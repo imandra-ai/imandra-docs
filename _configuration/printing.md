@@ -6,35 +6,18 @@ layout: pageSbar
 colName: Configuration
 ---
 Custom printers can be installed for any Imandra type. This is done using the `:install_printer` directive. A custom printer for a type `t` should have type ```Format.formatter -> t -> unit.``` These printers can be defined in `:program` mode.
-[block:api-header]
-{
-  "title": "Installing a custom printer"
-}
-[/block]
+
+### Installing a custom printer"
+
 Let us start with a small example, beginning by defining a type in `:logic` mode.
-[block:code]
-{
-  "codes": [
-    {
-      "code": "# type order = Market of int | Limit of int * float;;",
-      "language": "scala",
-      "name": "Imandra"
-    }
-  ]
-}
-[/block]
+{% highlight ocaml %}
+# type order = Market of int | Limit of int * float;;
+{% endhighlight %}
 With the type defined, we can begin reasoning about it. For example, we may ask for a value of type `order` using `instance`:
-[block:code]
-{
-  "codes": [
-    {
-      "code": "# instance _ (x : order) = true;;\n\nInstance:\n\n  { x = Market 0; }",
-      "language": "scala",
-      "name": "Imandra"
-    }
-  ]
-}
-[/block]
+{% highlight ocaml %}
+# instance _ (x : order) = true;;
+Instance:  { x = Market 0; }
+{% endhighlight %}
 Notice how the value `Market 0` is printed as part of a record. In fact, it is bound to a module `CX` and can be accessed by `CX.x`:
 [block:code]
 {
