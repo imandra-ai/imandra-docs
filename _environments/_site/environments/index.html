@@ -1,0 +1,202 @@
+<p>A state of an Imandra session is called an <em>environment</em>. An environment contains type and function definitions, configuration options, verification goals that have been proved, and all other contextual data that govern the evaluation of Imandra commands and directives.</p>
+
+<p>Intuitively, an environment is given by a history of <em>events</em>. This history describes how the initial <em>Ground Zero</em> environment was extended to arise at the current environment. Users typically work in the <em>live</em> environment, performing computations and extending the environment with new definitions and modifications of the Imandra configuration state. However, more fine-grained control over environments is available, including an environment stack, checkpointing and programmatic serialisation and restoration. 
+[block:api-header]
+{
+  “title”: “The Environment Stack”
+}
+[/block]
+The most basic environment management is performed through the <em>environment stack.</em></p>
+
+<p>By default, the environment stack is empty.</p>
+
+<p>Environments can be <em>pushed</em> and <em>popped</em> on and off the stack through the <code class="highlighter-rouge">:push</code> and <code class="highlighter-rouge">:pop</code> directives.</p>
+
+<p>At any time, a description of the environment stack (currently, just its size) can be displayed through the <code class="highlighter-rouge">:stack</code> directive.</p>
+
+<p>Let’s see an example:
+[block:code]
+{
+  “codes”: [
+    {
+      “code”: “            .__      /\ .__                           .<strong><em>\n     __</em></strong>  |<strong>|    / / |</strong>| <strong>___ __</strong>_    <strong>__    __| <em>/</em></strong><strong>__</strong><strong>\n     \</strong>  \ |  |   / /  |  |/     \__   \  /    \  / __ |\_  __ \__  \\n      / __ \|  |  / /   |  |  Y Y  \/ __ \|   |  \/ /<em>/ | |  | \// __ \</em>\n     (<strong>__  /</strong>| / /    |<strong>|</strong>|<em>|  (</em><strong>_  /</strong><em>|  /\</em><strong>_ | |</strong>|  (<em>__</em>  /\n          \/     \/              \/     \/     \/      \/            \/\n—————————————————————————-\n Imandra Commander 0.8a94 - (c)Copyright Aesthetic Integration Ltd, 2014-17\n—————————————————————————-\n# :stack\nEnvironment stack is empty.\n# :h\nAll events in session:\n\n0.«Ground Zero»\n\n# :push\n# :stack\nEnvironment stack contains 1 element.\n# let f x = x + 1;;\nval f : int -&gt; int = <fun>\n# :h\nAll events in session:\n\n0.&lt;<Ground Zero="">&gt;\n1.     Fun: f\n\n# f 10;;\n- : int = 11\n# instance _ x = f x = 100;;\n\nInstance:\n\n  { x = 99; }\n\n# :pop\n# :h\nAll events in session:\n\n0.&lt;<Ground Zero="">&gt;\n\n# f 10;;\nError: Unbound value f",
+      "language": "scala",
+      "name": "Imandra"
+    }
+  ]
+}
+[/block]</Ground></Ground></fun></p>
+
+<p>[block:api-header]
+{
+  “title”: “Programmatic Stack Manipulation”
+}
+[/block]
+An API for the environment stack is exposed through the <code class="highlighter-rouge">Reflect.Stack</code> module. This functionality is fully available in <code class="highlighter-rouge">:program</code> mode and can be applied (though not used in definitions) in <code class="highlighter-rouge">:logic</code> mode.</p>
+
+<p>The key functions are:</p>
+<ul>
+  <li><code class="highlighter-rouge">Reflect.Stack.size : unit -&gt; int</code>,</li>
+  <li><code class="highlighter-rouge">Reflect.Stack.push : unit -&gt; unit</code>, and</li>
+  <li><code class="highlighter-rouge">Reflect.Stack.pop : unit -&gt; unit</code>.
+[block:code]
+{
+  “codes”: [
+ {
+   “code”: “# Reflect.Stack.push ();;\n- : unit = ()\n# let f x = x + 1;;\nval f : int -&gt; int = <fun>\n# theorem _ x = f x &gt; x;;\nthm _ = <proved>\n# Reflect.Stack.size ();;\n- : int = 1\n# Reflect.Stack.pop ();;\n- : unit = ()\n# let f x = x + 2;;\nval f : int -&gt; int = <fun>\n# theorem _ x = f x &gt; x + 1;;\nthm _ = <proved>\n# :h\nAll events in session:\n\n0.&lt;<Ground Zero="">&gt;\n1.     Fun: f\n\n# Reflect.Stack.size ();;\n- : int = 0",
+   "language": "scala",
+   "name": "Imandra"
+ }
+  ]
+}
+[/block]
+We can use these stack manipulation functions in our own `:program` mode functions. For example, here is a light-weight way to "safely" evaluate a sequence of IML events and then subsequently throw away the results. Note this `safe_eval` is not truly safe as no checking is done to ensure that the evaluated commands do not contain, e.g., `:push` or `:pop`: 
+[block:code]
+{
+  "codes": [
+ {
+   "code": "&gt; let safe_eval xs =\n   begin\n    Reflect.Stack.push ();\n    List.iter Reflect.eval xs;\n    Reflect.Stack.pop ()\n   end\n  ;;\nval safe_eval : string list -&gt; unit = <fun>\n&gt; :logic\n# safe_eval [\"let f x = x + 1;;\"; \"f 10;;\"; \"theorem f_gt x = f x &gt; x;;\"];;\nval f : int -&gt; int = <fun>\n- : int = 11\nthm f_gt = <proved>\n- : unit = ()\n# :h\nAll events in session:\n\n0.&lt;<Ground Zero="">&gt;\n",
+   "language": "scala",
+   "name": "Imandra"
+ }
+  ]
+}
+[/block]</Ground></proved></fun></fun></Ground></proved></fun></proved></fun></li>
+</ul>
+
+<p>[block:api-header]
+{
+  “title”: “Environment Checkpoints”
+}
+[/block]
+The live environment may be serialised to disk through the use of the <code class="highlighter-rouge">:checkpoint</code> directive. A checkpoint must be given a name. By default, it is stored in an Imandra system directory which Imandra will automatically search whenever one attempts to restore the checkpoint.</p>
+
+<p>The loading of checkpoints is designed to be a fast, ideally <code class="highlighter-rouge">O(1)</code> operation. We typically “compile” large Imandra models by loading them in a fresh session and checkpointing the session immediately after their loading is complete. While the initial compilation may take some time (30 sec is not uncommon for a FIX venue model), once the checkpoint has been saved, we may then start (potentially simultaneous) Imandra sessions and <code class="highlighter-rouge">:restore</code> the checkpoint in all of them very quickly (e.g., 0.1 sec).
+[block:code]
+{
+  “codes”: [
+    {
+      “code”: “            .__      /\ .__                           .<strong><em>\n     __</em></strong>  |<strong>|    / / |</strong>| <strong>___ __</strong>_    <strong>__    __| <em>/</em></strong><strong>__</strong><strong>\n     \</strong>  \ |  |   / /  |  |/     \__   \  /    \  / __ |\_  __ \__  \\n      / __ \|  |  / /   |  |  Y Y  \/ __ \|   |  \/ /<em>/ | |  | \// __ \</em>\n     (<strong>__  /</strong>| / /    |<strong>|</strong>|<em>|  (</em><strong>_  /</strong><em>|  /\</em><strong>_ | |</strong>|  (<em>__</em>  /\n          \/     \/              \/     \/     \/      \/            \/\n—————————————————————————-\n Imandra Commander 0.8a94 - (c)Copyright Aesthetic Integration Ltd, 2014-17\n—————————————————————————-\n# type foo = A | B;;\ntype foo = A | B\n# let f = function\n    A -&gt; 10\n  | B -&gt; 20\n  ;;\nval f : foo -&gt; int = <fun>\n# :checkpoint foo\n- Building checkpoint foo.\n- Checkpoint foo built.\n                                                                 \nTo restore this checkpoint from the toplevel, run\n   :restore foo\n\n- Linking checkpoint foo back into current session.\n- Link complete.                                                                 ",
+      "language": "scala",
+      "name": "Imandra"
+    }
+  ]
+}
+[/block]
+Now that the checkpoint exists, we may use the `:restore` directive to restore it in a fresh session:
+[block:code]
+{
+  "codes": [
+    {
+      "code": "            .__      /\\ .__                           .___\n     _____  |__|    / / |__| _____ _____    ____    __| _/___________\n     \\__  \\ |  |   / /  |  |/     \\__   \\  /    \\  / __ |\\_  __ \\__  \\\n      / __ \\|  |  / /   |  |  Y Y  \\/ __ \\|   |  \\/ /_/ | |  | \\// __ \\_\n     (____  /__| / /    |__|__|_|  (____  /___|  /\\____ | |__|  (____  /\n          \\/     \\/              \\/     \\/     \\/      \\/            \\/\n----------------------------------------------------------------------------\n Imandra Commander 0.8a94 - (c)Copyright Aesthetic Integration Ltd, 2014-17\n----------------------------------------------------------------------------\n# :restore foo\nCheckpoint foo restored.\n# :h\nAll events in session:\n\n0.&lt;<Ground Zero="">&gt;\n1.    Type: foo\n2.     Fun: f\n\n# f A;;\n- : int = 10\n# instance _ x = f x = 20;;\n\nInstance:\n\n  { x = B; }\n",
+      "language": "scala",
+      "name": "Imandra"
+    }
+  ]
+}
+[/block]
+By default, `:checkpoint` will overwrite a checkpoint of the same name, if one exists. To block this overwriting, give `:checkpoint` an extra argument of `false`:
+[block:code]
+{
+  "codes": [
+    {
+      "code": "# :checkpoint foo false\nError: Checkpoint foo already exists (overwrite=false).",
+      "language": "scala",
+      "name": "Imandra"
+    }
+  ]
+}
+[/block]</Ground></fun></p>
+
+<p>[block:api-header]
+{
+  “title”: “Programmatic Checkpoint Manipulation”
+}
+[/block]
+The checkpointing functions are available through the <code class="highlighter-rouge">Reflect</code> API.</p>
+
+<p>The key functions are:</p>
+<ul>
+  <li><code class="highlighter-rouge">Reflect.checkpoint : ?overwrite:bool -&gt; string -&gt; unit</code></li>
+  <li><code class="highlighter-rouge">Reflect.restore : string -&gt; unit</code>
+[block:code]
+{
+“codes”: [
+  {
+    “code”: “            .__      /\ .__                           .<strong><em>\n     __</em></strong>  |<strong>|    / / |</strong>| <strong>___ __</strong>_    <strong>__    __| <em>/</em></strong><strong>__</strong><strong>\n     \</strong>  \ |  |   / /  |  |/     \__   \  /    \  / __ |\_  __ \__  \\n      / __ \|  |  / /   |  |  Y Y  \/ __ \|   |  \/ /<em>/ | |  | \// __ \</em>\n     (<strong>__  /</strong>| / /    |<strong>|</strong>|<em>|  (</em><strong>_  /</strong><em>|  /\</em><strong>_ | |</strong>|  (<em>__</em>  /\n          \/     \/              \/     \/     \/      \/            \/\n—————————————————————————-\n Imandra Commander 0.8a94 - (c)Copyright Aesthetic Integration Ltd, 2014-17\n—————————————————————————-\n# Reflect.checkpoint;;\n- : ?overwrite:bool -&gt; string -&gt; unit = <fun>\n# Reflect.checkpoint \"foo\";;\n- Building checkpoint foo.\n- Checkpoint foo built.\n\nTo restore this checkpoint from the toplevel, run\n   :restore foo\n\n- Linking checkpoint foo back into current session.\n- Link complete.\n- : unit = ()\n# Reflect.checkpoint ~overwrite:false \"foo\";;\nException:\nVersion.Unsupported \"Checkpoint foo already exists (overwrite=false).\".\n# Reflect.restore \"foo\";;\nCheckpoint foo restored.\n- : unit = ()",
+    "language": "scala",
+    "name": "Imandra"
+  }
+]
+}
+[/block]</fun></li>
+</ul>
+
+<p>[block:api-header]
+{
+  “title”: “Exporting and Importing Checkpoints”
+}
+[/block]
+By default, checkpoints are created and stored in a system-wide Imandra directory. Facilities for exporting and importing checkpoints are provided through the <code class="highlighter-rouge">Reflect</code> API. Exported checkpoints are version-sensitive: they may only be imported by installations of the same version of Imandra that was used to create them.</p>
+
+<p>The relevant functions are:</p>
+
+<ul>
+  <li><code class="highlighter-rouge">Reflect.export : string -&gt; string -&gt; unit</code></li>
+  <li><code class="highlighter-rouge">Reflect.import : string -&gt; unit</code></li>
+</ul>
+
+<p><code class="highlighter-rouge">Reflect.export "foo.icp" "foo"</code> will export an existing checkpoint named <code class="highlighter-rouge">foo</code> into the file <code class="highlighter-rouge">foo.icp</code> in the current directory.</p>
+
+<p><code class="highlighter-rouge">Reflect.import "foo.icp"</code> will import the checkpoint <code class="highlighter-rouge">foo</code> from the file <code class="highlighter-rouge">foo.icp</code>. When a checkpoint is imported, it is installed in the system directory and is then made available to all Imandra instances in the same environment.</p>
+
+<p>There are no restrictions on the export filenames. However, the name of the exported checkpoint (e.g., <code class="highlighter-rouge">foo</code>) is stable and not affected by the export filename.</p>
+
+<p>Let us see an example:
+[block:code]
+{
+  “codes”: [
+    {
+      “code”: “            .__      /\ .__                           .<strong><em>\n     __</em></strong>  |<strong>|    / / |</strong>| <strong>___ __</strong>_    <strong>__    __| <em>/</em></strong><strong>__</strong><strong>\n     \</strong>  \ |  |   / /  |  |/     \__   \  /    \  / __ |\_  __ \__  \\n      / __ \|  |  / /   |  |  Y Y  \/ __ \|   |  \/ /<em>/ | |  | \// __ \</em>\n     (<strong>__  /</strong>| / /    |<strong>|</strong>|<em>|  (</em><strong>_  /</strong><em>|  /\</em><strong>_ | |</strong>|  (<em>__</em>  /\n          \/     \/              \/     \/     \/      \/            \/\n—————————————————————————-\n Imandra Commander 0.8a94 - (c)Copyright Aesthetic Integration Ltd, 2014-17\n—————————————————————————-\n# let f x = x + 1;;\nval f : int -&gt; int = <fun>\n# let g x = f x + 2;;\nval g : int -&gt; int = <fun>\n# :checkpoint foo\n- Building checkpoint foo.\n- Checkpoint foo built.\n\nTo restore this checkpoint from the toplevel, run\n   :restore foo\n\n- Linking checkpoint foo back into current session.\n- Link complete.\n# Reflect.export \"example.icp\" \"foo\";;\n- : unit = ()",
+      "language": "scala",
+      "name": "Imandra"
+    }
+  ]
+}
+[/block]
+We can view the exported file in the current directory:
+[block:code]
+{
+  "codes": [
+    {
+      "code": "$ ls -lh example.icp\n-rw-r--r--  1 grant  staff    34M Jun 20 18:15 example.icp",
+      "language": "scala",
+      "name": "Imandra"
+    }
+  ]
+}
+[/block]
+And we can then start a fresh session and import the checkpoint. Once it's imported, it is made available to all Imandra sessions running in the same environment, just the same as if it had been obtained through a `:checkpoint` directive. 
+[block:code]
+{
+  "codes": [
+    {
+      "code": "            .__      /\\ .__                           .___\n     _____  |__|    / / |__| _____ _____    ____    __| _/___________\n     \\__  \\ |  |   / /  |  |/     \\__   \\  /    \\  / __ |\\_  __ \\__  \\\n      / __ \\|  |  / /   |  |  Y Y  \\/ __ \\|   |  \\/ /_/ | |  | \\// __ \\_\n     (____  /__| / /    |__|__|_|  (____  /___|  /\\____ | |__|  (____  /\n          \\/     \\/              \\/     \\/     \\/      \\/            \\/\n----------------------------------------------------------------------------\n Imandra Commander 0.8a94 - (c)Copyright Aesthetic Integration Ltd, 2014-17\n----------------------------------------------------------------------------\n# Reflect.import \"example.icp\";;\nArchive contains checkpoint foo.\nImporting foo.exe\nImporting foo.exe.dx86cl64\nImporting foo.ims\nCheckpoint foo imported, ready to be restored.\n- : unit = ()",
+      "language": "scala",
+      "name": "Imandra"
+    }
+  ]
+}
+[/block]
+Thus, we may then restore it, either through `:restore` or `Reflect.restore`:
+[block:code]
+{
+  "codes": [
+    {
+      "code": "# Reflect.restore \"foo\";;\nCheckpoint foo restored.\n- : unit = ()\n# :h\nAll events in session:\n\n0.&lt;<Ground Zero="">&gt;\n1.     Fun: f\n2.     Fun: g\n\n# instance _ x = g x = 10;;\n\nInstance:\n\n  { x = 7; }\n\n# g CX.x;;\n- : int = 10",
+      "language": "scala",
+      "name": "Imandra"
+    }
+  ]
+}
+[/block]</Ground></fun></fun></p>
