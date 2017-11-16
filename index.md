@@ -16,7 +16,7 @@ Before starting to use Imandra, it may be helpful to familiarise yourself with t
 There are many great resources and books for doing so.
 Here's a good place to start:
 
-[![OCaml](http://ocaml.org/img/real-world-ocaml.jpg)](http://ocaml.org/learn)
+[![OCaml](https://ocaml.org/img/real-world-ocaml.jpg)](http://ocaml.org/learn)
 
 ### First steps
 
