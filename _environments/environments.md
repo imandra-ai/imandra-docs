@@ -22,6 +22,7 @@ Environments can be *pushed* and *popped* on and off the stack through the `:pus
 At any time, a description of the environment stack (currently, just its size) can be displayed through the `:stack` directive.
 
 Let's see an example:
+
 ```
             .__      /\ .__                           .___            
      _____  |__|    / / |__| _____ _____    ____    __| _/___________   
@@ -126,10 +127,16 @@ All events in session:
 The live environment may be serialised to disk through the use of the `:checkpoint` directive. A checkpoint must be given a name. By default, it is stored in an Imandra system directory which Imandra will automatically search whenever one attempts to restore the checkpoint.
 
 The loading of checkpoints is designed to be a fast, ideally `O(1)` operation. We typically "compile" large Imandra models by loading them in a fresh session and checkpointing the session immediately after their loading is complete. While the initial compilation may take some time (30 sec is not uncommon for a FIX venue model), once the checkpoint has been saved, we may then start (potentially simultaneous) Imandra sessions and `:restore` the checkpoint in all of them very quickly (e.g., 0.1 sec).
+
 ```
-.__      /\\ .__                           .___\n     _____  |__|    / / |__| _____ _____    ____    __| _/___________\n     \\__  \\ |  |   / /  |  |/     \\__   \\  /    \\  / __ |\\_  __ \\__  \\\n      / __ \\|  |  / /   |  |  Y Y  \\/ __ \\|   |  \\/ /_/ | |  | \\// __ \\_\n     (____  /__| / /    |__|__|_|  (____  /___|  /\\____ | |__|  (____  /\n          \\/     \\/              \\/     \\/     \\/      \\/            \\/
+            .__      /\ .__                           .___            
+     _____  |__|    / / |__| _____ _____    ____    __| _/___________   
+     \__  \ |  |   / /  |  |/     \__   \  /    \  / __ |\_  __ \__  \  
+      / __ \|  |  / /   |  |  Y Y  \/ __ \|   |  \/ /_/ | |  | \// __ \_
+     (____  /__| / /    |__|__|_|  (____  /___|  /\____ | |__|  (____  /
+          \/     \/              \/     \/     \/      \/            \/ 
 ----------------------------------------------------------------------------
-Imandra Commander 0.8a94 - (c)Copyright Aesthetic Integration Ltd, 2014-17
+ Imandra Commander 0.8a94 - (c)Copyright Aesthetic Integration Ltd, 2014-17
 ----------------------------------------------------------------------------
 # type foo = A | B;;
 type foo = A | B
@@ -147,11 +154,18 @@ To restore this checkpoint from the toplevel, run
 - Linking checkpoint foo back into current session.
 - Link complete.
 ```
+
 Now that the checkpoint exists, we may use the `:restore` directive to restore it in a fresh session:
+
 ```
-  .__      /\\ .__                           .___\n     _____  |__|    / / |__| _____ _____    ____    __| _/___________\n     \\__  \\ |  |   / /  |  |/     \\__   \\  /    \\  / __ |\\_  __ \\__  \\\n      / __ \\|  |  / /   |  |  Y Y  \\/ __ \\|   |  \\/ /_/ | |  | \\// __ \\_\n     (____  /__| / /    |__|__|_|  (____  /___|  /\\____ | |__|  (____  /\n          \\/     \\/              \\/     \\/     \\/      \\/            \\/
+            .__      /\ .__                           .___            
+     _____  |__|    / / |__| _____ _____    ____    __| _/___________   
+     \__  \ |  |   / /  |  |/     \__   \  /    \  / __ |\_  __ \__  \  
+      / __ \|  |  / /   |  |  Y Y  \/ __ \|   |  \/ /_/ | |  | \// __ \_
+     (____  /__| / /    |__|__|_|  (____  /___|  /\____ | |__|  (____  /
+          \/     \/              \/     \/     \/      \/            \/ 
 ----------------------------------------------------------------------------
-Imandra Commander 0.8a94 - (c)Copyright Aesthetic Integration Ltd, 2014-17
+ Imandra Commander 0.8a94 - (c)Copyright Aesthetic Integration Ltd, 2014-17
 ----------------------------------------------------------------------------
 # :restore foo
 Checkpoint foo restored.
@@ -185,9 +199,14 @@ The checkpointing functions are available through the `Reflect` API.
 The key functions are:
 - `Reflect.checkpoint : ?overwrite:bool -> string -> unit`
 - `Reflect.restore : string -> unit`
+
 ```
-.__      /\\ .__                           .___
-_____  |__|    / / |__| _____ _____    ____    __| _/___________\n     \\__  \\ |  |   / /  |  |/     \\__   \\  /    \\  / __ |\\_  __ \\__  \\\n      / __ \\|  |  / /   |  |  Y Y  \\/ __ \\|   |  \\/ /_/ | |  | \\// __ \\_\n     (____  /__| / /    |__|__|_|  (____  /___|  /\\____ | |__|  (____  /\n          \\/     \\/              \\/     \\/     \\/      \\/            \\/
+            .__      /\ .__                           .___            
+     _____  |__|    / / |__| _____ _____    ____    __| _/___________   
+     \__  \ |  |   / /  |  |/     \__   \  /    \  / __ |\_  __ \__  \  
+      / __ \|  |  / /   |  |  Y Y  \/ __ \|   |  \/ /_/ | |  | \// __ \_
+     (____  /__| / /    |__|__|_|  (____  /___|  /\____ | |__|  (____  /
+          \/     \/              \/     \/     \/      \/            \/ 
 ----------------------------------------------------------------------------
  Imandra Commander 0.8a94 - (c)Copyright Aesthetic Integration Ltd, 2014-17
 ----------------------------------------------------------------------------
@@ -231,12 +250,15 @@ There are no restrictions on the export filenames. However, the name of the expo
 Let us see an example:
 
 ```
-  .__      /\\ .__                           .___\n     _____  |__|    / / |__| _____ _____    ____    __| _/___________\n     \\__  \\ |  |   / /  |  |/     \\__   \\  /    \\  / __ |\\_  __ \\__  \\\n      / __ \\|  |  / /   |  |  Y Y  \\/ __ \\|   |  \\/ /_/ | |  | \\// __ \\_\n     (____  /__| / /    |__|__|_|  (____  /___|  /\\____ | |__|  (____  /\n          \\/     \\/              \\/     \\/     \\/      \\/            \\/\
-
+            .__      /\ .__                           .___            
+     _____  |__|    / / |__| _____ _____    ____    __| _/___________   
+     \__  \ |  |   / /  |  |/     \__   \  /    \  / __ |\_  __ \__  \  
+      / __ \|  |  / /   |  |  Y Y  \/ __ \|   |  \/ /_/ | |  | \// __ \_
+     (____  /__| / /    |__|__|_|  (____  /___|  /\____ | |__|  (____  /
+          \/     \/              \/     \/     \/      \/            \/ 
 ----------------------------------------------------------------------------
  Imandra Commander 0.8a94 - (c)Copyright Aesthetic Integration Ltd, 2014-17
 ----------------------------------------------------------------------------
-
 # let f x = x + 1;;
 val f : int -> int = <fun>
 # let g x = f x + 2;;
@@ -263,10 +285,15 @@ $ ls -lh example.icp
 And we can then start a fresh session and import the checkpoint. Once it's imported, it is made available to all Imandra sessions running in the same environment, just the same as if it had been obtained through a `:checkpoint` directive. 
 
 ```
-.__      /\\ .__                           .___\n     _____  |__|    / / |__| _____ _____    ____    __| _/___________\n     \\__  \\ |  |   / /  |  |/     \\__   \\  /    \\  / __ |\\_  __ \\__  \\\n      / __ \\|  |  / /   |  |  Y Y  \\/ __ \\|   |  \\/ /_/ | |  | \\// __ \\_\n     (____  /__| / /    |__|__|_|  (____  /___|  /\\____ | |__|  (____  /\n          \\/     \\/              \\/     \\/     \\/      \\/            \\/
+            .__      /\ .__                           .___            
+     _____  |__|    / / |__| _____ _____    ____    __| _/___________   
+     \__  \ |  |   / /  |  |/     \__   \  /    \  / __ |\_  __ \__  \  
+      / __ \|  |  / /   |  |  Y Y  \/ __ \|   |  \/ /_/ | |  | \// __ \_
+     (____  /__| / /    |__|__|_|  (____  /___|  /\____ | |__|  (____  /
+          \/     \/              \/     \/     \/      \/            \/ 
 ----------------------------------------------------------------------------
  Imandra Commander 0.8a94 - (c)Copyright Aesthetic Integration Ltd, 2014-17
- ----------------------------------------------------------------------------
+----------------------------------------------------------------------------
  # Reflect.import "example.icp";;
  Archive contains checkpoint foo.
  Importing foo.exe
