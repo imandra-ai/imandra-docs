@@ -1,0 +1,100 @@
+<p>Let’s use Imandra to verify an implementation of <em>insertion sort</em>. 
+[block:api-header]
+{
+  “type”: “basic”,
+  “title”: “1. Define the function”
+}
+[/block]
+You may be familiar with languages like Python. Here’s a Python implementation of the algorithm:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">i_sort</span><span class="p">(</span> <span class="n">lst</span> <span class="p">):</span>
+  <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span> <span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">lst</span><span class="p">)):</span>
+  <span class="n">tmp</span> <span class="o">=</span> <span class="n">lst</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+  <span class="n">k</span> <span class="o">=</span> <span class="n">i</span>
+  <span class="k">while</span> <span class="n">k</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">tmp</span> <span class="o">&lt;</span> <span class="n">lst</span><span class="p">[</span><span class="n">k</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]:</span>
+    <span class="n">lst</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">lst</span><span class="p">[</span><span class="n">k</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span>
+    <span class="n">k</span> <span class="o">-=</span> <span class="mi">1</span>
+    <span class="n">lst</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">tmp</span>
+</code></pre></div></div>
+
+<p>Notice the nested iteration, i.e., the while-loop nested inside of the outer for-loop.</p>
+
+<p>Mathematically, this suggests that we use two recursive functions to give a functional definition of this algorithm.</p>
+
+<p>Let’s implement this in Imandra.</p>
+
+<p>First, we’ll define the <code class="highlighter-rouge">insert</code> function:</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code># let rec insert (a,lst) =
+  match lst with
+  []      -&gt; [a]
+  | x :: xs -&gt;
+    if a &lt; x then a :: x :: xs else x :: insert(a, xs);;
+
+val insert : 'a * 'a list -&gt; 'a list = &lt;fun&gt;,
+</code></pre></div></div>
+
+<p>Next, we’ll define the <code class="highlighter-rouge">sorting</code> function:</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code># let rec i_sort lst =
+  match lst with
+  []      -&gt; []
+  | x :: xs -&gt; insert(x, i_sort xs);;
+
+val i_sort : 'a list -&gt; 'a list = &lt;fun&gt;
+</code></pre></div></div>
+<p>Note that both definitions were accepted (and thus proved to be terminating) by Imandra.</p>
+
+<p>Note also the type of <code class="highlighter-rouge">i_sort</code> computed by Imandra. This type <code class="highlighter-rouge">'a list -&gt; 'a list</code> tells us that <code class="highlighter-rouge">i_sort</code> is a polymorphic function: It will accept as input a list of any type of values (all values in the list having type <code class="highlighter-rouge">'a</code> where <code class="highlighter-rouge">'a</code> is arbitrary), and will compute as output a list of the same type.
+(This is possible as the comparison function <code class="highlighter-rouge">&lt;</code> used in the definition of <code class="highlighter-rouge">insert</code> is itself polymorphic.)</p>
+
+<p>With these functions admitted, we can now compute with them:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code># i_sort [7; 3; 890; 100];;
+
+- : int list = [3; 7; 100; 890]
+</code></pre></div></div>
+
+<p>Excellent. But is the code actually correct? Are there ever any corner cases where it can fail to produce a sorted list as output?</p>
+
+<p>We can ask Imandra.</p>
+
+<p>First, we define a specification of what it means for a list to be sorted:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code># let rec is_sorted (x) =
+  match x with
+  | a :: b :: xs -&gt; (a &lt;= b) &amp;&amp; is_sorted (b::xs)
+  | _ -&gt; true;;
+
+val is_sorted : 'a list -&gt; bool = &lt;fun&gt;
+</code></pre></div></div>
+
+<p>Take some time to think about this definition.</p>
+
+<p>Now, we can ask Imandra to verify a correctness theorem:</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code># verify i_sort_spec x =
+  is_sorted (i_sort x);;
+
+thm i_sort_spec = &lt;proved&gt;
+</code></pre></div></div>
+
+<p>Success! And very quickly:</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code># :t\nLast timed event: 0.395 sec.
+</code></pre></div></div>
+
+<p>But now let’s think more about our spec. Is our spec really expressing what we want it to?</p>
+
+<p>Not completely! Why? Consider the following function:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code># let i_sort_bad (x) = [];;
+
+val i_sort_bad : 'a -&gt; 'b list = &lt;fun&gt;
+</code></pre></div></div>
+
+<p>This function also satisfies our spec:</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code># verify i_sort_bad_spec x =
+  is_sorted (i_sort_bad x);;
+
+thm i_sort_bad_spec = &lt;proved&gt;
+</code></pre></div></div>
+<p>We must also consider the property that the output is a permutation of its input.</p>
+
+<p>Defining and proving this property of <code class="highlighter-rouge">i_sort</code> is a great Imandra exercise!</p>

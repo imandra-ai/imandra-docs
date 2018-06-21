@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html>
+    <head>
+	  <meta charset="utf-8">
+	  <meta http-equiv="x-ua-compatible" content="ie=edge">
+	  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+	  <title>Hacking</title>
+	  
+	  <link rel="shortcut icon" type="image/x-icon" href="/imandra-docs/favicon.ico">
+	  <link rel="stylesheet" href="/imandra-docs/css/main.css">
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Merriweather+Sans:300,300i,400,400i%7CMerriweather:300,300i,400,400i%7CRoboto+Slab:300,300i,400,400i">
+
+	  <link rel="canonical" href="https://docs.imandra.ai//imandra-docs/hacking/">
+	  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.1/jquery.min.js"></script>
+	  <script type="text/javascript" src = "/imandra-docs/jekyll-resources/assets/scripts/jquery.scrollme.min.js"></script>
+	  <script type="text/javascript" src = "/imandra-docs/jekyll-resources/assets/scripts/jquery.sticky.min.js"></script>
+	  <script type="text/javascript">
+	  	 
+		$(document).ready(function(){
+			$("#StickMenu").sticky({topSpacing:52});
+		});
+
+	  </script>
+
+</head> 
+
+
+    <body>
+	      <div class="TopRowContainer">
+	<div class="TopRow">
+		<div class="TopNavLogoContainer">
+			<a class="TopNavLogoLink" href="https://docs.imandra.ai/">
+				<img class="TopNavLogo" src = "/imandra-docs/jekyll-resources/assets/img/imandra_doc_logo_main.svg">
+			</a>
+		</div>
+		<nav class="TopNavContainer">
+			<ul class="TopNavList">
+				
+				 
+				
+				 
+				
+				
+				
+				
+				<li class="TopNavListItem"><a class="TopNavLink" href="/imandra-docs/configuration/">Configuration</a></li>
+				
+				
+				 
+				
+				
+				
+				
+				<li class="TopNavListItem"><a class="TopNavLink" href="/imandra-docs/examples/">Examples</a></li>
+				
+				
+				 
+				
+				
+				
+				
+				<li class="TopNavListItem"><a class="TopNavLink TopNavLink__Active" href="/imandra-docs/hacking/">Hacking</a></li>
+				
+				
+				 
+				
+				
+				
+				
+				<li class="TopNavListItem"><a class="TopNavLink" href="/imandra-docs/regionDecomposition/">Region Decomposition</a></li>
+				
+				
+				 
+				
+				
+				
+				
+				<li class="TopNavListItem"><a class="TopNavLink" href="/imandra-docs/extra/">Further functionality</a></li>
+				
+				
+				
+			</ul>
+		</nav>
+	</div>
+</div>
+
+<header class="TemplateHeader">
+	<div class="TemplateHeaderImageContainer">
+	<a href ="/imandra-docs">
+		<img class="SiteSpecificImage" src="/imandra-docs/assets/img/site_specific_image_v_2.svg">
+	</a>
+	</div>
+</header>
+
+
+	      <main class="MainContentColumn">
+		        <article class="ArticleContainer">
+			          <!-- Sidebar -->
+<div class="SideMenuContainer">
+    <div id="StickMenu" class="SideMenu">
+        
+        
+        
+        
+        <A href=#>Introspection</A>
+        
+        
+        
+        <A href=#tracing>Tracing</A>
+        
+        
+        
+    </div>
+</div>
+<!--MainContent-->
+<div class="MainContent">
+    
+    
+    
+    <h2 id=introspection>Introspection</h2>
+    
+    <p>The directive <code class="highlighter-rouge">:introspection on</code> will enable introspection into the Imandra runtime. We currently support the introspection of type definitions.</p>
+
+<p>When introspection is enabled, type definitions are reflected and saved into the <code class="highlighter-rouge">Meta.type_defs</code> list.</p>
+
+<h4 id="1-example">1. Example</h4>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>            .__      /\ .__                           .___            
+     _____  |__|    / / |__| _____ _____    ____    __| _/___________   
+     \__  \ |  |   / /  |  |/     \__   \  /    \  / __ |\_  __ \__  \  
+      / __ \|  |  / /   |  |  Y Y  \/ __ \|   |  \/ /_/ | |  | \// __ \_
+     (____  /__| / /    |__|__|_|  (____  /___|  /\____ | |__|  (____  /
+          \/     \/              \/     \/     \/      \/            \/ 
+----------------------------------------------------------------------------
+ Imandra Commander 0.8a94 - (c)Copyright Aesthetic Integration Ltd, 2014-17
+----------------------------------------------------------------------------
+# :introspection on
+# type t1 = A of int | B of int * int | C of t1;;
+type t1 = A of int | B of int * int | C of t1
+# type t2 = { x : int; y : t1 };;
+type t2 = { x : int; y : t1; }
+# type t3 = t2 option;;
+type t3 = t2 option
+# Meta.type_defs;;
+- : Meta.type_def list ref =
+  {contents =
+    [{Meta.mod_path = "";
+      loc = "//toplevel//";
+      decl = Meta.Def_alias ("t3", "t2_option")};
+    {Meta.mod_path = ""; loc = "//toplevel//";
+      decl =
+        Meta.Def_rec ("t2",
+        [{Meta.field_name = "x"; field_ty = "int"};
+        {Meta.field_name = "y"; field_ty = "t1"}])};
+        {Meta.mod_path = ""; loc = "//toplevel//";
+      decl =
+        Meta.Def_adt ("t1",
+          [{Meta.constr = "A"; c_args = ["int"]};
+          {Meta.constr = "B"; c_args = ["int"; "int"]};
+          {Meta.constr = \"C\"; c_args = ["t1"]}])}]}
+
+</code></pre></div></div>
+<p>To see the signature of the <code class="highlighter-rouge">IMeta</code> module, you can use the following trick:</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+# :shadow off
+&gt; module Meta = Meta;;
+module Meta :
+  sig
+    type adt_row = Meta.adt_row = { constr : string; c_args : string list; }
+    type rec_row =
+      Meta.rec_row = {
+        field_name : string;
+        field_ty : string;
+      }
+      type type_decl =
+        Meta.type_decl =
+          Def_adt of string * adt_row list
+          | Def_rec of string * rec_row list
+          | Def_alias of string * string
+          type type_def =
+            Meta.type_def = {
+              mod_path : string;
+              loc : string;
+              decl : type_decl;
+            }
+          val type_defs : type_def list ref
+          val register_type_def : type_def -&gt; unit
+  end
+</code></pre></div></div>
+
+    
+    
+    <h2 class="internalLink-padding" id=tracing>Tracing</h2>
+    
+    <p>Imandra supports the standard tracing commands of OCaml:
+<code class="highlighter-rouge">#trace function-name</code>, <code class="highlighter-rouge">#untrace function-name</code> and <code class="highlighter-rouge">#untrace_all</code>.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>            .__      /\ .__                           .___            
+     _____  |__|    / / |__| _____ _____    ____    __| _/___________   
+     \__  \ |  |   / /  |  |/     \__   \  /    \  / __ |\_  __ \__  \  
+      / __ \|  |  / /   |  |  Y Y  \/ __ \|   |  \/ /_/ | |  | \// __ \_
+     (____  /__| / /    |__|__|_|  (____  /___|  /\____ | |__|  (____  /
+          \/     \/              \/     \/     \/      \/            \/ 
+----------------------------------------------------------------------------
+ Imandra Commander 0.8a94 - (c)Copyright Aesthetic Integration Ltd, 2014-17
+----------------------------------------------------------------------------
+  # let rec sum x =
+    if x &lt;= 0 then 0
+    else x + sum (x-1)
+  ;;
+  val sum : int -&gt; int = &lt;fun&gt;
+  # 
+  #trace sum;;
+  sum is now traced.
+  # sum 10;;
+  sum &lt;-- 10
+  sum &lt;-- 9
+  sum &lt;-- 8
+  sum &lt;-- 7
+  sum &lt;-- 6
+  sum &lt;-- 5
+  sum &lt;-- 4
+  sum &lt;-- 3
+  sum &lt;-- 2
+  sum &lt;-- 1
+  sum &lt;-- 0
+  sum --&gt; 0
+  sum --&gt; 1
+  sum --&gt; 3
+  sum --&gt; 6
+  sum --&gt; 10
+  sum --&gt; 15
+  sum --&gt; 21
+  sum --&gt; 28
+  sum --&gt; 36
+  sum --&gt; 45
+  sum --&gt; 55
+  - : int = 55
+  # 
+  #untrace sum;;
+  sum is no longer traced.
+  # sum 10;;
+  - : int = 55
+</code></pre></div></div>
+
+    
+    
+</div>
+		        </article>
+	      </main>
+	      <footer class="Footer">
+	  <a class="Copyrights"href="http://imandra.ai">&#9400; 2018 Aesthetic Integration Ltd. All rights reserved.</a>
+</footer>
+
+    </body>
+
+</html>

@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html>
+    <head>
+	  <meta charset="utf-8">
+	  <meta http-equiv="x-ua-compatible" content="ie=edge">
+	  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+	  <title>Dashing VGs</title>
+	  
+	  <link rel="shortcut icon" type="image/x-icon" href="/imandra-docs/favicon.ico">
+	  <link rel="stylesheet" href="/imandra-docs/css/main.css">
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Merriweather+Sans:300,300i,400,400i%7CMerriweather:300,300i,400,400i%7CRoboto+Slab:300,300i,400,400i">
+
+	  <link rel="canonical" href="https://docs.imandra.ai//imandra-docs/dashingVGs/">
+	  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.1/jquery.min.js"></script>
+	  <script type="text/javascript" src = "/imandra-docs/jekyll-resources/assets/scripts/jquery.scrollme.min.js"></script>
+	  <script type="text/javascript" src = "/imandra-docs/jekyll-resources/assets/scripts/jquery.sticky.min.js"></script>
+	  <script type="text/javascript">
+	  	 
+		$(document).ready(function(){
+			$("#StickMenu").sticky({topSpacing:52});
+		});
+
+	  </script>
+
+</head> 
+
+
+    <body>
+	      <div class="TopRowContainer">
+	<div class="TopRow">
+		<div class="TopNavLogoContainer">
+			<a class="TopNavLogoLink" href="https://docs.imandra.ai/">
+				<img class="TopNavLogo" src = "/imandra-docs/jekyll-resources/assets/img/imandra_doc_logo_main.svg">
+			</a>
+		</div>
+		<nav class="TopNavContainer">
+			<ul class="TopNavList">
+				
+				 
+				
+				 
+				
+				
+				
+				
+				<li class="TopNavListItem"><a class="TopNavLink" href="/imandra-docs/configuration/">Configuration</a></li>
+				
+				
+				 
+				
+				
+				
+				
+				<li class="TopNavListItem"><a class="TopNavLink" href="/imandra-docs/examples/">Examples</a></li>
+				
+				
+				 
+				
+				
+				
+				
+				<li class="TopNavListItem"><a class="TopNavLink" href="/imandra-docs/hacking/">Hacking</a></li>
+				
+				
+				 
+				
+				
+				
+				
+				<li class="TopNavListItem"><a class="TopNavLink" href="/imandra-docs/regionDecomposition/">Region Decomposition</a></li>
+				
+				
+				 
+				
+				
+				
+				
+				<li class="TopNavListItem"><a class="TopNavLink TopNavLink__Active" href="/imandra-docs/extra/">Further functionality</a></li>
+				
+				
+				
+			</ul>
+		</nav>
+	</div>
+</div>
+
+<header class="TemplateHeader">
+	<div class="TemplateHeaderImageContainer">
+	<a href ="/imandra-docs">
+		<img class="SiteSpecificImage" src="/imandra-docs/assets/img/site_specific_image_v_2.svg">
+	</a>
+	</div>
+</header>
+
+
+	      <main class="MainContentColumn">
+		        <article class="ArticleContainer">
+			          <!-- Sidebar -->
+<div class="SideMenuContainer">
+    <div id="StickMenu" class="SideMenu">
+        
+        
+        
+        <a href="/imandra-docs/theBasics/">In more detail</a>
+        
+        <a href="/imandra-docs/pitfalls/">Avoiding Common Mistakes</a>
+        
+        <a href="/imandra-docs/environments/">Environments</a>
+        
+        <a href="/imandra-docs/dashingVGs/">Dashing VGs</a>
+        
+        
+    </div>
+</div>
+<!--MainContent-->
+<div class="MainContent">
+    <h2>Dashing VGs</h2>
+    <h4 id="overview">Overview</h4>
+
+<p>Imandra’s <code class="highlighter-rouge">dash</code> functionality makes it easy to randomly test VGs before you invest the time and effort to verify them.</p>
+
+<p>Dash is enabled by turning on <code class="highlighter-rouge">dash_mode</code> via the directive <code class="highlighter-rouge">:dash_mode on</code>.</p>
+
+<p>When in <code class="highlighter-rouge">dash_mode</code>, two key things occur:</p>
+<ul>
+  <li>Imandra is placed in <code class="highlighter-rouge">:program</code> mode (i.e., <code class="highlighter-rouge">:shadow off</code>), so that all <code class="highlighter-rouge">type</code> and <code class="highlighter-rouge">function</code> definitions are not reflected into the Imandra logic. This makes the processing of definitions (i.e., the loading of models) fast. The definitions are processed as pure OCaml and are compiled on the fly.</li>
+  <li>Random value generators are created for all types that are defined. By default, when a type <code class="highlighter-rouge">ty</code> is defined, a value generator named <code class="highlighter-rouge">gen_ty : Valgen.RS.t -&gt; ty</code> is automatically created and reflected into the Imandra runtime.</li>
+</ul>
+
+<p>We can then use these randomised value generators to test our functions and conjectures.</p>
+
+<h4 id="dashing-verification-goals">Dashing verification goals</h4>
+
+<p>The simplest way to dash is through the <code class="highlighter-rouge">dash</code> command. This command has the same syntax as <code class="highlighter-rouge">verify</code>, but performs randomised testing rather than formal logical reasoning.</p>
+
+<p>Let’s see a simple example:</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code># :dash_mode on
+&gt; type order = Market | Limit | Quote;;
+type order = Market | Limit | Quote
+&gt; let f x = match x with
+  Market -&gt; 50
+  | _     -&gt; 100;;
+val f : order -&gt; int = &lt;fun&gt;
+&gt; dash _ x = f x &lt; 100;;
+dash _ = &lt;dashed:2&gt;
+&gt; DX.xs;;
+- : order list = [Limit; Quote]
+&gt; dash _ x = f x &gt; 0;;
+dash _ = &lt;passed:100&gt;
+</code></pre></div></div>
+
+<p>When we <code class="highlighter-rouge">dash</code> a goal, there are two possible outcomes:</p>
+<ul>
+  <li>The goal passes the random testing, in which case the number of tests that passed is reported.</li>
+  <li>The goal fails (is <em>dashed by</em>) the random testing, in which case the number of counterexamples found is reported, and the list of computed counterexamples is reflected into the runtime and bound within the <code class="highlighter-rouge">DX</code> module as the value <code class="highlighter-rouge">DX.xs</code>.</li>
+</ul>
+
+<p>In <code class="highlighter-rouge">dash_mode</code>, we may use arbitrary OCaml code to compute with the <code class="highlighter-rouge">DX.xs</code> counterexamples.</p>
+
+<p>Dash is designed to scale with little to no performance impact as the state-spaces of our models become more complex:</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt; type state = { order_type : order;
+  qty        : int;
+  price      : float option;
+  top        : float option;
+  tick       : int };;
+type state = {
+    order_type : order;
+    qty : int;
+    price : float option;\
+    top : float option;
+    tick : int;
+  }
+&gt; let step (x : state) =
+if x.order_type = Limit &amp;&amp; x.qty &gt; 0 then
+{ x with price = None }
+else
+{ x with tick = x.tick + 1 }
+;;
+val step : state -&gt; state = &lt;fun&gt;
+&gt; dash _ x = (step x).tick &lt;&gt; x.tick;;
+dash _ = &lt;dashed:26&gt;
+&gt; List.length DX.xs;;
+- : int = 26
+&gt; List.hd DX.xs;;
+- : state = 
+{order_type = Limit; qty = 4; price = None; top = None; tick = 68}
+</code></pre></div></div>
+
+<h4 id="using-the-dash-and-valgen-modules-interactively">Using the Dash and Valgen modules interactively</h4>
+
+<p>We can also use the <code class="highlighter-rouge">Dash</code> and <code class="highlighter-rouge">Valgen</code> modules interactively, and build and compile Imandra tools that make use of them.</p>
+
+<p>Recall that in <code class="highlighter-rouge">dash_mode</code>, all type definitions <code class="highlighter-rouge">ty</code> give rise to random value generators <code class="highlighter-rouge">gen_ty : Valgen.RS.t -&gt; ty</code>.</p>
+
+<p>A value of type <code class="highlighter-rouge">Valgen.RS.t</code> is a pseudo-random number generator (PRNG) state. We may create these states with <code class="highlighter-rouge">Valgen.RS.make : int array -&gt; Valgen.RS.t</code>. The argument we pass to <code class="highlighter-rouge">Valgen.RS.make</code> is a PRNG <em>seed</em>.</p>
+<div class="language-ocaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;</span> <span class="k">let</span> <span class="n">st</span> <span class="o">=</span> <span class="nn">Valgen</span><span class="p">.</span><span class="nn">RS</span><span class="p">.</span><span class="n">make</span> <span class="p">[</span><span class="o">|</span> <span class="mi">1983</span><span class="p">;</span> <span class="mi">1984</span><span class="p">;</span> <span class="mi">2017</span> <span class="o">|</span><span class="p">];;</span>
+<span class="k">val</span> <span class="n">st</span> <span class="o">:</span> <span class="nn">Valgen</span><span class="p">.</span><span class="nn">RS</span><span class="p">.</span><span class="n">t</span> <span class="o">=</span> <span class="o">&lt;</span><span class="n">abstr</span><span class="o">&gt;</span>
+</code></pre></div></div>
+<p>Given <code class="highlighter-rouge">st</code>, we can now apply our type inhabitant generator functions and obtain a pseudo-random sequence of values of our types:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt; gen_order st;;
+- : order = Market
+&gt; gen_order st;;
+- : order = Limit
+&gt; gen_order st;;
+- : order = Quote
+&gt; gen_order st;;
+- : order = Limit
+&gt; gen_order st;;
+- : order = Limit
+&gt; gen_order st;;
+- : order = Quote
+&gt; gen_state st;;
+- : state =
+  {order_type = Quote; qty = 49; price = None; top = Some 26.0844866625078957; tick = 72}
+&gt; gen_state st;;
+- : state =
+  {order_type = Limit; qty = 59; price = None; top = Some 58.2841969041644887; tick = 61}
+&gt; gen_state st;;
+- : state =
+  {order_type = Market; qty = 58; price = Some 44.5605671641410197; top = None; tick = 33}
+&gt; gen_state st;;
+- : state =
+  {order_type = Market; qty = 33; price = Some 59.3532384193087523; top = None; tick = 89}
+&gt; gen_state st;;
+- : state =
+  {order_type = Market; qty = 15; price = Some 97.7772441348000569; top = None; tick = 34}
+&gt; gen_state st;;
+- : state = {order_type = Limit; qty = 1; price = None; top = None; tick = 9}
+</code></pre></div></div>
+<p>We may also construct Dash <code class="highlighter-rouge">tests</code> using the <code class="highlighter-rouge">Dash.make</code> function:</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt; Dash.make;;
+- : ?n:int -&gt;
+    ?name:string -&gt;
+    ?size:('a -&gt; int) -&gt;
+    ?limit:int -&gt; 'a Valgen.t -&gt; 'a Valgen.Prop.t -&gt; 'a Dash.test
+  = &lt;fun&gt;
+</code></pre></div></div>
+<p>For example, we can duplicate the functionality of our previous <code class="highlighter-rouge">dash</code> call with the following manually constructed and executed test:</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt; let test = Dash.make ~n:100
+  ~name:"small example"
+  gen_order
+  (fun x -&gt; f x &lt; 100);
+
+val test : order Dash.test =
+Dash.Test
+  {Dash.n = 100; prop = &lt;fun&gt;; gen = &lt;fun&gt;; name = "small example";
+  limit = 10; size = None}
+
+&gt; Dash.run test;;
+dash small example = &lt;dashed:2&gt;
+- : order list = [Limit; Quote]
+</code></pre></div></div>
+
+<h4 id="configuration">Configuration</h4>
+
+<p>The execution of a <code class="highlighter-rouge">dash</code> command is affected by a number of configuration options.</p>
+
+<h2 id="search-depth">Search depth</h2>
+
+<p>By default, <code class="highlighter-rouge">dash</code> will search for counterexamples by generating a random sequence of <code class="highlighter-rouge">100</code> values of the given type. You can increase this default value through the <code class="highlighter-rouge">:dash_depth</code> directive, e.g., <code class="highlighter-rouge">:dash_depth 1000</code>.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt; dash _ x = (step x).tick &lt;&gt; x.tick;;
+dash _ = &lt;dashed:26&gt;
+&gt; :dash_depth 1000
+dash_depth set to 1000.
+&gt; dash _ x = (step x).tick &lt;&gt; x.tick;;
+dash _ = &lt;dashed:312&gt;
+&gt; List.nth DX.xs 150;;
+- : state =
+  {order_type = Limit; qty = 50; price = None; top = Some 84.8722978134515529; tick = 26}
+
+</code></pre></div></div>
+<h2 id="prng-seed">PRNG seed</h2>
+
+<p>The sequence of random values computed by <code class="highlighter-rouge">dash</code> is a function of a pseudo-random number generator (PRNG) state. The PRNG state is parameterized by an initial value called a <em>seed</em>. Given the same seed value, two otherwise identical <code class="highlighter-rouge">dash</code> queries will lead to the generation of the same random sequence of type inhabitants. PRNG states are created fresh for every <code class="highlighter-rouge">dash</code> call, and are initialized by the global seed.</p>
+
+<p>By default, the PRNG seed is initialised to a standard (configurable) value. This can be modified through the <code class="highlighter-rouge">:dash_seed</code> directive.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt; dash _ x = (step x).tick &lt;&gt; x.tick;;
+dash _ = &lt;dashed:26&gt;
+&gt; let old_dxs = ref [];;
+val old_dxs : '_a list ref = {contents = []}
+&gt; let () = old_dxs := DX.xs;;
+&gt; dash _ x = (step x).tick &lt;&gt; x.tick;;
+dash _ = &lt;dashed:26&gt;
+&gt; DX.xs = !old_dxs;;
+- : bool = true
+&gt; :dash_seed 371289 832622 387736
+Dash seed set.
+&gt; dash _ x = (step x).tick &lt;&gt; x.tick;;
+dash _ = &lt;dashed:36&gt;
+&gt; DX.xs = !old_dxs;;
+- : bool = false
+</code></pre></div></div>
+
+<h2 id="printing-counterexamples">Printing counterexamples</h2>
+
+<p>By default, <code class="highlighter-rouge">dash</code> does not automatically print the counterexamples it finds. Instead, it prints a number <code class="highlighter-rouge">k</code>, e.g., <code class="highlighter-rouge">&lt;dashed:k&gt;</code>, indicating that <code class="highlighter-rouge">k</code> counterexamples have been computed and stored in the list <code class="highlighter-rouge">DX.xs</code>.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt; dash _ (x,y) = x + y &lt; 10;;
+dash _ = &lt;dashed:100&gt;
+</code></pre></div></div>
+
+<p>This behaviour is intentional: Dash is designed to compute lists of counterexamples, not single (counter-)examples like <code class="highlighter-rouge">verify</code>, <code class="highlighter-rouge">instance</code>, and <code class="highlighter-rouge">check</code>. Moreover, <code class="highlighter-rouge">dash</code> is designed to be fast, and printing large counterexamples can be computationally expensive. By reflecting the found counterexamples into the <code class="highlighter-rouge">DX.xs</code> list, <code class="highlighter-rouge">dash</code> places control of the display of counterexamples into the hands of the user.</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt; DX.xs;;
+- : (int * int) list =
+[(2, 12); (3, 49); (4, 51); (5, 12); (5, 39); (5, 64); (6, 68); (8, 60);
+ (10, 32); (11, 29); (12, 3); (12, 7); (12, 58); (14, 4); (14, 54); (15, 19);
+ (16, 76); (17, 14); (18, 49); (18, 61); (19, 55); (21, 99); (23, 68);
+ (25, 70); (25, 91); (27, 9); (28, 7); (29, 28); (30, 48); (31, 38);
+ (31, 44); (33, 15); (33, 40); (36, 67); (37, 86); (38, 38); (38, 93);
+ (39, 26); (39, 63); (40, 33); (41, 60); (43, 7); (43, 77); (43, 79);
+ (45, 82); (46, 61); (47, 77); (47, 78); (47, 87); (48, 74); (50, 82);
+ (52, 22); (52, 29); (52, 59); (54, 55); (54, 76); (56, 39); (56, 54);
+ (57, 91); (58, 6); (60, 15); (60, 74); (60, 81); (61, 67); (62, 97);
+ (63, 56); (64, 5); (64, 21); (64, 86); (65, 63); (66, 41); (66, 75);
+ (66, 77); (67, 16); (72, 49); (72, 50); (73, 91); (74, 70); (75, 10);
+ (75, 26); (77, 77); (78, 9); (78, 65); (78, 68); (79, 31); (80, 42);
+ (81, 47); (86, 44); (87, 77); (88, 14); (88, 52); (88, 82); (89, 88);
+ (92, 6); (93, 46); (95, 24); (95, 84); (97, 75); (97, 99); (99, 32)]
+</code></pre></div></div>
+<p>That said, <code class="highlighter-rouge">dash</code> can be configured to automatically print a single counterexample from each <code class="highlighter-rouge">dash</code> command that computes one. This is done by enabling the <code class="highlighter-rouge">dash_dx</code> printer option via the <code class="highlighter-rouge">:set_print</code> directive, i.e., <code class="highlighter-rouge">:set_print dash_dx</code>. When this option is enabled, the first counterexample (i.e., <code class="highlighter-rouge">List.hd DX.xs</code>) will be printed. This option can be disabled with <code class="highlighter-rouge">:unset_print dash_dx</code>.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt; :set_print dash_dx
+&gt; dash _ (x,y) = x + y &lt; 10;;
+dash _ = &lt;dashed:100&gt;
+
+Counterexample (List.hd DX.xs):
+- : int * int = (2, 12)
+
+&gt; dash _ x = (step x).tick &lt;&gt; x.tick;;
+dash _ = &lt;dashed:36&gt;
+
+Counterexample (List.hd DX.xs):
+- : state =
+  {order_type = Limit; qty = 1; price = Some 69.1502421389093769; top = Some 8.99170783937942; tick = 52}
+  
+&gt; :unset_print dash_dx
+&gt; dash _ (x,y) = x + y &lt; 10;;
+dash _ = &lt;dashed:100&gt;
+
+</code></pre></div></div>
+
+<p>Note that the format of the printed counterexamples differs slightly from that of other commands such as <code class="highlighter-rouge">verify</code>, <code class="highlighter-rouge">instance</code> and <code class="highlighter-rouge">check</code>. The key differences are as follows:</p>
+
+<ul>
+  <li>The counterexample is presented as tuple, not a record. This is consistent with how the values are stored in <code class="highlighter-rouge">DX.xs</code>.</li>
+  <li>The type of the tuple is printed before the counterexample is displayed, using the printing format of OCaml toplevel evaluation results, e.g., <code class="highlighter-rouge">- : int * int = (2, 12)</code>.</li>
+</ul>
+
+<p>This display of counterexamples is also affected by the standard OCaml <code class="highlighter-rouge">#print_depth</code> and <code class="highlighter-rouge">#print_length</code> values. These can be changed by executing <code class="highlighter-rouge">#print_depth k</code> and <code class="highlighter-rouge">#print_length k</code>. The default Imandra printer values are <code class="highlighter-rouge">#print_depth 1000</code> and <code class="highlighter-rouge">#print_length 1000</code>. If a counterexample is printed and its display will exceed these bounds, ellipses <code class="highlighter-rouge">...</code> are printed in place of the offending value nodes.</p>
+
+<p>See the documentation on <a href="doc:printing-1">Printing</a> for how custom printers can be used to display <code class="highlighter-rouge">dash</code> counterexamples.</p>
+
+</div>
+		        </article>
+	      </main>
+	      <footer class="Footer">
+	  <a class="Copyrights"href="http://imandra.ai">&#9400; 2018 Aesthetic Integration Ltd. All rights reserved.</a>
+</footer>
+
+    </body>
+
+</html>

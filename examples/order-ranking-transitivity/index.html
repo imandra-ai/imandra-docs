@@ -1,0 +1,215 @@
+<p>This example is based on our white paper titled ‘Case Study: 2015 SEC fine against UBS ATS’.</p>
+
+<p>As part of the case study, we took the publicly available Form ATS (dated June 1st, 2015) and encoded it as an Imandra venue model. Our goal was to demonstrate how UBS could could have automatically picked up the issues raised by the SEC with Imandra.</p>
+
+<p>In particular, the report demonstrates verification goals targeting ‘sub-penny’ pricing and crossing restrictions. In the course of creating the model and verified those goals, we realised that under one interpretation of their Form ATS, their model’s ranking function violates transitivity.</p>
+
+<p>Let us analyse!</p>
+
+<h4 id="transitivity">Transitivity</h4>
+
+<p>As a simple example, consider three numbers a, b and c.</p>
+
+<p>If <code class="highlighter-rouge">a &gt; b</code> and <code class="highlighter-rouge">b &gt; c</code>, then it must be true that <code class="highlighter-rouge">a &gt; c</code>. This is a fundamental property of the “greater than” function. This property is called <em>transitivity</em>. We say that <code class="highlighter-rouge">&gt;</code> is <em>transitive</em>.</p>
+
+<p>When we use a sorting algorithm to sort a list of items with respect to some comparison function, it’s important that the comparison be transitive.</p>
+
+<p>Similarly, the way that orders are sorted within an order book must also be transitive. Otherwise, the sorting algorithm may easily rank orders incorrectly, and ensuring regulations like “best execution” becomes hopeless. Flaws like this are very difficult to catch by analysing a venue’s post-trade data alone. For example, in modern dark pools, there can be many valid (and legal) reasons why two orders that agree in price will not trade with one another.</p>
+
+<p>Fundamentally, this is an issue of the matching logic that must be analysed and eliminated.</p>
+
+<h4 id="loading-the-example-in-imandra-cloud">Loading the example in Imandra Cloud</h4>
+
+<p>The Examples folder of your Imandra installation should have the full version of the code we’re referencing, under <code class="highlighter-rouge">Transitivity</code>. So, we will just provide the most relevant fragment here.</p>
+
+<p>Below we define the function <code class="highlighter-rouge">order_higher_ranked</code> that is used by the sorting algorithm to ensure that the book is always order with respect to priority.</p>
+
+<div class="language-ocaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">let</span> <span class="n">order_higher_ranked</span> <span class="p">(</span><span class="n">side</span><span class="o">,</span> <span class="n">o1</span><span class="o">,</span> <span class="n">o2</span><span class="o">,</span> <span class="n">mkt</span><span class="p">)</span> <span class="o">=</span>
+  <span class="k">let</span> <span class="n">ot1</span> <span class="o">=</span> <span class="n">o1</span><span class="o">.</span><span class="n">order_type</span> <span class="k">in</span>
+  <span class="k">let</span> <span class="n">ot2</span> <span class="o">=</span> <span class="n">o2</span><span class="o">.</span><span class="n">order_type</span> <span class="k">in</span>
+  <span class="k">let</span> <span class="n">p_price1</span> <span class="o">=</span> <span class="n">priority_price</span> <span class="p">(</span><span class="n">side</span><span class="o">,</span> <span class="n">o1</span><span class="o">,</span> <span class="n">mkt</span><span class="p">)</span> <span class="k">in</span>
+  <span class="k">let</span> <span class="n">p_price2</span> <span class="o">=</span> <span class="n">priority_price</span> <span class="p">(</span><span class="n">side</span><span class="o">,</span> <span class="n">o2</span><span class="o">,</span> <span class="n">mkt</span><span class="p">)</span> <span class="k">in</span>
+  
+  <span class="k">let</span> <span class="n">wins_price</span> <span class="o">=</span>
+    <span class="k">begin</span>
+      <span class="k">if</span> <span class="n">side</span> <span class="o">=</span> <span class="nc">BUY</span> <span class="k">then</span>
+        <span class="k">begin</span>
+          <span class="k">if</span> <span class="n">p_price1</span> <span class="o">&gt;</span> <span class="n">p_price2</span> <span class="k">then</span> <span class="mi">1</span>
+            <span class="k">else</span> <span class="k">if</span> <span class="n">p_price1</span> <span class="o">=</span> <span class="n">p_price2</span> <span class="k">then</span> <span class="mi">0</span>
+            <span class="k">else</span> <span class="o">-</span><span class="mi">1</span>
+        <span class="k">end</span>
+      <span class="k">else</span>
+        <span class="k">begin</span>
+          <span class="k">if</span> <span class="n">p_price1</span> <span class="o">&lt;</span> <span class="n">p_price2</span> <span class="k">then</span> <span class="mi">1</span>
+          <span class="k">else</span> <span class="k">if</span> <span class="n">p_price1</span> <span class="o">=</span> <span class="n">p_price2</span> <span class="k">then</span> <span class="mi">0</span>
+          <span class="k">else</span> <span class="o">-</span><span class="mi">1</span>
+        <span class="k">end</span>
+    <span class="k">end</span> <span class="k">in</span>
+
+  <span class="k">let</span> <span class="n">wins_time</span> <span class="o">=</span> 
+    <span class="k">begin</span>
+      <span class="k">if</span> <span class="n">o1</span><span class="o">.</span><span class="n">time</span> <span class="o">&lt;</span> <span class="n">o2</span><span class="o">.</span><span class="n">time</span> <span class="k">then</span> <span class="mi">1</span>
+      <span class="k">else</span> <span class="k">if</span> <span class="n">o1</span><span class="o">.</span><span class="n">time</span> <span class="o">=</span> <span class="n">o2</span><span class="o">.</span><span class="n">time</span> <span class="k">then</span> <span class="mi">0</span>
+      <span class="k">else</span> <span class="o">-</span><span class="mi">1</span>
+    <span class="k">end</span> <span class="k">in</span>
+      <span class="c">(* Note that the CI priority is price, quantity and then time *)</span>
+      <span class="k">if</span> <span class="n">wins_price</span> <span class="o">=</span> <span class="mi">1</span> <span class="k">then</span> <span class="bp">true</span>
+      <span class="k">else</span> <span class="k">if</span> <span class="n">wins_price</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span> <span class="k">then</span> <span class="bp">false</span>
+      <span class="k">else</span>
+        <span class="k">begin</span>
+          <span class="c">(* Same price level - first check to see whether we're comparing two   *)</span>
+          <span class="c">(* CI orders here                                                      *)</span>
+          <span class="k">if</span> <span class="n">not</span> <span class="p">(</span><span class="n">non_ci</span> <span class="p">(</span><span class="n">ot1</span><span class="p">))</span> <span class="o">&amp;&amp;</span> <span class="n">not</span> <span class="p">(</span><span class="n">non_ci</span> <span class="p">(</span><span class="n">ot2</span><span class="p">))</span> <span class="k">then</span>
+            <span class="n">o1</span><span class="o">.</span><span class="n">leaves_qty</span> <span class="o">&gt;</span> <span class="n">o2</span><span class="o">.</span><span class="n">leaves_qty</span>
+          <span class="k">else</span>
+            <span class="k">begin</span>
+              <span class="k">if</span> <span class="n">wins_time</span> <span class="o">=</span> <span class="mi">1</span> <span class="k">then</span> <span class="bp">true</span>
+              <span class="k">else</span> <span class="k">if</span> <span class="n">wins_time</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span> <span class="k">then</span> <span class="bp">false</span>
+              <span class="k">else</span> <span class="p">(</span>
+                <span class="k">if</span> <span class="n">non_ci</span><span class="p">(</span><span class="n">ot1</span><span class="p">)</span> <span class="k">then</span> <span class="bp">true</span>
+                <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">not</span><span class="p">(</span><span class="n">non_ci</span><span class="p">(</span><span class="n">ot1</span><span class="p">))</span> <span class="o">&amp;&amp;</span> <span class="n">non_ci</span><span class="p">(</span><span class="n">ot2</span><span class="p">))</span> <span class="k">then</span> <span class="bp">false</span>
+                <span class="k">else</span> <span class="n">o1</span><span class="o">.</span><span class="n">leaves_qty</span> <span class="o">&gt;</span> <span class="n">o2</span><span class="o">.</span><span class="n">leaves_qty</span><span class="p">)</span>
+            <span class="k">end</span>
+        <span class="k">end</span>
+<span class="p">;;</span>
+</code></pre></div></div>
+
+<p>Armed with the definition of the ranking function, we’re now ready to look for a transitivity counterexample. We will use the check command to start the direct search for it. The code is listed below. Note the constraints that the verification goal lists for the orders and market data.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>check _ (side, o1, o2, o3, mkt) =
+  
+  (order_higher_ranked(side,o1,o2,mkt) &amp;&amp;
+    order_higher_ranked(side,o2,o3,mkt) &amp;&amp;
+    o1.leaves_qty &lt;= o1.qty &amp;&amp;
+    o2.leaves_qty &lt;= o2.qty &amp;&amp;
+    o3.leaves_qty &lt;= o3.qty &amp;&amp;
+    o1.time &gt;= 0 &amp;&amp;
+    o2.time &gt;= 0 &amp;&amp;
+    o3.time &gt;= 0 &amp;&amp;
+    o1.price &gt; 0.0 &amp;&amp;
+    o2.price &gt; 0.0 &amp;&amp;
+    o3.price &gt; 0.0 &amp;&amp;
+    o1.qty &gt; 0 &amp;&amp;
+    o2.qty &gt; 0 &amp;&amp;
+    o3.qty &gt; 0 &amp;&amp;
+    o1.leaves_qty &gt;= 0 &amp;&amp;
+    o2.leaves_qty &gt;= 0 &amp;&amp;
+    o3.leaves_qty &gt;= 0 &amp;&amp;
+    mkt.nbb &gt; 0.0 &amp;&amp;
+    mkt.nbo &gt; 0.0)
+  ==&gt;
+    order_higher_ranked(side, o1, o3, mkt);;
+
+</code></pre></div></div>
+
+<p>When we run this, Imandra computes the following counterexample:</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Counterexample:
+{ 
+  side = SELL;
+  o1 = {
+    id = 4;
+    peg = FAR;
+    client_id = 5;
+    order_type = PEGGED;
+    qty = 2289;
+    min_qty = 6;
+    leaves_qty = 1052;
+    price = 3.0;
+    time = 7720;
+    src = 7;
+    order_attr = RESIDENT;
+    capacity = Principal;
+    category = C_ONE;
+    cross_restrict = {
+      cr_self_cross = false;
+      cr_ubs_principal = false;
+      cr_round_lot_only = false;
+      cr_no_locked_nbbo = false;
+      cr_pegged_mid_point_mode = 3;
+      cr_enable_conditionals = false;
+      cr_min_qty = false;
+      cr_cat_elig = {
+        c_one_elig = false;
+        c_two_elig = false;
+        c_three_elig = false;
+        c_four_elig = false;
+      }; 
+    }; 
+    locate_found = false;
+    expiry_time = 8; 
+  };
+  
+  o2 = {
+    id = 10;
+    peg = FAR;
+    client_id = 11;
+    order_type = PEGGED_CI;
+    qty = 2438;
+    min_qty = 12;
+    leaves_qty = 1052;
+    price = 3.0;
+    time = 7721;
+    src = 13;
+    order_attr = RESIDENT;
+    capacity = Principal;
+    category = C_ONE;
+    cross_restrict = {
+      cr_self_cross = false;
+      cr_ubs_principal = false;
+      cr_round_lot_only = false;
+      cr_no_locked_nbbo = false;
+      cr_pegged_mid_point_mode = 9;
+      cr_enable_conditionals = false;
+      cr_min_qty = false;
+      cr_cat_elig = {
+        c_one_elig = false;
+        c_two_elig = false;
+        c_three_elig = false;
+        c_four_elig = false;
+      };
+    };
+    locate_found = false;
+    expiry_time = 14; 
+  };
+  
+  o3 = {
+    id = 18;
+    peg = NEAR;
+    client_id = 19;
+    order_type = PEGGED_CI;
+    qty = 8856;
+    min_qty = 20;
+    leaves_qty = 1051;
+    price = 3.0;
+    time = 7719;
+    src = 21;
+    order_attr = RESIDENT;
+    capacity = Principal;
+    category = C_ONE;
+    cross_restrict = {
+      cr_self_cross = false;
+      cr_ubs_principal = false;
+      cr_round_lot_only = false;
+      cr_no_locked_nbbo = false;
+      cr_pegged_mid_point_mode = 17;
+      cr_enable_conditionals = false;
+      cr_min_qty = false;
+      cr_cat_elig = { 
+        c_one_elig = false;
+        c_two_elig = false;
+        c_three_elig = false;
+        c_four_elig = false; 
+      }; 
+    };
+    locate_found = false;
+    expiry_time = 22; 
+  };
+  
+  mkt = {
+    nbb = 1.0;
+    nbo = 2.0;
+    l_up = 4.0;
+    l_down = 5.0; 
+  }; 
+}
+</code></pre></div></div>

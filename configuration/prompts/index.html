@@ -1,0 +1,76 @@
+<h4 id="introduction">Introduction</h4>
+<p>The Imandra top-level prompt may be configured via the <code class="highlighter-rouge">Reflect</code> API.</p>
+
+<p>By default, it is either <code class="highlighter-rouge"># </code> or <code class="highlighter-rouge">&gt; </code>, depending whether one is in <code class="highlighter-rouge">:logic</code> or <code class="highlighter-rouge">:program</code> mode.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>            .__      /\ .__                           .___            
+     _____  |__|    / / |__| _____ _____    ____    __| _/___________   
+     \__  \ |  |   / /  |  |/     \__   \  /    \  / __ |\_  __ \__  \  
+      / __ \|  |  / /   |  |  Y Y  \/ __ \|   |  \/ /_/ | |  | \// __ \_
+     (____  /__| / /    |__|__|_|  (____  /___|  /\____ | |__|  (____  /
+          \/     \/              \/     \/     \/      \/            \/ 
+----------------------------------------------------------------------------
+ Imandra Commander 0.8a94 - (c)Copyright Aesthetic Integration Ltd, 2014-17
+----------------------------------------------------------------------------
+# 1 + 2;;
+- : int = 3
+# :program
+&gt; 2 + 3;;
+- : int = 5
+&gt; :logic
+# 3 + 4;;
+- : int = 7
+</code></pre></div></div>
+
+<h4 id="api">API</h4>
+
+<p>The relevant functions are:</p>
+<ul>
+  <li><code class="highlighter-rouge">Reflect.Prompt.set_logic_prompt : string -&gt; unit</code></li>
+  <li><code class="highlighter-rouge">Reflect.Prompt.set_program_prompt : string -&gt; unit</code></li>
+</ul>
+
+<h4 id="example">Example</h4>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code># Reflect.Prompt.set_logic_prompt
+&gt;&gt;&gt; BEGIN IMANDRA PROMPT (LOGIC MODE)
+#
+&lt;&lt;&lt; END IMANDRA PROMPT\n  \";;
+- : unit = ()
+&gt;&gt;&gt; BEGIN IMANDRA PROMPT (LOGIC MODE)
+#
+&lt;&lt;&lt; END IMANDRA PROMPT
+let f x = x + 1;;
+val f : int -&gt; int = &lt;fun&gt;
+&gt;&gt;&gt; BEGIN IMANDRA PROMPT (LOGIC MODE)
+#
+&lt;&lt;&lt; END IMANDRA PROMPT
+:program
+&gt; Reflect.Prompt.set_program_prompt
+&gt;&gt;&gt; BEGIN IMANDRA PROMPT (PROGRAM MODE)
+&gt;
+&lt;&lt;&lt; END IMANDRA PROMPT
+";;
+- : unit = ()
+&gt;&gt;&gt; BEGIN IMANDRA PROMPT (PROGRAM MODE)
+&gt;
+&lt;&lt;&lt; END IMANDRA PROMPT
+1;;
+- : int = 1
+&gt;&gt;&gt; BEGIN IMANDRA PROMPT (PROGRAM MODE)
+&gt;
+&lt;&lt;&lt; END IMANDRA PROMPT
+:logic
+&gt;&gt;&gt; BEGIN IMANDRA PROMPT (LOGIC MODE)
+#
+&lt;&lt;&lt; END IMANDRA PROMPT
+instance _ x = f x = 10;;
+
+Instance:
+
+{ x = 9; }
+
+&gt;&gt;&gt; BEGIN IMANDRA PROMPT (LOGIC MODE)
+#
+&lt;&lt;&lt; END IMANDRA PROMPT
+</code></pre></div></div>

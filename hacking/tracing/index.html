@@ -1,0 +1,50 @@
+<p>Imandra supports the standard tracing commands of OCaml:
+<code class="highlighter-rouge">#trace function-name</code>, <code class="highlighter-rouge">#untrace function-name</code> and <code class="highlighter-rouge">#untrace_all</code>.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>            .__      /\ .__                           .___            
+     _____  |__|    / / |__| _____ _____    ____    __| _/___________   
+     \__  \ |  |   / /  |  |/     \__   \  /    \  / __ |\_  __ \__  \  
+      / __ \|  |  / /   |  |  Y Y  \/ __ \|   |  \/ /_/ | |  | \// __ \_
+     (____  /__| / /    |__|__|_|  (____  /___|  /\____ | |__|  (____  /
+          \/     \/              \/     \/     \/      \/            \/ 
+----------------------------------------------------------------------------
+ Imandra Commander 0.8a94 - (c)Copyright Aesthetic Integration Ltd, 2014-17
+----------------------------------------------------------------------------
+  # let rec sum x =
+    if x &lt;= 0 then 0
+    else x + sum (x-1)
+  ;;
+  val sum : int -&gt; int = &lt;fun&gt;
+  # 
+  #trace sum;;
+  sum is now traced.
+  # sum 10;;
+  sum &lt;-- 10
+  sum &lt;-- 9
+  sum &lt;-- 8
+  sum &lt;-- 7
+  sum &lt;-- 6
+  sum &lt;-- 5
+  sum &lt;-- 4
+  sum &lt;-- 3
+  sum &lt;-- 2
+  sum &lt;-- 1
+  sum &lt;-- 0
+  sum --&gt; 0
+  sum --&gt; 1
+  sum --&gt; 3
+  sum --&gt; 6
+  sum --&gt; 10
+  sum --&gt; 15
+  sum --&gt; 21
+  sum --&gt; 28
+  sum --&gt; 36
+  sum --&gt; 45
+  sum --&gt; 55
+  - : int = 55
+  # 
+  #untrace sum;;
+  sum is no longer traced.
+  # sum 10;;
+  - : int = 55
+</code></pre></div></div>
