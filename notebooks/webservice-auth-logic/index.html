@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8" />
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Imandra Documentation - Analysing Web-app Authentication Logic</title>
+<meta property="og:url" content="https://docs.imandra.ai/imandra-docs/notebooks/webservice-auth-logic/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Imandra Documentation - Analysing Web-app Authentication Logic">
+<meta property="og:description" content="In this notebook, we look at some typical authentication logic that might be found in a standard web application, and analyse it with Imandra to make sure it's doing what we expect.">
+<meta property="og:image" content="https://storage.googleapis.com/imandra-assets/images/og_image_default_i78.jpg">
+
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Merriweather" type="text/css" />
+
+<link rel="stylesheet" href="/imandra-docs/static/style/style.min.910c246e.css" type="text/css">
+<link rel="stylesheet" href="/imandra-docs/static/custom/custom.43522872.css" type="text/css">
+<link rel="stylesheet" href="/imandra-docs/static/nbextensions/nbimandra/styles.c7ed3d1a.css" type="text/css">
+<link rel="stylesheet" href="/imandra-docs/static/docs-styles.f1666efd.css" type="text/css">
+
+<script src="/imandra-docs/static/nbimandra-rjs-bundle.26eac81a.js"></script>
+
+<style type="text/css">
+.highlight .hll { background-color: #ffffcc }
+.highlight  { background: #f8f8f8; }
+.highlight .c { color: #408080; font-style: italic } /* Comment */
+.highlight .err { border: 1px solid #FF0000 } /* Error */
+.highlight .k { color: #008000; font-weight: bold } /* Keyword */
+.highlight .o { color: #666666 } /* Operator */
+.highlight .ch { color: #408080; font-style: italic } /* Comment.Hashbang */
+.highlight .cm { color: #408080; font-style: italic } /* Comment.Multiline */
+.highlight .cp { color: #BC7A00 } /* Comment.Preproc */
+.highlight .cpf { color: #408080; font-style: italic } /* Comment.PreprocFile */
+.highlight .c1 { color: #408080; font-style: italic } /* Comment.Single */
+.highlight .cs { color: #408080; font-style: italic } /* Comment.Special */
+.highlight .gd { color: #A00000 } /* Generic.Deleted */
+.highlight .ge { font-style: italic } /* Generic.Emph */
+.highlight .gr { color: #FF0000 } /* Generic.Error */
+.highlight .gh { color: #000080; font-weight: bold } /* Generic.Heading */
+.highlight .gi { color: #00A000 } /* Generic.Inserted */
+.highlight .go { color: #888888 } /* Generic.Output */
+.highlight .gp { color: #000080; font-weight: bold } /* Generic.Prompt */
+.highlight .gs { font-weight: bold } /* Generic.Strong */
+.highlight .gu { color: #800080; font-weight: bold } /* Generic.Subheading */
+.highlight .gt { color: #0044DD } /* Generic.Traceback */
+.highlight .kc { color: #008000; font-weight: bold } /* Keyword.Constant */
+.highlight .kd { color: #008000; font-weight: bold } /* Keyword.Declaration */
+.highlight .kn { color: #008000; font-weight: bold } /* Keyword.Namespace */
+.highlight .kp { color: #008000 } /* Keyword.Pseudo */
+.highlight .kr { color: #008000; font-weight: bold } /* Keyword.Reserved */
+.highlight .kt { color: #B00040 } /* Keyword.Type */
+.highlight .m { color: #666666 } /* Literal.Number */
+.highlight .s { color: #BA2121 } /* Literal.String */
+.highlight .na { color: #7D9029 } /* Name.Attribute */
+.highlight .nb { color: #008000 } /* Name.Builtin */
+.highlight .nc { color: #0000FF; font-weight: bold } /* Name.Class */
+.highlight .no { color: #880000 } /* Name.Constant */
+.highlight .nd { color: #AA22FF } /* Name.Decorator */
+.highlight .ni { color: #999999; font-weight: bold } /* Name.Entity */
+.highlight .ne { color: #D2413A; font-weight: bold } /* Name.Exception */
+.highlight .nf { color: #0000FF } /* Name.Function */
+.highlight .nl { color: #A0A000 } /* Name.Label */
+.highlight .nn { color: #0000FF; font-weight: bold } /* Name.Namespace */
+.highlight .nt { color: #008000; font-weight: bold } /* Name.Tag */
+.highlight .nv { color: #19177C } /* Name.Variable */
+.highlight .ow { color: #AA22FF; font-weight: bold } /* Operator.Word */
+.highlight .w { color: #bbbbbb } /* Text.Whitespace */
+.highlight .mb { color: #666666 } /* Literal.Number.Bin */
+.highlight .mf { color: #666666 } /* Literal.Number.Float */
+.highlight .mh { color: #666666 } /* Literal.Number.Hex */
+.highlight .mi { color: #666666 } /* Literal.Number.Integer */
+.highlight .mo { color: #666666 } /* Literal.Number.Oct */
+.highlight .sa { color: #BA2121 } /* Literal.String.Affix */
+.highlight .sb { color: #BA2121 } /* Literal.String.Backtick */
+.highlight .sc { color: #BA2121 } /* Literal.String.Char */
+.highlight .dl { color: #BA2121 } /* Literal.String.Delimiter */
+.highlight .sd { color: #BA2121; font-style: italic } /* Literal.String.Doc */
+.highlight .s2 { color: #BA2121 } /* Literal.String.Double */
+.highlight .se { color: #BB6622; font-weight: bold } /* Literal.String.Escape */
+.highlight .sh { color: #BA2121 } /* Literal.String.Heredoc */
+.highlight .si { color: #BB6688; font-weight: bold } /* Literal.String.Interpol */
+.highlight .sx { color: #008000 } /* Literal.String.Other */
+.highlight .sr { color: #BB6688 } /* Literal.String.Regex */
+.highlight .s1 { color: #BA2121 } /* Literal.String.Single */
+.highlight .ss { color: #19177C } /* Literal.String.Symbol */
+.highlight .bp { color: #008000 } /* Name.Builtin.Pseudo */
+.highlight .fm { color: #0000FF } /* Name.Function.Magic */
+.highlight .vc { color: #19177C } /* Name.Variable.Class */
+.highlight .vg { color: #19177C } /* Name.Variable.Global */
+.highlight .vi { color: #19177C } /* Name.Variable.Instance */
+.highlight .vm { color: #19177C } /* Name.Variable.Magic */
+.highlight .il { color: #666666 } /* Literal.Number.Integer.Long */
+</style>
+    
+<!-- Loading mathjax macro -->
+<!-- Load mathjax -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS_HTML"></script>
+    <!-- MathJax configuration -->
+    <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+            displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+            processEscapes: true,
+            processEnvironments: true
+        },
+        // Center justify equations in code and markdown cells. Elsewhere
+        // we use CSS to left justify single line equations in code cells.
+        displayAlign: 'center',
+        "HTML-CSS": {
+            styles: {'.MathJax_Display': {"margin": 0}},
+            linebreaks: { automatic: true }
+        }
+    });
+    </script>
+    <!-- End of mathjax configuration --></head>
+<body>
+  <div class="header-nav">
+    <a href="/imandra-docs/">&lt; Back</a>
+  </div>
+  <div class="bg-container">
+    <div class="bg-container__bg"></div>
+    <div class="container">
+      <header class="header">
+        <a href="/imandra-docs/">
+          <img src="/imandra-docs/static/img/site_specific_image_v_2.svg">
+        </a>
+      </header>
+      <div class="content content--with-cells">
+  
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Analysing-Web-app-Authentication-Logic">Analysing Web-app Authentication Logic<a class="anchor-link" href="#Analysing-Web-app-Authentication-Logic">&#182;</a></h1><p>When writing and refactoring we often have to make a lot of assumptions about how our code works. Here we'll look at some example authentication logic written in OCaml that you might find a standard web application codebase, and use Imandra as a tool to analyse it.</p>
+<p>Let's imagine our system currently has a user represented by this type:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="try-this-container">
+  <div class="try-this"><a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Analysing%20Web-app%20Authentication%20Logic.ipynb%23try-cell-2" target="_blank">Try this!</a></div>
+</div>
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[1]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ocaml"><pre><span></span><span class="k">type</span> <span class="n">user</span> <span class="o">=</span> 
+<span class="o">{</span> <span class="n">is_admin</span><span class="o">:</span> <span class="kt">bool</span>
+<span class="o">;</span> <span class="n">username</span><span class="o">:</span> <span class="kt">string</span>
+<span class="o">;</span> <span class="n">email</span><span class="o">:</span> <span class="kt">string</span>
+<span class="o">}</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[1]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>type user = { is_admin : bool; username : string; email : string; }
+</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Right. Let's take a look at the core of the authentication logic itself.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="try-this-container">
+  <div class="try-this"><a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Analysing%20Web-app%20Authentication%20Logic.ipynb%23try-cell-4" target="_blank">Try this!</a></div>
+</div>
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[2]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ocaml"><pre><span></span><span class="k">type</span> <span class="n">auth_result</span> <span class="o">=</span> <span class="nc">Authed</span> <span class="o">|</span> <span class="nc">Not_authed</span><span class="o">;;</span>
+
+<span class="k">let</span> <span class="n">get_auth_result</span> <span class="o">(</span><span class="n">path</span><span class="o">:</span> <span class="kt">string</span><span class="o">)</span> <span class="o">(</span><span class="n">u</span> <span class="o">:</span> <span class="n">user</span><span class="o">)</span> <span class="o">:</span> <span class="n">auth_result</span> <span class="o">=</span>
+    <span class="k">if</span> <span class="nn">String</span><span class="p">.</span><span class="n">prefix</span> <span class="s2">&quot;/user/&quot;</span> <span class="n">path</span> <span class="k">then</span>
+        <span class="k">if</span> <span class="nn">String</span><span class="p">.</span><span class="n">prefix</span> <span class="o">(</span><span class="s2">&quot;/user/&quot;</span> <span class="o">^</span> <span class="n">u</span><span class="o">.</span><span class="n">username</span><span class="o">)</span> <span class="n">path</span> <span class="k">then</span>
+            <span class="nc">Authed</span>
+        <span class="k">else</span>
+            <span class="nc">Not_authed</span>
+    <span class="k">else</span> <span class="k">if</span> <span class="nn">String</span><span class="p">.</span><span class="n">prefix</span> <span class="s2">&quot;/admin&quot;</span> <span class="n">path</span> <span class="k">then</span>
+        <span class="k">if</span> <span class="n">u</span><span class="o">.</span><span class="n">is_admin</span> <span class="k">then</span>
+            <span class="nc">Authed</span>
+        <span class="k">else</span>
+            <span class="c">(* Temporary hack to give co-founder accounts admin access for the demo! - DA 06/05/15 *)</span>
+            <span class="k">if</span> <span class="nn">List</span><span class="p">.</span><span class="n">exists</span> <span class="o">(</span><span class="k">fun</span> <span class="n">au</span> <span class="o">-&gt;</span> <span class="n">au</span> <span class="o">=</span> <span class="n">u</span><span class="o">.</span><span class="n">username</span><span class="o">)</span> <span class="o">[</span><span class="s2">&quot;diego&quot;</span><span class="o">;</span> <span class="s2">&quot;shannon&quot;</span><span class="o">]</span> <span class="k">then</span>
+                <span class="nc">Authed</span>
+            <span class="k">else</span>
+                <span class="nc">Not_authed</span>
+    <span class="k">else</span>
+        <span class="nc">Authed</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[2]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>type auth_result = Authed | Not_authed
+val get_auth_result : string -&gt; user -&gt; auth_result = &lt;fun&gt;
+</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>There's even a few tests (although they are a bit rusty...)!</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="try-this-container">
+  <div class="try-this"><a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Analysing%20Web-app%20Authentication%20Logic.ipynb%23try-cell-6" target="_blank">Try this!</a></div>
+</div>
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[3]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ocaml"><pre><span></span><span class="k">type</span> <span class="n">test_result</span> <span class="o">=</span> <span class="nc">Pass</span> <span class="o">|</span> <span class="nc">Fail</span><span class="o">;;</span>
+<span class="k">let</span> <span class="n">run_test</span> <span class="n">f</span> <span class="o">=</span> <span class="k">if</span> <span class="n">f</span> <span class="k">then</span> <span class="nc">Pass</span> <span class="k">else</span> <span class="nc">Fail</span><span class="o">;;</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[3]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>type test_result = Pass | Fail
+val run_test : bool -&gt; test_result = &lt;fun&gt;
+</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="try-this-container">
+  <div class="try-this"><a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Analysing%20Web-app%20Authentication%20Logic.ipynb%23try-cell-7" target="_blank">Try this!</a></div>
+</div>
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[4]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ocaml"><pre><span></span><span class="n">run_test</span> <span class="o">((</span><span class="n">get_auth_result</span> <span class="s2">&quot;/&quot;</span> <span class="o">{</span> <span class="n">username</span> <span class="o">=</span> <span class="s2">&quot;test&quot;</span><span class="o">;</span> <span class="n">email</span> <span class="o">=</span> <span class="s2">&quot;email&quot;</span><span class="o">;</span> <span class="n">is_admin</span> <span class="o">=</span> <span class="bp">false</span> <span class="o">})</span> <span class="o">=</span> <span class="nc">Authed</span><span class="o">);;</span>
+<span class="n">run_test</span> <span class="o">((</span><span class="n">get_auth_result</span> <span class="s2">&quot;/admin&quot;</span> <span class="o">{</span> <span class="n">username</span> <span class="o">=</span> <span class="s2">&quot;test&quot;</span><span class="o">;</span> <span class="n">email</span> <span class="o">=</span> <span class="s2">&quot;email&quot;</span><span class="o">;</span> <span class="n">is_admin</span> <span class="o">=</span> <span class="bp">false</span> <span class="o">})</span> <span class="o">=</span> <span class="nc">Not_authed</span><span class="o">);;</span>
+<span class="n">run_test</span> <span class="o">((</span><span class="n">get_auth_result</span> <span class="s2">&quot;/admin&quot;</span> <span class="o">{</span> <span class="n">username</span> <span class="o">=</span> <span class="s2">&quot;test&quot;</span><span class="o">;</span> <span class="n">email</span> <span class="o">=</span> <span class="s2">&quot;email&quot;</span><span class="o">;</span> <span class="n">is_admin</span> <span class="o">=</span> <span class="bp">true</span> <span class="o">})</span> <span class="o">=</span> <span class="nc">Authed</span><span class="o">);;</span>
+<span class="n">run_test</span> <span class="o">((</span><span class="n">get_auth_result</span> <span class="s2">&quot;/user/paula&quot;</span> <span class="o">{</span> <span class="n">username</span> <span class="o">=</span> <span class="s2">&quot;joe&quot;</span><span class="o">;</span> <span class="n">email</span> <span class="o">=</span> <span class="s2">&quot;email&quot;</span><span class="o">;</span> <span class="n">is_admin</span> <span class="o">=</span> <span class="bp">false</span> <span class="o">}</span> <span class="o">=</span> <span class="nc">Not_authed</span><span class="o">));;</span>
+<span class="n">run_test</span> <span class="o">((</span><span class="n">get_auth_result</span> <span class="s2">&quot;/user/paula&quot;</span> <span class="o">{</span> <span class="n">username</span> <span class="o">=</span> <span class="s2">&quot;paula&quot;</span><span class="o">;</span> <span class="n">email</span> <span class="o">=</span> <span class="s2">&quot;email&quot;</span><span class="o">;</span> <span class="n">is_admin</span> <span class="o">=</span> <span class="bp">false</span> <span class="o">}</span> <span class="o">=</span> <span class="nc">Authed</span><span class="o">));;</span>
+<span class="n">run_test</span> <span class="o">((</span><span class="n">get_auth_result</span> <span class="s2">&quot;/user/paula/profile&quot;</span> <span class="o">{</span> <span class="n">username</span> <span class="o">=</span> <span class="s2">&quot;paula&quot;</span><span class="o">;</span> <span class="n">email</span> <span class="o">=</span> <span class="s2">&quot;email&quot;</span><span class="o">;</span> <span class="n">is_admin</span> <span class="o">=</span> <span class="bp">false</span> <span class="o">}</span> <span class="o">=</span> <span class="nc">Authed</span><span class="o">));;</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[4]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>- : test_result = Pass
+- : test_result = Pass
+- : test_result = Pass
+- : test_result = Pass
+- : test_result = Pass
+- : test_result = Pass
+</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>However the tests haven't quite covered all the cases. Let's use Imandra to verify a few things. Note that we've got tests for <code>is_admin = true</code> (test 2) and <code>is_admin = false</code> (test 3) on the <code>/admin</code> route above, but this only checks that these inputs give the desired outcome, and not that <em>all</em> inputs do. So let's verify that all non-admin users are not authenticated for the admin area.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="try-this-container">
+  <div class="try-this"><a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Analysing%20Web-app%20Authentication%20Logic.ipynb%23try-cell-9" target="_blank">Try this!</a></div>
+</div>
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[5]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ocaml"><pre><span></span><span class="n">verify</span> <span class="o">(</span><span class="k">fun</span> <span class="n">u</span> <span class="o">-&gt;</span> <span class="n">u</span><span class="o">.</span><span class="n">is_admin</span> <span class="o">=</span> <span class="bp">false</span> <span class="o">==&gt;</span> <span class="o">(</span><span class="n">get_auth_result</span> <span class="s2">&quot;/admin&quot;</span> <span class="n">u</span><span class="o">)</span> <span class="o">=</span> <span class="nc">Not_authed</span><span class="o">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[5]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>- : user -&gt; bool = &lt;fun&gt;
+module CX : sig val u : user end
+</pre>
+</div>
+
+</div>
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+
+<div class="output_html rendered_html output_subarea ">
+<div><pre>Counterexample (after 1 steps, 0.017s):
+ let u = {is_admin = false; username = &quot;diego&quot;; email = &quot;diego&quot;}
+</pre></div>
+
+</div>
+
+</div>
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+
+<div class="output_html rendered_html output_subarea ">
+<div><div class="imandra-vr imandra-vr-refuted"><i class="fa fa-times-circle-o"></i><span>Refuted</span></div><div><div class="imandra-alternatives" id="alt-aa8b0301-b844-4932-8af9-59585b98d6e6"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>call graph</a></li><li class="" data-toggle="tab"><a>proof-attempt</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-graphviz" id="graphviz-e0d20d30-8992-42f4-88b9-1d4889e48e7b"><textarea style="display: none">digraph &quot;call graph&quot; {
+goal [label=&quot;not\l(u.is_admin\l \|\| not u.is_admin\l    &amp;&amp; not\l       (List.exists (anon_fun.get_auth_result.0 u)\l        (\&quot;diego\&quot; :: (\&quot;shannon\&quot; :: []))))&quot;,shape=box,style=filled,color=&quot;cyan&quot;,fontname=&quot;courier&quot;,fontsize=14];
+call_279 [label=&quot;List.exists (anon_fun.get_auth_result.0 u)\l(List.tl (\&quot;diego\&quot; :: (\&quot;shannon\&quot; :: [])))&quot;,shape=box,style=filled,color=&quot;yellow&quot;,fontname=&quot;courier&quot;,fontsize=14];
+expr_281 -&gt; call_279 [label=&quot;calls&quot;];
+call_50 [label=&quot;List.exists (anon_fun.get_auth_result.0 u) (\&quot;diego\&quot; :: (\&quot;shannon\&quot; :: []))&quot;,shape=box,style=filled,color=&quot;green&quot;,fontname=&quot;courier&quot;,fontsize=14];
+call_50 -&gt; expr_281 [label=&quot;=&quot;];
+expr_281 [label=&quot;not (\&quot;diego\&quot; :: (\&quot;shannon\&quot; :: []) = [])\l&amp;&amp; (\&quot;diego\&quot; = u.username\l    \|\| List.exists (anon_fun.get_auth_result.0 u)\l       (List.tl (\&quot;diego\&quot; :: (\&quot;shannon\&quot; :: []))))&quot;,shape=box,style=filled,color=&quot;grey&quot;,fontname=&quot;courier&quot;,fontsize=14];
+goal -&gt; call_50 [label=&quot;calls&quot;];
+}
+</textarea><button class="btn btn-primary">Load graph</button><div class="imandra-graphviz-loading display-none">Loading..</div><div class="imandra-graphviz-target"></div><script>
+require(['nbextensions/nbimandra/graphviz'], function (graphviz) {
+  var target = '#graphviz-e0d20d30-8992-42f4-88b9-1d4889e48e7b';
+  graphviz.hydrate(target);
+});
+</script></div></div><div class="tab-pane"><div class="imandra-proof-top"><div class="imandra-fold panel panel-default" id="fold-fbdce852-d0e9-4c12-ba08-679b46c5dbf6"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>proof attempt</span></div></div><div class="panel-body collapse"><div class="imandra-proof"><div class="imandra-alternatives" id="alt-35662fe7-64cd-4b49-9d41-2adf3aabe040"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>summary</a></li><li class="" data-toggle="tab"><a>full</a></li><li class="" data-toggle="tab"><a>graph</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-table" id="table-e02eb242-3f3c-420b-95d2-b3556bbffcb8"><table><tr><td><b>ground_instances</b></td><td>1</td></tr><tr><td><b>definitions</b></td><td>0</td></tr><tr><td><b>inductions</b></td><td>0</td></tr><tr><td><b>search_time</b></td><td><pre>0.017s</pre></td></tr><tr><td><b>details</b></td><td><div class="imandra-fold panel panel-default" id="fold-ef4de690-6ffb-4d30-ad4a-42447c6f4160"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><div class="imandra-table" id="table-7d872ed4-6399-4d74-83f4-d57d2185b1b8"><table><tr><td><b>smt_stats</b></td><td><div class="imandra-table" id="table-113c6a19-665a-4aab-9679-dadbe82dbcbe"><table><tr><td><b>num checks</b></td><td>3</td></tr><tr><td><b>rlimit count</b></td><td>667</td></tr><tr><td><b>mk clause</b></td><td>8</td></tr><tr><td><b>datatype occurs check</b></td><td>28</td></tr><tr><td><b>seq add axiom</b></td><td>2</td></tr><tr><td><b>mk bool var</b></td><td>21</td></tr><tr><td><b>decisions</b></td><td>4</td></tr><tr><td><b>seq num reductions</b></td><td>10</td></tr><tr><td><b>propagations</b></td><td>2</td></tr><tr><td><b>interface eqs</b></td><td>2</td></tr><tr><td><b>conflicts</b></td><td>1</td></tr><tr><td><b>datatype accessor ax</b></td><td>4</td></tr><tr><td><b>datatype constructor ax</b></td><td>1</td></tr><tr><td><b>seq extensionality</b></td><td>2</td></tr><tr><td><b>num allocs</b></td><td>1303858240</td></tr><tr><td><b>final checks</b></td><td>4</td></tr><tr><td><b>added eqs</b></td><td>18</td></tr><tr><td><b>del clause</b></td><td>4</td></tr><tr><td><b>memory</b></td><td>6.200000</td></tr><tr><td><b>max memory</b></td><td>20.060000</td></tr></table></div></td></tr></table></div></div><script>
+require(['nbextensions/nbimandra/fold'], function (fold) {
+  var target = '#fold-ef4de690-6ffb-4d30-ad4a-42447c6f4160';
+  fold.hydrate(target);
+});
+</script></div></td></tr></table></div></div><div class="tab-pane"><div class="imandra-fold panel panel-default" id="fold-1476d90c-3f84-4eff-917f-4c823a163f49"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.017s]
+  :var_0:.is_admin = false
+  ==&gt; (if String.prefix &quot;/user/&quot; &quot;/admin&quot;
+       then
+         if String.prefix (String.append &quot;/user/&quot; :var_0:.username) &quot;/admin&quot;
+         then Authed else Not_authed
+       else
+       if String.prefix &quot;/admin&quot; &quot;/admin&quot;
+       then
+         if :var_0:.is_admin then Authed
+         else
+         if List.exists (anon_fun.get_auth_result.0 :var_0:) … then Authed
+         else Not_authed
+       else Authed)
+      = Not_authed</pre></li><li><div><h4>simplify</h4><div class="imandra-table" id="table-63ff176c-cae8-4867-94f6-a303c03793c4"><table><tr><td><b>into</b></td><td><pre>:var_0:.is_admin
+|| not :var_0:.is_admin
+   &amp;&amp; not
+      (List.exists (anon_fun.get_auth_result.0 :var_0:)
+       (&quot;diego&quot; :: (&quot;shannon&quot; :: [])))</pre></td></tr><tr><td><b>expansions</b></td><td><pre>[]</pre></td></tr><tr><td><b>rewrite_steps</b></td><td><ul></ul></td></tr><tr><td><b>forward_chaining</b></td><td><ul></ul></td></tr></table></div></div></li><li><div>unroll<div class="imandra-table" id="table-242f0aba-003d-46a8-b59c-8638321bc9c6"><table><tr><td><b>expr</b></td><td><pre>(|`List.exists (anon_fun.get_auth_result.0 (u : user))[0]`_2333|
+  u_2326
+  (|::_3| &quot;diego&quot; (|::_3| …</pre></td></tr><tr><td><b>expansions</b></td><td><ul></ul></td></tr></table></div></div></li><li>Sat (Some  let u = {is_admin = false; username = &quot;diego&quot;; email = &quot;diego&quot;}
+)</li></ul></div><script>
+require(['nbextensions/nbimandra/fold'], function (fold) {
+  var target = '#fold-1476d90c-3f84-4eff-917f-4c823a163f49';
+  fold.hydrate(target);
+});
+</script></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-deb65a7b-edbb-4f6d-ba48-3d3e21fe57b8"><textarea style="display: none">digraph &quot;proof&quot; {
+p_235 [label=&quot;Start (:var_0:.is_admin = false\l       ==\&gt; (if String.prefix \&quot;/user/\&quot; \&quot;/admin\&quot;\l            then\l              if String.prefix (String.append \&quot;/user/\&quot; :var_0:.username)\l                 \&quot;/admin\&quot;\l              then Authed else Not_authed\l            else\l            if String.prefix \&quot;/admin\&quot; \&quot;/admin\&quot;\l            then\l              if :var_0:.is_admin then Authed\l              else\l              if List.exists (anon_fun.get_auth_result.0 :var_0:) …\l              then Authed else Not_authed\l            else Authed)\l           = Not_authed\l       :time 0.017s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+p_235 -&gt; p_234 [label=&quot;&quot;];
+p_234 [label=&quot;Simplify (:var_0:.is_admin\l          \|\| not :var_0:.is_admin\l             &amp;&amp; not\l                (List.exists (anon_fun.get_auth_result.0 :var_0:)\l                 (\&quot;diego\&quot; :: (\&quot;shannon\&quot; :: [])))\l          :expansions [] :rw [] :fc [])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+p_234 -&gt; p_233 [label=&quot;&quot;];
+p_233 [label=&quot;Unroll ([List.exists (anon_fun.get_auth_result.0 u)\l         (\&quot;diego\&quot; :: (\&quot;shannon\&quot; :: []))],\l        [[]])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+p_233 -&gt; p_232 [label=&quot;&quot;];
+p_232 [label=&quot;Sat (Some  let u = \{is_admin = false; username = \&quot;diego\&quot;; email = \&quot;diego\&quot;\}\l)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+}
+</textarea><button class="btn btn-primary">Load graph</button><div class="imandra-graphviz-loading display-none">Loading..</div><div class="imandra-graphviz-target"></div><script>
+require(['nbextensions/nbimandra/graphviz'], function (graphviz) {
+  var target = '#graphviz-deb65a7b-edbb-4f6d-ba48-3d3e21fe57b8';
+  graphviz.hydrate(target);
+});
+</script></div></div></div><script>
+require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
+  var target = '#alt-35662fe7-64cd-4b49-9d41-2adf3aabe040';
+  alternatives.hydrate(target);
+});
+</script></div></div></div><script>
+require(['nbextensions/nbimandra/fold'], function (fold) {
+  var target = '#fold-fbdce852-d0e9-4c12-ba08-679b46c5dbf6';
+  fold.hydrate(target);
+});
+</script></div></div></div></div><script>
+require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
+  var target = '#alt-aa8b0301-b844-4932-8af9-59585b98d6e6';
+  alternatives.hydrate(target);
+});
+</script></div></div></div>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>This verification fails, and Imandra gives us an example input that violates the assumption we gave it - we hadn't considered the users added by the 'temporary hack' code path in our tests!</p>
+<p>We can also ask for a decomposition of all the regions in the <code>get_auth_result</code> function, which gives us an idea of the various conditions and complexity:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="try-this-container">
+  <div class="try-this"><a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Analysing%20Web-app%20Authentication%20Logic.ipynb%23try-cell-11" target="_blank">Try this!</a></div>
+</div>
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[6]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ocaml"><pre><span></span><span class="nn">Decompose</span><span class="p">.</span><span class="n">by_simp_ctx</span> <span class="o">~</span><span class="n">compound</span><span class="o">:</span><span class="bp">false</span> <span class="s2">&quot;get_auth_result&quot;</span><span class="o">;;</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[6]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>- : Imandra_reasoning.Decompose.t list =
+[&lt;region&gt;; &lt;region&gt;; &lt;region&gt;; &lt;region&gt;; &lt;region&gt;; &lt;region&gt;; &lt;region&gt;]
+</pre>
+</div>
+
+</div>
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+
+<div class="output_html rendered_html output_subarea ">
+<div class="imandra-alternatives" id="alt-15574d1d-b3d5-4ae7-ad5b-1ebb1c3ddbaa"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-19d71a0d-ee33-41b0-a2dd-a17f9b15aa3d" class="decompose"><textarea class="display-none">{
+  &quot;regions&quot;: [
+    {
+      &quot;constraints&quot;: [
+        &quot;String.prefix (String.append \&quot;/user/\&quot; u.username) path&quot;
+      ],
+      &quot;region&quot;: {
+        &quot;constraints&quot;: [
+          &quot;String.prefix (String.append \&quot;/user/\&quot; u.username) path&quot;
+        ],
+        &quot;invariant&quot;: &quot;F = Authed&quot;
+      },
+      &quot;groups&quot;: [],
+      &quot;label&quot;: &quot;R[2]&quot;,
+      &quot;weight&quot;: 1
+    },
+    {
+      &quot;constraints&quot;: [
+        &quot;not (String.prefix (String.append \&quot;/user/\&quot; u.username) path)&quot;
+      ],
+      &quot;region&quot;: null,
+      &quot;groups&quot;: [
+        {
+          &quot;constraints&quot;: [
+            &quot;not (String.prefix (String.append \&quot;/user/\&quot; u.username) path)&quot;,
+            &quot;String.prefix \&quot;/user/\&quot; path&quot;
+          ],
+          &quot;region&quot;: {
+            &quot;constraints&quot;: [
+              &quot;not (String.prefix (String.append \&quot;/user/\&quot; u.username) path)&quot;,
+              &quot;String.prefix \&quot;/user/\&quot; path&quot;
+            ],
+            &quot;invariant&quot;: &quot;F = Not_authed&quot;
+          },
+          &quot;groups&quot;: [],
+          &quot;label&quot;: &quot;R[1.2]&quot;,
+          &quot;weight&quot;: 1
+        },
+        {
+          &quot;constraints&quot;: [
+            &quot;not (String.prefix (String.append \&quot;/user/\&quot; u.username) path)&quot;,
+            &quot;not (String.prefix \&quot;/user/\&quot; path)&quot;
+          ],
+          &quot;region&quot;: null,
+          &quot;groups&quot;: [
+            {
+              &quot;constraints&quot;: [
+                &quot;not (String.prefix (String.append \&quot;/user/\&quot; u.username) path)&quot;,
+                &quot;not (String.prefix \&quot;/user/\&quot; path)&quot;,
+                &quot;not (String.prefix \&quot;/admin\&quot; path)&quot;
+              ],
+              &quot;region&quot;: {
+                &quot;constraints&quot;: [
+                  &quot;not (String.prefix (String.append \&quot;/user/\&quot; u.username) path)&quot;,
+                  &quot;not (String.prefix \&quot;/user/\&quot; path)&quot;,
+                  &quot;not (String.prefix \&quot;/admin\&quot; path)&quot;
+                ],
+                &quot;invariant&quot;: &quot;F = Authed&quot;
+              },
+              &quot;groups&quot;: [],
+              &quot;label&quot;: &quot;R[1.1.2]&quot;,
+              &quot;weight&quot;: 1
+            },
+            {
+              &quot;constraints&quot;: [
+                &quot;not (String.prefix (String.append \&quot;/user/\&quot; u.username) path)&quot;,
+                &quot;not (String.prefix \&quot;/user/\&quot; path)&quot;,
+                &quot;String.prefix \&quot;/admin\&quot; path&quot;
+              ],
+              &quot;region&quot;: null,
+              &quot;groups&quot;: [
+                {
+                  &quot;constraints&quot;: [
+                    &quot;not (String.prefix (String.append \&quot;/user/\&quot; u.username) path)&quot;,
+                    &quot;not (String.prefix \&quot;/user/\&quot; path)&quot;,
+                    &quot;String.prefix \&quot;/admin\&quot; path&quot;, &quot;u.is_admin&quot;
+                  ],
+                  &quot;region&quot;: {
+                    &quot;constraints&quot;: [
+                      &quot;not (String.prefix (String.append \&quot;/user/\&quot; u.username) path)&quot;,
+                      &quot;not (String.prefix \&quot;/user/\&quot; path)&quot;,
+                      &quot;String.prefix \&quot;/admin\&quot; path&quot;, &quot;u.is_admin&quot;
+                    ],
+                    &quot;invariant&quot;: &quot;F = Authed&quot;
+                  },
+                  &quot;groups&quot;: [],
+                  &quot;label&quot;: &quot;R[1.1.1.2]&quot;,
+                  &quot;weight&quot;: 1
+                },
+                {
+                  &quot;constraints&quot;: [
+                    &quot;not (String.prefix (String.append \&quot;/user/\&quot; u.username) path)&quot;,
+                    &quot;not (String.prefix \&quot;/user/\&quot; path)&quot;,
+                    &quot;String.prefix \&quot;/admin\&quot; path&quot;, &quot;not u.is_admin&quot;
+                  ],
+                  &quot;region&quot;: null,
+                  &quot;groups&quot;: [
+                    {
+                      &quot;constraints&quot;: [
+                        &quot;not (String.prefix (String.append \&quot;/user/\&quot; u.username) path)&quot;,
+                        &quot;not (String.prefix \&quot;/user/\&quot; path)&quot;,
+                        &quot;String.prefix \&quot;/admin\&quot; path&quot;, &quot;not u.is_admin&quot;,
+                        &quot;\&quot;diego\&quot; = u.username&quot;
+                      ],
+                      &quot;region&quot;: {
+                        &quot;constraints&quot;: [
+                          &quot;not (String.prefix (String.append \&quot;/user/\&quot; u.username) path)&quot;,
+                          &quot;not (String.prefix \&quot;/user/\&quot; path)&quot;,
+                          &quot;String.prefix \&quot;/admin\&quot; path&quot;, &quot;not u.is_admin&quot;,
+                          &quot;\&quot;diego\&quot; = u.username&quot;
+                        ],
+                        &quot;invariant&quot;: &quot;F = Authed&quot;
+                      },
+                      &quot;groups&quot;: [],
+                      &quot;label&quot;: &quot;R[1.1.1.1.2]&quot;,
+                      &quot;weight&quot;: 1
+                    },
+                    {
+                      &quot;constraints&quot;: [
+                        &quot;not (String.prefix (String.append \&quot;/user/\&quot; u.username) path)&quot;,
+                        &quot;not (String.prefix \&quot;/user/\&quot; path)&quot;,
+                        &quot;String.prefix \&quot;/admin\&quot; path&quot;, &quot;not u.is_admin&quot;,
+                        &quot;not (\&quot;diego\&quot; = u.username)&quot;
+                      ],
+                      &quot;region&quot;: null,
+                      &quot;groups&quot;: [
+                        {
+                          &quot;constraints&quot;: [
+                            &quot;not (String.prefix (String.append \&quot;/user/\&quot; u.username) path)&quot;,
+                            &quot;not (String.prefix \&quot;/user/\&quot; path)&quot;,
+                            &quot;String.prefix \&quot;/admin\&quot; path&quot;,
+                            &quot;not u.is_admin&quot;, &quot;not (\&quot;diego\&quot; = u.username)&quot;,
+                            &quot;not (\&quot;shannon\&quot; = u.username)&quot;
+                          ],
+                          &quot;region&quot;: {
+                            &quot;constraints&quot;: [
+                              &quot;not (String.prefix (String.append \&quot;/user/\&quot; u.username) path)&quot;,
+                              &quot;not (String.prefix \&quot;/user/\&quot; path)&quot;,
+                              &quot;String.prefix \&quot;/admin\&quot; path&quot;,
+                              &quot;not u.is_admin&quot;,
+                              &quot;not (\&quot;diego\&quot; = u.username)&quot;,
+                              &quot;not (\&quot;shannon\&quot; = u.username)&quot;
+                            ],
+                            &quot;invariant&quot;: &quot;F = Not_authed&quot;
+                          },
+                          &quot;groups&quot;: [],
+                          &quot;label&quot;: &quot;R[1.1.1.1.1.2]&quot;,
+                          &quot;weight&quot;: 1
+                        },
+                        {
+                          &quot;constraints&quot;: [
+                            &quot;not (String.prefix (String.append \&quot;/user/\&quot; u.username) path)&quot;,
+                            &quot;not (String.prefix \&quot;/user/\&quot; path)&quot;,
+                            &quot;String.prefix \&quot;/admin\&quot; path&quot;,
+                            &quot;not u.is_admin&quot;, &quot;not (\&quot;diego\&quot; = u.username)&quot;,
+                            &quot;\&quot;shannon\&quot; = u.username&quot;
+                          ],
+                          &quot;region&quot;: {
+                            &quot;constraints&quot;: [
+                              &quot;not (String.prefix (String.append \&quot;/user/\&quot; u.username) path)&quot;,
+                              &quot;not (String.prefix \&quot;/user/\&quot; path)&quot;,
+                              &quot;String.prefix \&quot;/admin\&quot; path&quot;,
+                              &quot;not u.is_admin&quot;,
+                              &quot;not (\&quot;diego\&quot; = u.username)&quot;,
+                              &quot;\&quot;shannon\&quot; = u.username&quot;
+                            ],
+                            &quot;invariant&quot;: &quot;F = Authed&quot;
+                          },
+                          &quot;groups&quot;: [],
+                          &quot;label&quot;: &quot;R[1.1.1.1.1.1]&quot;,
+                          &quot;weight&quot;: 1
+                        }
+                      ],
+                      &quot;label&quot;: &quot;(1.1.1.1.1)&quot;,
+                      &quot;weight&quot;: 2
+                    }
+                  ],
+                  &quot;label&quot;: &quot;(1.1.1.1)&quot;,
+                  &quot;weight&quot;: 3
+                }
+              ],
+              &quot;label&quot;: &quot;(1.1.1)&quot;,
+              &quot;weight&quot;: 4
+            }
+          ],
+          &quot;label&quot;: &quot;(1.1)&quot;,
+          &quot;weight&quot;: 5
+        }
+      ],
+      &quot;label&quot;: &quot;(1)&quot;,
+      &quot;weight&quot;: 6
+    }
+  ]
+}</textarea><div class="decompose-foamtree"></div><div class="decompose-details"><div class="decompose-details-header">Regions details</div><div class="decompose-details-no-selection">No group selected.</div><div class="decompose-details-selection hidden"><div><span class="decompose-details-label">Direct sub-regions: </span><span class="decompose-details-direct-sub-regions-text">-</span></div><div><span class="decompose-details-label">Contained regions: </span><span class="decompose-details-contained-regions-text">-</span></div><div class="decompose-details-section-header">Constraints</div><div class="decompose-details-constraints"><pre class="decompose-details-constraint">&lt;constraint&gt;</pre></div><div class="decompose-details-invariant"><div class="decompose-details-section-header">Invariant</div><pre class="decompose-details-invariant-text">&lt;invariant&gt;</pre></div></div></div><script>
+(function () {
+  require(['nbextensions/nbimandra/regions'], function (regions) {
+    var target = '#decompose-19d71a0d-ee33-41b0-a2dd-a17f9b15aa3d';
+    regions.hydrate(target);
+  });
+})();
+</script></div></div><div class="tab-pane"><div><div class="imandra-table" id="table-7860ffd2-97fa-43b3-bb0b-9acd46467f39"><table><thead><tr><th>Constraints</th><th>Invariant</th></tr></thead><tr><td><ul><li><pre>String.prefix (String.append &quot;/user/&quot; u.username) path</pre></li></ul></td><td><pre>F = Authed</pre></td></tr><tr><td><ul><li><pre>not (String.prefix (String.append &quot;/user/&quot; u.username) path)</pre></li><li><pre>not (String.prefix &quot;/user/&quot; path)</pre></li><li><pre>String.prefix &quot;/admin&quot; path</pre></li><li><pre>u.is_admin</pre></li></ul></td><td><pre>F = Authed</pre></td></tr><tr><td><ul><li><pre>not (String.prefix (String.append &quot;/user/&quot; u.username) path)</pre></li><li><pre>not (String.prefix &quot;/user/&quot; path)</pre></li><li><pre>String.prefix &quot;/admin&quot; path</pre></li><li><pre>not u.is_admin</pre></li><li><pre>&quot;diego&quot; = u.username</pre></li></ul></td><td><pre>F = Authed</pre></td></tr><tr><td><ul><li><pre>not (String.prefix (String.append &quot;/user/&quot; u.username) path)</pre></li><li><pre>not (String.prefix &quot;/user/&quot; path)</pre></li><li><pre>String.prefix &quot;/admin&quot; path</pre></li><li><pre>not u.is_admin</pre></li><li><pre>not (&quot;diego&quot; = u.username)</pre></li><li><pre>&quot;shannon&quot; = u.username</pre></li></ul></td><td><pre>F = Authed</pre></td></tr><tr><td><ul><li><pre>not (String.prefix (String.append &quot;/user/&quot; u.username) path)</pre></li><li><pre>not (String.prefix &quot;/user/&quot; path)</pre></li><li><pre>String.prefix &quot;/admin&quot; path</pre></li><li><pre>not u.is_admin</pre></li><li><pre>not (&quot;diego&quot; = u.username)</pre></li><li><pre>not (&quot;shannon&quot; = u.username)</pre></li></ul></td><td><pre>F = Not_authed</pre></td></tr><tr><td><ul><li><pre>not (String.prefix (String.append &quot;/user/&quot; u.username) path)</pre></li><li><pre>not (String.prefix &quot;/user/&quot; path)</pre></li><li><pre>not (String.prefix &quot;/admin&quot; path)</pre></li></ul></td><td><pre>F = Authed</pre></td></tr><tr><td><ul><li><pre>not (String.prefix (String.append &quot;/user/&quot; u.username) path)</pre></li><li><pre>String.prefix &quot;/user/&quot; path</pre></li></ul></td><td><pre>F = Not_authed</pre></td></tr></table></div></div></div></div><script>
+require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
+  var target = '#alt-15574d1d-b3d5-4ae7-ad5b-1ebb1c3ddbaa';
+  alternatives.hydrate(target);
+});
+</script></div>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+  
+ 
+
+
+      </div></div>
+  </div>
+</body>
+</html>

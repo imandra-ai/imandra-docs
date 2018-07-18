@@ -1,0 +1,2632 @@
+<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8" />
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Imandra Documentation - Imandra Decomposition Flags</title>
+<meta property="og:url" content="https://docs.imandra.ai/imandra-docs/notebooks/decomposition-flags/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Imandra Documentation - Imandra Decomposition Flags">
+<meta property="og:description" content="In this notebook we’re going to describe the main flags and arguments accepted by Imandra’s principal region decomposition, with concrete examples to clarify their behaviour.">
+<meta property="og:image" content="https://storage.googleapis.com/imandra-assets/images/og_image_default_i78.jpg">
+
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Merriweather" type="text/css" />
+
+<link rel="stylesheet" href="/imandra-docs/static/style/style.min.910c246e.css" type="text/css">
+<link rel="stylesheet" href="/imandra-docs/static/custom/custom.43522872.css" type="text/css">
+<link rel="stylesheet" href="/imandra-docs/static/nbextensions/nbimandra/styles.c7ed3d1a.css" type="text/css">
+<link rel="stylesheet" href="/imandra-docs/static/docs-styles.f1666efd.css" type="text/css">
+
+<script src="/imandra-docs/static/nbimandra-rjs-bundle.26eac81a.js"></script>
+
+<style type="text/css">
+.highlight .hll { background-color: #ffffcc }
+.highlight  { background: #f8f8f8; }
+.highlight .c { color: #408080; font-style: italic } /* Comment */
+.highlight .err { border: 1px solid #FF0000 } /* Error */
+.highlight .k { color: #008000; font-weight: bold } /* Keyword */
+.highlight .o { color: #666666 } /* Operator */
+.highlight .ch { color: #408080; font-style: italic } /* Comment.Hashbang */
+.highlight .cm { color: #408080; font-style: italic } /* Comment.Multiline */
+.highlight .cp { color: #BC7A00 } /* Comment.Preproc */
+.highlight .cpf { color: #408080; font-style: italic } /* Comment.PreprocFile */
+.highlight .c1 { color: #408080; font-style: italic } /* Comment.Single */
+.highlight .cs { color: #408080; font-style: italic } /* Comment.Special */
+.highlight .gd { color: #A00000 } /* Generic.Deleted */
+.highlight .ge { font-style: italic } /* Generic.Emph */
+.highlight .gr { color: #FF0000 } /* Generic.Error */
+.highlight .gh { color: #000080; font-weight: bold } /* Generic.Heading */
+.highlight .gi { color: #00A000 } /* Generic.Inserted */
+.highlight .go { color: #888888 } /* Generic.Output */
+.highlight .gp { color: #000080; font-weight: bold } /* Generic.Prompt */
+.highlight .gs { font-weight: bold } /* Generic.Strong */
+.highlight .gu { color: #800080; font-weight: bold } /* Generic.Subheading */
+.highlight .gt { color: #0044DD } /* Generic.Traceback */
+.highlight .kc { color: #008000; font-weight: bold } /* Keyword.Constant */
+.highlight .kd { color: #008000; font-weight: bold } /* Keyword.Declaration */
+.highlight .kn { color: #008000; font-weight: bold } /* Keyword.Namespace */
+.highlight .kp { color: #008000 } /* Keyword.Pseudo */
+.highlight .kr { color: #008000; font-weight: bold } /* Keyword.Reserved */
+.highlight .kt { color: #B00040 } /* Keyword.Type */
+.highlight .m { color: #666666 } /* Literal.Number */
+.highlight .s { color: #BA2121 } /* Literal.String */
+.highlight .na { color: #7D9029 } /* Name.Attribute */
+.highlight .nb { color: #008000 } /* Name.Builtin */
+.highlight .nc { color: #0000FF; font-weight: bold } /* Name.Class */
+.highlight .no { color: #880000 } /* Name.Constant */
+.highlight .nd { color: #AA22FF } /* Name.Decorator */
+.highlight .ni { color: #999999; font-weight: bold } /* Name.Entity */
+.highlight .ne { color: #D2413A; font-weight: bold } /* Name.Exception */
+.highlight .nf { color: #0000FF } /* Name.Function */
+.highlight .nl { color: #A0A000 } /* Name.Label */
+.highlight .nn { color: #0000FF; font-weight: bold } /* Name.Namespace */
+.highlight .nt { color: #008000; font-weight: bold } /* Name.Tag */
+.highlight .nv { color: #19177C } /* Name.Variable */
+.highlight .ow { color: #AA22FF; font-weight: bold } /* Operator.Word */
+.highlight .w { color: #bbbbbb } /* Text.Whitespace */
+.highlight .mb { color: #666666 } /* Literal.Number.Bin */
+.highlight .mf { color: #666666 } /* Literal.Number.Float */
+.highlight .mh { color: #666666 } /* Literal.Number.Hex */
+.highlight .mi { color: #666666 } /* Literal.Number.Integer */
+.highlight .mo { color: #666666 } /* Literal.Number.Oct */
+.highlight .sa { color: #BA2121 } /* Literal.String.Affix */
+.highlight .sb { color: #BA2121 } /* Literal.String.Backtick */
+.highlight .sc { color: #BA2121 } /* Literal.String.Char */
+.highlight .dl { color: #BA2121 } /* Literal.String.Delimiter */
+.highlight .sd { color: #BA2121; font-style: italic } /* Literal.String.Doc */
+.highlight .s2 { color: #BA2121 } /* Literal.String.Double */
+.highlight .se { color: #BB6622; font-weight: bold } /* Literal.String.Escape */
+.highlight .sh { color: #BA2121 } /* Literal.String.Heredoc */
+.highlight .si { color: #BB6688; font-weight: bold } /* Literal.String.Interpol */
+.highlight .sx { color: #008000 } /* Literal.String.Other */
+.highlight .sr { color: #BB6688 } /* Literal.String.Regex */
+.highlight .s1 { color: #BA2121 } /* Literal.String.Single */
+.highlight .ss { color: #19177C } /* Literal.String.Symbol */
+.highlight .bp { color: #008000 } /* Name.Builtin.Pseudo */
+.highlight .fm { color: #0000FF } /* Name.Function.Magic */
+.highlight .vc { color: #19177C } /* Name.Variable.Class */
+.highlight .vg { color: #19177C } /* Name.Variable.Global */
+.highlight .vi { color: #19177C } /* Name.Variable.Instance */
+.highlight .vm { color: #19177C } /* Name.Variable.Magic */
+.highlight .il { color: #666666 } /* Literal.Number.Integer.Long */
+</style>
+    
+<!-- Loading mathjax macro -->
+<!-- Load mathjax -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS_HTML"></script>
+    <!-- MathJax configuration -->
+    <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+            displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+            processEscapes: true,
+            processEnvironments: true
+        },
+        // Center justify equations in code and markdown cells. Elsewhere
+        // we use CSS to left justify single line equations in code cells.
+        displayAlign: 'center',
+        "HTML-CSS": {
+            styles: {'.MathJax_Display': {"margin": 0}},
+            linebreaks: { automatic: true }
+        }
+    });
+    </script>
+    <!-- End of mathjax configuration --></head>
+<body>
+  <div class="header-nav">
+    <a href="/imandra-docs/">&lt; Back</a>
+  </div>
+  <div class="bg-container">
+    <div class="bg-container__bg"></div>
+    <div class="container">
+      <header class="header">
+        <a href="/imandra-docs/">
+          <img src="/imandra-docs/static/img/site_specific_image_v_2.svg">
+        </a>
+      </header>
+      <div class="content content--with-cells">
+  
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Imandra-decomposition-flags">Imandra decomposition flags<a class="anchor-link" href="#Imandra-decomposition-flags">&#182;</a></h1><p>In this notebook we'll go over various important flags and arguments accepted by Imandra's <code>Decompose.top</code> entrypoint into its Principal Region Decomposition machinery. As much as possible, we'll use concrete examples to clarify their behaviour.</p>
+<ul>
+<li><a href="#Assuming">Assuming</a></li>
+<li><a href="#Compound">Compound</a></li>
+<li><a href="#Reduce-symmetry">Reduce symmetry</a></li>
+<li><a href="#Ctx_asm_simp">Ctx asm simp</a></li>
+<li><a href="#Max_ctx_simp">Max ctx simp</a></li>
+<li><a href="#Basis">Basis</a></li>
+<li><a href="#Interpret-basis">Interpret basis</a></li>
+<li><a href="#Aggressive-Recursion">Aggressive rec</a></li>
+</ul>
+<h1 id="Assuming">Assuming<a class="anchor-link" href="#Assuming">&#182;</a></h1><p>The <code>~assuming</code> flag is used to add extra axioms as a side-condition to the decomposition of target function. This usually has the effect that regions that don't satisfy the side-condition will be pruned away (although it is not always the case when in presence of non-interpreted functions, see <a href="#Aggressive-Recursion">aggressive_rec</a> for a mitigation) but it can also cause constraints to be pruned away or new regions to be discovered when used in combination with <a href="#Ctx_asm_simp">ctx_asm_simp</a>.</p>
+<p>The side-condition function must be a boolean predicate accepting the same arguments as the target function.</p>
+<p>Let's see how it works:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="try-this-container">
+  <div class="try-this"><a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Imandra%20Decomposition%20Flags.ipynb%23try-cell-2" target="_blank">Try this!</a></div>
+</div>
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[1]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ocaml"><pre><span></span><span class="k">let</span> <span class="n">f</span> <span class="n">x</span> <span class="n">y</span> <span class="o">=</span> 
+  <span class="k">if</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">then</span>
+    <span class="k">if</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="n">y</span> <span class="k">then</span>
+      <span class="nc">Some</span> <span class="o">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">y</span><span class="o">)</span>
+    <span class="k">else</span>
+      <span class="nc">Some</span> <span class="o">(</span><span class="n">y</span> <span class="o">-</span> <span class="n">x</span><span class="o">)</span>
+  <span class="k">else</span>
+    <span class="nc">None</span>
+    
+<span class="k">let</span> <span class="n">g</span> <span class="n">x</span> <span class="o">(</span><span class="n">y</span> <span class="o">:</span> <span class="kt">int</span><span class="o">)</span> <span class="o">=</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="mi">0</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[1]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>val f : int -&gt; int -&gt; Z.t option = &lt;fun&gt;
+val g : int -&gt; int -&gt; bool = &lt;fun&gt;
+</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Let's assume we only care to decompose feasible paths of <code>f</code> when <code>g</code> holds (i.e. when <code>x &gt; 0</code>):</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="try-this-container">
+  <div class="try-this"><a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Imandra%20Decomposition%20Flags.ipynb%23try-cell-4" target="_blank">Try this!</a></div>
+</div>
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[2]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ocaml"><pre><span></span><span class="nn">Decompose</span><span class="p">.</span><span class="n">top</span> <span class="o">~</span><span class="n">assuming</span><span class="o">:</span><span class="s2">&quot;g&quot;</span> <span class="s2">&quot;f&quot;</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[2]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>- : Imandra_reasoning.Decompose.t list = [&lt;region&gt;; &lt;region&gt;]
+</pre>
+</div>
+
+</div>
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+
+<div class="output_html rendered_html output_subarea ">
+<div class="imandra-alternatives" id="alt-e95a104b-015d-4fda-8825-00b9207fd280"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-84b4e31c-0bd4-44ae-b497-c7092cf273a9" class="decompose"><textarea class="display-none">{
+  &quot;regions&quot;: [
+    {
+      &quot;constraints&quot;: [ &quot;not (x &lt;= 0)&quot; ],
+      &quot;region&quot;: null,
+      &quot;groups&quot;: [
+        {
+          &quot;constraints&quot;: [ &quot;not (x &lt;= 0)&quot;, &quot;x &lt;= y&quot; ],
+          &quot;region&quot;: {
+            &quot;constraints&quot;: [ &quot;not (x &lt;= 0)&quot;, &quot;x &lt;= y&quot; ],
+            &quot;invariant&quot;: &quot;F = Some (y + -1 * x)&quot;
+          },
+          &quot;groups&quot;: [],
+          &quot;label&quot;: &quot;R[1.2]&quot;,
+          &quot;weight&quot;: 1
+        },
+        {
+          &quot;constraints&quot;: [ &quot;not (x &lt;= 0)&quot;, &quot;not (x &lt;= y)&quot; ],
+          &quot;region&quot;: {
+            &quot;constraints&quot;: [ &quot;not (x &lt;= 0)&quot;, &quot;not (x &lt;= y)&quot; ],
+            &quot;invariant&quot;: &quot;F = Some (x + -1 * y)&quot;
+          },
+          &quot;groups&quot;: [],
+          &quot;label&quot;: &quot;R[1.1]&quot;,
+          &quot;weight&quot;: 1
+        }
+      ],
+      &quot;label&quot;: &quot;(1)&quot;,
+      &quot;weight&quot;: 2
+    }
+  ]
+}</textarea><div class="decompose-foamtree"></div><div class="decompose-details"><div class="decompose-details-header">Regions details</div><div class="decompose-details-no-selection">No group selected.</div><div class="decompose-details-selection hidden"><div><span class="decompose-details-label">Direct sub-regions: </span><span class="decompose-details-direct-sub-regions-text">-</span></div><div><span class="decompose-details-label">Contained regions: </span><span class="decompose-details-contained-regions-text">-</span></div><div class="decompose-details-section-header">Constraints</div><div class="decompose-details-constraints"><pre class="decompose-details-constraint">&lt;constraint&gt;</pre></div><div class="decompose-details-invariant"><div class="decompose-details-section-header">Invariant</div><pre class="decompose-details-invariant-text">&lt;invariant&gt;</pre></div></div></div><script>
+(function () {
+  require(['nbextensions/nbimandra/regions'], function (regions) {
+    var target = '#decompose-84b4e31c-0bd4-44ae-b497-c7092cf273a9';
+    regions.hydrate(target);
+  });
+})();
+</script></div></div><div class="tab-pane"><div><div class="imandra-table" id="table-6c205292-9635-47bb-8f87-0ea7d44e7a12"><table><thead><tr><th>Constraints</th><th>Invariant</th></tr></thead><tr><td><ul><li><pre>not (x &lt;= 0)</pre></li><li><pre>x &lt;= y</pre></li></ul></td><td><pre>F = Some (y + -1 * x)</pre></td></tr><tr><td><ul><li><pre>not (x &lt;= 0)</pre></li><li><pre>not (x &lt;= y)</pre></li></ul></td><td><pre>F = Some (x + -1 * y)</pre></td></tr></table></div></div></div></div><script>
+require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
+  var target = '#alt-e95a104b-015d-4fda-8825-00b9207fd280';
+  alternatives.hydrate(target);
+});
+</script></div>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>As we can see, the call to <code>Decompose.top</code> pruned away the region where <code>g</code> didn't hold.</p>
+<h1 id="Compound">Compound<a class="anchor-link" href="#Compound">&#182;</a></h1><p>The <code>~compound</code> flag instructs Imandra whether or not to expand compound logical statements in conditionals, such as conjunctions and disjunctions, into their constituent parts. With <code>~compound:true</code>, the decomposition may in general be possible with fewer regions than otherwise, but region constraints and invariants may involve <code>&amp;&amp;</code> and <code>||</code>. This flag doesn't cause any constraints to be removed.</p>
+<p>By default, <code>~compound:false</code> is used.</p>
+<p>Let's see how <code>~compound</code> works in practice on a target function with a compound conditional:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="try-this-container">
+  <div class="try-this"><a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Imandra%20Decomposition%20Flags.ipynb%23try-cell-6" target="_blank">Try this!</a></div>
+</div>
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[3]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ocaml"><pre><span></span><span class="k">let</span> <span class="n">f</span> <span class="n">x</span> <span class="n">y</span> <span class="o">=</span>
+  <span class="k">if</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="mi">10</span> <span class="o">||</span> <span class="n">y</span> <span class="o">&lt;</span> <span class="mi">20</span> <span class="k">then</span>
+    <span class="mi">1</span>
+  <span class="k">else</span>
+    <span class="mi">2</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[3]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>val f : int -&gt; int -&gt; Z.t = &lt;fun&gt;
+</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>If we decompose <code>f</code> with <code>~compound:false</code>, we'll get 3 different regions:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="try-this-container">
+  <div class="try-this"><a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Imandra%20Decomposition%20Flags.ipynb%23try-cell-8" target="_blank">Try this!</a></div>
+</div>
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[4]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ocaml"><pre><span></span><span class="nn">Decompose</span><span class="p">.</span><span class="n">top</span> <span class="o">~</span><span class="n">compound</span><span class="o">:</span><span class="bp">false</span> <span class="s2">&quot;f&quot;</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[4]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>- : Imandra_reasoning.Decompose.t list = [&lt;region&gt;; &lt;region&gt;; &lt;region&gt;]
+</pre>
+</div>
+
+</div>
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+
+<div class="output_html rendered_html output_subarea ">
+<div class="imandra-alternatives" id="alt-a879edc4-ba63-4bc3-a50e-1730c8b9cfa2"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-25c09a17-a104-42d4-86bc-d4d2f110aa9e" class="decompose"><textarea class="display-none">{
+  &quot;regions&quot;: [
+    {
+      &quot;constraints&quot;: [ &quot;not (x &lt;= 10)&quot; ],
+      &quot;region&quot;: { &quot;constraints&quot;: [ &quot;not (x &lt;= 10)&quot; ], &quot;invariant&quot;: &quot;F = 1&quot; },
+      &quot;groups&quot;: [],
+      &quot;label&quot;: &quot;R[2]&quot;,
+      &quot;weight&quot;: 1
+    },
+    {
+      &quot;constraints&quot;: [ &quot;x &lt;= 10&quot; ],
+      &quot;region&quot;: null,
+      &quot;groups&quot;: [
+        {
+          &quot;constraints&quot;: [ &quot;x &lt;= 10&quot;, &quot;not (20 &lt;= y)&quot; ],
+          &quot;region&quot;: {
+            &quot;constraints&quot;: [ &quot;x &lt;= 10&quot;, &quot;not (20 &lt;= y)&quot; ],
+            &quot;invariant&quot;: &quot;F = 1&quot;
+          },
+          &quot;groups&quot;: [],
+          &quot;label&quot;: &quot;R[1.2]&quot;,
+          &quot;weight&quot;: 1
+        },
+        {
+          &quot;constraints&quot;: [ &quot;x &lt;= 10&quot;, &quot;20 &lt;= y&quot; ],
+          &quot;region&quot;: {
+            &quot;constraints&quot;: [ &quot;x &lt;= 10&quot;, &quot;20 &lt;= y&quot; ],
+            &quot;invariant&quot;: &quot;F = 2&quot;
+          },
+          &quot;groups&quot;: [],
+          &quot;label&quot;: &quot;R[1.1]&quot;,
+          &quot;weight&quot;: 1
+        }
+      ],
+      &quot;label&quot;: &quot;(1)&quot;,
+      &quot;weight&quot;: 2
+    }
+  ]
+}</textarea><div class="decompose-foamtree"></div><div class="decompose-details"><div class="decompose-details-header">Regions details</div><div class="decompose-details-no-selection">No group selected.</div><div class="decompose-details-selection hidden"><div><span class="decompose-details-label">Direct sub-regions: </span><span class="decompose-details-direct-sub-regions-text">-</span></div><div><span class="decompose-details-label">Contained regions: </span><span class="decompose-details-contained-regions-text">-</span></div><div class="decompose-details-section-header">Constraints</div><div class="decompose-details-constraints"><pre class="decompose-details-constraint">&lt;constraint&gt;</pre></div><div class="decompose-details-invariant"><div class="decompose-details-section-header">Invariant</div><pre class="decompose-details-invariant-text">&lt;invariant&gt;</pre></div></div></div><script>
+(function () {
+  require(['nbextensions/nbimandra/regions'], function (regions) {
+    var target = '#decompose-25c09a17-a104-42d4-86bc-d4d2f110aa9e';
+    regions.hydrate(target);
+  });
+})();
+</script></div></div><div class="tab-pane"><div><div class="imandra-table" id="table-b14be080-05d7-4057-9119-f3a48a6c5a72"><table><thead><tr><th>Constraints</th><th>Invariant</th></tr></thead><tr><td><ul><li><pre>not (x &lt;= 10)</pre></li></ul></td><td><pre>F = 1</pre></td></tr><tr><td><ul><li><pre>x &lt;= 10</pre></li><li><pre>not (20 &lt;= y)</pre></li></ul></td><td><pre>F = 1</pre></td></tr><tr><td><ul><li><pre>x &lt;= 10</pre></li><li><pre>20 &lt;= y</pre></li></ul></td><td><pre>F = 2</pre></td></tr></table></div></div></div></div><script>
+require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
+  var target = '#alt-a879edc4-ba63-4bc3-a50e-1730c8b9cfa2';
+  alternatives.hydrate(target);
+});
+</script></div>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Though all regions are disjoint, we can see that two regions have the same invariant and could be logically collapsed into just one region with a disjunctive constraint. (Hint: click on a region in the Voronoi diagram to see the region's constraints and invariant.) This is where <code>~compound:true</code> helps us:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="try-this-container">
+  <div class="try-this"><a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Imandra%20Decomposition%20Flags.ipynb%23try-cell-10" target="_blank">Try this!</a></div>
+</div>
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[5]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ocaml"><pre><span></span><span class="nn">Decompose</span><span class="p">.</span><span class="n">top</span> <span class="o">~</span><span class="n">compound</span><span class="o">:</span><span class="bp">true</span> <span class="s2">&quot;f&quot;</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[5]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>- : Imandra_reasoning.Decompose.t list = [&lt;region&gt;; &lt;region&gt;]
+</pre>
+</div>
+
+</div>
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+
+<div class="output_html rendered_html output_subarea ">
+<div class="imandra-alternatives" id="alt-e690327d-1539-4f55-b8aa-85f28e45c0d9"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-3ef2e54d-b698-40df-9d28-01aef4c9370c" class="decompose"><textarea class="display-none">{
+  &quot;regions&quot;: [
+    {
+      &quot;constraints&quot;: [ &quot;not (x &lt;= 10) || not (20 &lt;= y)&quot; ],
+      &quot;region&quot;: {
+        &quot;constraints&quot;: [ &quot;not (x &lt;= 10) || not (20 &lt;= y)&quot; ],
+        &quot;invariant&quot;: &quot;F = 1&quot;
+      },
+      &quot;groups&quot;: [],
+      &quot;label&quot;: &quot;R[2]&quot;,
+      &quot;weight&quot;: 1
+    },
+    {
+      &quot;constraints&quot;: [ &quot;20 &lt;= y&quot;, &quot;x &lt;= 10&quot; ],
+      &quot;region&quot;: {
+        &quot;constraints&quot;: [ &quot;x &lt;= 10&quot;, &quot;20 &lt;= y&quot; ],
+        &quot;invariant&quot;: &quot;F = 2&quot;
+      },
+      &quot;groups&quot;: [],
+      &quot;label&quot;: &quot;R[1.1]&quot;,
+      &quot;weight&quot;: 1
+    }
+  ]
+}</textarea><div class="decompose-foamtree"></div><div class="decompose-details"><div class="decompose-details-header">Regions details</div><div class="decompose-details-no-selection">No group selected.</div><div class="decompose-details-selection hidden"><div><span class="decompose-details-label">Direct sub-regions: </span><span class="decompose-details-direct-sub-regions-text">-</span></div><div><span class="decompose-details-label">Contained regions: </span><span class="decompose-details-contained-regions-text">-</span></div><div class="decompose-details-section-header">Constraints</div><div class="decompose-details-constraints"><pre class="decompose-details-constraint">&lt;constraint&gt;</pre></div><div class="decompose-details-invariant"><div class="decompose-details-section-header">Invariant</div><pre class="decompose-details-invariant-text">&lt;invariant&gt;</pre></div></div></div><script>
+(function () {
+  require(['nbextensions/nbimandra/regions'], function (regions) {
+    var target = '#decompose-3ef2e54d-b698-40df-9d28-01aef4c9370c';
+    regions.hydrate(target);
+  });
+})();
+</script></div></div><div class="tab-pane"><div><div class="imandra-table" id="table-0ccdeaf7-5645-4c08-b43b-6a217e21c564"><table><thead><tr><th>Constraints</th><th>Invariant</th></tr></thead><tr><td><ul><li><pre>not (x &lt;= 10) || not (20 &lt;= y)</pre></li></ul></td><td><pre>F = 1</pre></td></tr><tr><td><ul><li><pre>x &lt;= 10</pre></li><li><pre>20 &lt;= y</pre></li></ul></td><td><pre>F = 2</pre></td></tr></table></div></div></div></div><script>
+require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
+  var target = '#alt-e690327d-1539-4f55-b8aa-85f28e45c0d9';
+  alternatives.hydrate(target);
+});
+</script></div>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Note that <code>~compound:true</code> doesn't simply operate on literal <code>&amp;&amp;</code>'s and <code>||</code>'s in code, but is more general, taking the boolean meaning of nested <code>if</code> statements into account.</p>
+<h1 id="Reduce-symmetry">Reduce symmetry<a class="anchor-link" href="#Reduce-symmetry">&#182;</a></h1><p>The flag <code>~reduce_symmetry</code> is like <code>~compound</code> in the sense that it is used to reduce the number of regions output by a decomposition, but through very different means.</p>
+<p>This flag is only meaningful when used in combination with side-conditions (<code>assuming</code>), and behaves like a no-op when no-side conditions are present.</p>
+<p>When side-conditions are present and <code>reduce_symmetry</code> is true, Imandra uses the information it has been given by the <code>assuming</code> function to find and merge <em>symmetric</em> regions. At a high level, symmetric regions are regions that share some control flow paths which, modulo the assumptions, can be seen to behave identically and thus can be merged.</p>
+<p>This flag can cause constraints to be eliminated, so it should be used only when decomposing as means of finding possible behavioural regions rather than as a way to get at all the possible execution paths of a function.</p>
+<p>Let's see how this works in practice:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="try-this-container">
+  <div class="try-this"><a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Imandra%20Decomposition%20Flags.ipynb%23try-cell-12" target="_blank">Try this!</a></div>
+</div>
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[6]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ocaml"><pre><span></span><span class="k">let</span> <span class="n">f</span> <span class="n">x</span> <span class="n">y</span> <span class="o">=</span>
+  <span class="k">if</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span> <span class="o">=</span> <span class="mi">10</span> <span class="k">then</span>
+    <span class="mi">1</span>
+  <span class="k">else</span> <span class="k">if</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="n">y</span> <span class="k">then</span>
+    <span class="mi">1</span>
+  <span class="k">else</span>
+    <span class="mi">2</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[6]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>val f : int -&gt; int -&gt; Z.t = &lt;fun&gt;
+</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>For this particular example (with no compound conditionals), the setting of <code>~compound</code> is immaterial, so for the sake of demonstrating the behaviour of <code>~reduce_symmetry:true</code>, we'll decompose with the default <code>~compound:false</code> setting. Note that in general, with more complex target and side-condition functions than the ones we use here as examples, it is not in general true that <code>~compound:true</code> subsumes <code>~reduce_symmetry:true</code>.</p>
+<p>If we try to decompose <code>f</code>, we see that we get 3 different regions, as expected, corresponding to the three different branches.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="try-this-container">
+  <div class="try-this"><a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Imandra%20Decomposition%20Flags.ipynb%23try-cell-14" target="_blank">Try this!</a></div>
+</div>
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[7]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ocaml"><pre><span></span><span class="nn">Decompose</span><span class="p">.</span><span class="n">top</span> <span class="s2">&quot;f&quot;</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[7]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>- : Imandra_reasoning.Decompose.t list = [&lt;region&gt;; &lt;region&gt;; &lt;region&gt;]
+</pre>
+</div>
+
+</div>
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+
+<div class="output_html rendered_html output_subarea ">
+<div class="imandra-alternatives" id="alt-dba7f9e2-3546-40da-a2bc-b31b92ac9488"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-eb83f755-3f69-449a-abaf-0b594971ffa5" class="decompose"><textarea class="display-none">{
+  &quot;regions&quot;: [
+    {
+      &quot;constraints&quot;: [ &quot;x + y = 10&quot; ],
+      &quot;region&quot;: { &quot;constraints&quot;: [ &quot;x + y = 10&quot; ], &quot;invariant&quot;: &quot;F = 1&quot; },
+      &quot;groups&quot;: [],
+      &quot;label&quot;: &quot;R[2]&quot;,
+      &quot;weight&quot;: 1
+    },
+    {
+      &quot;constraints&quot;: [ &quot;not (x + y = 10)&quot; ],
+      &quot;region&quot;: null,
+      &quot;groups&quot;: [
+        {
+          &quot;constraints&quot;: [ &quot;not (x + y = 10)&quot;, &quot;x &lt;= y&quot; ],
+          &quot;region&quot;: {
+            &quot;constraints&quot;: [ &quot;not (x + y = 10)&quot;, &quot;x &lt;= y&quot; ],
+            &quot;invariant&quot;: &quot;F = 2&quot;
+          },
+          &quot;groups&quot;: [],
+          &quot;label&quot;: &quot;R[1.2]&quot;,
+          &quot;weight&quot;: 1
+        },
+        {
+          &quot;constraints&quot;: [ &quot;not (x + y = 10)&quot;, &quot;not (x &lt;= y)&quot; ],
+          &quot;region&quot;: {
+            &quot;constraints&quot;: [ &quot;not (x + y = 10)&quot;, &quot;not (x &lt;= y)&quot; ],
+            &quot;invariant&quot;: &quot;F = 1&quot;
+          },
+          &quot;groups&quot;: [],
+          &quot;label&quot;: &quot;R[1.1]&quot;,
+          &quot;weight&quot;: 1
+        }
+      ],
+      &quot;label&quot;: &quot;(1)&quot;,
+      &quot;weight&quot;: 2
+    }
+  ]
+}</textarea><div class="decompose-foamtree"></div><div class="decompose-details"><div class="decompose-details-header">Regions details</div><div class="decompose-details-no-selection">No group selected.</div><div class="decompose-details-selection hidden"><div><span class="decompose-details-label">Direct sub-regions: </span><span class="decompose-details-direct-sub-regions-text">-</span></div><div><span class="decompose-details-label">Contained regions: </span><span class="decompose-details-contained-regions-text">-</span></div><div class="decompose-details-section-header">Constraints</div><div class="decompose-details-constraints"><pre class="decompose-details-constraint">&lt;constraint&gt;</pre></div><div class="decompose-details-invariant"><div class="decompose-details-section-header">Invariant</div><pre class="decompose-details-invariant-text">&lt;invariant&gt;</pre></div></div></div><script>
+(function () {
+  require(['nbextensions/nbimandra/regions'], function (regions) {
+    var target = '#decompose-eb83f755-3f69-449a-abaf-0b594971ffa5';
+    regions.hydrate(target);
+  });
+})();
+</script></div></div><div class="tab-pane"><div><div class="imandra-table" id="table-820b0bb4-a1ac-469a-a732-106f2a9564ba"><table><thead><tr><th>Constraints</th><th>Invariant</th></tr></thead><tr><td><ul><li><pre>x + y = 10</pre></li></ul></td><td><pre>F = 1</pre></td></tr><tr><td><ul><li><pre>not (x + y = 10)</pre></li><li><pre>not (x &lt;= y)</pre></li></ul></td><td><pre>F = 1</pre></td></tr><tr><td><ul><li><pre>not (x + y = 10)</pre></li><li><pre>x &lt;= y</pre></li></ul></td><td><pre>F = 2</pre></td></tr></table></div></div></div></div><script>
+require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
+  var target = '#alt-dba7f9e2-3546-40da-a2bc-b31b92ac9488';
+  alternatives.hydrate(target);
+});
+</script></div>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Let's now try to insert a side condition <code>g</code> that simply states that <code>x</code> is always bigger than <code>y</code>:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="try-this-container">
+  <div class="try-this"><a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Imandra%20Decomposition%20Flags.ipynb%23try-cell-16" target="_blank">Try this!</a></div>
+</div>
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[8]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ocaml"><pre><span></span><span class="k">let</span> <span class="n">g</span> <span class="o">(</span><span class="n">x</span><span class="o">:</span><span class="kt">int</span><span class="o">)</span> <span class="n">y</span> <span class="o">=</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="n">y</span><span class="o">;;</span>
+
+<span class="nn">Decompose</span><span class="p">.</span><span class="n">top</span> <span class="o">~</span><span class="n">assuming</span><span class="o">:</span><span class="s2">&quot;g&quot;</span> <span class="s2">&quot;f&quot;</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[8]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>val g : int -&gt; int -&gt; bool = &lt;fun&gt;
+- : Imandra_reasoning.Decompose.t list = [&lt;region&gt;; &lt;region&gt;]
+</pre>
+</div>
+
+</div>
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+
+<div class="output_html rendered_html output_subarea ">
+<div class="imandra-alternatives" id="alt-5b2affbc-a1c8-402e-9c8a-edac5be7f64a"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-4ac48488-cb36-457f-a56a-7a6c0a4df406" class="decompose"><textarea class="display-none">{
+  &quot;regions&quot;: [
+    {
+      &quot;constraints&quot;: [ &quot;x + y = 10&quot; ],
+      &quot;region&quot;: { &quot;constraints&quot;: [ &quot;x + y = 10&quot; ], &quot;invariant&quot;: &quot;F = 1&quot; },
+      &quot;groups&quot;: [],
+      &quot;label&quot;: &quot;R[2]&quot;,
+      &quot;weight&quot;: 1
+    },
+    {
+      &quot;constraints&quot;: [ &quot;not (x + y = 10)&quot;, &quot;not (x &lt;= y)&quot; ],
+      &quot;region&quot;: {
+        &quot;constraints&quot;: [ &quot;not (x + y = 10)&quot;, &quot;not (x &lt;= y)&quot; ],
+        &quot;invariant&quot;: &quot;F = 1&quot;
+      },
+      &quot;groups&quot;: [],
+      &quot;label&quot;: &quot;R[1.1]&quot;,
+      &quot;weight&quot;: 1
+    }
+  ]
+}</textarea><div class="decompose-foamtree"></div><div class="decompose-details"><div class="decompose-details-header">Regions details</div><div class="decompose-details-no-selection">No group selected.</div><div class="decompose-details-selection hidden"><div><span class="decompose-details-label">Direct sub-regions: </span><span class="decompose-details-direct-sub-regions-text">-</span></div><div><span class="decompose-details-label">Contained regions: </span><span class="decompose-details-contained-regions-text">-</span></div><div class="decompose-details-section-header">Constraints</div><div class="decompose-details-constraints"><pre class="decompose-details-constraint">&lt;constraint&gt;</pre></div><div class="decompose-details-invariant"><div class="decompose-details-section-header">Invariant</div><pre class="decompose-details-invariant-text">&lt;invariant&gt;</pre></div></div></div><script>
+(function () {
+  require(['nbextensions/nbimandra/regions'], function (regions) {
+    var target = '#decompose-4ac48488-cb36-457f-a56a-7a6c0a4df406';
+    regions.hydrate(target);
+  });
+})();
+</script></div></div><div class="tab-pane"><div><div class="imandra-table" id="table-544250d4-6126-4bdc-ba49-e65754cb4242"><table><thead><tr><th>Constraints</th><th>Invariant</th></tr></thead><tr><td><ul><li><pre>x + y = 10</pre></li></ul></td><td><pre>F = 1</pre></td></tr><tr><td><ul><li><pre>not (x + y = 10)</pre></li><li><pre>not (x &lt;= y)</pre></li></ul></td><td><pre>F = 1</pre></td></tr></table></div></div></div></div><script>
+require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
+  var target = '#alt-5b2affbc-a1c8-402e-9c8a-edac5be7f64a';
+  alternatives.hydrate(target);
+});
+</script></div>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>We've now excluded the third region, as we've asserted that it is never the case that <code>x&lt;=y</code>.</p>
+<p>However if we look carefully, we'll notice that both remaining regions have invariants that don't depend on the region constraints, thus if we're doing a decomposition just to analyze all the possible states our <code>f</code> can be in and not to get a concrete listing of all the possible paths through <code>f</code>, we'd like for this decomposition to collapse both regions into one.</p>
+<p>In other words, we'd like imandra to understand that for our purposes, <code>f</code> could have been written instead like:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="try-this-container">
+  <div class="try-this"><a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Imandra%20Decomposition%20Flags.ipynb%23try-cell-18" target="_blank">Try this!</a></div>
+</div>
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[9]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ocaml"><pre><span></span><span class="k">let</span> <span class="n">f</span> <span class="n">x</span> <span class="n">y</span> <span class="o">=</span>
+  <span class="k">if</span> <span class="n">x</span> <span class="o">&lt;=</span> <span class="n">y</span> <span class="k">then</span>
+    <span class="mi">2</span>
+  <span class="k">else</span>
+    <span class="mi">1</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[9]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>val f : int -&gt; int -&gt; Z.t = &lt;fun&gt;
+</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>This is where <code>~reduce_symmetry:true</code> helps us:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="try-this-container">
+  <div class="try-this"><a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Imandra%20Decomposition%20Flags.ipynb%23try-cell-20" target="_blank">Try this!</a></div>
+</div>
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[10]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ocaml"><pre><span></span><span class="nn">Decompose</span><span class="p">.</span><span class="n">top</span> <span class="o">~</span><span class="n">assuming</span><span class="o">:</span><span class="s2">&quot;g&quot;</span> <span class="o">~</span><span class="n">reduce_symmetry</span><span class="o">:</span><span class="bp">true</span> <span class="s2">&quot;f&quot;</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[10]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>- : Imandra_reasoning.Decompose.t list = [&lt;region&gt;]
+</pre>
+</div>
+
+</div>
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+
+<div class="output_html rendered_html output_subarea ">
+<div class="imandra-alternatives" id="alt-5bbf1ccc-2ef6-4ae5-9bc1-1ce3f00cd311"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-a6beba4a-2109-4a5c-bd7b-cef9bd1fea6a" class="decompose"><textarea class="display-none">{
+  &quot;regions&quot;: [
+    {
+      &quot;constraints&quot;: [ &quot;true&quot; ],
+      &quot;region&quot;: { &quot;constraints&quot;: [ &quot;true&quot; ], &quot;invariant&quot;: &quot;F = 1&quot; },
+      &quot;groups&quot;: [],
+      &quot;label&quot;: &quot;R[1]&quot;,
+      &quot;weight&quot;: 1
+    }
+  ]
+}</textarea><div class="decompose-foamtree"></div><div class="decompose-details"><div class="decompose-details-header">Regions details</div><div class="decompose-details-no-selection">No group selected.</div><div class="decompose-details-selection hidden"><div><span class="decompose-details-label">Direct sub-regions: </span><span class="decompose-details-direct-sub-regions-text">-</span></div><div><span class="decompose-details-label">Contained regions: </span><span class="decompose-details-contained-regions-text">-</span></div><div class="decompose-details-section-header">Constraints</div><div class="decompose-details-constraints"><pre class="decompose-details-constraint">&lt;constraint&gt;</pre></div><div class="decompose-details-invariant"><div class="decompose-details-section-header">Invariant</div><pre class="decompose-details-invariant-text">&lt;invariant&gt;</pre></div></div></div><script>
+(function () {
+  require(['nbextensions/nbimandra/regions'], function (regions) {
+    var target = '#decompose-a6beba4a-2109-4a5c-bd7b-cef9bd1fea6a';
+    regions.hydrate(target);
+  });
+})();
+</script></div></div><div class="tab-pane"><div><div class="imandra-table" id="table-deba02a9-780f-4a3a-887d-83eacaea6bc7"><table><thead><tr><th>Constraints</th><th>Invariant</th></tr></thead><tr><td><ul></ul></td><td><pre>F = 1</pre></td></tr></table></div></div></div></div><script>
+require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
+  var target = '#alt-5bbf1ccc-2ef6-4ae5-9bc1-1ce3f00cd311';
+  alternatives.hydrate(target);
+});
+</script></div>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>As you can see, not only did <code>~reduce_symmetry:true</code> collapse both regions into one, but it also figured out that there are actually no constraints to be held true for this regions's invariant to hold, since all possible values of <code>x</code> and <code>y</code> will cause <code>f x y</code> to evaluate to <code>1</code>, as we've restricted the functions' domain in the side-condition.</p>
+<p>For the curious, this is one of the big differencies between <code>~reduce_symmetry:true</code> and <code>~compound:true</code> in this case, as <code>~compound:true</code> would've merged the two regions and had the constraints in a logical disjunction, but wouldn't have figured out that it could just as well remove the constraints altogether as they always hold true from the side-condition:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="try-this-container">
+  <div class="try-this"><a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Imandra%20Decomposition%20Flags.ipynb%23try-cell-22" target="_blank">Try this!</a></div>
+</div>
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[11]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ocaml"><pre><span></span><span class="nn">Decompose</span><span class="p">.</span><span class="n">top</span> <span class="o">~</span><span class="n">assuming</span><span class="o">:</span><span class="s2">&quot;g&quot;</span> <span class="o">~</span><span class="n">compound</span><span class="o">:</span><span class="bp">true</span> <span class="s2">&quot;f&quot;</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[11]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>- : Imandra_reasoning.Decompose.t list = [&lt;region&gt;]
+</pre>
+</div>
+
+</div>
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+
+<div class="output_html rendered_html output_subarea ">
+<div class="imandra-alternatives" id="alt-ab08b895-86d6-42c8-9696-fd99c07a8143"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-f6ad9e53-c2bc-4fed-905f-3323c128d22a" class="decompose"><textarea class="display-none">{
+  &quot;regions&quot;: [
+    {
+      &quot;constraints&quot;: [ &quot;not (x &lt;= y)&quot; ],
+      &quot;region&quot;: { &quot;constraints&quot;: [ &quot;not (x &lt;= y)&quot; ], &quot;invariant&quot;: &quot;F = 1&quot; },
+      &quot;groups&quot;: [],
+      &quot;label&quot;: &quot;R[1]&quot;,
+      &quot;weight&quot;: 1
+    }
+  ]
+}</textarea><div class="decompose-foamtree"></div><div class="decompose-details"><div class="decompose-details-header">Regions details</div><div class="decompose-details-no-selection">No group selected.</div><div class="decompose-details-selection hidden"><div><span class="decompose-details-label">Direct sub-regions: </span><span class="decompose-details-direct-sub-regions-text">-</span></div><div><span class="decompose-details-label">Contained regions: </span><span class="decompose-details-contained-regions-text">-</span></div><div class="decompose-details-section-header">Constraints</div><div class="decompose-details-constraints"><pre class="decompose-details-constraint">&lt;constraint&gt;</pre></div><div class="decompose-details-invariant"><div class="decompose-details-section-header">Invariant</div><pre class="decompose-details-invariant-text">&lt;invariant&gt;</pre></div></div></div><script>
+(function () {
+  require(['nbextensions/nbimandra/regions'], function (regions) {
+    var target = '#decompose-f6ad9e53-c2bc-4fed-905f-3323c128d22a';
+    regions.hydrate(target);
+  });
+})();
+</script></div></div><div class="tab-pane"><div><div class="imandra-table" id="table-91afb220-666f-459e-8da4-eacb62d65d5b"><table><thead><tr><th>Constraints</th><th>Invariant</th></tr></thead><tr><td><ul><li><pre>not (x &lt;= y)</pre></li></ul></td><td><pre>F = 1</pre></td></tr></table></div></div></div></div><script>
+require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
+  var target = '#alt-ab08b895-86d6-42c8-9696-fd99c07a8143';
+  alternatives.hydrate(target);
+});
+</script></div>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Ctx_asm_simp">Ctx_asm_simp<a class="anchor-link" href="#Ctx_asm_simp">&#182;</a></h1><p><code>~ctx_asm_simp</code> is yet another flag that deals with trying to reduce the number of regions and improve performance. It instructs Imandra whether or not to take the side-conditions into accound when doing a pre-processing step of contextually simplifying the target function. When no side condition is present this is equivalent to a no-op.</p>
+<p>When set to <code>true</code>, this can help Imandra simplify some more state space away and make decomposition faster and produce less regions, however it is also possible that this will cause Imandra to spend a lot more time doing simplification and might even cause more regions to be produced, so careful consideration is needed before enabling this.</p>
+<p>Let's see how this flag works in practice:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="try-this-container">
+  <div class="try-this"><a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Imandra%20Decomposition%20Flags.ipynb%23try-cell-24" target="_blank">Try this!</a></div>
+</div>
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[12]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ocaml"><pre><span></span><span class="k">let</span> <span class="n">f</span> <span class="n">x</span> <span class="o">(</span><span class="n">y</span><span class="o">:</span><span class="kt">int</span><span class="o">)</span> <span class="o">=</span>
+  <span class="k">if</span> <span class="n">y</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">then</span>
+    <span class="k">if</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="n">y</span>  <span class="k">then</span>
+      <span class="mi">1</span>
+    <span class="k">else</span>
+      <span class="mi">2</span>
+  <span class="k">else</span>
+    <span class="k">if</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="k">then</span>
+      <span class="mi">3</span>
+    <span class="k">else</span>
+      <span class="mi">2</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[12]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>val f : int -&gt; int -&gt; Z.t = &lt;fun&gt;
+</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>If we decompose <code>f</code> we get all 4 regions, as expeted:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="try-this-container">
+  <div class="try-this"><a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Imandra%20Decomposition%20Flags.ipynb%23try-cell-26" target="_blank">Try this!</a></div>
+</div>
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[13]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ocaml"><pre><span></span><span class="nn">Decompose</span><span class="p">.</span><span class="n">top</span> <span class="s2">&quot;f&quot;</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[13]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>- : Imandra_reasoning.Decompose.t list =
+[&lt;region&gt;; &lt;region&gt;; &lt;region&gt;; &lt;region&gt;]
+</pre>
+</div>
+
+</div>
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+
+<div class="output_html rendered_html output_subarea ">
+<div class="imandra-alternatives" id="alt-29244b6e-6174-459d-b572-6210c16845c8"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-8432d1ec-e367-4d66-9c81-2073e4f51a5c" class="decompose"><textarea class="display-none">{
+  &quot;regions&quot;: [
+    {
+      &quot;constraints&quot;: [ &quot;y &lt;= 0&quot; ],
+      &quot;region&quot;: null,
+      &quot;groups&quot;: [
+        {
+          &quot;constraints&quot;: [ &quot;y &lt;= 0&quot;, &quot;not (0 &lt;= x)&quot; ],
+          &quot;region&quot;: {
+            &quot;constraints&quot;: [ &quot;y &lt;= 0&quot;, &quot;not (0 &lt;= x)&quot; ],
+            &quot;invariant&quot;: &quot;F = 3&quot;
+          },
+          &quot;groups&quot;: [],
+          &quot;label&quot;: &quot;R[2.2]&quot;,
+          &quot;weight&quot;: 1
+        },
+        {
+          &quot;constraints&quot;: [ &quot;y &lt;= 0&quot;, &quot;0 &lt;= x&quot; ],
+          &quot;region&quot;: {
+            &quot;constraints&quot;: [ &quot;y &lt;= 0&quot;, &quot;0 &lt;= x&quot; ],
+            &quot;invariant&quot;: &quot;F = 2&quot;
+          },
+          &quot;groups&quot;: [],
+          &quot;label&quot;: &quot;R[2.1]&quot;,
+          &quot;weight&quot;: 1
+        }
+      ],
+      &quot;label&quot;: &quot;(2)&quot;,
+      &quot;weight&quot;: 2
+    },
+    {
+      &quot;constraints&quot;: [ &quot;not (y &lt;= 0)&quot; ],
+      &quot;region&quot;: null,
+      &quot;groups&quot;: [
+        {
+          &quot;constraints&quot;: [ &quot;not (y &lt;= 0)&quot;, &quot;x &lt;= y&quot; ],
+          &quot;region&quot;: {
+            &quot;constraints&quot;: [ &quot;not (y &lt;= 0)&quot;, &quot;x &lt;= y&quot; ],
+            &quot;invariant&quot;: &quot;F = 2&quot;
+          },
+          &quot;groups&quot;: [],
+          &quot;label&quot;: &quot;R[1.2]&quot;,
+          &quot;weight&quot;: 1
+        },
+        {
+          &quot;constraints&quot;: [ &quot;not (y &lt;= 0)&quot;, &quot;not (x &lt;= y)&quot; ],
+          &quot;region&quot;: {
+            &quot;constraints&quot;: [ &quot;not (y &lt;= 0)&quot;, &quot;not (x &lt;= y)&quot; ],
+            &quot;invariant&quot;: &quot;F = 1&quot;
+          },
+          &quot;groups&quot;: [],
+          &quot;label&quot;: &quot;R[1.1]&quot;,
+          &quot;weight&quot;: 1
+        }
+      ],
+      &quot;label&quot;: &quot;(1)&quot;,
+      &quot;weight&quot;: 2
+    }
+  ]
+}</textarea><div class="decompose-foamtree"></div><div class="decompose-details"><div class="decompose-details-header">Regions details</div><div class="decompose-details-no-selection">No group selected.</div><div class="decompose-details-selection hidden"><div><span class="decompose-details-label">Direct sub-regions: </span><span class="decompose-details-direct-sub-regions-text">-</span></div><div><span class="decompose-details-label">Contained regions: </span><span class="decompose-details-contained-regions-text">-</span></div><div class="decompose-details-section-header">Constraints</div><div class="decompose-details-constraints"><pre class="decompose-details-constraint">&lt;constraint&gt;</pre></div><div class="decompose-details-invariant"><div class="decompose-details-section-header">Invariant</div><pre class="decompose-details-invariant-text">&lt;invariant&gt;</pre></div></div></div><script>
+(function () {
+  require(['nbextensions/nbimandra/regions'], function (regions) {
+    var target = '#decompose-8432d1ec-e367-4d66-9c81-2073e4f51a5c';
+    regions.hydrate(target);
+  });
+})();
+</script></div></div><div class="tab-pane"><div><div class="imandra-table" id="table-b9a36c74-0edc-4998-be52-fd4dba30a1df"><table><thead><tr><th>Constraints</th><th>Invariant</th></tr></thead><tr><td><ul><li><pre>y &lt;= 0</pre></li><li><pre>0 &lt;= x</pre></li></ul></td><td><pre>F = 2</pre></td></tr><tr><td><ul><li><pre>y &lt;= 0</pre></li><li><pre>not (0 &lt;= x)</pre></li></ul></td><td><pre>F = 3</pre></td></tr><tr><td><ul><li><pre>not (y &lt;= 0)</pre></li><li><pre>x &lt;= y</pre></li></ul></td><td><pre>F = 2</pre></td></tr><tr><td><ul><li><pre>not (y &lt;= 0)</pre></li><li><pre>not (x &lt;= y)</pre></li></ul></td><td><pre>F = 1</pre></td></tr></table></div></div></div></div><script>
+require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
+  var target = '#alt-29244b6e-6174-459d-b572-6210c16845c8';
+  alternatives.hydrate(target);
+});
+</script></div>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>If we then introduce a side-condition <code>g</code> making the first and third branches unreachable:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="try-this-container">
+  <div class="try-this"><a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Imandra%20Decomposition%20Flags.ipynb%23try-cell-28" target="_blank">Try this!</a></div>
+</div>
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[14]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ocaml"><pre><span></span><span class="k">let</span> <span class="n">g</span> <span class="n">x</span> <span class="n">y</span> <span class="o">=</span>
+  <span class="n">x</span> <span class="o">+</span> <span class="n">y</span> <span class="o">=</span> <span class="mi">1</span><span class="o">;;</span>
+  
+<span class="nn">Decompose</span><span class="p">.</span><span class="n">top</span> <span class="o">~</span><span class="n">assuming</span><span class="o">:</span><span class="s2">&quot;g&quot;</span> <span class="s2">&quot;f&quot;</span><span class="o">;;</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[14]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>val g : Z.t -&gt; Z.t -&gt; bool = &lt;fun&gt;
+- : Imandra_reasoning.Decompose.t list = [&lt;region&gt;; &lt;region&gt;]
+</pre>
+</div>
+
+</div>
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+
+<div class="output_html rendered_html output_subarea ">
+<div class="imandra-alternatives" id="alt-c8862aaf-4ee5-4307-ab7c-b4ae6bb990c3"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-cfd4a018-d837-475c-b343-eb025e53d2c4" class="decompose"><textarea class="display-none">{
+  &quot;regions&quot;: [
+    {
+      &quot;constraints&quot;: [ &quot;not (y &lt;= 0)&quot;, &quot;x &lt;= y&quot; ],
+      &quot;region&quot;: {
+        &quot;constraints&quot;: [ &quot;not (y &lt;= 0)&quot;, &quot;x &lt;= y&quot; ],
+        &quot;invariant&quot;: &quot;F = 2&quot;
+      },
+      &quot;groups&quot;: [],
+      &quot;label&quot;: &quot;R[2.1]&quot;,
+      &quot;weight&quot;: 1
+    },
+    {
+      &quot;constraints&quot;: [ &quot;0 &lt;= x&quot;, &quot;y &lt;= 0&quot; ],
+      &quot;region&quot;: {
+        &quot;constraints&quot;: [ &quot;y &lt;= 0&quot;, &quot;0 &lt;= x&quot; ],
+        &quot;invariant&quot;: &quot;F = 2&quot;
+      },
+      &quot;groups&quot;: [],
+      &quot;label&quot;: &quot;R[1.1]&quot;,
+      &quot;weight&quot;: 1
+    }
+  ]
+}</textarea><div class="decompose-foamtree"></div><div class="decompose-details"><div class="decompose-details-header">Regions details</div><div class="decompose-details-no-selection">No group selected.</div><div class="decompose-details-selection hidden"><div><span class="decompose-details-label">Direct sub-regions: </span><span class="decompose-details-direct-sub-regions-text">-</span></div><div><span class="decompose-details-label">Contained regions: </span><span class="decompose-details-contained-regions-text">-</span></div><div class="decompose-details-section-header">Constraints</div><div class="decompose-details-constraints"><pre class="decompose-details-constraint">&lt;constraint&gt;</pre></div><div class="decompose-details-invariant"><div class="decompose-details-section-header">Invariant</div><pre class="decompose-details-invariant-text">&lt;invariant&gt;</pre></div></div></div><script>
+(function () {
+  require(['nbextensions/nbimandra/regions'], function (regions) {
+    var target = '#decompose-cfd4a018-d837-475c-b343-eb025e53d2c4';
+    regions.hydrate(target);
+  });
+})();
+</script></div></div><div class="tab-pane"><div><div class="imandra-table" id="table-d9e5b55a-cffb-478c-87a7-46b5d78e7743"><table><thead><tr><th>Constraints</th><th>Invariant</th></tr></thead><tr><td><ul><li><pre>y &lt;= 0</pre></li><li><pre>0 &lt;= x</pre></li></ul></td><td><pre>F = 2</pre></td></tr><tr><td><ul><li><pre>not (y &lt;= 0)</pre></li><li><pre>x &lt;= y</pre></li></ul></td><td><pre>F = 2</pre></td></tr></table></div></div></div></div><script>
+require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
+  var target = '#alt-c8862aaf-4ee5-4307-ab7c-b4ae6bb990c3';
+  alternatives.hydrate(target);
+});
+</script></div>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>The 2 unreachable branches are correctly filtered out by the side-condition. However we notice that both feasabile paths have the same invariant and we would like to collapse them into a single region.</p>
+<p>Let's see how <code>~ctx_asm_simp:true</code> helps us here:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="try-this-container">
+  <div class="try-this"><a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Imandra%20Decomposition%20Flags.ipynb%23try-cell-30" target="_blank">Try this!</a></div>
+</div>
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[15]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ocaml"><pre><span></span><span class="nn">Decompose</span><span class="p">.</span><span class="n">top</span> <span class="o">~</span><span class="n">compound</span><span class="o">:</span><span class="bp">false</span> <span class="o">~</span><span class="n">ctx_asm_simp</span><span class="o">:</span><span class="bp">true</span> <span class="o">~</span><span class="n">assuming</span><span class="o">:</span><span class="s2">&quot;g&quot;</span> <span class="s2">&quot;f&quot;</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[15]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>- : Imandra_reasoning.Decompose.t list = [&lt;region&gt;]
+</pre>
+</div>
+
+</div>
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+
+<div class="output_html rendered_html output_subarea ">
+<div class="imandra-alternatives" id="alt-4e88acd3-8be8-4b5e-bf57-6aecbc2e9439"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-7c16f1fa-8c81-4b86-84a8-dad9ecce6382" class="decompose"><textarea class="display-none">{
+  &quot;regions&quot;: [
+    {
+      &quot;constraints&quot;: [ &quot;true&quot; ],
+      &quot;region&quot;: { &quot;constraints&quot;: [ &quot;true&quot; ], &quot;invariant&quot;: &quot;F = 2&quot; },
+      &quot;groups&quot;: [],
+      &quot;label&quot;: &quot;R[1]&quot;,
+      &quot;weight&quot;: 1
+    }
+  ]
+}</textarea><div class="decompose-foamtree"></div><div class="decompose-details"><div class="decompose-details-header">Regions details</div><div class="decompose-details-no-selection">No group selected.</div><div class="decompose-details-selection hidden"><div><span class="decompose-details-label">Direct sub-regions: </span><span class="decompose-details-direct-sub-regions-text">-</span></div><div><span class="decompose-details-label">Contained regions: </span><span class="decompose-details-contained-regions-text">-</span></div><div class="decompose-details-section-header">Constraints</div><div class="decompose-details-constraints"><pre class="decompose-details-constraint">&lt;constraint&gt;</pre></div><div class="decompose-details-invariant"><div class="decompose-details-section-header">Invariant</div><pre class="decompose-details-invariant-text">&lt;invariant&gt;</pre></div></div></div><script>
+(function () {
+  require(['nbextensions/nbimandra/regions'], function (regions) {
+    var target = '#decompose-7c16f1fa-8c81-4b86-84a8-dad9ecce6382';
+    regions.hydrate(target);
+  });
+})();
+</script></div></div><div class="tab-pane"><div><div class="imandra-table" id="table-69a32f45-e268-4321-ba81-3239870bb748"><table><thead><tr><th>Constraints</th><th>Invariant</th></tr></thead><tr><td><ul></ul></td><td><pre>F = 2</pre></td></tr></table></div></div></div></div><script>
+require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
+  var target = '#alt-4e88acd3-8be8-4b5e-bf57-6aecbc2e9439';
+  alternatives.hydrate(target);
+});
+</script></div>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>By letting Imandra use the side-condition while doing simplification, it can then realize there is just one possible behaviour for <code>f</code> given the side-condition <code>g</code>, and collapse the two regions.</p>
+<h1 id="Max_ctx_simp">Max_ctx_simp<a class="anchor-link" href="#Max_ctx_simp">&#182;</a></h1><p><code>~max_ctx_simp</code> is a numeric value (defaults to <code>100</code>) which tells Imandra how "deep" to simplify conditional statements into separate regions. A higher number will mean that Imandra will spend more time trying to "simplify" the target function, which can lead to faster or better decomposition, but a value too high might also make Imandra work too hard trying to simplify a target function that would be more easily decomposed with a less deep simplification.</p>
+<p>In practice you'll very rarely need to tweak this flag.</p>
+<h1 id="Basis">Basis<a class="anchor-link" href="#Basis">&#182;</a></h1><p><code>~basis</code> is an optional list of functions that we want Imandra to leave <em>opaque</em> (i.e., <em>disabled</em> or <em>uninterpreted</em>). There are two main reasons for wanting to do this:</p>
+<ul>
+<li><p>Abstraction fence: Function symbols in the <code>basis</code> will give a logical vernacular for describing regions and invariants. This is very similar to the use of <code>disabled</code> function symbols in Imandra theorem proving.</p>
+<p>A typical example: Consider a "date/time comparison" function <code>Datetime.(&lt;=)</code> which is used in an IML model. If this comparison function is complex with many branches (comparing year, month, day, hour, minute, etc.), these constraints may pollute your decomposition with a huge number of regions ultimately describing "every possible way" one can have, e.g., <code>Datetime.(x &lt;= y)</code> and this may obscure the meaning of the various regions. Instead, if we add <code>Datetime.(&lt;=)</code> to the basis, then its definition will not be expanded and it can appear atomically in constraints and invariants. There are also ways to make use of Imandra rewrite rules and other lemmas, so that various exposed properties of the <code>basis</code> functions are respected (and contribute to simplification) during decomposition, culimatining in the use of <code>interpret_basis</code> (described below).</p>
+</li>
+</ul>
+<ul>
+<li>Performance/region space: When the interpretation of a function is too expensive (many branches, lots of complex nonlinear arithmetic), we may want to tell imandra to avoid interpreting it</li>
+</ul>
+<p>Note that putting certain functions in <code>~basis</code> may actually cause a higher number of regions to be computed and much more deeply nested branches to be analyzed, thus also causing performance issues and having the exactly opposite effect than what desired, so be very careful and thoughtful about putting functions in <code>~basis</code>. There are also correctness issues that can arise, see <a href="#interpret-basis">~interpret-basis</a></p>
+<p>Let's see how this flag works in practice:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="try-this-container">
+  <div class="try-this"><a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Imandra%20Decomposition%20Flags.ipynb%23try-cell-32" target="_blank">Try this!</a></div>
+</div>
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[16]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ocaml"><pre><span></span><span class="k">type</span> <span class="n">my_num</span> <span class="o">=</span> <span class="nc">Real</span> <span class="k">of</span> <span class="n">real</span> <span class="o">|</span> <span class="nc">Int</span> <span class="k">of</span> <span class="kt">int</span> <span class="o">|</span> <span class="nc">NaN</span>
+
+<span class="k">let</span> <span class="n">add</span> <span class="n">x</span> <span class="n">y</span> <span class="o">=</span>
+  <span class="k">match</span> <span class="n">x</span><span class="o">,</span> <span class="n">y</span> <span class="k">with</span>
+  <span class="o">|</span> <span class="nc">Real</span> <span class="n">f1</span><span class="o">,</span> <span class="nc">Real</span> <span class="n">f2</span> <span class="o">-&gt;</span> <span class="nc">Real</span> <span class="o">(</span><span class="n">f1</span> <span class="o">+.</span> <span class="n">f2</span><span class="o">)</span>
+  <span class="o">|</span> <span class="nc">Int</span> <span class="n">i1</span><span class="o">,</span> <span class="nc">Int</span> <span class="n">i2</span> <span class="o">-&gt;</span> <span class="nc">Int</span> <span class="o">(</span><span class="n">i1</span> <span class="o">+</span> <span class="n">i2</span><span class="o">)</span>
+  <span class="o">|</span> <span class="o">_,</span> <span class="o">_</span> <span class="o">-&gt;</span> <span class="nc">NaN</span>
+
+<span class="k">let</span> <span class="n">is_pos</span> <span class="n">x</span> <span class="o">=</span>
+  <span class="k">match</span> <span class="n">x</span> <span class="k">with</span>
+  <span class="o">|</span> <span class="nc">Real</span> <span class="n">f</span> <span class="o">-&gt;</span> <span class="n">f</span> <span class="o">&gt;.</span> <span class="mi">0</span><span class="o">.</span><span class="mi">0</span>
+  <span class="o">|</span> <span class="nc">Int</span> <span class="n">i</span> <span class="o">-&gt;</span> <span class="n">i</span> <span class="o">&gt;</span> <span class="mi">0</span>
+  <span class="o">|</span> <span class="nc">NaN</span> <span class="o">-&gt;</span> <span class="bp">false</span>
+
+<span class="k">let</span> <span class="n">f</span> <span class="n">x</span> <span class="n">y</span> <span class="o">=</span>
+  <span class="k">if</span> <span class="n">is_pos</span> <span class="o">(</span><span class="n">add</span> <span class="n">x</span> <span class="n">y</span><span class="o">)</span> <span class="k">then</span>
+    <span class="mi">1</span>
+  <span class="k">else</span>
+    <span class="mi">2</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[16]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>type my_num = Real of real | Int of int | NaN
+val add : my_num -&gt; my_num -&gt; my_num = &lt;fun&gt;
+val is_pos : my_num -&gt; bool = &lt;fun&gt;
+val f : my_num -&gt; my_num -&gt; Z.t = &lt;fun&gt;
+</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Let's try to decompose <code>f</code> without anything in basis:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="try-this-container">
+  <div class="try-this"><a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Imandra%20Decomposition%20Flags.ipynb%23try-cell-34" target="_blank">Try this!</a></div>
+</div>
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[17]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ocaml"><pre><span></span><span class="nn">Decompose</span><span class="p">.</span><span class="n">top</span> <span class="s2">&quot;f&quot;</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[17]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>- : Imandra_reasoning.Decompose.t list =
+[&lt;region&gt;; &lt;region&gt;; &lt;region&gt;; &lt;region&gt;; &lt;region&gt;; &lt;region&gt;; &lt;region&gt;]
+</pre>
+</div>
+
+</div>
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+
+<div class="output_html rendered_html output_subarea ">
+<div class="imandra-alternatives" id="alt-9538707f-d2c5-4314-b454-b7ae30d6ce89"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-2eb9f2d2-8f3f-4e10-9646-96d67e626720" class="decompose"><textarea class="display-none">{
+  &quot;regions&quot;: [
+    {
+      &quot;constraints&quot;: [ &quot;Is_a(Real, y)&quot; ],
+      &quot;region&quot;: null,
+      &quot;groups&quot;: [
+        {
+          &quot;constraints&quot;: [
+            &quot;Is_a(Real, y)&quot;, &quot;not Is_a(Int, y)&quot;, &quot;not Is_a(Real, x)&quot;
+          ],
+          &quot;region&quot;: {
+            &quot;constraints&quot;: [
+              &quot;Is_a(Real, y)&quot;, &quot;not Is_a(Real, x)&quot;, &quot;not Is_a(Int, y)&quot;
+            ],
+            &quot;invariant&quot;: &quot;F = 2&quot;
+          },
+          &quot;groups&quot;: [],
+          &quot;label&quot;: &quot;R[2.2.1]&quot;,
+          &quot;weight&quot;: 1
+        },
+        {
+          &quot;constraints&quot;: [ &quot;Is_a(Real, y)&quot;, &quot;Is_a(Real, x)&quot; ],
+          &quot;region&quot;: null,
+          &quot;groups&quot;: [
+            {
+              &quot;constraints&quot;: [
+                &quot;Is_a(Real, y)&quot;, &quot;Is_a(Real, x)&quot;,
+                &quot;not ((Destruct(Real, 0, x) +. Destruct(Real, 0, y)) &lt;=. 0)&quot;
+              ],
+              &quot;region&quot;: {
+                &quot;constraints&quot;: [
+                  &quot;Is_a(Real, y)&quot;, &quot;Is_a(Real, x)&quot;,
+                  &quot;not ((Destruct(Real, 0, x) +. Destruct(Real, 0, y)) &lt;=. 0)&quot;
+                ],
+                &quot;invariant&quot;: &quot;F = 1&quot;
+              },
+              &quot;groups&quot;: [],
+              &quot;label&quot;: &quot;R[2.1.2]&quot;,
+              &quot;weight&quot;: 1
+            },
+            {
+              &quot;constraints&quot;: [
+                &quot;Is_a(Real, y)&quot;, &quot;Is_a(Real, x)&quot;,
+                &quot;(Destruct(Real, 0, x) +. Destruct(Real, 0, y)) &lt;=. 0&quot;
+              ],
+              &quot;region&quot;: {
+                &quot;constraints&quot;: [
+                  &quot;Is_a(Real, y)&quot;, &quot;Is_a(Real, x)&quot;,
+                  &quot;(Destruct(Real, 0, x) +. Destruct(Real, 0, y)) &lt;=. 0&quot;
+                ],
+                &quot;invariant&quot;: &quot;F = 2&quot;
+              },
+              &quot;groups&quot;: [],
+              &quot;label&quot;: &quot;R[2.1.1]&quot;,
+              &quot;weight&quot;: 1
+            }
+          ],
+          &quot;label&quot;: &quot;(2.1)&quot;,
+          &quot;weight&quot;: 2
+        }
+      ],
+      &quot;label&quot;: &quot;(2)&quot;,
+      &quot;weight&quot;: 3
+    },
+    {
+      &quot;constraints&quot;: [ &quot;not Is_a(Real, y)&quot; ],
+      &quot;region&quot;: null,
+      &quot;groups&quot;: [
+        {
+          &quot;constraints&quot;: [ &quot;not Is_a(Real, y)&quot;, &quot;not Is_a(Int, y)&quot; ],
+          &quot;region&quot;: {
+            &quot;constraints&quot;: [ &quot;not Is_a(Real, y)&quot;, &quot;not Is_a(Int, y)&quot; ],
+            &quot;invariant&quot;: &quot;F = 2&quot;
+          },
+          &quot;groups&quot;: [],
+          &quot;label&quot;: &quot;R[1.2]&quot;,
+          &quot;weight&quot;: 1
+        },
+        {
+          &quot;constraints&quot;: [ &quot;not Is_a(Real, y)&quot;, &quot;Is_a(Int, y)&quot; ],
+          &quot;region&quot;: null,
+          &quot;groups&quot;: [
+            {
+              &quot;constraints&quot;: [
+                &quot;not Is_a(Real, y)&quot;, &quot;Is_a(Int, y)&quot;, &quot;not Is_a(Int, x)&quot;
+              ],
+              &quot;region&quot;: {
+                &quot;constraints&quot;: [
+                  &quot;not Is_a(Real, y)&quot;, &quot;Is_a(Int, y)&quot;, &quot;not Is_a(Int, x)&quot;
+                ],
+                &quot;invariant&quot;: &quot;F = 2&quot;
+              },
+              &quot;groups&quot;: [],
+              &quot;label&quot;: &quot;R[1.1.2]&quot;,
+              &quot;weight&quot;: 1
+            },
+            {
+              &quot;constraints&quot;: [
+                &quot;not Is_a(Real, y)&quot;, &quot;Is_a(Int, y)&quot;, &quot;Is_a(Int, x)&quot;
+              ],
+              &quot;region&quot;: null,
+              &quot;groups&quot;: [
+                {
+                  &quot;constraints&quot;: [
+                    &quot;not Is_a(Real, y)&quot;, &quot;Is_a(Int, y)&quot;, &quot;Is_a(Int, x)&quot;,
+                    &quot;not ((Destruct(Int, 0, x) + Destruct(Int, 0, y)) &lt;= 0)&quot;
+                  ],
+                  &quot;region&quot;: {
+                    &quot;constraints&quot;: [
+                      &quot;not Is_a(Real, y)&quot;, &quot;Is_a(Int, y)&quot;, &quot;Is_a(Int, x)&quot;,
+                      &quot;not ((Destruct(Int, 0, x) + Destruct(Int, 0, y)) &lt;= 0)&quot;
+                    ],
+                    &quot;invariant&quot;: &quot;F = 1&quot;
+                  },
+                  &quot;groups&quot;: [],
+                  &quot;label&quot;: &quot;R[1.1.1.2]&quot;,
+                  &quot;weight&quot;: 1
+                },
+                {
+                  &quot;constraints&quot;: [
+                    &quot;not Is_a(Real, y)&quot;, &quot;Is_a(Int, y)&quot;, &quot;Is_a(Int, x)&quot;,
+                    &quot;(Destruct(Int, 0, x) + Destruct(Int, 0, y)) &lt;= 0&quot;
+                  ],
+                  &quot;region&quot;: {
+                    &quot;constraints&quot;: [
+                      &quot;not Is_a(Real, y)&quot;, &quot;Is_a(Int, y)&quot;, &quot;Is_a(Int, x)&quot;,
+                      &quot;(Destruct(Int, 0, x) + Destruct(Int, 0, y)) &lt;= 0&quot;
+                    ],
+                    &quot;invariant&quot;: &quot;F = 2&quot;
+                  },
+                  &quot;groups&quot;: [],
+                  &quot;label&quot;: &quot;R[1.1.1.1]&quot;,
+                  &quot;weight&quot;: 1
+                }
+              ],
+              &quot;label&quot;: &quot;(1.1.1)&quot;,
+              &quot;weight&quot;: 2
+            }
+          ],
+          &quot;label&quot;: &quot;(1.1)&quot;,
+          &quot;weight&quot;: 3
+        }
+      ],
+      &quot;label&quot;: &quot;(1)&quot;,
+      &quot;weight&quot;: 4
+    }
+  ]
+}</textarea><div class="decompose-foamtree"></div><div class="decompose-details"><div class="decompose-details-header">Regions details</div><div class="decompose-details-no-selection">No group selected.</div><div class="decompose-details-selection hidden"><div><span class="decompose-details-label">Direct sub-regions: </span><span class="decompose-details-direct-sub-regions-text">-</span></div><div><span class="decompose-details-label">Contained regions: </span><span class="decompose-details-contained-regions-text">-</span></div><div class="decompose-details-section-header">Constraints</div><div class="decompose-details-constraints"><pre class="decompose-details-constraint">&lt;constraint&gt;</pre></div><div class="decompose-details-invariant"><div class="decompose-details-section-header">Invariant</div><pre class="decompose-details-invariant-text">&lt;invariant&gt;</pre></div></div></div><script>
+(function () {
+  require(['nbextensions/nbimandra/regions'], function (regions) {
+    var target = '#decompose-2eb9f2d2-8f3f-4e10-9646-96d67e626720';
+    regions.hydrate(target);
+  });
+})();
+</script></div></div><div class="tab-pane"><div><div class="imandra-table" id="table-c7b291ae-aab1-4b89-b361-addd534bacb5"><table><thead><tr><th>Constraints</th><th>Invariant</th></tr></thead><tr><td><ul><li><pre>Is_a(Real, y)</pre></li><li><pre>Is_a(Real, x)</pre></li><li><pre>not ((Destruct(Real, 0, x) +. Destruct(Real, 0, y)) &lt;=. 0)</pre></li></ul></td><td><pre>F = 1</pre></td></tr><tr><td><ul><li><pre>Is_a(Real, y)</pre></li><li><pre>Is_a(Real, x)</pre></li><li><pre>(Destruct(Real, 0, x) +. Destruct(Real, 0, y)) &lt;=. 0</pre></li></ul></td><td><pre>F = 2</pre></td></tr><tr><td><ul><li><pre>Is_a(Real, y)</pre></li><li><pre>not Is_a(Real, x)</pre></li><li><pre>not Is_a(Int, y)</pre></li></ul></td><td><pre>F = 2</pre></td></tr><tr><td><ul><li><pre>not Is_a(Real, y)</pre></li><li><pre>Is_a(Int, y)</pre></li><li><pre>Is_a(Int, x)</pre></li><li><pre>not ((Destruct(Int, 0, x) + Destruct(Int, 0, y)) &lt;= 0)</pre></li></ul></td><td><pre>F = 1</pre></td></tr><tr><td><ul><li><pre>not Is_a(Real, y)</pre></li><li><pre>Is_a(Int, y)</pre></li><li><pre>Is_a(Int, x)</pre></li><li><pre>(Destruct(Int, 0, x) + Destruct(Int, 0, y)) &lt;= 0</pre></li></ul></td><td><pre>F = 2</pre></td></tr><tr><td><ul><li><pre>not Is_a(Real, y)</pre></li><li><pre>Is_a(Int, y)</pre></li><li><pre>not Is_a(Int, x)</pre></li></ul></td><td><pre>F = 2</pre></td></tr><tr><td><ul><li><pre>not Is_a(Real, y)</pre></li><li><pre>not Is_a(Int, y)</pre></li></ul></td><td><pre>F = 2</pre></td></tr></table></div></div></div></div><script>
+require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
+  var target = '#alt-9538707f-d2c5-4314-b454-b7ae30d6ce89';
+  alternatives.hydrate(target);
+});
+</script></div>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>As we can see decomposition for our <code>f</code> explodes because of the branching in <code>is_pos</code> and <code>add</code>, we can imagine the number of regions getting much larger as we support summation between <code>Float</code> and <code>Int</code> for example.</p>
+<p>Let's see how <code>~basis</code> helps us here:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="try-this-container">
+  <div class="try-this"><a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Imandra%20Decomposition%20Flags.ipynb%23try-cell-36" target="_blank">Try this!</a></div>
+</div>
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[18]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ocaml"><pre><span></span><span class="nn">Decompose</span><span class="p">.</span><span class="n">top</span> <span class="o">~</span><span class="n">basis</span><span class="o">:[</span><span class="s2">&quot;add&quot;</span><span class="o">;</span><span class="s2">&quot;is_pos&quot;</span><span class="o">]</span> <span class="s2">&quot;f&quot;</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[18]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>- : Imandra_reasoning.Decompose.t list = [&lt;region&gt;; &lt;region&gt;]
+</pre>
+</div>
+
+</div>
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+
+<div class="output_html rendered_html output_subarea ">
+<div class="imandra-alternatives" id="alt-5277c445-9b53-47e0-9666-93b725037877"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-bfc2e34e-a58c-4797-bfa4-0d2755a11d04" class="decompose"><textarea class="display-none">{
+  &quot;regions&quot;: [
+    {
+      &quot;constraints&quot;: [ &quot;not (is_pos (add x y))&quot; ],
+      &quot;region&quot;: {
+        &quot;constraints&quot;: [ &quot;not (is_pos (add x y))&quot; ],
+        &quot;invariant&quot;: &quot;F = 2&quot;
+      },
+      &quot;groups&quot;: [],
+      &quot;label&quot;: &quot;R[2]&quot;,
+      &quot;weight&quot;: 1
+    },
+    {
+      &quot;constraints&quot;: [ &quot;is_pos (add x y)&quot; ],
+      &quot;region&quot;: {
+        &quot;constraints&quot;: [ &quot;is_pos (add x y)&quot; ],
+        &quot;invariant&quot;: &quot;F = 1&quot;
+      },
+      &quot;groups&quot;: [],
+      &quot;label&quot;: &quot;R[1]&quot;,
+      &quot;weight&quot;: 1
+    }
+  ]
+}</textarea><div class="decompose-foamtree"></div><div class="decompose-details"><div class="decompose-details-header">Regions details</div><div class="decompose-details-no-selection">No group selected.</div><div class="decompose-details-selection hidden"><div><span class="decompose-details-label">Direct sub-regions: </span><span class="decompose-details-direct-sub-regions-text">-</span></div><div><span class="decompose-details-label">Contained regions: </span><span class="decompose-details-contained-regions-text">-</span></div><div class="decompose-details-section-header">Constraints</div><div class="decompose-details-constraints"><pre class="decompose-details-constraint">&lt;constraint&gt;</pre></div><div class="decompose-details-invariant"><div class="decompose-details-section-header">Invariant</div><pre class="decompose-details-invariant-text">&lt;invariant&gt;</pre></div></div></div><script>
+(function () {
+  require(['nbextensions/nbimandra/regions'], function (regions) {
+    var target = '#decompose-bfc2e34e-a58c-4797-bfa4-0d2755a11d04';
+    regions.hydrate(target);
+  });
+})();
+</script></div></div><div class="tab-pane"><div><div class="imandra-table" id="table-844a4d77-07e6-4e3d-b900-0ab56822516b"><table><thead><tr><th>Constraints</th><th>Invariant</th></tr></thead><tr><td><ul><li><pre>is_pos (add x y)</pre></li></ul></td><td><pre>F = 1</pre></td></tr><tr><td><ul><li><pre>not (is_pos (add x y))</pre></li></ul></td><td><pre>F = 2</pre></td></tr></table></div></div></div></div><script>
+require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
+  var target = '#alt-5277c445-9b53-47e0-9666-93b725037877';
+  alternatives.hydrate(target);
+});
+</script></div>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>By putting <code>add</code> and <code>is_pos</code> in <code>~basis</code>, we now only get the 2 "logical" regions of behaviour instead of a listing of all the possible code paths.</p>
+<h1 id="Interpret-basis">Interpret basis<a class="anchor-link" href="#Interpret-basis">&#182;</a></h1><p><code>~interpret_basis</code> is a flag which tells Imandra whether or not to take the interpretation of the functions in <code>~basis</code> into account when <code>lifting</code> and when extracting sample values via the <code>Mex</code> module. It only has effect when <code>~basis</code> is not empty.</p>
+<p>Note that <code>~interpret_basis</code> <em>cannot</em> be used with recursive functions in <code>basis</code>.</p>
+<p>This flag has a strong effect on correctness when used in decompositions that have side-conditions that use functions in <code>~basis</code> in branching points, as in the absence of side-conditions, setting this flag to <code>false</code> may cause unreachable regions to be output. Setting <code>~interpret_basis:false</code> may have significant performance benefits, but could also cause a degradation in performance in certain cases; for those reasons we suggest to always set <code>~interpret_basis:true</code> unless careful thought is given and the possible issues have been explored and are understood.</p>
+<p>Let's see how this flag works in practice:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="try-this-container">
+  <div class="try-this"><a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Imandra%20Decomposition%20Flags.ipynb%23try-cell-38" target="_blank">Try this!</a></div>
+</div>
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[19]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ocaml"><pre><span></span><span class="k">let</span> <span class="n">gt</span> <span class="o">(</span><span class="n">x</span> <span class="o">:</span> <span class="kt">int</span><span class="o">)</span> <span class="o">(</span><span class="n">y</span> <span class="o">:</span> <span class="kt">int</span><span class="o">)</span> <span class="o">=</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="n">y</span><span class="o">;;</span>
+
+<span class="k">let</span> <span class="n">f</span> <span class="n">x</span> <span class="n">y</span> <span class="o">=</span>
+  <span class="k">if</span> <span class="n">gt</span> <span class="n">x</span> <span class="n">y</span> <span class="k">then</span>
+    <span class="k">if</span> <span class="n">gt</span> <span class="n">y</span> <span class="n">x</span> <span class="k">then</span>
+      <span class="mi">1</span> <span class="c">(* this is unreachable! *)</span>
+    <span class="k">else</span>
+      <span class="mi">2</span>
+  <span class="k">else</span>
+    <span class="mi">3</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[19]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>val gt : int -&gt; int -&gt; bool = &lt;fun&gt;
+val f : int -&gt; int -&gt; Z.t = &lt;fun&gt;
+</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>If we try to simply decompose <code>f</code>, we get 2 regions:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="try-this-container">
+  <div class="try-this"><a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Imandra%20Decomposition%20Flags.ipynb%23try-cell-40" target="_blank">Try this!</a></div>
+</div>
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[20]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ocaml"><pre><span></span><span class="nn">Decompose</span><span class="p">.</span><span class="n">top</span> <span class="s2">&quot;f&quot;</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[20]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>- : Imandra_reasoning.Decompose.t list = [&lt;region&gt;; &lt;region&gt;]
+</pre>
+</div>
+
+</div>
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+
+<div class="output_html rendered_html output_subarea ">
+<div class="imandra-alternatives" id="alt-9a5d88f3-87fb-4f64-8339-10c007508988"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-cc0c25b4-9986-4b87-960e-7b0f4b87df99" class="decompose"><textarea class="display-none">{
+  &quot;regions&quot;: [
+    {
+      &quot;constraints&quot;: [ &quot;x &lt;= y&quot; ],
+      &quot;region&quot;: { &quot;constraints&quot;: [ &quot;x &lt;= y&quot; ], &quot;invariant&quot;: &quot;F = 3&quot; },
+      &quot;groups&quot;: [],
+      &quot;label&quot;: &quot;R[2]&quot;,
+      &quot;weight&quot;: 1
+    },
+    {
+      &quot;constraints&quot;: [ &quot;not (x &lt;= y)&quot; ],
+      &quot;region&quot;: { &quot;constraints&quot;: [ &quot;not (x &lt;= y)&quot; ], &quot;invariant&quot;: &quot;F = 2&quot; },
+      &quot;groups&quot;: [],
+      &quot;label&quot;: &quot;R[1]&quot;,
+      &quot;weight&quot;: 1
+    }
+  ]
+}</textarea><div class="decompose-foamtree"></div><div class="decompose-details"><div class="decompose-details-header">Regions details</div><div class="decompose-details-no-selection">No group selected.</div><div class="decompose-details-selection hidden"><div><span class="decompose-details-label">Direct sub-regions: </span><span class="decompose-details-direct-sub-regions-text">-</span></div><div><span class="decompose-details-label">Contained regions: </span><span class="decompose-details-contained-regions-text">-</span></div><div class="decompose-details-section-header">Constraints</div><div class="decompose-details-constraints"><pre class="decompose-details-constraint">&lt;constraint&gt;</pre></div><div class="decompose-details-invariant"><div class="decompose-details-section-header">Invariant</div><pre class="decompose-details-invariant-text">&lt;invariant&gt;</pre></div></div></div><script>
+(function () {
+  require(['nbextensions/nbimandra/regions'], function (regions) {
+    var target = '#decompose-cc0c25b4-9986-4b87-960e-7b0f4b87df99';
+    regions.hydrate(target);
+  });
+})();
+</script></div></div><div class="tab-pane"><div><div class="imandra-table" id="table-925b2b4f-bf96-4266-8aba-91db82ea6db5"><table><thead><tr><th>Constraints</th><th>Invariant</th></tr></thead><tr><td><ul><li><pre>x &lt;= y</pre></li></ul></td><td><pre>F = 3</pre></td></tr><tr><td><ul><li><pre>not (x &lt;= y)</pre></li></ul></td><td><pre>F = 2</pre></td></tr></table></div></div></div></div><script>
+require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
+  var target = '#alt-9a5d88f3-87fb-4f64-8339-10c007508988';
+  alternatives.hydrate(target);
+});
+</script></div>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Imandra has correctly figured out that the region with invariant <code>F=1</code> is not admissible, since it's never the case that <code>x&gt;y &amp;&amp; y&gt;x</code>.</p>
+<p>However, if we decide we need <code>gt</code> to be a <code>basis</code> function (for one of the reasions we've described earlier), Imandra doesn't have any visibility into what <code>gt</code> does and thus loses the ability to understand that if <code>gt x y</code> then <code>not (gt y x)</code>, and we see that the unreachable region is output anyway:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="try-this-container">
+  <div class="try-this"><a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Imandra%20Decomposition%20Flags.ipynb%23try-cell-42" target="_blank">Try this!</a></div>
+</div>
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[21]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ocaml"><pre><span></span><span class="nn">Decompose</span><span class="p">.</span><span class="n">top</span> <span class="o">~</span><span class="n">basis</span><span class="o">:[</span><span class="s2">&quot;gt&quot;</span><span class="o">]</span> <span class="s2">&quot;f&quot;</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[21]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>- : Imandra_reasoning.Decompose.t list = [&lt;region&gt;; &lt;region&gt;; &lt;region&gt;]
+</pre>
+</div>
+
+</div>
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+
+<div class="output_html rendered_html output_subarea ">
+<div class="imandra-alternatives" id="alt-27da7058-89a3-49af-bf54-8bda49cf2de2"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-d8939c10-18b5-4ba3-8605-2a2b0d1af7b9" class="decompose"><textarea class="display-none">{
+  &quot;regions&quot;: [
+    {
+      &quot;constraints&quot;: [ &quot;not (gt x y)&quot; ],
+      &quot;region&quot;: { &quot;constraints&quot;: [ &quot;not (gt x y)&quot; ], &quot;invariant&quot;: &quot;F = 3&quot; },
+      &quot;groups&quot;: [],
+      &quot;label&quot;: &quot;R[2]&quot;,
+      &quot;weight&quot;: 1
+    },
+    {
+      &quot;constraints&quot;: [ &quot;gt x y&quot; ],
+      &quot;region&quot;: null,
+      &quot;groups&quot;: [
+        {
+          &quot;constraints&quot;: [ &quot;gt x y&quot;, &quot;not (gt y x)&quot; ],
+          &quot;region&quot;: {
+            &quot;constraints&quot;: [ &quot;gt x y&quot;, &quot;not (gt y x)&quot; ],
+            &quot;invariant&quot;: &quot;F = 2&quot;
+          },
+          &quot;groups&quot;: [],
+          &quot;label&quot;: &quot;R[1.2]&quot;,
+          &quot;weight&quot;: 1
+        },
+        {
+          &quot;constraints&quot;: [ &quot;gt x y&quot;, &quot;gt y x&quot; ],
+          &quot;region&quot;: {
+            &quot;constraints&quot;: [ &quot;gt x y&quot;, &quot;gt y x&quot; ],
+            &quot;invariant&quot;: &quot;F = 1&quot;
+          },
+          &quot;groups&quot;: [],
+          &quot;label&quot;: &quot;R[1.1]&quot;,
+          &quot;weight&quot;: 1
+        }
+      ],
+      &quot;label&quot;: &quot;(1)&quot;,
+      &quot;weight&quot;: 2
+    }
+  ]
+}</textarea><div class="decompose-foamtree"></div><div class="decompose-details"><div class="decompose-details-header">Regions details</div><div class="decompose-details-no-selection">No group selected.</div><div class="decompose-details-selection hidden"><div><span class="decompose-details-label">Direct sub-regions: </span><span class="decompose-details-direct-sub-regions-text">-</span></div><div><span class="decompose-details-label">Contained regions: </span><span class="decompose-details-contained-regions-text">-</span></div><div class="decompose-details-section-header">Constraints</div><div class="decompose-details-constraints"><pre class="decompose-details-constraint">&lt;constraint&gt;</pre></div><div class="decompose-details-invariant"><div class="decompose-details-section-header">Invariant</div><pre class="decompose-details-invariant-text">&lt;invariant&gt;</pre></div></div></div><script>
+(function () {
+  require(['nbextensions/nbimandra/regions'], function (regions) {
+    var target = '#decompose-d8939c10-18b5-4ba3-8605-2a2b0d1af7b9';
+    regions.hydrate(target);
+  });
+})();
+</script></div></div><div class="tab-pane"><div><div class="imandra-table" id="table-47974659-b7c3-4e6a-8d41-c7e9b616687e"><table><thead><tr><th>Constraints</th><th>Invariant</th></tr></thead><tr><td><ul><li><pre>gt x y</pre></li><li><pre>gt y x</pre></li></ul></td><td><pre>F = 1</pre></td></tr><tr><td><ul><li><pre>gt x y</pre></li><li><pre>not (gt y x)</pre></li></ul></td><td><pre>F = 2</pre></td></tr><tr><td><ul><li><pre>not (gt x y)</pre></li></ul></td><td><pre>F = 3</pre></td></tr></table></div></div></div></div><script>
+require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
+  var target = '#alt-27da7058-89a3-49af-bf54-8bda49cf2de2';
+  alternatives.hydrate(target);
+});
+</script></div>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>If however, we set <code>~interpret_basis:true</code>, Imandra will have visibility into <code>gt</code> at "region feasibility checks" even though it will keep it atomic in the constraints, and thus will be able to prove that <code>gt x y ==&gt; not (gt y x)</code> which is sufficient to exclude that region:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="try-this-container">
+  <div class="try-this"><a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Imandra%20Decomposition%20Flags.ipynb%23try-cell-44" target="_blank">Try this!</a></div>
+</div>
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[22]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ocaml"><pre><span></span><span class="nn">Decompose</span><span class="p">.</span><span class="n">top</span> <span class="o">~</span><span class="n">interpret_basis</span><span class="o">:</span><span class="bp">true</span> <span class="o">~</span><span class="n">basis</span><span class="o">:[</span><span class="s2">&quot;gt&quot;</span><span class="o">]</span> <span class="s2">&quot;f&quot;</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[22]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>- : Imandra_reasoning.Decompose.t list = [&lt;region&gt;; &lt;region&gt;]
+</pre>
+</div>
+
+</div>
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+
+<div class="output_html rendered_html output_subarea ">
+<div class="imandra-alternatives" id="alt-f06a295f-2bb5-4dd6-88a0-eed14ee45276"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-59d2b50d-a369-4d71-b74d-8e7b21786b1c" class="decompose"><textarea class="display-none">{
+  &quot;regions&quot;: [
+    {
+      &quot;constraints&quot;: [ &quot;not (gt x y)&quot; ],
+      &quot;region&quot;: { &quot;constraints&quot;: [ &quot;not (gt x y)&quot; ], &quot;invariant&quot;: &quot;F = 3&quot; },
+      &quot;groups&quot;: [],
+      &quot;label&quot;: &quot;R[2]&quot;,
+      &quot;weight&quot;: 1
+    },
+    {
+      &quot;constraints&quot;: [ &quot;gt x y&quot;, &quot;not (gt y x)&quot; ],
+      &quot;region&quot;: {
+        &quot;constraints&quot;: [ &quot;gt x y&quot;, &quot;not (gt y x)&quot; ],
+        &quot;invariant&quot;: &quot;F = 2&quot;
+      },
+      &quot;groups&quot;: [],
+      &quot;label&quot;: &quot;R[1.1]&quot;,
+      &quot;weight&quot;: 1
+    }
+  ]
+}</textarea><div class="decompose-foamtree"></div><div class="decompose-details"><div class="decompose-details-header">Regions details</div><div class="decompose-details-no-selection">No group selected.</div><div class="decompose-details-selection hidden"><div><span class="decompose-details-label">Direct sub-regions: </span><span class="decompose-details-direct-sub-regions-text">-</span></div><div><span class="decompose-details-label">Contained regions: </span><span class="decompose-details-contained-regions-text">-</span></div><div class="decompose-details-section-header">Constraints</div><div class="decompose-details-constraints"><pre class="decompose-details-constraint">&lt;constraint&gt;</pre></div><div class="decompose-details-invariant"><div class="decompose-details-section-header">Invariant</div><pre class="decompose-details-invariant-text">&lt;invariant&gt;</pre></div></div></div><script>
+(function () {
+  require(['nbextensions/nbimandra/regions'], function (regions) {
+    var target = '#decompose-59d2b50d-a369-4d71-b74d-8e7b21786b1c';
+    regions.hydrate(target);
+  });
+})();
+</script></div></div><div class="tab-pane"><div><div class="imandra-table" id="table-b9fda039-9372-4bd8-aade-9d37c286f6df"><table><thead><tr><th>Constraints</th><th>Invariant</th></tr></thead><tr><td><ul><li><pre>gt x y</pre></li><li><pre>not (gt y x)</pre></li></ul></td><td><pre>F = 2</pre></td></tr><tr><td><ul><li><pre>not (gt x y)</pre></li></ul></td><td><pre>F = 3</pre></td></tr></table></div></div></div></div><script>
+require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
+  var target = '#alt-f06a295f-2bb5-4dd6-88a0-eed14ee45276';
+  alternatives.hydrate(target);
+});
+</script></div>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Aggressive-Recursion">Aggressive Recursion<a class="anchor-link" href="#Aggressive-Recursion">&#182;</a></h1><p>Sometimes, even <code>~interpret_basis:true</code> won't be enough, and regions with falsifiable constraints will still be returned.
+This can be the case for a number of cases where it is not possible to provide an interpretation for a function, for example in the case of a recursive function that cannot be fully unrolled.</p>
+<p>In those cases, <code>~aggressive_rec:true</code> can help us by applying the full unrolling and simplification machinery used for theorem proving and verification to each region before returning it, this means that we can install theorems as rewrite rules or forward-chaining rules to aid in this process:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="try-this-container">
+  <div class="try-this"><a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Imandra%20Decomposition%20Flags.ipynb%23try-cell-46" target="_blank">Try this!</a></div>
+</div>
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[23]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ocaml"><pre><span></span><span class="k">let</span> <span class="k">rec</span> <span class="n">f</span> <span class="n">x</span> <span class="o">=</span> <span class="k">if</span> <span class="n">x</span> <span class="o">&lt;=</span> <span class="mi">0</span> <span class="k">then</span> <span class="mi">23</span> <span class="k">else</span> <span class="n">f</span> <span class="o">(</span><span class="n">x</span> <span class="o">-</span> <span class="mi">1</span><span class="o">)</span>
+
+<span class="k">let</span> <span class="n">g</span> <span class="n">x</span> <span class="o">=</span> <span class="k">if</span> <span class="n">f</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">23</span> <span class="k">then</span> <span class="mi">1</span> <span class="k">else</span> <span class="mi">2</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[23]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>val f : int -&gt; Z.t = &lt;fun&gt;
+val g : int -&gt; Z.t = &lt;fun&gt;
+</pre>
+</div>
+
+</div>
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+
+<div class="output_html rendered_html output_subarea ">
+<div><div class="imandra-fold panel panel-default" id="fold-bcbe08ff-acf3-4b57-a4e4-772aa600e3db"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>termination proof</span></div></div><div class="panel-body collapse"><div><h3>Termination proof</h3><p></p><div class="imandra-fold panel panel-default" id="fold-c38e608f-52aa-4a81-af3a-e55a7cd15d54"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>call `f (x - 1)` from `f x`</span></div></div><div class="panel-body collapse"><div class="imandra-table" id="table-817acc10-388a-4f27-a7f3-f614f37aed63"><table><tr><td><b>original</b></td><td>f x</td></tr><tr><td><b>sub</b></td><td>f (x - 1)</td></tr><tr><td><b>original ordinal</b></td><td>Ordinal.Int (if x &gt;= 0 then x else 0)</td></tr><tr><td><b>sub ordinal</b></td><td>Ordinal.Int (if (x - 1) &gt;= 0 then x - 1 else 0)</td></tr><tr><td><b>path</b></td><td>[not (x &lt;= 0)]</td></tr><tr><td><b>proof</b></td><td><div class="imandra-fold panel panel-default" id="fold-4e128fd5-e0f8-4471-b42c-362c7c4be472"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>detailed proof</span></div></div><div class="panel-body collapse"><div class="imandra-proof"><div class="imandra-alternatives" id="alt-f454c4ed-d9cf-4476-84d2-da379105310e"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>summary</a></li><li class="" data-toggle="tab"><a>full</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-table" id="table-40940d89-90a4-46de-be2f-15380de1e8ba"><table><tr><td><b>ground_instances</b></td><td>1</td></tr><tr><td><b>definitions</b></td><td>0</td></tr><tr><td><b>inductions</b></td><td>0</td></tr><tr><td><b>search_time</b></td><td><pre>0.021s</pre></td></tr><tr><td><b>details</b></td><td><div class="imandra-fold panel panel-default" id="fold-120ad276-0d65-49a3-8bee-a093da243a4b"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><div class="imandra-table" id="table-2e8b96e2-0e7f-43dd-9f4c-7a0888fb3996"><table><tr><td><b>smt_stats</b></td><td><div class="imandra-table" id="table-da00936d-7f8f-4ea2-bfd2-cbb8891bc2bb"><table><tr><td><b>num checks</b></td><td>3</td></tr><tr><td><b>arith assert lower</b></td><td>8</td></tr><tr><td><b>arith pivots</b></td><td>2</td></tr><tr><td><b>rlimit count</b></td><td>80466</td></tr><tr><td><b>mk clause</b></td><td>4</td></tr><tr><td><b>datatype occurs check</b></td><td>2</td></tr><tr><td><b>mk bool var</b></td><td>20</td></tr><tr><td><b>arith assert upper</b></td><td>3</td></tr><tr><td><b>decisions</b></td><td>2</td></tr><tr><td><b>arith add rows</b></td><td>3</td></tr><tr><td><b>propagations</b></td><td>2</td></tr><tr><td><b>conflicts</b></td><td>2</td></tr><tr><td><b>arith fixed eqs</b></td><td>2</td></tr><tr><td><b>datatype accessor ax</b></td><td>2</td></tr><tr><td><b>arith conflicts</b></td><td>1</td></tr><tr><td><b>final checks</b></td><td>1</td></tr><tr><td><b>added eqs</b></td><td>6</td></tr><tr><td><b>del clause</b></td><td>4</td></tr><tr><td><b>arith eq adapter</b></td><td>2</td></tr><tr><td><b>memory</b></td><td>6.040000</td></tr><tr><td><b>max memory</b></td><td>112.450000</td></tr><tr><td><b>num allocs</b></td><td>37583572982.000000</td></tr></table></div></td></tr></table></div></div><script>
+require(['nbextensions/nbimandra/fold'], function (fold) {
+  var target = '#fold-120ad276-0d65-49a3-8bee-a093da243a4b';
+  fold.hydrate(target);
+});
+</script></div></td></tr></table></div></div><div class="tab-pane"><div class="imandra-fold panel panel-default" id="fold-a0297463-dcf8-458e-990c-6f75cd5b2ab4"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.021s]
+  not (x &lt;= 0)
+  &amp;&amp; (if x &gt;= 0 then x else 0) &gt;= 0
+     &amp;&amp; (if (x - 1) &gt;= 0 then x - 1 else 0) &gt;= 0
+  ==&gt; (x - 1) &lt;= 0
+      || Ordinal.Int (if (x - 1) &gt;= 0 then x - 1 else 0) Ordinal.&lt;&lt;
+         Ordinal.Int (if x &gt;= 0 then x else 0)</pre></li><li><div><h5>simplify</h5><div class="imandra-table" id="table-d3be8581-b3a1-48db-8899-a53c5be11c12"><table><tr><td><b>into</b></td><td><pre>(not
+ ((not (x &lt;= 0) &amp;&amp; (if x &gt;= 0 then x else 0) &gt;= 0)
+  &amp;&amp; (if x &gt;= 1 then -1 + x else 0) &gt;= 0)
+ || x &lt;= 1)
+|| Ordinal.Int (if x &gt;= 1 then -1 + x else 0) Ordinal.&lt;&lt;
+   Ordinal.Int (if x &gt;= 0 then x else 0)</pre></td></tr><tr><td><b>expansions</b></td><td><pre>[]</pre></td></tr><tr><td><b>rewrite_steps</b></td><td><ul></ul></td></tr><tr><td><b>forward_chaining</b></td><td><ul></ul></td></tr></table></div></div></li><li><div>unroll<div class="imandra-table" id="table-f0c639dd-3baf-4f59-b148-9c213454fae6"><table><tr><td><b>expr</b></td><td><pre>(Ordinal.&lt;&lt;_131 (Ordinal.Int_122 (ite (&gt;= x_2413 1) (+ (- 1) x_2413) 0))
+                (Ordinal.In…</pre></td></tr><tr><td><b>expansions</b></td><td><ul></ul></td></tr></table></div></div></li><li><div><h5>unsat</h5><pre>(let ((a!1 (not (= x_2413 (ite (&gt;= x_2413 0) x_2413 0))))
+      (a!2 (+ x_2413 (* (- 1) (ite (&gt;= x_2…</pre></div></li></ul></div><script>
+require(['nbextensions/nbimandra/fold'], function (fold) {
+  var target = '#fold-a0297463-dcf8-458e-990c-6f75cd5b2ab4';
+  fold.hydrate(target);
+});
+</script></div></div></div><script>
+require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
+  var target = '#alt-f454c4ed-d9cf-4476-84d2-da379105310e';
+  alternatives.hydrate(target);
+});
+</script></div></div></div><script>
+require(['nbextensions/nbimandra/fold'], function (fold) {
+  var target = '#fold-4e128fd5-e0f8-4471-b42c-362c7c4be472';
+  fold.hydrate(target);
+});
+</script></div></td></tr></table></div></div><script>
+require(['nbextensions/nbimandra/fold'], function (fold) {
+  var target = '#fold-c38e608f-52aa-4a81-af3a-e55a7cd15d54';
+  fold.hydrate(target);
+});
+</script></div><p></p></div></div><script>
+require(['nbextensions/nbimandra/fold'], function (fold) {
+  var target = '#fold-bcbe08ff-acf3-4b57-a4e4-772aa600e3db';
+  fold.hydrate(target);
+});
+</script></div></div>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>It's quite clear that the only live region of <code>g</code> is the one that returns <code>1</code>, but if we try to decompose it we see that Imandra doesn't realize that:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="try-this-container">
+  <div class="try-this"><a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Imandra%20Decomposition%20Flags.ipynb%23try-cell-48" target="_blank">Try this!</a></div>
+</div>
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[24]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ocaml"><pre><span></span><span class="nn">Decompose</span><span class="p">.</span><span class="n">top</span> <span class="s2">&quot;g&quot;</span><span class="o">;;</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[24]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>- : Imandra_reasoning.Decompose.t list = [&lt;region&gt;; &lt;region&gt;]
+</pre>
+</div>
+
+</div>
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+
+<div class="output_html rendered_html output_subarea ">
+<div class="imandra-alternatives" id="alt-5707f502-fa6e-4976-8714-8747d696695b"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-5a20f1e1-801f-415e-84a4-12fc6310cc9a" class="decompose"><textarea class="display-none">{
+  &quot;regions&quot;: [
+    {
+      &quot;constraints&quot;: [ &quot;not (f x = 23)&quot; ],
+      &quot;region&quot;: { &quot;constraints&quot;: [ &quot;not (f x = 23)&quot; ], &quot;invariant&quot;: &quot;F = 2&quot; },
+      &quot;groups&quot;: [],
+      &quot;label&quot;: &quot;R[2]&quot;,
+      &quot;weight&quot;: 1
+    },
+    {
+      &quot;constraints&quot;: [ &quot;f x = 23&quot; ],
+      &quot;region&quot;: { &quot;constraints&quot;: [ &quot;f x = 23&quot; ], &quot;invariant&quot;: &quot;F = 1&quot; },
+      &quot;groups&quot;: [],
+      &quot;label&quot;: &quot;R[1]&quot;,
+      &quot;weight&quot;: 1
+    }
+  ]
+}</textarea><div class="decompose-foamtree"></div><div class="decompose-details"><div class="decompose-details-header">Regions details</div><div class="decompose-details-no-selection">No group selected.</div><div class="decompose-details-selection hidden"><div><span class="decompose-details-label">Direct sub-regions: </span><span class="decompose-details-direct-sub-regions-text">-</span></div><div><span class="decompose-details-label">Contained regions: </span><span class="decompose-details-contained-regions-text">-</span></div><div class="decompose-details-section-header">Constraints</div><div class="decompose-details-constraints"><pre class="decompose-details-constraint">&lt;constraint&gt;</pre></div><div class="decompose-details-invariant"><div class="decompose-details-section-header">Invariant</div><pre class="decompose-details-invariant-text">&lt;invariant&gt;</pre></div></div></div><script>
+(function () {
+  require(['nbextensions/nbimandra/regions'], function (regions) {
+    var target = '#decompose-5a20f1e1-801f-415e-84a4-12fc6310cc9a';
+    regions.hydrate(target);
+  });
+})();
+</script></div></div><div class="tab-pane"><div><div class="imandra-table" id="table-a08d5d77-013c-4f4c-8ff3-269698e56360"><table><thead><tr><th>Constraints</th><th>Invariant</th></tr></thead><tr><td><ul><li><pre>f x = 23</pre></li></ul></td><td><pre>F = 1</pre></td></tr><tr><td><ul><li><pre>not (f x = 23)</pre></li></ul></td><td><pre>F = 2</pre></td></tr></table></div></div></div></div><script>
+require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
+  var target = '#alt-5707f502-fa6e-4976-8714-8747d696695b';
+  alternatives.hydrate(target);
+});
+</script></div>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Let's prove that <code>f x</code> does indeed always return 23 and register the theorem as a rewrite rule:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="try-this-container">
+  <div class="try-this"><a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Imandra%20Decomposition%20Flags.ipynb%23try-cell-50" target="_blank">Try this!</a></div>
+</div>
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[25]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ocaml"><pre><span></span><span class="n">theorem</span> <span class="o">_</span> <span class="n">x</span> <span class="o">=</span> <span class="n">f</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">23</span> <span class="o">[@@</span><span class="n">induct</span> <span class="n">functional</span> <span class="n">f</span><span class="o">]</span> <span class="o">[@@</span><span class="n">rw</span><span class="o">]</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[25]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>val _anonymous_theorem_1 : int -&gt; bool = &lt;fun&gt;
+<span class="ansi-white-intense-fg ansi-bold">Goal</span>:
+
+f x = 23.
+
+1 nontautological subgoal.
+
+<span class="ansi-white-intense-fg ansi-bold">Subgoal 1</span>:
+
+|---------------------------------------------------------------------------
+ f x = 23
+
+Verified up to bound 5 (after 0.052s).
+
+Must try induction.
+
+<span class="ansi-cyan-intense-fg ansi-bold">Induction scheme</span>:
+
+ (x &lt;= 0 ==&gt; φ x) &amp;&amp; (not (x &lt;= 0) &amp;&amp; φ (x - 1) ==&gt; φ x).
+
+2 nontautological subgoals.
+
+<span class="ansi-white-intense-fg ansi-bold">Subgoal 1.2</span>:
+
+ H0. x &lt;= 0
+|---------------------------------------------------------------------------
+ f x = 23
+
+But simplification reduces this to true, using the definition of <span class="ansi-blue-intense-fg ansi-bold">f</span>.
+
+<span class="ansi-white-intense-fg ansi-bold">Subgoal 1.1</span>:
+
+ H0. not (x &lt;= 0)
+ H1. f (-1 + x) = 23
+|---------------------------------------------------------------------------
+ f x = 23
+
+But simplification reduces this to true, using the definition of <span class="ansi-blue-intense-fg ansi-bold">f</span>.
+
+</pre>
+</div>
+
+</div>
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+
+<div class="output_html rendered_html output_subarea ">
+<div><div class="imandra-vr imandra-vr-proved"><i class="fa fa-check-circle"></i><span>Proved</span></div><div><div class="imandra-alternatives" id="alt-5bc4080a-2e54-4f30-9e21-ed8de7a16dbf"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>proof</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-proof-top"><div class="imandra-fold panel panel-default" id="fold-8fcd1c44-5f0c-4879-a813-6265737a0dc7"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>proof</span></div></div><div class="panel-body collapse"><div class="imandra-proof"><div class="imandra-alternatives" id="alt-0593eeaf-6e10-4832-8c1f-693755baac78"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>summary</a></li><li class="" data-toggle="tab"><a>full</a></li><li class="" data-toggle="tab"><a>graph</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-table" id="table-d5827d8f-7555-4607-9d12-1e605712eac7"><table><tr><td><b>ground_instances</b></td><td>0</td></tr><tr><td><b>definitions</b></td><td>2</td></tr><tr><td><b>inductions</b></td><td>1</td></tr><tr><td><b>search_time</b></td><td><pre>0.124s</pre></td></tr></table></div></div><div class="tab-pane"><div class="imandra-fold panel panel-default" id="fold-314c1dd0-4d67-4aa1-b27c-489a6ee06c74"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.124s, &quot;Goal&quot;] f :var_0: = 23</pre></li><li><div><h4>subproof</h4><div class="imandra-fold panel panel-default" id="fold-2382342e-fc06-475e-b23c-dd3d6e7bc616"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>f x = 23</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.124s, &quot;1&quot;] f x = 23</pre></li><li><pre>induction on (functional f)
+:scheme (x &lt;= 0 ==&gt; φ x) &amp;&amp; (not (x &lt;= 0) &amp;&amp; φ (x - 1) ==&gt; φ x)</pre></li><li><div><pre>Split ((not (x &lt;= 0) || f x = 23)
+       &amp;&amp; (not (not (x &lt;= 0) &amp;&amp; f (-1 + x) = 23) || f x = 23)
+       :cases [not (x &lt;= 0) || f x = 23;
+               (x &lt;= 0 || not (f (-1 + x) = 23)) || f x = 23])</pre><ul><li><div><h5>subproof</h5><div class="imandra-fold panel panel-default" id="fold-46e0959d-1803-460e-b201-634af9f84874"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>(x &lt;= 0 || not (f (-1 + x) = 23)) || f x = 23</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.047s, &quot;1.1&quot;] (x &lt;= 0 || not (f (-1 + x) = 23)) || f x = 23</pre></li><li><div><h6>simplify</h6><div class="imandra-table" id="table-d005de5c-9acf-4a8a-b266-6264a86ad9c6"><table><tr><td><b>into</b></td><td><pre>true</pre></td></tr><tr><td><b>expansions</b></td><td><pre>f</pre></td></tr><tr><td><b>rewrite_steps</b></td><td><ul></ul></td></tr><tr><td><b>forward_chaining</b></td><td><ul></ul></td></tr></table></div></div></li></ul></div><script>
+require(['nbextensions/nbimandra/fold'], function (fold) {
+  var target = '#fold-46e0959d-1803-460e-b201-634af9f84874';
+  fold.hydrate(target);
+});
+</script></div></div></li><li><div><h5>subproof</h5><div class="imandra-fold panel panel-default" id="fold-983093c6-779b-4660-a6b6-46422d27d531"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>not (x &lt;= 0) || f x = 23</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.047s, &quot;1.2&quot;] not (x &lt;= 0) || f x = 23</pre></li><li><div><h6>simplify</h6><div class="imandra-table" id="table-8a13941c-0c9f-4d92-af4b-500c26a42fb9"><table><tr><td><b>into</b></td><td><pre>true</pre></td></tr><tr><td><b>expansions</b></td><td><pre>f</pre></td></tr><tr><td><b>rewrite_steps</b></td><td><ul></ul></td></tr><tr><td><b>forward_chaining</b></td><td><ul></ul></td></tr></table></div></div></li></ul></div><script>
+require(['nbextensions/nbimandra/fold'], function (fold) {
+  var target = '#fold-983093c6-779b-4660-a6b6-46422d27d531';
+  fold.hydrate(target);
+});
+</script></div></div></li></ul></div></li></ul></div><script>
+require(['nbextensions/nbimandra/fold'], function (fold) {
+  var target = '#fold-2382342e-fc06-475e-b23c-dd3d6e7bc616';
+  fold.hydrate(target);
+});
+</script></div></div></li></ul></div><script>
+require(['nbextensions/nbimandra/fold'], function (fold) {
+  var target = '#fold-314c1dd0-4d67-4aa1-b27c-489a6ee06c74';
+  fold.hydrate(target);
+});
+</script></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-39431646-e4e7-4326-a358-d292f8297f47"><textarea style="display: none">digraph &quot;proof&quot; {
+p_253 [label=&quot;Start (f :var_0: = 23 :name \&quot;Goal\&quot; :time 0.124s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+p_253 -&gt; p_251 [label=&quot;&quot;];
+subgraph cluster_252 {
+  color=blue;
+p_251 [label=&quot;Start (f x = 23 :name \&quot;1\&quot; :time 0.124s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+p_251 -&gt; p_250 [label=&quot;&quot;];
+p_250 [label=&quot;Induct ((functional f),\l        :scheme (x \&lt;= 0 ==\&gt; φ x) &amp;&amp; (not (x \&lt;= 0) &amp;&amp; φ (x - 1) ==\&gt; φ x))&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+p_250 -&gt; p_249 [label=&quot;&quot;];
+p_249 [label=&quot;Split ((not (x \&lt;= 0) \|\| f x = 23)\l       &amp;&amp; (not (not (x \&lt;= 0) &amp;&amp; f (-1 + x) = 23) \|\| f x = 23)\l       :cases [not (x \&lt;= 0) \|\| f x = 23;\l               (x \&lt;= 0 \|\| not (f (-1 + x) = 23)) \|\| f x = 23])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+p_249 -&gt; p_244 [label=&quot;&quot;];
+subgraph cluster_245 {
+  color=blue;
+p_244 [label=&quot;Start ((x \&lt;= 0 \|\| not (f (-1 + x) = 23)) \|\| f x = 23 :name \&quot;1.1\&quot; :time 0.047s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+p_244 -&gt; p_243 [label=&quot;&quot;];
+p_243 [label=&quot;Simplify (true :expansions [f] :rw [] :fc [])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+}
+p_249 -&gt; p_247 [label=&quot;&quot;];
+subgraph cluster_248 {
+  color=blue;
+p_247 [label=&quot;Start (not (x \&lt;= 0) \|\| f x = 23 :name \&quot;1.2\&quot; :time 0.047s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+p_247 -&gt; p_246 [label=&quot;&quot;];
+p_246 [label=&quot;Simplify (true :expansions [f] :rw [] :fc [])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+}
+}
+}
+</textarea><button class="btn btn-primary">Load graph</button><div class="imandra-graphviz-loading display-none">Loading..</div><div class="imandra-graphviz-target"></div><script>
+require(['nbextensions/nbimandra/graphviz'], function (graphviz) {
+  var target = '#graphviz-39431646-e4e7-4326-a358-d292f8297f47';
+  graphviz.hydrate(target);
+});
+</script></div></div></div><script>
+require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
+  var target = '#alt-0593eeaf-6e10-4832-8c1f-693755baac78';
+  alternatives.hydrate(target);
+});
+</script></div></div></div><script>
+require(['nbextensions/nbimandra/fold'], function (fold) {
+  var target = '#fold-8fcd1c44-5f0c-4879-a813-6265737a0dc7';
+  fold.hydrate(target);
+});
+</script></div></div></div></div><script>
+require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
+  var target = '#alt-5bc4080a-2e54-4f30-9e21-ed8de7a16dbf';
+  alternatives.hydrate(target);
+});
+</script></div></div></div>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>That was easy. We can now decompose <code>g</code> using <code>~aggressive_rec:true</code> and we obtain just one region, as Imandra is able to apply our rewrite rule during simplification:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="try-this-container">
+  <div class="try-this"><a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Imandra%20Decomposition%20Flags.ipynb%23try-cell-52" target="_blank">Try this!</a></div>
+</div>
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[26]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ocaml"><pre><span></span><span class="nn">Decompose</span><span class="p">.</span><span class="n">top</span> <span class="s2">&quot;g&quot;</span> <span class="o">~</span><span class="n">aggressive_rec</span><span class="o">:</span><span class="bp">true</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[26]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>- : Imandra_reasoning.Decompose.t list = [&lt;region&gt;]
+</pre>
+</div>
+
+</div>
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+
+<div class="output_html rendered_html output_subarea ">
+<div><pre></pre></div>
+
+</div>
+
+</div>
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+
+<div class="output_html rendered_html output_subarea ">
+<div class="imandra-alternatives" id="alt-72386c67-623f-4a86-8fb9-cd5e8111a001"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-f48267b3-556f-47a1-98f1-38e1af5d13c7" class="decompose"><textarea class="display-none">{
+  &quot;regions&quot;: [
+    {
+      &quot;constraints&quot;: [ &quot;true&quot; ],
+      &quot;region&quot;: { &quot;constraints&quot;: [ &quot;true&quot; ], &quot;invariant&quot;: &quot;F = 1&quot; },
+      &quot;groups&quot;: [],
+      &quot;label&quot;: &quot;R[1]&quot;,
+      &quot;weight&quot;: 1
+    }
+  ]
+}</textarea><div class="decompose-foamtree"></div><div class="decompose-details"><div class="decompose-details-header">Regions details</div><div class="decompose-details-no-selection">No group selected.</div><div class="decompose-details-selection hidden"><div><span class="decompose-details-label">Direct sub-regions: </span><span class="decompose-details-direct-sub-regions-text">-</span></div><div><span class="decompose-details-label">Contained regions: </span><span class="decompose-details-contained-regions-text">-</span></div><div class="decompose-details-section-header">Constraints</div><div class="decompose-details-constraints"><pre class="decompose-details-constraint">&lt;constraint&gt;</pre></div><div class="decompose-details-invariant"><div class="decompose-details-section-header">Invariant</div><pre class="decompose-details-invariant-text">&lt;invariant&gt;</pre></div></div></div><script>
+(function () {
+  require(['nbextensions/nbimandra/regions'], function (regions) {
+    var target = '#decompose-f48267b3-556f-47a1-98f1-38e1af5d13c7';
+    regions.hydrate(target);
+  });
+})();
+</script></div></div><div class="tab-pane"><div><div class="imandra-table" id="table-feef3aa9-b9bd-439b-9e1b-311adb58d10b"><table><thead><tr><th>Constraints</th><th>Invariant</th></tr></thead><tr><td><ul></ul></td><td><pre>F = 1</pre></td></tr></table></div></div></div></div><script>
+require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
+  var target = '#alt-72386c67-623f-4a86-8fb9-cd5e8111a001';
+  alternatives.hydrate(target);
+});
+</script></div>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+  
+ 
+
+
+      </div><div class="content-nav">
+          <ul>
+          
+            <li class="content-nav__item content-nav__item--h1"><a href="#Imandra-decomposition-flags">Imandra decomposition flags</a></li>
+          
+            <li class="content-nav__item content-nav__item--h1"><a href="#Assuming">Assuming</a></li>
+          
+            <li class="content-nav__item content-nav__item--h1"><a href="#Compound">Compound</a></li>
+          
+            <li class="content-nav__item content-nav__item--h1"><a href="#Reduce-symmetry">Reduce symmetry</a></li>
+          
+            <li class="content-nav__item content-nav__item--h1"><a href="#Ctx_asm_simp">Ctx_asm_simp</a></li>
+          
+            <li class="content-nav__item content-nav__item--h1"><a href="#Max_ctx_simp">Max_ctx_simp</a></li>
+          
+            <li class="content-nav__item content-nav__item--h1"><a href="#Basis">Basis</a></li>
+          
+            <li class="content-nav__item content-nav__item--h1"><a href="#Interpret-basis">Interpret basis</a></li>
+          
+            <li class="content-nav__item content-nav__item--h1"><a href="#Aggressive-Recursion">Aggressive Recursion</a></li>
+          
+          </ul>
+        </div></div>
+  </div>
+</body>
+</html>

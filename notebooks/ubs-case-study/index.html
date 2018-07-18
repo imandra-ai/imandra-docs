@@ -1,0 +1,2337 @@
+<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8" />
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Imandra Documentation - Analysing the UBS ATS Dark Pool</title>
+<meta property="og:url" content="https://docs.imandra.ai/imandra-docs/notebooks/ubs-case-study/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Imandra Documentation - Analysing the UBS ATS Dark Pool">
+<meta property="og:description" content="In this notebook, we model the order priority logic of the UBS ATS dark pool as described in UBS's June 1st 2015 Form ATS submission to the SEC and analyse it using Imandra. We observe that as described, the order priority logic suffers from a fundamental flaw: the order ranking function is not transitive.">
+<meta property="og:image" content="https://storage.googleapis.com/imandra-assets/images/og_image_default_i78.jpg">
+
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Merriweather" type="text/css" />
+
+<link rel="stylesheet" href="/imandra-docs/static/style/style.min.910c246e.css" type="text/css">
+<link rel="stylesheet" href="/imandra-docs/static/custom/custom.43522872.css" type="text/css">
+<link rel="stylesheet" href="/imandra-docs/static/nbextensions/nbimandra/styles.c7ed3d1a.css" type="text/css">
+<link rel="stylesheet" href="/imandra-docs/static/docs-styles.f1666efd.css" type="text/css">
+
+<script src="/imandra-docs/static/nbimandra-rjs-bundle.26eac81a.js"></script>
+
+<style type="text/css">
+.highlight .hll { background-color: #ffffcc }
+.highlight  { background: #f8f8f8; }
+.highlight .c { color: #408080; font-style: italic } /* Comment */
+.highlight .err { border: 1px solid #FF0000 } /* Error */
+.highlight .k { color: #008000; font-weight: bold } /* Keyword */
+.highlight .o { color: #666666 } /* Operator */
+.highlight .ch { color: #408080; font-style: italic } /* Comment.Hashbang */
+.highlight .cm { color: #408080; font-style: italic } /* Comment.Multiline */
+.highlight .cp { color: #BC7A00 } /* Comment.Preproc */
+.highlight .cpf { color: #408080; font-style: italic } /* Comment.PreprocFile */
+.highlight .c1 { color: #408080; font-style: italic } /* Comment.Single */
+.highlight .cs { color: #408080; font-style: italic } /* Comment.Special */
+.highlight .gd { color: #A00000 } /* Generic.Deleted */
+.highlight .ge { font-style: italic } /* Generic.Emph */
+.highlight .gr { color: #FF0000 } /* Generic.Error */
+.highlight .gh { color: #000080; font-weight: bold } /* Generic.Heading */
+.highlight .gi { color: #00A000 } /* Generic.Inserted */
+.highlight .go { color: #888888 } /* Generic.Output */
+.highlight .gp { color: #000080; font-weight: bold } /* Generic.Prompt */
+.highlight .gs { font-weight: bold } /* Generic.Strong */
+.highlight .gu { color: #800080; font-weight: bold } /* Generic.Subheading */
+.highlight .gt { color: #0044DD } /* Generic.Traceback */
+.highlight .kc { color: #008000; font-weight: bold } /* Keyword.Constant */
+.highlight .kd { color: #008000; font-weight: bold } /* Keyword.Declaration */
+.highlight .kn { color: #008000; font-weight: bold } /* Keyword.Namespace */
+.highlight .kp { color: #008000 } /* Keyword.Pseudo */
+.highlight .kr { color: #008000; font-weight: bold } /* Keyword.Reserved */
+.highlight .kt { color: #B00040 } /* Keyword.Type */
+.highlight .m { color: #666666 } /* Literal.Number */
+.highlight .s { color: #BA2121 } /* Literal.String */
+.highlight .na { color: #7D9029 } /* Name.Attribute */
+.highlight .nb { color: #008000 } /* Name.Builtin */
+.highlight .nc { color: #0000FF; font-weight: bold } /* Name.Class */
+.highlight .no { color: #880000 } /* Name.Constant */
+.highlight .nd { color: #AA22FF } /* Name.Decorator */
+.highlight .ni { color: #999999; font-weight: bold } /* Name.Entity */
+.highlight .ne { color: #D2413A; font-weight: bold } /* Name.Exception */
+.highlight .nf { color: #0000FF } /* Name.Function */
+.highlight .nl { color: #A0A000 } /* Name.Label */
+.highlight .nn { color: #0000FF; font-weight: bold } /* Name.Namespace */
+.highlight .nt { color: #008000; font-weight: bold } /* Name.Tag */
+.highlight .nv { color: #19177C } /* Name.Variable */
+.highlight .ow { color: #AA22FF; font-weight: bold } /* Operator.Word */
+.highlight .w { color: #bbbbbb } /* Text.Whitespace */
+.highlight .mb { color: #666666 } /* Literal.Number.Bin */
+.highlight .mf { color: #666666 } /* Literal.Number.Float */
+.highlight .mh { color: #666666 } /* Literal.Number.Hex */
+.highlight .mi { color: #666666 } /* Literal.Number.Integer */
+.highlight .mo { color: #666666 } /* Literal.Number.Oct */
+.highlight .sa { color: #BA2121 } /* Literal.String.Affix */
+.highlight .sb { color: #BA2121 } /* Literal.String.Backtick */
+.highlight .sc { color: #BA2121 } /* Literal.String.Char */
+.highlight .dl { color: #BA2121 } /* Literal.String.Delimiter */
+.highlight .sd { color: #BA2121; font-style: italic } /* Literal.String.Doc */
+.highlight .s2 { color: #BA2121 } /* Literal.String.Double */
+.highlight .se { color: #BB6622; font-weight: bold } /* Literal.String.Escape */
+.highlight .sh { color: #BA2121 } /* Literal.String.Heredoc */
+.highlight .si { color: #BB6688; font-weight: bold } /* Literal.String.Interpol */
+.highlight .sx { color: #008000 } /* Literal.String.Other */
+.highlight .sr { color: #BB6688 } /* Literal.String.Regex */
+.highlight .s1 { color: #BA2121 } /* Literal.String.Single */
+.highlight .ss { color: #19177C } /* Literal.String.Symbol */
+.highlight .bp { color: #008000 } /* Name.Builtin.Pseudo */
+.highlight .fm { color: #0000FF } /* Name.Function.Magic */
+.highlight .vc { color: #19177C } /* Name.Variable.Class */
+.highlight .vg { color: #19177C } /* Name.Variable.Global */
+.highlight .vi { color: #19177C } /* Name.Variable.Instance */
+.highlight .vm { color: #19177C } /* Name.Variable.Magic */
+.highlight .il { color: #666666 } /* Literal.Number.Integer.Long */
+</style>
+    
+<!-- Loading mathjax macro -->
+<!-- Load mathjax -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS_HTML"></script>
+    <!-- MathJax configuration -->
+    <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+            displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+            processEscapes: true,
+            processEnvironments: true
+        },
+        // Center justify equations in code and markdown cells. Elsewhere
+        // we use CSS to left justify single line equations in code cells.
+        displayAlign: 'center',
+        "HTML-CSS": {
+            styles: {'.MathJax_Display': {"margin": 0}},
+            linebreaks: { automatic: true }
+        }
+    });
+    </script>
+    <!-- End of mathjax configuration --></head>
+<body>
+  <div class="header-nav">
+    <a href="/imandra-docs/">&lt; Back</a>
+  </div>
+  <div class="bg-container">
+    <div class="bg-container__bg"></div>
+    <div class="container">
+      <header class="header">
+        <a href="/imandra-docs/">
+          <img src="/imandra-docs/static/img/site_specific_image_v_2.svg">
+        </a>
+      </header>
+      <div class="content content--with-cells">
+  
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Imandra-encoding-of-UBS-dark-pool-(Form-ATS)">Imandra encoding of UBS dark pool (Form ATS)<a class="anchor-link" href="#Imandra-encoding-of-UBS-dark-pool-(Form-ATS)">&#182;</a></h1><p>In this notebook, we model the order priority logic of the UBS ATS dark pool as described in UBS's <a href="https://storage.googleapis.com/imandra-notebook-assets/Form-ATS-June15.pdf">June 1st 2015 Form ATS submission to the SEC</a> and analyse it using Imandra.</p>
+<p>We observe that as described, the order priority logic suffers from a fundamental flaw: the order ranking function is not <em>transitive</em>.</p>
+<p>This type of subtle issue in matching logic strongly motivates the use of formal, <a href="https://medium.com/imandra/machine-reasonable-apis-and-regulations-20f29e1bd4cf">machine reasonable</a> disclosures.</p>
+<p>Some relevant references:</p>
+<ul>
+<li><a href="https://www.bloomberg.com/news/articles/2016-03-04/intel-s-pentium-bug-fix-is-proposed-as-solution-for-dark-pools">Bloomberg - Intel's Pentium Bug Fix Is Proposed as Solution for Dark Pools</a>  </li>
+<li>our 2017 Lecture Notes in AI paper <a href="https://link.springer.com/chapter/10.1007/978-3-319-63046-5_3">Formal Verification of Financial Algorithms</a></li>
+<li>our 2016 <a href="https://www.sec.gov/comments/s7-23-15/s72315-24.pdf">SEC Reg ATS-N comment letter</a> proposing the <em>Precise Specification Standard</em> for disclosure of financial algorithms</li>
+<li>our 2018 <a href="https://medium.com/imandra/machine-reasonable-apis-and-regulations-20f29e1bd4cf">Machine Reasonable APIs and Regulations</a> Medium post</li>
+</ul>
+<h2 id="UBS-Future-of-Finance-Challenge---First-Place-Winner">UBS Future of Finance Challenge - First Place Winner<a class="anchor-link" href="#UBS-Future-of-Finance-Challenge---First-Place-Winner">&#182;</a></h2><p><img src="https://storage.googleapis.com/imandra-notebook-assets/winningubsfinals2015_jpg-large.jpg" width=500></p>
+<p>This analysis was part of Aesthetic Integration's entry in the 2015 UBS Future of Finance Challenge, for which we won first place (out of 620 companies from 52 countries!). This analysis is based purely on publicly available documents, and is based on our interpretation of the English prose written in the Form ATS.</p>
+<p><img src="https://storage.googleapis.com/imandra-notebook-assets/ubs-form-ats-first-page.png" width=500></p>
+<h1 id="An-Imandra-Formal-Model-of-UBS-ATS-Order-Priority-Logic">An Imandra Formal Model of UBS ATS Order Priority Logic<a class="anchor-link" href="#An-Imandra-Formal-Model-of-UBS-ATS-Order-Priority-Logic">&#182;</a></h1><p>We begin our model by defining a record type corresponding to the current NBB/O and relevant market data signals.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="try-this-container">
+  <div class="try-this"><a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Analysing%20the%20UBS%20ATS%20Dark%20Pool.ipynb%23try-cell-2" target="_blank">Try this!</a></div>
+</div>
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[1]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ocaml"><pre><span></span><span class="k">type</span> <span class="n">mkt_data</span> <span class="o">=</span> <span class="o">{</span>
+  <span class="n">nbb</span> <span class="o">:</span> <span class="n">real</span><span class="o">;</span>
+  <span class="n">nbo</span> <span class="o">:</span> <span class="n">real</span><span class="o">;</span>
+  <span class="n">l_up</span> <span class="o">:</span> <span class="n">real</span><span class="o">;</span>
+  <span class="n">l_down</span> <span class="o">:</span> <span class="n">real</span><span class="o">;</span>
+<span class="o">}</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[1]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>type mkt_data = { nbb : real; nbo : real; l_up : real; l_down : real; }
+</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Let us now introduce some useful functions on <code>mkt_data</code>.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="try-this-container">
+  <div class="try-this"><a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Analysing%20the%20UBS%20ATS%20Dark%20Pool.ipynb%23try-cell-4" target="_blank">Try this!</a></div>
+</div>
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[2]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ocaml"><pre><span></span><span class="k">type</span> <span class="n">mkt_cond</span> <span class="o">=</span> <span class="nc">MKT_NORMAL</span> <span class="o">|</span> <span class="nc">MKT_CROSSED</span> <span class="o">|</span> <span class="nc">MKT_LOCKED</span>
+
+<span class="k">let</span> <span class="n">which_mkt</span> <span class="n">mkt</span> <span class="o">=</span>
+  <span class="k">if</span> <span class="n">mkt</span><span class="o">.</span><span class="n">nbo</span> <span class="o">=</span> <span class="n">mkt</span><span class="o">.</span><span class="n">nbb</span> <span class="k">then</span> <span class="nc">MKT_LOCKED</span>
+  <span class="k">else</span> <span class="k">if</span> <span class="n">mkt</span><span class="o">.</span><span class="n">nbo</span> <span class="o">&lt;.</span> <span class="n">mkt</span><span class="o">.</span><span class="n">nbb</span> <span class="k">then</span> <span class="nc">MKT_CROSSED</span>
+  <span class="k">else</span> <span class="nc">MKT_NORMAL</span>
+
+<span class="k">let</span> <span class="n">mid_point</span> <span class="n">mkt</span> <span class="o">=</span> <span class="o">(</span><span class="n">mkt</span><span class="o">.</span><span class="n">nbb</span> <span class="o">+.</span> <span class="n">mkt</span><span class="o">.</span><span class="n">nbo</span><span class="o">)</span> <span class="o">/.</span> <span class="mi">2</span><span class="o">.</span><span class="mi">0</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[2]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>type mkt_cond = MKT_NORMAL | MKT_CROSSED | MKT_LOCKED
+val which_mkt : mkt_data -&gt; mkt_cond = &lt;fun&gt;
+val mid_point : mkt_data -&gt; real = &lt;fun&gt;
+</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Because our model is executable, we can compute with various <code>mkt_data</code> values:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="try-this-container">
+  <div class="try-this"><a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Analysing%20the%20UBS%20ATS%20Dark%20Pool.ipynb%23try-cell-6" target="_blank">Try this!</a></div>
+</div>
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[3]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ocaml"><pre><span></span><span class="o">{</span><span class="n">nbb</span><span class="o">=</span><span class="mi">42</span><span class="o">.</span><span class="mi">11</span><span class="o">;</span> <span class="n">nbo</span><span class="o">=</span><span class="mi">42</span><span class="o">.</span><span class="mi">10</span><span class="o">;</span> <span class="n">l_up</span><span class="o">=</span><span class="mi">3</span><span class="o">.</span> <span class="o">;</span> <span class="n">l_down</span><span class="o">=</span> <span class="mi">2</span><span class="o">.</span><span class="mi">5</span><span class="o">}</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[3]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>- : mkt_data = {nbb = 4211/100; nbo = 421/10; l_up = 3; l_down = 5/2}
+</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="try-this-container">
+  <div class="try-this"><a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Analysing%20the%20UBS%20ATS%20Dark%20Pool.ipynb%23try-cell-7" target="_blank">Try this!</a></div>
+</div>
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[4]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ocaml"><pre><span></span><span class="n">which_mkt</span> <span class="o">{</span><span class="n">nbb</span><span class="o">=</span><span class="mi">42</span><span class="o">.</span><span class="mi">11</span><span class="o">;</span> <span class="n">nbo</span><span class="o">=</span><span class="mi">42</span><span class="o">.</span><span class="mi">10</span><span class="o">;</span> <span class="n">l_up</span><span class="o">=</span><span class="mi">3</span><span class="o">.</span> <span class="o">;</span> <span class="n">l_down</span><span class="o">=</span> <span class="mi">2</span><span class="o">.</span><span class="mi">5</span><span class="o">}</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[4]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>- : mkt_cond = MKT_CROSSED
+</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Aside:-Custom-Document-Printers">Aside: Custom Document Printers<a class="anchor-link" href="#Aside:-Custom-Document-Printers">&#182;</a></h2><p>Imandra has a powerful structured <em>document</em> system for making custom views and interfaces for your algorithm analysis tasks.</p>
+<p>To make our Imandra notebooks and analysis toolchains user-friendly, we can define and install our own custom Imandra <em>document printer</em> that will render our market data type in a table in our notebook.</p>
+<p>For example, we can define a simple table-based document printer for our <code>mkt_data</code> type as follows.</p>
+<p>We use the <code>[@@program]</code> attribute on our pretty-printer definition, to tell Imandra to only define this function in <code>#program</code> mode (not in <code>#logic</code> mode, i.e., not within our formal logic). Arbitrary OCaml functions can be defined in <code>#program</code> mode, the basis for much custom Imandra interfaces and proof automation:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="try-this-container">
+  <div class="try-this"><a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Analysing%20the%20UBS%20ATS%20Dark%20Pool.ipynb%23try-cell-9" target="_blank">Try this!</a></div>
+</div>
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[5]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ocaml"><pre><span></span><span class="k">let</span> <span class="n">doc_of_mkt_data</span> <span class="n">m</span> <span class="o">=</span>
+  <span class="k">let</span> <span class="k">module</span> <span class="nc">D</span> <span class="o">=</span> <span class="nc">Document</span> <span class="k">in</span>
+  <span class="nn">D</span><span class="p">.</span><span class="n">indent</span> <span class="s2">&quot;mkt_data&quot;</span> <span class="o">@@</span> <span class="nn">D</span><span class="p">.</span><span class="n">record</span> <span class="o">[</span>
+           <span class="s2">&quot;nbb&quot;</span><span class="o">,</span> <span class="nn">D</span><span class="p">.</span><span class="n">s</span> <span class="o">@@</span> <span class="nn">Real</span><span class="p">.</span><span class="n">to_string_approx</span> <span class="n">m</span><span class="o">.</span><span class="n">nbb</span><span class="o">;</span>
+           <span class="s2">&quot;nbo&quot;</span><span class="o">,</span> <span class="nn">D</span><span class="p">.</span><span class="n">s</span> <span class="o">@@</span> <span class="nn">Real</span><span class="p">.</span><span class="n">to_string_approx</span> <span class="n">m</span><span class="o">.</span><span class="n">nbo</span><span class="o">;</span>
+           <span class="s2">&quot;l_up&quot;</span><span class="o">,</span> <span class="nn">D</span><span class="p">.</span><span class="n">s</span> <span class="o">@@</span> <span class="nn">Real</span><span class="p">.</span><span class="n">to_string_approx</span> <span class="n">m</span><span class="o">.</span><span class="n">l_up</span><span class="o">;</span>
+           <span class="s2">&quot;l_down&quot;</span><span class="o">,</span> <span class="nn">D</span><span class="p">.</span><span class="n">s</span> <span class="o">@@</span> <span class="nn">Real</span><span class="p">.</span><span class="n">to_string_approx</span> <span class="n">m</span><span class="o">.</span><span class="n">l_down</span><span class="o">;</span>
+  <span class="o">]</span>
+<span class="o">[@@</span><span class="n">program</span><span class="o">]</span>
+
+<span class="o">#</span><span class="n">install_doc</span> <span class="n">doc_of_mkt_data</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[5]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>val doc_of_mkt_data : mkt_data -&gt; Imandra_surface__Document.t = &lt;fun&gt;
+</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>If we view the same <code>mkt_data</code> value as above, we'll now see it rendered with our custom pretty-printer:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="try-this-container">
+  <div class="try-this"><a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Analysing%20the%20UBS%20ATS%20Dark%20Pool.ipynb%23try-cell-11" target="_blank">Try this!</a></div>
+</div>
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[6]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ocaml"><pre><span></span><span class="o">{</span><span class="n">nbb</span><span class="o">=</span><span class="mi">42</span><span class="o">.</span><span class="mi">11</span><span class="o">;</span> <span class="n">nbo</span><span class="o">=</span><span class="mi">42</span><span class="o">.</span><span class="mi">10</span><span class="o">;</span> <span class="n">l_up</span><span class="o">=</span><span class="mi">3</span><span class="o">.</span> <span class="o">;</span> <span class="n">l_down</span><span class="o">=</span> <span class="mi">2</span><span class="o">.</span><span class="mi">5</span><span class="o">}</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[6]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>- : mkt_data = &lt;document&gt;
+</pre>
+</div>
+
+</div>
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+
+<div class="output_html rendered_html output_subarea ">
+<div><div><h4>mkt_data</h4><div class="imandra-table" id="table-62b7d464-841c-43ed-a191-4e397bdcb43c"><table><tr><td><b>nbb</b></td><td>42.11</td></tr><tr><td><b>nbo</b></td><td>42.1</td></tr><tr><td><b>l_up</b></td><td>3.</td></tr><tr><td><b>l_down</b></td><td>2.5</td></tr></table></div></div></div>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Time,-Price-and-Static-Data">Time, Price and Static Data<a class="anchor-link" href="#Time,-Price-and-Static-Data">&#182;</a></h1><p>We now define some types and functions for representing <code>time</code>, <code>price</code> and <code>static_data</code>. We use <code>int</code> for <code>time</code> and <code>real</code> for <code>price</code>, as it is sufficient for this analysis, but custom types (e.g., <code>decs</code> with price bands) can be easily defined.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="try-this-container">
+  <div class="try-this"><a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Analysing%20the%20UBS%20ATS%20Dark%20Pool.ipynb%23try-cell-13" target="_blank">Try this!</a></div>
+</div>
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[7]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ocaml"><pre><span></span><span class="k">type</span> <span class="n">time</span> <span class="o">=</span> <span class="kt">int</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[7]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>type time = int
+</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="try-this-container">
+  <div class="try-this"><a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Analysing%20the%20UBS%20ATS%20Dark%20Pool.ipynb%23try-cell-14" target="_blank">Try this!</a></div>
+</div>
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[8]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ocaml"><pre><span></span><span class="k">type</span> <span class="n">price</span> <span class="o">=</span> <span class="n">real</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[8]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>type price = real
+</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="try-this-container">
+  <div class="try-this"><a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Analysing%20the%20UBS%20ATS%20Dark%20Pool.ipynb%23try-cell-15" target="_blank">Try this!</a></div>
+</div>
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[9]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ocaml"><pre><span></span><span class="k">type</span> <span class="n">static_data</span> <span class="o">=</span> <span class="o">{</span> <span class="n">round_lot</span> <span class="o">:</span> <span class="kt">int</span><span class="o">;</span>
+                     <span class="n">tick_size</span> <span class="o">:</span> <span class="kt">float</span> <span class="o">}</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[9]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>type static_data = { round_lot : int; tick_size : float; }
+</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Order-types">Order types<a class="anchor-link" href="#Order-types">&#182;</a></h1><p>We now define the order types supported by the dark pool.</p>
+<h2 id="Section-2-of-the-Form-ATS-defines-the-order-types-as-follows:">Section 2 of the Form ATS defines the order types as follows:<a class="anchor-link" href="#Section-2-of-the-Form-ATS-defines-the-order-types-as-follows:">&#182;</a></h2><p>Order Types:</p>
+<ul>
+<li>Pegged Orders (both Resident and IOC TimeInForce).
+<pre><code>Pegging can be to the near, midpoint, or far
+side of the NBBO. Pegged Orders may have a limit price.</code></pre>
+</li>
+<li>Limit Orders (both Resident and IOC TimeInForce)</li>
+<li>Market Orders (both Resident and IOC TimeInForce)</li>
+</ul>
+<p>Conditional Indication Types:</p>
+<ul>
+<li>Pegged Conditional Indications (Resident T)</li>
+<li>Limit Conditional Indications (Resident TimeInForce only)</li>
+</ul>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="try-this-container">
+  <div class="try-this"><a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Analysing%20the%20UBS%20ATS%20Dark%20Pool.ipynb%23try-cell-17" target="_blank">Try this!</a></div>
+</div>
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[10]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ocaml"><pre><span></span><span class="k">type</span> <span class="n">order_side</span> <span class="o">=</span> <span class="nc">BUY</span> <span class="o">|</span> <span class="nc">SELL</span> <span class="o">|</span> <span class="nc">SELL_SHORT</span>
+
+<span class="k">type</span> <span class="n">order_peg</span> <span class="o">=</span> <span class="nc">NEAR</span> <span class="o">|</span> <span class="nc">MID</span> <span class="o">|</span> <span class="nc">FAR</span> <span class="o">|</span> <span class="nc">NO_PEG</span>
+
+<span class="k">type</span> <span class="n">order_type</span> <span class="o">=</span>
+    <span class="nc">MARKET</span>
+  <span class="o">|</span> <span class="nc">LIMIT</span>
+  <span class="o">|</span> <span class="nc">PEGGED</span>
+  <span class="o">|</span> <span class="nc">PEGGED_CI</span>
+  <span class="o">|</span> <span class="nc">LIMIT_CI</span>
+  <span class="o">|</span> <span class="nc">FIRM_UP_PEGGED</span>
+  <span class="o">|</span> <span class="nc">FIRM_UP_LIMIT</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[10]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>type order_side = BUY | SELL | SELL_SHORT
+type order_peg = NEAR | MID | FAR | NO_PEG
+type order_type =
+    MARKET
+  | LIMIT
+  | PEGGED
+  | PEGGED_CI
+  | LIMIT_CI
+  | FIRM_UP_PEGGED
+  | FIRM_UP_LIMIT
+</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Source Categories are defined in the Form ATS as follows:</p>
+<ul>
+<li>Source Category 1: Retail orders routed by broker - dealer clients of the UBS Retail Market Making business.</li>
+<li>Source Category 2: Certain orders received from UBS algorithms, where the underlying client is an institutional client of UBS.</li>
+<li>Source Category 3: Orders received from Order Originators that are determined by UBS to exhibit lowto - neutral reversion.</li>
+<li>Source Category 4: All other orders not originating from Source Categories 1, 2 or 3.</li>
+</ul>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="try-this-container">
+  <div class="try-this"><a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Analysing%20the%20UBS%20ATS%20Dark%20Pool.ipynb%23try-cell-19" target="_blank">Try this!</a></div>
+</div>
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[11]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ocaml"><pre><span></span><span class="k">type</span> <span class="n">order_attr</span> <span class="o">=</span> <span class="nc">RESIDENT</span> <span class="o">|</span> <span class="nc">IOC</span>
+
+<span class="k">type</span> <span class="n">category</span> <span class="o">=</span> <span class="nc">C_ONE</span> <span class="o">|</span> <span class="nc">C_TWO</span> <span class="o">|</span> <span class="nc">C_THREE</span> <span class="o">|</span> <span class="nc">C_FOUR</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[11]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>type order_attr = RESIDENT | IOC
+type category = C_ONE | C_TWO | C_THREE | C_FOUR
+</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Capacity,-Eligibilities-and-Crossing-Restrictions">Capacity, Eligibilities and Crossing Restrictions<a class="anchor-link" href="#Capacity,-Eligibilities-and-Crossing-Restrictions">&#182;</a></h1>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="try-this-container">
+  <div class="try-this"><a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Analysing%20the%20UBS%20ATS%20Dark%20Pool.ipynb%23try-cell-21" target="_blank">Try this!</a></div>
+</div>
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[12]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ocaml"><pre><span></span><span class="k">type</span> <span class="n">capacity</span> <span class="o">=</span> <span class="nc">Principal</span> <span class="o">|</span> <span class="nc">Agency</span>
+
+<span class="c">(* ID of the order source *)</span>
+
+<span class="k">type</span> <span class="n">order_source</span> <span class="o">=</span> <span class="kt">int</span>
+
+<span class="c">(* UBS&#39;s ID in the model *)</span>
+
+<span class="k">let</span> <span class="n">ubs_id</span> <span class="o">=</span> <span class="mi">12</span>
+
+<span class="c">(* Category crossing constraints *)</span>
+
+<span class="k">type</span> <span class="n">category_elig</span> <span class="o">=</span> <span class="o">{</span>
+  <span class="n">c_one_elig</span> <span class="o">:</span> <span class="kt">bool</span><span class="o">;</span>
+  <span class="n">c_two_elig</span> <span class="o">:</span> <span class="kt">bool</span><span class="o">;</span>
+  <span class="n">c_three_elig</span> <span class="o">:</span> <span class="kt">bool</span><span class="o">;</span>
+  <span class="n">c_four_elig</span> <span class="o">:</span> <span class="kt">bool</span><span class="o">;</span>
+<span class="o">}</span>
+
+<span class="k">let</span> <span class="n">default_cat_elig</span> <span class="o">=</span> <span class="o">{</span>
+  <span class="n">c_one_elig</span> <span class="o">=</span> <span class="bp">true</span><span class="o">;</span>
+  <span class="n">c_two_elig</span> <span class="o">=</span> <span class="bp">true</span><span class="o">;</span>
+  <span class="n">c_three_elig</span> <span class="o">=</span> <span class="bp">true</span><span class="o">;</span>
+  <span class="n">c_four_elig</span> <span class="o">=</span> <span class="bp">true</span><span class="o">;</span>
+<span class="o">}</span>
+
+<span class="c">(* Type for crossing restrictions *)</span>
+
+<span class="k">type</span> <span class="n">cross_restrict</span> <span class="o">=</span> <span class="o">{</span>
+  <span class="n">cr_self_cross</span> <span class="o">:</span> <span class="kt">bool</span><span class="o">;</span>
+  <span class="n">cr_ubs_principal</span> <span class="o">:</span> <span class="kt">bool</span><span class="o">;</span>
+  <span class="n">cr_round_lot_only</span> <span class="o">:</span> <span class="kt">bool</span><span class="o">;</span>
+  <span class="n">cr_no_locked_nbbo</span> <span class="o">:</span> <span class="kt">bool</span><span class="o">;</span>
+  <span class="n">cr_pegged_mid_point_mode</span> <span class="o">:</span> <span class="kt">int</span><span class="o">;</span>
+
+  <span class="c">(* From the examples, we understand that: 0 - no constraint 1 - mid      *)</span>
+  <span class="c">(* constraint 2 - limit constraint                                       *)</span>
+
+  <span class="n">cr_enable_conditionals</span> <span class="o">:</span> <span class="kt">bool</span><span class="o">;</span>
+  <span class="n">cr_min_qty</span> <span class="o">:</span> <span class="kt">bool</span><span class="o">;</span>
+  <span class="n">cr_cat_elig</span> <span class="o">:</span> <span class="n">category_elig</span><span class="o">;</span>
+<span class="o">}</span>
+
+<span class="k">let</span> <span class="n">default_cross_restrict</span> <span class="o">=</span> <span class="o">{</span>
+  <span class="n">cr_self_cross</span> <span class="o">=</span> <span class="bp">false</span><span class="o">;</span>
+  <span class="n">cr_ubs_principal</span> <span class="o">=</span> <span class="bp">false</span><span class="o">;</span>
+  <span class="n">cr_round_lot_only</span> <span class="o">=</span> <span class="bp">false</span><span class="o">;</span>
+  <span class="n">cr_no_locked_nbbo</span> <span class="o">=</span> <span class="bp">false</span><span class="o">;</span>
+  <span class="n">cr_pegged_mid_point_mode</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+  <span class="n">cr_enable_conditionals</span> <span class="o">=</span> <span class="bp">false</span><span class="o">;</span>
+  <span class="n">cr_min_qty</span> <span class="o">=</span> <span class="bp">false</span><span class="o">;</span>
+  <span class="n">cr_cat_elig</span> <span class="o">=</span> <span class="n">default_cat_elig</span><span class="o">;</span>
+<span class="o">}</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[12]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>type capacity = Principal | Agency
+type order_source = int
+val ubs_id : Z.t = 12
+type category_elig = {
+  c_one_elig : bool;
+  c_two_elig : bool;
+  c_three_elig : bool;
+  c_four_elig : bool;
+}
+val default_cat_elig : category_elig =
+  {c_one_elig = true; c_two_elig = true; c_three_elig = true;
+   c_four_elig = true}
+type cross_restrict = {
+  cr_self_cross : bool;
+  cr_ubs_principal : bool;
+  cr_round_lot_only : bool;
+  cr_no_locked_nbbo : bool;
+  cr_pegged_mid_point_mode : int;
+  cr_enable_conditionals : bool;
+  cr_min_qty : bool;
+  cr_cat_elig : category_elig;
+}
+val default_cross_restrict : cross_restrict =
+  {cr_self_cross = false; cr_ubs_principal = false;
+   cr_round_lot_only = false; cr_no_locked_nbbo = false;
+   cr_pegged_mid_point_mode = 0; cr_enable_conditionals = false;
+   cr_min_qty = false;
+   cr_cat_elig =
+    {c_one_elig = true; c_two_elig = true; c_three_elig = true;
+     c_four_elig = true}}
+</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Orders">Orders<a class="anchor-link" href="#Orders">&#182;</a></h1><p>We now define the type <code>order</code>, representing all data associated with a given order.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="try-this-container">
+  <div class="try-this"><a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Analysing%20the%20UBS%20ATS%20Dark%20Pool.ipynb%23try-cell-23" target="_blank">Try this!</a></div>
+</div>
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[13]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ocaml"><pre><span></span><span class="c">(* Note: there&#39;s both the quantity of the order and the current filled quantity. *)</span>
+
+<span class="k">type</span> <span class="n">order</span> <span class="o">=</span>
+    <span class="o">{</span> <span class="n">id</span> <span class="o">:</span> <span class="kt">int</span><span class="o">;</span>                        <span class="c">(* Order ID *)</span>
+      <span class="n">peg</span> <span class="o">:</span> <span class="n">order_peg</span><span class="o">;</span>                 <span class="c">(* Near, Mid, Far or NoPeg *)</span>
+      <span class="n">client_id</span> <span class="o">:</span> <span class="kt">int</span><span class="o">;</span>                 <span class="c">(* Client ID *)</span>
+      <span class="n">order_type</span> <span class="o">:</span> <span class="n">order_type</span><span class="o">;</span>         <span class="c">(* Market, Limit or Pegged order + Conditional Indications *)</span>
+      <span class="n">qty</span> <span class="o">:</span> <span class="kt">int</span><span class="o">;</span>                       <span class="c">(* Original quantity of the order (updated after cancel/replace) *)</span>
+      <span class="n">min_qty</span> <span class="o">:</span> <span class="kt">int</span><span class="o">;</span>                   <span class="c">(* Minimum acceptible quantity to trade *)</span>
+      <span class="n">leaves_qty</span> <span class="o">:</span> <span class="kt">int</span><span class="o">;</span>                <span class="c">(* Remaining quantity of the order *)</span>
+      <span class="n">price</span> <span class="o">:</span> <span class="n">price</span><span class="o">;</span>                   <span class="c">(* Limit price (Not used if the order *)</span>
+      <span class="n">time</span> <span class="o">:</span> <span class="n">time</span><span class="o">;</span>                     <span class="c">(* time of order entry (reset on update)) *)</span>
+      <span class="n">src</span> <span class="o">:</span> <span class="n">order_source</span><span class="o">;</span>              <span class="c">(* ID of the order source *)</span>
+      <span class="n">order_attr</span> <span class="o">:</span> <span class="n">order_attr</span><span class="o">;</span>         <span class="c">(* Resident or Immediate Or Cancel (IOC) *)</span>
+      <span class="n">capacity</span> <span class="o">:</span> <span class="n">capacity</span><span class="o">;</span>             <span class="c">(* Principal or agency *)</span>
+      <span class="n">category</span> <span class="o">:</span> <span class="n">category</span><span class="o">;</span>             <span class="c">(* Client category *)</span>
+      <span class="n">cross_restrict</span> <span class="o">:</span> <span class="n">cross_restrict</span><span class="o">;</span> <span class="c">(* Crossing restrictions *)</span>
+      <span class="n">locate_found</span> <span class="o">:</span> <span class="kt">bool</span><span class="o">;</span>             <span class="c">(* A sell-short order without a locate would be rejected *)</span>
+      <span class="n">expiry_time</span> <span class="o">:</span> <span class="kt">int</span><span class="o">;</span>               <span class="c">(* When will the order expire? *)</span>
+    <span class="o">}</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[13]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>type order = {
+  id : int;
+  peg : order_peg;
+  client_id : int;
+  order_type : order_type;
+  qty : int;
+  min_qty : int;
+  leaves_qty : int;
+  price : price;
+  time : time;
+  src : order_source;
+  order_attr : order_attr;
+  capacity : capacity;
+  category : category;
+  cross_restrict : cross_restrict;
+  locate_found : bool;
+  expiry_time : int;
+}
+</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Determining-how-much-and-at-what-price-two-orders-may-trade">Determining how much and at what price two orders may trade<a class="anchor-link" href="#Determining-how-much-and-at-what-price-two-orders-may-trade">&#182;</a></h1>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="try-this-container">
+  <div class="try-this"><a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Analysing%20the%20UBS%20ATS%20Dark%20Pool.ipynb%23try-cell-25" target="_blank">Try this!</a></div>
+</div>
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[14]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ocaml"><pre><span></span><span class="c">(** Uses two orders&#39; timestamps to determin the older price of the two *)</span>
+<span class="k">let</span> <span class="n">older_price</span> <span class="o">(</span><span class="n">o1</span><span class="o">,</span> <span class="n">o2</span><span class="o">)</span> <span class="o">=</span>
+  <span class="k">if</span> <span class="n">o1</span><span class="o">.</span><span class="n">time</span> <span class="o">&gt;</span> <span class="n">o2</span><span class="o">.</span><span class="n">time</span> <span class="k">then</span> <span class="n">o2</span><span class="o">.</span><span class="n">price</span> <span class="k">else</span> <span class="n">o1</span><span class="o">.</span><span class="n">price</span>
+
+<span class="k">type</span> <span class="n">fill_price</span> <span class="o">=</span>
+  <span class="o">|</span> <span class="nc">Known</span> <span class="k">of</span> <span class="n">price</span>
+  <span class="o">|</span> <span class="nc">Unknown</span>
+  <span class="o">|</span> <span class="nc">TOP</span> <span class="k">of</span> <span class="n">price</span>
+
+<span class="c">(* Functions for categorisations  *)</span>
+
+<span class="k">let</span> <span class="n">cat_priority</span> <span class="o">(</span><span class="n">o1</span><span class="o">,</span> <span class="n">o2</span><span class="o">)</span> <span class="o">=</span>
+  <span class="k">if</span> <span class="n">o1</span><span class="o">.</span><span class="n">category</span> <span class="o">=</span> <span class="nc">C_ONE</span> <span class="k">then</span> <span class="bp">false</span>
+  <span class="k">else</span> <span class="k">if</span> <span class="n">o1</span><span class="o">.</span><span class="n">category</span> <span class="o">=</span> <span class="nc">C_TWO</span> <span class="o">&amp;&amp;</span>
+            <span class="o">(</span><span class="n">o2</span><span class="o">.</span><span class="n">category</span> <span class="o">=</span> <span class="nc">C_THREE</span> <span class="o">||</span> <span class="n">o2</span><span class="o">.</span><span class="n">category</span> <span class="o">=</span> <span class="nc">C_FOUR</span><span class="o">)</span>
+  <span class="k">then</span> <span class="bp">false</span>
+  <span class="k">else</span> <span class="k">if</span> <span class="n">o1</span><span class="o">.</span><span class="n">category</span> <span class="o">=</span> <span class="nc">C_THREE</span> <span class="o">&amp;&amp;</span> <span class="o">(</span><span class="n">o2</span><span class="o">.</span><span class="n">category</span> <span class="o">=</span> <span class="nc">C_FOUR</span><span class="o">)</span> <span class="k">then</span> <span class="bp">false</span>
+  <span class="k">else</span> <span class="bp">true</span>
+
+<span class="k">let</span> <span class="n">eff_min_qty</span> <span class="o">(</span><span class="n">o</span><span class="o">)</span> <span class="o">=</span> <span class="n">min</span> <span class="n">o</span><span class="o">.</span><span class="n">min_qty</span> <span class="n">o</span><span class="o">.</span><span class="n">leaves_qty</span>
+
+<span class="k">let</span> <span class="n">effective_size</span> <span class="o">(</span><span class="n">o</span><span class="o">,</span> <span class="n">should_round</span><span class="o">,</span> <span class="n">round_lot</span><span class="o">)</span> <span class="o">=</span>
+  <span class="k">if</span> <span class="n">should_round</span> <span class="o">=</span> <span class="bp">true</span> <span class="k">then</span>
+    <span class="o">(</span> <span class="k">if</span> <span class="n">round_lot</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">then</span> <span class="o">(</span> <span class="o">(</span><span class="n">o</span><span class="o">.</span><span class="n">leaves_qty</span> <span class="o">/</span> <span class="n">round_lot</span><span class="o">)</span> <span class="o">*</span> <span class="n">round_lot</span> <span class="o">)</span>
+      <span class="k">else</span> <span class="n">o</span><span class="o">.</span><span class="n">leaves_qty</span> <span class="o">)</span>
+  <span class="k">else</span>
+    <span class="n">o</span><span class="o">.</span><span class="n">leaves_qty</span>
+
+<span class="c">(* The pricing functions *)</span>
+
+<span class="k">let</span> <span class="n">lessAggressive</span> <span class="o">(</span><span class="n">side</span><span class="o">,</span> <span class="n">lim_price</span><span class="o">,</span> <span class="n">far_price</span><span class="o">)</span> <span class="o">=</span>
+  <span class="k">if</span> <span class="n">lim_price</span> <span class="o">&lt;.</span> <span class="mi">0</span><span class="o">.</span><span class="mi">0</span> <span class="k">then</span> <span class="n">far_price</span> <span class="k">else</span>
+    <span class="o">(</span><span class="k">if</span> <span class="n">side</span> <span class="o">=</span> <span class="nc">BUY</span> <span class="k">then</span> <span class="nn">Real</span><span class="p">.</span><span class="n">min</span> <span class="n">lim_price</span> <span class="n">far_price</span>
+     <span class="k">else</span> <span class="nn">Real</span><span class="p">.</span><span class="n">max</span> <span class="n">lim_price</span> <span class="n">far_price</span><span class="o">)</span>
+
+<span class="c">(** This function is used to calculate the priority price *)</span>
+<span class="k">let</span> <span class="n">priority_price</span> <span class="o">(</span><span class="n">side</span><span class="o">,</span> <span class="n">o</span><span class="o">,</span> <span class="n">mkt</span><span class="o">)</span> <span class="o">=</span>
+  <span class="k">let</span> <span class="n">calc_pegged_price</span> <span class="o">=</span>
+    <span class="o">(</span> <span class="k">match</span> <span class="n">o</span><span class="o">.</span><span class="n">peg</span> <span class="k">with</span>
+      <span class="o">|</span> <span class="nc">FAR</span> <span class="o">-&gt;</span> <span class="n">lessAggressive</span><span class="o">(</span><span class="n">side</span><span class="o">,</span> <span class="n">o</span><span class="o">.</span><span class="n">price</span><span class="o">,</span>
+                              <span class="o">(</span><span class="k">if</span> <span class="n">side</span> <span class="o">=</span> <span class="nc">BUY</span> <span class="k">then</span> <span class="n">mkt</span><span class="o">.</span><span class="n">nbo</span> <span class="k">else</span> <span class="n">mkt</span><span class="o">.</span><span class="n">nbb</span><span class="o">))</span>
+      <span class="o">|</span> <span class="nc">MID</span> <span class="o">-&gt;</span> <span class="n">lessAggressive</span><span class="o">(</span><span class="n">side</span><span class="o">,</span> <span class="n">o</span><span class="o">.</span><span class="n">price</span><span class="o">,</span> <span class="o">(</span><span class="n">mid_point</span> <span class="n">mkt</span><span class="o">))</span>
+      <span class="o">|</span> <span class="nc">NEAR</span> <span class="o">-&gt;</span> <span class="n">lessAggressive</span><span class="o">(</span><span class="n">side</span><span class="o">,</span> <span class="n">o</span><span class="o">.</span><span class="n">price</span><span class="o">,</span>
+                               <span class="o">(</span><span class="k">if</span> <span class="n">side</span> <span class="o">=</span> <span class="nc">BUY</span> <span class="k">then</span> <span class="n">mkt</span><span class="o">.</span><span class="n">nbb</span> <span class="k">else</span> <span class="n">mkt</span><span class="o">.</span><span class="n">nbo</span><span class="o">))</span>
+      <span class="o">|</span> <span class="nc">NO_PEG</span> <span class="o">-&gt;</span> <span class="n">o</span><span class="o">.</span><span class="n">price</span> <span class="o">)</span>
+  <span class="k">in</span>
+  <span class="k">let</span> <span class="n">calc_nbbo_capped_limit</span> <span class="o">=</span>
+    <span class="o">(</span> <span class="k">if</span> <span class="n">side</span> <span class="o">=</span> <span class="nc">BUY</span> <span class="k">then</span> <span class="n">lessAggressive</span> <span class="o">(</span><span class="nc">BUY</span><span class="o">,</span> <span class="n">o</span><span class="o">.</span><span class="n">price</span><span class="o">,</span> <span class="n">mkt</span><span class="o">.</span><span class="n">nbo</span><span class="o">)</span>
+      <span class="k">else</span> <span class="n">lessAggressive</span> <span class="o">(</span><span class="nc">SELL</span><span class="o">,</span> <span class="n">o</span><span class="o">.</span><span class="n">price</span><span class="o">,</span> <span class="n">mkt</span><span class="o">.</span><span class="n">nbb</span> <span class="o">)</span> <span class="o">)</span>
+  <span class="k">in</span>
+  <span class="k">match</span> <span class="n">o</span><span class="o">.</span><span class="n">order_type</span> <span class="k">with</span>
+  <span class="o">|</span> <span class="nc">LIMIT</span> <span class="o">-&gt;</span> <span class="n">calc_nbbo_capped_limit</span>
+  <span class="o">|</span> <span class="nc">MARKET</span> <span class="o">-&gt;</span> <span class="k">if</span> <span class="n">side</span> <span class="o">=</span> <span class="nc">BUY</span> <span class="k">then</span> <span class="n">mkt</span><span class="o">.</span><span class="n">nbo</span> <span class="k">else</span> <span class="n">mkt</span><span class="o">.</span><span class="n">nbb</span>
+  <span class="o">|</span> <span class="nc">PEGGED</span> <span class="o">-&gt;</span> <span class="n">calc_pegged_price</span>
+  <span class="o">|</span> <span class="nc">PEGGED_CI</span> <span class="o">-&gt;</span> <span class="n">calc_pegged_price</span>
+  <span class="o">|</span> <span class="nc">LIMIT_CI</span> <span class="o">-&gt;</span> <span class="n">calc_nbbo_capped_limit</span>
+  <span class="o">|</span> <span class="nc">FIRM_UP_PEGGED</span> <span class="o">-&gt;</span> <span class="n">calc_pegged_price</span>
+  <span class="o">|</span> <span class="nc">FIRM_UP_LIMIT</span> <span class="o">-&gt;</span> <span class="n">calc_nbbo_capped_limit</span>
+
+<span class="c">(** This is used to calculate the actual price at which the order would trade   *)</span>
+<span class="k">let</span> <span class="n">exec_price</span> <span class="o">(</span><span class="n">side</span><span class="o">,</span> <span class="n">o</span><span class="o">,</span> <span class="n">mkt</span><span class="o">)</span> <span class="o">=</span>
+  <span class="n">priority_price</span> <span class="o">(</span><span class="n">side</span><span class="o">,</span> <span class="n">o</span><span class="o">,</span> <span class="n">mkt</span><span class="o">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[14]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>val older_price : order * order -&gt; price = &lt;fun&gt;
+type fill_price = Known of price | Unknown | TOP of price
+val cat_priority : order * order -&gt; bool = &lt;fun&gt;
+val eff_min_qty : order -&gt; int = &lt;fun&gt;
+val effective_size : order * bool * int -&gt; int = &lt;fun&gt;
+val lessAggressive : order_side * real * real -&gt; real = &lt;fun&gt;
+val priority_price : order_side * order * mkt_data -&gt; real = &lt;fun&gt;
+val exec_price : order_side * order * mkt_data -&gt; real = &lt;fun&gt;
+</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Crossing-Restrictions">Crossing Restrictions<a class="anchor-link" href="#Crossing-Restrictions">&#182;</a></h1><p>The UBS ATS allows all Order Originators to use the following optional
+crossing restrictions, on a per - order or configured basis:</p>
+<ul>
+<li>No Self Cross: To prevent crossing against 'own orders' (orders sent with the same client ID).</li>
+<li>No UBS Principal: To prevent crossing against UBS BD Principal Orders, or UBS affiliate Principal orders.</li>
+<li>Round Lot Only: To prevent crossing in other than round lot orders.</li>
+<li>No Locked: To prevent crossing on a pegged order when the NBBO is locked. (Bid = Offer)</li>
+<li>PeggedMidPointMode: To prevent a Mid - point Pegged Order from being executed
+  at its limit price if (i) in the case of a buy order, its limit price is less
+  than the mid - point of the spread between the NBB and NBO and (ii) in the
+  case of a sell order, its limit price is greater than the mid - point of the
+  spread between the NBB and NBO. In the event this restriction is not
+  elected, a Mid - Point Pegged Order with a specified limit price may be executed
+  at the limit price even if the price is not equal to the mid - point of the
+  spread between the NBB and the NBBO.</li>
+<li>Enable Conditionals: To enable a Resident Order to interact with Conditional Indicators.</li>
+<li>Minimum Quantity: Orders may be routed to the UBS ATS with a minimum quantity
+  value specified. UBS ATS will only cross where at least this number of shares
+  is available from a single eligible contra side order.</li>
+</ul>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="try-this-container">
+  <div class="try-this"><a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Analysing%20the%20UBS%20ATS%20Dark%20Pool.ipynb%23try-cell-27" target="_blank">Try this!</a></div>
+</div>
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[15]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ocaml"><pre><span></span><span class="c">(* Note that these are order-level constraints. There are members of this  *)</span>
+<span class="c">(* structure, like cr_min_qty and cr_round_lot_only that are used in       *)</span>
+<span class="c">(* calculating the effective minimum price.                                *)</span>
+
+<span class="k">let</span> <span class="n">get_cat_eligibility</span> <span class="o">(</span><span class="n">cat_elig</span><span class="o">,</span> <span class="n">c</span><span class="o">)</span> <span class="o">=</span>
+  <span class="k">match</span> <span class="n">c</span> <span class="k">with</span>
+  <span class="o">|</span> <span class="nc">C_ONE</span> <span class="o">-&gt;</span> <span class="n">cat_elig</span><span class="o">.</span><span class="n">c_one_elig</span>
+  <span class="o">|</span> <span class="nc">C_TWO</span> <span class="o">-&gt;</span> <span class="n">cat_elig</span><span class="o">.</span><span class="n">c_two_elig</span>
+  <span class="o">|</span> <span class="nc">C_THREE</span> <span class="o">-&gt;</span> <span class="n">cat_elig</span><span class="o">.</span><span class="n">c_three_elig</span>
+  <span class="o">|</span> <span class="nc">C_FOUR</span> <span class="o">-&gt;</span> <span class="n">cat_elig</span><span class="o">.</span><span class="n">c_four_elig</span>
+
+<span class="k">let</span> <span class="n">can_orders_cross</span> <span class="o">(</span><span class="n">o1</span><span class="o">,</span> <span class="n">o2</span><span class="o">)</span> <span class="o">=</span>
+  <span class="k">let</span> <span class="n">o1_cr</span> <span class="o">=</span> <span class="n">o1</span><span class="o">.</span><span class="n">cross_restrict</span> <span class="k">in</span>
+  <span class="k">let</span> <span class="n">o2_cr</span> <span class="o">=</span> <span class="n">o2</span><span class="o">.</span><span class="n">cross_restrict</span> <span class="k">in</span>
+  <span class="k">if</span> <span class="o">(</span><span class="n">o1_cr</span><span class="o">.</span><span class="n">cr_self_cross</span> <span class="o">||</span> <span class="n">o2_cr</span><span class="o">.</span><span class="n">cr_self_cross</span><span class="o">)</span> <span class="o">&amp;&amp;</span> <span class="o">(</span><span class="n">o1</span><span class="o">.</span><span class="n">client_id</span> <span class="o">=</span> <span class="n">o2</span><span class="o">.</span><span class="n">client_id</span><span class="o">)</span>
+  <span class="k">then</span> <span class="bp">false</span>
+  <span class="k">else</span> <span class="k">if</span> <span class="o">(</span><span class="n">o1_cr</span><span class="o">.</span><span class="n">cr_ubs_principal</span> <span class="o">||</span> <span class="n">o2_cr</span><span class="o">.</span><span class="n">cr_ubs_principal</span><span class="o">)</span> <span class="o">&amp;&amp;</span>
+            <span class="o">(</span><span class="n">o1</span><span class="o">.</span><span class="n">client_id</span> <span class="o">=</span> <span class="n">ubs_id</span> <span class="o">||</span> <span class="n">o2</span><span class="o">.</span><span class="n">client_id</span> <span class="o">=</span> <span class="n">ubs_id</span><span class="o">)</span> <span class="k">then</span> <span class="bp">false</span>
+  <span class="k">else</span> <span class="k">if</span> <span class="o">(</span><span class="n">o1_cr</span><span class="o">.</span><span class="n">cr_enable_conditionals</span> <span class="o">||</span> <span class="n">o2_cr</span><span class="o">.</span><span class="n">cr_enable_conditionals</span><span class="o">)</span> <span class="o">&amp;&amp;</span>
+            <span class="o">(</span><span class="n">o1</span><span class="o">.</span><span class="n">order_type</span> <span class="o">=</span> <span class="nc">LIMIT_CI</span> <span class="o">||</span> <span class="n">o1</span><span class="o">.</span><span class="n">order_type</span> <span class="o">=</span> <span class="nc">PEGGED_CI</span><span class="o">)</span> <span class="k">then</span> <span class="bp">false</span>
+  <span class="k">else</span> <span class="bp">true</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[15]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>val get_cat_eligibility : category_elig * category -&gt; bool = &lt;fun&gt;
+val can_orders_cross : order * order -&gt; bool = &lt;fun&gt;
+</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Order-Book">Order Book<a class="anchor-link" href="#Order-Book">&#182;</a></h1><p>The Order Book is used to match buy orders against sell orders.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="try-this-container">
+  <div class="try-this"><a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Analysing%20the%20UBS%20ATS%20Dark%20Pool.ipynb%23try-cell-29" target="_blank">Try this!</a></div>
+</div>
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[16]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ocaml"><pre><span></span><span class="k">type</span> <span class="n">order_book</span> <span class="o">=</span> <span class="o">{</span>
+  <span class="n">buys</span>  <span class="o">:</span> <span class="n">order</span> <span class="kt">list</span><span class="o">;</span>
+  <span class="n">sells</span> <span class="o">:</span> <span class="n">order</span> <span class="kt">list</span><span class="o">;</span>
+<span class="o">}</span>
+
+<span class="k">let</span> <span class="n">empty_book</span> <span class="o">=</span> <span class="o">{</span> <span class="n">buys</span> <span class="o">=</span> <span class="bp">[]</span><span class="o">;</span> <span class="n">sells</span> <span class="o">=</span> <span class="bp">[]</span> <span class="o">}</span>
+
+<span class="k">type</span> <span class="n">fill</span> <span class="o">=</span> <span class="o">{</span> <span class="n">order_buy</span> <span class="o">:</span> <span class="n">order</span><span class="o">;</span>
+              <span class="n">order_sell</span> <span class="o">:</span> <span class="n">order</span><span class="o">;</span>
+              <span class="n">fill_qty</span> <span class="o">:</span> <span class="kt">int</span><span class="o">;</span>
+              <span class="n">fill_price</span> <span class="o">:</span> <span class="n">fill_price</span><span class="o">;</span>
+              <span class="n">fill_time</span> <span class="o">:</span> <span class="n">time</span><span class="o">;</span>
+            <span class="o">}</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[16]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>type order_book = { buys : order list; sells : order list; }
+val empty_book : order_book = {buys = []; sells = []}
+type fill = {
+  order_buy : order;
+  order_sell : order;
+  fill_qty : int;
+  fill_price : fill_price;
+  fill_time : time;
+}
+</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Ranking-functions-for-orders">Ranking functions for orders<a class="anchor-link" href="#Ranking-functions-for-orders">&#182;</a></h2><p>From Section 4.1 of UBS's June, 2015 Form ATS:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+
+<pre><code>Eligible Resident Orders and IOC Orders are given priority
+based first on price and second on the time of their receipt by the UBS ATS.
+Eligibility is determined based on the crossing restrictions associated with
+the orders on both sides of the potential cross.
+
+Invites are sent to the Order Originators of Conditional Indications on a
+priority based first on price, second on the quantity and third on the time of
+receipt by UBS ATS. For orders with the same price and time, priority is given
+to Resident and IOC Orders over Conditional Indications.
+
+All marketable limit orders (i.e., buy orders with limit prices at or above the
+NBO or sell orders with limit prices at or below the NBB) will be treated as
+though they are at equivalent prices for priority purposes. As such, they will
+be handled based strictly on time priority, as if they were market orders. If a
+marketable limit order becomes non - marketable before execution, it will be treated
+as a limit order and will receive price / time priority, with time based upon the
+original time of receipt of the order by the UBS ATS.</code></pre>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Let us formalise this logic below.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="try-this-container">
+  <div class="try-this"><a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Analysing%20the%20UBS%20ATS%20Dark%20Pool.ipynb%23try-cell-33" target="_blank">Try this!</a></div>
+</div>
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[17]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ocaml"><pre><span></span><span class="k">let</span> <span class="n">non_ci</span> <span class="o">(</span><span class="n">ot</span><span class="o">)</span> <span class="o">=</span> <span class="n">not</span><span class="o">(</span><span class="n">ot</span> <span class="o">=</span> <span class="nc">PEGGED_CI</span> <span class="o">||</span> <span class="n">ot</span> <span class="o">=</span> <span class="nc">LIMIT_CI</span><span class="o">);;</span>
+
+<span class="k">let</span> <span class="n">order_higher_ranked</span> <span class="o">(</span><span class="n">side</span><span class="o">,</span> <span class="n">o1</span><span class="o">,</span> <span class="n">o2</span><span class="o">,</span> <span class="n">mkt</span><span class="o">)</span> <span class="o">=</span>
+  <span class="k">let</span> <span class="n">ot1</span> <span class="o">=</span> <span class="n">o1</span><span class="o">.</span><span class="n">order_type</span> <span class="k">in</span>
+  <span class="k">let</span> <span class="n">ot2</span> <span class="o">=</span> <span class="n">o2</span><span class="o">.</span><span class="n">order_type</span> <span class="k">in</span>
+
+  <span class="k">let</span> <span class="n">p_price1</span> <span class="o">=</span> <span class="n">priority_price</span> <span class="o">(</span><span class="n">side</span><span class="o">,</span> <span class="n">o1</span><span class="o">,</span> <span class="n">mkt</span><span class="o">)</span> <span class="k">in</span>
+  <span class="k">let</span> <span class="n">p_price2</span> <span class="o">=</span> <span class="n">priority_price</span> <span class="o">(</span><span class="n">side</span><span class="o">,</span> <span class="n">o2</span><span class="o">,</span> <span class="n">mkt</span><span class="o">)</span> <span class="k">in</span>
+
+  <span class="k">let</span> <span class="n">wins_price</span> <span class="o">=</span> <span class="o">(</span>
+    <span class="k">if</span> <span class="n">side</span> <span class="o">=</span> <span class="nc">BUY</span> <span class="k">then</span>
+      <span class="o">(</span> <span class="k">if</span> <span class="n">p_price1</span> <span class="o">&gt;.</span> <span class="n">p_price2</span> <span class="k">then</span> <span class="mi">1</span>
+        <span class="k">else</span> <span class="k">if</span> <span class="n">p_price1</span> <span class="o">=</span> <span class="n">p_price2</span> <span class="k">then</span> <span class="mi">0</span>
+        <span class="k">else</span> <span class="o">-</span><span class="mi">1</span><span class="o">)</span>
+    <span class="k">else</span>
+      <span class="o">(</span> <span class="k">if</span> <span class="n">p_price1</span> <span class="o">&lt;.</span> <span class="n">p_price2</span> <span class="k">then</span> <span class="mi">1</span>
+        <span class="k">else</span> <span class="k">if</span> <span class="n">p_price1</span> <span class="o">=</span> <span class="n">p_price2</span> <span class="k">then</span> <span class="mi">0</span>
+        <span class="k">else</span> <span class="o">-</span><span class="mi">1</span><span class="o">)</span> <span class="o">)</span> <span class="k">in</span>
+
+  <span class="k">let</span> <span class="n">wins_time</span> <span class="o">=</span> <span class="o">(</span>
+    <span class="k">if</span> <span class="n">o1</span><span class="o">.</span><span class="n">time</span> <span class="o">&lt;</span> <span class="n">o2</span><span class="o">.</span><span class="n">time</span> <span class="k">then</span> <span class="mi">1</span>
+    <span class="k">else</span> <span class="k">if</span> <span class="n">o1</span><span class="o">.</span><span class="n">time</span> <span class="o">=</span> <span class="n">o2</span><span class="o">.</span><span class="n">time</span> <span class="k">then</span> <span class="mi">0</span>
+    <span class="k">else</span> <span class="o">-</span><span class="mi">1</span>
+  <span class="o">)</span> <span class="k">in</span>
+
+  <span class="c">(* Note that the CI priority is price, quantity and then time *)</span>
+  <span class="k">if</span> <span class="n">wins_price</span> <span class="o">=</span> <span class="mi">1</span> <span class="k">then</span> <span class="bp">true</span>
+  <span class="k">else</span> <span class="k">if</span> <span class="n">wins_price</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span> <span class="k">then</span> <span class="bp">false</span>
+  <span class="k">else</span> <span class="o">(</span>
+    <span class="c">(* Same price level - first check to see whether we&#39;re comparing two   *)</span>
+    <span class="c">(* CI orders here                                                      *)</span>
+    <span class="k">if</span> <span class="n">not</span> <span class="o">(</span><span class="n">non_ci</span> <span class="o">(</span><span class="n">ot1</span><span class="o">))</span> <span class="o">&amp;&amp;</span> <span class="n">not</span> <span class="o">(</span><span class="n">non_ci</span> <span class="o">(</span><span class="n">ot2</span><span class="o">))</span> <span class="k">then</span>
+      <span class="n">o1</span><span class="o">.</span><span class="n">leaves_qty</span> <span class="o">&gt;</span> <span class="n">o2</span><span class="o">.</span><span class="n">leaves_qty</span>
+    <span class="k">else</span> <span class="o">(</span> <span class="k">if</span> <span class="n">wins_time</span> <span class="o">=</span> <span class="mi">1</span> <span class="k">then</span> <span class="bp">true</span>
+           <span class="k">else</span> <span class="k">if</span> <span class="n">wins_time</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span> <span class="k">then</span> <span class="bp">false</span>
+           <span class="k">else</span> <span class="o">(</span>
+             <span class="k">if</span> <span class="n">non_ci</span><span class="o">(</span><span class="n">ot1</span><span class="o">)</span> <span class="k">then</span> <span class="bp">true</span>
+             <span class="k">else</span> <span class="k">if</span> <span class="o">(</span><span class="n">not</span><span class="o">(</span><span class="n">non_ci</span><span class="o">(</span><span class="n">ot1</span><span class="o">))</span> <span class="o">&amp;&amp;</span> <span class="n">non_ci</span><span class="o">(</span><span class="n">ot2</span><span class="o">))</span> <span class="k">then</span> <span class="bp">false</span>
+             <span class="k">else</span>
+               <span class="n">o1</span><span class="o">.</span><span class="n">leaves_qty</span> <span class="o">&gt;</span> <span class="n">o2</span><span class="o">.</span><span class="n">leaves_qty</span><span class="o">)</span>
+         <span class="o">)</span>
+  <span class="o">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[17]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>val non_ci : order_type -&gt; bool = &lt;fun&gt;
+val order_higher_ranked : order_side * order * order * mkt_data -&gt; bool =
+  &lt;fun&gt;
+</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>The property we're interested in is whether this ranking predicate is transitive (a necessary condition for being a proper ordering relation that can be used for sorting, e.g., orders in the book):</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="try-this-container">
+  <div class="try-this"><a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Analysing%20the%20UBS%20ATS%20Dark%20Pool.ipynb%23try-cell-35" target="_blank">Try this!</a></div>
+</div>
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[18]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ocaml"><pre><span></span><span class="k">let</span> <span class="n">rank_transitivity</span> <span class="n">side</span> <span class="n">o1</span> <span class="n">o2</span> <span class="n">o3</span> <span class="n">mkt</span> <span class="o">=</span>
+    <span class="n">order_higher_ranked</span><span class="o">(</span><span class="n">side</span><span class="o">,</span><span class="n">o1</span><span class="o">,</span><span class="n">o2</span><span class="o">,</span><span class="n">mkt</span><span class="o">)</span> <span class="o">&amp;&amp;</span>
+    <span class="n">order_higher_ranked</span><span class="o">(</span><span class="n">side</span><span class="o">,</span><span class="n">o2</span><span class="o">,</span><span class="n">o3</span><span class="o">,</span><span class="n">mkt</span><span class="o">)</span>
+    <span class="o">==&gt;</span>
+    <span class="n">order_higher_ranked</span><span class="o">(</span><span class="n">side</span><span class="o">,</span><span class="n">o1</span><span class="o">,</span><span class="n">o3</span><span class="o">,</span><span class="n">mkt</span><span class="o">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[18]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>val rank_transitivity :
+  order_side -&gt; order -&gt; order -&gt; order -&gt; mkt_data -&gt; bool = &lt;fun&gt;
+</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Now we can check whether this property of being transitive holds:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="try-this-container">
+  <div class="try-this"><a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Analysing%20the%20UBS%20ATS%20Dark%20Pool.ipynb%23try-cell-37" target="_blank">Try this!</a></div>
+</div>
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[19]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ocaml"><pre><span></span><span class="n">verify</span> <span class="o">(</span><span class="k">fun</span> <span class="n">side</span> <span class="n">o1</span> <span class="n">o2</span> <span class="n">o3</span> <span class="n">mkt</span> <span class="o">-&gt;</span> <span class="n">rank_transitivity</span> <span class="n">side</span> <span class="n">o1</span> <span class="n">o2</span> <span class="n">o3</span> <span class="n">mkt</span><span class="o">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[19]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>- : order_side -&gt; order -&gt; order -&gt; order -&gt; mkt_data -&gt; bool = &lt;fun&gt;
+module CX :
+  sig
+    val side : order_side
+    val o1 : order
+    val o2 : order
+    val o3 : order
+    val mkt : mkt_data
+  end
+</pre>
+</div>
+
+</div>
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+
+<div class="output_html rendered_html output_subarea ">
+<div><pre>Counterexample (after 0 steps, 0.069s):
+ let side = SELL
+ let o1 =
+   {id = 3; peg = FAR; client_id = 4; order_type = LIMIT_CI; qty = 5;
+    min_qty = 6; leaves_qty = 2438; price = 0.; time = 8856; src = 7;
+    order_attr = IOC; capacity = Principal; category = C_TWO;
+    cross_restrict =
+     {cr_self_cross = false; cr_ubs_principal = false;
+      cr_round_lot_only = false; cr_no_locked_nbbo = false;
+      cr_pegged_mid_point_mode = 2; cr_enable_conditionals = false;
+      cr_min_qty = false;
+      cr_cat_elig =
+       {c_one_elig = false; c_two_elig = false; c_three_elig = false;
+        c_four_elig = false}};
+    locate_found = false; expiry_time = 8}
+ let o2 =
+   {id = 9; peg = FAR; client_id = 10; order_type = LIMIT_CI; qty = 11;
+    min_qty = 12; leaves_qty = 2437; price = -1.; time = 8854; src = 13;
+    order_attr = IOC; capacity = Principal; category = C_TWO;
+    cross_restrict =
+     {cr_self_cross = false; cr_ubs_principal = false;
+      cr_round_lot_only = false; cr_no_locked_nbbo = false;
+      cr_pegged_mid_point_mode = 15; cr_enable_conditionals = false;
+      cr_min_qty = false;
+      cr_cat_elig =
+       {c_one_elig = false; c_two_elig = false; c_three_elig = false;
+        c_four_elig = false}};
+    locate_found = false; expiry_time = 14}
+ let o3 =
+   {id = 19; peg = FAR; client_id = 20; order_type = FIRM_UP_LIMIT; qty = 21;
+    min_qty = 22; leaves_qty = 1796; price = 1.; time = 8855; src = 23;
+    order_attr = IOC; capacity = Principal; category = C_TWO;
+    cross_restrict =
+     {cr_self_cross = false; cr_ubs_principal = false;
+      cr_round_lot_only = false; cr_no_locked_nbbo = false;
+      cr_pegged_mid_point_mode = 18; cr_enable_conditionals = false;
+      cr_min_qty = false;
+      cr_cat_elig =
+       {c_one_elig = false; c_two_elig = false; c_three_elig = false;
+        c_four_elig = false}};
+    locate_found = false; expiry_time = 24}
+ let mkt = {nbb = 1.; nbo = 1236.; l_up = 2.; l_down = 3.}
+</pre></div>
+
+</div>
+
+</div>
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+
+<div class="output_html rendered_html output_subarea ">
+<div><div class="imandra-vr imandra-vr-refuted"><i class="fa fa-times-circle-o"></i><span>Refuted</span></div><div><div class="imandra-alternatives" id="alt-6ac05576-36ec-42bc-97c3-17af10d01947"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>call graph</a></li><li class="" data-toggle="tab"><a>proof-attempt</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-graphviz" id="graphviz-ae523cde-d318-4212-8c0b-4a6076ad4a9e"><textarea style="display: none">digraph &quot;call graph&quot; {
+goal [label=&quot;not\l((not\l  (((if side = BUY\l     then\l       if (if o1.order_type = LIMIT\l           then\l             if side = BUY then if 0 \&lt;=. o1.price then … else …\l             else if 0 \&lt;=. o1.price then … else …\l           else\l           if o1.order_type = MARKET then if side = BUY then … else …\l           else if o1.order_type = PEGGED then … else …)\l          \&lt;=.\l          (if o2.order_type = LIMIT\l           then\l             if side = BUY then if 0 \&lt;=. o2.price then … else …\l             else if 0 \&lt;=. o2.price then … else …\l           else if … then … else …)\l       then … else 1\l     else …)\l    = 1 \|\| …)\l   &amp;&amp; …)\l  \|\| …)\l \|\| …)&quot;,shape=box,style=filled,color=&quot;cyan&quot;,fontname=&quot;courier&quot;,fontsize=14];
+}
+</textarea><button class="btn btn-primary">Load graph</button><div class="imandra-graphviz-loading display-none">Loading..</div><div class="imandra-graphviz-target"></div><script>
+require(['nbextensions/nbimandra/graphviz'], function (graphviz) {
+  var target = '#graphviz-ae523cde-d318-4212-8c0b-4a6076ad4a9e';
+  graphviz.hydrate(target);
+});
+</script></div></div><div class="tab-pane"><div class="imandra-proof-top"><div class="imandra-fold panel panel-default" id="fold-fd637d6d-365c-4ad4-8bea-11dabcfc813a"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>proof attempt</span></div></div><div class="panel-body collapse"><div class="imandra-proof"><div class="imandra-alternatives" id="alt-636a2e9a-dd7c-44a3-97d3-83396c84004b"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>summary</a></li><li class="" data-toggle="tab"><a>full</a></li><li class="" data-toggle="tab"><a>graph</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-table" id="table-7b1a73e8-0bec-4bf4-beb3-711a74437b36"><table><tr><td><b>ground_instances</b></td><td>0</td></tr><tr><td><b>definitions</b></td><td>0</td></tr><tr><td><b>inductions</b></td><td>0</td></tr><tr><td><b>search_time</b></td><td><pre>0.069s</pre></td></tr><tr><td><b>details</b></td><td><div class="imandra-fold panel panel-default" id="fold-4d96cc13-4a70-4f38-8227-b0fec31acdd6"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><div class="imandra-table" id="table-730f1d5c-f9d5-4c51-a74a-9365c8a28367"><table><tr><td><b>smt_stats</b></td><td><div class="imandra-table" id="table-42799c81-a1f2-4b83-a4a6-4cbd08d822b2"><table><tr><td><b>arith assert lower</b></td><td>42</td></tr><tr><td><b>arith pivots</b></td><td>15</td></tr><tr><td><b>rlimit count</b></td><td>18822</td></tr><tr><td><b>mk clause</b></td><td>540</td></tr><tr><td><b>datatype occurs check</b></td><td>47</td></tr><tr><td><b>mk bool var</b></td><td>767</td></tr><tr><td><b>arith assert upper</b></td><td>53</td></tr><tr><td><b>datatype splits</b></td><td>31</td></tr><tr><td><b>decisions</b></td><td>829</td></tr><tr><td><b>arith add rows</b></td><td>60</td></tr><tr><td><b>arith bound prop</b></td><td>5</td></tr><tr><td><b>propagations</b></td><td>882</td></tr><tr><td><b>conflicts</b></td><td>23</td></tr><tr><td><b>arith fixed eqs</b></td><td>20</td></tr><tr><td><b>datatype accessor ax</b></td><td>69</td></tr><tr><td><b>minimized lits</b></td><td>1</td></tr><tr><td><b>arith conflicts</b></td><td>2</td></tr><tr><td><b>arith assert diseq</b></td><td>17</td></tr><tr><td><b>datatype constructor ax</b></td><td>201</td></tr><tr><td><b>num allocs</b></td><td>1339193122</td></tr><tr><td><b>final checks</b></td><td>1</td></tr><tr><td><b>added eqs</b></td><td>1327</td></tr><tr><td><b>del clause</b></td><td>107</td></tr><tr><td><b>arith eq adapter</b></td><td>22</td></tr><tr><td><b>memory</b></td><td>6.260000</td></tr><tr><td><b>max memory</b></td><td>20.060000</td></tr></table></div></td></tr></table></div></div><script>
+require(['nbextensions/nbimandra/fold'], function (fold) {
+  var target = '#fold-4d96cc13-4a70-4f38-8227-b0fec31acdd6';
+  fold.hydrate(target);
+});
+</script></div></td></tr></table></div></div><div class="tab-pane"><div class="imandra-fold panel panel-default" id="fold-9281b9c8-7350-4a92-9b49-eb1d577dc9cd"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.069s]
+  (if (if :var_0: = BUY
+       then
+         if (if ….order_type = LIMIT
+             then
+               if :var_0: = BUY then if ….1 &lt;. 0 then … else …
+               else if ….1 &lt;. 0 then … else …
+             else
+             if ….order_type = MARKET
+             then if :var_0: = BUY then … else …
+             else if ….order_type = PEGGED then … else …)
+            &gt;.
+            (if ….order_type = LIMIT
+             then
+               if :var_0: = BUY then if ….1 &lt;. 0 then … else …
+               else if … then … else …
+             else …)
+         then 1 else …
+       else …)
+      = 1
+   then true else …)
+  &amp;&amp; … ==&gt; …</pre></li><li><div><h4>simplify</h4><div class="imandra-table" id="table-a6c33bf7-d9ff-428a-8af5-ab36415c17a2"><table><tr><td><b>into</b></td><td><pre>(not
+ (((if :var_0: = BUY
+    then
+      if (if :var_1:.order_type = LIMIT
+          then
+            if :var_0: = BUY then if 0 &lt;=. :var_1:.price then … else …
+            else if 0 &lt;=. :var_1:.price then … else …
+          else
+          if :var_1:.order_type = MARKET
+          then if :var_0: = BUY then … else …
+          else if :var_1:.order_type = PEGGED then … else …)
+         &lt;=.
+         (if :var_2:.order_type = LIMIT
+          then
+            if :var_0: = BUY then if 0 &lt;=. :var_2:.price then … else …
+            else if 0 &lt;=. :var_2:.price then … else …
+          else
+          if :var_2:.order_type = MARKET
+          then if :var_0: = BUY then … else …
+          else if :var_2:.order_type = PEGGED then … else …)
+      then if … then 0 else -1 else 1
+    else …)
+   = 1 || …)
+  &amp;&amp; …)
+ || …)
+|| …</pre></td></tr><tr><td><b>expansions</b></td><td><pre>[]</pre></td></tr><tr><td><b>rewrite_steps</b></td><td><ul></ul></td></tr><tr><td><b>forward_chaining</b></td><td><ul></ul></td></tr></table></div></div></li><li>Sat (Some  let side = SELL
+ let o1 =
+   {id = 3; peg = FAR; client_id = 4; order_type = LIMIT_CI; qty = 5;
+    min_qty = 6; leaves_qty = 2438; price = 0.; time = 8856; src = 7;
+    order_attr = IOC; capacity = Principal; category = C_TWO;
+    cross_restrict =
+     {cr_self_cross = false; cr_ubs_principal = false;
+      cr_round_lot_only = false; cr_no_locked_nbbo = false;
+      cr_pegged_mid_point_mode = 2; cr_enable_conditionals = false;
+      cr_min_qty = false;
+      cr_cat_elig =
+       {c_one_elig = false; c_two_elig = false; c_three_elig = false;
+        c_four_elig = false}};
+    locate_found = false; expiry_time = 8}
+ let o2 =
+   {id = 9; peg = FAR; client_id = 10; order_type = LIMIT_CI; qty = 11;
+    min_qty = 12; leaves_qty = 2437; price = -1.; time = 8854; src = 13;
+    order_attr = IOC; capacity = Principal; category = C_TWO;
+    cross_restrict =
+     {cr_self_cross = false; cr_ubs_principal = false;
+      cr_round_lot_only = false; cr_no_locked_nbbo = false;
+      cr_pegged_mid_point_mode = 15; cr_enable_conditionals = false;
+      cr_min_qty = false;
+      cr_cat_elig =
+       {c_one_elig = false; c_two_elig = false; c_three_elig = false;
+        c_four_elig = false}};
+    locate_found = false; expiry_time = 14}
+ let o3 =
+   {id = 19; peg = FAR; client_id = 20; order_type = FIRM_UP_LIMIT; qty = 21;
+    min_qty = 22; leaves_qty = 1796; price = 1.; time = 8855; src = 23;
+    order_attr = IOC; capacity = Principal; category = C_TWO;
+    cross_restrict =
+     {cr_self_cross = false; cr_ubs_principal = false;
+      cr_round_lot_only = false; cr_no_locked_nbbo = false;
+      cr_pegged_mid_point_mode = 18; cr_enable_conditionals = false;
+      cr_min_qty = false;
+      cr_cat_elig =
+       {c_one_elig = false; c_two_elig = false; c_three_elig = false;
+        c_four_elig = false}};
+    locate_found = false; expiry_time = 24}
+ let mkt = {nbb = 1.; nbo = 1236.; l_up = 2.; l_down = 3.}
+)</li></ul></div><script>
+require(['nbextensions/nbimandra/fold'], function (fold) {
+  var target = '#fold-9281b9c8-7350-4a92-9b49-eb1d577dc9cd';
+  fold.hydrate(target);
+});
+</script></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-9f4f1fac-7aaa-4285-bbfb-eb19d96ecb3a"><textarea style="display: none">digraph &quot;proof&quot; {
+p_234 [label=&quot;Start ((if (if :var_0: = BUY\l            then\l              if (if ….order_type = LIMIT\l                  then\l                    if :var_0: = BUY then if ….1 \&lt;. 0 then … else …\l                    else if ….1 \&lt;. 0 then … else …\l                  else\l                  if ….order_type = MARKET\l                  then if :var_0: = BUY then … else …\l                  else if ….order_type = PEGGED then … else …)\l                 \&gt;.\l                 (if ….order_type = LIMIT\l                  then\l                    if :var_0: = BUY then if ….1 \&lt;. 0 then … else …\l                    else if … then … else …\l                  else …)\l              then 1 else …\l            else …)\l           = 1\l        then true else …)\l       &amp;&amp; … ==\&gt; … :time 0.069s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+p_234 -&gt; p_233 [label=&quot;&quot;];
+p_233 [label=&quot;Simplify ((not\l           (((if :var_0: = BUY\l              then\l                if (if :var_1:.order_type = LIMIT\l                    then\l                      if :var_0: = BUY\l                      then if 0 \&lt;=. :var_1:.price then … else …\l                      else if 0 \&lt;=. :var_1:.price then … else …\l                    else\l                    if :var_1:.order_type = MARKET\l                    then if :var_0: = BUY then … else …\l                    else if :var_1:.order_type = PEGGED then … else …)\l                   \&lt;=.\l                   (if :var_2:.order_type = LIMIT\l                    then\l                      if :var_0: = BUY\l                      then if 0 \&lt;=. :var_2:.price then … else …\l                      else if 0 \&lt;=. :var_2:.price then … else …\l                    else\l                    if :var_2:.order_type = MARKET\l                    then if :var_0: = BUY then … else …\l                    else if :var_2:.order_type = PEGGED then … else …)\l                then if … then 0 else -1 else 1\l              else …)\l             = 1 \|\| …)\l            &amp;&amp; …)\l           \|\| …)\l          \|\| … :expansions [] :rw [] :fc [])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+p_233 -&gt; p_232 [label=&quot;&quot;];
+p_232 [label=&quot;Sat (Some  let side = SELL\l let o1 =\l   \{id = 3; peg = FAR; client_id = 4; order_type = LIMIT_CI; qty = 5;\l    min_qty = 6; leaves_qty = 2438; price = 0.; time = 8856; src = 7;\l    order_attr = IOC; capacity = Principal; category = C_TWO;\l    cross_restrict =\l     \{cr_self_cross = false; cr_ubs_principal = false;\l      cr_round_lot_only = false; cr_no_locked_nbbo = false;\l      cr_pegged_mid_point_mode = 2; cr_enable_conditionals = false;\l      cr_min_qty = false;\l      cr_cat_elig =\l       \{c_one_elig = false; c_two_elig = false; c_three_elig = false;\l        c_four_elig = false\}\};\l    locate_found = false; expiry_time = 8\}\l let o2 =\l   \{id = 9; peg = FAR; client_id = 10; order_type = LIMIT_CI; qty = 11;\l    min_qty = 12; leaves_qty = 2437; price = -1.; time = 8854; src = 13;\l    order_attr = IOC; capacity = Principal; category = C_TWO;\l    cross_restrict =\l     \{cr_self_cross = false; cr_ubs_principal = false;\l      cr_round_lot_only = false; cr_no_locked_nbbo = false;\l      cr_pegged_mid_point_mode = 15; cr_enable_conditionals = false;\l      cr_min_qty = false;\l      cr_cat_elig =\l       \{c_one_elig = false; c_two_elig = false; c_three_elig = false;\l        c_four_elig = false\}\};\l    locate_found = false; expiry_time = 14\}\l let o3 =\l   \{id = 19; peg = FAR; client_id = 20; order_type = FIRM_UP_LIMIT; qty = 21;\l    min_qty = 22; leaves_qty = 1796; price = 1.; time = 8855; src = 23;\l    order_attr = IOC; capacity = Principal; category = C_TWO;\l    cross_restrict =\l     \{cr_self_cross = false; cr_ubs_principal = false;\l      cr_round_lot_only = false; cr_no_locked_nbbo = false;\l      cr_pegged_mid_point_mode = 18; cr_enable_conditionals = false;\l      cr_min_qty = false;\l      cr_cat_elig =\l       \{c_one_elig = false; c_two_elig = false; c_three_elig = false;\l        c_four_elig = false\}\};\l    locate_found = false; expiry_time = 24\}\l let mkt = \{nbb = 1.; nbo = 1236.; l_up = 2.; l_down = 3.\}\l)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+}
+</textarea><button class="btn btn-primary">Load graph</button><div class="imandra-graphviz-loading display-none">Loading..</div><div class="imandra-graphviz-target"></div><script>
+require(['nbextensions/nbimandra/graphviz'], function (graphviz) {
+  var target = '#graphviz-9f4f1fac-7aaa-4285-bbfb-eb19d96ecb3a';
+  graphviz.hydrate(target);
+});
+</script></div></div></div><script>
+require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
+  var target = '#alt-636a2e9a-dd7c-44a3-97d3-83396c84004b';
+  alternatives.hydrate(target);
+});
+</script></div></div></div><script>
+require(['nbextensions/nbimandra/fold'], function (fold) {
+  var target = '#fold-fd637d6d-365c-4ad4-8bea-11dabcfc813a';
+  fold.hydrate(target);
+});
+</script></div></div></div></div><script>
+require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
+  var target = '#alt-6ac05576-36ec-42bc-97c3-17af10d01947';
+  alternatives.hydrate(target);
+});
+</script></div></div></div>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>We just showed that the ranking function is <strong>not</strong> transitive! As always, the components of the counterexample are automatically reflected into a module called <code>CX</code> and can be computed with, just as any other value in our runtime:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="try-this-container">
+  <div class="try-this"><a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Analysing%20the%20UBS%20ATS%20Dark%20Pool.ipynb%23try-cell-39" target="_blank">Try this!</a></div>
+</div>
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[20]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ocaml"><pre><span></span><span class="nn">CX</span><span class="p">.</span><span class="n">o1</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[20]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>- : order =
+{id = 3; peg = FAR; client_id = 4; order_type = LIMIT_CI; qty = 5;
+ min_qty = 6; leaves_qty = 2438; price = 0; time = 8856; src = 7;
+ order_attr = IOC; capacity = Principal; category = C_TWO;
+ cross_restrict =
+  {cr_self_cross = false; cr_ubs_principal = false;
+   cr_round_lot_only = false; cr_no_locked_nbbo = false;
+   cr_pegged_mid_point_mode = 2; cr_enable_conditionals = false;
+   cr_min_qty = false;
+   cr_cat_elig =
+    {c_one_elig = false; c_two_elig = false; c_three_elig = false;
+     c_four_elig = false}};
+ locate_found = false; expiry_time = 8}
+</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Let's verify this counterexample to transitivity by computation!</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="try-this-container">
+  <div class="try-this"><a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Analysing%20the%20UBS%20ATS%20Dark%20Pool.ipynb%23try-cell-41" target="_blank">Try this!</a></div>
+</div>
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[21]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ocaml"><pre><span></span><span class="n">order_higher_ranked</span> <span class="nn">CX</span><span class="p">.</span><span class="o">(</span><span class="n">side</span><span class="o">,</span> <span class="n">o1</span><span class="o">,</span> <span class="n">o2</span><span class="o">,</span> <span class="n">mkt</span><span class="o">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[21]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>- : bool = true
+</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="try-this-container">
+  <div class="try-this"><a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Analysing%20the%20UBS%20ATS%20Dark%20Pool.ipynb%23try-cell-42" target="_blank">Try this!</a></div>
+</div>
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[22]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ocaml"><pre><span></span><span class="n">order_higher_ranked</span> <span class="nn">CX</span><span class="p">.</span><span class="o">(</span><span class="n">side</span><span class="o">,</span> <span class="n">o2</span><span class="o">,</span> <span class="n">o3</span><span class="o">,</span> <span class="n">mkt</span><span class="o">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[22]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>- : bool = true
+</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="try-this-container">
+  <div class="try-this"><a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Analysing%20the%20UBS%20ATS%20Dark%20Pool.ipynb%23try-cell-43" target="_blank">Try this!</a></div>
+</div>
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[23]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ocaml"><pre><span></span><span class="n">order_higher_ranked</span> <span class="nn">CX</span><span class="p">.</span><span class="o">(</span><span class="n">side</span><span class="o">,</span> <span class="n">o1</span><span class="o">,</span> <span class="n">o3</span><span class="o">,</span> <span class="n">mkt</span><span class="o">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[23]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>- : bool = false
+</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Let us add some additional constraints to help make our counterexample "pretty":</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="try-this-container">
+  <div class="try-this"><a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Analysing%20the%20UBS%20ATS%20Dark%20Pool.ipynb%23try-cell-45" target="_blank">Try this!</a></div>
+</div>
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[24]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ocaml"><pre><span></span><span class="k">let</span> <span class="n">pretty</span> <span class="n">mkt</span> <span class="n">o1</span> <span class="n">o2</span> <span class="n">o3</span> <span class="o">=</span>
+    <span class="n">o1</span><span class="o">.</span><span class="n">leaves_qty</span> <span class="o">&lt;=</span> <span class="n">o1</span><span class="o">.</span><span class="n">qty</span> <span class="o">&amp;&amp;</span>
+    <span class="n">o2</span><span class="o">.</span><span class="n">leaves_qty</span> <span class="o">&lt;=</span> <span class="n">o2</span><span class="o">.</span><span class="n">qty</span> <span class="o">&amp;&amp;</span>
+    <span class="n">o3</span><span class="o">.</span><span class="n">leaves_qty</span> <span class="o">&lt;=</span> <span class="n">o3</span><span class="o">.</span><span class="n">qty</span> <span class="o">&amp;&amp;</span>
+    <span class="n">o1</span><span class="o">.</span><span class="n">time</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span>
+    <span class="n">o2</span><span class="o">.</span><span class="n">time</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span>
+    <span class="n">o3</span><span class="o">.</span><span class="n">time</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span>
+    <span class="n">o1</span><span class="o">.</span><span class="n">price</span> <span class="o">&gt;.</span> <span class="mi">0</span><span class="o">.</span><span class="mi">0</span> <span class="o">&amp;&amp;</span>
+    <span class="n">o2</span><span class="o">.</span><span class="n">price</span> <span class="o">&gt;.</span> <span class="mi">0</span><span class="o">.</span><span class="mi">0</span> <span class="o">&amp;&amp;</span>
+    <span class="n">o3</span><span class="o">.</span><span class="n">price</span> <span class="o">&gt;.</span> <span class="mi">0</span><span class="o">.</span><span class="mi">0</span> <span class="o">&amp;&amp;</span>
+    <span class="n">o1</span><span class="o">.</span><span class="n">qty</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span>
+    <span class="n">o2</span><span class="o">.</span><span class="n">qty</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span>
+    <span class="n">o3</span><span class="o">.</span><span class="n">qty</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span>
+    <span class="n">o1</span><span class="o">.</span><span class="n">leaves_qty</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span>
+    <span class="n">o2</span><span class="o">.</span><span class="n">leaves_qty</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span>
+    <span class="n">o3</span><span class="o">.</span><span class="n">leaves_qty</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span>
+    <span class="n">mkt</span><span class="o">.</span><span class="n">nbb</span> <span class="o">&gt;.</span> <span class="mi">0</span><span class="o">.</span><span class="mi">0</span> <span class="o">&amp;&amp;</span>
+    <span class="n">mkt</span><span class="o">.</span><span class="n">nbo</span> <span class="o">&gt;.</span> <span class="mi">0</span><span class="o">.</span><span class="mi">0</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[24]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>val pretty : mkt_data -&gt; order -&gt; order -&gt; order -&gt; bool = &lt;fun&gt;
+</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="try-this-container">
+  <div class="try-this"><a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Analysing%20the%20UBS%20ATS%20Dark%20Pool.ipynb%23try-cell-46" target="_blank">Try this!</a></div>
+</div>
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[25]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ocaml"><pre><span></span><span class="n">verify</span> <span class="o">(</span><span class="k">fun</span> <span class="n">side</span> <span class="n">o1</span> <span class="n">o2</span> <span class="n">o3</span> <span class="n">mkt</span> <span class="o">-&gt;</span> <span class="n">pretty</span> <span class="n">mkt</span> <span class="n">o1</span> <span class="n">o2</span> <span class="n">o3</span> <span class="o">==&gt;</span> <span class="n">rank_transitivity</span> <span class="n">side</span> <span class="n">o1</span> <span class="n">o2</span> <span class="n">o3</span> <span class="n">mkt</span><span class="o">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[25]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>- : order_side -&gt; order -&gt; order -&gt; order -&gt; mkt_data -&gt; bool = &lt;fun&gt;
+module CX :
+  sig
+    val side : order_side
+    val o1 : order
+    val o2 : order
+    val o3 : order
+    val mkt : mkt_data
+  end
+</pre>
+</div>
+
+</div>
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+
+<div class="output_html rendered_html output_subarea ">
+<div><pre>Counterexample (after 0 steps, 0.072s):
+ let side = SELL
+ let o1 =
+   {id = 3; peg = NEAR; client_id = 4; order_type = PEGGED_CI; qty = 7720;
+    min_qty = 5; leaves_qty = 547; price = 2283.; time = 8367; src = 6;
+    order_attr = IOC; capacity = Principal; category = C_TWO;
+    cross_restrict =
+     {cr_self_cross = false; cr_ubs_principal = false;
+      cr_round_lot_only = false; cr_no_locked_nbbo = false;
+      cr_pegged_mid_point_mode = 7; cr_enable_conditionals = false;
+      cr_min_qty = false;
+      cr_cat_elig =
+       {c_one_elig = false; c_two_elig = false; c_three_elig = false;
+        c_four_elig = false}};
+    locate_found = false; expiry_time = 8}
+ let o2 =
+   {id = 11; peg = FAR; client_id = 12; order_type = LIMIT_CI; qty = 1237;
+    min_qty = 13; leaves_qty = 546; price = 1.; time = 8365; src = 14;
+    order_attr = IOC; capacity = Principal; category = C_TWO;
+    cross_restrict =
+     {cr_self_cross = false; cr_ubs_principal = false;
+      cr_round_lot_only = false; cr_no_locked_nbbo = false;
+      cr_pegged_mid_point_mode = 10; cr_enable_conditionals = false;
+      cr_min_qty = false;
+      cr_cat_elig =
+       {c_one_elig = false; c_two_elig = false; c_three_elig = false;
+        c_four_elig = false}};
+    locate_found = false; expiry_time = 15}
+ let o3 =
+   {id = 17; peg = MID; client_id = 18; order_type = PEGGED; qty = 8856;
+    min_qty = 19; leaves_qty = 545; price = 2283.; time = 8366; src = 20;
+    order_attr = IOC; capacity = Principal; category = C_TWO;
+    cross_restrict =
+     {cr_self_cross = false; cr_ubs_principal = false;
+      cr_round_lot_only = false; cr_no_locked_nbbo = false;
+      cr_pegged_mid_point_mode = 22; cr_enable_conditionals = false;
+      cr_min_qty = false;
+      cr_cat_elig =
+       {c_one_elig = false; c_two_elig = false; c_three_elig = false;
+        c_four_elig = false}};
+    locate_found = false; expiry_time = 21}
+ let mkt = {nbb = 2284.; nbo = 2284.; l_up = 2.; l_down = 3.}
+</pre></div>
+
+</div>
+
+</div>
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+
+<div class="output_html rendered_html output_subarea ">
+<div><div class="imandra-vr imandra-vr-refuted"><i class="fa fa-times-circle-o"></i><span>Refuted</span></div><div><div class="imandra-alternatives" id="alt-9a77da6e-c3e6-4bc6-a030-a859a85a8a42"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>call graph</a></li><li class="" data-toggle="tab"><a>proof-attempt</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-graphviz" id="graphviz-3766fc70-5829-4350-a62e-77f936cf5b3c"><textarea style="display: none">digraph &quot;call graph&quot; {
+goal [label=&quot;not\l(((not\l   ((((((((((((((((o1.leaves_qty \&lt;= o1.qty &amp;&amp; o2.leaves_qty \&lt;= o2.qty)\l                  &amp;&amp; o3.leaves_qty \&lt;= o3.qty)\l                 &amp;&amp; o1.time \&gt;= 0)\l                &amp;&amp; o2.time \&gt;= 0)\l               &amp;&amp; o3.time \&gt;= 0)\l              &amp;&amp; not (o1.price \&lt;=. 0))\l             &amp;&amp; not (o2.price \&lt;=. 0))\l            &amp;&amp; not (o3.price \&lt;=. 0))\l           &amp;&amp; not (o1.qty \&lt;= 0))\l          &amp;&amp; not (o2.qty \&lt;= 0))\l         &amp;&amp; not (o3.qty \&lt;= 0))\l        &amp;&amp; o1.leaves_qty \&gt;= 0)\l       &amp;&amp; o2.leaves_qty \&gt;= 0)\l      &amp;&amp; o3.leaves_qty \&gt;= 0)\l     &amp;&amp; not (mkt.nbb \&lt;=. 0))\l    &amp;&amp; not (mkt.nbo \&lt;=. 0))\l   \|\| not\l      (((if side = BUY\l         then\l           if (if o1.order_type = LIMIT\l               then\l                 if side = BUY then if 0 \&lt;=. o1.price then … else mkt.nbo\l                 else if 0 \&lt;=. o1.price then … else mkt.nbb\l               else\l               if o1.order_type = MARKET\l               then if side = BUY then mkt.nbo else mkt.nbb\l               else if o1.order_type = PEGGED then … else …)\l              \&lt;=.\l              (if o2.order_type = LIMIT\l               then if side = BUY then if … then … else mkt.nbo else …\l               else …)\l           then … else 1\l         else …)\l        = 1 \|\| …)\l       &amp;&amp; …))\l  \|\| …)\l \|\| …)&quot;,shape=box,style=filled,color=&quot;cyan&quot;,fontname=&quot;courier&quot;,fontsize=14];
+}
+</textarea><button class="btn btn-primary">Load graph</button><div class="imandra-graphviz-loading display-none">Loading..</div><div class="imandra-graphviz-target"></div><script>
+require(['nbextensions/nbimandra/graphviz'], function (graphviz) {
+  var target = '#graphviz-3766fc70-5829-4350-a62e-77f936cf5b3c';
+  graphviz.hydrate(target);
+});
+</script></div></div><div class="tab-pane"><div class="imandra-proof-top"><div class="imandra-fold panel panel-default" id="fold-22def80a-1a1f-4ed8-99c4-6117aa95f715"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>proof attempt</span></div></div><div class="panel-body collapse"><div class="imandra-proof"><div class="imandra-alternatives" id="alt-fccf5238-9b37-4522-8fbe-45099e9fc8df"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>summary</a></li><li class="" data-toggle="tab"><a>full</a></li><li class="" data-toggle="tab"><a>graph</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-table" id="table-a9895371-3f2f-4b5b-b345-2d3a43e212b7"><table><tr><td><b>ground_instances</b></td><td>0</td></tr><tr><td><b>definitions</b></td><td>0</td></tr><tr><td><b>inductions</b></td><td>0</td></tr><tr><td><b>search_time</b></td><td><pre>0.072s</pre></td></tr><tr><td><b>details</b></td><td><div class="imandra-fold panel panel-default" id="fold-893a584e-1c9e-46bc-a9f3-e89e5e7bcb9d"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><div class="imandra-table" id="table-ce5b7fdf-e566-49e2-82df-5345eb095dd0"><table><tr><td><b>smt_stats</b></td><td><div class="imandra-table" id="table-8af6572f-cdba-4bd4-9e82-d296ef7df058"><table><tr><td><b>arith offset eqs</b></td><td>18</td></tr><tr><td><b>arith assert lower</b></td><td>139</td></tr><tr><td><b>arith pivots</b></td><td>23</td></tr><tr><td><b>rlimit count</b></td><td>29352</td></tr><tr><td><b>mk clause</b></td><td>630</td></tr><tr><td><b>datatype occurs check</b></td><td>138</td></tr><tr><td><b>mk bool var</b></td><td>893</td></tr><tr><td><b>arith assert upper</b></td><td>104</td></tr><tr><td><b>datatype splits</b></td><td>44</td></tr><tr><td><b>decisions</b></td><td>1747</td></tr><tr><td><b>arith add rows</b></td><td>144</td></tr><tr><td><b>arith bound prop</b></td><td>14</td></tr><tr><td><b>propagations</b></td><td>1853</td></tr><tr><td><b>interface eqs</b></td><td>3</td></tr><tr><td><b>conflicts</b></td><td>44</td></tr><tr><td><b>arith fixed eqs</b></td><td>49</td></tr><tr><td><b>datatype accessor ax</b></td><td>61</td></tr><tr><td><b>minimized lits</b></td><td>4</td></tr><tr><td><b>arith assert diseq</b></td><td>73</td></tr><tr><td><b>datatype constructor ax</b></td><td>228</td></tr><tr><td><b>num allocs</b></td><td>1402375662</td></tr><tr><td><b>final checks</b></td><td>4</td></tr><tr><td><b>added eqs</b></td><td>2526</td></tr><tr><td><b>del clause</b></td><td>178</td></tr><tr><td><b>arith eq adapter</b></td><td>52</td></tr><tr><td><b>memory</b></td><td>9.020000</td></tr><tr><td><b>max memory</b></td><td>20.060000</td></tr></table></div></td></tr></table></div></div><script>
+require(['nbextensions/nbimandra/fold'], function (fold) {
+  var target = '#fold-893a584e-1c9e-46bc-a9f3-e89e5e7bcb9d';
+  fold.hydrate(target);
+});
+</script></div></td></tr></table></div></div><div class="tab-pane"><div class="imandra-fold panel panel-default" id="fold-ad685787-2f3d-4dae-bb82-2e279b7f0910"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.072s]
+  :var_0:.leaves_qty &lt;= :var_0:.qty
+  &amp;&amp; :var_1:.leaves_qty &lt;= :var_1:.qty
+     &amp;&amp; :var_2:.leaves_qty &lt;= :var_2:.qty
+        &amp;&amp; :var_0:.time &gt;= 0
+           &amp;&amp; :var_1:.time &gt;= 0
+              &amp;&amp; :var_2:.time &gt;= 0
+                 &amp;&amp; :var_0:.price &gt;. 0
+                    &amp;&amp; :var_1:.price &gt;. 0
+                       &amp;&amp; :var_2:.price &gt;. 0
+                          &amp;&amp; :var_0:.qty &gt; 0
+                             &amp;&amp; :var_1:.qty &gt; 0
+                                &amp;&amp; :var_2:.qty &gt; 0
+                                   &amp;&amp; :var_0:.leaves_qty &gt;= 0
+                                      &amp;&amp; :var_1:.leaves_qty &gt;= 0
+                                         &amp;&amp; :var_2:.leaves_qty &gt;= 0
+                                            &amp;&amp; :var_3:.nbb &gt;. 0
+                                               &amp;&amp; :var_3:.nbo &gt;. 0
+  ==&gt; (if (if :var_4: = BUY
+           then
+             if (if ….order_type = LIMIT
+                 then
+                   if :var_4: = BUY then if ….1 &lt;. 0 then … else …
+                   else if ….1 &lt;. 0 then … else …
+                 else
+                 if ….order_type = MARKET
+                 then if :var_4: = BUY then … else …
+                 else if ….order_type = PEGGED then … else …)
+                &gt;.
+                (if ….order_type = LIMIT
+                 then
+                   if :var_4: = BUY then if ….1 &lt;. 0 then … else …
+                   else if … then … else …
+                 else …)
+             then 1 else …
+           else …)
+          = 1
+       then true else …)
+      &amp;&amp; … ==&gt; …</pre></li><li><div><h4>simplify</h4><div class="imandra-table" id="table-532c6467-89ff-4f73-b3ae-2cad11ae2037"><table><tr><td><b>into</b></td><td><pre>((not
+  ((((((((((((((((:var_0:.leaves_qty &lt;= :var_0:.qty
+                  &amp;&amp; :var_1:.leaves_qty &lt;= :var_1:.qty)
+                 &amp;&amp; :var_2:.leaves_qty &lt;= :var_2:.qty)
+                &amp;&amp; :var_0:.time &gt;= 0)
+               &amp;&amp; :var_1:.time &gt;= 0)
+              &amp;&amp; :var_2:.time &gt;= 0)
+             &amp;&amp; not (:var_0:.price &lt;=. 0))
+            &amp;&amp; not (:var_1:.price &lt;=. 0))
+           &amp;&amp; not (:var_2:.price &lt;=. 0))
+          &amp;&amp; not (:var_0:.qty &lt;= 0))
+         &amp;&amp; not (:var_1:.qty &lt;= 0))
+        &amp;&amp; not (:var_2:.qty &lt;= 0))
+       &amp;&amp; :var_0:.leaves_qty &gt;= 0)
+      &amp;&amp; :var_1:.leaves_qty &gt;= 0)
+     &amp;&amp; :var_2:.leaves_qty &gt;= 0)
+    &amp;&amp; not (:var_3:.nbb &lt;=. 0))
+   &amp;&amp; not (:var_3:.nbo &lt;=. 0))
+  || not
+     (((if :var_4: = BUY
+        then
+          if (if :var_0:.order_type = LIMIT
+              then
+                if :var_4: = BUY
+                then if 0 &lt;=. :var_0:.price then … else :var_3:.nbo
+                else if 0 &lt;=. :var_0:.price then … else :var_3:.nbb
+              else
+              if :var_0:.order_type = MARKET
+              then if :var_4: = BUY then :var_3:.nbo else :var_3:.nbb
+              else if :var_0:.order_type = PEGGED then … else …)
+             &lt;=.
+             (if :var_1:.order_type = LIMIT
+              then
+                if :var_4: = BUY
+                then if 0 &lt;=. :var_1:.price then … else :var_3:.nbo
+                else if 0 &lt;=. :var_1:.price then … else :var_3:.nbb
+              else
+              if :var_1:.order_type = MARKET
+              then if :var_4: = BUY then :var_3:.nbo else :var_3:.nbb
+              else if :var_1:.order_type = PEGGED then … else …)
+          then if … then 0 else -1 else 1
+        else …)
+       = 1 || …)
+      &amp;&amp; …))
+ || …)
+|| …</pre></td></tr><tr><td><b>expansions</b></td><td><pre>[]</pre></td></tr><tr><td><b>rewrite_steps</b></td><td><ul></ul></td></tr><tr><td><b>forward_chaining</b></td><td><ul></ul></td></tr></table></div></div></li><li>Sat (Some  let side = SELL
+ let o1 =
+   {id = 3; peg = NEAR; client_id = 4; order_type = PEGGED_CI; qty = 7720;
+    min_qty = 5; leaves_qty = 547; price = 2283.; time = 8367; src = 6;
+    order_attr = IOC; capacity = Principal; category = C_TWO;
+    cross_restrict =
+     {cr_self_cross = false; cr_ubs_principal = false;
+      cr_round_lot_only = false; cr_no_locked_nbbo = false;
+      cr_pegged_mid_point_mode = 7; cr_enable_conditionals = false;
+      cr_min_qty = false;
+      cr_cat_elig =
+       {c_one_elig = false; c_two_elig = false; c_three_elig = false;
+        c_four_elig = false}};
+    locate_found = false; expiry_time = 8}
+ let o2 =
+   {id = 11; peg = FAR; client_id = 12; order_type = LIMIT_CI; qty = 1237;
+    min_qty = 13; leaves_qty = 546; price = 1.; time = 8365; src = 14;
+    order_attr = IOC; capacity = Principal; category = C_TWO;
+    cross_restrict =
+     {cr_self_cross = false; cr_ubs_principal = false;
+      cr_round_lot_only = false; cr_no_locked_nbbo = false;
+      cr_pegged_mid_point_mode = 10; cr_enable_conditionals = false;
+      cr_min_qty = false;
+      cr_cat_elig =
+       {c_one_elig = false; c_two_elig = false; c_three_elig = false;
+        c_four_elig = false}};
+    locate_found = false; expiry_time = 15}
+ let o3 =
+   {id = 17; peg = MID; client_id = 18; order_type = PEGGED; qty = 8856;
+    min_qty = 19; leaves_qty = 545; price = 2283.; time = 8366; src = 20;
+    order_attr = IOC; capacity = Principal; category = C_TWO;
+    cross_restrict =
+     {cr_self_cross = false; cr_ubs_principal = false;
+      cr_round_lot_only = false; cr_no_locked_nbbo = false;
+      cr_pegged_mid_point_mode = 22; cr_enable_conditionals = false;
+      cr_min_qty = false;
+      cr_cat_elig =
+       {c_one_elig = false; c_two_elig = false; c_three_elig = false;
+        c_four_elig = false}};
+    locate_found = false; expiry_time = 21}
+ let mkt = {nbb = 2284.; nbo = 2284.; l_up = 2.; l_down = 3.}
+)</li></ul></div><script>
+require(['nbextensions/nbimandra/fold'], function (fold) {
+  var target = '#fold-ad685787-2f3d-4dae-bb82-2e279b7f0910';
+  fold.hydrate(target);
+});
+</script></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-56dfd0fa-f191-41e7-ae76-fb8568a29a0f"><textarea style="display: none">digraph &quot;proof&quot; {
+p_237 [label=&quot;Start (:var_0:.leaves_qty \&lt;= :var_0:.qty\l       &amp;&amp; :var_1:.leaves_qty \&lt;= :var_1:.qty\l          &amp;&amp; :var_2:.leaves_qty \&lt;= :var_2:.qty\l             &amp;&amp; :var_0:.time \&gt;= 0\l                &amp;&amp; :var_1:.time \&gt;= 0\l                   &amp;&amp; :var_2:.time \&gt;= 0\l                      &amp;&amp; :var_0:.price \&gt;. 0\l                         &amp;&amp; :var_1:.price \&gt;. 0\l                            &amp;&amp; :var_2:.price \&gt;. 0\l                               &amp;&amp; :var_0:.qty \&gt; 0\l                                  &amp;&amp; :var_1:.qty \&gt; 0\l                                     &amp;&amp; :var_2:.qty \&gt; 0\l                                        &amp;&amp; :var_0:.leaves_qty \&gt;= 0\l                                           &amp;&amp; :var_1:.leaves_qty \&gt;= 0\l                                              &amp;&amp; :var_2:.leaves_qty \&gt;= 0\l                                                 &amp;&amp; :var_3:.nbb \&gt;. 0\l                                                    &amp;&amp; :var_3:.nbo \&gt;. 0\l       ==\&gt; (if (if :var_4: = BUY\l                then\l                  if (if ….order_type = LIMIT\l                      then\l                        if :var_4: = BUY then if ….1 \&lt;. 0 then … else …\l                        else if ….1 \&lt;. 0 then … else …\l                      else\l                      if ….order_type = MARKET\l                      then if :var_4: = BUY then … else …\l                      else if ….order_type = PEGGED then … else …)\l                     \&gt;.\l                     (if ….order_type = LIMIT\l                      then\l                        if :var_4: = BUY then if ….1 \&lt;. 0 then … else …\l                        else if … then … else …\l                      else …)\l                  then 1 else …\l                else …)\l               = 1\l            then true else …)\l           &amp;&amp; … ==\&gt; …\l       :time 0.072s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+p_237 -&gt; p_236 [label=&quot;&quot;];
+p_236 [label=&quot;Simplify (((not\l            ((((((((((((((((:var_0:.leaves_qty \&lt;= :var_0:.qty\l                            &amp;&amp; :var_1:.leaves_qty \&lt;= :var_1:.qty)\l                           &amp;&amp; :var_2:.leaves_qty \&lt;= :var_2:.qty)\l                          &amp;&amp; :var_0:.time \&gt;= 0)\l                         &amp;&amp; :var_1:.time \&gt;= 0)\l                        &amp;&amp; :var_2:.time \&gt;= 0)\l                       &amp;&amp; not (:var_0:.price \&lt;=. 0))\l                      &amp;&amp; not (:var_1:.price \&lt;=. 0))\l                     &amp;&amp; not (:var_2:.price \&lt;=. 0))\l                    &amp;&amp; not (:var_0:.qty \&lt;= 0))\l                   &amp;&amp; not (:var_1:.qty \&lt;= 0))\l                  &amp;&amp; not (:var_2:.qty \&lt;= 0))\l                 &amp;&amp; :var_0:.leaves_qty \&gt;= 0)\l                &amp;&amp; :var_1:.leaves_qty \&gt;= 0)\l               &amp;&amp; :var_2:.leaves_qty \&gt;= 0)\l              &amp;&amp; not (:var_3:.nbb \&lt;=. 0))\l             &amp;&amp; not (:var_3:.nbo \&lt;=. 0))\l            \|\| not\l               (((if :var_4: = BUY\l                  then\l                    if (if :var_0:.order_type = LIMIT\l                        then\l                          if :var_4: = BUY\l                          then\l                            if 0 \&lt;=. :var_0:.price then … else :var_3:.nbo\l                          else\l                          if 0 \&lt;=. :var_0:.price then … else :var_3:.nbb\l                        else\l                        if :var_0:.order_type = MARKET\l                        then\l                          if :var_4: = BUY then :var_3:.nbo else :var_3:.nbb\l                        else if :var_0:.order_type = PEGGED then … else …)\l                       \&lt;=.\l                       (if :var_1:.order_type = LIMIT\l                        then\l                          if :var_4: = BUY\l                          then\l                            if 0 \&lt;=. :var_1:.price then … else :var_3:.nbo\l                          else\l                          if 0 \&lt;=. :var_1:.price then … else :var_3:.nbb\l                        else\l                        if :var_1:.order_type = MARKET\l                        then\l                          if :var_4: = BUY then :var_3:.nbo else :var_3:.nbb\l                        else if :var_1:.order_type = PEGGED then … else …)\l                    then if … then 0 else -1 else 1\l                  else …)\l                 = 1 \|\| …)\l                &amp;&amp; …))\l           \|\| …)\l          \|\| … :expansions [] :rw [] :fc [])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+p_236 -&gt; p_235 [label=&quot;&quot;];
+p_235 [label=&quot;Sat (Some  let side = SELL\l let o1 =\l   \{id = 3; peg = NEAR; client_id = 4; order_type = PEGGED_CI; qty = 7720;\l    min_qty = 5; leaves_qty = 547; price = 2283.; time = 8367; src = 6;\l    order_attr = IOC; capacity = Principal; category = C_TWO;\l    cross_restrict =\l     \{cr_self_cross = false; cr_ubs_principal = false;\l      cr_round_lot_only = false; cr_no_locked_nbbo = false;\l      cr_pegged_mid_point_mode = 7; cr_enable_conditionals = false;\l      cr_min_qty = false;\l      cr_cat_elig =\l       \{c_one_elig = false; c_two_elig = false; c_three_elig = false;\l        c_four_elig = false\}\};\l    locate_found = false; expiry_time = 8\}\l let o2 =\l   \{id = 11; peg = FAR; client_id = 12; order_type = LIMIT_CI; qty = 1237;\l    min_qty = 13; leaves_qty = 546; price = 1.; time = 8365; src = 14;\l    order_attr = IOC; capacity = Principal; category = C_TWO;\l    cross_restrict =\l     \{cr_self_cross = false; cr_ubs_principal = false;\l      cr_round_lot_only = false; cr_no_locked_nbbo = false;\l      cr_pegged_mid_point_mode = 10; cr_enable_conditionals = false;\l      cr_min_qty = false;\l      cr_cat_elig =\l       \{c_one_elig = false; c_two_elig = false; c_three_elig = false;\l        c_four_elig = false\}\};\l    locate_found = false; expiry_time = 15\}\l let o3 =\l   \{id = 17; peg = MID; client_id = 18; order_type = PEGGED; qty = 8856;\l    min_qty = 19; leaves_qty = 545; price = 2283.; time = 8366; src = 20;\l    order_attr = IOC; capacity = Principal; category = C_TWO;\l    cross_restrict =\l     \{cr_self_cross = false; cr_ubs_principal = false;\l      cr_round_lot_only = false; cr_no_locked_nbbo = false;\l      cr_pegged_mid_point_mode = 22; cr_enable_conditionals = false;\l      cr_min_qty = false;\l      cr_cat_elig =\l       \{c_one_elig = false; c_two_elig = false; c_three_elig = false;\l        c_four_elig = false\}\};\l    locate_found = false; expiry_time = 21\}\l let mkt = \{nbb = 2284.; nbo = 2284.; l_up = 2.; l_down = 3.\}\l)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+}
+</textarea><button class="btn btn-primary">Load graph</button><div class="imandra-graphviz-loading display-none">Loading..</div><div class="imandra-graphviz-target"></div><script>
+require(['nbextensions/nbimandra/graphviz'], function (graphviz) {
+  var target = '#graphviz-56dfd0fa-f191-41e7-ae76-fb8568a29a0f';
+  graphviz.hydrate(target);
+});
+</script></div></div></div><script>
+require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
+  var target = '#alt-fccf5238-9b37-4522-8fbe-45099e9fc8df';
+  alternatives.hydrate(target);
+});
+</script></div></div></div><script>
+require(['nbextensions/nbimandra/fold'], function (fold) {
+  var target = '#fold-22def80a-1a1f-4ed8-99c4-6117aa95f715';
+  fold.hydrate(target);
+});
+</script></div></div></div></div><script>
+require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
+  var target = '#alt-9a77da6e-c3e6-4bc6-a030-a859a85a8a42';
+  alternatives.hydrate(target);
+});
+</script></div></div></div>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Extending-the-model-with-Document-printers">Extending the model with Document printers<a class="anchor-link" href="#Extending-the-model-with-Document-printers">&#182;</a></h1><p>Let's define a few more custom document printers to make these (complex!) counterexamples easier to understand.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="try-this-container">
+  <div class="try-this"><a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Analysing%20the%20UBS%20ATS%20Dark%20Pool.ipynb%23try-cell-48" target="_blank">Try this!</a></div>
+</div>
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[26]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ocaml"><pre><span></span><span class="c">(* We can generate string printers for our types automatically using `Genpp` *)</span>
+<span class="nn">Genpp</span><span class="p">.</span><span class="n">eval</span> <span class="o">~</span><span class="n">quiet</span><span class="o">:</span><span class="bp">true</span> <span class="bp">()</span><span class="o">;;</span>
+
+<span class="k">let</span> <span class="n">doc_of_order_type</span> <span class="n">o</span> <span class="o">=</span>
+  <span class="nn">Document</span><span class="p">.</span><span class="n">s</span> <span class="o">@@</span> <span class="nn">Pp</span><span class="p">.</span><span class="n">pp_order_type</span> <span class="n">o</span>
+<span class="o">[@@</span><span class="n">program</span><span class="o">];;</span>
+
+<span class="o">#</span><span class="n">install_doc</span> <span class="n">doc_of_order_type</span><span class="o">;;</span>
+
+<span class="k">let</span> <span class="n">doc_of_order</span> <span class="n">o</span> <span class="o">=</span>
+  <span class="k">let</span> <span class="k">module</span> <span class="nc">D</span> <span class="o">=</span> <span class="nc">Document</span> <span class="k">in</span>
+  <span class="nn">D</span><span class="p">.</span><span class="n">indent</span> <span class="s2">&quot;order&quot;</span> <span class="o">@@</span> <span class="nn">D</span><span class="p">.</span><span class="n">record</span> <span class="o">[</span>
+      <span class="s2">&quot;id&quot;</span><span class="o">,</span> <span class="nn">D</span><span class="p">.</span><span class="n">bigint</span> <span class="n">o</span><span class="o">.</span><span class="n">id</span><span class="o">;</span>
+      <span class="s2">&quot;peg&quot;</span><span class="o">,</span> <span class="nn">D</span><span class="p">.</span><span class="n">s</span> <span class="o">@@</span> <span class="nn">Pp</span><span class="p">.</span><span class="n">pp_order_peg</span> <span class="n">o</span><span class="o">.</span><span class="n">peg</span><span class="o">;</span>
+      <span class="s2">&quot;client_id&quot;</span><span class="o">,</span> <span class="nn">D</span><span class="p">.</span><span class="n">bigint</span> <span class="n">o</span><span class="o">.</span><span class="n">client_id</span><span class="o">;</span>
+      <span class="s2">&quot;order_type&quot;</span><span class="o">,</span> <span class="nn">D</span><span class="p">.</span><span class="n">s</span> <span class="o">@@</span> <span class="nn">Pp</span><span class="p">.</span><span class="n">pp_order_type</span> <span class="n">o</span><span class="o">.</span><span class="n">order_type</span><span class="o">;</span>
+      <span class="s2">&quot;qty&quot;</span><span class="o">,</span> <span class="nn">D</span><span class="p">.</span><span class="n">bigint</span> <span class="n">o</span><span class="o">.</span><span class="n">qty</span><span class="o">;</span>
+      <span class="s2">&quot;min_qty&quot;</span><span class="o">,</span> <span class="nn">D</span><span class="p">.</span><span class="n">bigint</span> <span class="n">o</span><span class="o">.</span><span class="n">min_qty</span><span class="o">;</span>
+      <span class="s2">&quot;leaves_qty&quot;</span><span class="o">,</span> <span class="nn">D</span><span class="p">.</span><span class="n">bigint</span> <span class="n">o</span><span class="o">.</span><span class="n">leaves_qty</span><span class="o">;</span>
+      <span class="s2">&quot;price&quot;</span><span class="o">,</span> <span class="nn">D</span><span class="p">.</span><span class="n">s</span> <span class="o">@@</span> <span class="nn">Real</span><span class="p">.</span><span class="n">to_string_approx</span> <span class="n">o</span><span class="o">.</span><span class="n">price</span><span class="o">;</span>
+      <span class="s2">&quot;time&quot;</span><span class="o">,</span> <span class="nn">D</span><span class="p">.</span><span class="n">s</span> <span class="o">@@</span> <span class="nn">Pp</span><span class="p">.</span><span class="n">pp_time</span> <span class="n">o</span><span class="o">.</span><span class="n">time</span><span class="o">;</span>
+      <span class="s2">&quot;src&quot;</span><span class="o">,</span> <span class="nn">D</span><span class="p">.</span><span class="n">s</span> <span class="o">@@</span> <span class="nn">Pp</span><span class="p">.</span><span class="n">pp_order_source</span> <span class="n">o</span><span class="o">.</span><span class="n">src</span><span class="o">;</span>
+      <span class="s2">&quot;order_attr&quot;</span><span class="o">,</span> <span class="nn">D</span><span class="p">.</span><span class="n">s</span> <span class="o">@@</span> <span class="nn">Pp</span><span class="p">.</span><span class="n">pp_order_attr</span> <span class="n">o</span><span class="o">.</span><span class="n">order_attr</span><span class="o">;</span>
+      <span class="s2">&quot;capacity&quot;</span><span class="o">,</span> <span class="nn">D</span><span class="p">.</span><span class="n">s</span> <span class="o">@@</span> <span class="nn">Pp</span><span class="p">.</span><span class="n">pp_capacity</span> <span class="n">o</span><span class="o">.</span><span class="n">capacity</span><span class="o">;</span>
+      <span class="s2">&quot;category&quot;</span><span class="o">,</span> <span class="nn">D</span><span class="p">.</span><span class="n">s</span> <span class="o">@@</span> <span class="nn">Pp</span><span class="p">.</span><span class="n">pp_category</span> <span class="n">o</span><span class="o">.</span><span class="n">category</span><span class="o">;</span>
+      <span class="c">(* &quot;cross_restrict&quot;, D.s @@ Pp.pp_cross_restrict o.cross_restrict; *)</span>
+      <span class="s2">&quot;locate_found&quot;</span><span class="o">,</span> <span class="nn">D</span><span class="p">.</span><span class="n">s_f</span> <span class="s2">&quot;%B&quot;</span> <span class="n">o</span><span class="o">.</span><span class="n">locate_found</span><span class="o">;</span>
+      <span class="s2">&quot;expiry_time&quot;</span><span class="o">,</span> <span class="nn">D</span><span class="p">.</span><span class="n">bigint</span> <span class="n">o</span><span class="o">.</span><span class="n">expiry_time</span><span class="o">;</span>
+  <span class="o">]</span>
+<span class="o">[@@</span><span class="n">program</span><span class="o">];;</span>
+
+<span class="o">#</span><span class="n">install_doc</span> <span class="n">doc_of_order</span><span class="o">;;</span>
+
+<span class="k">let</span> <span class="n">doc_of_side</span> <span class="n">side</span> <span class="o">=</span> <span class="nn">Document</span><span class="p">.</span><span class="n">s</span> <span class="o">@@</span> <span class="nn">Pp</span><span class="p">.</span><span class="n">pp_order_side</span> <span class="n">side</span>
+<span class="o">[@@</span><span class="n">program</span><span class="o">];;</span>
+
+<span class="o">#</span><span class="n">install_doc</span> <span class="n">doc_of_side</span><span class="o">;;</span>
+
+<span class="k">let</span> <span class="n">doc_of_mkt</span> <span class="n">mkt</span> <span class="o">=</span>
+  <span class="k">let</span> <span class="k">module</span> <span class="nc">D</span> <span class="o">=</span> <span class="nc">Document</span> <span class="k">in</span>
+  <span class="nn">D</span><span class="p">.</span><span class="n">indent</span> <span class="s2">&quot;mkt&quot;</span> <span class="o">@@</span> <span class="nn">D</span><span class="p">.</span><span class="n">record</span> <span class="o">[</span>
+      <span class="s2">&quot;nbb&quot;</span><span class="o">,</span> <span class="nn">D</span><span class="p">.</span><span class="n">s</span> <span class="o">@@</span> <span class="nn">Real</span><span class="p">.</span><span class="n">to_string_approx</span> <span class="n">mkt</span><span class="o">.</span><span class="n">nbb</span><span class="o">;</span>
+      <span class="s2">&quot;nbo&quot;</span><span class="o">,</span> <span class="nn">D</span><span class="p">.</span><span class="n">s</span> <span class="o">@@</span> <span class="nn">Real</span><span class="p">.</span><span class="n">to_string_approx</span> <span class="n">mkt</span><span class="o">.</span><span class="n">nbo</span><span class="o">;</span>
+      <span class="s2">&quot;l_up&quot;</span><span class="o">,</span> <span class="nn">D</span><span class="p">.</span><span class="n">s</span> <span class="o">@@</span> <span class="nn">Real</span><span class="p">.</span><span class="n">to_string_approx</span> <span class="n">mkt</span><span class="o">.</span><span class="n">l_up</span><span class="o">;</span>
+      <span class="s2">&quot;l_down&quot;</span><span class="o">,</span> <span class="nn">D</span><span class="p">.</span><span class="n">s</span> <span class="o">@@</span> <span class="nn">Real</span><span class="p">.</span><span class="n">to_string_approx</span> <span class="n">mkt</span><span class="o">.</span><span class="n">l_down</span><span class="o">;</span>
+  <span class="o">]</span>
+<span class="o">[@@</span><span class="n">program</span><span class="o">];;</span>
+
+<span class="k">let</span> <span class="n">pp_rank</span> <span class="o">(</span><span class="n">side</span><span class="o">,</span> <span class="n">o1</span><span class="o">,</span> <span class="n">o2</span><span class="o">,</span> <span class="n">o3</span><span class="o">,</span> <span class="n">mkt</span><span class="o">)</span> <span class="o">=</span>
+  <span class="nn">Document</span><span class="p">.</span><span class="o">(</span><span class="n">tbl</span> <span class="o">~</span><span class="n">headers</span><span class="o">:[</span><span class="s2">&quot;side&quot;</span><span class="o">;</span><span class="s2">&quot;order1&quot;</span><span class="o">;</span><span class="s2">&quot;order2&quot;</span><span class="o">;</span><span class="s2">&quot;order3&quot;</span><span class="o">;</span><span class="s2">&quot;mkt&quot;</span><span class="o">]</span> 
+    <span class="o">@@</span> <span class="o">[[</span><span class="n">doc_of_side</span> <span class="n">side</span><span class="o">;</span> <span class="n">doc_of_order</span> <span class="n">o1</span><span class="o">;</span> <span class="n">doc_of_order</span> <span class="n">o2</span><span class="o">;</span> <span class="n">doc_of_order</span> <span class="n">o3</span><span class="o">;</span> <span class="n">doc_of_mkt</span> <span class="n">mkt</span><span class="o">]])</span> 
+ <span class="o">[@@</span><span class="n">program</span><span class="o">];;</span>
+
+<span class="o">#</span><span class="n">install_doc</span> <span class="n">pp_rank</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[26]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>- : unit = ()
+val doc_of_order_type : order_type -&gt; Imandra_surface.Document.t = &lt;fun&gt;
+val doc_of_order : order -&gt; Imandra_surface__Document.t = &lt;fun&gt;
+val doc_of_side : order_side -&gt; Imandra_surface.Document.t = &lt;fun&gt;
+val doc_of_mkt : mkt_data -&gt; Imandra_surface__Document.t = &lt;fun&gt;
+val pp_rank :
+  order_side * order * order * order * mkt_data -&gt; Imandra_surface.Document.t =
+  &lt;fun&gt;
+</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Now, let's view our latest counterexample again:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="try-this-container">
+  <div class="try-this"><a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Analysing%20the%20UBS%20ATS%20Dark%20Pool.ipynb%23try-cell-50" target="_blank">Try this!</a></div>
+</div>
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[27]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ocaml"><pre><span></span><span class="nn">CX</span><span class="p">.</span><span class="o">(</span><span class="n">side</span><span class="o">,</span> <span class="n">o1</span><span class="o">,</span> <span class="n">o2</span><span class="o">,</span> <span class="n">o3</span><span class="o">,</span> <span class="n">mkt</span><span class="o">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[27]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>- : order_side * order * order * order * mkt_data = &lt;document&gt;
+</pre>
+</div>
+
+</div>
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+
+<div class="output_html rendered_html output_subarea ">
+<div><div class="imandra-table" id="table-b3af0017-f017-467b-8037-aa7a5aecd282"><table><thead><tr><th>side</th><th>order1</th><th>order2</th><th>order3</th><th>mkt</th></tr></thead><tr><td>SELL</td><td><div><h5>order</h5><div class="imandra-table" id="table-baf4d8fc-2d0f-434f-a25a-0a70916ff3b9"><table><tr><td><b>id</b></td><td>3</td></tr><tr><td><b>peg</b></td><td>NEAR</td></tr><tr><td><b>client_id</b></td><td>4</td></tr><tr><td><b>order_type</b></td><td>PEGGED_CI</td></tr><tr><td><b>qty</b></td><td>7720</td></tr><tr><td><b>min_qty</b></td><td>5</td></tr><tr><td><b>leaves_qty</b></td><td>547</td></tr><tr><td><b>price</b></td><td>2283.</td></tr><tr><td><b>time</b></td><td>8367</td></tr><tr><td><b>src</b></td><td>6</td></tr><tr><td><b>order_attr</b></td><td>IOC</td></tr><tr><td><b>capacity</b></td><td>Principal</td></tr><tr><td><b>category</b></td><td>C_TWO</td></tr><tr><td><b>locate_found</b></td><td>false</td></tr><tr><td><b>expiry_time</b></td><td>8</td></tr></table></div></div></td><td><div><h5>order</h5><div class="imandra-table" id="table-e0d63668-f4d3-4fc1-a39b-a3093e4b7cb5"><table><tr><td><b>id</b></td><td>11</td></tr><tr><td><b>peg</b></td><td>FAR</td></tr><tr><td><b>client_id</b></td><td>12</td></tr><tr><td><b>order_type</b></td><td>LIMIT_CI</td></tr><tr><td><b>qty</b></td><td>1237</td></tr><tr><td><b>min_qty</b></td><td>13</td></tr><tr><td><b>leaves_qty</b></td><td>546</td></tr><tr><td><b>price</b></td><td>1.</td></tr><tr><td><b>time</b></td><td>8365</td></tr><tr><td><b>src</b></td><td>14</td></tr><tr><td><b>order_attr</b></td><td>IOC</td></tr><tr><td><b>capacity</b></td><td>Principal</td></tr><tr><td><b>category</b></td><td>C_TWO</td></tr><tr><td><b>locate_found</b></td><td>false</td></tr><tr><td><b>expiry_time</b></td><td>15</td></tr></table></div></div></td><td><div><h5>order</h5><div class="imandra-table" id="table-9391f2e9-3c5a-4b51-a4b1-bfef257706a7"><table><tr><td><b>id</b></td><td>17</td></tr><tr><td><b>peg</b></td><td>MID</td></tr><tr><td><b>client_id</b></td><td>18</td></tr><tr><td><b>order_type</b></td><td>PEGGED</td></tr><tr><td><b>qty</b></td><td>8856</td></tr><tr><td><b>min_qty</b></td><td>19</td></tr><tr><td><b>leaves_qty</b></td><td>545</td></tr><tr><td><b>price</b></td><td>2283.</td></tr><tr><td><b>time</b></td><td>8366</td></tr><tr><td><b>src</b></td><td>20</td></tr><tr><td><b>order_attr</b></td><td>IOC</td></tr><tr><td><b>capacity</b></td><td>Principal</td></tr><tr><td><b>category</b></td><td>C_TWO</td></tr><tr><td><b>locate_found</b></td><td>false</td></tr><tr><td><b>expiry_time</b></td><td>21</td></tr></table></div></div></td><td><div><h5>mkt</h5><div class="imandra-table" id="table-fe87870d-3503-4ed7-b943-862414213481"><table><tr><td><b>nbb</b></td><td>2284.</td></tr><tr><td><b>nbo</b></td><td>2284.</td></tr><tr><td><b>l_up</b></td><td>2.</td></tr><tr><td><b>l_down</b></td><td>3.</td></tr></table></div></div></td></tr></table></div></div>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+  
+ 
+
+
+      </div><div class="content-nav">
+          <ul>
+          
+            <li class="content-nav__item content-nav__item--h1"><a href="#Imandra-encoding-of-UBS-dark-pool-(Form-ATS)">Imandra encoding of UBS dark pool (Form ATS)</a></li>
+          
+            <li class="content-nav__item content-nav__item--h2"><a href="#UBS-Future-of-Finance-Challenge---First-Place-Winner">UBS Future of Finance Challenge - First Place Winner</a></li>
+          
+            <li class="content-nav__item content-nav__item--h1"><a href="#An-Imandra-Formal-Model-of-UBS-ATS-Order-Priority-Logic">An Imandra Formal Model of UBS ATS Order Priority Logic</a></li>
+          
+            <li class="content-nav__item content-nav__item--h2"><a href="#Aside:-Custom-Document-Printers">Aside: Custom Document Printers</a></li>
+          
+            <li class="content-nav__item content-nav__item--h1"><a href="#Time,-Price-and-Static-Data">Time, Price and Static Data</a></li>
+          
+            <li class="content-nav__item content-nav__item--h1"><a href="#Order-types">Order types</a></li>
+          
+            <li class="content-nav__item content-nav__item--h2"><a href="#Section-2-of-the-Form-ATS-defines-the-order-types-as-follows:">Section 2 of the Form ATS defines the order types as follows:</a></li>
+          
+            <li class="content-nav__item content-nav__item--h1"><a href="#Capacity,-Eligibilities-and-Crossing-Restrictions">Capacity, Eligibilities and Crossing Restrictions</a></li>
+          
+            <li class="content-nav__item content-nav__item--h1"><a href="#Orders">Orders</a></li>
+          
+            <li class="content-nav__item content-nav__item--h1"><a href="#Determining-how-much-and-at-what-price-two-orders-may-trade">Determining how much and at what price two orders may trade</a></li>
+          
+            <li class="content-nav__item content-nav__item--h1"><a href="#Crossing-Restrictions">Crossing Restrictions</a></li>
+          
+            <li class="content-nav__item content-nav__item--h1"><a href="#Order-Book">Order Book</a></li>
+          
+            <li class="content-nav__item content-nav__item--h2"><a href="#Ranking-functions-for-orders">Ranking functions for orders</a></li>
+          
+            <li class="content-nav__item content-nav__item--h1"><a href="#Extending-the-model-with-Document-printers">Extending the model with Document printers</a></li>
+          
+          </ul>
+        </div></div>
+  </div>
+</body>
+</html>
