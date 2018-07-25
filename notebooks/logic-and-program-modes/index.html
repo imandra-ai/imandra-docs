@@ -1,0 +1,926 @@
+<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8" />
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Imandra Documentation - Logic and program modes</title>
+<meta property="og:url" content="https://docs.imandra.ai/imandra-docs/notebooks/logic-and-program-modes/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Imandra Documentation - Logic and program modes">
+<meta property="og:description" content="An overview of logic and program modes in Imandra">
+<meta property="og:image" content="https://storage.googleapis.com/imandra-assets/images/og_image_default_i78.jpg">
+
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-116937440-6"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+
+gtag('config', 'UA-116937440-6');
+</script>
+<script type="text/javascript"> var sc_project=11767520; var sc_invisible=1; var sc_security="fa7e88d1"; </script>
+<script type="text/javascript" src="https://www.statcounter.com/counter/counter.js" async></script>
+<noscript><div class="statcounter">
+<a title="Web Analytics" href="http://statcounter.com/" target="_blank">
+<img class="statcounter" src="//c.statcounter.com/11767520/0/fa7e88d1/1/" alt="Web Analytics"></a>
+</div></noscript>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Merriweather" type="text/css" />
+
+<link rel="stylesheet" href="/imandra-docs/static/style/style.min.910c246e.css" type="text/css">
+<link rel="stylesheet" href="/imandra-docs/static/custom/custom.43522872.css" type="text/css">
+<link rel="stylesheet" href="/imandra-docs/static/nbextensions/nbimandra/styles.c7ed3d1a.css" type="text/css">
+<link rel="stylesheet" href="/imandra-docs/static/docs-styles.fc825a73.css" type="text/css">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<script src="/imandra-docs/static/nbimandra-rjs-bundle.2469bcb7.js"></script>
+
+<style type="text/css">
+.highlight .hll { background-color: #ffffcc }
+.highlight  { background: #f8f8f8; }
+.highlight .c { color: #408080; font-style: italic } /* Comment */
+.highlight .err { border: 1px solid #FF0000 } /* Error */
+.highlight .k { color: #008000; font-weight: bold } /* Keyword */
+.highlight .o { color: #666666 } /* Operator */
+.highlight .ch { color: #408080; font-style: italic } /* Comment.Hashbang */
+.highlight .cm { color: #408080; font-style: italic } /* Comment.Multiline */
+.highlight .cp { color: #BC7A00 } /* Comment.Preproc */
+.highlight .cpf { color: #408080; font-style: italic } /* Comment.PreprocFile */
+.highlight .c1 { color: #408080; font-style: italic } /* Comment.Single */
+.highlight .cs { color: #408080; font-style: italic } /* Comment.Special */
+.highlight .gd { color: #A00000 } /* Generic.Deleted */
+.highlight .ge { font-style: italic } /* Generic.Emph */
+.highlight .gr { color: #FF0000 } /* Generic.Error */
+.highlight .gh { color: #000080; font-weight: bold } /* Generic.Heading */
+.highlight .gi { color: #00A000 } /* Generic.Inserted */
+.highlight .go { color: #888888 } /* Generic.Output */
+.highlight .gp { color: #000080; font-weight: bold } /* Generic.Prompt */
+.highlight .gs { font-weight: bold } /* Generic.Strong */
+.highlight .gu { color: #800080; font-weight: bold } /* Generic.Subheading */
+.highlight .gt { color: #0044DD } /* Generic.Traceback */
+.highlight .kc { color: #008000; font-weight: bold } /* Keyword.Constant */
+.highlight .kd { color: #008000; font-weight: bold } /* Keyword.Declaration */
+.highlight .kn { color: #008000; font-weight: bold } /* Keyword.Namespace */
+.highlight .kp { color: #008000 } /* Keyword.Pseudo */
+.highlight .kr { color: #008000; font-weight: bold } /* Keyword.Reserved */
+.highlight .kt { color: #B00040 } /* Keyword.Type */
+.highlight .m { color: #666666 } /* Literal.Number */
+.highlight .s { color: #BA2121 } /* Literal.String */
+.highlight .na { color: #7D9029 } /* Name.Attribute */
+.highlight .nb { color: #008000 } /* Name.Builtin */
+.highlight .nc { color: #0000FF; font-weight: bold } /* Name.Class */
+.highlight .no { color: #880000 } /* Name.Constant */
+.highlight .nd { color: #AA22FF } /* Name.Decorator */
+.highlight .ni { color: #999999; font-weight: bold } /* Name.Entity */
+.highlight .ne { color: #D2413A; font-weight: bold } /* Name.Exception */
+.highlight .nf { color: #0000FF } /* Name.Function */
+.highlight .nl { color: #A0A000 } /* Name.Label */
+.highlight .nn { color: #0000FF; font-weight: bold } /* Name.Namespace */
+.highlight .nt { color: #008000; font-weight: bold } /* Name.Tag */
+.highlight .nv { color: #19177C } /* Name.Variable */
+.highlight .ow { color: #AA22FF; font-weight: bold } /* Operator.Word */
+.highlight .w { color: #bbbbbb } /* Text.Whitespace */
+.highlight .mb { color: #666666 } /* Literal.Number.Bin */
+.highlight .mf { color: #666666 } /* Literal.Number.Float */
+.highlight .mh { color: #666666 } /* Literal.Number.Hex */
+.highlight .mi { color: #666666 } /* Literal.Number.Integer */
+.highlight .mo { color: #666666 } /* Literal.Number.Oct */
+.highlight .sa { color: #BA2121 } /* Literal.String.Affix */
+.highlight .sb { color: #BA2121 } /* Literal.String.Backtick */
+.highlight .sc { color: #BA2121 } /* Literal.String.Char */
+.highlight .dl { color: #BA2121 } /* Literal.String.Delimiter */
+.highlight .sd { color: #BA2121; font-style: italic } /* Literal.String.Doc */
+.highlight .s2 { color: #BA2121 } /* Literal.String.Double */
+.highlight .se { color: #BB6622; font-weight: bold } /* Literal.String.Escape */
+.highlight .sh { color: #BA2121 } /* Literal.String.Heredoc */
+.highlight .si { color: #BB6688; font-weight: bold } /* Literal.String.Interpol */
+.highlight .sx { color: #008000 } /* Literal.String.Other */
+.highlight .sr { color: #BB6688 } /* Literal.String.Regex */
+.highlight .s1 { color: #BA2121 } /* Literal.String.Single */
+.highlight .ss { color: #19177C } /* Literal.String.Symbol */
+.highlight .bp { color: #008000 } /* Name.Builtin.Pseudo */
+.highlight .fm { color: #0000FF } /* Name.Function.Magic */
+.highlight .vc { color: #19177C } /* Name.Variable.Class */
+.highlight .vg { color: #19177C } /* Name.Variable.Global */
+.highlight .vi { color: #19177C } /* Name.Variable.Instance */
+.highlight .vm { color: #19177C } /* Name.Variable.Magic */
+.highlight .il { color: #666666 } /* Literal.Number.Integer.Long */
+</style>
+    
+<!-- Loading mathjax macro -->
+<!-- Load mathjax -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS_HTML"></script>
+    <!-- MathJax configuration -->
+    <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+            displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+            processEscapes: true,
+            processEnvironments: true
+        },
+        // Center justify equations in code and markdown cells. Elsewhere
+        // we use CSS to left justify single line equations in code cells.
+        displayAlign: 'center',
+        "HTML-CSS": {
+            styles: {'.MathJax_Display': {"margin": 0}},
+            linebreaks: { automatic: true }
+        }
+    });
+    </script>
+    <!-- End of mathjax configuration --></head>
+<body>
+  <div class="header-nav">
+    <a href="/imandra-docs/">&lt; Back</a>
+  </div>
+  <div class="bg-container">
+    <div class="bg-container__bg"></div>
+    <div class="container">
+      <header class="header">
+        <a href="/imandra-docs/">
+          <img src="/imandra-docs/static/img/site_specific_image_v_2.svg">
+        </a>
+      </header>
+      <div class="content content--with-cells">
+  
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Logic-and-Program-modes">Logic and Program modes<a class="anchor-link" href="#Logic-and-Program-modes">&#182;</a></h1><p>Imandra has two modes: <em>logic mode</em> and <em>program mode</em>. When we launch Imandra Terminal (or an Imandra Jupyter Notebook session), we start off in logic mode.</p>
+<p>In the terminal, we can identify that Imandra is in logic mode by the pound sign prompt (<code>#</code>).</p>
+<p>In a notebook, we can inspect Imandra's current mode using the <code>#config</code> directive.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="try-this-container">
+  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Logic%20and%20program%20modes.ipynb%23try-cell-2" target="_blank">
+    <div class="try-this">Try this!</div>
+  </a>
+</div>
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[1]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ocaml"><pre><span></span><span class="o">#</span><span class="n">config</span> <span class="mi">1</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[1]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>----------------------------------------------------------------------------
+Configuration component: Mode
+----------------------------------------------------------------------------
+Value: Logic
+Help topics: program, logic
+----------------------------------------------------------------------------
+</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>While in logic mode, we have access to Imandra's reasoning tools, such as <code>verify</code> and <code>theorem</code>.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="try-this-container">
+  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Logic%20and%20program%20modes.ipynb%23try-cell-4" target="_blank">
+    <div class="try-this">Try this!</div>
+  </a>
+</div>
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[2]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ocaml"><pre><span></span><span class="k">let</span> <span class="n">succ</span> <span class="n">n</span> <span class="o">=</span> <span class="n">n</span> <span class="o">+</span> <span class="mi">1</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[2]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>val succ : Z.t -&gt; Z.t = &lt;fun&gt;
+</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="try-this-container">
+  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Logic%20and%20program%20modes.ipynb%23try-cell-5" target="_blank">
+    <div class="try-this">Try this!</div>
+  </a>
+</div>
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[3]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ocaml"><pre><span></span><span class="n">verify</span> <span class="o">(</span><span class="k">fun</span> <span class="n">n</span> <span class="o">-&gt;</span> <span class="n">succ</span> <span class="n">n</span> <span class="o">&gt;</span> <span class="n">n</span><span class="o">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[3]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>- : int -&gt; bool = &lt;fun&gt;
+</pre>
+</div>
+
+</div>
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+
+<div class="output_html rendered_html output_subarea ">
+<div><div class="imandra-vr imandra-vr-proved"><i class="fa fa-check-circle"></i><span>Proved</span></div><div><div class="imandra-alternatives" id="alt-0849fdaa-cf41-495d-9ea0-812a04cc3cc7"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>proof</a></li><li class="" data-toggle="tab"><a>call graph</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-proof-top"><div class="imandra-fold panel panel-default" id="fold-3aa81699-1eb7-4a83-bc8f-17650e7f8174"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>proof</span></div></div><div class="panel-body collapse"><div class="imandra-proof"><div class="imandra-alternatives" id="alt-997935f9-f147-4f0a-80cc-29ee0bf253a5"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>summary</a></li><li class="" data-toggle="tab"><a>full</a></li><li class="" data-toggle="tab"><a>graph</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-table" id="table-a9bef1a1-cef5-401e-9d91-68350077bb78"><table><tr><td><b>ground_instances</b></td><td>0</td></tr><tr><td><b>definitions</b></td><td>0</td></tr><tr><td><b>inductions</b></td><td>0</td></tr><tr><td><b>search_time</b></td><td><pre>0.011s</pre></td></tr><tr><td><b>details</b></td><td><div class="imandra-fold panel panel-default" id="fold-3dfa83ac-9c7d-4a6f-98e4-83781205bddf"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><div class="imandra-table" id="table-f134b5b2-8464-44df-94c6-f48df94cf722"><table><tr><td><b>smt_stats</b></td><td><div class="imandra-table" id="table-00f0bdc6-f6b0-4045-8b45-dbc9c4fe2c23"><table><tr><td><b>rlimit count</b></td><td>13</td></tr><tr><td><b>mk bool var</b></td><td>5</td></tr><tr><td><b>num allocs</b></td><td>1313751663</td></tr><tr><td><b>memory</b></td><td>5.730000</td></tr><tr><td><b>max memory</b></td><td>20.060000</td></tr></table></div></td></tr></table></div></div><script>
+require(['nbextensions/nbimandra/fold'], function (fold) {
+  var target = '#fold-3dfa83ac-9c7d-4a6f-98e4-83781205bddf';
+  fold.hydrate(target);
+});
+</script></div></td></tr></table></div></div><div class="tab-pane"><div class="imandra-fold panel panel-default" id="fold-d1c63fe6-f357-4b14-9d32-7e562e3a3a34"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.011s] (:var_0: + 1) &gt; :var_0:</pre></li><li><div><h4>simplify</h4><div class="imandra-table" id="table-ef3d61b5-8313-4f19-882b-37ba5bca9431"><table><tr><td><b>into</b></td><td><pre>true</pre></td></tr><tr><td><b>expansions</b></td><td><pre>[]</pre></td></tr><tr><td><b>rewrite_steps</b></td><td><ul></ul></td></tr><tr><td><b>forward_chaining</b></td><td><ul></ul></td></tr></table></div></div></li><li><div><h4>unsat</h4><pre>(mp (asserted (not true)) (rewrite (= (not true) false)) false)</pre></div></li></ul></div><script>
+require(['nbextensions/nbimandra/fold'], function (fold) {
+  var target = '#fold-d1c63fe6-f357-4b14-9d32-7e562e3a3a34';
+  fold.hydrate(target);
+});
+</script></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-383c7249-9257-44bc-862e-522340cba6ea"><textarea style="display: none">digraph &quot;proof&quot; {
+p_234 [label=&quot;Start ((:var_0: + 1) \&gt; :var_0: :time 0.011s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+p_234 -&gt; p_233 [label=&quot;&quot;];
+p_233 [label=&quot;Simplify (true :expansions [] :rw [] :fc [])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+p_233 -&gt; p_232 [label=&quot;&quot;];
+p_232 -&gt; p_z3_35 [label=&quot;&quot;,fontname=&quot;courier&quot;,fontsize=14];
+p_z3_35 [label=&quot;(mp (asserted (not true)) (rewrite (= (not true) false)) false)&quot;,shape=box,fontname=&quot;courier&quot;,fontsize=14];p_232 [label=&quot;unsat&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+}
+</textarea><button class="btn btn-primary">Load graph</button><div class="imandra-graphviz-loading display-none">Loading..</div><div class="imandra-graphviz-target"></div><script>
+require(['nbextensions/nbimandra/graphviz'], function (graphviz) {
+  var target = '#graphviz-383c7249-9257-44bc-862e-522340cba6ea';
+  graphviz.hydrate(target);
+});
+</script></div></div></div><script>
+require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
+  var target = '#alt-997935f9-f147-4f0a-80cc-29ee0bf253a5';
+  alternatives.hydrate(target);
+});
+</script></div></div></div><script>
+require(['nbextensions/nbimandra/fold'], function (fold) {
+  var target = '#fold-3aa81699-1eb7-4a83-bc8f-17650e7f8174';
+  fold.hydrate(target);
+});
+</script></div></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-4657a2ee-b280-4b89-822c-52d78c0732e7"><textarea style="display: none">digraph &quot;call graph&quot; {
+goal [label=&quot;not true&quot;,shape=box,style=filled,color=&quot;cyan&quot;,fontname=&quot;courier&quot;,fontsize=14];
+}
+</textarea><button class="btn btn-primary">Load graph</button><div class="imandra-graphviz-loading display-none">Loading..</div><div class="imandra-graphviz-target"></div><script>
+require(['nbextensions/nbimandra/graphviz'], function (graphviz) {
+  var target = '#graphviz-4657a2ee-b280-4b89-822c-52d78c0732e7';
+  graphviz.hydrate(target);
+});
+</script></div></div></div><script>
+require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
+  var target = '#alt-0849fdaa-cf41-495d-9ea0-812a04cc3cc7';
+  alternatives.hydrate(target);
+});
+</script></div></div></div>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>A future notebook will summarize the various reasoning tools, and explain when to use which one.</p>
+<p>In logic mode, all definitions -- types, values and functions -- are entered into the logic. We can see all previous events in logic mode by inspecting the <code>#history</code> (aliased to <code>#h</code>).</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="try-this-container">
+  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Logic%20and%20program%20modes.ipynb%23try-cell-7" target="_blank">
+    <div class="try-this">Try this!</div>
+  </a>
+</div>
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[4]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ocaml"><pre><span></span><span class="o">#</span><span class="n">h</span><span class="o">;;</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[4]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre></pre>
+</div>
+
+</div>
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+
+<div class="output_html rendered_html output_subarea ">
+<div><div><h3>All events in session</h3><p></p><ul><li><div>0. Fun: succ</div></li><li><div>1. Verify: &lt;expr&gt;</div></li></ul><p></p></div></div>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="try-this-container">
+  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Logic%20and%20program%20modes.ipynb%23try-cell-8" target="_blank">
+    <div class="try-this">Try this!</div>
+  </a>
+</div>
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[5]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ocaml"><pre><span></span><span class="o">#</span><span class="n">h</span> <span class="n">succ</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[5]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre></pre>
+</div>
+
+</div>
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+
+<div class="output_html rendered_html output_subarea ">
+<div><div><h3>Fun: succ</h3><div class="imandra-table" id="table-a9477561-b305-4d4d-8ecc-83bfc4c35812"><table><tr><td><b>iml</b></td><td><div class="imandra-fold panel panel-default" id="fold-af66d2a8-df4d-44b7-ad0c-dcef4d6ab31a"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>definition</span></div></div><div class="panel-body collapse"><pre>fun (n : int) -&gt; n + 1</pre></div><script>
+require(['nbextensions/nbimandra/fold'], function (fold) {
+  var target = '#fold-af66d2a8-df4d-44b7-ad0c-dcef4d6ab31a';
+  fold.hydrate(target);
+});
+</script></div></td></tr><tr><td><b>def</b></td><td><div class="imandra-table" id="table-da933d24-120f-4845-8f98-4fd0fc81980b"><table><tr><td><b>name</b></td><td>succ</td></tr><tr><td><b>type</b></td><td>int -&gt; int</td></tr><tr><td><b>recursive</b></td><td>false</td></tr><tr><td><b>call signature</b></td><td>succ (n : int)</td></tr><tr><td><b>validated</b></td><td>true</td></tr><tr><td><b>location</b></td><td>jupyter cell 2:1,0--18</td></tr></table></div></td></tr></table></div></div></div>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>While in logic mode, we are restricted to a purely functional subset of OCaml, and our recursive functions must terminate.</p>
+<p>If we try to define a non-termating function, for example, Imandra will reject it.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="try-this-container">
+  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Logic%20and%20program%20modes.ipynb%23try-cell-10" target="_blank">
+    <div class="try-this">Try this!</div>
+  </a>
+</div>
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[6]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ocaml"><pre><span></span><span class="k">let</span> <span class="k">rec</span> <span class="n">bad_repeat</span> <span class="n">x</span> <span class="o">=</span> <span class="n">x</span> <span class="o">::</span> <span class="n">bad_repeat</span> <span class="n">x</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[6]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>val bad_repeat : &#39;a -&gt; &#39;a list = &lt;fun&gt;
+File &#34;jupyter cell 6&#34;, line 1, characters 0-40:
+<span class="ansi-red-intense-fg ansi-bold">Error</span>: Validate: no measure provided, and Imandra cannot guess any.
+Are you sure this function is actually terminating?
+</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="try-this-container">
+  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Logic%20and%20program%20modes.ipynb%23try-cell-11" target="_blank">
+    <div class="try-this">Try this!</div>
+  </a>
+</div>
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[7]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ocaml"><pre><span></span><span class="o">#</span><span class="n">show</span> <span class="n">bad_repeat</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[7]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>Unknown element.
+</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>For more complex recursive functions, we may need to convince Imandra that the function terminates, for example by defining a "measure". See the notebook <a href="https://docs.imandra.ai/imandra-docs/notebooks/proving-program-termination/">Proving Program Termination with Imandra</a> for more details.</p>
+<p>Our logic-mode definitions are allowed to call other definitions only if those other definitions have been admitted into the logic.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="try-this-container">
+  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Logic%20and%20program%20modes.ipynb%23try-cell-13" target="_blank">
+    <div class="try-this">Try this!</div>
+  </a>
+</div>
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[8]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ocaml"><pre><span></span><span class="k">let</span> <span class="n">say_hi</span> <span class="bp">()</span> <span class="o">=</span> <span class="n">print_endline</span> <span class="s2">&quot;Hello!&quot;</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[8]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>val say_hi : unit -&gt; unit = &lt;fun&gt;
+<span class="ansi-red-intense-fg ansi-bold">Error</span>: No function Pervasives/0.print_endline was defined in logic-mode
+</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>In order to define such a side-effecting function, we switch to <em>program mode</em>. We do this using the <code>#program</code> directive.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="try-this-container">
+  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Logic%20and%20program%20modes.ipynb%23try-cell-15" target="_blank">
+    <div class="try-this">Try this!</div>
+  </a>
+</div>
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[9]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ocaml"><pre><span></span><span class="o">#</span><span class="n">program</span><span class="o">;;</span>
+
+<span class="o">#</span><span class="n">config</span> <span class="mi">1</span><span class="o">;;</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[9]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>----------------------------------------------------------------------------
+Configuration component: Mode
+----------------------------------------------------------------------------
+Value: Program
+Help topics: program, logic
+----------------------------------------------------------------------------
+</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>In the terminal, we can identify that Imandra is in program mode by the angle bracket prompt (<code>&gt;</code>).</p>
+<p>Now that we are in program mode, we have the full power of OCaml at our fingertips!</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="try-this-container">
+  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Logic%20and%20program%20modes.ipynb%23try-cell-17" target="_blank">
+    <div class="try-this">Try this!</div>
+  </a>
+</div>
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[10]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ocaml"><pre><span></span><span class="k">let</span> <span class="n">say_hi</span> <span class="bp">()</span> <span class="o">=</span> <span class="n">print_endline</span> <span class="s2">&quot;Hello!&quot;</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[10]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>val say_hi : unit -&gt; unit = &lt;fun&gt;
+</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="try-this-container">
+  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Logic%20and%20program%20modes.ipynb%23try-cell-18" target="_blank">
+    <div class="try-this">Try this!</div>
+  </a>
+</div>
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[11]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ocaml"><pre><span></span><span class="n">say_hi</span> <span class="bp">()</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[11]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>Hello!
+- : unit = ()
+</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>When we switch back to logic mode (using the <code>#logic</code> directive), we can still refer to our program-mode definitions at the top level.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="try-this-container">
+  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Logic%20and%20program%20modes.ipynb%23try-cell-20" target="_blank">
+    <div class="try-this">Try this!</div>
+  </a>
+</div>
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[12]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ocaml"><pre><span></span><span class="o">#</span><span class="n">logic</span><span class="o">;;</span>
+
+<span class="n">say_hi</span> <span class="bp">()</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[12]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>Hello!
+- : unit = ()
+</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>But we are forbidden from using them in our logic-mode definitions.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="try-this-container">
+  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Logic%20and%20program%20modes.ipynb%23try-cell-22" target="_blank">
+    <div class="try-this">Try this!</div>
+  </a>
+</div>
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[13]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ocaml"><pre><span></span><span class="k">let</span> <span class="n">say_hi_from_logic_mode</span> <span class="bp">()</span> <span class="o">=</span> <span class="n">say_hi</span> <span class="bp">()</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[13]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>val say_hi_from_logic_mode : unit -&gt; unit = &lt;fun&gt;
+<span class="ansi-red-intense-fg ansi-bold">Error</span>: No function say_hi/6663 was defined in logic-mode
+</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Often, we want to define a type in logic mode and then a related function in program mode, for example a pretty-printer. For this case we can use the <code>[@@program]</code> annotation to define a one-off program-mode function while in logic mode.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="try-this-container">
+  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Logic%20and%20program%20modes.ipynb%23try-cell-24" target="_blank">
+    <div class="try-this">Try this!</div>
+  </a>
+</div>
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[14]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ocaml"><pre><span></span><span class="k">type</span> <span class="n">person</span> <span class="o">=</span> <span class="o">{</span> <span class="n">name</span> <span class="o">:</span> <span class="kt">string</span><span class="o">;</span> <span class="n">favorite_color</span> <span class="o">:</span> <span class="kt">string</span> <span class="o">};;</span>
+
+<span class="k">let</span> <span class="n">print_person</span> <span class="o">(</span><span class="n">person</span> <span class="o">:</span> <span class="n">person</span><span class="o">)</span> <span class="o">:</span> <span class="kt">string</span> <span class="o">=</span>
+  <span class="nn">Printf</span><span class="p">.</span><span class="n">sprintf</span> <span class="s2">&quot;%s prefers %s things&quot;</span> <span class="n">person</span><span class="o">.</span><span class="n">name</span> <span class="n">person</span><span class="o">.</span><span class="n">favorite_color</span>
+<span class="o">[@@</span><span class="n">program</span><span class="o">];;</span>
+
+<span class="n">print_person</span> <span class="o">{</span> <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;Matt&quot;</span><span class="o">;</span> <span class="n">favorite_color</span> <span class="o">=</span> <span class="s2">&quot;green&quot;</span> <span class="o">};;</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[14]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>type person = { name : string; favorite_color : string; }
+val print_person : person -&gt; string = &lt;fun&gt;
+- : string = &#34;Matt prefers green things&#34;
+</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>There is also the <code>[@@logic]</code> annotation, which allows admitting a definition into the logic while in program mode.</p>
+<p>That concludes our overview of Imandra's logic and program modes!</p>
+
+</div>
+</div>
+</div>
+  
+ 
+
+
+      </div></div>
+  </div>
+</body>
+</html>
