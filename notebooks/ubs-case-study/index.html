@@ -476,7 +476,7 @@ val mid_point : mkt_data -&gt; real = &lt;fun&gt;
 
 
 <div class="output_html rendered_html output_subarea ">
-<div><div><h4>mkt_data</h4><div class="imandra-table" id="table-9cf6e18b-fcb6-4fac-a9ee-3f8ee7287bbf"><table><tr><td><b>nbb</b></td><td>42.11</td></tr><tr><td><b>nbo</b></td><td>42.1</td></tr><tr><td><b>l_up</b></td><td>3.</td></tr><tr><td><b>l_down</b></td><td>2.5</td></tr></table></div></div></div>
+<div><div><h4>mkt_data</h4><div class="imandra-table" id="table-26f4bbdf-5bfa-4db4-b5f4-1d7f323583c1"><table><tr><td><b>nbb</b></td><td>42.11</td></tr><tr><td><b>nbo</b></td><td>42.1</td></tr><tr><td><b>l_up</b></td><td>3.</td></tr><tr><td><b>l_down</b></td><td>2.5</td></tr></table></div></div></div>
 
 </div>
 
@@ -1473,11 +1473,11 @@ module CX :
 
 
 <div class="output_html rendered_html output_subarea ">
-<div><pre>Counterexample (after 0 steps, 0.030s):
+<div><pre>Counterexample (after 0 steps, 0.033s):
  let side = SELL
  let o1 =
    {id = 3; peg = FAR; client_id = 4; order_type = LIMIT_CI; qty = 5;
-    min_qty = 6; leaves_qty = 2438; price = 0.; time = 8856; src = 7;
+    min_qty = 6; leaves_qty = 2437; price = 1235.; time = 8856; src = 7;
     order_attr = IOC; capacity = Principal; category = C_TWO;
     cross_restrict =
      {cr_self_cross = false; cr_ubs_principal = false;
@@ -1490,21 +1490,21 @@ module CX :
     locate_found = false; expiry_time = 8}
  let o2 =
    {id = 9; peg = FAR; client_id = 10; order_type = LIMIT_CI; qty = 11;
-    min_qty = 12; leaves_qty = 2437; price = -1.; time = 8854; src = 13;
+    min_qty = 12; leaves_qty = 2436; price = 1235.; time = 8854; src = 13;
     order_attr = IOC; capacity = Principal; category = C_TWO;
     cross_restrict =
      {cr_self_cross = false; cr_ubs_principal = false;
       cr_round_lot_only = false; cr_no_locked_nbbo = false;
-      cr_pegged_mid_point_mode = 15; cr_enable_conditionals = false;
+      cr_pegged_mid_point_mode = 14; cr_enable_conditionals = false;
       cr_min_qty = false;
       cr_cat_elig =
        {c_one_elig = false; c_two_elig = false; c_three_elig = false;
         c_four_elig = false}};
-    locate_found = false; expiry_time = 14}
+    locate_found = false; expiry_time = 15}
  let o3 =
-   {id = 19; peg = FAR; client_id = 20; order_type = FIRM_UP_LIMIT; qty = 21;
-    min_qty = 22; leaves_qty = 1796; price = 1.; time = 8855; src = 23;
-    order_attr = IOC; capacity = Principal; category = C_TWO;
+   {id = 19; peg = NEAR; client_id = 20; order_type = FIRM_UP_LIMIT;
+    qty = 21; min_qty = 22; leaves_qty = 1796; price = 1235.; time = 8855;
+    src = 23; order_attr = IOC; capacity = Principal; category = C_TWO;
     cross_restrict =
      {cr_self_cross = false; cr_ubs_principal = false;
       cr_round_lot_only = false; cr_no_locked_nbbo = false;
@@ -1514,7 +1514,7 @@ module CX :
        {c_one_elig = false; c_two_elig = false; c_three_elig = false;
         c_four_elig = false}};
     locate_found = false; expiry_time = 24}
- let mkt = {nbb = 1.; nbo = 1236.; l_up = 2.; l_down = 3.}
+ let mkt = {nbb = 1234.; nbo = 1236.; l_up = 2.; l_down = 3.}
 </pre></div>
 
 </div>
@@ -1528,20 +1528,20 @@ module CX :
 
 
 <div class="output_html rendered_html output_subarea ">
-<div><div class="imandra-vr imandra-vr-refuted"><i class="fa fa-times-circle-o"></i><span>Refuted</span></div><div><div class="imandra-alternatives" id="alt-1383ae24-071e-4e23-952b-1086774cc316"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>call graph</a></li><li class="" data-toggle="tab"><a>proof-attempt</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-graphviz" id="graphviz-26f7b961-e548-4af9-8084-eb6bec27e3ff"><textarea style="display: none">digraph &quot;call graph&quot; {
+<div><div class="imandra-vr imandra-vr-refuted"><i class="fa fa-times-circle-o"></i><span>Refuted</span></div><div><div class="imandra-alternatives" id="alt-6cda0eb6-e1b3-4bd6-ad74-ac48c7a96cbf"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>call graph</a></li><li class="" data-toggle="tab"><a>proof-attempt</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-graphviz" id="graphviz-3dbb2013-f65b-422e-aa7f-66cd8f342c58"><textarea style="display: none">digraph &quot;call graph&quot; {
 goal [label=&quot;not\l((not\l  (((if side = BUY\l     then\l       if (if o1.order_type = LIMIT\l           then\l             if side = BUY then if 0 \&lt;=. o1.price then … else …\l             else if 0 \&lt;=. o1.price then … else …\l           else\l           if o1.order_type = MARKET then if side = BUY then … else …\l           else if o1.order_type = PEGGED then … else …)\l          \&lt;=.\l          (if o2.order_type = LIMIT\l           then\l             if side = BUY then if 0 \&lt;=. o2.price then … else …\l             else if 0 \&lt;=. o2.price then … else …\l           else if … then … else …)\l       then … else 1\l     else …)\l    = 1 \|\| …)\l   &amp;&amp; …)\l  \|\| …)\l \|\| …)&quot;,shape=box,style=filled,color=&quot;cyan&quot;,fontname=&quot;courier&quot;,fontsize=14];
 }
 </textarea><button class="btn btn-primary">Load graph</button><div class="imandra-graphviz-loading display-none">Loading..</div><div class="imandra-graphviz-target"></div><script>
 require(['nbextensions/nbimandra/graphviz'], function (graphviz) {
-  var target = '#graphviz-26f7b961-e548-4af9-8084-eb6bec27e3ff';
+  var target = '#graphviz-3dbb2013-f65b-422e-aa7f-66cd8f342c58';
   graphviz.hydrate(target);
 });
-</script></div></div><div class="tab-pane"><div class="imandra-proof-top"><div class="imandra-fold panel panel-default" id="fold-56ada5c2-f8f3-43ae-b335-15f298a0dab0"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>proof attempt</span></div></div><div class="panel-body collapse"><div class="imandra-proof"><div class="imandra-alternatives" id="alt-737153af-6df2-4800-9c70-94e2db51875f"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>summary</a></li><li class="" data-toggle="tab"><a>full</a></li><li class="" data-toggle="tab"><a>graph</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-table" id="table-03cd3804-ea9e-4fe2-b18a-947eb8abca4c"><table><tr><td><b>ground_instances</b></td><td>0</td></tr><tr><td><b>definitions</b></td><td>0</td></tr><tr><td><b>inductions</b></td><td>0</td></tr><tr><td><b>search_time</b></td><td><pre>0.030s</pre></td></tr><tr><td><b>details</b></td><td><div class="imandra-fold panel panel-default" id="fold-7ca3d17a-eb1e-4503-948a-ad11cc0d0890"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><div class="imandra-table" id="table-6efd9d1b-11ca-458f-b66c-b67c4879838f"><table><tr><td><b>smt_stats</b></td><td><div class="imandra-table" id="table-6aa217c0-3b7f-4fd2-b195-c94362334ea2"><table><tr><td><b>arith assert lower</b></td><td>42</td></tr><tr><td><b>arith pivots</b></td><td>15</td></tr><tr><td><b>rlimit count</b></td><td>18822</td></tr><tr><td><b>mk clause</b></td><td>540</td></tr><tr><td><b>datatype occurs check</b></td><td>47</td></tr><tr><td><b>mk bool var</b></td><td>767</td></tr><tr><td><b>arith assert upper</b></td><td>53</td></tr><tr><td><b>datatype splits</b></td><td>31</td></tr><tr><td><b>decisions</b></td><td>829</td></tr><tr><td><b>arith add rows</b></td><td>60</td></tr><tr><td><b>arith bound prop</b></td><td>5</td></tr><tr><td><b>propagations</b></td><td>882</td></tr><tr><td><b>conflicts</b></td><td>23</td></tr><tr><td><b>arith fixed eqs</b></td><td>20</td></tr><tr><td><b>datatype accessor ax</b></td><td>69</td></tr><tr><td><b>minimized lits</b></td><td>1</td></tr><tr><td><b>arith conflicts</b></td><td>2</td></tr><tr><td><b>arith assert diseq</b></td><td>17</td></tr><tr><td><b>datatype constructor ax</b></td><td>201</td></tr><tr><td><b>num allocs</b></td><td>1217030694</td></tr><tr><td><b>final checks</b></td><td>1</td></tr><tr><td><b>added eqs</b></td><td>1327</td></tr><tr><td><b>del clause</b></td><td>107</td></tr><tr><td><b>arith eq adapter</b></td><td>22</td></tr><tr><td><b>memory</b></td><td>13.450000</td></tr><tr><td><b>max memory</b></td><td>15.370000</td></tr></table></div></td></tr></table></div></div><script>
+</script></div></div><div class="tab-pane"><div class="imandra-proof-top"><div class="imandra-fold panel panel-default" id="fold-9d19ef72-8714-495f-9989-22aead20af22"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>proof attempt</span></div></div><div class="panel-body collapse"><div class="imandra-proof"><div class="imandra-alternatives" id="alt-28bb23fd-26ef-415a-af4c-1f5b09033a53"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>summary</a></li><li class="" data-toggle="tab"><a>full</a></li><li class="" data-toggle="tab"><a>graph</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-table" id="table-90373f24-773e-428e-a28c-f87e473a00cf"><table><tr><td><b>ground_instances</b></td><td>0</td></tr><tr><td><b>definitions</b></td><td>0</td></tr><tr><td><b>inductions</b></td><td>0</td></tr><tr><td><b>search_time</b></td><td><pre>0.033s</pre></td></tr><tr><td><b>details</b></td><td><div class="imandra-fold panel panel-default" id="fold-203ccfec-7f71-4faa-ae91-89f901b70c49"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><div class="imandra-table" id="table-c3ea4557-b6e7-4cf6-b0d6-39ca122cf5c6"><table><tr><td><b>smt_stats</b></td><td><div class="imandra-table" id="table-0d100ffb-8996-4b39-85b5-8be2a7247d16"><table><tr><td><b>arith offset eqs</b></td><td>18</td></tr><tr><td><b>arith assert lower</b></td><td>58</td></tr><tr><td><b>arith pivots</b></td><td>23</td></tr><tr><td><b>rlimit count</b></td><td>24888</td></tr><tr><td><b>mk clause</b></td><td>589</td></tr><tr><td><b>datatype occurs check</b></td><td>47</td></tr><tr><td><b>mk bool var</b></td><td>864</td></tr><tr><td><b>arith assert upper</b></td><td>71</td></tr><tr><td><b>datatype splits</b></td><td>37</td></tr><tr><td><b>decisions</b></td><td>1206</td></tr><tr><td><b>arith add rows</b></td><td>189</td></tr><tr><td><b>arith bound prop</b></td><td>10</td></tr><tr><td><b>propagations</b></td><td>1152</td></tr><tr><td><b>interface eqs</b></td><td>1</td></tr><tr><td><b>conflicts</b></td><td>34</td></tr><tr><td><b>arith fixed eqs</b></td><td>22</td></tr><tr><td><b>datatype accessor ax</b></td><td>76</td></tr><tr><td><b>minimized lits</b></td><td>2</td></tr><tr><td><b>arith conflicts</b></td><td>2</td></tr><tr><td><b>arith assert diseq</b></td><td>58</td></tr><tr><td><b>datatype constructor ax</b></td><td>254</td></tr><tr><td><b>num allocs</b></td><td>1418419482</td></tr><tr><td><b>final checks</b></td><td>2</td></tr><tr><td><b>added eqs</b></td><td>1826</td></tr><tr><td><b>del clause</b></td><td>135</td></tr><tr><td><b>arith eq adapter</b></td><td>38</td></tr><tr><td><b>memory</b></td><td>6.640000</td></tr><tr><td><b>max memory</b></td><td>22.720000</td></tr></table></div></td></tr></table></div></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-7ca3d17a-eb1e-4503-948a-ad11cc0d0890';
+  var target = '#fold-203ccfec-7f71-4faa-ae91-89f901b70c49';
   fold.hydrate(target);
 });
-</script></div></td></tr></table></div></div><div class="tab-pane"><div class="imandra-fold panel panel-default" id="fold-7799dc61-7ef4-4d39-8f1a-c98f8ee5f4fa"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.030s]
+</script></div></td></tr></table></div></div><div class="tab-pane"><div class="imandra-fold panel panel-default" id="fold-e5ca24de-c875-4e4a-b7f2-0897a2f07ef6"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.033s]
   (if (if :var_0: = BUY
        then
          if (if ….order_type = LIMIT
@@ -1562,7 +1562,7 @@ require(['nbextensions/nbimandra/fold'], function (fold) {
        else …)
       = 1
    then true else …)
-  &amp;&amp; … ==&gt; …</pre></li><li><div><h4>simplify</h4><div class="imandra-table" id="table-d1400ede-0e42-45d0-9e8f-036a4355c580"><table><tr><td><b>into</b></td><td><pre>(not
+  &amp;&amp; … ==&gt; …</pre></li><li><div><h4>simplify</h4><div class="imandra-table" id="table-bc331a9e-276e-45f7-bcbb-c504e29f14f6"><table><tr><td><b>into</b></td><td><pre>(not
  (((if :var_0: = BUY
     then
       if (if :var_1:.order_type = LIMIT
@@ -1590,7 +1590,7 @@ require(['nbextensions/nbimandra/fold'], function (fold) {
 || …</pre></td></tr><tr><td><b>expansions</b></td><td><pre>[]</pre></td></tr><tr><td><b>rewrite_steps</b></td><td><ul></ul></td></tr><tr><td><b>forward_chaining</b></td><td><ul></ul></td></tr></table></div></div></li><li>Sat (Some  let side = SELL
  let o1 =
    {id = 3; peg = FAR; client_id = 4; order_type = LIMIT_CI; qty = 5;
-    min_qty = 6; leaves_qty = 2438; price = 0.; time = 8856; src = 7;
+    min_qty = 6; leaves_qty = 2437; price = 1235.; time = 8856; src = 7;
     order_attr = IOC; capacity = Principal; category = C_TWO;
     cross_restrict =
      {cr_self_cross = false; cr_ubs_principal = false;
@@ -1603,21 +1603,21 @@ require(['nbextensions/nbimandra/fold'], function (fold) {
     locate_found = false; expiry_time = 8}
  let o2 =
    {id = 9; peg = FAR; client_id = 10; order_type = LIMIT_CI; qty = 11;
-    min_qty = 12; leaves_qty = 2437; price = -1.; time = 8854; src = 13;
+    min_qty = 12; leaves_qty = 2436; price = 1235.; time = 8854; src = 13;
     order_attr = IOC; capacity = Principal; category = C_TWO;
     cross_restrict =
      {cr_self_cross = false; cr_ubs_principal = false;
       cr_round_lot_only = false; cr_no_locked_nbbo = false;
-      cr_pegged_mid_point_mode = 15; cr_enable_conditionals = false;
+      cr_pegged_mid_point_mode = 14; cr_enable_conditionals = false;
       cr_min_qty = false;
       cr_cat_elig =
        {c_one_elig = false; c_two_elig = false; c_three_elig = false;
         c_four_elig = false}};
-    locate_found = false; expiry_time = 14}
+    locate_found = false; expiry_time = 15}
  let o3 =
-   {id = 19; peg = FAR; client_id = 20; order_type = FIRM_UP_LIMIT; qty = 21;
-    min_qty = 22; leaves_qty = 1796; price = 1.; time = 8855; src = 23;
-    order_attr = IOC; capacity = Principal; category = C_TWO;
+   {id = 19; peg = NEAR; client_id = 20; order_type = FIRM_UP_LIMIT;
+    qty = 21; min_qty = 22; leaves_qty = 1796; price = 1235.; time = 8855;
+    src = 23; order_attr = IOC; capacity = Principal; category = C_TWO;
     cross_restrict =
      {cr_self_cross = false; cr_ubs_principal = false;
       cr_round_lot_only = false; cr_no_locked_nbbo = false;
@@ -1627,37 +1627,37 @@ require(['nbextensions/nbimandra/fold'], function (fold) {
        {c_one_elig = false; c_two_elig = false; c_three_elig = false;
         c_four_elig = false}};
     locate_found = false; expiry_time = 24}
- let mkt = {nbb = 1.; nbo = 1236.; l_up = 2.; l_down = 3.}
+ let mkt = {nbb = 1234.; nbo = 1236.; l_up = 2.; l_down = 3.}
 )</li></ul></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-7799dc61-7ef4-4d39-8f1a-c98f8ee5f4fa';
+  var target = '#fold-e5ca24de-c875-4e4a-b7f2-0897a2f07ef6';
   fold.hydrate(target);
 });
-</script></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-46a9db73-2bb7-4b00-86cd-6661f8382a9d"><textarea style="display: none">digraph &quot;proof&quot; {
-p_234 [label=&quot;Start ((if (if :var_0: = BUY\l            then\l              if (if ….order_type = LIMIT\l                  then\l                    if :var_0: = BUY then if ….1 \&lt;. 0 then … else …\l                    else if ….1 \&lt;. 0 then … else …\l                  else\l                  if ….order_type = MARKET\l                  then if :var_0: = BUY then … else …\l                  else if ….order_type = PEGGED then … else …)\l                 \&gt;.\l                 (if ….order_type = LIMIT\l                  then\l                    if :var_0: = BUY then if ….1 \&lt;. 0 then … else …\l                    else if … then … else …\l                  else …)\l              then 1 else …\l            else …)\l           = 1\l        then true else …)\l       &amp;&amp; … ==\&gt; … :time 0.030s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
-p_234 -&gt; p_233 [label=&quot;&quot;];
-p_233 [label=&quot;Simplify ((not\l           (((if :var_0: = BUY\l              then\l                if (if :var_1:.order_type = LIMIT\l                    then\l                      if :var_0: = BUY\l                      then if 0 \&lt;=. :var_1:.price then … else …\l                      else if 0 \&lt;=. :var_1:.price then … else …\l                    else\l                    if :var_1:.order_type = MARKET\l                    then if :var_0: = BUY then … else …\l                    else if :var_1:.order_type = PEGGED then … else …)\l                   \&lt;=.\l                   (if :var_2:.order_type = LIMIT\l                    then\l                      if :var_0: = BUY\l                      then if 0 \&lt;=. :var_2:.price then … else …\l                      else if 0 \&lt;=. :var_2:.price then … else …\l                    else\l                    if :var_2:.order_type = MARKET\l                    then if :var_0: = BUY then … else …\l                    else if :var_2:.order_type = PEGGED then … else …)\l                then if … then 0 else -1 else 1\l              else …)\l             = 1 \|\| …)\l            &amp;&amp; …)\l           \|\| …)\l          \|\| … :expansions [] :rw [] :fc [])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
-p_233 -&gt; p_232 [label=&quot;&quot;];
-p_232 [label=&quot;Sat (Some  let side = SELL\l let o1 =\l   \{id = 3; peg = FAR; client_id = 4; order_type = LIMIT_CI; qty = 5;\l    min_qty = 6; leaves_qty = 2438; price = 0.; time = 8856; src = 7;\l    order_attr = IOC; capacity = Principal; category = C_TWO;\l    cross_restrict =\l     \{cr_self_cross = false; cr_ubs_principal = false;\l      cr_round_lot_only = false; cr_no_locked_nbbo = false;\l      cr_pegged_mid_point_mode = 2; cr_enable_conditionals = false;\l      cr_min_qty = false;\l      cr_cat_elig =\l       \{c_one_elig = false; c_two_elig = false; c_three_elig = false;\l        c_four_elig = false\}\};\l    locate_found = false; expiry_time = 8\}\l let o2 =\l   \{id = 9; peg = FAR; client_id = 10; order_type = LIMIT_CI; qty = 11;\l    min_qty = 12; leaves_qty = 2437; price = -1.; time = 8854; src = 13;\l    order_attr = IOC; capacity = Principal; category = C_TWO;\l    cross_restrict =\l     \{cr_self_cross = false; cr_ubs_principal = false;\l      cr_round_lot_only = false; cr_no_locked_nbbo = false;\l      cr_pegged_mid_point_mode = 15; cr_enable_conditionals = false;\l      cr_min_qty = false;\l      cr_cat_elig =\l       \{c_one_elig = false; c_two_elig = false; c_three_elig = false;\l        c_four_elig = false\}\};\l    locate_found = false; expiry_time = 14\}\l let o3 =\l   \{id = 19; peg = FAR; client_id = 20; order_type = FIRM_UP_LIMIT; qty = 21;\l    min_qty = 22; leaves_qty = 1796; price = 1.; time = 8855; src = 23;\l    order_attr = IOC; capacity = Principal; category = C_TWO;\l    cross_restrict =\l     \{cr_self_cross = false; cr_ubs_principal = false;\l      cr_round_lot_only = false; cr_no_locked_nbbo = false;\l      cr_pegged_mid_point_mode = 18; cr_enable_conditionals = false;\l      cr_min_qty = false;\l      cr_cat_elig =\l       \{c_one_elig = false; c_two_elig = false; c_three_elig = false;\l        c_four_elig = false\}\};\l    locate_found = false; expiry_time = 24\}\l let mkt = \{nbb = 1.; nbo = 1236.; l_up = 2.; l_down = 3.\}\l)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+</script></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-fbc4cf5f-e13f-40cd-a003-2c511ab7dc87"><textarea style="display: none">digraph &quot;proof&quot; {
+p_249 [label=&quot;Start ((if (if :var_0: = BUY\l            then\l              if (if ….order_type = LIMIT\l                  then\l                    if :var_0: = BUY then if ….1 \&lt;. 0 then … else …\l                    else if ….1 \&lt;. 0 then … else …\l                  else\l                  if ….order_type = MARKET\l                  then if :var_0: = BUY then … else …\l                  else if ….order_type = PEGGED then … else …)\l                 \&gt;.\l                 (if ….order_type = LIMIT\l                  then\l                    if :var_0: = BUY then if ….1 \&lt;. 0 then … else …\l                    else if … then … else …\l                  else …)\l              then 1 else …\l            else …)\l           = 1\l        then true else …)\l       &amp;&amp; … ==\&gt; … :time 0.033s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+p_249 -&gt; p_248 [label=&quot;&quot;];
+p_248 [label=&quot;Simplify ((not\l           (((if :var_0: = BUY\l              then\l                if (if :var_1:.order_type = LIMIT\l                    then\l                      if :var_0: = BUY\l                      then if 0 \&lt;=. :var_1:.price then … else …\l                      else if 0 \&lt;=. :var_1:.price then … else …\l                    else\l                    if :var_1:.order_type = MARKET\l                    then if :var_0: = BUY then … else …\l                    else if :var_1:.order_type = PEGGED then … else …)\l                   \&lt;=.\l                   (if :var_2:.order_type = LIMIT\l                    then\l                      if :var_0: = BUY\l                      then if 0 \&lt;=. :var_2:.price then … else …\l                      else if 0 \&lt;=. :var_2:.price then … else …\l                    else\l                    if :var_2:.order_type = MARKET\l                    then if :var_0: = BUY then … else …\l                    else if :var_2:.order_type = PEGGED then … else …)\l                then if … then 0 else -1 else 1\l              else …)\l             = 1 \|\| …)\l            &amp;&amp; …)\l           \|\| …)\l          \|\| … :expansions [] :rw [] :fc [])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+p_248 -&gt; p_247 [label=&quot;&quot;];
+p_247 [label=&quot;Sat (Some  let side = SELL\l let o1 =\l   \{id = 3; peg = FAR; client_id = 4; order_type = LIMIT_CI; qty = 5;\l    min_qty = 6; leaves_qty = 2437; price = 1235.; time = 8856; src = 7;\l    order_attr = IOC; capacity = Principal; category = C_TWO;\l    cross_restrict =\l     \{cr_self_cross = false; cr_ubs_principal = false;\l      cr_round_lot_only = false; cr_no_locked_nbbo = false;\l      cr_pegged_mid_point_mode = 2; cr_enable_conditionals = false;\l      cr_min_qty = false;\l      cr_cat_elig =\l       \{c_one_elig = false; c_two_elig = false; c_three_elig = false;\l        c_four_elig = false\}\};\l    locate_found = false; expiry_time = 8\}\l let o2 =\l   \{id = 9; peg = FAR; client_id = 10; order_type = LIMIT_CI; qty = 11;\l    min_qty = 12; leaves_qty = 2436; price = 1235.; time = 8854; src = 13;\l    order_attr = IOC; capacity = Principal; category = C_TWO;\l    cross_restrict =\l     \{cr_self_cross = false; cr_ubs_principal = false;\l      cr_round_lot_only = false; cr_no_locked_nbbo = false;\l      cr_pegged_mid_point_mode = 14; cr_enable_conditionals = false;\l      cr_min_qty = false;\l      cr_cat_elig =\l       \{c_one_elig = false; c_two_elig = false; c_three_elig = false;\l        c_four_elig = false\}\};\l    locate_found = false; expiry_time = 15\}\l let o3 =\l   \{id = 19; peg = NEAR; client_id = 20; order_type = FIRM_UP_LIMIT;\l    qty = 21; min_qty = 22; leaves_qty = 1796; price = 1235.; time = 8855;\l    src = 23; order_attr = IOC; capacity = Principal; category = C_TWO;\l    cross_restrict =\l     \{cr_self_cross = false; cr_ubs_principal = false;\l      cr_round_lot_only = false; cr_no_locked_nbbo = false;\l      cr_pegged_mid_point_mode = 18; cr_enable_conditionals = false;\l      cr_min_qty = false;\l      cr_cat_elig =\l       \{c_one_elig = false; c_two_elig = false; c_three_elig = false;\l        c_four_elig = false\}\};\l    locate_found = false; expiry_time = 24\}\l let mkt = \{nbb = 1234.; nbo = 1236.; l_up = 2.; l_down = 3.\}\l)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 }
 </textarea><button class="btn btn-primary">Load graph</button><div class="imandra-graphviz-loading display-none">Loading..</div><div class="imandra-graphviz-target"></div><script>
 require(['nbextensions/nbimandra/graphviz'], function (graphviz) {
-  var target = '#graphviz-46a9db73-2bb7-4b00-86cd-6661f8382a9d';
+  var target = '#graphviz-fbc4cf5f-e13f-40cd-a003-2c511ab7dc87';
   graphviz.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-737153af-6df2-4800-9c70-94e2db51875f';
+  var target = '#alt-28bb23fd-26ef-415a-af4c-1f5b09033a53';
   alternatives.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-56ada5c2-f8f3-43ae-b335-15f298a0dab0';
+  var target = '#fold-9d19ef72-8714-495f-9989-22aead20af22';
   fold.hydrate(target);
 });
 </script></div></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-1383ae24-071e-4e23-952b-1086774cc316';
+  var target = '#alt-6cda0eb6-e1b3-4bd6-ad74-ac48c7a96cbf';
   alternatives.hydrate(target);
 });
 </script></div></div></div>
@@ -1710,7 +1710,7 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
 <div class="output_text output_subarea output_execute_result">
 <pre>- : order =
 {id = 3; peg = FAR; client_id = 4; order_type = LIMIT_CI; qty = 5;
- min_qty = 6; leaves_qty = 2438; price = 0; time = 8856; src = 7;
+ min_qty = 6; leaves_qty = 2437; price = 1235; time = 8856; src = 7;
  order_attr = IOC; capacity = Principal; category = C_TWO;
  cross_restrict =
   {cr_self_cross = false; cr_ubs_principal = false;
@@ -1973,12 +1973,13 @@ module CX :
 
 
 <div class="output_html rendered_html output_subarea ">
-<div><pre>Counterexample (after 0 steps, 0.036s):
- let side = BUY
+<div><pre>Counterexample (after 0 steps, 0.034s):
+ let side = SELL
  let o1 =
-   {id = 2; peg = MID; client_id = 3; order_type = LIMIT; qty = 460;
-    min_qty = 4; leaves_qty = 460; price = 450.; time = 2283; src = 5;
-    order_attr = IOC; capacity = Principal; category = C_TWO;
+   {id = 3; peg = MID; client_id = 4; order_type = LIMIT_CI; qty = 1;
+    min_qty = 5; leaves_qty = 1; price = (Real.mk_of_string &quot;5/2&quot;);
+    time = 8857; src = 6; order_attr = IOC; capacity = Principal;
+    category = C_TWO;
     cross_restrict =
      {cr_self_cross = false; cr_ubs_principal = false;
       cr_round_lot_only = false; cr_no_locked_nbbo = false;
@@ -1987,34 +1988,36 @@ module CX :
       cr_cat_elig =
        {c_one_elig = false; c_two_elig = false; c_three_elig = false;
         c_four_elig = false}};
-    locate_found = false; expiry_time = 6}
+    locate_found = false; expiry_time = 8}
  let o2 =
-   {id = 10; peg = NEAR; client_id = 11; order_type = LIMIT_CI; qty = 2438;
-    min_qty = 12; leaves_qty = 460; price = 450.; time = 2284; src = 13;
-    order_attr = IOC; capacity = Principal; category = C_TWO;
+   {id = 11; peg = MID; client_id = 12; order_type = PEGGED_CI; qty = 39;
+    min_qty = 13; leaves_qty = 0; price = (Real.mk_of_string &quot;5/2&quot;);
+    time = 8855; src = 14; order_attr = IOC; capacity = Principal;
+    category = C_TWO;
     cross_restrict =
      {cr_self_cross = false; cr_ubs_principal = false;
       cr_round_lot_only = false; cr_no_locked_nbbo = false;
-      cr_pegged_mid_point_mode = 9; cr_enable_conditionals = false;
+      cr_pegged_mid_point_mode = 10; cr_enable_conditionals = false;
       cr_min_qty = false;
       cr_cat_elig =
        {c_one_elig = false; c_two_elig = false; c_three_elig = false;
         c_four_elig = false}};
-    locate_found = false; expiry_time = 14}
+    locate_found = false; expiry_time = 15}
  let o3 =
-   {id = 16; peg = NEAR; client_id = 17; order_type = PEGGED_CI; qty = 1797;
-    min_qty = 18; leaves_qty = 459; price = 450.; time = 2282; src = 19;
-    order_attr = IOC; capacity = Principal; category = C_TWO;
+   {id = 18; peg = MID; client_id = 19; order_type = PEGGED; qty = 7720;
+    min_qty = 20; leaves_qty = 5796; price = (Real.mk_of_string &quot;5/2&quot;);
+    time = 8856; src = 21; order_attr = IOC; capacity = Principal;
+    category = C_TWO;
     cross_restrict =
      {cr_self_cross = false; cr_ubs_principal = false;
       cr_round_lot_only = false; cr_no_locked_nbbo = false;
-      cr_pegged_mid_point_mode = 21; cr_enable_conditionals = false;
+      cr_pegged_mid_point_mode = 17; cr_enable_conditionals = false;
       cr_min_qty = false;
       cr_cat_elig =
        {c_one_elig = false; c_two_elig = false; c_three_elig = false;
         c_four_elig = false}};
-    locate_found = false; expiry_time = 20}
- let mkt = {nbb = 451.; nbo = 452.; l_up = 453.; l_down = 450.}
+    locate_found = false; expiry_time = 22}
+ let mkt = {nbb = 2.; nbo = 3.; l_up = 4.; l_down = 1.}
 </pre></div>
 
 </div>
@@ -2028,20 +2031,20 @@ module CX :
 
 
 <div class="output_html rendered_html output_subarea ">
-<div><div class="imandra-vr imandra-vr-refuted"><i class="fa fa-times-circle-o"></i><span>Refuted</span></div><div><div class="imandra-alternatives" id="alt-f8672054-dd22-422d-b145-42a95a9b561e"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>call graph</a></li><li class="" data-toggle="tab"><a>proof-attempt</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-graphviz" id="graphviz-1ba95d13-40af-4cbd-ac4b-297d10ce240d"><textarea style="display: none">digraph &quot;call graph&quot; {
+<div><div class="imandra-vr imandra-vr-refuted"><i class="fa fa-times-circle-o"></i><span>Refuted</span></div><div><div class="imandra-alternatives" id="alt-efb2fa75-9b04-4b4a-991f-393f8ea7e59a"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>call graph</a></li><li class="" data-toggle="tab"><a>proof-attempt</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-graphviz" id="graphviz-bbb08246-d79c-4429-bbdb-3e5fe4e9ab87"><textarea style="display: none">digraph &quot;call graph&quot; {
 goal [label=&quot;not\l(((not\l   ((((((((((((((((((o1.leaves_qty \&lt;= o1.qty &amp;&amp; o2.leaves_qty \&lt;= o2.qty)\l                    &amp;&amp; o3.leaves_qty \&lt;= o3.qty)\l                   &amp;&amp; o1.time \&gt;= 0)\l                  &amp;&amp; o2.time \&gt;= 0)\l                 &amp;&amp; o3.time \&gt;= 0)\l                &amp;&amp; not (o1.price \&lt;=. 0))\l               &amp;&amp; not (o2.price \&lt;=. 0))\l              &amp;&amp; not (o3.price \&lt;=. 0))\l             &amp;&amp; not (o1.qty \&lt;= 0))\l            &amp;&amp; not (o2.qty \&lt;= 0))\l           &amp;&amp; not (o3.qty \&lt;= 0))\l          &amp;&amp; o1.leaves_qty \&gt;= 0)\l         &amp;&amp; o2.leaves_qty \&gt;= 0)\l        &amp;&amp; o3.leaves_qty \&gt;= 0)\l       &amp;&amp; not (mkt.l_down \&lt;=. 0))\l      &amp;&amp; not (mkt.nbb \&lt;=. mkt.l_down))\l     &amp;&amp; not (mkt.nbo \&lt;=. mkt.nbb))\l    &amp;&amp; not (mkt.l_up \&lt;=. mkt.nbo))\l   \|\| not\l      (((if side = BUY\l         then\l           if (if o1.order_type = LIMIT\l               then\l                 if side = BUY then if 0 \&lt;=. o1.price then … else mkt.nbo\l                 else if 0 \&lt;=. o1.price then … else mkt.nbb\l               else\l               if o1.order_type = MARKET\l               then if side = BUY then mkt.nbo else mkt.nbb\l               else if o1.order_type = PEGGED then … else …)\l              \&lt;=.\l              (if o2.order_type = LIMIT\l               then if side = BUY then if … then … else mkt.nbo else …\l               else …)\l           then … else 1\l         else …)\l        = 1 \|\| …)\l       &amp;&amp; …))\l  \|\| …)\l \|\| …)&quot;,shape=box,style=filled,color=&quot;cyan&quot;,fontname=&quot;courier&quot;,fontsize=14];
 }
 </textarea><button class="btn btn-primary">Load graph</button><div class="imandra-graphviz-loading display-none">Loading..</div><div class="imandra-graphviz-target"></div><script>
 require(['nbextensions/nbimandra/graphviz'], function (graphviz) {
-  var target = '#graphviz-1ba95d13-40af-4cbd-ac4b-297d10ce240d';
+  var target = '#graphviz-bbb08246-d79c-4429-bbdb-3e5fe4e9ab87';
   graphviz.hydrate(target);
 });
-</script></div></div><div class="tab-pane"><div class="imandra-proof-top"><div class="imandra-fold panel panel-default" id="fold-a62bd130-0d51-47bd-ba3b-3d33a6653533"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>proof attempt</span></div></div><div class="panel-body collapse"><div class="imandra-proof"><div class="imandra-alternatives" id="alt-a39291e0-abf6-40e2-a555-c930a1973663"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>summary</a></li><li class="" data-toggle="tab"><a>full</a></li><li class="" data-toggle="tab"><a>graph</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-table" id="table-a364e83e-6232-4b60-9d46-385b46d5ddbe"><table><tr><td><b>ground_instances</b></td><td>0</td></tr><tr><td><b>definitions</b></td><td>0</td></tr><tr><td><b>inductions</b></td><td>0</td></tr><tr><td><b>search_time</b></td><td><pre>0.036s</pre></td></tr><tr><td><b>details</b></td><td><div class="imandra-fold panel panel-default" id="fold-d3a7347b-1e71-4a80-92a2-50af71c3dc56"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><div class="imandra-table" id="table-57eaae1a-2fc5-4793-aecc-6406209268fb"><table><tr><td><b>smt_stats</b></td><td><div class="imandra-table" id="table-14457ae2-7cc1-4fda-af04-8462093ea7dc"><table><tr><td><b>arith offset eqs</b></td><td>28</td></tr><tr><td><b>arith assert lower</b></td><td>162</td></tr><tr><td><b>arith pivots</b></td><td>45</td></tr><tr><td><b>rlimit count</b></td><td>32325</td></tr><tr><td><b>mk clause</b></td><td>653</td></tr><tr><td><b>datatype occurs check</b></td><td>180</td></tr><tr><td><b>mk bool var</b></td><td>994</td></tr><tr><td><b>arith assert upper</b></td><td>137</td></tr><tr><td><b>datatype splits</b></td><td>67</td></tr><tr><td><b>decisions</b></td><td>1771</td></tr><tr><td><b>arith add rows</b></td><td>283</td></tr><tr><td><b>arith bound prop</b></td><td>10</td></tr><tr><td><b>propagations</b></td><td>1733</td></tr><tr><td><b>interface eqs</b></td><td>4</td></tr><tr><td><b>conflicts</b></td><td>48</td></tr><tr><td><b>arith fixed eqs</b></td><td>52</td></tr><tr><td><b>datatype accessor ax</b></td><td>61</td></tr><tr><td><b>arith conflicts</b></td><td>2</td></tr><tr><td><b>arith assert diseq</b></td><td>107</td></tr><tr><td><b>datatype constructor ax</b></td><td>266</td></tr><tr><td><b>num allocs</b></td><td>1281141533</td></tr><tr><td><b>final checks</b></td><td>5</td></tr><tr><td><b>added eqs</b></td><td>2611</td></tr><tr><td><b>del clause</b></td><td>208</td></tr><tr><td><b>arith eq adapter</b></td><td>69</td></tr><tr><td><b>memory</b></td><td>16.180000</td></tr><tr><td><b>max memory</b></td><td>17.440000</td></tr></table></div></td></tr></table></div></div><script>
+</script></div></div><div class="tab-pane"><div class="imandra-proof-top"><div class="imandra-fold panel panel-default" id="fold-5e7d5704-2e79-4aef-8910-69cd1c2cd4de"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>proof attempt</span></div></div><div class="panel-body collapse"><div class="imandra-proof"><div class="imandra-alternatives" id="alt-b7ecd1a7-098b-4ea1-94d8-4bfdb670d8f0"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>summary</a></li><li class="" data-toggle="tab"><a>full</a></li><li class="" data-toggle="tab"><a>graph</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-table" id="table-4693f9ac-130c-4391-8eaf-e8a3a445e708"><table><tr><td><b>ground_instances</b></td><td>0</td></tr><tr><td><b>definitions</b></td><td>0</td></tr><tr><td><b>inductions</b></td><td>0</td></tr><tr><td><b>search_time</b></td><td><pre>0.034s</pre></td></tr><tr><td><b>details</b></td><td><div class="imandra-fold panel panel-default" id="fold-3126bd90-4753-4db2-989a-d454b254dcc4"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><div class="imandra-table" id="table-13e0215b-e9c6-4007-a740-0cbf96f78f96"><table><tr><td><b>smt_stats</b></td><td><div class="imandra-table" id="table-75cdd4d2-e33c-40c0-bec1-88e427fe8a3c"><table><tr><td><b>arith offset eqs</b></td><td>9</td></tr><tr><td><b>arith assert lower</b></td><td>138</td></tr><tr><td><b>arith pivots</b></td><td>25</td></tr><tr><td><b>rlimit count</b></td><td>28506</td></tr><tr><td><b>mk clause</b></td><td>567</td></tr><tr><td><b>datatype occurs check</b></td><td>46</td></tr><tr><td><b>mk bool var</b></td><td>870</td></tr><tr><td><b>arith assert upper</b></td><td>105</td></tr><tr><td><b>datatype splits</b></td><td>38</td></tr><tr><td><b>decisions</b></td><td>1683</td></tr><tr><td><b>arith add rows</b></td><td>149</td></tr><tr><td><b>arith bound prop</b></td><td>8</td></tr><tr><td><b>propagations</b></td><td>1831</td></tr><tr><td><b>interface eqs</b></td><td>1</td></tr><tr><td><b>conflicts</b></td><td>32</td></tr><tr><td><b>arith fixed eqs</b></td><td>61</td></tr><tr><td><b>datatype accessor ax</b></td><td>58</td></tr><tr><td><b>arith assert diseq</b></td><td>15</td></tr><tr><td><b>datatype constructor ax</b></td><td>223</td></tr><tr><td><b>num allocs</b></td><td>1486276506</td></tr><tr><td><b>final checks</b></td><td>2</td></tr><tr><td><b>added eqs</b></td><td>2603</td></tr><tr><td><b>del clause</b></td><td>149</td></tr><tr><td><b>arith eq adapter</b></td><td>39</td></tr><tr><td><b>memory</b></td><td>9.400000</td></tr><tr><td><b>max memory</b></td><td>22.720000</td></tr></table></div></td></tr></table></div></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-d3a7347b-1e71-4a80-92a2-50af71c3dc56';
+  var target = '#fold-3126bd90-4753-4db2-989a-d454b254dcc4';
   fold.hydrate(target);
 });
-</script></div></td></tr></table></div></div><div class="tab-pane"><div class="imandra-fold panel panel-default" id="fold-2871b3de-7de1-491e-b0a9-47ad510ba8e3"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.036s]
+</script></div></td></tr></table></div></div><div class="tab-pane"><div class="imandra-fold panel panel-default" id="fold-1ef043ea-1c5d-44ff-a7a6-6d7bbbf73030"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.034s]
   :var_0:.leaves_qty &lt;= :var_0:.qty
   &amp;&amp; :var_1:.leaves_qty &lt;= :var_1:.qty
      &amp;&amp; :var_2:.leaves_qty &lt;= :var_2:.qty
@@ -2084,7 +2087,7 @@ require(['nbextensions/nbimandra/fold'], function (fold) {
            else …)
           = 1
        then true else …)
-      &amp;&amp; … ==&gt; …</pre></li><li><div><h4>simplify</h4><div class="imandra-table" id="table-8869f0b0-1d81-4f32-b753-a9407c3efb5e"><table><tr><td><b>into</b></td><td><pre>((not
+      &amp;&amp; … ==&gt; …</pre></li><li><div><h4>simplify</h4><div class="imandra-table" id="table-aa49778b-ddf7-4849-bc48-7b9d967f8507"><table><tr><td><b>into</b></td><td><pre>((not
   ((((((((((((((((((:var_0:.leaves_qty &lt;= :var_0:.qty
                     &amp;&amp; :var_1:.leaves_qty &lt;= :var_1:.qty)
                    &amp;&amp; :var_2:.leaves_qty &lt;= :var_2:.qty)
@@ -2131,11 +2134,12 @@ require(['nbextensions/nbimandra/fold'], function (fold) {
        = 1 || …)
       &amp;&amp; …))
  || …)
-|| …</pre></td></tr><tr><td><b>expansions</b></td><td><pre>[]</pre></td></tr><tr><td><b>rewrite_steps</b></td><td><ul></ul></td></tr><tr><td><b>forward_chaining</b></td><td><ul></ul></td></tr></table></div></div></li><li>Sat (Some  let side = BUY
+|| …</pre></td></tr><tr><td><b>expansions</b></td><td><pre>[]</pre></td></tr><tr><td><b>rewrite_steps</b></td><td><ul></ul></td></tr><tr><td><b>forward_chaining</b></td><td><ul></ul></td></tr></table></div></div></li><li>Sat (Some  let side = SELL
  let o1 =
-   {id = 2; peg = MID; client_id = 3; order_type = LIMIT; qty = 460;
-    min_qty = 4; leaves_qty = 460; price = 450.; time = 2283; src = 5;
-    order_attr = IOC; capacity = Principal; category = C_TWO;
+   {id = 3; peg = MID; client_id = 4; order_type = LIMIT_CI; qty = 1;
+    min_qty = 5; leaves_qty = 1; price = (Real.mk_of_string &quot;5/2&quot;);
+    time = 8857; src = 6; order_attr = IOC; capacity = Principal;
+    category = C_TWO;
     cross_restrict =
      {cr_self_cross = false; cr_ubs_principal = false;
       cr_round_lot_only = false; cr_no_locked_nbbo = false;
@@ -2144,64 +2148,66 @@ require(['nbextensions/nbimandra/fold'], function (fold) {
       cr_cat_elig =
        {c_one_elig = false; c_two_elig = false; c_three_elig = false;
         c_four_elig = false}};
-    locate_found = false; expiry_time = 6}
+    locate_found = false; expiry_time = 8}
  let o2 =
-   {id = 10; peg = NEAR; client_id = 11; order_type = LIMIT_CI; qty = 2438;
-    min_qty = 12; leaves_qty = 460; price = 450.; time = 2284; src = 13;
-    order_attr = IOC; capacity = Principal; category = C_TWO;
+   {id = 11; peg = MID; client_id = 12; order_type = PEGGED_CI; qty = 39;
+    min_qty = 13; leaves_qty = 0; price = (Real.mk_of_string &quot;5/2&quot;);
+    time = 8855; src = 14; order_attr = IOC; capacity = Principal;
+    category = C_TWO;
     cross_restrict =
      {cr_self_cross = false; cr_ubs_principal = false;
       cr_round_lot_only = false; cr_no_locked_nbbo = false;
-      cr_pegged_mid_point_mode = 9; cr_enable_conditionals = false;
+      cr_pegged_mid_point_mode = 10; cr_enable_conditionals = false;
       cr_min_qty = false;
       cr_cat_elig =
        {c_one_elig = false; c_two_elig = false; c_three_elig = false;
         c_four_elig = false}};
-    locate_found = false; expiry_time = 14}
+    locate_found = false; expiry_time = 15}
  let o3 =
-   {id = 16; peg = NEAR; client_id = 17; order_type = PEGGED_CI; qty = 1797;
-    min_qty = 18; leaves_qty = 459; price = 450.; time = 2282; src = 19;
-    order_attr = IOC; capacity = Principal; category = C_TWO;
+   {id = 18; peg = MID; client_id = 19; order_type = PEGGED; qty = 7720;
+    min_qty = 20; leaves_qty = 5796; price = (Real.mk_of_string &quot;5/2&quot;);
+    time = 8856; src = 21; order_attr = IOC; capacity = Principal;
+    category = C_TWO;
     cross_restrict =
      {cr_self_cross = false; cr_ubs_principal = false;
       cr_round_lot_only = false; cr_no_locked_nbbo = false;
-      cr_pegged_mid_point_mode = 21; cr_enable_conditionals = false;
+      cr_pegged_mid_point_mode = 17; cr_enable_conditionals = false;
       cr_min_qty = false;
       cr_cat_elig =
        {c_one_elig = false; c_two_elig = false; c_three_elig = false;
         c_four_elig = false}};
-    locate_found = false; expiry_time = 20}
- let mkt = {nbb = 451.; nbo = 452.; l_up = 453.; l_down = 450.}
+    locate_found = false; expiry_time = 22}
+ let mkt = {nbb = 2.; nbo = 3.; l_up = 4.; l_down = 1.}
 )</li></ul></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-2871b3de-7de1-491e-b0a9-47ad510ba8e3';
+  var target = '#fold-1ef043ea-1c5d-44ff-a7a6-6d7bbbf73030';
   fold.hydrate(target);
 });
-</script></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-86f52997-4352-4054-a245-22ba03d40951"><textarea style="display: none">digraph &quot;proof&quot; {
-p_237 [label=&quot;Start (:var_0:.leaves_qty \&lt;= :var_0:.qty\l       &amp;&amp; :var_1:.leaves_qty \&lt;= :var_1:.qty\l          &amp;&amp; :var_2:.leaves_qty \&lt;= :var_2:.qty\l             &amp;&amp; :var_0:.time \&gt;= 0\l                &amp;&amp; :var_1:.time \&gt;= 0\l                   &amp;&amp; :var_2:.time \&gt;= 0\l                      &amp;&amp; :var_0:.price \&gt;. 0\l                         &amp;&amp; :var_1:.price \&gt;. 0\l                            &amp;&amp; :var_2:.price \&gt;. 0\l                               &amp;&amp; :var_0:.qty \&gt; 0\l                                  &amp;&amp; :var_1:.qty \&gt; 0\l                                     &amp;&amp; :var_2:.qty \&gt; 0\l                                        &amp;&amp; :var_0:.leaves_qty \&gt;= 0\l                                           &amp;&amp; :var_1:.leaves_qty \&gt;= 0\l                                              &amp;&amp; :var_2:.leaves_qty \&gt;= 0\l                                                 &amp;&amp; :var_3:.l_down \&gt;. 0\l                                                    &amp;&amp; :var_3:.nbb \&gt;.\l                                                       :var_3:.l_down\l                                                       &amp;&amp; :var_3:.nbo \&gt;.\l                                                          :var_3:.nbb\l                                                          &amp;&amp; :var_3:.l_up \&gt;.\l                                                             :var_3:.nbo\l       ==\&gt; (if (if :var_4: = BUY\l                then\l                  if (if ….order_type = LIMIT\l                      then\l                        if :var_4: = BUY then if ….1 \&lt;. 0 then … else …\l                        else if ….1 \&lt;. 0 then … else …\l                      else\l                      if ….order_type = MARKET\l                      then if :var_4: = BUY then … else …\l                      else if ….order_type = PEGGED then … else …)\l                     \&gt;.\l                     (if ….order_type = LIMIT\l                      then\l                        if :var_4: = BUY then if ….1 \&lt;. 0 then … else …\l                        else if … then … else …\l                      else …)\l                  then 1 else …\l                else …)\l               = 1\l            then true else …)\l           &amp;&amp; … ==\&gt; …\l       :time 0.036s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
-p_237 -&gt; p_236 [label=&quot;&quot;];
-p_236 [label=&quot;Simplify (((not\l            ((((((((((((((((((:var_0:.leaves_qty \&lt;= :var_0:.qty\l                              &amp;&amp; :var_1:.leaves_qty \&lt;= :var_1:.qty)\l                             &amp;&amp; :var_2:.leaves_qty \&lt;= :var_2:.qty)\l                            &amp;&amp; :var_0:.time \&gt;= 0)\l                           &amp;&amp; :var_1:.time \&gt;= 0)\l                          &amp;&amp; :var_2:.time \&gt;= 0)\l                         &amp;&amp; not (:var_0:.price \&lt;=. 0))\l                        &amp;&amp; not (:var_1:.price \&lt;=. 0))\l                       &amp;&amp; not (:var_2:.price \&lt;=. 0))\l                      &amp;&amp; not (:var_0:.qty \&lt;= 0))\l                     &amp;&amp; not (:var_1:.qty \&lt;= 0))\l                    &amp;&amp; not (:var_2:.qty \&lt;= 0))\l                   &amp;&amp; :var_0:.leaves_qty \&gt;= 0)\l                  &amp;&amp; :var_1:.leaves_qty \&gt;= 0)\l                 &amp;&amp; :var_2:.leaves_qty \&gt;= 0)\l                &amp;&amp; not (:var_3:.l_down \&lt;=. 0))\l               &amp;&amp; not (:var_3:.nbb \&lt;=. :var_3:.l_down))\l              &amp;&amp; not (:var_3:.nbo \&lt;=. :var_3:.nbb))\l             &amp;&amp; not (:var_3:.l_up \&lt;=. :var_3:.nbo))\l            \|\| not\l               (((if :var_4: = BUY\l                  then\l                    if (if :var_0:.order_type = LIMIT\l                        then\l                          if :var_4: = BUY\l                          then\l                            if 0 \&lt;=. :var_0:.price then … else :var_3:.nbo\l                          else\l                          if 0 \&lt;=. :var_0:.price then … else :var_3:.nbb\l                        else\l                        if :var_0:.order_type = MARKET\l                        then\l                          if :var_4: = BUY then :var_3:.nbo else :var_3:.nbb\l                        else if :var_0:.order_type = PEGGED then … else …)\l                       \&lt;=.\l                       (if :var_1:.order_type = LIMIT\l                        then\l                          if :var_4: = BUY\l                          then\l                            if 0 \&lt;=. :var_1:.price then … else :var_3:.nbo\l                          else\l                          if 0 \&lt;=. :var_1:.price then … else :var_3:.nbb\l                        else\l                        if :var_1:.order_type = MARKET\l                        then\l                          if :var_4: = BUY then :var_3:.nbo else :var_3:.nbb\l                        else if :var_1:.order_type = PEGGED then … else …)\l                    then if … then 0 else -1 else 1\l                  else …)\l                 = 1 \|\| …)\l                &amp;&amp; …))\l           \|\| …)\l          \|\| … :expansions [] :rw [] :fc [])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
-p_236 -&gt; p_235 [label=&quot;&quot;];
-p_235 [label=&quot;Sat (Some  let side = BUY\l let o1 =\l   \{id = 2; peg = MID; client_id = 3; order_type = LIMIT; qty = 460;\l    min_qty = 4; leaves_qty = 460; price = 450.; time = 2283; src = 5;\l    order_attr = IOC; capacity = Principal; category = C_TWO;\l    cross_restrict =\l     \{cr_self_cross = false; cr_ubs_principal = false;\l      cr_round_lot_only = false; cr_no_locked_nbbo = false;\l      cr_pegged_mid_point_mode = 7; cr_enable_conditionals = false;\l      cr_min_qty = false;\l      cr_cat_elig =\l       \{c_one_elig = false; c_two_elig = false; c_three_elig = false;\l        c_four_elig = false\}\};\l    locate_found = false; expiry_time = 6\}\l let o2 =\l   \{id = 10; peg = NEAR; client_id = 11; order_type = LIMIT_CI; qty = 2438;\l    min_qty = 12; leaves_qty = 460; price = 450.; time = 2284; src = 13;\l    order_attr = IOC; capacity = Principal; category = C_TWO;\l    cross_restrict =\l     \{cr_self_cross = false; cr_ubs_principal = false;\l      cr_round_lot_only = false; cr_no_locked_nbbo = false;\l      cr_pegged_mid_point_mode = 9; cr_enable_conditionals = false;\l      cr_min_qty = false;\l      cr_cat_elig =\l       \{c_one_elig = false; c_two_elig = false; c_three_elig = false;\l        c_four_elig = false\}\};\l    locate_found = false; expiry_time = 14\}\l let o3 =\l   \{id = 16; peg = NEAR; client_id = 17; order_type = PEGGED_CI; qty = 1797;\l    min_qty = 18; leaves_qty = 459; price = 450.; time = 2282; src = 19;\l    order_attr = IOC; capacity = Principal; category = C_TWO;\l    cross_restrict =\l     \{cr_self_cross = false; cr_ubs_principal = false;\l      cr_round_lot_only = false; cr_no_locked_nbbo = false;\l      cr_pegged_mid_point_mode = 21; cr_enable_conditionals = false;\l      cr_min_qty = false;\l      cr_cat_elig =\l       \{c_one_elig = false; c_two_elig = false; c_three_elig = false;\l        c_four_elig = false\}\};\l    locate_found = false; expiry_time = 20\}\l let mkt = \{nbb = 451.; nbo = 452.; l_up = 453.; l_down = 450.\}\l)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+</script></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-570ccf91-8fb3-4b6f-b3b8-79a1a6c21ea0"><textarea style="display: none">digraph &quot;proof&quot; {
+p_252 [label=&quot;Start (:var_0:.leaves_qty \&lt;= :var_0:.qty\l       &amp;&amp; :var_1:.leaves_qty \&lt;= :var_1:.qty\l          &amp;&amp; :var_2:.leaves_qty \&lt;= :var_2:.qty\l             &amp;&amp; :var_0:.time \&gt;= 0\l                &amp;&amp; :var_1:.time \&gt;= 0\l                   &amp;&amp; :var_2:.time \&gt;= 0\l                      &amp;&amp; :var_0:.price \&gt;. 0\l                         &amp;&amp; :var_1:.price \&gt;. 0\l                            &amp;&amp; :var_2:.price \&gt;. 0\l                               &amp;&amp; :var_0:.qty \&gt; 0\l                                  &amp;&amp; :var_1:.qty \&gt; 0\l                                     &amp;&amp; :var_2:.qty \&gt; 0\l                                        &amp;&amp; :var_0:.leaves_qty \&gt;= 0\l                                           &amp;&amp; :var_1:.leaves_qty \&gt;= 0\l                                              &amp;&amp; :var_2:.leaves_qty \&gt;= 0\l                                                 &amp;&amp; :var_3:.l_down \&gt;. 0\l                                                    &amp;&amp; :var_3:.nbb \&gt;.\l                                                       :var_3:.l_down\l                                                       &amp;&amp; :var_3:.nbo \&gt;.\l                                                          :var_3:.nbb\l                                                          &amp;&amp; :var_3:.l_up \&gt;.\l                                                             :var_3:.nbo\l       ==\&gt; (if (if :var_4: = BUY\l                then\l                  if (if ….order_type = LIMIT\l                      then\l                        if :var_4: = BUY then if ….1 \&lt;. 0 then … else …\l                        else if ….1 \&lt;. 0 then … else …\l                      else\l                      if ….order_type = MARKET\l                      then if :var_4: = BUY then … else …\l                      else if ….order_type = PEGGED then … else …)\l                     \&gt;.\l                     (if ….order_type = LIMIT\l                      then\l                        if :var_4: = BUY then if ….1 \&lt;. 0 then … else …\l                        else if … then … else …\l                      else …)\l                  then 1 else …\l                else …)\l               = 1\l            then true else …)\l           &amp;&amp; … ==\&gt; …\l       :time 0.034s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+p_252 -&gt; p_251 [label=&quot;&quot;];
+p_251 [label=&quot;Simplify (((not\l            ((((((((((((((((((:var_0:.leaves_qty \&lt;= :var_0:.qty\l                              &amp;&amp; :var_1:.leaves_qty \&lt;= :var_1:.qty)\l                             &amp;&amp; :var_2:.leaves_qty \&lt;= :var_2:.qty)\l                            &amp;&amp; :var_0:.time \&gt;= 0)\l                           &amp;&amp; :var_1:.time \&gt;= 0)\l                          &amp;&amp; :var_2:.time \&gt;= 0)\l                         &amp;&amp; not (:var_0:.price \&lt;=. 0))\l                        &amp;&amp; not (:var_1:.price \&lt;=. 0))\l                       &amp;&amp; not (:var_2:.price \&lt;=. 0))\l                      &amp;&amp; not (:var_0:.qty \&lt;= 0))\l                     &amp;&amp; not (:var_1:.qty \&lt;= 0))\l                    &amp;&amp; not (:var_2:.qty \&lt;= 0))\l                   &amp;&amp; :var_0:.leaves_qty \&gt;= 0)\l                  &amp;&amp; :var_1:.leaves_qty \&gt;= 0)\l                 &amp;&amp; :var_2:.leaves_qty \&gt;= 0)\l                &amp;&amp; not (:var_3:.l_down \&lt;=. 0))\l               &amp;&amp; not (:var_3:.nbb \&lt;=. :var_3:.l_down))\l              &amp;&amp; not (:var_3:.nbo \&lt;=. :var_3:.nbb))\l             &amp;&amp; not (:var_3:.l_up \&lt;=. :var_3:.nbo))\l            \|\| not\l               (((if :var_4: = BUY\l                  then\l                    if (if :var_0:.order_type = LIMIT\l                        then\l                          if :var_4: = BUY\l                          then\l                            if 0 \&lt;=. :var_0:.price then … else :var_3:.nbo\l                          else\l                          if 0 \&lt;=. :var_0:.price then … else :var_3:.nbb\l                        else\l                        if :var_0:.order_type = MARKET\l                        then\l                          if :var_4: = BUY then :var_3:.nbo else :var_3:.nbb\l                        else if :var_0:.order_type = PEGGED then … else …)\l                       \&lt;=.\l                       (if :var_1:.order_type = LIMIT\l                        then\l                          if :var_4: = BUY\l                          then\l                            if 0 \&lt;=. :var_1:.price then … else :var_3:.nbo\l                          else\l                          if 0 \&lt;=. :var_1:.price then … else :var_3:.nbb\l                        else\l                        if :var_1:.order_type = MARKET\l                        then\l                          if :var_4: = BUY then :var_3:.nbo else :var_3:.nbb\l                        else if :var_1:.order_type = PEGGED then … else …)\l                    then if … then 0 else -1 else 1\l                  else …)\l                 = 1 \|\| …)\l                &amp;&amp; …))\l           \|\| …)\l          \|\| … :expansions [] :rw [] :fc [])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+p_251 -&gt; p_250 [label=&quot;&quot;];
+p_250 [label=&quot;Sat (Some  let side = SELL\l let o1 =\l   \{id = 3; peg = MID; client_id = 4; order_type = LIMIT_CI; qty = 1;\l    min_qty = 5; leaves_qty = 1; price = (Real.mk_of_string \&quot;5/2\&quot;);\l    time = 8857; src = 6; order_attr = IOC; capacity = Principal;\l    category = C_TWO;\l    cross_restrict =\l     \{cr_self_cross = false; cr_ubs_principal = false;\l      cr_round_lot_only = false; cr_no_locked_nbbo = false;\l      cr_pegged_mid_point_mode = 7; cr_enable_conditionals = false;\l      cr_min_qty = false;\l      cr_cat_elig =\l       \{c_one_elig = false; c_two_elig = false; c_three_elig = false;\l        c_four_elig = false\}\};\l    locate_found = false; expiry_time = 8\}\l let o2 =\l   \{id = 11; peg = MID; client_id = 12; order_type = PEGGED_CI; qty = 39;\l    min_qty = 13; leaves_qty = 0; price = (Real.mk_of_string \&quot;5/2\&quot;);\l    time = 8855; src = 14; order_attr = IOC; capacity = Principal;\l    category = C_TWO;\l    cross_restrict =\l     \{cr_self_cross = false; cr_ubs_principal = false;\l      cr_round_lot_only = false; cr_no_locked_nbbo = false;\l      cr_pegged_mid_point_mode = 10; cr_enable_conditionals = false;\l      cr_min_qty = false;\l      cr_cat_elig =\l       \{c_one_elig = false; c_two_elig = false; c_three_elig = false;\l        c_four_elig = false\}\};\l    locate_found = false; expiry_time = 15\}\l let o3 =\l   \{id = 18; peg = MID; client_id = 19; order_type = PEGGED; qty = 7720;\l    min_qty = 20; leaves_qty = 5796; price = (Real.mk_of_string \&quot;5/2\&quot;);\l    time = 8856; src = 21; order_attr = IOC; capacity = Principal;\l    category = C_TWO;\l    cross_restrict =\l     \{cr_self_cross = false; cr_ubs_principal = false;\l      cr_round_lot_only = false; cr_no_locked_nbbo = false;\l      cr_pegged_mid_point_mode = 17; cr_enable_conditionals = false;\l      cr_min_qty = false;\l      cr_cat_elig =\l       \{c_one_elig = false; c_two_elig = false; c_three_elig = false;\l        c_four_elig = false\}\};\l    locate_found = false; expiry_time = 22\}\l let mkt = \{nbb = 2.; nbo = 3.; l_up = 4.; l_down = 1.\}\l)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 }
 </textarea><button class="btn btn-primary">Load graph</button><div class="imandra-graphviz-loading display-none">Loading..</div><div class="imandra-graphviz-target"></div><script>
 require(['nbextensions/nbimandra/graphviz'], function (graphviz) {
-  var target = '#graphviz-86f52997-4352-4054-a245-22ba03d40951';
+  var target = '#graphviz-570ccf91-8fb3-4b6f-b3b8-79a1a6c21ea0';
   graphviz.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-a39291e0-abf6-40e2-a555-c930a1973663';
+  var target = '#alt-b7ecd1a7-098b-4ea1-94d8-4bfdb670d8f0';
   alternatives.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-a62bd130-0d51-47bd-ba3b-3d33a6653533';
+  var target = '#fold-5e7d5704-2e79-4aef-8910-69cd1c2cd4de';
   fold.hydrate(target);
 });
 </script></div></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-f8672054-dd22-422d-b145-42a95a9b561e';
+  var target = '#alt-efb2fa75-9b04-4b4a-991f-393f8ea7e59a';
   alternatives.hydrate(target);
 });
 </script></div></div></div>
@@ -2373,7 +2379,7 @@ val pp_rank :
 
 
 <div class="output_html rendered_html output_subarea ">
-<div><div class="imandra-table" id="table-e179ab8f-1266-4c6d-953c-db8692b0a4ec"><table><thead><tr><th>side</th><th>order1</th><th>order2</th><th>order3</th><th>mkt</th></tr></thead><tr><td>BUY</td><td><div><h5>order</h5><div class="imandra-table" id="table-080456f5-0d4e-46c4-aadb-2c039d8c5c84"><table><tr><td><b>id</b></td><td>2</td></tr><tr><td><b>peg</b></td><td>MID</td></tr><tr><td><b>client_id</b></td><td>3</td></tr><tr><td><b>order_type</b></td><td>LIMIT</td></tr><tr><td><b>qty</b></td><td>460</td></tr><tr><td><b>min_qty</b></td><td>4</td></tr><tr><td><b>leaves_qty</b></td><td>460</td></tr><tr><td><b>price</b></td><td>450.</td></tr><tr><td><b>time</b></td><td>2283</td></tr><tr><td><b>src</b></td><td>5</td></tr><tr><td><b>order_attr</b></td><td>IOC</td></tr><tr><td><b>capacity</b></td><td>Principal</td></tr><tr><td><b>category</b></td><td>C_TWO</td></tr><tr><td><b>locate_found</b></td><td>false</td></tr><tr><td><b>expiry_time</b></td><td>6</td></tr></table></div></div></td><td><div><h5>order</h5><div class="imandra-table" id="table-08c6c8f9-44b0-4064-89c8-9889961ad508"><table><tr><td><b>id</b></td><td>10</td></tr><tr><td><b>peg</b></td><td>NEAR</td></tr><tr><td><b>client_id</b></td><td>11</td></tr><tr><td><b>order_type</b></td><td>LIMIT_CI</td></tr><tr><td><b>qty</b></td><td>2438</td></tr><tr><td><b>min_qty</b></td><td>12</td></tr><tr><td><b>leaves_qty</b></td><td>460</td></tr><tr><td><b>price</b></td><td>450.</td></tr><tr><td><b>time</b></td><td>2284</td></tr><tr><td><b>src</b></td><td>13</td></tr><tr><td><b>order_attr</b></td><td>IOC</td></tr><tr><td><b>capacity</b></td><td>Principal</td></tr><tr><td><b>category</b></td><td>C_TWO</td></tr><tr><td><b>locate_found</b></td><td>false</td></tr><tr><td><b>expiry_time</b></td><td>14</td></tr></table></div></div></td><td><div><h5>order</h5><div class="imandra-table" id="table-5352c8e5-ec34-4979-9117-24001ce454a4"><table><tr><td><b>id</b></td><td>16</td></tr><tr><td><b>peg</b></td><td>NEAR</td></tr><tr><td><b>client_id</b></td><td>17</td></tr><tr><td><b>order_type</b></td><td>PEGGED_CI</td></tr><tr><td><b>qty</b></td><td>1797</td></tr><tr><td><b>min_qty</b></td><td>18</td></tr><tr><td><b>leaves_qty</b></td><td>459</td></tr><tr><td><b>price</b></td><td>450.</td></tr><tr><td><b>time</b></td><td>2282</td></tr><tr><td><b>src</b></td><td>19</td></tr><tr><td><b>order_attr</b></td><td>IOC</td></tr><tr><td><b>capacity</b></td><td>Principal</td></tr><tr><td><b>category</b></td><td>C_TWO</td></tr><tr><td><b>locate_found</b></td><td>false</td></tr><tr><td><b>expiry_time</b></td><td>20</td></tr></table></div></div></td><td><div><h5>mkt</h5><div class="imandra-table" id="table-42517864-2715-4d5d-9dc8-9c5c3e104f86"><table><tr><td><b>nbb</b></td><td>451.</td></tr><tr><td><b>nbo</b></td><td>452.</td></tr><tr><td><b>l_up</b></td><td>453.</td></tr><tr><td><b>l_down</b></td><td>450.</td></tr></table></div></div></td></tr></table></div></div>
+<div><div class="imandra-table" id="table-6a55c5da-5cd7-4ab1-8866-9c41b950fc6e"><table><thead><tr><th>side</th><th>order1</th><th>order2</th><th>order3</th><th>mkt</th></tr></thead><tr><td>SELL</td><td><div><h5>order</h5><div class="imandra-table" id="table-561d0911-a940-49f8-b491-d251d59d9d44"><table><tr><td><b>id</b></td><td>3</td></tr><tr><td><b>peg</b></td><td>MID</td></tr><tr><td><b>client_id</b></td><td>4</td></tr><tr><td><b>order_type</b></td><td>LIMIT_CI</td></tr><tr><td><b>qty</b></td><td>1</td></tr><tr><td><b>min_qty</b></td><td>5</td></tr><tr><td><b>leaves_qty</b></td><td>1</td></tr><tr><td><b>price</b></td><td>2.5</td></tr><tr><td><b>time</b></td><td>8857</td></tr><tr><td><b>src</b></td><td>6</td></tr><tr><td><b>order_attr</b></td><td>IOC</td></tr><tr><td><b>capacity</b></td><td>Principal</td></tr><tr><td><b>category</b></td><td>C_TWO</td></tr><tr><td><b>locate_found</b></td><td>false</td></tr><tr><td><b>expiry_time</b></td><td>8</td></tr></table></div></div></td><td><div><h5>order</h5><div class="imandra-table" id="table-5e1ac836-0776-4d14-a9dc-200d6108ea1f"><table><tr><td><b>id</b></td><td>11</td></tr><tr><td><b>peg</b></td><td>MID</td></tr><tr><td><b>client_id</b></td><td>12</td></tr><tr><td><b>order_type</b></td><td>PEGGED_CI</td></tr><tr><td><b>qty</b></td><td>39</td></tr><tr><td><b>min_qty</b></td><td>13</td></tr><tr><td><b>leaves_qty</b></td><td>0</td></tr><tr><td><b>price</b></td><td>2.5</td></tr><tr><td><b>time</b></td><td>8855</td></tr><tr><td><b>src</b></td><td>14</td></tr><tr><td><b>order_attr</b></td><td>IOC</td></tr><tr><td><b>capacity</b></td><td>Principal</td></tr><tr><td><b>category</b></td><td>C_TWO</td></tr><tr><td><b>locate_found</b></td><td>false</td></tr><tr><td><b>expiry_time</b></td><td>15</td></tr></table></div></div></td><td><div><h5>order</h5><div class="imandra-table" id="table-3ea0c2bc-9693-4b50-9a37-49072abc2502"><table><tr><td><b>id</b></td><td>18</td></tr><tr><td><b>peg</b></td><td>MID</td></tr><tr><td><b>client_id</b></td><td>19</td></tr><tr><td><b>order_type</b></td><td>PEGGED</td></tr><tr><td><b>qty</b></td><td>7720</td></tr><tr><td><b>min_qty</b></td><td>20</td></tr><tr><td><b>leaves_qty</b></td><td>5796</td></tr><tr><td><b>price</b></td><td>2.5</td></tr><tr><td><b>time</b></td><td>8856</td></tr><tr><td><b>src</b></td><td>21</td></tr><tr><td><b>order_attr</b></td><td>IOC</td></tr><tr><td><b>capacity</b></td><td>Principal</td></tr><tr><td><b>category</b></td><td>C_TWO</td></tr><tr><td><b>locate_found</b></td><td>false</td></tr><tr><td><b>expiry_time</b></td><td>22</td></tr></table></div></div></td><td><div><h5>mkt</h5><div class="imandra-table" id="table-da1a031c-1e65-414a-9828-2120389bf955"><table><tr><td><b>nbb</b></td><td>2.</td></tr><tr><td><b>nbo</b></td><td>3.</td></tr><tr><td><b>l_up</b></td><td>4.</td></tr><tr><td><b>l_down</b></td><td>1.</td></tr></table></div></div></td></tr></table></div></div>
 
 </div>
 

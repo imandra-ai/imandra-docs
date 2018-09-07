@@ -596,7 +596,12 @@ module D :
         val default : default:&#39;a t -&gt; &#39;a t -&gt; &#39;a t
         val cons : &#39;a -&gt; &#39;a t -&gt; &#39;a t
       end
-    module Gen : sig val funs_of_template : template -&gt; funs end
+    module Gen :
+      sig
+        val funs_of_template : template -&gt; funs
+        val funs_of_steps : Imandra_prelude.string list list -&gt; funs
+        val target_of_funs : funs -&gt; target
+      end
     module Mex :
       sig
         type event = DecompositionConfig.event
@@ -781,7 +786,6 @@ module D :
             ?g:G.t -&gt;
             ?root:S.node_t -&gt;
             ?idx:Imandra_prelude.Caml.Int.t -&gt;
-            ?include_partials:bool -&gt;
             ?basis:Imandra_prelude.string list -&gt;
             ?max_asm_lookahead:Imandra_prelude.Caml.Int.t -&gt;
             ?max_ctx_simp:Imandra_prelude.Caml.Int.t -&gt;
@@ -950,7 +954,6 @@ module D :
             ?g:G.t -&gt;
             ?root:S.node_t -&gt;
             ?idx:Imandra_prelude.Caml.Int.t -&gt;
-            ?include_partials:bool -&gt;
             ?basis:Imandra_prelude.string list -&gt;
             ?max_asm_lookahead:Imandra_prelude.Caml.Int.t -&gt;
             ?max_ctx_simp:Imandra_prelude.Caml.Int.t -&gt;
@@ -1096,7 +1099,6 @@ module D :
           ?g:G.t -&gt;
           ?root:Strategy.Concrete.node_t -&gt;
           ?idx:Imandra_prelude.Caml.Int.t -&gt;
-          ?include_partials:bool -&gt;
           ?basis:Imandra_prelude.string list -&gt;
           ?max_asm_lookahead:Imandra_prelude.Caml.Int.t -&gt;
           ?max_ctx_simp:Imandra_prelude.Caml.Int.t -&gt;
@@ -1243,7 +1245,6 @@ module D :
           ?g:G.t -&gt;
           ?root:Strategy.Symbolic.node_t -&gt;
           ?idx:Imandra_prelude.Caml.Int.t -&gt;
-          ?include_partials:bool -&gt;
           ?basis:Imandra_prelude.string list -&gt;
           ?max_asm_lookahead:Imandra_prelude.Caml.Int.t -&gt;
           ?max_ctx_simp:Imandra_prelude.Caml.Int.t -&gt;
@@ -1345,85 +1346,106 @@ val imandra_gensym__56 :
   DecompositionConfig.event list -&gt; DecompositionConfig.state = &lt;fun&gt;
 val first_path : D.Symbolic.path =
   [({D.Symbolic.state =
-      D.Strategy.Expr ((rec_mk.Model.counter_state_2311 0 23), [], None);
+      D.Strategy.Expr
+       ((|\|rec_mk.Model.counter_state_2260\|| 0 23), [], None);
      idx = 0i},
     {D.Symbolic.sample = Model.Add 1337; region = &lt;region&gt;;
      signature = &#34;imandra_gensym__4&#34;},
     {D.Symbolic.state =
       D.Strategy.Expr
-       ((rec_mk.Model.counter_state_2311
-         (get.Model.Add.0_2309 (|get.::.0_2347| e_2407)) 23),
-        [(= (|get.::.1_2348| (|get.::.1_2348| (|get.::.1_2348| e_2407)))
-          |[]_2|);
-         (|is_::_3| (|get.::.1_2348| (|get.::.1_2348| e_2407)));
-         (is_Model.Add_2297 (|get.::.0_2347| (|get.::.1_2348| e_2407)));
-         (|is_::_3| (|get.::.1_2348| e_2407)); (|is_::_3| e_2407);
-         (not (= (|get.::.0_2347| e_2407) Model.Reset_2299));
-         (is_Model.Add_2297 (|get.::.0_2347| e_2407));
-         (&lt;= (get.Model.Add.0_2309 (|get.::.0_2347| e_2407)) 9000)],
-        Some e_2407);
+       ((|\|rec_mk.Model.counter_state_2260\||
+         (|\|get.Model.Add.0_2256\|| (|\|get.::.0_2298\|| e_2358)) 23),
+        [(=
+          (|\|get.::.1_2299\||
+           (|\|get.::.1_2299\|| (|\|get.::.1_2299\|| e_2358)))
+          |\|[]_2\||);
+         (|is_::_3| (|\|get.::.1_2299\|| (|\|get.::.1_2299\|| e_2358)));
+         (|is_\|Model.Add_2244\||
+          (|\|get.::.0_2298\|| (|\|get.::.1_2299\|| e_2358)));
+         (|is_::_3| (|\|get.::.1_2299\|| e_2358)); (|is_::_3| e_2358);
+         (not (= (|\|get.::.0_2298\|| e_2358) |\|Model.Reset_2246\||));
+         (|is_\|Model.Add_2244\|| (|\|get.::.0_2298\|| e_2358));
+         (&lt;= (|\|get.Model.Add.0_2256\|| (|\|get.::.0_2298\|| e_2358)) 9000)],
+        Some e_2358);
      idx = 1i});
    ({D.Symbolic.state =
       D.Strategy.Expr
-       ((rec_mk.Model.counter_state_2311
-         (get.Model.Add.0_2309 (|get.::.0_2347| e_2407)) 23),
-        [(= (|get.::.1_2348| (|get.::.1_2348| (|get.::.1_2348| e_2407)))
-          |[]_2|);
-         (|is_::_3| (|get.::.1_2348| (|get.::.1_2348| e_2407)));
-         (is_Model.Add_2297 (|get.::.0_2347| (|get.::.1_2348| e_2407)));
-         (|is_::_3| (|get.::.1_2348| e_2407)); (|is_::_3| e_2407);
-         (not (= (|get.::.0_2347| e_2407) Model.Reset_2299));
-         (is_Model.Add_2297 (|get.::.0_2347| e_2407));
-         (&lt;= (get.Model.Add.0_2309 (|get.::.0_2347| e_2407)) 9000)],
-        Some e_2407);
+       ((|\|rec_mk.Model.counter_state_2260\||
+         (|\|get.Model.Add.0_2256\|| (|\|get.::.0_2298\|| e_2358)) 23),
+        [(=
+          (|\|get.::.1_2299\||
+           (|\|get.::.1_2299\|| (|\|get.::.1_2299\|| e_2358)))
+          |\|[]_2\||);
+         (|is_::_3| (|\|get.::.1_2299\|| (|\|get.::.1_2299\|| e_2358)));
+         (|is_\|Model.Add_2244\||
+          (|\|get.::.0_2298\|| (|\|get.::.1_2299\|| e_2358)));
+         (|is_::_3| (|\|get.::.1_2299\|| e_2358)); (|is_::_3| e_2358);
+         (not (= (|\|get.::.0_2298\|| e_2358) |\|Model.Reset_2246\||));
+         (|is_\|Model.Add_2244\|| (|\|get.::.0_2298\|| e_2358));
+         (&lt;= (|\|get.Model.Add.0_2256\|| (|\|get.::.0_2298\|| e_2358)) 9000)],
+        Some e_2358);
      idx = 1i},
     {D.Symbolic.sample = Model.Add 1; region = &lt;region&gt;;
      signature = &#34;imandra_gensym__34&#34;},
     {D.Symbolic.state =
       D.Strategy.Expr
-       ((rec_mk.Model.counter_state_2311 23 23),
-        [(|is_::_3| e_2421); (is_Model.Add_2297 (|get.::.0_2347| e_2421));
-         (|is_::_3| (|get.::.1_2348| e_2421));
-         (= (|get.::.1_2348| (|get.::.1_2348| (|get.::.1_2348| e_2421)))
-          |[]_2|);
-         (|is_::_3| (|get.::.1_2348| (|get.::.1_2348| e_2421)));
-         (is_Model.Add_2297 (|get.::.0_2347| (|get.::.1_2348| e_2421)));
-         (&lt;= (get.Model.Add.0_2309 (|get.::.0_2347| e_2421)) 9000);
-         (= (get.Model.Add.0_2309 (|get.::.0_2347| e_2421)) 1337);
-         (not (= (|get.::.0_2347| e_2421) Model.Reset_2299))],
-        Some e_2421);
+       ((|\|rec_mk.Model.counter_state_2260\|| 23 23),
+        [(|is_::_3| e_2372);
+         (|is_\|Model.Add_2244\|| (|\|get.::.0_2298\|| e_2372));
+         (|is_::_3| (|\|get.::.1_2299\|| e_2372));
+         (=
+          (|\|get.::.1_2299\||
+           (|\|get.::.1_2299\|| (|\|get.::.1_2299\|| e_2372)))
+          |\|[]_2\||);
+         (|is_::_3| (|\|get.::.1_2299\|| (|\|get.::.1_2299\|| e_2372)));
+         (|is_\|Model.Add_2244\||
+          (|\|get.::.0_2298\|| (|\|get.::.1_2299\|| e_2372)));
+         (&lt;= (|\|get.Model.Add.0_2256\|| (|\|get.::.0_2298\|| e_2372)) 9000);
+         (= (|\|get.Model.Add.0_2256\|| (|\|get.::.0_2298\|| e_2372)) 1337);
+         (not (= (|\|get.::.0_2298\|| e_2372) |\|Model.Reset_2246\||))],
+        Some e_2372);
      idx = 2i});
    ({D.Symbolic.state =
       D.Strategy.Expr
-       ((rec_mk.Model.counter_state_2311 23 23),
-        [(|is_::_3| e_2421); (is_Model.Add_2297 (|get.::.0_2347| e_2421));
-         (|is_::_3| (|get.::.1_2348| e_2421));
-         (= (|get.::.1_2348| (|get.::.1_2348| (|get.::.1_2348| e_2421)))
-          |[]_2|);
-         (|is_::_3| (|get.::.1_2348| (|get.::.1_2348| e_2421)));
-         (is_Model.Add_2297 (|get.::.0_2347| (|get.::.1_2348| e_2421)));
-         (&lt;= (get.Model.Add.0_2309 (|get.::.0_2347| e_2421)) 9000);
-         (= (get.Model.Add.0_2309 (|get.::.0_2347| e_2421)) 1337);
-         (not (= (|get.::.0_2347| e_2421) Model.Reset_2299))],
-        Some e_2421);
+       ((|\|rec_mk.Model.counter_state_2260\|| 23 23),
+        [(|is_::_3| e_2372);
+         (|is_\|Model.Add_2244\|| (|\|get.::.0_2298\|| e_2372));
+         (|is_::_3| (|\|get.::.1_2299\|| e_2372));
+         (=
+          (|\|get.::.1_2299\||
+           (|\|get.::.1_2299\|| (|\|get.::.1_2299\|| e_2372)))
+          |\|[]_2\||);
+         (|is_::_3| (|\|get.::.1_2299\|| (|\|get.::.1_2299\|| e_2372)));
+         (|is_\|Model.Add_2244\||
+          (|\|get.::.0_2298\|| (|\|get.::.1_2299\|| e_2372)));
+         (&lt;= (|\|get.Model.Add.0_2256\|| (|\|get.::.0_2298\|| e_2372)) 9000);
+         (= (|\|get.Model.Add.0_2256\|| (|\|get.::.0_2298\|| e_2372)) 1337);
+         (not (= (|\|get.::.0_2298\|| e_2372) |\|Model.Reset_2246\||))],
+        Some e_2372);
      idx = 2i},
     {D.Symbolic.sample = Model.Reset; region = &lt;region&gt;;
      signature = &#34;imandra_gensym__56&#34;},
     {D.Symbolic.state =
       D.Strategy.Expr
-       ((rec_mk.Model.counter_state_2311 0 23),
-        [(|is_::_3| e_2440); (is_Model.Add_2297 (|get.::.0_2347| e_2440));
-         (|is_::_3| (|get.::.1_2348| e_2440));
-         (= (|get.::.1_2348| (|get.::.1_2348| (|get.::.1_2348| e_2440)))
-          |[]_2|);
-         (|is_::_3| (|get.::.1_2348| (|get.::.1_2348| e_2440)));
-         (is_Model.Add_2297 (|get.::.0_2347| (|get.::.1_2348| e_2440)));
-         (= (get.Model.Add.0_2309 (|get.::.0_2347| e_2440)) 1337);
-         (= (|get.::.0_2347| (|get.::.1_2348| (|get.::.1_2348| e_2440)))
-          Model.Reset_2299);
-         (&lt;= (get.Model.Add.0_2309 (|get.::.0_2347| e_2440)) 9000);
-         (not (= (|get.::.0_2347| e_2440) Model.Reset_2299))],
-        Some e_2440);
+       ((|\|rec_mk.Model.counter_state_2260\|| 0 23),
+        [(|is_::_3| e_2391);
+         (|is_\|Model.Add_2244\|| (|\|get.::.0_2298\|| e_2391));
+         (|is_::_3| (|\|get.::.1_2299\|| e_2391));
+         (=
+          (|\|get.::.1_2299\||
+           (|\|get.::.1_2299\|| (|\|get.::.1_2299\|| e_2391)))
+          |\|[]_2\||);
+         (|is_::_3| (|\|get.::.1_2299\|| (|\|get.::.1_2299\|| e_2391)));
+         (|is_\|Model.Add_2244\||
+          (|\|get.::.0_2298\|| (|\|get.::.1_2299\|| e_2391)));
+         (= (|\|get.Model.Add.0_2256\|| (|\|get.::.0_2298\|| e_2391)) 1337);
+         (=
+          (|\|get.::.0_2298\||
+           (|\|get.::.1_2299\|| (|\|get.::.1_2299\|| e_2391)))
+          |\|Model.Reset_2246\||);
+         (&lt;= (|\|get.Model.Add.0_2256\|| (|\|get.::.0_2298\|| e_2391)) 9000);
+         (not (= (|\|get.::.0_2298\|| e_2391) |\|Model.Reset_2246\||))],
+        Some e_2391);
      idx = 3i})]
 </pre>
 </div>
@@ -1738,7 +1760,7 @@ val rs : Imandra_reasoning.Decompose.t list =
 
 
 <div class="output_html rendered_html output_subarea ">
-<div class="imandra-alternatives" id="alt-10feb68d-f71f-4ae7-a4ec-c7b4a89206c3"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-97f8b79d-8556-414a-9fbb-cf4509211ff8" class="decompose"><textarea class="display-none">{
+<div class="imandra-alternatives" id="alt-6d12c19e-cf53-4717-8c88-4b059df01d8f"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-016b30dd-045c-437a-b511-0ee26d75d5ee" class="decompose"><textarea class="display-none">{
   &quot;regions&quot;: [
     {
       &quot;constraints&quot;: [ &quot;y = Set.union x y&quot; ],
@@ -1764,13 +1786,13 @@ val rs : Imandra_reasoning.Decompose.t list =
 }</textarea><div class="decompose-foamtree"></div><div class="decompose-details"><div class="decompose-details-header">Regions details</div><div class="decompose-details-no-selection">No group selected.</div><div class="decompose-details-selection hidden"><div><span class="decompose-details-label">Direct sub-regions: </span><span class="decompose-details-direct-sub-regions-text">-</span></div><div><span class="decompose-details-label">Contained regions: </span><span class="decompose-details-contained-regions-text">-</span></div><div class="decompose-details-section-header">Constraints</div><div class="decompose-details-constraints"><pre class="decompose-details-constraint">&lt;constraint&gt;</pre></div><div class="decompose-details-invariant"><div class="decompose-details-section-header">Invariant</div><pre class="decompose-details-invariant-text">&lt;invariant&gt;</pre></div></div></div><script>
 (function () {
   require(['nbextensions/nbimandra/regions'], function (regions) {
-    var target = '#decompose-97f8b79d-8556-414a-9fbb-cf4509211ff8';
+    var target = '#decompose-016b30dd-045c-437a-b511-0ee26d75d5ee';
     regions.hydrate(target);
   });
 })();
-</script></div></div><div class="tab-pane"><div><div class="imandra-table" id="table-8fa0057f-f20f-46ef-93e2-72364f24b610"><table><thead><tr><th>Constraints</th><th>Invariant</th></tr></thead><tr><td><ul><li><pre>not (y = Set.union x y)</pre></li></ul></td><td><pre>F = Map.add' (Map.const false) z true</pre></td></tr><tr><td><ul><li><pre>y = Set.union x y</pre></li></ul></td><td><pre>F = Map.add' x z true</pre></td></tr></table></div></div></div></div><script>
+</script></div></div><div class="tab-pane"><div><div class="imandra-table" id="table-32d05f02-267c-428b-9f4e-fd06a3c37be6"><table><thead><tr><th>Constraints</th><th>Invariant</th></tr></thead><tr><td><ul><li><pre>not (y = Set.union x y)</pre></li></ul></td><td><pre>F = Map.add' (Map.const false) z true</pre></td></tr><tr><td><ul><li><pre>y = Set.union x y</pre></li></ul></td><td><pre>F = Map.add' x z true</pre></td></tr></table></div></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-10feb68d-f71f-4ae7-a4ec-c7b4a89206c3';
+  var target = '#alt-6d12c19e-cf53-4717-8c88-4b059df01d8f';
   alternatives.hydrate(target);
 });
 </script></div>
