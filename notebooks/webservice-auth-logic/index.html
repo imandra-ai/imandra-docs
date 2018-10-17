@@ -1,118 +1,120 @@
 <!DOCTYPE html>
 <html>
-<head><meta charset="utf-8" />
-<meta content="width=device-width, initial-scale=1.0" name="viewport">
-<title>Imandra Documentation - Analysing Web-app Authentication Logic</title>
-<meta property="og:url" content="https://docs.imandra.ai/imandra-docs/notebooks/webservice-auth-logic/">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Imandra Documentation - Analysing Web-app Authentication Logic">
-<meta property="og:description" content="In this notebook, we look at some typical authentication logic that might be found in a standard web application, and analyse it with Imandra to make sure it's doing what we expect.">
-<meta property="og:image" content="https://storage.googleapis.com/imandra-assets/images/og_image_default_i78.jpg">
+    <head><meta charset="utf-8" />
+        <meta content="width=device-width, initial-scale=1.0" name="viewport">
+        <title>Imandra Documentation - Analysing Web-app Authentication Logic</title>
+        <meta property="og:url" content="https://docs.imandra.ai/imandra-docs/notebooks/webservice-auth-logic/">
+        <meta property="og:type" content="website">
+        <meta property="og:title" content="Imandra Documentation - Analysing Web-app Authentication Logic">
+        <meta property="og:description" content="In this notebook, we look at some typical authentication logic that might be found in a standard web application, and analyse it with Imandra to make sure it's doing what we expect.">
+        <meta property="og:image" content="https://storage.googleapis.com/imandra-assets/images/og_image_default_i78.jpg">
 
+        
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-116937440-6"></script>
+        <script>
+         window.dataLayer = window.dataLayer || [];
+         function gtag(){dataLayer.push(arguments);}
+         gtag('js', new Date());
 
-<!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=UA-116937440-6"></script>
-<script>
-window.dataLayer = window.dataLayer || [];
-function gtag(){dataLayer.push(arguments);}
-gtag('js', new Date());
+         gtag('config', 'UA-116937440-6');
+        </script>
+        <script type="text/javascript"> var sc_project=11767520; var sc_invisible=1; var sc_security="fa7e88d1"; </script>
+        <script type="text/javascript" src="https://www.statcounter.com/counter/counter.js" async></script>
+        <noscript><div class="statcounter">
+            <a title="Web Analytics" href="http://statcounter.com/" target="_blank">
+                <img class="statcounter" src="//c.statcounter.com/11767520/0/fa7e88d1/1/" alt="Web Analytics"></a>
+        </div></noscript>
+        
 
-gtag('config', 'UA-116937440-6');
-</script>
-<script type="text/javascript"> var sc_project=11767520; var sc_invisible=1; var sc_security="fa7e88d1"; </script>
-<script type="text/javascript" src="https://www.statcounter.com/counter/counter.js" async></script>
-<noscript><div class="statcounter">
-<a title="Web Analytics" href="http://statcounter.com/" target="_blank">
-<img class="statcounter" src="//c.statcounter.com/11767520/0/fa7e88d1/1/" alt="Web Analytics"></a>
-</div></noscript>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Merriweather+Sans:300,300i,400,400i%7CMerriweather:300,300i,400,400i%7CRoboto+Slab:300,300i,400,400i">
 
+        <link rel="stylesheet" href="/imandra-docs/static/style/style.min.9ef6027e.css" type="text/css">
+        <link rel="stylesheet" href="/imandra-docs/static/nbextensions/nbimandra/styles.c7ed3d1a.css" type="text/css">
+        <link rel="stylesheet" href="/imandra-docs/static/docs-styles.86fc0481.css" type="text/css">
+        
+        <link rel="stylesheet" href="/imandra-docs/static/jekyll-styles.0d588486.css" type="text/css">
+        
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Merriweather" type="text/css" />
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+        <script src="/imandra-docs/static/nbimandra-rjs-bundle.2469bcb7.js"></script>
 
-<link rel="stylesheet" href="/imandra-docs/static/style/style.min.9ef6027e.css" type="text/css">
-<link rel="stylesheet" href="/imandra-docs/static/custom/custom.43522872.css" type="text/css">
-<link rel="stylesheet" href="/imandra-docs/static/nbextensions/nbimandra/styles.c7ed3d1a.css" type="text/css">
-<link rel="stylesheet" href="/imandra-docs/static/docs-styles.3b1b6d03.css" type="text/css">
+        <style type="text/css">
+         .highlight .hll { background-color: #ffffcc }
+         .highlight  { background: #f8f8f8; }
+         .highlight .c { color: #408080; font-style: italic } /* Comment */
+         .highlight .err { border: 1px solid #FF0000 } /* Error */
+         .highlight .k { color: #008000; font-weight: bold } /* Keyword */
+         .highlight .o { color: #666666 } /* Operator */
+         .highlight .ch { color: #408080; font-style: italic } /* Comment.Hashbang */
+         .highlight .cm { color: #408080; font-style: italic } /* Comment.Multiline */
+         .highlight .cp { color: #BC7A00 } /* Comment.Preproc */
+         .highlight .cpf { color: #408080; font-style: italic } /* Comment.PreprocFile */
+         .highlight .c1 { color: #408080; font-style: italic } /* Comment.Single */
+         .highlight .cs { color: #408080; font-style: italic } /* Comment.Special */
+         .highlight .gd { color: #A00000 } /* Generic.Deleted */
+         .highlight .ge { font-style: italic } /* Generic.Emph */
+         .highlight .gr { color: #FF0000 } /* Generic.Error */
+         .highlight .gh { color: #000080; font-weight: bold } /* Generic.Heading */
+         .highlight .gi { color: #00A000 } /* Generic.Inserted */
+         .highlight .go { color: #888888 } /* Generic.Output */
+         .highlight .gp { color: #000080; font-weight: bold } /* Generic.Prompt */
+         .highlight .gs { font-weight: bold } /* Generic.Strong */
+         .highlight .gu { color: #800080; font-weight: bold } /* Generic.Subheading */
+         .highlight .gt { color: #0044DD } /* Generic.Traceback */
+         .highlight .kc { color: #008000; font-weight: bold } /* Keyword.Constant */
+         .highlight .kd { color: #008000; font-weight: bold } /* Keyword.Declaration */
+         .highlight .kn { color: #008000; font-weight: bold } /* Keyword.Namespace */
+         .highlight .kp { color: #008000 } /* Keyword.Pseudo */
+         .highlight .kr { color: #008000; font-weight: bold } /* Keyword.Reserved */
+         .highlight .kt { color: #B00040 } /* Keyword.Type */
+         .highlight .m { color: #666666 } /* Literal.Number */
+         .highlight .s { color: #BA2121 } /* Literal.String */
+         .highlight .na { color: #7D9029 } /* Name.Attribute */
+         .highlight .nb { color: #008000 } /* Name.Builtin */
+         .highlight .nc { color: #0000FF; font-weight: bold } /* Name.Class */
+         .highlight .no { color: #880000 } /* Name.Constant */
+         .highlight .nd { color: #AA22FF } /* Name.Decorator */
+         .highlight .ni { color: #999999; font-weight: bold } /* Name.Entity */
+         .highlight .ne { color: #D2413A; font-weight: bold } /* Name.Exception */
+         .highlight .nf { color: #0000FF } /* Name.Function */
+         .highlight .nl { color: #A0A000 } /* Name.Label */
+         .highlight .nn { color: #0000FF; font-weight: bold } /* Name.Namespace */
+         .highlight .nt { color: #008000; font-weight: bold } /* Name.Tag */
+         .highlight .nv { color: #19177C } /* Name.Variable */
+         .highlight .ow { color: #AA22FF; font-weight: bold } /* Operator.Word */
+         .highlight .w { color: #bbbbbb } /* Text.Whitespace */
+         .highlight .mb { color: #666666 } /* Literal.Number.Bin */
+         .highlight .mf { color: #666666 } /* Literal.Number.Float */
+         .highlight .mh { color: #666666 } /* Literal.Number.Hex */
+         .highlight .mi { color: #666666 } /* Literal.Number.Integer */
+         .highlight .mo { color: #666666 } /* Literal.Number.Oct */
+         .highlight .sa { color: #BA2121 } /* Literal.String.Affix */
+         .highlight .sb { color: #BA2121 } /* Literal.String.Backtick */
+         .highlight .sc { color: #BA2121 } /* Literal.String.Char */
+         .highlight .dl { color: #BA2121 } /* Literal.String.Delimiter */
+         .highlight .sd { color: #BA2121; font-style: italic } /* Literal.String.Doc */
+         .highlight .s2 { color: #BA2121 } /* Literal.String.Double */
+         .highlight .se { color: #BB6622; font-weight: bold } /* Literal.String.Escape */
+         .highlight .sh { color: #BA2121 } /* Literal.String.Heredoc */
+         .highlight .si { color: #BB6688; font-weight: bold } /* Literal.String.Interpol */
+         .highlight .sx { color: #008000 } /* Literal.String.Other */
+         .highlight .sr { color: #BB6688 } /* Literal.String.Regex */
+         .highlight .s1 { color: #BA2121 } /* Literal.String.Single */
+         .highlight .ss { color: #19177C } /* Literal.String.Symbol */
+         .highlight .bp { color: #008000 } /* Name.Builtin.Pseudo */
+         .highlight .fm { color: #0000FF } /* Name.Function.Magic */
+         .highlight .vc { color: #19177C } /* Name.Variable.Class */
+         .highlight .vg { color: #19177C } /* Name.Variable.Global */
+         .highlight .vi { color: #19177C } /* Name.Variable.Instance */
+         .highlight .vm { color: #19177C } /* Name.Variable.Magic */
+         .highlight .il { color: #666666 } /* Literal.Number.Integer.Long */
+        </style>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-<script src="/imandra-docs/static/nbimandra-rjs-bundle.2469bcb7.js"></script>
-
-<style type="text/css">
-.highlight .hll { background-color: #ffffcc }
-.highlight  { background: #f8f8f8; }
-.highlight .c { color: #408080; font-style: italic } /* Comment */
-.highlight .err { border: 1px solid #FF0000 } /* Error */
-.highlight .k { color: #008000; font-weight: bold } /* Keyword */
-.highlight .o { color: #666666 } /* Operator */
-.highlight .ch { color: #408080; font-style: italic } /* Comment.Hashbang */
-.highlight .cm { color: #408080; font-style: italic } /* Comment.Multiline */
-.highlight .cp { color: #BC7A00 } /* Comment.Preproc */
-.highlight .cpf { color: #408080; font-style: italic } /* Comment.PreprocFile */
-.highlight .c1 { color: #408080; font-style: italic } /* Comment.Single */
-.highlight .cs { color: #408080; font-style: italic } /* Comment.Special */
-.highlight .gd { color: #A00000 } /* Generic.Deleted */
-.highlight .ge { font-style: italic } /* Generic.Emph */
-.highlight .gr { color: #FF0000 } /* Generic.Error */
-.highlight .gh { color: #000080; font-weight: bold } /* Generic.Heading */
-.highlight .gi { color: #00A000 } /* Generic.Inserted */
-.highlight .go { color: #888888 } /* Generic.Output */
-.highlight .gp { color: #000080; font-weight: bold } /* Generic.Prompt */
-.highlight .gs { font-weight: bold } /* Generic.Strong */
-.highlight .gu { color: #800080; font-weight: bold } /* Generic.Subheading */
-.highlight .gt { color: #0044DD } /* Generic.Traceback */
-.highlight .kc { color: #008000; font-weight: bold } /* Keyword.Constant */
-.highlight .kd { color: #008000; font-weight: bold } /* Keyword.Declaration */
-.highlight .kn { color: #008000; font-weight: bold } /* Keyword.Namespace */
-.highlight .kp { color: #008000 } /* Keyword.Pseudo */
-.highlight .kr { color: #008000; font-weight: bold } /* Keyword.Reserved */
-.highlight .kt { color: #B00040 } /* Keyword.Type */
-.highlight .m { color: #666666 } /* Literal.Number */
-.highlight .s { color: #BA2121 } /* Literal.String */
-.highlight .na { color: #7D9029 } /* Name.Attribute */
-.highlight .nb { color: #008000 } /* Name.Builtin */
-.highlight .nc { color: #0000FF; font-weight: bold } /* Name.Class */
-.highlight .no { color: #880000 } /* Name.Constant */
-.highlight .nd { color: #AA22FF } /* Name.Decorator */
-.highlight .ni { color: #999999; font-weight: bold } /* Name.Entity */
-.highlight .ne { color: #D2413A; font-weight: bold } /* Name.Exception */
-.highlight .nf { color: #0000FF } /* Name.Function */
-.highlight .nl { color: #A0A000 } /* Name.Label */
-.highlight .nn { color: #0000FF; font-weight: bold } /* Name.Namespace */
-.highlight .nt { color: #008000; font-weight: bold } /* Name.Tag */
-.highlight .nv { color: #19177C } /* Name.Variable */
-.highlight .ow { color: #AA22FF; font-weight: bold } /* Operator.Word */
-.highlight .w { color: #bbbbbb } /* Text.Whitespace */
-.highlight .mb { color: #666666 } /* Literal.Number.Bin */
-.highlight .mf { color: #666666 } /* Literal.Number.Float */
-.highlight .mh { color: #666666 } /* Literal.Number.Hex */
-.highlight .mi { color: #666666 } /* Literal.Number.Integer */
-.highlight .mo { color: #666666 } /* Literal.Number.Oct */
-.highlight .sa { color: #BA2121 } /* Literal.String.Affix */
-.highlight .sb { color: #BA2121 } /* Literal.String.Backtick */
-.highlight .sc { color: #BA2121 } /* Literal.String.Char */
-.highlight .dl { color: #BA2121 } /* Literal.String.Delimiter */
-.highlight .sd { color: #BA2121; font-style: italic } /* Literal.String.Doc */
-.highlight .s2 { color: #BA2121 } /* Literal.String.Double */
-.highlight .se { color: #BB6622; font-weight: bold } /* Literal.String.Escape */
-.highlight .sh { color: #BA2121 } /* Literal.String.Heredoc */
-.highlight .si { color: #BB6688; font-weight: bold } /* Literal.String.Interpol */
-.highlight .sx { color: #008000 } /* Literal.String.Other */
-.highlight .sr { color: #BB6688 } /* Literal.String.Regex */
-.highlight .s1 { color: #BA2121 } /* Literal.String.Single */
-.highlight .ss { color: #19177C } /* Literal.String.Symbol */
-.highlight .bp { color: #008000 } /* Name.Builtin.Pseudo */
-.highlight .fm { color: #0000FF } /* Name.Function.Magic */
-.highlight .vc { color: #19177C } /* Name.Variable.Class */
-.highlight .vg { color: #19177C } /* Name.Variable.Global */
-.highlight .vi { color: #19177C } /* Name.Variable.Instance */
-.highlight .vm { color: #19177C } /* Name.Variable.Magic */
-.highlight .il { color: #666666 } /* Literal.Number.Integer.Long */
-</style>
-    
-<!-- Loading mathjax macro -->
-<!-- Load mathjax -->
+        <!-- Loading mathjax macro -->
+        <!-- Load mathjax -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS_HTML"></script>
     <!-- MathJax configuration -->
     <script type="text/x-mathjax-config">
@@ -133,27 +135,260 @@ gtag('config', 'UA-116937440-6');
     });
     </script>
     <!-- End of mathjax configuration --></head>
-<body>
-  <div class="header-nav">
-    <div class="header-nav__container">
-      <div class="header-nav-main-logo">
-        <a href="/" class="header-nav-main-logo__container">
-          <img src="/imandra-docs/static/img/imandra_doc_logo_main.svg">
-        </a>
-      </div>
-      <a href="/imandra-docs/">&lt; Back</a>
+    <body>
+        <div class="background">
+        </div>
+        <div class="page-container">
+            <main class="main-content-column">
+                <!-- Jupyter (Imandra core docs) version -->
+<header class="header">
+    <div class="top-row-container">
+        <div class="top-row">
+            <div id="toggler--left" class="side__left-menu-toggler"><a href="#" class="side__toggle">≡ <span class="side__toggle-text">Docs</span></a></div>
+            <div class="side__logo-container">
+                <a class="side__logo-link" href="/">
+                    <img class="side__logo " src = "/imandra-docs/jekyll-resources/assets/img/ai_logo_green.svg">
+                </a>
+            </div>
+            <div id="toggler--right" class="side__right-menu-toggler"><a href="#" class="side__toggle"><span class="side__toggle-text">Pages</span> ≡</a></div>
+
+            <nav class="side__nav-container side__nav-container--hidden">
+
+                <ul class="side__nav-list">
+                    
+                    <li class="side__nav-list-item TopNavListItem">
+                        <a class="side__nav-link" href="/">Home</a>
+                        
+                    </li>
+                    
+                    <li class="side__nav-list-item TopNavListItem">
+                        <a class="side__nav-link side__nav-link--active" href="/imandra-docs">Imandra</a>
+                        
+                        <ul class="side__nav-list--sub-level-1">
+                            
+                            <li class="side__nav-list-item--sub-level-1">
+                                
+                                <a class="side__nav-link" href="/imandra-docs/notebooks/welcome">A Quick Tour</a>
+                                
+                                <ul class="side__nav-list--sub-level-2">
+                                    
+                                </ul>
+                            </li>
+                            
+                            <li class="side__nav-list-item--sub-level-1">
+                                
+                                <a class="side__nav-link" href="/imandra-docs/notebooks/installation">Installation</a>
+                                
+                                <ul class="side__nav-list--sub-level-2">
+                                    
+                                    <li class="side__nav-list-item--sub-level-2">
+                                        <a class="side__nav-link" href="/imandra-docs/notebooks/installation-simple">Simple</a>
+                                        
+                                    </li>
+                                    
+                                    <li class="side__nav-list-item--sub-level-2">
+                                        <a class="side__nav-link" href="/imandra-docs/notebooks/installation-manual-opam">Manual (opam)</a>
+                                        
+                                    </li>
+                                    
+                                    <li class="side__nav-list-item--sub-level-2">
+                                        <a class="side__nav-link" href="/imandra-docs/notebooks/installation-docker">Docker</a>
+                                        
+                                    </li>
+                                    
+                                </ul>
+                            </li>
+                            
+                            <li class="side__nav-list-item--sub-level-1">
+                                
+                                <a class="side__nav-link" href="/imandra-docs/notebooks/logic-and-program-modes">Logic and Program Modes</a>
+                                
+                                <ul class="side__nav-list--sub-level-2">
+                                    
+                                </ul>
+                            </li>
+                            
+                            <li class="side__nav-list-item--sub-level-1">
+                                
+                                <a class="side__nav-link" href="/imandra-docs/notebooks/verification">Verification</a>
+                                
+                                <ul class="side__nav-list--sub-level-2">
+                                    
+                                    <li class="side__nav-list-item--sub-level-2">
+                                        <a class="side__nav-link" href="/imandra-docs/notebooks/verification#Bounded-Solving">Bounded Solving</a>
+                                        
+                                        <ul class="side__nav-list--sub-level-3">
+                                            
+                                            <li class="side__nav-list-item--sub-level-3">
+                                              <a class="side__nav-link" href="/imandra-docs/notebooks/verification#Unrolling">Unrolling</a>
+                                            </li>
+                                            
+                                            <li class="side__nav-list-item--sub-level-3">
+                                              <a class="side__nav-link" href="/imandra-docs/notebooks/verification#Blast">Blast</a>
+                                            </li>
+                                            
+                                        </ul>
+                                        
+                                    </li>
+                                    
+                                    <li class="side__nav-list-item--sub-level-2">
+                                        <a class="side__nav-link" href="/imandra-docs/notebooks/verification#Simplification">Simplification</a>
+                                        
+                                        <ul class="side__nav-list--sub-level-3">
+                                            
+                                            <li class="side__nav-list-item--sub-level-3">
+                                              <a class="side__nav-link" href="/imandra-docs/notebooks/verification#Rewrite-Rule">Rewrite Rule</a>
+                                            </li>
+                                            
+                                            <li class="side__nav-list-item--sub-level-3">
+                                              <a class="side__nav-link" href="/imandra-docs/notebooks/verification#Forward-Chaining">Forward Chaining</a>
+                                            </li>
+                                            
+                                        </ul>
+                                        
+                                    </li>
+                                    
+                                    <li class="side__nav-list-item--sub-level-2">
+                                        <a class="side__nav-link" href="/imandra-docs/notebooks/verification#Induction">Induction</a>
+                                        
+                                    </li>
+                                    
+                                </ul>
+                            </li>
+                            
+                            <li class="side__nav-list-item--sub-level-1">
+                                
+                                Features
+                                
+                                <ul class="side__nav-list--sub-level-2">
+                                    
+                                    <li class="side__nav-list-item--sub-level-2">
+                                        <a class="side__nav-link" href="/imandra-docs/notebooks/verifying-merge-sort">Verifying Merge Sort in Imandra</a>
+                                        
+                                    </li>
+                                    
+                                    <li class="side__nav-list-item--sub-level-2">
+                                        <a class="side__nav-link" href="/imandra-docs/notebooks/recursion-induction-and-rewriting">Recursion, Induction and Rewriting</a>
+                                        
+                                    </li>
+                                    
+                                    <li class="side__nav-list-item--sub-level-2">
+                                        <a class="side__nav-link" href="/imandra-docs/notebooks/proving-program-termination">Proving Program Termination with Imandra</a>
+                                        
+                                    </li>
+                                    
+                                    <li class="side__nav-list-item--sub-level-2">
+                                        <a class="side__nav-link" href="/imandra-docs/notebooks/decomposition-flags">Imandra Decomposition Flags</a>
+                                        
+                                    </li>
+                                    
+                                    <li class="side__nav-list-item--sub-level-2">
+                                        <a class="side__nav-link" href="/imandra-docs/notebooks/imandra-tools-intro">Imandra Tools Introduction</a>
+                                        
+                                    </li>
+                                    
+                                </ul>
+                            </li>
+                            
+                            <li class="side__nav-list-item--sub-level-1">
+                                
+                                Examples
+                                
+                                <ul class="side__nav-list--sub-level-2">
+                                    
+                                    <li class="side__nav-list-item--sub-level-2">
+                                        <a class="side__nav-link" href="/imandra-docs/notebooks/ubs-case-study">Analysing the UBS ATS Dark Pool</a>
+                                        
+                                    </li>
+                                    
+                                    <li class="side__nav-list-item--sub-level-2">
+                                        <a class="side__nav-link side__nav-link--active" href="/imandra-docs/notebooks/webservice-auth-logic">Analysing Web-app Authentication Logic</a>
+                                        
+                                    </li>
+                                    
+                                    <li class="side__nav-list-item--sub-level-2">
+                                        <a class="side__nav-link" href="/imandra-docs/notebooks/simple-vehicle-controller">Simple Vehicle Controller</a>
+                                        
+                                    </li>
+                                    
+                                    <li class="side__nav-list-item--sub-level-2">
+                                        <a class="side__nav-link" href="/imandra-docs/notebooks/ripple-carry-adder">Verifying a Ripple Carry Adder</a>
+                                        
+                                    </li>
+                                    
+                                    <li class="side__nav-list-item--sub-level-2">
+                                        <a class="side__nav-link" href="/imandra-docs/notebooks/verifying-an-ros-node">Creating and Verifying a ROS Node</a>
+                                        
+                                    </li>
+                                    
+                                    <li class="side__nav-list-item--sub-level-2">
+                                        <a class="side__nav-link" href="/imandra-docs/notebooks/reasonml-tic-tac-toe">Tic Tac Toe with ReasonML</a>
+                                        
+                                    </li>
+                                    
+                                </ul>
+                            </li>
+                            
+                        </ul>
+                        
+                    </li>
+                    
+                    <li class="side__nav-list-item TopNavListItem">
+                        <a class="side__nav-link" href="/ipl">Imandra Protocol Language</a>
+                        
+                    </li>
+                    
+                    <li class="side__nav-list-item TopNavListItem">
+                        <a class="side__nav-link" href="/fix-engine">FIX Engine</a>
+                        
+                    </li>
+                    
+                </ul>
+            </nav>
+        </div>
     </div>
-  </div>
-  <div class="bg-container">
-    <div class="bg-container__bg"></div>
-    <div class="container">
-      <header class="header">
-        <a href="/imandra-docs/">
-          <img src="/imandra-docs/static/img/site_specific_image_v_2.svg">
-        </a>
-      </header>
-      <div class="content content--with-cells">
-  
+
+    <div class="background">
+    </div>
+
+    <div class="template-header">
+        <div class="top-bar">
+            <nav class="top-bar__nav-container">
+                <a href="#" class="top-bar__toggle">≡</a>
+                <ul class="top-bar__nav-list top-bar__nav-list--hidden">
+                    <li class="top-bar__nav-list-item"><a class="top-bar__nav-link" href="https://imandra.ai/">Home</a></li>
+                    <li class="top-bar__nav-list-item"><a class="top-bar__nav-link" href="https://imandra.ai/">Imandra</a></li>
+                    <li class="top-bar__nav-list-item"><a class="top-bar__nav-link" href="https://try.imandra.ai/">Try</a></li>
+                    <li class="top-bar__nav-list-item"><a class="top-bar__nav-link" href="https://medium.com/">Blog</a></li>
+                    <li class="top-bar__nav-list-item"><a class="top-bar__nav-link" href="https://imandra.ai/">Research</a></li>
+                    <li class="top-bar__nav-list-item"><a class="top-bar__nav-link" href="https://docs.imandra.ai/">Docs</a></li>
+                    <li class="top-bar__nav-list-item"><a class="top-bar__nav-link" href="https://imandra.ai/media">Media</a></li>
+                    <li class="top-bar__nav-list-item"><a class="top-bar__nav-link" href="https://imandra.ai/#about-ai">About AI</a></li>
+                    <li class="top-bar__nav-list-item"><a class="top-bar__nav-link" href="https://imandra.ai/careers">CAREERS</a></li>
+                    <li class="top-bar__nav-list-item"><a class="top-bar__nav-link" href="https://imandra.ai/#contact">CONTACT</a></li>
+                </ul>
+            </nav>
+        </div>
+        <div class="template-header__image-container template-header__image-container--jupyter">
+            <div class="template-header__image" href ="/imandra-docs">
+                <img class="SiteSpecificImage" src="/imandra-docs/static/img/site_specific_image_v_2.svg">
+            </div>
+        </div>
+    </div>
+    <script>
+     document.getElementById('toggler--left').addEventListener('click', function () {
+         document.getElementsByClassName('side__nav-container')[0].classList.toggle('side__nav-container--hidden');
+         document.getElementsByClassName('top-bar__nav-list')[0].classList.add('top-bar__nav-list--hidden');
+     });
+     document.getElementById('toggler--right').addEventListener('click', function () {
+         document.getElementsByClassName('side__nav-container')[0].classList.add('side__nav-container--hidden');
+         document.getElementsByClassName('top-bar__nav-list')[0].classList.toggle('top-bar__nav-list--hidden');
+     });
+    </script>
+</header>
+                <article class="ArticleContainer">
+                    <div class="main-content main-content--jupyter">
+                        
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
@@ -166,7 +401,7 @@ gtag('config', 'UA-116937440-6');
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="try-this-container">
-  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Analysing%20Web-app%20Authentication%20Logic.ipynb%23try-cell-2" target="_blank">
+  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Analysing%20Web-app%20Authentication%20Logic.ipynb%23try-cell-2" target="_blank" rel="nofollow">
     <div class="try-this">Try this!</div>
   </a>
 </div>
@@ -218,7 +453,7 @@ gtag('config', 'UA-116937440-6');
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="try-this-container">
-  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Analysing%20Web-app%20Authentication%20Logic.ipynb%23try-cell-4" target="_blank">
+  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Analysing%20Web-app%20Authentication%20Logic.ipynb%23try-cell-4" target="_blank" rel="nofollow">
     <div class="try-this">Try this!</div>
   </a>
 </div>
@@ -285,7 +520,7 @@ val get_auth_result : string -&gt; user -&gt; auth_result = &lt;fun&gt;
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="try-this-container">
-  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Analysing%20Web-app%20Authentication%20Logic.ipynb%23try-cell-6" target="_blank">
+  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Analysing%20Web-app%20Authentication%20Logic.ipynb%23try-cell-6" target="_blank" rel="nofollow">
     <div class="try-this">Try this!</div>
   </a>
 </div>
@@ -326,7 +561,7 @@ val run_test : bool -&gt; test_result = &lt;fun&gt;
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="try-this-container">
-  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Analysing%20Web-app%20Authentication%20Logic.ipynb%23try-cell-7" target="_blank">
+  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Analysing%20Web-app%20Authentication%20Logic.ipynb%23try-cell-7" target="_blank" rel="nofollow">
     <div class="try-this">Try this!</div>
   </a>
 </div>
@@ -384,7 +619,7 @@ val run_test : bool -&gt; test_result = &lt;fun&gt;
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="try-this-container">
-  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Analysing%20Web-app%20Authentication%20Logic.ipynb%23try-cell-9" target="_blank">
+  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Analysing%20Web-app%20Authentication%20Logic.ipynb%23try-cell-9" target="_blank" rel="nofollow">
     <div class="try-this">Try this!</div>
   </a>
 </div>
@@ -440,26 +675,26 @@ module CX : sig val u : user end
 
 
 <div class="output_html rendered_html output_subarea ">
-<div><div class="imandra-vr imandra-vr-refuted"><i class="fa fa-times-circle-o"></i><span>Refuted</span></div><div><div class="imandra-alternatives" id="alt-711d0f35-ea07-4cc3-acf1-2c508e8ab4a5"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>call graph</a></li><li class="" data-toggle="tab"><a>proof-attempt</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-graphviz" id="graphviz-f7d3bf28-063f-4a49-a9e6-28babbcdd12f"><textarea style="display: none">digraph &quot;call graph&quot; {
+<div><div class="imandra-vr imandra-vr-refuted"><i class="fa fa-times-circle-o"></i><span>Refuted</span></div><div><div class="imandra-alternatives" id="alt-b8c585d7-878e-4f92-936b-01a76fdfe293"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>call graph</a></li><li class="" data-toggle="tab"><a>proof-attempt</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-graphviz" id="graphviz-908e1de3-4ffd-4a8b-b333-6556b8ac7aa2"><textarea style="display: none">digraph &quot;call graph&quot; {
 goal [label=&quot;not\l(u.is_admin\l \|\| not u.is_admin\l    &amp;&amp; not\l       (List.exists (anon_fun.get_auth_result.0 u)\l        (\&quot;diego\&quot; :: (\&quot;shannon\&quot; :: []))))&quot;,shape=box,style=filled,color=&quot;cyan&quot;,fontname=&quot;courier&quot;,fontsize=14];
 call_279 [label=&quot;List.exists (anon_fun.get_auth_result.0 u)\l(List.tl (\&quot;diego\&quot; :: (\&quot;shannon\&quot; :: [])))&quot;,shape=box,style=filled,color=&quot;yellow&quot;,fontname=&quot;courier&quot;,fontsize=14];
 expr_281 -&gt; call_279 [label=&quot;calls&quot;];
-call_79 [label=&quot;List.exists (anon_fun.get_auth_result.0 u) (\&quot;diego\&quot; :: (\&quot;shannon\&quot; :: []))&quot;,shape=box,style=filled,color=&quot;green&quot;,fontname=&quot;courier&quot;,fontsize=14];
-call_79 -&gt; expr_281 [label=&quot;=&quot;];
+call_50 [label=&quot;List.exists (anon_fun.get_auth_result.0 u) (\&quot;diego\&quot; :: (\&quot;shannon\&quot; :: []))&quot;,shape=box,style=filled,color=&quot;green&quot;,fontname=&quot;courier&quot;,fontsize=14];
+call_50 -&gt; expr_281 [label=&quot;=&quot;];
 expr_281 [label=&quot;not (\&quot;diego\&quot; :: (\&quot;shannon\&quot; :: []) = [])\l&amp;&amp; (\&quot;diego\&quot; = u.username\l    \|\| List.exists (anon_fun.get_auth_result.0 u)\l       (List.tl (\&quot;diego\&quot; :: (\&quot;shannon\&quot; :: []))))&quot;,shape=box,style=filled,color=&quot;grey&quot;,fontname=&quot;courier&quot;,fontsize=14];
-goal -&gt; call_79 [label=&quot;calls&quot;];
+goal -&gt; call_50 [label=&quot;calls&quot;];
 }
 </textarea><button class="btn btn-primary">Load graph</button><div class="imandra-graphviz-loading display-none">Loading..</div><div class="imandra-graphviz-target"></div><script>
 require(['nbextensions/nbimandra/graphviz'], function (graphviz) {
-  var target = '#graphviz-f7d3bf28-063f-4a49-a9e6-28babbcdd12f';
+  var target = '#graphviz-908e1de3-4ffd-4a8b-b333-6556b8ac7aa2';
   graphviz.hydrate(target);
 });
-</script></div></div><div class="tab-pane"><div class="imandra-proof-top"><div class="imandra-fold panel panel-default" id="fold-22fd9568-9bd2-41b5-acf1-59885d5b4330"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>proof attempt</span></div></div><div class="panel-body collapse"><div class="imandra-proof"><div class="imandra-alternatives" id="alt-0966c181-da16-4999-b242-d67ff47a0c68"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>summary</a></li><li class="" data-toggle="tab"><a>full</a></li><li class="" data-toggle="tab"><a>graph</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-table" id="table-f8e3c866-0b04-43b0-aed2-bcdf7525084c"><table><tr><td><b>ground_instances</b></td><td>1</td></tr><tr><td><b>definitions</b></td><td>0</td></tr><tr><td><b>inductions</b></td><td>0</td></tr><tr><td><b>search_time</b></td><td><pre>0.011s</pre></td></tr><tr><td><b>details</b></td><td><div class="imandra-fold panel panel-default" id="fold-66e9ea00-1f79-4cf4-943e-945c895ca610"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><div class="imandra-table" id="table-56a631d6-cd75-4944-bc69-7dc9cab08249"><table><tr><td><b>smt_stats</b></td><td><div class="imandra-table" id="table-5736fec5-2820-4553-a6b8-f9d735d518d0"><table><tr><td><b>num checks</b></td><td>3</td></tr><tr><td><b>rlimit count</b></td><td>667</td></tr><tr><td><b>mk clause</b></td><td>8</td></tr><tr><td><b>datatype occurs check</b></td><td>28</td></tr><tr><td><b>seq add axiom</b></td><td>2</td></tr><tr><td><b>mk bool var</b></td><td>21</td></tr><tr><td><b>decisions</b></td><td>4</td></tr><tr><td><b>seq num reductions</b></td><td>10</td></tr><tr><td><b>propagations</b></td><td>2</td></tr><tr><td><b>interface eqs</b></td><td>2</td></tr><tr><td><b>conflicts</b></td><td>1</td></tr><tr><td><b>datatype accessor ax</b></td><td>4</td></tr><tr><td><b>datatype constructor ax</b></td><td>1</td></tr><tr><td><b>seq extensionality</b></td><td>2</td></tr><tr><td><b>num allocs</b></td><td>1381532510</td></tr><tr><td><b>final checks</b></td><td>4</td></tr><tr><td><b>added eqs</b></td><td>18</td></tr><tr><td><b>del clause</b></td><td>4</td></tr><tr><td><b>memory</b></td><td>6.570000</td></tr><tr><td><b>max memory</b></td><td>22.720000</td></tr></table></div></td></tr></table></div></div><script>
+</script></div></div><div class="tab-pane"><div class="imandra-proof-top"><div class="imandra-fold panel panel-default" id="fold-4bc271c0-a8bd-44bf-b6a1-f4d7f2f901ae"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>proof attempt</span></div></div><div class="panel-body collapse"><div class="imandra-proof"><div class="imandra-alternatives" id="alt-6d8f2c0f-7b6a-4683-847b-18860a86623e"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>summary</a></li><li class="" data-toggle="tab"><a>full</a></li><li class="" data-toggle="tab"><a>graph</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-table" id="table-e1379100-389c-4f66-9fb7-3281f1333ec2"><table><tr><td><b>ground_instances</b></td><td>1</td></tr><tr><td><b>definitions</b></td><td>0</td></tr><tr><td><b>inductions</b></td><td>0</td></tr><tr><td><b>search_time</b></td><td><pre>0.011s</pre></td></tr><tr><td><b>details</b></td><td><div class="imandra-fold panel panel-default" id="fold-9bc46e02-2371-477c-9b0d-e242e0a875da"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><div class="imandra-table" id="table-a5ac8579-6a9c-4b55-bb7d-2f0032072237"><table><tr><td><b>smt_stats</b></td><td><div class="imandra-table" id="table-1fffb863-648e-4702-b144-30abe18e0acb"><table><tr><td><b>num checks</b></td><td>3</td></tr><tr><td><b>rlimit count</b></td><td>667</td></tr><tr><td><b>mk clause</b></td><td>8</td></tr><tr><td><b>datatype occurs check</b></td><td>28</td></tr><tr><td><b>seq add axiom</b></td><td>2</td></tr><tr><td><b>mk bool var</b></td><td>21</td></tr><tr><td><b>decisions</b></td><td>4</td></tr><tr><td><b>seq num reductions</b></td><td>10</td></tr><tr><td><b>propagations</b></td><td>2</td></tr><tr><td><b>interface eqs</b></td><td>2</td></tr><tr><td><b>conflicts</b></td><td>1</td></tr><tr><td><b>datatype accessor ax</b></td><td>4</td></tr><tr><td><b>datatype constructor ax</b></td><td>1</td></tr><tr><td><b>seq extensionality</b></td><td>2</td></tr><tr><td><b>num allocs</b></td><td>864983584</td></tr><tr><td><b>final checks</b></td><td>4</td></tr><tr><td><b>added eqs</b></td><td>18</td></tr><tr><td><b>del clause</b></td><td>4</td></tr><tr><td><b>memory</b></td><td>17.040000</td></tr><tr><td><b>max memory</b></td><td>19.240000</td></tr></table></div></td></tr></table></div></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-66e9ea00-1f79-4cf4-943e-945c895ca610';
+  var target = '#fold-9bc46e02-2371-477c-9b0d-e242e0a875da';
   fold.hydrate(target);
 });
-</script></div></td></tr></table></div></div><div class="tab-pane"><div class="imandra-fold panel panel-default" id="fold-0cd363e7-3aee-4013-a3b0-7cbec42f310a"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.011s]
+</script></div></td></tr></table></div></div><div class="tab-pane"><div class="imandra-fold panel panel-default" id="fold-71884200-fea8-43fe-8515-6f73ca36af81"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.011s]
   :var_0:.is_admin = false
   ==&gt; (if String.prefix &quot;/user/&quot; &quot;/admin&quot;
        then
@@ -473,45 +708,45 @@ require(['nbextensions/nbimandra/fold'], function (fold) {
          if List.exists (anon_fun.get_auth_result.0 :var_0:) … then Authed
          else Not_authed
        else Authed)
-      = Not_authed</pre></li><li><div><h4>simplify</h4><div class="imandra-table" id="table-5421dfdf-6b4e-431c-8f52-8a66b2e80aaf"><table><tr><td><b>into</b></td><td><pre>:var_0:.is_admin
+      = Not_authed</pre></li><li><div><h4>simplify</h4><div class="imandra-table" id="table-7d95d69a-69c3-41af-aedd-d678218f5cee"><table><tr><td><b>into</b></td><td><pre>:var_0:.is_admin
 || not :var_0:.is_admin
    &amp;&amp; not
       (List.exists (anon_fun.get_auth_result.0 :var_0:)
-       (&quot;diego&quot; :: (&quot;shannon&quot; :: [])))</pre></td></tr><tr><td><b>expansions</b></td><td><pre>[]</pre></td></tr><tr><td><b>rewrite_steps</b></td><td><ul></ul></td></tr><tr><td><b>forward_chaining</b></td><td><ul></ul></td></tr></table></div></div></li><li><div>unroll<div class="imandra-table" id="table-3cd5c712-b316-4c62-b97e-2ecb6551f101"><table><tr><td><b>expr</b></td><td><pre>(|\|`List.exists (anon_fun.get_auth_result.0 (u : user))[0]`_2283\||
-  u_2276
+       (&quot;diego&quot; :: (&quot;shannon&quot; :: [])))</pre></td></tr><tr><td><b>expansions</b></td><td><pre>[]</pre></td></tr><tr><td><b>rewrite_steps</b></td><td><ul></ul></td></tr><tr><td><b>forward_chaining</b></td><td><ul></ul></td></tr></table></div></div></li><li><div>unroll<div class="imandra-table" id="table-90d70e26-c228-4540-aa0c-279e94b7d985"><table><tr><td><b>expr</b></td><td><pre>(|\|`List.exists (anon_fun.get_auth_result.0 (u : user))[0]`_2332\||
+  u_2325
   (|::_3| &quot;diego&quot; (|::…</pre></td></tr><tr><td><b>expansions</b></td><td><ul></ul></td></tr></table></div></div></li><li>Sat (Some  let u = {is_admin = false; username = &quot;diego&quot;; email = &quot;diego&quot;}
 )</li></ul></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-0cd363e7-3aee-4013-a3b0-7cbec42f310a';
+  var target = '#fold-71884200-fea8-43fe-8515-6f73ca36af81';
   fold.hydrate(target);
 });
-</script></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-5ef57949-ace6-4f06-97c0-0f13a57e14d2"><textarea style="display: none">digraph &quot;proof&quot; {
-p_250 [label=&quot;Start (:var_0:.is_admin = false\l       ==\&gt; (if String.prefix \&quot;/user/\&quot; \&quot;/admin\&quot;\l            then\l              if String.prefix (String.append \&quot;/user/\&quot; :var_0:.username)\l                 \&quot;/admin\&quot;\l              then Authed else Not_authed\l            else\l            if String.prefix \&quot;/admin\&quot; \&quot;/admin\&quot;\l            then\l              if :var_0:.is_admin then Authed\l              else\l              if List.exists (anon_fun.get_auth_result.0 :var_0:) …\l              then Authed else Not_authed\l            else Authed)\l           = Not_authed\l       :time 0.011s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
-p_250 -&gt; p_249 [label=&quot;&quot;];
-p_249 [label=&quot;Simplify (:var_0:.is_admin\l          \|\| not :var_0:.is_admin\l             &amp;&amp; not\l                (List.exists (anon_fun.get_auth_result.0 :var_0:)\l                 (\&quot;diego\&quot; :: (\&quot;shannon\&quot; :: [])))\l          :expansions [] :rw [] :fc [])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
-p_249 -&gt; p_248 [label=&quot;&quot;];
-p_248 [label=&quot;Unroll ([List.exists (anon_fun.get_auth_result.0 u)\l         (\&quot;diego\&quot; :: (\&quot;shannon\&quot; :: []))],\l        [[]])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
-p_248 -&gt; p_247 [label=&quot;&quot;];
-p_247 [label=&quot;Sat (Some  let u = \{is_admin = false; username = \&quot;diego\&quot;; email = \&quot;diego\&quot;\}\l)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+</script></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-d838deac-d089-4db8-b6ca-58d74c0e06d8"><textarea style="display: none">digraph &quot;proof&quot; {
+p_268 [label=&quot;Start (:var_0:.is_admin = false\l       ==\&gt; (if String.prefix \&quot;/user/\&quot; \&quot;/admin\&quot;\l            then\l              if String.prefix (String.append \&quot;/user/\&quot; :var_0:.username)\l                 \&quot;/admin\&quot;\l              then Authed else Not_authed\l            else\l            if String.prefix \&quot;/admin\&quot; \&quot;/admin\&quot;\l            then\l              if :var_0:.is_admin then Authed\l              else\l              if List.exists (anon_fun.get_auth_result.0 :var_0:) …\l              then Authed else Not_authed\l            else Authed)\l           = Not_authed\l       :time 0.011s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+p_268 -&gt; p_267 [label=&quot;&quot;];
+p_267 [label=&quot;Simplify (:var_0:.is_admin\l          \|\| not :var_0:.is_admin\l             &amp;&amp; not\l                (List.exists (anon_fun.get_auth_result.0 :var_0:)\l                 (\&quot;diego\&quot; :: (\&quot;shannon\&quot; :: [])))\l          :expansions [] :rw [] :fc [])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+p_267 -&gt; p_266 [label=&quot;&quot;];
+p_266 [label=&quot;Unroll ([List.exists (anon_fun.get_auth_result.0 u)\l         (\&quot;diego\&quot; :: (\&quot;shannon\&quot; :: []))],\l        [[]])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+p_266 -&gt; p_265 [label=&quot;&quot;];
+p_265 [label=&quot;Sat (Some  let u = \{is_admin = false; username = \&quot;diego\&quot;; email = \&quot;diego\&quot;\}\l)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 }
 </textarea><button class="btn btn-primary">Load graph</button><div class="imandra-graphviz-loading display-none">Loading..</div><div class="imandra-graphviz-target"></div><script>
 require(['nbextensions/nbimandra/graphviz'], function (graphviz) {
-  var target = '#graphviz-5ef57949-ace6-4f06-97c0-0f13a57e14d2';
+  var target = '#graphviz-d838deac-d089-4db8-b6ca-58d74c0e06d8';
   graphviz.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-0966c181-da16-4999-b242-d67ff47a0c68';
+  var target = '#alt-6d8f2c0f-7b6a-4683-847b-18860a86623e';
   alternatives.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-22fd9568-9bd2-41b5-acf1-59885d5b4330';
+  var target = '#fold-4bc271c0-a8bd-44bf-b6a1-f4d7f2f901ae';
   fold.hydrate(target);
 });
 </script></div></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-711d0f35-ea07-4cc3-acf1-2c508e8ab4a5';
+  var target = '#alt-b8c585d7-878e-4f92-936b-01a76fdfe293';
   alternatives.hydrate(target);
 });
 </script></div></div></div>
@@ -536,7 +771,7 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="try-this-container">
-  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Analysing%20Web-app%20Authentication%20Logic.ipynb%23try-cell-11" target="_blank">
+  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Analysing%20Web-app%20Authentication%20Logic.ipynb%23try-cell-11" target="_blank" rel="nofollow">
     <div class="try-this">Try this!</div>
   </a>
 </div>
@@ -577,7 +812,7 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
 
 
 <div class="output_html rendered_html output_subarea ">
-<div class="imandra-alternatives" id="alt-f09bb3e4-828f-49a0-bd05-c6100adfe6f2"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-5bb82aa2-913e-4728-91be-f75e108f4086" class="decompose"><textarea class="display-none">{
+<div class="imandra-alternatives" id="alt-2cef80aa-ad20-42d5-b91e-938b583f2c3b"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-b534f02a-be3c-43ab-8d06-f60f5367ffc5" class="decompose"><textarea class="display-none">{
   &quot;regions&quot;: [
     {
       &quot;constraints&quot;: [
@@ -773,13 +1008,13 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
 }</textarea><div class="decompose-foamtree"></div><div class="decompose-details"><div class="decompose-details-header">Regions details</div><div class="decompose-details-no-selection">No group selected.</div><div class="decompose-details-selection hidden"><div><span class="decompose-details-label">Direct sub-regions: </span><span class="decompose-details-direct-sub-regions-text">-</span></div><div><span class="decompose-details-label">Contained regions: </span><span class="decompose-details-contained-regions-text">-</span></div><div class="decompose-details-section-header">Constraints</div><div class="decompose-details-constraints"><pre class="decompose-details-constraint">&lt;constraint&gt;</pre></div><div class="decompose-details-invariant"><div class="decompose-details-section-header">Invariant</div><pre class="decompose-details-invariant-text">&lt;invariant&gt;</pre></div></div></div><script>
 (function () {
   require(['nbextensions/nbimandra/regions'], function (regions) {
-    var target = '#decompose-5bb82aa2-913e-4728-91be-f75e108f4086';
+    var target = '#decompose-b534f02a-be3c-43ab-8d06-f60f5367ffc5';
     regions.hydrate(target);
   });
 })();
-</script></div></div><div class="tab-pane"><div><div class="imandra-table" id="table-4cca81bb-a6d1-49f0-b0be-86b3103448dd"><table><thead><tr><th>Constraints</th><th>Invariant</th></tr></thead><tr><td><ul><li><pre>not (String.prefix (String.append &quot;/user/&quot; u.username) path)</pre></li><li><pre>String.prefix &quot;/user/&quot; path</pre></li></ul></td><td><pre>F = Not_authed</pre></td></tr><tr><td><ul><li><pre>not (String.prefix (String.append &quot;/user/&quot; u.username) path)</pre></li><li><pre>not (String.prefix &quot;/user/&quot; path)</pre></li><li><pre>not (String.prefix &quot;/admin&quot; path)</pre></li></ul></td><td><pre>F = Authed</pre></td></tr><tr><td><ul><li><pre>not (String.prefix (String.append &quot;/user/&quot; u.username) path)</pre></li><li><pre>not (String.prefix &quot;/user/&quot; path)</pre></li><li><pre>String.prefix &quot;/admin&quot; path</pre></li><li><pre>not u.is_admin</pre></li><li><pre>not (&quot;diego&quot; = u.username)</pre></li><li><pre>not (&quot;shannon&quot; = u.username)</pre></li></ul></td><td><pre>F = Not_authed</pre></td></tr><tr><td><ul><li><pre>not (String.prefix (String.append &quot;/user/&quot; u.username) path)</pre></li><li><pre>not (String.prefix &quot;/user/&quot; path)</pre></li><li><pre>String.prefix &quot;/admin&quot; path</pre></li><li><pre>not u.is_admin</pre></li><li><pre>not (&quot;diego&quot; = u.username)</pre></li><li><pre>&quot;shannon&quot; = u.username</pre></li></ul></td><td><pre>F = Authed</pre></td></tr><tr><td><ul><li><pre>not (String.prefix (String.append &quot;/user/&quot; u.username) path)</pre></li><li><pre>not (String.prefix &quot;/user/&quot; path)</pre></li><li><pre>String.prefix &quot;/admin&quot; path</pre></li><li><pre>not u.is_admin</pre></li><li><pre>&quot;diego&quot; = u.username</pre></li></ul></td><td><pre>F = Authed</pre></td></tr><tr><td><ul><li><pre>not (String.prefix (String.append &quot;/user/&quot; u.username) path)</pre></li><li><pre>not (String.prefix &quot;/user/&quot; path)</pre></li><li><pre>String.prefix &quot;/admin&quot; path</pre></li><li><pre>u.is_admin</pre></li></ul></td><td><pre>F = Authed</pre></td></tr><tr><td><ul><li><pre>String.prefix (String.append &quot;/user/&quot; u.username) path</pre></li></ul></td><td><pre>F = Authed</pre></td></tr></table></div></div></div></div><script>
+</script></div></div><div class="tab-pane"><div><div class="imandra-table" id="table-ff4f6d79-08d7-49d3-b1c4-6e8e0b5dd343"><table><thead><tr><th>Constraints</th><th>Invariant</th></tr></thead><tr><td><ul><li><pre>not (String.prefix (String.append &quot;/user/&quot; u.username) path)</pre></li><li><pre>String.prefix &quot;/user/&quot; path</pre></li></ul></td><td><pre>F = Not_authed</pre></td></tr><tr><td><ul><li><pre>not (String.prefix (String.append &quot;/user/&quot; u.username) path)</pre></li><li><pre>not (String.prefix &quot;/user/&quot; path)</pre></li><li><pre>not (String.prefix &quot;/admin&quot; path)</pre></li></ul></td><td><pre>F = Authed</pre></td></tr><tr><td><ul><li><pre>not (String.prefix (String.append &quot;/user/&quot; u.username) path)</pre></li><li><pre>not (String.prefix &quot;/user/&quot; path)</pre></li><li><pre>String.prefix &quot;/admin&quot; path</pre></li><li><pre>not u.is_admin</pre></li><li><pre>not (&quot;diego&quot; = u.username)</pre></li><li><pre>not (&quot;shannon&quot; = u.username)</pre></li></ul></td><td><pre>F = Not_authed</pre></td></tr><tr><td><ul><li><pre>not (String.prefix (String.append &quot;/user/&quot; u.username) path)</pre></li><li><pre>not (String.prefix &quot;/user/&quot; path)</pre></li><li><pre>String.prefix &quot;/admin&quot; path</pre></li><li><pre>not u.is_admin</pre></li><li><pre>not (&quot;diego&quot; = u.username)</pre></li><li><pre>&quot;shannon&quot; = u.username</pre></li></ul></td><td><pre>F = Authed</pre></td></tr><tr><td><ul><li><pre>not (String.prefix (String.append &quot;/user/&quot; u.username) path)</pre></li><li><pre>not (String.prefix &quot;/user/&quot; path)</pre></li><li><pre>String.prefix &quot;/admin&quot; path</pre></li><li><pre>not u.is_admin</pre></li><li><pre>&quot;diego&quot; = u.username</pre></li></ul></td><td><pre>F = Authed</pre></td></tr><tr><td><ul><li><pre>not (String.prefix (String.append &quot;/user/&quot; u.username) path)</pre></li><li><pre>not (String.prefix &quot;/user/&quot; path)</pre></li><li><pre>String.prefix &quot;/admin&quot; path</pre></li><li><pre>u.is_admin</pre></li></ul></td><td><pre>F = Authed</pre></td></tr><tr><td><ul><li><pre>String.prefix (String.append &quot;/user/&quot; u.username) path</pre></li></ul></td><td><pre>F = Authed</pre></td></tr></table></div></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-f09bb3e4-828f-49a0-bd05-c6100adfe6f2';
+  var target = '#alt-2cef80aa-ad20-42d5-b91e-938b583f2c3b';
   alternatives.hydrate(target);
 });
 </script></div>
@@ -792,11 +1027,21 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
 </div>
 
 </div>
-  
+                    </div>
+
+                    </article>
+            </main>
+            <footer class="Footer">
+                <a class="Copyrights"href="http://imandra.ai">&#9400; 2018 Aesthetic Integration Ltd. All rights reserved.</a>
+            </footer>
+        </div>
+    </body>
+    
  
 
 
-      </div></div>
-  </div>
-</body>
+        </div>
+        </div>
+        </div>
+    </body>
 </html>
