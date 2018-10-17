@@ -1,120 +1,118 @@
 <!DOCTYPE html>
 <html>
-    <head><meta charset="utf-8" />
-        <meta content="width=device-width, initial-scale=1.0" name="viewport">
-        <title>Imandra Documentation - Imandra Decomposition Flags</title>
-        <meta property="og:url" content="https://docs.imandra.ai/imandra-docs/notebooks/decomposition-flags/">
-        <meta property="og:type" content="website">
-        <meta property="og:title" content="Imandra Documentation - Imandra Decomposition Flags">
-        <meta property="og:description" content="In this notebook we’re going to describe the main flags and arguments accepted by Imandra’s principal region decomposition, with concrete examples to clarify their behaviour.">
-        <meta property="og:image" content="https://storage.googleapis.com/imandra-assets/images/og_image_default_i78.jpg">
+<head><meta charset="utf-8" />
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Imandra Documentation - Imandra Decomposition Flags</title>
+<meta property="og:url" content="https://docs.imandra.ai/imandra-docs/notebooks/decomposition-flags/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Imandra Documentation - Imandra Decomposition Flags">
+<meta property="og:description" content="In this notebook we’re going to describe the main flags and arguments accepted by Imandra’s principal region decomposition, with concrete examples to clarify their behaviour.">
+<meta property="og:image" content="https://storage.googleapis.com/imandra-assets/images/og_image_default_i78.jpg">
 
-        
-        <!-- Global site tag (gtag.js) - Google Analytics -->
-        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-116937440-6"></script>
-        <script>
-         window.dataLayer = window.dataLayer || [];
-         function gtag(){dataLayer.push(arguments);}
-         gtag('js', new Date());
 
-         gtag('config', 'UA-116937440-6');
-        </script>
-        <script type="text/javascript"> var sc_project=11767520; var sc_invisible=1; var sc_security="fa7e88d1"; </script>
-        <script type="text/javascript" src="https://www.statcounter.com/counter/counter.js" async></script>
-        <noscript><div class="statcounter">
-            <a title="Web Analytics" href="http://statcounter.com/" target="_blank">
-                <img class="statcounter" src="//c.statcounter.com/11767520/0/fa7e88d1/1/" alt="Web Analytics"></a>
-        </div></noscript>
-        
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-116937440-6"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
 
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Merriweather+Sans:300,300i,400,400i%7CMerriweather:300,300i,400,400i%7CRoboto+Slab:300,300i,400,400i">
+gtag('config', 'UA-116937440-6');
+</script>
+<script type="text/javascript"> var sc_project=11767520; var sc_invisible=1; var sc_security="fa7e88d1"; </script>
+<script type="text/javascript" src="https://www.statcounter.com/counter/counter.js" async></script>
+<noscript><div class="statcounter">
+<a title="Web Analytics" href="http://statcounter.com/" target="_blank">
+<img class="statcounter" src="//c.statcounter.com/11767520/0/fa7e88d1/1/" alt="Web Analytics"></a>
+</div></noscript>
 
-        <link rel="stylesheet" href="/imandra-docs/static/style/style.min.9ef6027e.css" type="text/css">
-        <link rel="stylesheet" href="/imandra-docs/static/nbextensions/nbimandra/styles.c7ed3d1a.css" type="text/css">
-        <link rel="stylesheet" href="/imandra-docs/static/docs-styles.86fc0481.css" type="text/css">
-        
-        <link rel="stylesheet" href="/imandra-docs/static/jekyll-styles.0d588486.css" type="text/css">
-        
 
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-        <script src="/imandra-docs/static/nbimandra-rjs-bundle.2469bcb7.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Merriweather" type="text/css" />
 
-        <style type="text/css">
-         .highlight .hll { background-color: #ffffcc }
-         .highlight  { background: #f8f8f8; }
-         .highlight .c { color: #408080; font-style: italic } /* Comment */
-         .highlight .err { border: 1px solid #FF0000 } /* Error */
-         .highlight .k { color: #008000; font-weight: bold } /* Keyword */
-         .highlight .o { color: #666666 } /* Operator */
-         .highlight .ch { color: #408080; font-style: italic } /* Comment.Hashbang */
-         .highlight .cm { color: #408080; font-style: italic } /* Comment.Multiline */
-         .highlight .cp { color: #BC7A00 } /* Comment.Preproc */
-         .highlight .cpf { color: #408080; font-style: italic } /* Comment.PreprocFile */
-         .highlight .c1 { color: #408080; font-style: italic } /* Comment.Single */
-         .highlight .cs { color: #408080; font-style: italic } /* Comment.Special */
-         .highlight .gd { color: #A00000 } /* Generic.Deleted */
-         .highlight .ge { font-style: italic } /* Generic.Emph */
-         .highlight .gr { color: #FF0000 } /* Generic.Error */
-         .highlight .gh { color: #000080; font-weight: bold } /* Generic.Heading */
-         .highlight .gi { color: #00A000 } /* Generic.Inserted */
-         .highlight .go { color: #888888 } /* Generic.Output */
-         .highlight .gp { color: #000080; font-weight: bold } /* Generic.Prompt */
-         .highlight .gs { font-weight: bold } /* Generic.Strong */
-         .highlight .gu { color: #800080; font-weight: bold } /* Generic.Subheading */
-         .highlight .gt { color: #0044DD } /* Generic.Traceback */
-         .highlight .kc { color: #008000; font-weight: bold } /* Keyword.Constant */
-         .highlight .kd { color: #008000; font-weight: bold } /* Keyword.Declaration */
-         .highlight .kn { color: #008000; font-weight: bold } /* Keyword.Namespace */
-         .highlight .kp { color: #008000 } /* Keyword.Pseudo */
-         .highlight .kr { color: #008000; font-weight: bold } /* Keyword.Reserved */
-         .highlight .kt { color: #B00040 } /* Keyword.Type */
-         .highlight .m { color: #666666 } /* Literal.Number */
-         .highlight .s { color: #BA2121 } /* Literal.String */
-         .highlight .na { color: #7D9029 } /* Name.Attribute */
-         .highlight .nb { color: #008000 } /* Name.Builtin */
-         .highlight .nc { color: #0000FF; font-weight: bold } /* Name.Class */
-         .highlight .no { color: #880000 } /* Name.Constant */
-         .highlight .nd { color: #AA22FF } /* Name.Decorator */
-         .highlight .ni { color: #999999; font-weight: bold } /* Name.Entity */
-         .highlight .ne { color: #D2413A; font-weight: bold } /* Name.Exception */
-         .highlight .nf { color: #0000FF } /* Name.Function */
-         .highlight .nl { color: #A0A000 } /* Name.Label */
-         .highlight .nn { color: #0000FF; font-weight: bold } /* Name.Namespace */
-         .highlight .nt { color: #008000; font-weight: bold } /* Name.Tag */
-         .highlight .nv { color: #19177C } /* Name.Variable */
-         .highlight .ow { color: #AA22FF; font-weight: bold } /* Operator.Word */
-         .highlight .w { color: #bbbbbb } /* Text.Whitespace */
-         .highlight .mb { color: #666666 } /* Literal.Number.Bin */
-         .highlight .mf { color: #666666 } /* Literal.Number.Float */
-         .highlight .mh { color: #666666 } /* Literal.Number.Hex */
-         .highlight .mi { color: #666666 } /* Literal.Number.Integer */
-         .highlight .mo { color: #666666 } /* Literal.Number.Oct */
-         .highlight .sa { color: #BA2121 } /* Literal.String.Affix */
-         .highlight .sb { color: #BA2121 } /* Literal.String.Backtick */
-         .highlight .sc { color: #BA2121 } /* Literal.String.Char */
-         .highlight .dl { color: #BA2121 } /* Literal.String.Delimiter */
-         .highlight .sd { color: #BA2121; font-style: italic } /* Literal.String.Doc */
-         .highlight .s2 { color: #BA2121 } /* Literal.String.Double */
-         .highlight .se { color: #BB6622; font-weight: bold } /* Literal.String.Escape */
-         .highlight .sh { color: #BA2121 } /* Literal.String.Heredoc */
-         .highlight .si { color: #BB6688; font-weight: bold } /* Literal.String.Interpol */
-         .highlight .sx { color: #008000 } /* Literal.String.Other */
-         .highlight .sr { color: #BB6688 } /* Literal.String.Regex */
-         .highlight .s1 { color: #BA2121 } /* Literal.String.Single */
-         .highlight .ss { color: #19177C } /* Literal.String.Symbol */
-         .highlight .bp { color: #008000 } /* Name.Builtin.Pseudo */
-         .highlight .fm { color: #0000FF } /* Name.Function.Magic */
-         .highlight .vc { color: #19177C } /* Name.Variable.Class */
-         .highlight .vg { color: #19177C } /* Name.Variable.Global */
-         .highlight .vi { color: #19177C } /* Name.Variable.Instance */
-         .highlight .vm { color: #19177C } /* Name.Variable.Magic */
-         .highlight .il { color: #666666 } /* Literal.Number.Integer.Long */
-        </style>
+<link rel="stylesheet" href="/imandra-docs/static/style/style.min.9ef6027e.css" type="text/css">
+<link rel="stylesheet" href="/imandra-docs/static/custom/custom.43522872.css" type="text/css">
+<link rel="stylesheet" href="/imandra-docs/static/nbextensions/nbimandra/styles.c7ed3d1a.css" type="text/css">
+<link rel="stylesheet" href="/imandra-docs/static/docs-styles.3b1b6d03.css" type="text/css">
 
-        <!-- Loading mathjax macro -->
-        <!-- Load mathjax -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<script src="/imandra-docs/static/nbimandra-rjs-bundle.2469bcb7.js"></script>
+
+<style type="text/css">
+.highlight .hll { background-color: #ffffcc }
+.highlight  { background: #f8f8f8; }
+.highlight .c { color: #408080; font-style: italic } /* Comment */
+.highlight .err { border: 1px solid #FF0000 } /* Error */
+.highlight .k { color: #008000; font-weight: bold } /* Keyword */
+.highlight .o { color: #666666 } /* Operator */
+.highlight .ch { color: #408080; font-style: italic } /* Comment.Hashbang */
+.highlight .cm { color: #408080; font-style: italic } /* Comment.Multiline */
+.highlight .cp { color: #BC7A00 } /* Comment.Preproc */
+.highlight .cpf { color: #408080; font-style: italic } /* Comment.PreprocFile */
+.highlight .c1 { color: #408080; font-style: italic } /* Comment.Single */
+.highlight .cs { color: #408080; font-style: italic } /* Comment.Special */
+.highlight .gd { color: #A00000 } /* Generic.Deleted */
+.highlight .ge { font-style: italic } /* Generic.Emph */
+.highlight .gr { color: #FF0000 } /* Generic.Error */
+.highlight .gh { color: #000080; font-weight: bold } /* Generic.Heading */
+.highlight .gi { color: #00A000 } /* Generic.Inserted */
+.highlight .go { color: #888888 } /* Generic.Output */
+.highlight .gp { color: #000080; font-weight: bold } /* Generic.Prompt */
+.highlight .gs { font-weight: bold } /* Generic.Strong */
+.highlight .gu { color: #800080; font-weight: bold } /* Generic.Subheading */
+.highlight .gt { color: #0044DD } /* Generic.Traceback */
+.highlight .kc { color: #008000; font-weight: bold } /* Keyword.Constant */
+.highlight .kd { color: #008000; font-weight: bold } /* Keyword.Declaration */
+.highlight .kn { color: #008000; font-weight: bold } /* Keyword.Namespace */
+.highlight .kp { color: #008000 } /* Keyword.Pseudo */
+.highlight .kr { color: #008000; font-weight: bold } /* Keyword.Reserved */
+.highlight .kt { color: #B00040 } /* Keyword.Type */
+.highlight .m { color: #666666 } /* Literal.Number */
+.highlight .s { color: #BA2121 } /* Literal.String */
+.highlight .na { color: #7D9029 } /* Name.Attribute */
+.highlight .nb { color: #008000 } /* Name.Builtin */
+.highlight .nc { color: #0000FF; font-weight: bold } /* Name.Class */
+.highlight .no { color: #880000 } /* Name.Constant */
+.highlight .nd { color: #AA22FF } /* Name.Decorator */
+.highlight .ni { color: #999999; font-weight: bold } /* Name.Entity */
+.highlight .ne { color: #D2413A; font-weight: bold } /* Name.Exception */
+.highlight .nf { color: #0000FF } /* Name.Function */
+.highlight .nl { color: #A0A000 } /* Name.Label */
+.highlight .nn { color: #0000FF; font-weight: bold } /* Name.Namespace */
+.highlight .nt { color: #008000; font-weight: bold } /* Name.Tag */
+.highlight .nv { color: #19177C } /* Name.Variable */
+.highlight .ow { color: #AA22FF; font-weight: bold } /* Operator.Word */
+.highlight .w { color: #bbbbbb } /* Text.Whitespace */
+.highlight .mb { color: #666666 } /* Literal.Number.Bin */
+.highlight .mf { color: #666666 } /* Literal.Number.Float */
+.highlight .mh { color: #666666 } /* Literal.Number.Hex */
+.highlight .mi { color: #666666 } /* Literal.Number.Integer */
+.highlight .mo { color: #666666 } /* Literal.Number.Oct */
+.highlight .sa { color: #BA2121 } /* Literal.String.Affix */
+.highlight .sb { color: #BA2121 } /* Literal.String.Backtick */
+.highlight .sc { color: #BA2121 } /* Literal.String.Char */
+.highlight .dl { color: #BA2121 } /* Literal.String.Delimiter */
+.highlight .sd { color: #BA2121; font-style: italic } /* Literal.String.Doc */
+.highlight .s2 { color: #BA2121 } /* Literal.String.Double */
+.highlight .se { color: #BB6622; font-weight: bold } /* Literal.String.Escape */
+.highlight .sh { color: #BA2121 } /* Literal.String.Heredoc */
+.highlight .si { color: #BB6688; font-weight: bold } /* Literal.String.Interpol */
+.highlight .sx { color: #008000 } /* Literal.String.Other */
+.highlight .sr { color: #BB6688 } /* Literal.String.Regex */
+.highlight .s1 { color: #BA2121 } /* Literal.String.Single */
+.highlight .ss { color: #19177C } /* Literal.String.Symbol */
+.highlight .bp { color: #008000 } /* Name.Builtin.Pseudo */
+.highlight .fm { color: #0000FF } /* Name.Function.Magic */
+.highlight .vc { color: #19177C } /* Name.Variable.Class */
+.highlight .vg { color: #19177C } /* Name.Variable.Global */
+.highlight .vi { color: #19177C } /* Name.Variable.Instance */
+.highlight .vm { color: #19177C } /* Name.Variable.Magic */
+.highlight .il { color: #666666 } /* Literal.Number.Integer.Long */
+</style>
+    
+<!-- Loading mathjax macro -->
+<!-- Load mathjax -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS_HTML"></script>
     <!-- MathJax configuration -->
     <script type="text/x-mathjax-config">
@@ -135,260 +133,27 @@
     });
     </script>
     <!-- End of mathjax configuration --></head>
-    <body>
-        <div class="background">
-        </div>
-        <div class="page-container">
-            <main class="main-content-column">
-                <!-- Jupyter (Imandra core docs) version -->
-<header class="header">
-    <div class="top-row-container">
-        <div class="top-row">
-            <div id="toggler--left" class="side__left-menu-toggler"><a href="#" class="side__toggle">≡ <span class="side__toggle-text">Docs</span></a></div>
-            <div class="side__logo-container">
-                <a class="side__logo-link" href="/">
-                    <img class="side__logo " src = "/imandra-docs/jekyll-resources/assets/img/ai_logo_green.svg">
-                </a>
-            </div>
-            <div id="toggler--right" class="side__right-menu-toggler"><a href="#" class="side__toggle"><span class="side__toggle-text">Pages</span> ≡</a></div>
-
-            <nav class="side__nav-container side__nav-container--hidden">
-
-                <ul class="side__nav-list">
-                    
-                    <li class="side__nav-list-item TopNavListItem">
-                        <a class="side__nav-link" href="/">Documentation Home</a>
-                        
-                    </li>
-                    
-                    <li class="side__nav-list-item TopNavListItem">
-                        <a class="side__nav-link side__nav-link--active" href="/imandra-docs">Imandra</a>
-                        
-                        <ul class="side__nav-list--sub-level-1">
-                            
-                            <li class="side__nav-list-item--sub-level-1">
-                                
-                                <a class="side__nav-link" href="/imandra-docs/notebooks/welcome">A Quick Tour</a>
-                                
-                                <ul class="side__nav-list--sub-level-2">
-                                    
-                                </ul>
-                            </li>
-                            
-                            <li class="side__nav-list-item--sub-level-1">
-                                
-                                <a class="side__nav-link" href="/imandra-docs/notebooks/installation">Installation</a>
-                                
-                                <ul class="side__nav-list--sub-level-2">
-                                    
-                                    <li class="side__nav-list-item--sub-level-2">
-                                        <a class="side__nav-link" href="/imandra-docs/notebooks/installation-simple">Simple</a>
-                                        
-                                    </li>
-                                    
-                                    <li class="side__nav-list-item--sub-level-2">
-                                        <a class="side__nav-link" href="/imandra-docs/notebooks/installation-manual-opam">Manual (opam)</a>
-                                        
-                                    </li>
-                                    
-                                    <li class="side__nav-list-item--sub-level-2">
-                                        <a class="side__nav-link" href="/imandra-docs/notebooks/installation-docker">Docker</a>
-                                        
-                                    </li>
-                                    
-                                </ul>
-                            </li>
-                            
-                            <li class="side__nav-list-item--sub-level-1">
-                                
-                                <a class="side__nav-link" href="/imandra-docs/notebooks/logic-and-program-modes">Logic and Program Modes</a>
-                                
-                                <ul class="side__nav-list--sub-level-2">
-                                    
-                                </ul>
-                            </li>
-                            
-                            <li class="side__nav-list-item--sub-level-1">
-                                
-                                <a class="side__nav-link" href="/imandra-docs/notebooks/verification">Verification</a>
-                                
-                                <ul class="side__nav-list--sub-level-2">
-                                    
-                                    <li class="side__nav-list-item--sub-level-2">
-                                        <a class="side__nav-link" href="/imandra-docs/notebooks/verification#Bounded-Solving">Bounded Solving</a>
-                                        
-                                        <ul class="side__nav-list--sub-level-3">
-                                            
-                                            <li class="side__nav-list-item--sub-level-3">
-                                              <a class="side__nav-link" href="/imandra-docs/notebooks/verification#Unrolling">Unrolling</a>
-                                            </li>
-                                            
-                                            <li class="side__nav-list-item--sub-level-3">
-                                              <a class="side__nav-link" href="/imandra-docs/notebooks/verification#Blast">Blast</a>
-                                            </li>
-                                            
-                                        </ul>
-                                        
-                                    </li>
-                                    
-                                    <li class="side__nav-list-item--sub-level-2">
-                                        <a class="side__nav-link" href="/imandra-docs/notebooks/verification#Simplification">Simplification</a>
-                                        
-                                        <ul class="side__nav-list--sub-level-3">
-                                            
-                                            <li class="side__nav-list-item--sub-level-3">
-                                              <a class="side__nav-link" href="/imandra-docs/notebooks/verification#Rewrite-Rule">Rewrite Rule</a>
-                                            </li>
-                                            
-                                            <li class="side__nav-list-item--sub-level-3">
-                                              <a class="side__nav-link" href="/imandra-docs/notebooks/verification#Forward-Chaining">Forward Chaining</a>
-                                            </li>
-                                            
-                                        </ul>
-                                        
-                                    </li>
-                                    
-                                    <li class="side__nav-list-item--sub-level-2">
-                                        <a class="side__nav-link" href="/imandra-docs/notebooks/verification#Induction">Induction</a>
-                                        
-                                    </li>
-                                    
-                                </ul>
-                            </li>
-                            
-                            <li class="side__nav-list-item--sub-level-1">
-                                
-                                Features
-                                
-                                <ul class="side__nav-list--sub-level-2">
-                                    
-                                    <li class="side__nav-list-item--sub-level-2">
-                                        <a class="side__nav-link" href="/imandra-docs/notebooks/verifying-merge-sort">Verifying Merge Sort in Imandra</a>
-                                        
-                                    </li>
-                                    
-                                    <li class="side__nav-list-item--sub-level-2">
-                                        <a class="side__nav-link" href="/imandra-docs/notebooks/recursion-induction-and-rewriting">Recursion, Induction and Rewriting</a>
-                                        
-                                    </li>
-                                    
-                                    <li class="side__nav-list-item--sub-level-2">
-                                        <a class="side__nav-link" href="/imandra-docs/notebooks/proving-program-termination">Proving Program Termination with Imandra</a>
-                                        
-                                    </li>
-                                    
-                                    <li class="side__nav-list-item--sub-level-2">
-                                        <a class="side__nav-link side__nav-link--active" href="/imandra-docs/notebooks/decomposition-flags">Imandra Decomposition Flags</a>
-                                        
-                                    </li>
-                                    
-                                    <li class="side__nav-list-item--sub-level-2">
-                                        <a class="side__nav-link" href="/imandra-docs/notebooks/imandra-tools-intro">Imandra Tools Introduction</a>
-                                        
-                                    </li>
-                                    
-                                </ul>
-                            </li>
-                            
-                            <li class="side__nav-list-item--sub-level-1">
-                                
-                                Examples
-                                
-                                <ul class="side__nav-list--sub-level-2">
-                                    
-                                    <li class="side__nav-list-item--sub-level-2">
-                                        <a class="side__nav-link" href="/imandra-docs/notebooks/ubs-case-study">Analysing the UBS ATS Dark Pool</a>
-                                        
-                                    </li>
-                                    
-                                    <li class="side__nav-list-item--sub-level-2">
-                                        <a class="side__nav-link" href="/imandra-docs/notebooks/webservice-auth-logic">Analysing Web-app Authentication Logic</a>
-                                        
-                                    </li>
-                                    
-                                    <li class="side__nav-list-item--sub-level-2">
-                                        <a class="side__nav-link" href="/imandra-docs/notebooks/simple-vehicle-controller">Simple Vehicle Controller</a>
-                                        
-                                    </li>
-                                    
-                                    <li class="side__nav-list-item--sub-level-2">
-                                        <a class="side__nav-link" href="/imandra-docs/notebooks/ripple-carry-adder">Verifying a Ripple Carry Adder</a>
-                                        
-                                    </li>
-                                    
-                                    <li class="side__nav-list-item--sub-level-2">
-                                        <a class="side__nav-link" href="/imandra-docs/notebooks/verifying-an-ros-node">Creating and Verifying a ROS Node</a>
-                                        
-                                    </li>
-                                    
-                                    <li class="side__nav-list-item--sub-level-2">
-                                        <a class="side__nav-link" href="/imandra-docs/notebooks/reasonml-tic-tac-toe">Tic Tac Toe with ReasonML</a>
-                                        
-                                    </li>
-                                    
-                                </ul>
-                            </li>
-                            
-                        </ul>
-                        
-                    </li>
-                    
-                    <li class="side__nav-list-item TopNavListItem">
-                        <a class="side__nav-link" href="/ipl">Imandra Protocol Language</a>
-                        
-                    </li>
-                    
-                    <li class="side__nav-list-item TopNavListItem">
-                        <a class="side__nav-link" href="/fix-engine">FIX Engine</a>
-                        
-                    </li>
-                    
-                </ul>
-            </nav>
-        </div>
+<body>
+  <div class="header-nav">
+    <div class="header-nav__container">
+      <div class="header-nav-main-logo">
+        <a href="/" class="header-nav-main-logo__container">
+          <img src="/imandra-docs/static/img/imandra_doc_logo_main.svg">
+        </a>
+      </div>
+      <a href="/imandra-docs/">&lt; Back</a>
     </div>
-
-    <div class="background">
-    </div>
-
-    <div class="template-header">
-        <div class="top-bar">
-            <nav class="top-bar__nav-container">
-                <a href="#" class="top-bar__toggle">≡</a>
-                <ul class="top-bar__nav-list top-bar__nav-list--hidden">
-                    <li class="top-bar__nav-list-item"><a class="top-bar__nav-link" href="https://imandra.ai/">Home</a></li>
-                    <li class="top-bar__nav-list-item"><a class="top-bar__nav-link" href="https://imandra.ai/">Imandra</a></li>
-                    <li class="top-bar__nav-list-item"><a class="top-bar__nav-link" href="https://try.imandra.ai/">Try</a></li>
-                    <li class="top-bar__nav-list-item"><a class="top-bar__nav-link" href="https://medium.com/">Blog</a></li>
-                    <li class="top-bar__nav-list-item"><a class="top-bar__nav-link" href="https://imandra.ai/">Research</a></li>
-                    <li class="top-bar__nav-list-item"><a class="top-bar__nav-link" href="https://docs.imandra.ai/">Docs</a></li>
-                    <li class="top-bar__nav-list-item"><a class="top-bar__nav-link" href="https://imandra.ai/media">Media</a></li>
-                    <li class="top-bar__nav-list-item"><a class="top-bar__nav-link" href="https://imandra.ai/#about-ai">About AI</a></li>
-                    <li class="top-bar__nav-list-item"><a class="top-bar__nav-link" href="https://imandra.ai/careers">CAREERS</a></li>
-                    <li class="top-bar__nav-list-item"><a class="top-bar__nav-link" href="https://imandra.ai/#contact">CONTACT</a></li>
-                </ul>
-            </nav>
-        </div>
-        <div class="template-header__image-container template-header__image-container--jupyter">
-            <div class="template-header__image" href ="/imandra-docs">
-                <img class="SiteSpecificImage" src="/imandra-docs/static/img/site_specific_image_v_2.svg">
-            </div>
-        </div>
-    </div>
-    <script>
-     document.getElementById('toggler--left').addEventListener('click', function () {
-         document.getElementsByClassName('side__nav-container')[0].classList.toggle('side__nav-container--hidden');
-         document.getElementsByClassName('top-bar__nav-list')[0].classList.add('top-bar__nav-list--hidden');
-     });
-     document.getElementById('toggler--right').addEventListener('click', function () {
-         document.getElementsByClassName('side__nav-container')[0].classList.add('side__nav-container--hidden');
-         document.getElementsByClassName('top-bar__nav-list')[0].classList.toggle('top-bar__nav-list--hidden');
-     });
-    </script>
-</header>
-                <article class="ArticleContainer">
-                    <div class="main-content main-content--jupyter">
-                        
+  </div>
+  <div class="bg-container">
+    <div class="bg-container__bg"></div>
+    <div class="container">
+      <header class="header">
+        <a href="/imandra-docs/">
+          <img src="/imandra-docs/static/img/site_specific_image_v_2.svg">
+        </a>
+      </header>
+      <div class="content content--with-cells">
+  
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
@@ -413,7 +178,7 @@
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="try-this-container">
-  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Imandra%20Decomposition%20Flags.ipynb%23try-cell-2" target="_blank" rel="nofollow">
+  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Imandra%20Decomposition%20Flags.ipynb%23try-cell-2" target="_blank">
     <div class="try-this">Try this!</div>
   </a>
 </div>
@@ -471,7 +236,7 @@ val g : int -&gt; int -&gt; bool = &lt;fun&gt;
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="try-this-container">
-  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Imandra%20Decomposition%20Flags.ipynb%23try-cell-4" target="_blank" rel="nofollow">
+  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Imandra%20Decomposition%20Flags.ipynb%23try-cell-4" target="_blank">
     <div class="try-this">Try this!</div>
   </a>
 </div>
@@ -511,7 +276,7 @@ val g : int -&gt; int -&gt; bool = &lt;fun&gt;
 
 
 <div class="output_html rendered_html output_subarea ">
-<div class="imandra-alternatives" id="alt-b7297512-e729-45d0-888d-5addab3b19ca"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-7e66df5a-54ab-47b9-bf19-49574b84df04" class="decompose"><textarea class="display-none">{
+<div class="imandra-alternatives" id="alt-016d68e0-6134-4b2a-94d7-d302e2c51302"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-f9ba7011-bf24-4f8c-9a79-e442250a7d8e" class="decompose"><textarea class="display-none">{
   &quot;regions&quot;: [
     {
       &quot;constraints&quot;: [ &quot;not (x &lt;= 0)&quot; ],
@@ -545,13 +310,13 @@ val g : int -&gt; int -&gt; bool = &lt;fun&gt;
 }</textarea><div class="decompose-foamtree"></div><div class="decompose-details"><div class="decompose-details-header">Regions details</div><div class="decompose-details-no-selection">No group selected.</div><div class="decompose-details-selection hidden"><div><span class="decompose-details-label">Direct sub-regions: </span><span class="decompose-details-direct-sub-regions-text">-</span></div><div><span class="decompose-details-label">Contained regions: </span><span class="decompose-details-contained-regions-text">-</span></div><div class="decompose-details-section-header">Constraints</div><div class="decompose-details-constraints"><pre class="decompose-details-constraint">&lt;constraint&gt;</pre></div><div class="decompose-details-invariant"><div class="decompose-details-section-header">Invariant</div><pre class="decompose-details-invariant-text">&lt;invariant&gt;</pre></div></div></div><script>
 (function () {
   require(['nbextensions/nbimandra/regions'], function (regions) {
-    var target = '#decompose-7e66df5a-54ab-47b9-bf19-49574b84df04';
+    var target = '#decompose-f9ba7011-bf24-4f8c-9a79-e442250a7d8e';
     regions.hydrate(target);
   });
 })();
-</script></div></div><div class="tab-pane"><div><div class="imandra-table" id="table-939dd132-509e-4617-8759-f14ead5d8064"><table><thead><tr><th>Constraints</th><th>Invariant</th></tr></thead><tr><td><ul><li><pre>not (x &lt;= 0)</pre></li><li><pre>not (x &lt;= y)</pre></li></ul></td><td><pre>F = Some (x + -1 * y)</pre></td></tr><tr><td><ul><li><pre>not (x &lt;= 0)</pre></li><li><pre>x &lt;= y</pre></li></ul></td><td><pre>F = Some (y + -1 * x)</pre></td></tr></table></div></div></div></div><script>
+</script></div></div><div class="tab-pane"><div><div class="imandra-table" id="table-2ead91b8-5063-4a5d-945d-bf8a62e223c9"><table><thead><tr><th>Constraints</th><th>Invariant</th></tr></thead><tr><td><ul><li><pre>not (x &lt;= 0)</pre></li><li><pre>not (x &lt;= y)</pre></li></ul></td><td><pre>F = Some (x + -1 * y)</pre></td></tr><tr><td><ul><li><pre>not (x &lt;= 0)</pre></li><li><pre>x &lt;= y</pre></li></ul></td><td><pre>F = Some (y + -1 * x)</pre></td></tr></table></div></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-b7297512-e729-45d0-888d-5addab3b19ca';
+  var target = '#alt-016d68e0-6134-4b2a-94d7-d302e2c51302';
   alternatives.hydrate(target);
 });
 </script></div>
@@ -578,7 +343,7 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="try-this-container">
-  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Imandra%20Decomposition%20Flags.ipynb%23try-cell-6" target="_blank" rel="nofollow">
+  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Imandra%20Decomposition%20Flags.ipynb%23try-cell-6" target="_blank">
     <div class="try-this">Try this!</div>
   </a>
 </div>
@@ -630,7 +395,7 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="try-this-container">
-  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Imandra%20Decomposition%20Flags.ipynb%23try-cell-8" target="_blank" rel="nofollow">
+  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Imandra%20Decomposition%20Flags.ipynb%23try-cell-8" target="_blank">
     <div class="try-this">Try this!</div>
   </a>
 </div>
@@ -670,7 +435,7 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
 
 
 <div class="output_html rendered_html output_subarea ">
-<div class="imandra-alternatives" id="alt-3157c41c-8646-41c3-b1f2-3cb6589b9483"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-7c44f99d-578f-4142-a51d-1a5f0fc4746b" class="decompose"><textarea class="display-none">{
+<div class="imandra-alternatives" id="alt-ffcc84ee-7339-441f-9d0e-87508f09da70"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-f4d24a76-0343-42a9-aca4-ef79d919e94e" class="decompose"><textarea class="display-none">{
   &quot;regions&quot;: [
     {
       &quot;constraints&quot;: [ &quot;not (x &lt;= 10)&quot; ],
@@ -711,13 +476,13 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
 }</textarea><div class="decompose-foamtree"></div><div class="decompose-details"><div class="decompose-details-header">Regions details</div><div class="decompose-details-no-selection">No group selected.</div><div class="decompose-details-selection hidden"><div><span class="decompose-details-label">Direct sub-regions: </span><span class="decompose-details-direct-sub-regions-text">-</span></div><div><span class="decompose-details-label">Contained regions: </span><span class="decompose-details-contained-regions-text">-</span></div><div class="decompose-details-section-header">Constraints</div><div class="decompose-details-constraints"><pre class="decompose-details-constraint">&lt;constraint&gt;</pre></div><div class="decompose-details-invariant"><div class="decompose-details-section-header">Invariant</div><pre class="decompose-details-invariant-text">&lt;invariant&gt;</pre></div></div></div><script>
 (function () {
   require(['nbextensions/nbimandra/regions'], function (regions) {
-    var target = '#decompose-7c44f99d-578f-4142-a51d-1a5f0fc4746b';
+    var target = '#decompose-f4d24a76-0343-42a9-aca4-ef79d919e94e';
     regions.hydrate(target);
   });
 })();
-</script></div></div><div class="tab-pane"><div><div class="imandra-table" id="table-db8e09cd-312c-49f7-b7cc-a296c6c416de"><table><thead><tr><th>Constraints</th><th>Invariant</th></tr></thead><tr><td><ul><li><pre>x &lt;= 10</pre></li><li><pre>20 &lt;= y</pre></li></ul></td><td><pre>F = 2</pre></td></tr><tr><td><ul><li><pre>x &lt;= 10</pre></li><li><pre>not (20 &lt;= y)</pre></li></ul></td><td><pre>F = 1</pre></td></tr><tr><td><ul><li><pre>not (x &lt;= 10)</pre></li></ul></td><td><pre>F = 1</pre></td></tr></table></div></div></div></div><script>
+</script></div></div><div class="tab-pane"><div><div class="imandra-table" id="table-d376f361-5722-490b-b67f-c238bef10a93"><table><thead><tr><th>Constraints</th><th>Invariant</th></tr></thead><tr><td><ul><li><pre>x &lt;= 10</pre></li><li><pre>20 &lt;= y</pre></li></ul></td><td><pre>F = 2</pre></td></tr><tr><td><ul><li><pre>x &lt;= 10</pre></li><li><pre>not (20 &lt;= y)</pre></li></ul></td><td><pre>F = 1</pre></td></tr><tr><td><ul><li><pre>not (x &lt;= 10)</pre></li></ul></td><td><pre>F = 1</pre></td></tr></table></div></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-3157c41c-8646-41c3-b1f2-3cb6589b9483';
+  var target = '#alt-ffcc84ee-7339-441f-9d0e-87508f09da70';
   alternatives.hydrate(target);
 });
 </script></div>
@@ -741,7 +506,7 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="try-this-container">
-  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Imandra%20Decomposition%20Flags.ipynb%23try-cell-10" target="_blank" rel="nofollow">
+  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Imandra%20Decomposition%20Flags.ipynb%23try-cell-10" target="_blank">
     <div class="try-this">Try this!</div>
   </a>
 </div>
@@ -781,7 +546,7 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
 
 
 <div class="output_html rendered_html output_subarea ">
-<div class="imandra-alternatives" id="alt-28f066a8-826e-426f-9f85-76c790245f3e"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-06b4933f-cdbf-4da4-93f2-c690f7ceb1b9" class="decompose"><textarea class="display-none">{
+<div class="imandra-alternatives" id="alt-47b6c2b9-ae00-416b-932e-c44478f60bf4"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-83de9620-16ba-4287-a803-17ed10c6a831" class="decompose"><textarea class="display-none">{
   &quot;regions&quot;: [
     {
       &quot;constraints&quot;: [ &quot;not (x &lt;= 10) || not (20 &lt;= y)&quot; ],
@@ -807,13 +572,13 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
 }</textarea><div class="decompose-foamtree"></div><div class="decompose-details"><div class="decompose-details-header">Regions details</div><div class="decompose-details-no-selection">No group selected.</div><div class="decompose-details-selection hidden"><div><span class="decompose-details-label">Direct sub-regions: </span><span class="decompose-details-direct-sub-regions-text">-</span></div><div><span class="decompose-details-label">Contained regions: </span><span class="decompose-details-contained-regions-text">-</span></div><div class="decompose-details-section-header">Constraints</div><div class="decompose-details-constraints"><pre class="decompose-details-constraint">&lt;constraint&gt;</pre></div><div class="decompose-details-invariant"><div class="decompose-details-section-header">Invariant</div><pre class="decompose-details-invariant-text">&lt;invariant&gt;</pre></div></div></div><script>
 (function () {
   require(['nbextensions/nbimandra/regions'], function (regions) {
-    var target = '#decompose-06b4933f-cdbf-4da4-93f2-c690f7ceb1b9';
+    var target = '#decompose-83de9620-16ba-4287-a803-17ed10c6a831';
     regions.hydrate(target);
   });
 })();
-</script></div></div><div class="tab-pane"><div><div class="imandra-table" id="table-9aa88963-5266-4c66-9ea0-61c2862d7753"><table><thead><tr><th>Constraints</th><th>Invariant</th></tr></thead><tr><td><ul><li><pre>x &lt;= 10</pre></li><li><pre>20 &lt;= y</pre></li></ul></td><td><pre>F = 2</pre></td></tr><tr><td><ul><li><pre>not (x &lt;= 10) || not (20 &lt;= y)</pre></li></ul></td><td><pre>F = 1</pre></td></tr></table></div></div></div></div><script>
+</script></div></div><div class="tab-pane"><div><div class="imandra-table" id="table-7765dc8d-bcea-4e0d-a41e-2760711b33db"><table><thead><tr><th>Constraints</th><th>Invariant</th></tr></thead><tr><td><ul><li><pre>x &lt;= 10</pre></li><li><pre>20 &lt;= y</pre></li></ul></td><td><pre>F = 2</pre></td></tr><tr><td><ul><li><pre>not (x &lt;= 10) || not (20 &lt;= y)</pre></li></ul></td><td><pre>F = 1</pre></td></tr></table></div></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-28f066a8-826e-426f-9f85-76c790245f3e';
+  var target = '#alt-47b6c2b9-ae00-416b-932e-c44478f60bf4';
   alternatives.hydrate(target);
 });
 </script></div>
@@ -842,7 +607,7 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="try-this-container">
-  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Imandra%20Decomposition%20Flags.ipynb%23try-cell-12" target="_blank" rel="nofollow">
+  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Imandra%20Decomposition%20Flags.ipynb%23try-cell-12" target="_blank">
     <div class="try-this">Try this!</div>
   </a>
 </div>
@@ -897,7 +662,7 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="try-this-container">
-  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Imandra%20Decomposition%20Flags.ipynb%23try-cell-14" target="_blank" rel="nofollow">
+  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Imandra%20Decomposition%20Flags.ipynb%23try-cell-14" target="_blank">
     <div class="try-this">Try this!</div>
   </a>
 </div>
@@ -937,7 +702,7 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
 
 
 <div class="output_html rendered_html output_subarea ">
-<div class="imandra-alternatives" id="alt-7cb23ea7-bdc1-4f71-99c7-863dbce728f8"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-2bd13a5a-e2e8-432c-81fe-22d848fdd768" class="decompose"><textarea class="display-none">{
+<div class="imandra-alternatives" id="alt-ce5e1df2-a341-420b-9df4-06e85a65e619"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-6b43bc06-9537-4cd4-a87b-58a3924f044b" class="decompose"><textarea class="display-none">{
   &quot;regions&quot;: [
     {
       &quot;constraints&quot;: [ &quot;x + y = 10&quot; ],
@@ -978,13 +743,13 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
 }</textarea><div class="decompose-foamtree"></div><div class="decompose-details"><div class="decompose-details-header">Regions details</div><div class="decompose-details-no-selection">No group selected.</div><div class="decompose-details-selection hidden"><div><span class="decompose-details-label">Direct sub-regions: </span><span class="decompose-details-direct-sub-regions-text">-</span></div><div><span class="decompose-details-label">Contained regions: </span><span class="decompose-details-contained-regions-text">-</span></div><div class="decompose-details-section-header">Constraints</div><div class="decompose-details-constraints"><pre class="decompose-details-constraint">&lt;constraint&gt;</pre></div><div class="decompose-details-invariant"><div class="decompose-details-section-header">Invariant</div><pre class="decompose-details-invariant-text">&lt;invariant&gt;</pre></div></div></div><script>
 (function () {
   require(['nbextensions/nbimandra/regions'], function (regions) {
-    var target = '#decompose-2bd13a5a-e2e8-432c-81fe-22d848fdd768';
+    var target = '#decompose-6b43bc06-9537-4cd4-a87b-58a3924f044b';
     regions.hydrate(target);
   });
 })();
-</script></div></div><div class="tab-pane"><div><div class="imandra-table" id="table-8b72ef26-8da7-4ed1-a614-5b7f40bcffc4"><table><thead><tr><th>Constraints</th><th>Invariant</th></tr></thead><tr><td><ul><li><pre>not (x + y = 10)</pre></li><li><pre>x &lt;= y</pre></li></ul></td><td><pre>F = 2</pre></td></tr><tr><td><ul><li><pre>not (x + y = 10)</pre></li><li><pre>not (x &lt;= y)</pre></li></ul></td><td><pre>F = 1</pre></td></tr><tr><td><ul><li><pre>x + y = 10</pre></li></ul></td><td><pre>F = 1</pre></td></tr></table></div></div></div></div><script>
+</script></div></div><div class="tab-pane"><div><div class="imandra-table" id="table-013e46a6-4e8a-4baa-8c56-b948371cc391"><table><thead><tr><th>Constraints</th><th>Invariant</th></tr></thead><tr><td><ul><li><pre>not (x + y = 10)</pre></li><li><pre>x &lt;= y</pre></li></ul></td><td><pre>F = 2</pre></td></tr><tr><td><ul><li><pre>not (x + y = 10)</pre></li><li><pre>not (x &lt;= y)</pre></li></ul></td><td><pre>F = 1</pre></td></tr><tr><td><ul><li><pre>x + y = 10</pre></li></ul></td><td><pre>F = 1</pre></td></tr></table></div></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-7cb23ea7-bdc1-4f71-99c7-863dbce728f8';
+  var target = '#alt-ce5e1df2-a341-420b-9df4-06e85a65e619';
   alternatives.hydrate(target);
 });
 </script></div>
@@ -1008,7 +773,7 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="try-this-container">
-  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Imandra%20Decomposition%20Flags.ipynb%23try-cell-16" target="_blank" rel="nofollow">
+  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Imandra%20Decomposition%20Flags.ipynb%23try-cell-16" target="_blank">
     <div class="try-this">Try this!</div>
   </a>
 </div>
@@ -1051,7 +816,7 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
 
 
 <div class="output_html rendered_html output_subarea ">
-<div class="imandra-alternatives" id="alt-688d0031-ca2a-43ca-afe0-a05bc1a96b26"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-34f280e6-1151-4688-a740-c0f1d3ea4944" class="decompose"><textarea class="display-none">{
+<div class="imandra-alternatives" id="alt-b726447c-5e5c-43e5-aef1-2c9c9ef4a506"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-7c07d77d-fddc-4182-81e2-c71dac0859b6" class="decompose"><textarea class="display-none">{
   &quot;regions&quot;: [
     {
       &quot;constraints&quot;: [ &quot;x + y = 10&quot; ],
@@ -1074,13 +839,13 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
 }</textarea><div class="decompose-foamtree"></div><div class="decompose-details"><div class="decompose-details-header">Regions details</div><div class="decompose-details-no-selection">No group selected.</div><div class="decompose-details-selection hidden"><div><span class="decompose-details-label">Direct sub-regions: </span><span class="decompose-details-direct-sub-regions-text">-</span></div><div><span class="decompose-details-label">Contained regions: </span><span class="decompose-details-contained-regions-text">-</span></div><div class="decompose-details-section-header">Constraints</div><div class="decompose-details-constraints"><pre class="decompose-details-constraint">&lt;constraint&gt;</pre></div><div class="decompose-details-invariant"><div class="decompose-details-section-header">Invariant</div><pre class="decompose-details-invariant-text">&lt;invariant&gt;</pre></div></div></div><script>
 (function () {
   require(['nbextensions/nbimandra/regions'], function (regions) {
-    var target = '#decompose-34f280e6-1151-4688-a740-c0f1d3ea4944';
+    var target = '#decompose-7c07d77d-fddc-4182-81e2-c71dac0859b6';
     regions.hydrate(target);
   });
 })();
-</script></div></div><div class="tab-pane"><div><div class="imandra-table" id="table-3ada6f7e-2186-4de0-badb-76e0e1127282"><table><thead><tr><th>Constraints</th><th>Invariant</th></tr></thead><tr><td><ul><li><pre>not (x + y = 10)</pre></li><li><pre>not (x &lt;= y)</pre></li></ul></td><td><pre>F = 1</pre></td></tr><tr><td><ul><li><pre>x + y = 10</pre></li></ul></td><td><pre>F = 1</pre></td></tr></table></div></div></div></div><script>
+</script></div></div><div class="tab-pane"><div><div class="imandra-table" id="table-82b2d0df-8a45-4f53-a8a1-e46770e98b19"><table><thead><tr><th>Constraints</th><th>Invariant</th></tr></thead><tr><td><ul><li><pre>not (x + y = 10)</pre></li><li><pre>not (x &lt;= y)</pre></li></ul></td><td><pre>F = 1</pre></td></tr><tr><td><ul><li><pre>x + y = 10</pre></li></ul></td><td><pre>F = 1</pre></td></tr></table></div></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-688d0031-ca2a-43ca-afe0-a05bc1a96b26';
+  var target = '#alt-b726447c-5e5c-43e5-aef1-2c9c9ef4a506';
   alternatives.hydrate(target);
 });
 </script></div>
@@ -1106,7 +871,7 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="try-this-container">
-  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Imandra%20Decomposition%20Flags.ipynb%23try-cell-18" target="_blank" rel="nofollow">
+  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Imandra%20Decomposition%20Flags.ipynb%23try-cell-18" target="_blank">
     <div class="try-this">Try this!</div>
   </a>
 </div>
@@ -1158,7 +923,7 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="try-this-container">
-  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Imandra%20Decomposition%20Flags.ipynb%23try-cell-20" target="_blank" rel="nofollow">
+  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Imandra%20Decomposition%20Flags.ipynb%23try-cell-20" target="_blank">
     <div class="try-this">Try this!</div>
   </a>
 </div>
@@ -1198,7 +963,7 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
 
 
 <div class="output_html rendered_html output_subarea ">
-<div class="imandra-alternatives" id="alt-7984afc1-ea55-45bb-b27f-0664ca9b9ac1"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-2a6ca1d9-c75d-41b5-bd21-a98e545ad06e" class="decompose"><textarea class="display-none">{
+<div class="imandra-alternatives" id="alt-7cfd6252-4219-43d2-96e0-3dee309a3115"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-ea4a703b-0014-4b10-baea-ce71158dba01" class="decompose"><textarea class="display-none">{
   &quot;regions&quot;: [
     {
       &quot;constraints&quot;: [ &quot;true&quot; ],
@@ -1211,13 +976,13 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
 }</textarea><div class="decompose-foamtree"></div><div class="decompose-details"><div class="decompose-details-header">Regions details</div><div class="decompose-details-no-selection">No group selected.</div><div class="decompose-details-selection hidden"><div><span class="decompose-details-label">Direct sub-regions: </span><span class="decompose-details-direct-sub-regions-text">-</span></div><div><span class="decompose-details-label">Contained regions: </span><span class="decompose-details-contained-regions-text">-</span></div><div class="decompose-details-section-header">Constraints</div><div class="decompose-details-constraints"><pre class="decompose-details-constraint">&lt;constraint&gt;</pre></div><div class="decompose-details-invariant"><div class="decompose-details-section-header">Invariant</div><pre class="decompose-details-invariant-text">&lt;invariant&gt;</pre></div></div></div><script>
 (function () {
   require(['nbextensions/nbimandra/regions'], function (regions) {
-    var target = '#decompose-2a6ca1d9-c75d-41b5-bd21-a98e545ad06e';
+    var target = '#decompose-ea4a703b-0014-4b10-baea-ce71158dba01';
     regions.hydrate(target);
   });
 })();
-</script></div></div><div class="tab-pane"><div><div class="imandra-table" id="table-600049a0-e3ad-4b83-b55b-75d432ba9879"><table><thead><tr><th>Constraints</th><th>Invariant</th></tr></thead><tr><td><ul></ul></td><td><pre>F = 1</pre></td></tr></table></div></div></div></div><script>
+</script></div></div><div class="tab-pane"><div><div class="imandra-table" id="table-a36f5dc3-1189-4c67-9e0c-e033a2d84ee7"><table><thead><tr><th>Constraints</th><th>Invariant</th></tr></thead><tr><td><ul></ul></td><td><pre>F = 1</pre></td></tr></table></div></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-7984afc1-ea55-45bb-b27f-0664ca9b9ac1';
+  var target = '#alt-7cfd6252-4219-43d2-96e0-3dee309a3115';
   alternatives.hydrate(target);
 });
 </script></div>
@@ -1242,7 +1007,7 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="try-this-container">
-  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Imandra%20Decomposition%20Flags.ipynb%23try-cell-22" target="_blank" rel="nofollow">
+  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Imandra%20Decomposition%20Flags.ipynb%23try-cell-22" target="_blank">
     <div class="try-this">Try this!</div>
   </a>
 </div>
@@ -1282,7 +1047,7 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
 
 
 <div class="output_html rendered_html output_subarea ">
-<div class="imandra-alternatives" id="alt-16235dd3-59c5-4603-935b-43ab96774d11"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-2d3e8394-f73a-40a5-aa62-c955e6c10ad4" class="decompose"><textarea class="display-none">{
+<div class="imandra-alternatives" id="alt-35f6d3d9-e0a4-43d3-8c67-71f1e012ecc2"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-9e19db30-601b-40f6-8ac2-08f3c6d7bd70" class="decompose"><textarea class="display-none">{
   &quot;regions&quot;: [
     {
       &quot;constraints&quot;: [ &quot;not (x &lt;= y)&quot; ],
@@ -1295,13 +1060,13 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
 }</textarea><div class="decompose-foamtree"></div><div class="decompose-details"><div class="decompose-details-header">Regions details</div><div class="decompose-details-no-selection">No group selected.</div><div class="decompose-details-selection hidden"><div><span class="decompose-details-label">Direct sub-regions: </span><span class="decompose-details-direct-sub-regions-text">-</span></div><div><span class="decompose-details-label">Contained regions: </span><span class="decompose-details-contained-regions-text">-</span></div><div class="decompose-details-section-header">Constraints</div><div class="decompose-details-constraints"><pre class="decompose-details-constraint">&lt;constraint&gt;</pre></div><div class="decompose-details-invariant"><div class="decompose-details-section-header">Invariant</div><pre class="decompose-details-invariant-text">&lt;invariant&gt;</pre></div></div></div><script>
 (function () {
   require(['nbextensions/nbimandra/regions'], function (regions) {
-    var target = '#decompose-2d3e8394-f73a-40a5-aa62-c955e6c10ad4';
+    var target = '#decompose-9e19db30-601b-40f6-8ac2-08f3c6d7bd70';
     regions.hydrate(target);
   });
 })();
-</script></div></div><div class="tab-pane"><div><div class="imandra-table" id="table-13c7b11f-570e-44f2-842c-fa2cacfe0331"><table><thead><tr><th>Constraints</th><th>Invariant</th></tr></thead><tr><td><ul><li><pre>not (x &lt;= y)</pre></li></ul></td><td><pre>F = 1</pre></td></tr></table></div></div></div></div><script>
+</script></div></div><div class="tab-pane"><div><div class="imandra-table" id="table-dea0a20a-4173-4749-b53c-297c1857c3fa"><table><thead><tr><th>Constraints</th><th>Invariant</th></tr></thead><tr><td><ul><li><pre>not (x &lt;= y)</pre></li></ul></td><td><pre>F = 1</pre></td></tr></table></div></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-16235dd3-59c5-4603-935b-43ab96774d11';
+  var target = '#alt-35f6d3d9-e0a4-43d3-8c67-71f1e012ecc2';
   alternatives.hydrate(target);
 });
 </script></div>
@@ -1327,7 +1092,7 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="try-this-container">
-  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Imandra%20Decomposition%20Flags.ipynb%23try-cell-24" target="_blank" rel="nofollow">
+  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Imandra%20Decomposition%20Flags.ipynb%23try-cell-24" target="_blank">
     <div class="try-this">Try this!</div>
   </a>
 </div>
@@ -1385,7 +1150,7 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="try-this-container">
-  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Imandra%20Decomposition%20Flags.ipynb%23try-cell-26" target="_blank" rel="nofollow">
+  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Imandra%20Decomposition%20Flags.ipynb%23try-cell-26" target="_blank">
     <div class="try-this">Try this!</div>
   </a>
 </div>
@@ -1426,7 +1191,7 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
 
 
 <div class="output_html rendered_html output_subarea ">
-<div class="imandra-alternatives" id="alt-8bfae613-4fec-4622-aeaf-9f082d9ba8b8"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-da509255-df56-4d70-8aaa-1678bfe091f0" class="decompose"><textarea class="display-none">{
+<div class="imandra-alternatives" id="alt-990fad05-ef77-4e01-ac31-7ca01d91c319"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-6d133f0e-0ebf-491d-81ab-9a417830d4a1" class="decompose"><textarea class="display-none">{
   &quot;regions&quot;: [
     {
       &quot;constraints&quot;: [ &quot;y &lt;= 0&quot; ],
@@ -1488,13 +1253,13 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
 }</textarea><div class="decompose-foamtree"></div><div class="decompose-details"><div class="decompose-details-header">Regions details</div><div class="decompose-details-no-selection">No group selected.</div><div class="decompose-details-selection hidden"><div><span class="decompose-details-label">Direct sub-regions: </span><span class="decompose-details-direct-sub-regions-text">-</span></div><div><span class="decompose-details-label">Contained regions: </span><span class="decompose-details-contained-regions-text">-</span></div><div class="decompose-details-section-header">Constraints</div><div class="decompose-details-constraints"><pre class="decompose-details-constraint">&lt;constraint&gt;</pre></div><div class="decompose-details-invariant"><div class="decompose-details-section-header">Invariant</div><pre class="decompose-details-invariant-text">&lt;invariant&gt;</pre></div></div></div><script>
 (function () {
   require(['nbextensions/nbimandra/regions'], function (regions) {
-    var target = '#decompose-da509255-df56-4d70-8aaa-1678bfe091f0';
+    var target = '#decompose-6d133f0e-0ebf-491d-81ab-9a417830d4a1';
     regions.hydrate(target);
   });
 })();
-</script></div></div><div class="tab-pane"><div><div class="imandra-table" id="table-ff754046-5d4f-4542-821e-07214f43cedd"><table><thead><tr><th>Constraints</th><th>Invariant</th></tr></thead><tr><td><ul><li><pre>not (y &lt;= 0)</pre></li><li><pre>not (x &lt;= y)</pre></li></ul></td><td><pre>F = 1</pre></td></tr><tr><td><ul><li><pre>not (y &lt;= 0)</pre></li><li><pre>x &lt;= y</pre></li></ul></td><td><pre>F = 2</pre></td></tr><tr><td><ul><li><pre>y &lt;= 0</pre></li><li><pre>not (0 &lt;= x)</pre></li></ul></td><td><pre>F = 3</pre></td></tr><tr><td><ul><li><pre>y &lt;= 0</pre></li><li><pre>0 &lt;= x</pre></li></ul></td><td><pre>F = 2</pre></td></tr></table></div></div></div></div><script>
+</script></div></div><div class="tab-pane"><div><div class="imandra-table" id="table-65a3e31e-9097-4f26-9c39-ae72ccc9f29a"><table><thead><tr><th>Constraints</th><th>Invariant</th></tr></thead><tr><td><ul><li><pre>not (y &lt;= 0)</pre></li><li><pre>not (x &lt;= y)</pre></li></ul></td><td><pre>F = 1</pre></td></tr><tr><td><ul><li><pre>not (y &lt;= 0)</pre></li><li><pre>x &lt;= y</pre></li></ul></td><td><pre>F = 2</pre></td></tr><tr><td><ul><li><pre>y &lt;= 0</pre></li><li><pre>not (0 &lt;= x)</pre></li></ul></td><td><pre>F = 3</pre></td></tr><tr><td><ul><li><pre>y &lt;= 0</pre></li><li><pre>0 &lt;= x</pre></li></ul></td><td><pre>F = 2</pre></td></tr></table></div></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-8bfae613-4fec-4622-aeaf-9f082d9ba8b8';
+  var target = '#alt-990fad05-ef77-4e01-ac31-7ca01d91c319';
   alternatives.hydrate(target);
 });
 </script></div>
@@ -1518,7 +1283,7 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="try-this-container">
-  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Imandra%20Decomposition%20Flags.ipynb%23try-cell-28" target="_blank" rel="nofollow">
+  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Imandra%20Decomposition%20Flags.ipynb%23try-cell-28" target="_blank">
     <div class="try-this">Try this!</div>
   </a>
 </div>
@@ -1562,7 +1327,7 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
 
 
 <div class="output_html rendered_html output_subarea ">
-<div class="imandra-alternatives" id="alt-91bd1aa3-9e21-4b16-b9a0-54527a2a4adb"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-913ad271-f0f9-48bf-91ff-081e2c0378f3" class="decompose"><textarea class="display-none">{
+<div class="imandra-alternatives" id="alt-dafe81ff-cf46-49db-8270-a9e6427260f8"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-1958fb14-3dfb-464d-a727-db4437b0f391" class="decompose"><textarea class="display-none">{
   &quot;regions&quot;: [
     {
       &quot;constraints&quot;: [ &quot;not (y &lt;= 0)&quot;, &quot;x &lt;= y&quot; ],
@@ -1588,13 +1353,13 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
 }</textarea><div class="decompose-foamtree"></div><div class="decompose-details"><div class="decompose-details-header">Regions details</div><div class="decompose-details-no-selection">No group selected.</div><div class="decompose-details-selection hidden"><div><span class="decompose-details-label">Direct sub-regions: </span><span class="decompose-details-direct-sub-regions-text">-</span></div><div><span class="decompose-details-label">Contained regions: </span><span class="decompose-details-contained-regions-text">-</span></div><div class="decompose-details-section-header">Constraints</div><div class="decompose-details-constraints"><pre class="decompose-details-constraint">&lt;constraint&gt;</pre></div><div class="decompose-details-invariant"><div class="decompose-details-section-header">Invariant</div><pre class="decompose-details-invariant-text">&lt;invariant&gt;</pre></div></div></div><script>
 (function () {
   require(['nbextensions/nbimandra/regions'], function (regions) {
-    var target = '#decompose-913ad271-f0f9-48bf-91ff-081e2c0378f3';
+    var target = '#decompose-1958fb14-3dfb-464d-a727-db4437b0f391';
     regions.hydrate(target);
   });
 })();
-</script></div></div><div class="tab-pane"><div><div class="imandra-table" id="table-3ae28aa9-6ec7-4519-bbd1-5ea72697e73e"><table><thead><tr><th>Constraints</th><th>Invariant</th></tr></thead><tr><td><ul><li><pre>not (y &lt;= 0)</pre></li><li><pre>x &lt;= y</pre></li></ul></td><td><pre>F = 2</pre></td></tr><tr><td><ul><li><pre>y &lt;= 0</pre></li><li><pre>0 &lt;= x</pre></li></ul></td><td><pre>F = 2</pre></td></tr></table></div></div></div></div><script>
+</script></div></div><div class="tab-pane"><div><div class="imandra-table" id="table-0def59f5-7c44-485f-8292-2a0c8a74b175"><table><thead><tr><th>Constraints</th><th>Invariant</th></tr></thead><tr><td><ul><li><pre>not (y &lt;= 0)</pre></li><li><pre>x &lt;= y</pre></li></ul></td><td><pre>F = 2</pre></td></tr><tr><td><ul><li><pre>y &lt;= 0</pre></li><li><pre>0 &lt;= x</pre></li></ul></td><td><pre>F = 2</pre></td></tr></table></div></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-91bd1aa3-9e21-4b16-b9a0-54527a2a4adb';
+  var target = '#alt-dafe81ff-cf46-49db-8270-a9e6427260f8';
   alternatives.hydrate(target);
 });
 </script></div>
@@ -1619,7 +1384,7 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="try-this-container">
-  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Imandra%20Decomposition%20Flags.ipynb%23try-cell-30" target="_blank" rel="nofollow">
+  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Imandra%20Decomposition%20Flags.ipynb%23try-cell-30" target="_blank">
     <div class="try-this">Try this!</div>
   </a>
 </div>
@@ -1659,7 +1424,7 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
 
 
 <div class="output_html rendered_html output_subarea ">
-<div class="imandra-alternatives" id="alt-aa12d11d-68a1-4b22-8afe-da32e67024ba"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-feb65c15-9606-4cc9-87f7-08940a708297" class="decompose"><textarea class="display-none">{
+<div class="imandra-alternatives" id="alt-1512d125-0643-4b95-9965-fa8d1178a281"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-6ebfc725-3c44-454b-95a4-9a22bf0aa561" class="decompose"><textarea class="display-none">{
   &quot;regions&quot;: [
     {
       &quot;constraints&quot;: [ &quot;true&quot; ],
@@ -1672,13 +1437,13 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
 }</textarea><div class="decompose-foamtree"></div><div class="decompose-details"><div class="decompose-details-header">Regions details</div><div class="decompose-details-no-selection">No group selected.</div><div class="decompose-details-selection hidden"><div><span class="decompose-details-label">Direct sub-regions: </span><span class="decompose-details-direct-sub-regions-text">-</span></div><div><span class="decompose-details-label">Contained regions: </span><span class="decompose-details-contained-regions-text">-</span></div><div class="decompose-details-section-header">Constraints</div><div class="decompose-details-constraints"><pre class="decompose-details-constraint">&lt;constraint&gt;</pre></div><div class="decompose-details-invariant"><div class="decompose-details-section-header">Invariant</div><pre class="decompose-details-invariant-text">&lt;invariant&gt;</pre></div></div></div><script>
 (function () {
   require(['nbextensions/nbimandra/regions'], function (regions) {
-    var target = '#decompose-feb65c15-9606-4cc9-87f7-08940a708297';
+    var target = '#decompose-6ebfc725-3c44-454b-95a4-9a22bf0aa561';
     regions.hydrate(target);
   });
 })();
-</script></div></div><div class="tab-pane"><div><div class="imandra-table" id="table-5d3b2a16-a790-40f5-a462-8b7eacc58314"><table><thead><tr><th>Constraints</th><th>Invariant</th></tr></thead><tr><td><ul></ul></td><td><pre>F = 2</pre></td></tr></table></div></div></div></div><script>
+</script></div></div><div class="tab-pane"><div><div class="imandra-table" id="table-835792d5-47a5-4b26-b714-74aec6b9bcd8"><table><thead><tr><th>Constraints</th><th>Invariant</th></tr></thead><tr><td><ul></ul></td><td><pre>F = 2</pre></td></tr></table></div></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-aa12d11d-68a1-4b22-8afe-da32e67024ba';
+  var target = '#alt-1512d125-0643-4b95-9965-fa8d1178a281';
   alternatives.hydrate(target);
 });
 </script></div>
@@ -1715,7 +1480,7 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="try-this-container">
-  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Imandra%20Decomposition%20Flags.ipynb%23try-cell-32" target="_blank" rel="nofollow">
+  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Imandra%20Decomposition%20Flags.ipynb%23try-cell-32" target="_blank">
     <div class="try-this">Try this!</div>
   </a>
 </div>
@@ -1784,7 +1549,7 @@ val f : my_num -&gt; my_num -&gt; Z.t = &lt;fun&gt;
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="try-this-container">
-  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Imandra%20Decomposition%20Flags.ipynb%23try-cell-34" target="_blank" rel="nofollow">
+  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Imandra%20Decomposition%20Flags.ipynb%23try-cell-34" target="_blank">
     <div class="try-this">Try this!</div>
   </a>
 </div>
@@ -1825,7 +1590,7 @@ val f : my_num -&gt; my_num -&gt; Z.t = &lt;fun&gt;
 
 
 <div class="output_html rendered_html output_subarea ">
-<div class="imandra-alternatives" id="alt-fbe84de1-1d26-4b5e-adf0-49f6df800a04"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-44806e65-59d6-439c-8fc4-b75b060b151f" class="decompose"><textarea class="display-none">{
+<div class="imandra-alternatives" id="alt-badf7bcc-808c-4297-b5c4-861451f00864"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-6edb1fdb-bc4c-4c21-9700-f45e60baf962" class="decompose"><textarea class="display-none">{
   &quot;regions&quot;: [
     {
       &quot;constraints&quot;: [ &quot;Is_a(Real, y)&quot; ],
@@ -1975,13 +1740,13 @@ val f : my_num -&gt; my_num -&gt; Z.t = &lt;fun&gt;
 }</textarea><div class="decompose-foamtree"></div><div class="decompose-details"><div class="decompose-details-header">Regions details</div><div class="decompose-details-no-selection">No group selected.</div><div class="decompose-details-selection hidden"><div><span class="decompose-details-label">Direct sub-regions: </span><span class="decompose-details-direct-sub-regions-text">-</span></div><div><span class="decompose-details-label">Contained regions: </span><span class="decompose-details-contained-regions-text">-</span></div><div class="decompose-details-section-header">Constraints</div><div class="decompose-details-constraints"><pre class="decompose-details-constraint">&lt;constraint&gt;</pre></div><div class="decompose-details-invariant"><div class="decompose-details-section-header">Invariant</div><pre class="decompose-details-invariant-text">&lt;invariant&gt;</pre></div></div></div><script>
 (function () {
   require(['nbextensions/nbimandra/regions'], function (regions) {
-    var target = '#decompose-44806e65-59d6-439c-8fc4-b75b060b151f';
+    var target = '#decompose-6edb1fdb-bc4c-4c21-9700-f45e60baf962';
     regions.hydrate(target);
   });
 })();
-</script></div></div><div class="tab-pane"><div><div class="imandra-table" id="table-ac27e525-519e-45fc-aea4-d843e5594e63"><table><thead><tr><th>Constraints</th><th>Invariant</th></tr></thead><tr><td><ul><li><pre>not Is_a(Real, y)</pre></li><li><pre>not Is_a(Int, y)</pre></li></ul></td><td><pre>F = 2</pre></td></tr><tr><td><ul><li><pre>not Is_a(Real, y)</pre></li><li><pre>Is_a(Int, y)</pre></li><li><pre>not Is_a(Int, x)</pre></li></ul></td><td><pre>F = 2</pre></td></tr><tr><td><ul><li><pre>not Is_a(Real, y)</pre></li><li><pre>Is_a(Int, y)</pre></li><li><pre>Is_a(Int, x)</pre></li><li><pre>(Destruct(Int, 0, x) + Destruct(Int, 0, y)) &lt;= 0</pre></li></ul></td><td><pre>F = 2</pre></td></tr><tr><td><ul><li><pre>not Is_a(Real, y)</pre></li><li><pre>Is_a(Int, y)</pre></li><li><pre>Is_a(Int, x)</pre></li><li><pre>not ((Destruct(Int, 0, x) + Destruct(Int, 0, y)) &lt;= 0)</pre></li></ul></td><td><pre>F = 1</pre></td></tr><tr><td><ul><li><pre>Is_a(Real, y)</pre></li><li><pre>not Is_a(Real, x)</pre></li><li><pre>not Is_a(Int, y)</pre></li></ul></td><td><pre>F = 2</pre></td></tr><tr><td><ul><li><pre>Is_a(Real, y)</pre></li><li><pre>Is_a(Real, x)</pre></li><li><pre>(Destruct(Real, 0, x) +. Destruct(Real, 0, y)) &lt;=. 0</pre></li></ul></td><td><pre>F = 2</pre></td></tr><tr><td><ul><li><pre>Is_a(Real, y)</pre></li><li><pre>Is_a(Real, x)</pre></li><li><pre>not ((Destruct(Real, 0, x) +. Destruct(Real, 0, y)) &lt;=. 0)</pre></li></ul></td><td><pre>F = 1</pre></td></tr></table></div></div></div></div><script>
+</script></div></div><div class="tab-pane"><div><div class="imandra-table" id="table-c346ca25-916f-4415-b5ac-5a44a60b7d7d"><table><thead><tr><th>Constraints</th><th>Invariant</th></tr></thead><tr><td><ul><li><pre>not Is_a(Real, y)</pre></li><li><pre>not Is_a(Int, y)</pre></li></ul></td><td><pre>F = 2</pre></td></tr><tr><td><ul><li><pre>not Is_a(Real, y)</pre></li><li><pre>Is_a(Int, y)</pre></li><li><pre>not Is_a(Int, x)</pre></li></ul></td><td><pre>F = 2</pre></td></tr><tr><td><ul><li><pre>not Is_a(Real, y)</pre></li><li><pre>Is_a(Int, y)</pre></li><li><pre>Is_a(Int, x)</pre></li><li><pre>(Destruct(Int, 0, x) + Destruct(Int, 0, y)) &lt;= 0</pre></li></ul></td><td><pre>F = 2</pre></td></tr><tr><td><ul><li><pre>not Is_a(Real, y)</pre></li><li><pre>Is_a(Int, y)</pre></li><li><pre>Is_a(Int, x)</pre></li><li><pre>not ((Destruct(Int, 0, x) + Destruct(Int, 0, y)) &lt;= 0)</pre></li></ul></td><td><pre>F = 1</pre></td></tr><tr><td><ul><li><pre>Is_a(Real, y)</pre></li><li><pre>not Is_a(Real, x)</pre></li><li><pre>not Is_a(Int, y)</pre></li></ul></td><td><pre>F = 2</pre></td></tr><tr><td><ul><li><pre>Is_a(Real, y)</pre></li><li><pre>Is_a(Real, x)</pre></li><li><pre>(Destruct(Real, 0, x) +. Destruct(Real, 0, y)) &lt;=. 0</pre></li></ul></td><td><pre>F = 2</pre></td></tr><tr><td><ul><li><pre>Is_a(Real, y)</pre></li><li><pre>Is_a(Real, x)</pre></li><li><pre>not ((Destruct(Real, 0, x) +. Destruct(Real, 0, y)) &lt;=. 0)</pre></li></ul></td><td><pre>F = 1</pre></td></tr></table></div></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-fbe84de1-1d26-4b5e-adf0-49f6df800a04';
+  var target = '#alt-badf7bcc-808c-4297-b5c4-861451f00864';
   alternatives.hydrate(target);
 });
 </script></div>
@@ -2006,7 +1771,7 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="try-this-container">
-  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Imandra%20Decomposition%20Flags.ipynb%23try-cell-36" target="_blank" rel="nofollow">
+  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Imandra%20Decomposition%20Flags.ipynb%23try-cell-36" target="_blank">
     <div class="try-this">Try this!</div>
   </a>
 </div>
@@ -2046,7 +1811,7 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
 
 
 <div class="output_html rendered_html output_subarea ">
-<div class="imandra-alternatives" id="alt-fa36280c-6a26-4092-86f0-85ef6b318dfc"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-8ef580a7-ce1b-46df-8707-771a02b07382" class="decompose"><textarea class="display-none">{
+<div class="imandra-alternatives" id="alt-d08ee9ec-5c63-4339-bbf3-843549c8469e"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-f47aebaa-6259-4376-baf2-3e56ee894e2c" class="decompose"><textarea class="display-none">{
   &quot;regions&quot;: [
     {
       &quot;constraints&quot;: [ &quot;not (is_pos (add x y))&quot; ],
@@ -2072,13 +1837,13 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
 }</textarea><div class="decompose-foamtree"></div><div class="decompose-details"><div class="decompose-details-header">Regions details</div><div class="decompose-details-no-selection">No group selected.</div><div class="decompose-details-selection hidden"><div><span class="decompose-details-label">Direct sub-regions: </span><span class="decompose-details-direct-sub-regions-text">-</span></div><div><span class="decompose-details-label">Contained regions: </span><span class="decompose-details-contained-regions-text">-</span></div><div class="decompose-details-section-header">Constraints</div><div class="decompose-details-constraints"><pre class="decompose-details-constraint">&lt;constraint&gt;</pre></div><div class="decompose-details-invariant"><div class="decompose-details-section-header">Invariant</div><pre class="decompose-details-invariant-text">&lt;invariant&gt;</pre></div></div></div><script>
 (function () {
   require(['nbextensions/nbimandra/regions'], function (regions) {
-    var target = '#decompose-8ef580a7-ce1b-46df-8707-771a02b07382';
+    var target = '#decompose-f47aebaa-6259-4376-baf2-3e56ee894e2c';
     regions.hydrate(target);
   });
 })();
-</script></div></div><div class="tab-pane"><div><div class="imandra-table" id="table-9c451749-8f5f-48a4-bae0-73cb87f37cf4"><table><thead><tr><th>Constraints</th><th>Invariant</th></tr></thead><tr><td><ul><li><pre>not (is_pos (add x y))</pre></li></ul></td><td><pre>F = 2</pre></td></tr><tr><td><ul><li><pre>is_pos (add x y)</pre></li></ul></td><td><pre>F = 1</pre></td></tr></table></div></div></div></div><script>
+</script></div></div><div class="tab-pane"><div><div class="imandra-table" id="table-7bcb6af7-0bd8-49ad-85c4-37fbabaeb885"><table><thead><tr><th>Constraints</th><th>Invariant</th></tr></thead><tr><td><ul><li><pre>not (is_pos (add x y))</pre></li></ul></td><td><pre>F = 2</pre></td></tr><tr><td><ul><li><pre>is_pos (add x y)</pre></li></ul></td><td><pre>F = 1</pre></td></tr></table></div></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-fa36280c-6a26-4092-86f0-85ef6b318dfc';
+  var target = '#alt-d08ee9ec-5c63-4339-bbf3-843549c8469e';
   alternatives.hydrate(target);
 });
 </script></div>
@@ -2106,7 +1871,7 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="try-this-container">
-  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Imandra%20Decomposition%20Flags.ipynb%23try-cell-38" target="_blank" rel="nofollow">
+  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Imandra%20Decomposition%20Flags.ipynb%23try-cell-38" target="_blank">
     <div class="try-this">Try this!</div>
   </a>
 </div>
@@ -2164,7 +1929,7 @@ val f : int -&gt; int -&gt; Z.t = &lt;fun&gt;
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="try-this-container">
-  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Imandra%20Decomposition%20Flags.ipynb%23try-cell-40" target="_blank" rel="nofollow">
+  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Imandra%20Decomposition%20Flags.ipynb%23try-cell-40" target="_blank">
     <div class="try-this">Try this!</div>
   </a>
 </div>
@@ -2204,7 +1969,7 @@ val f : int -&gt; int -&gt; Z.t = &lt;fun&gt;
 
 
 <div class="output_html rendered_html output_subarea ">
-<div class="imandra-alternatives" id="alt-087972f3-6eda-42c3-8f8f-f404687ada1c"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-31682f94-3dc0-44f6-b0e8-b73ca7117fd4" class="decompose"><textarea class="display-none">{
+<div class="imandra-alternatives" id="alt-9f0cc8f7-deb8-420a-a231-f1432f6844c9"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-00b2f436-39cf-4652-940e-413a13f5c822" class="decompose"><textarea class="display-none">{
   &quot;regions&quot;: [
     {
       &quot;constraints&quot;: [ &quot;x &lt;= y&quot; ],
@@ -2224,13 +1989,13 @@ val f : int -&gt; int -&gt; Z.t = &lt;fun&gt;
 }</textarea><div class="decompose-foamtree"></div><div class="decompose-details"><div class="decompose-details-header">Regions details</div><div class="decompose-details-no-selection">No group selected.</div><div class="decompose-details-selection hidden"><div><span class="decompose-details-label">Direct sub-regions: </span><span class="decompose-details-direct-sub-regions-text">-</span></div><div><span class="decompose-details-label">Contained regions: </span><span class="decompose-details-contained-regions-text">-</span></div><div class="decompose-details-section-header">Constraints</div><div class="decompose-details-constraints"><pre class="decompose-details-constraint">&lt;constraint&gt;</pre></div><div class="decompose-details-invariant"><div class="decompose-details-section-header">Invariant</div><pre class="decompose-details-invariant-text">&lt;invariant&gt;</pre></div></div></div><script>
 (function () {
   require(['nbextensions/nbimandra/regions'], function (regions) {
-    var target = '#decompose-31682f94-3dc0-44f6-b0e8-b73ca7117fd4';
+    var target = '#decompose-00b2f436-39cf-4652-940e-413a13f5c822';
     regions.hydrate(target);
   });
 })();
-</script></div></div><div class="tab-pane"><div><div class="imandra-table" id="table-aea28535-abe5-4a56-9b1b-31c3f36c5de6"><table><thead><tr><th>Constraints</th><th>Invariant</th></tr></thead><tr><td><ul><li><pre>not (x &lt;= y)</pre></li></ul></td><td><pre>F = 2</pre></td></tr><tr><td><ul><li><pre>x &lt;= y</pre></li></ul></td><td><pre>F = 3</pre></td></tr></table></div></div></div></div><script>
+</script></div></div><div class="tab-pane"><div><div class="imandra-table" id="table-80623fa7-bb40-4f98-911b-1a13b3457079"><table><thead><tr><th>Constraints</th><th>Invariant</th></tr></thead><tr><td><ul><li><pre>not (x &lt;= y)</pre></li></ul></td><td><pre>F = 2</pre></td></tr><tr><td><ul><li><pre>x &lt;= y</pre></li></ul></td><td><pre>F = 3</pre></td></tr></table></div></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-087972f3-6eda-42c3-8f8f-f404687ada1c';
+  var target = '#alt-9f0cc8f7-deb8-420a-a231-f1432f6844c9';
   alternatives.hydrate(target);
 });
 </script></div>
@@ -2255,7 +2020,7 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="try-this-container">
-  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Imandra%20Decomposition%20Flags.ipynb%23try-cell-42" target="_blank" rel="nofollow">
+  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Imandra%20Decomposition%20Flags.ipynb%23try-cell-42" target="_blank">
     <div class="try-this">Try this!</div>
   </a>
 </div>
@@ -2295,7 +2060,7 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
 
 
 <div class="output_html rendered_html output_subarea ">
-<div class="imandra-alternatives" id="alt-df8cd798-4d64-422c-97b0-e00897900df4"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-7f35a933-c114-47ae-9d87-e9c368fbaeb1" class="decompose"><textarea class="display-none">{
+<div class="imandra-alternatives" id="alt-9a3040ba-3c64-4388-bc73-d93eb9d7a2b3"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-acc60093-a083-45cb-95cb-c4ff9a6bea7c" class="decompose"><textarea class="display-none">{
   &quot;regions&quot;: [
     {
       &quot;constraints&quot;: [ &quot;not (gt x y)&quot; ],
@@ -2336,13 +2101,13 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
 }</textarea><div class="decompose-foamtree"></div><div class="decompose-details"><div class="decompose-details-header">Regions details</div><div class="decompose-details-no-selection">No group selected.</div><div class="decompose-details-selection hidden"><div><span class="decompose-details-label">Direct sub-regions: </span><span class="decompose-details-direct-sub-regions-text">-</span></div><div><span class="decompose-details-label">Contained regions: </span><span class="decompose-details-contained-regions-text">-</span></div><div class="decompose-details-section-header">Constraints</div><div class="decompose-details-constraints"><pre class="decompose-details-constraint">&lt;constraint&gt;</pre></div><div class="decompose-details-invariant"><div class="decompose-details-section-header">Invariant</div><pre class="decompose-details-invariant-text">&lt;invariant&gt;</pre></div></div></div><script>
 (function () {
   require(['nbextensions/nbimandra/regions'], function (regions) {
-    var target = '#decompose-7f35a933-c114-47ae-9d87-e9c368fbaeb1';
+    var target = '#decompose-acc60093-a083-45cb-95cb-c4ff9a6bea7c';
     regions.hydrate(target);
   });
 })();
-</script></div></div><div class="tab-pane"><div><div class="imandra-table" id="table-80319f72-e363-40e8-a565-c79ea4e13d00"><table><thead><tr><th>Constraints</th><th>Invariant</th></tr></thead><tr><td><ul><li><pre>not (gt x y)</pre></li></ul></td><td><pre>F = 3</pre></td></tr><tr><td><ul><li><pre>gt x y</pre></li><li><pre>not (gt y x)</pre></li></ul></td><td><pre>F = 2</pre></td></tr><tr><td><ul><li><pre>gt x y</pre></li><li><pre>gt y x</pre></li></ul></td><td><pre>F = 1</pre></td></tr></table></div></div></div></div><script>
+</script></div></div><div class="tab-pane"><div><div class="imandra-table" id="table-a71dab2e-b35e-447b-b969-2a1cf8cd6c21"><table><thead><tr><th>Constraints</th><th>Invariant</th></tr></thead><tr><td><ul><li><pre>not (gt x y)</pre></li></ul></td><td><pre>F = 3</pre></td></tr><tr><td><ul><li><pre>gt x y</pre></li><li><pre>not (gt y x)</pre></li></ul></td><td><pre>F = 2</pre></td></tr><tr><td><ul><li><pre>gt x y</pre></li><li><pre>gt y x</pre></li></ul></td><td><pre>F = 1</pre></td></tr></table></div></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-df8cd798-4d64-422c-97b0-e00897900df4';
+  var target = '#alt-9a3040ba-3c64-4388-bc73-d93eb9d7a2b3';
   alternatives.hydrate(target);
 });
 </script></div>
@@ -2366,7 +2131,7 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="try-this-container">
-  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Imandra%20Decomposition%20Flags.ipynb%23try-cell-44" target="_blank" rel="nofollow">
+  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Imandra%20Decomposition%20Flags.ipynb%23try-cell-44" target="_blank">
     <div class="try-this">Try this!</div>
   </a>
 </div>
@@ -2406,7 +2171,7 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
 
 
 <div class="output_html rendered_html output_subarea ">
-<div class="imandra-alternatives" id="alt-1c3501e0-29af-472e-bbb5-9462617c5ec9"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-65de7b25-ee23-4b12-9e14-335d9f00166a" class="decompose"><textarea class="display-none">{
+<div class="imandra-alternatives" id="alt-23e5f08f-bb04-465d-a029-1944a937c4ad"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-894fa2b2-e475-4fe8-93da-7feff076c34c" class="decompose"><textarea class="display-none">{
   &quot;regions&quot;: [
     {
       &quot;constraints&quot;: [ &quot;not (gt x y)&quot; ],
@@ -2429,13 +2194,13 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
 }</textarea><div class="decompose-foamtree"></div><div class="decompose-details"><div class="decompose-details-header">Regions details</div><div class="decompose-details-no-selection">No group selected.</div><div class="decompose-details-selection hidden"><div><span class="decompose-details-label">Direct sub-regions: </span><span class="decompose-details-direct-sub-regions-text">-</span></div><div><span class="decompose-details-label">Contained regions: </span><span class="decompose-details-contained-regions-text">-</span></div><div class="decompose-details-section-header">Constraints</div><div class="decompose-details-constraints"><pre class="decompose-details-constraint">&lt;constraint&gt;</pre></div><div class="decompose-details-invariant"><div class="decompose-details-section-header">Invariant</div><pre class="decompose-details-invariant-text">&lt;invariant&gt;</pre></div></div></div><script>
 (function () {
   require(['nbextensions/nbimandra/regions'], function (regions) {
-    var target = '#decompose-65de7b25-ee23-4b12-9e14-335d9f00166a';
+    var target = '#decompose-894fa2b2-e475-4fe8-93da-7feff076c34c';
     regions.hydrate(target);
   });
 })();
-</script></div></div><div class="tab-pane"><div><div class="imandra-table" id="table-0618973f-4e61-46b8-93c6-c2f0768fa4cb"><table><thead><tr><th>Constraints</th><th>Invariant</th></tr></thead><tr><td><ul><li><pre>not (gt x y)</pre></li></ul></td><td><pre>F = 3</pre></td></tr><tr><td><ul><li><pre>gt x y</pre></li><li><pre>not (gt y x)</pre></li></ul></td><td><pre>F = 2</pre></td></tr></table></div></div></div></div><script>
+</script></div></div><div class="tab-pane"><div><div class="imandra-table" id="table-6259329a-cd8c-4395-85e3-88d1e741ccde"><table><thead><tr><th>Constraints</th><th>Invariant</th></tr></thead><tr><td><ul><li><pre>not (gt x y)</pre></li></ul></td><td><pre>F = 3</pre></td></tr><tr><td><ul><li><pre>gt x y</pre></li><li><pre>not (gt y x)</pre></li></ul></td><td><pre>F = 2</pre></td></tr></table></div></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-1c3501e0-29af-472e-bbb5-9462617c5ec9';
+  var target = '#alt-23e5f08f-bb04-465d-a029-1944a937c4ad';
   alternatives.hydrate(target);
 });
 </script></div>
@@ -2461,7 +2226,7 @@ This can be the case for a number of cases where it is not possible to provide a
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="try-this-container">
-  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Imandra%20Decomposition%20Flags.ipynb%23try-cell-46" target="_blank" rel="nofollow">
+  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Imandra%20Decomposition%20Flags.ipynb%23try-cell-46" target="_blank">
     <div class="try-this">Try this!</div>
   </a>
 </div>
@@ -2504,48 +2269,48 @@ val g : int -&gt; Z.t = &lt;fun&gt;
 
 
 <div class="output_html rendered_html output_subarea ">
-<div><div class="imandra-fold panel panel-default" id="fold-056c389e-c754-42ec-9c13-f96ba4154e93"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>termination proof</span></div></div><div class="panel-body collapse"><div><h3>Termination proof</h3><p></p><div class="imandra-fold panel panel-default" id="fold-2409c6b3-4ff0-4f17-a6ad-c280d8827997"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>call `f (x - 1)` from `f x`</span></div></div><div class="panel-body collapse"><div class="imandra-table" id="table-8e12bd1b-2ca4-4f49-b41c-46c66fa9da3b"><table><tr><td><b>original</b></td><td>f x</td></tr><tr><td><b>sub</b></td><td>f (x - 1)</td></tr><tr><td><b>original ordinal</b></td><td>Ordinal.Int (if x &gt;= 0 then x else 0)</td></tr><tr><td><b>sub ordinal</b></td><td>Ordinal.Int (if (x - 1) &gt;= 0 then x - 1 else 0)</td></tr><tr><td><b>path</b></td><td>[not (x &lt;= 0)]</td></tr><tr><td><b>proof</b></td><td><div class="imandra-fold panel panel-default" id="fold-69a18cce-8ce8-4f54-ae0d-ed3b3b3a189f"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>detailed proof</span></div></div><div class="panel-body collapse"><div class="imandra-proof"><div class="imandra-alternatives" id="alt-0a4f19d9-6bc8-4ce7-83f0-8520121e9afc"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>summary</a></li><li class="" data-toggle="tab"><a>full</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-table" id="table-ba0bbb26-5cd1-401a-a442-8e510fc2ce2d"><table><tr><td><b>ground_instances</b></td><td>1</td></tr><tr><td><b>definitions</b></td><td>0</td></tr><tr><td><b>inductions</b></td><td>0</td></tr><tr><td><b>search_time</b></td><td><pre>0.014s</pre></td></tr><tr><td><b>details</b></td><td><div class="imandra-fold panel panel-default" id="fold-b2bee95c-083b-4a1c-b2bf-9d902c5a5df6"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><div class="imandra-table" id="table-84644f67-084d-474f-8bcb-938ea81f1c5b"><table><tr><td><b>smt_stats</b></td><td><div class="imandra-table" id="table-99aff214-3c9c-40d6-89e2-dd6a0c3b8ca6"><table><tr><td><b>num checks</b></td><td>3</td></tr><tr><td><b>arith assert lower</b></td><td>9</td></tr><tr><td><b>arith pivots</b></td><td>2</td></tr><tr><td><b>rlimit count</b></td><td>80487</td></tr><tr><td><b>mk clause</b></td><td>4</td></tr><tr><td><b>datatype occurs check</b></td><td>2</td></tr><tr><td><b>mk bool var</b></td><td>20</td></tr><tr><td><b>arith assert upper</b></td><td>2</td></tr><tr><td><b>decisions</b></td><td>2</td></tr><tr><td><b>arith add rows</b></td><td>3</td></tr><tr><td><b>propagations</b></td><td>2</td></tr><tr><td><b>conflicts</b></td><td>2</td></tr><tr><td><b>arith fixed eqs</b></td><td>2</td></tr><tr><td><b>datatype accessor ax</b></td><td>2</td></tr><tr><td><b>arith conflicts</b></td><td>1</td></tr><tr><td><b>final checks</b></td><td>1</td></tr><tr><td><b>added eqs</b></td><td>6</td></tr><tr><td><b>del clause</b></td><td>4</td></tr><tr><td><b>arith eq adapter</b></td><td>2</td></tr><tr><td><b>memory</b></td><td>38.350000</td></tr><tr><td><b>max memory</b></td><td>123.300000</td></tr><tr><td><b>num allocs</b></td><td>34843533325.000000</td></tr></table></div></td></tr></table></div></div><script>
+<div><div class="imandra-fold panel panel-default" id="fold-28508bc8-a976-4bc4-8709-1c1706abc911"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>termination proof</span></div></div><div class="panel-body collapse"><div><h3>Termination proof</h3><p></p><div class="imandra-fold panel panel-default" id="fold-a78b65c5-02a1-47c2-ab4b-60e6239bf724"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>call `f (x - 1)` from `f x`</span></div></div><div class="panel-body collapse"><div class="imandra-table" id="table-4965d8b2-ea59-4ee4-a67b-70791f0b1967"><table><tr><td><b>original</b></td><td>f x</td></tr><tr><td><b>sub</b></td><td>f (x - 1)</td></tr><tr><td><b>original ordinal</b></td><td>Ordinal.Int (if x &gt;= 0 then x else 0)</td></tr><tr><td><b>sub ordinal</b></td><td>Ordinal.Int (if (x - 1) &gt;= 0 then x - 1 else 0)</td></tr><tr><td><b>path</b></td><td>[not (x &lt;= 0)]</td></tr><tr><td><b>proof</b></td><td><div class="imandra-fold panel panel-default" id="fold-3213ad81-d3ea-4f98-8a53-a04add66708e"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>detailed proof</span></div></div><div class="panel-body collapse"><div class="imandra-proof"><div class="imandra-alternatives" id="alt-4ebc53d4-ad3e-4b9f-a25d-6dfd96e99aae"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>summary</a></li><li class="" data-toggle="tab"><a>full</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-table" id="table-39661555-2f69-4df9-b83b-10c46909cdbf"><table><tr><td><b>ground_instances</b></td><td>1</td></tr><tr><td><b>definitions</b></td><td>0</td></tr><tr><td><b>inductions</b></td><td>0</td></tr><tr><td><b>search_time</b></td><td><pre>0.011s</pre></td></tr><tr><td><b>details</b></td><td><div class="imandra-fold panel panel-default" id="fold-60222b05-c2e1-490f-97b9-33b42e0e1aad"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><div class="imandra-table" id="table-dd40e31d-7254-4f71-a819-604b55483710"><table><tr><td><b>smt_stats</b></td><td><div class="imandra-table" id="table-749478bb-a27c-4fbb-aa38-aa303f171515"><table><tr><td><b>num checks</b></td><td>3</td></tr><tr><td><b>arith assert lower</b></td><td>9</td></tr><tr><td><b>arith pivots</b></td><td>2</td></tr><tr><td><b>rlimit count</b></td><td>80466</td></tr><tr><td><b>mk clause</b></td><td>4</td></tr><tr><td><b>datatype occurs check</b></td><td>2</td></tr><tr><td><b>mk bool var</b></td><td>20</td></tr><tr><td><b>arith assert upper</b></td><td>2</td></tr><tr><td><b>decisions</b></td><td>2</td></tr><tr><td><b>arith add rows</b></td><td>3</td></tr><tr><td><b>propagations</b></td><td>2</td></tr><tr><td><b>conflicts</b></td><td>2</td></tr><tr><td><b>arith fixed eqs</b></td><td>2</td></tr><tr><td><b>datatype accessor ax</b></td><td>2</td></tr><tr><td><b>arith conflicts</b></td><td>1</td></tr><tr><td><b>final checks</b></td><td>1</td></tr><tr><td><b>added eqs</b></td><td>6</td></tr><tr><td><b>del clause</b></td><td>4</td></tr><tr><td><b>arith eq adapter</b></td><td>2</td></tr><tr><td><b>memory</b></td><td>38.360000</td></tr><tr><td><b>max memory</b></td><td>112.820000</td></tr><tr><td><b>num allocs</b></td><td>36115247433.000000</td></tr></table></div></td></tr></table></div></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-b2bee95c-083b-4a1c-b2bf-9d902c5a5df6';
+  var target = '#fold-60222b05-c2e1-490f-97b9-33b42e0e1aad';
   fold.hydrate(target);
 });
-</script></div></td></tr></table></div></div><div class="tab-pane"><div class="imandra-fold panel panel-default" id="fold-d4d1e6d2-4ff0-45e6-a813-9b8280c3abb8"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.014s]
+</script></div></td></tr></table></div></div><div class="tab-pane"><div class="imandra-fold panel panel-default" id="fold-b117a0aa-fb7c-4725-84f8-c569fbf5b8f6"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.011s]
   not (x &lt;= 0)
   &amp;&amp; (if x &gt;= 0 then x else 0) &gt;= 0
      &amp;&amp; (if (x - 1) &gt;= 0 then x - 1 else 0) &gt;= 0
   ==&gt; (x - 1) &lt;= 0
       || Ordinal.Int (if (x - 1) &gt;= 0 then x - 1 else 0) Ordinal.&lt;&lt;
-         Ordinal.Int (if x &gt;= 0 then x else 0)</pre></li><li><div><h5>simplify</h5><div class="imandra-table" id="table-b4b1fa5e-4cf7-472b-bb1a-429c9999c4b5"><table><tr><td><b>into</b></td><td><pre>(not
+         Ordinal.Int (if x &gt;= 0 then x else 0)</pre></li><li><div><h5>simplify</h5><div class="imandra-table" id="table-54021761-f160-4959-b811-82dbb3daa88c"><table><tr><td><b>into</b></td><td><pre>(not
  ((not (x &lt;= 0) &amp;&amp; (if x &gt;= 0 then x else 0) &gt;= 0)
   &amp;&amp; (if x &gt;= 1 then -1 + x else 0) &gt;= 0)
  || x &lt;= 1)
 || Ordinal.Int (if x &gt;= 1 then -1 + x else 0) Ordinal.&lt;&lt;
-   Ordinal.Int (if x &gt;= 0 then x else 0)</pre></td></tr><tr><td><b>expansions</b></td><td><pre>[]</pre></td></tr><tr><td><b>rewrite_steps</b></td><td><ul></ul></td></tr><tr><td><b>forward_chaining</b></td><td><ul></ul></td></tr></table></div></div></li><li><div>unroll<div class="imandra-table" id="table-2db18f56-ec32-4c45-a0b3-f9619c1ed693"><table><tr><td><b>expr</b></td><td><pre>(|\|Ordinal.&lt;&lt;_121\||
-  (|\|Ordinal.Int_112\|| (ite (&gt;= x_2411 1) (+ (- 1) x_2411) 0))
-  (|\|Ordinal…</pre></td></tr><tr><td><b>expansions</b></td><td><ul></ul></td></tr></table></div></div></li><li><div><h5>unsat</h5><pre>(let ((a!1 (= (ite (&gt;= x_2411 1) (+ (- 1) x_2411) 0) (+ (- 1) x_2411)))
+   Ordinal.Int (if x &gt;= 0 then x else 0)</pre></td></tr><tr><td><b>expansions</b></td><td><pre>[]</pre></td></tr><tr><td><b>rewrite_steps</b></td><td><ul></ul></td></tr><tr><td><b>forward_chaining</b></td><td><ul></ul></td></tr></table></div></div></li><li><div>unroll<div class="imandra-table" id="table-9b75dfcb-31bc-4202-8758-c137206f31e4"><table><tr><td><b>expr</b></td><td><pre>(|\|Ordinal.&lt;&lt;_132\||
+  (|\|Ordinal.Int_123\|| (ite (&gt;= x_2362 1) (+ (- 1) x_2362) 0))
+  (|\|Ordinal…</pre></td></tr><tr><td><b>expansions</b></td><td><ul></ul></td></tr></table></div></div></li><li><div><h5>unsat</h5><pre>(let ((a!1 (= (ite (&gt;= x_2362 1) (+ (- 1) x_2362) 0) (+ (- 1) x_2362)))
       (a!2 (&lt;= (+ (ite (&gt;= x…</pre></div></li></ul></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-d4d1e6d2-4ff0-45e6-a813-9b8280c3abb8';
+  var target = '#fold-b117a0aa-fb7c-4725-84f8-c569fbf5b8f6';
   fold.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-0a4f19d9-6bc8-4ce7-83f0-8520121e9afc';
+  var target = '#alt-4ebc53d4-ad3e-4b9f-a25d-6dfd96e99aae';
   alternatives.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-69a18cce-8ce8-4f54-ae0d-ed3b3b3a189f';
+  var target = '#fold-3213ad81-d3ea-4f98-8a53-a04add66708e';
   fold.hydrate(target);
 });
 </script></div></td></tr></table></div></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-2409c6b3-4ff0-4f17-a6ad-c280d8827997';
+  var target = '#fold-a78b65c5-02a1-47c2-ab4b-60e6239bf724';
   fold.hydrate(target);
 });
 </script></div><p></p></div></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-056c389e-c754-42ec-9c13-f96ba4154e93';
+  var target = '#fold-28508bc8-a976-4bc4-8709-1c1706abc911';
   fold.hydrate(target);
 });
 </script></div></div>
@@ -2569,7 +2334,7 @@ require(['nbextensions/nbimandra/fold'], function (fold) {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="try-this-container">
-  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Imandra%20Decomposition%20Flags.ipynb%23try-cell-48" target="_blank" rel="nofollow">
+  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Imandra%20Decomposition%20Flags.ipynb%23try-cell-48" target="_blank">
     <div class="try-this">Try this!</div>
   </a>
 </div>
@@ -2609,7 +2374,7 @@ require(['nbextensions/nbimandra/fold'], function (fold) {
 
 
 <div class="output_html rendered_html output_subarea ">
-<div class="imandra-alternatives" id="alt-cad0f5a7-630d-424a-956d-2fe0a7b3a1da"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-6d58a08b-1b8f-49d3-8978-1196f676cb04" class="decompose"><textarea class="display-none">{
+<div class="imandra-alternatives" id="alt-78ff3cfe-4a0b-4356-b71c-ba9aca032f24"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-0591cb62-c433-4884-94fc-0c1003f81f62" class="decompose"><textarea class="display-none">{
   &quot;regions&quot;: [
     {
       &quot;constraints&quot;: [ &quot;not (f x = 23)&quot; ],
@@ -2629,13 +2394,13 @@ require(['nbextensions/nbimandra/fold'], function (fold) {
 }</textarea><div class="decompose-foamtree"></div><div class="decompose-details"><div class="decompose-details-header">Regions details</div><div class="decompose-details-no-selection">No group selected.</div><div class="decompose-details-selection hidden"><div><span class="decompose-details-label">Direct sub-regions: </span><span class="decompose-details-direct-sub-regions-text">-</span></div><div><span class="decompose-details-label">Contained regions: </span><span class="decompose-details-contained-regions-text">-</span></div><div class="decompose-details-section-header">Constraints</div><div class="decompose-details-constraints"><pre class="decompose-details-constraint">&lt;constraint&gt;</pre></div><div class="decompose-details-invariant"><div class="decompose-details-section-header">Invariant</div><pre class="decompose-details-invariant-text">&lt;invariant&gt;</pre></div></div></div><script>
 (function () {
   require(['nbextensions/nbimandra/regions'], function (regions) {
-    var target = '#decompose-6d58a08b-1b8f-49d3-8978-1196f676cb04';
+    var target = '#decompose-0591cb62-c433-4884-94fc-0c1003f81f62';
     regions.hydrate(target);
   });
 })();
-</script></div></div><div class="tab-pane"><div><div class="imandra-table" id="table-a40d66fd-b3e5-4460-866f-46c2895753d3"><table><thead><tr><th>Constraints</th><th>Invariant</th></tr></thead><tr><td><ul><li><pre>not (f x = 23)</pre></li></ul></td><td><pre>F = 2</pre></td></tr><tr><td><ul><li><pre>f x = 23</pre></li></ul></td><td><pre>F = 1</pre></td></tr></table></div></div></div></div><script>
+</script></div></div><div class="tab-pane"><div><div class="imandra-table" id="table-c57e2aa6-97af-4136-b961-7c9e76bfa456"><table><thead><tr><th>Constraints</th><th>Invariant</th></tr></thead><tr><td><ul><li><pre>not (f x = 23)</pre></li></ul></td><td><pre>F = 2</pre></td></tr><tr><td><ul><li><pre>f x = 23</pre></li></ul></td><td><pre>F = 1</pre></td></tr></table></div></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-cad0f5a7-630d-424a-956d-2fe0a7b3a1da';
+  var target = '#alt-78ff3cfe-4a0b-4356-b71c-ba9aca032f24';
   alternatives.hydrate(target);
 });
 </script></div>
@@ -2659,7 +2424,7 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="try-this-container">
-  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Imandra%20Decomposition%20Flags.ipynb%23try-cell-50" target="_blank" rel="nofollow">
+  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Imandra%20Decomposition%20Flags.ipynb%23try-cell-50" target="_blank">
     <div class="try-this">Try this!</div>
   </a>
 </div>
@@ -2739,74 +2504,74 @@ But simplification reduces this to true, using the definition of <span class="an
 
 
 <div class="output_html rendered_html output_subarea ">
-<div><div class="imandra-vr imandra-vr-proved"><i class="fa fa-check-circle"></i><span>Proved</span></div><div><div class="imandra-alternatives" id="alt-522d3c3d-38d5-4354-8fe1-078cac69b8b9"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>proof</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-proof-top"><div class="imandra-fold panel panel-default" id="fold-1dd34662-36a6-4461-9e08-43a87757844e"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>proof</span></div></div><div class="panel-body collapse"><div class="imandra-proof"><div class="imandra-alternatives" id="alt-f1a6211e-3d24-4c77-80af-ffc2a4f4168e"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>summary</a></li><li class="" data-toggle="tab"><a>full</a></li><li class="" data-toggle="tab"><a>graph</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-table" id="table-7cc4c55b-c4ee-4b95-bc92-d34e9fb48144"><table><tr><td><b>ground_instances</b></td><td>0</td></tr><tr><td><b>definitions</b></td><td>2</td></tr><tr><td><b>inductions</b></td><td>1</td></tr><tr><td><b>search_time</b></td><td><pre>0.117s</pre></td></tr></table></div></div><div class="tab-pane"><div class="imandra-fold panel panel-default" id="fold-efe28a37-8528-4419-93d3-97c9017a1f5c"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.117s, &quot;Goal&quot;] f :var_0: = 23</pre></li><li><div><h4>subproof</h4><div class="imandra-fold panel panel-default" id="fold-d42a4e74-88db-4c16-a8e5-46ba073a3dc3"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>f x = 23</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.117s, &quot;1&quot;] f x = 23</pre></li><li><pre>induction on (functional f)
+<div><div class="imandra-vr imandra-vr-proved"><i class="fa fa-check-circle"></i><span>Proved</span></div><div><div class="imandra-alternatives" id="alt-d51b47a2-17f3-4e4c-8770-9b1825114939"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>proof</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-proof-top"><div class="imandra-fold panel panel-default" id="fold-3b49e99f-4bdc-47fb-a595-44d8287f8da8"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>proof</span></div></div><div class="panel-body collapse"><div class="imandra-proof"><div class="imandra-alternatives" id="alt-f34c03aa-5abe-4975-8fe5-ff24a35f044e"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>summary</a></li><li class="" data-toggle="tab"><a>full</a></li><li class="" data-toggle="tab"><a>graph</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-table" id="table-9b5a2936-2fd6-4f46-b636-e20a9092ddc5"><table><tr><td><b>ground_instances</b></td><td>0</td></tr><tr><td><b>definitions</b></td><td>2</td></tr><tr><td><b>inductions</b></td><td>1</td></tr><tr><td><b>search_time</b></td><td><pre>0.118s</pre></td></tr></table></div></div><div class="tab-pane"><div class="imandra-fold panel panel-default" id="fold-d5986ac7-da98-4218-99df-655286ca31dd"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.118s, &quot;Goal&quot;] f :var_0: = 23</pre></li><li><div><h4>subproof</h4><div class="imandra-fold panel panel-default" id="fold-5005faa2-7637-4785-a166-c21feac4af98"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>f x = 23</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.118s, &quot;1&quot;] f x = 23</pre></li><li><pre>induction on (functional f)
 :scheme (x &lt;= 0 ==&gt; φ x) &amp;&amp; (not (x &lt;= 0) &amp;&amp; φ (x - 1) ==&gt; φ x)</pre></li><li><div><pre>Split ((not (x &lt;= 0) || f x = 23)
        &amp;&amp; (not (not (x &lt;= 0) &amp;&amp; f (-1 + x) = 23) || f x = 23)
        :cases [not (x &lt;= 0) || f x = 23;
-               (x &lt;= 0 || not (f (-1 + x) = 23)) || f x = 23])</pre><ul><li><div><h5>subproof</h5><div class="imandra-fold panel panel-default" id="fold-217ab376-aee9-469c-827f-05f2ced7589a"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>(x &lt;= 0 || not (f (-1 + x) = 23)) || f x = 23</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.050s, &quot;1.1&quot;] (x &lt;= 0 || not (f (-1 + x) = 23)) || f x = 23</pre></li><li><div><h6>simplify</h6><div class="imandra-table" id="table-3f65dd4a-3b06-4540-a29c-d339144d2de9"><table><tr><td><b>into</b></td><td><pre>true</pre></td></tr><tr><td><b>expansions</b></td><td><pre>f</pre></td></tr><tr><td><b>rewrite_steps</b></td><td><ul></ul></td></tr><tr><td><b>forward_chaining</b></td><td><ul></ul></td></tr></table></div></div></li></ul></div><script>
+               (x &lt;= 0 || not (f (-1 + x) = 23)) || f x = 23])</pre><ul><li><div><h5>subproof</h5><div class="imandra-fold panel panel-default" id="fold-f0ff59d7-ba29-4794-b271-7e5f39ccd560"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>(x &lt;= 0 || not (f (-1 + x) = 23)) || f x = 23</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.051s, &quot;1.1&quot;] (x &lt;= 0 || not (f (-1 + x) = 23)) || f x = 23</pre></li><li><div><h6>simplify</h6><div class="imandra-table" id="table-3b810cfb-5128-4f9b-a78d-62fab6c160f9"><table><tr><td><b>into</b></td><td><pre>true</pre></td></tr><tr><td><b>expansions</b></td><td><pre>f</pre></td></tr><tr><td><b>rewrite_steps</b></td><td><ul></ul></td></tr><tr><td><b>forward_chaining</b></td><td><ul></ul></td></tr></table></div></div></li></ul></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-217ab376-aee9-469c-827f-05f2ced7589a';
+  var target = '#fold-f0ff59d7-ba29-4794-b271-7e5f39ccd560';
   fold.hydrate(target);
 });
-</script></div></div></li><li><div><h5>subproof</h5><div class="imandra-fold panel panel-default" id="fold-6d40b795-f7e7-4e39-b1aa-5255af48f84c"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>not (x &lt;= 0) || f x = 23</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.050s, &quot;1.2&quot;] not (x &lt;= 0) || f x = 23</pre></li><li><div><h6>simplify</h6><div class="imandra-table" id="table-d31fbf2c-2817-4c55-8a3c-115b1b17b671"><table><tr><td><b>into</b></td><td><pre>true</pre></td></tr><tr><td><b>expansions</b></td><td><pre>f</pre></td></tr><tr><td><b>rewrite_steps</b></td><td><ul></ul></td></tr><tr><td><b>forward_chaining</b></td><td><ul></ul></td></tr></table></div></div></li></ul></div><script>
+</script></div></div></li><li><div><h5>subproof</h5><div class="imandra-fold panel panel-default" id="fold-ab9a54f5-5861-42f5-baf5-f4a17ceed142"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>not (x &lt;= 0) || f x = 23</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.051s, &quot;1.2&quot;] not (x &lt;= 0) || f x = 23</pre></li><li><div><h6>simplify</h6><div class="imandra-table" id="table-a6ebef7c-d812-42fb-923e-e1cbbcf76404"><table><tr><td><b>into</b></td><td><pre>true</pre></td></tr><tr><td><b>expansions</b></td><td><pre>f</pre></td></tr><tr><td><b>rewrite_steps</b></td><td><ul></ul></td></tr><tr><td><b>forward_chaining</b></td><td><ul></ul></td></tr></table></div></div></li></ul></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-6d40b795-f7e7-4e39-b1aa-5255af48f84c';
+  var target = '#fold-ab9a54f5-5861-42f5-baf5-f4a17ceed142';
   fold.hydrate(target);
 });
 </script></div></div></li></ul></div></li></ul></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-d42a4e74-88db-4c16-a8e5-46ba073a3dc3';
+  var target = '#fold-5005faa2-7637-4785-a166-c21feac4af98';
   fold.hydrate(target);
 });
 </script></div></div></li></ul></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-efe28a37-8528-4419-93d3-97c9017a1f5c';
+  var target = '#fold-d5986ac7-da98-4218-99df-655286ca31dd';
   fold.hydrate(target);
 });
-</script></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-7db1061f-4fc0-4637-ad96-eb8e91b326ab"><textarea style="display: none">digraph &quot;proof&quot; {
-p_291 [label=&quot;Start (f :var_0: = 23 :name \&quot;Goal\&quot; :time 0.117s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
-p_291 -&gt; p_289 [label=&quot;&quot;];
-subgraph cluster_290 {
+</script></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-0078dec6-0220-40dc-b6c1-6598150fef86"><textarea style="display: none">digraph &quot;proof&quot; {
+p_273 [label=&quot;Start (f :var_0: = 23 :name \&quot;Goal\&quot; :time 0.118s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+p_273 -&gt; p_271 [label=&quot;&quot;];
+subgraph cluster_272 {
   color=blue;
-p_289 [label=&quot;Start (f x = 23 :name \&quot;1\&quot; :time 0.117s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
-p_289 -&gt; p_288 [label=&quot;&quot;];
-p_288 [label=&quot;Induct ((functional f),\l        :scheme (x \&lt;= 0 ==\&gt; φ x) &amp;&amp; (not (x \&lt;= 0) &amp;&amp; φ (x - 1) ==\&gt; φ x))&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
-p_288 -&gt; p_287 [label=&quot;&quot;];
-p_287 [label=&quot;Split ((not (x \&lt;= 0) \|\| f x = 23)\l       &amp;&amp; (not (not (x \&lt;= 0) &amp;&amp; f (-1 + x) = 23) \|\| f x = 23)\l       :cases [not (x \&lt;= 0) \|\| f x = 23;\l               (x \&lt;= 0 \|\| not (f (-1 + x) = 23)) \|\| f x = 23])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
-p_287 -&gt; p_282 [label=&quot;&quot;];
-subgraph cluster_283 {
+p_271 [label=&quot;Start (f x = 23 :name \&quot;1\&quot; :time 0.118s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+p_271 -&gt; p_270 [label=&quot;&quot;];
+p_270 [label=&quot;Induct ((functional f),\l        :scheme (x \&lt;= 0 ==\&gt; φ x) &amp;&amp; (not (x \&lt;= 0) &amp;&amp; φ (x - 1) ==\&gt; φ x))&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+p_270 -&gt; p_269 [label=&quot;&quot;];
+p_269 [label=&quot;Split ((not (x \&lt;= 0) \|\| f x = 23)\l       &amp;&amp; (not (not (x \&lt;= 0) &amp;&amp; f (-1 + x) = 23) \|\| f x = 23)\l       :cases [not (x \&lt;= 0) \|\| f x = 23;\l               (x \&lt;= 0 \|\| not (f (-1 + x) = 23)) \|\| f x = 23])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+p_269 -&gt; p_264 [label=&quot;&quot;];
+subgraph cluster_265 {
   color=blue;
-p_282 [label=&quot;Start ((x \&lt;= 0 \|\| not (f (-1 + x) = 23)) \|\| f x = 23 :name \&quot;1.1\&quot; :time 0.050s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
-p_282 -&gt; p_281 [label=&quot;&quot;];
-p_281 [label=&quot;Simplify (true :expansions [f] :rw [] :fc [])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+p_264 [label=&quot;Start ((x \&lt;= 0 \|\| not (f (-1 + x) = 23)) \|\| f x = 23 :name \&quot;1.1\&quot; :time 0.051s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+p_264 -&gt; p_263 [label=&quot;&quot;];
+p_263 [label=&quot;Simplify (true :expansions [f] :rw [] :fc [])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 }
-p_287 -&gt; p_285 [label=&quot;&quot;];
-subgraph cluster_286 {
+p_269 -&gt; p_267 [label=&quot;&quot;];
+subgraph cluster_268 {
   color=blue;
-p_285 [label=&quot;Start (not (x \&lt;= 0) \|\| f x = 23 :name \&quot;1.2\&quot; :time 0.050s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
-p_285 -&gt; p_284 [label=&quot;&quot;];
-p_284 [label=&quot;Simplify (true :expansions [f] :rw [] :fc [])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+p_267 [label=&quot;Start (not (x \&lt;= 0) \|\| f x = 23 :name \&quot;1.2\&quot; :time 0.051s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+p_267 -&gt; p_266 [label=&quot;&quot;];
+p_266 [label=&quot;Simplify (true :expansions [f] :rw [] :fc [])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 }
 }
 }
 </textarea><button class="btn btn-primary">Load graph</button><div class="imandra-graphviz-loading display-none">Loading..</div><div class="imandra-graphviz-target"></div><script>
 require(['nbextensions/nbimandra/graphviz'], function (graphviz) {
-  var target = '#graphviz-7db1061f-4fc0-4637-ad96-eb8e91b326ab';
+  var target = '#graphviz-0078dec6-0220-40dc-b6c1-6598150fef86';
   graphviz.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-f1a6211e-3d24-4c77-80af-ffc2a4f4168e';
+  var target = '#alt-f34c03aa-5abe-4975-8fe5-ff24a35f044e';
   alternatives.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-1dd34662-36a6-4461-9e08-43a87757844e';
+  var target = '#fold-3b49e99f-4bdc-47fb-a595-44d8287f8da8';
   fold.hydrate(target);
 });
 </script></div></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-522d3c3d-38d5-4354-8fe1-078cac69b8b9';
+  var target = '#alt-d51b47a2-17f3-4e4c-8770-9b1825114939';
   alternatives.hydrate(target);
 });
 </script></div></div></div>
@@ -2830,7 +2595,7 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="try-this-container">
-  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Imandra%20Decomposition%20Flags.ipynb%23try-cell-52" target="_blank" rel="nofollow">
+  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Imandra%20Decomposition%20Flags.ipynb%23try-cell-52" target="_blank">
     <div class="try-this">Try this!</div>
   </a>
 </div>
@@ -2883,7 +2648,7 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
 
 
 <div class="output_html rendered_html output_subarea ">
-<div class="imandra-alternatives" id="alt-61a50900-7fc7-4321-933b-d3d38c626ce9"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-998288ba-d560-4c13-ae41-b777a5d220bb" class="decompose"><textarea class="display-none">{
+<div class="imandra-alternatives" id="alt-8dbaa763-de49-4c3b-bc88-ee20cd873d4c"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-3d4bb867-2cc5-4bc6-b608-0c294c3b6f8a" class="decompose"><textarea class="display-none">{
   &quot;regions&quot;: [
     {
       &quot;constraints&quot;: [ &quot;true&quot; ],
@@ -2896,13 +2661,13 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
 }</textarea><div class="decompose-foamtree"></div><div class="decompose-details"><div class="decompose-details-header">Regions details</div><div class="decompose-details-no-selection">No group selected.</div><div class="decompose-details-selection hidden"><div><span class="decompose-details-label">Direct sub-regions: </span><span class="decompose-details-direct-sub-regions-text">-</span></div><div><span class="decompose-details-label">Contained regions: </span><span class="decompose-details-contained-regions-text">-</span></div><div class="decompose-details-section-header">Constraints</div><div class="decompose-details-constraints"><pre class="decompose-details-constraint">&lt;constraint&gt;</pre></div><div class="decompose-details-invariant"><div class="decompose-details-section-header">Invariant</div><pre class="decompose-details-invariant-text">&lt;invariant&gt;</pre></div></div></div><script>
 (function () {
   require(['nbextensions/nbimandra/regions'], function (regions) {
-    var target = '#decompose-998288ba-d560-4c13-ae41-b777a5d220bb';
+    var target = '#decompose-3d4bb867-2cc5-4bc6-b608-0c294c3b6f8a';
     regions.hydrate(target);
   });
 })();
-</script></div></div><div class="tab-pane"><div><div class="imandra-table" id="table-21fae5f8-6426-4dd8-9d45-d610f391e160"><table><thead><tr><th>Constraints</th><th>Invariant</th></tr></thead><tr><td><ul></ul></td><td><pre>F = 1</pre></td></tr></table></div></div></div></div><script>
+</script></div></div><div class="tab-pane"><div><div class="imandra-table" id="table-03d4e0e4-02b3-48a7-82c2-dd9a645b4cf9"><table><thead><tr><th>Constraints</th><th>Invariant</th></tr></thead><tr><td><ul></ul></td><td><pre>F = 1</pre></td></tr></table></div></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-61a50900-7fc7-4321-933b-d3d38c626ce9';
+  var target = '#alt-8dbaa763-de49-4c3b-bc88-ee20cd873d4c';
   alternatives.hydrate(target);
 });
 </script></div>
@@ -2915,43 +2680,33 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
 </div>
 
 </div>
-                    </div>
-
-                    <div class="sidebar-right">
-                        <div class="sidebar-right__menu">
-                            
-                            <a class="sidebar-right__menu-item sidebar-right__menu-item--h1" href="#Imandra-decomposition-flags">Imandra decomposition flags</a>
-                            
-                            <a class="sidebar-right__menu-item sidebar-right__menu-item--h1" href="#Assuming">Assuming</a>
-                            
-                            <a class="sidebar-right__menu-item sidebar-right__menu-item--h1" href="#Compound">Compound</a>
-                            
-                            <a class="sidebar-right__menu-item sidebar-right__menu-item--h1" href="#Reduce-symmetry">Reduce symmetry</a>
-                            
-                            <a class="sidebar-right__menu-item sidebar-right__menu-item--h1" href="#Ctx_asm_simp">Ctx_asm_simp</a>
-                            
-                            <a class="sidebar-right__menu-item sidebar-right__menu-item--h1" href="#Max_ctx_simp">Max_ctx_simp</a>
-                            
-                            <a class="sidebar-right__menu-item sidebar-right__menu-item--h1" href="#Basis">Basis</a>
-                            
-                            <a class="sidebar-right__menu-item sidebar-right__menu-item--h1" href="#Interpret-basis">Interpret basis</a>
-                            
-                            <a class="sidebar-right__menu-item sidebar-right__menu-item--h1" href="#Aggressive-Recursion">Aggressive Recursion</a>
-                            
-                        </div>
-                    </div></article>
-            </main>
-            <footer class="Footer">
-                <a class="Copyrights"href="http://imandra.ai">&#9400; 2018 Aesthetic Integration Ltd. All rights reserved.</a>
-            </footer>
-        </div>
-    </body>
-    
+  
  
 
 
-        </div>
-        </div>
-        </div>
-    </body>
+      </div><div class="content-nav">
+          <ul>
+          
+            <li class="content-nav__item content-nav__item--h1"><a href="#Imandra-decomposition-flags">Imandra decomposition flags</a></li>
+          
+            <li class="content-nav__item content-nav__item--h1"><a href="#Assuming">Assuming</a></li>
+          
+            <li class="content-nav__item content-nav__item--h1"><a href="#Compound">Compound</a></li>
+          
+            <li class="content-nav__item content-nav__item--h1"><a href="#Reduce-symmetry">Reduce symmetry</a></li>
+          
+            <li class="content-nav__item content-nav__item--h1"><a href="#Ctx_asm_simp">Ctx_asm_simp</a></li>
+          
+            <li class="content-nav__item content-nav__item--h1"><a href="#Max_ctx_simp">Max_ctx_simp</a></li>
+          
+            <li class="content-nav__item content-nav__item--h1"><a href="#Basis">Basis</a></li>
+          
+            <li class="content-nav__item content-nav__item--h1"><a href="#Interpret-basis">Interpret basis</a></li>
+          
+            <li class="content-nav__item content-nav__item--h1"><a href="#Aggressive-Recursion">Aggressive Recursion</a></li>
+          
+          </ul>
+        </div></div>
+  </div>
+</body>
 </html>
