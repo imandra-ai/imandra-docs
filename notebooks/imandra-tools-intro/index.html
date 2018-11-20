@@ -357,6 +357,16 @@
                                         
                                     </li>
                                     
+                                    <li class="side__nav-list-item--sub-level-2">
+                                        <a class="side__nav-link" href="/imandra-docs/notebooks/sudoku">Solving Sudoku with Imandra</a>
+                                        
+                                    </li>
+                                    
+                                    <li class="side__nav-list-item--sub-level-2">
+                                        <a class="side__nav-link" href="/imandra-docs/notebooks/crossing-river-safely">Crossing the River Safely</a>
+                                        
+                                    </li>
+                                    
                                 </ul>
                             </li>
                             
@@ -778,61 +788,36 @@ Note: this is an introductory walkthrough of the capabilities of `imandra-tools`
   DecompositionConfig.event list -&gt; DecompositionConfig.state = &lt;fun&gt;
 module Mex :
   sig
-    module E = Imandra_lib.Extract
-    val get_option :
-      (E.Model.t -&gt; Imandra_reasoning.Expr.t -&gt; &#39;a_0) -&gt;
-      E.Model.t -&gt; Imandra_reasoning.Expr.t -&gt; &#39;a_0 option
-    val get_unit : E.Model.t -&gt; Imandra_reasoning.Expr.t -&gt; unit
+    module E = Imandra_interactive.Extract_frontend
+    val get_option : (E.expr -&gt; &#39;a_0) -&gt; E.expr -&gt; &#39;a_0 option
+    val get_unit : E.expr -&gt; unit
     val get_result :
-      (E.Model.t -&gt; Imandra_reasoning.Expr.t -&gt; &#39;a_0) -&gt;
-      (E.Model.t -&gt; Imandra_reasoning.Expr.t -&gt; &#39;a_1) -&gt;
-      E.Model.t -&gt; Imandra_reasoning.Expr.t -&gt; (&#39;a_0, &#39;a_1) result
+      (E.expr -&gt; &#39;a_0) -&gt; (E.expr -&gt; &#39;a_1) -&gt; E.expr -&gt; (&#39;a_0, &#39;a_1) result
     val get_Result_t :
-      (E.Model.t -&gt; Imandra_reasoning.Expr.t -&gt; &#39;a_0) -&gt;
-      (E.Model.t -&gt; Imandra_reasoning.Expr.t -&gt; &#39;a_1) -&gt;
-      E.Model.t -&gt; Imandra_reasoning.Expr.t -&gt; (&#39;a_0, &#39;a_1) Result.t
+      (E.expr -&gt; &#39;a_0) -&gt; (E.expr -&gt; &#39;a_1) -&gt; E.expr -&gt; (&#39;a_0, &#39;a_1) Result.t
     val get_either :
-      (E.Model.t -&gt; Imandra_reasoning.Expr.t -&gt; &#39;a_0) -&gt;
-      (E.Model.t -&gt; Imandra_reasoning.Expr.t -&gt; &#39;a_1) -&gt;
-      E.Model.t -&gt; Imandra_reasoning.Expr.t -&gt; (&#39;a_0, &#39;a_1) either
-    val get_List_t :
-      (E.Model.t -&gt; Imandra_reasoning.Expr.t -&gt; &#39;a_0) -&gt;
-      E.Model.t -&gt; Imandra_reasoning.Expr.t -&gt; &#39;a_0 List.t
-    val get_Int_t : E.Model.t -&gt; Imandra_reasoning.Expr.t -&gt; Int.t
-    val get_Option_t :
-      (E.Model.t -&gt; Imandra_reasoning.Expr.t -&gt; &#39;a_0) -&gt;
-      E.Model.t -&gt; Imandra_reasoning.Expr.t -&gt; &#39;a_0 Option.t
-    val get_Real_t : E.Model.t -&gt; Imandra_reasoning.Expr.t -&gt; Real.t
+      (E.expr -&gt; &#39;a_0) -&gt; (E.expr -&gt; &#39;a_1) -&gt; E.expr -&gt; (&#39;a_0, &#39;a_1) either
+    val get_List_t : (E.expr -&gt; &#39;a_0) -&gt; E.expr -&gt; &#39;a_0 List.t
+    val get_Int_t : E.expr -&gt; Int.t
+    val get_Option_t : (E.expr -&gt; &#39;a_0) -&gt; E.expr -&gt; &#39;a_0 Option.t
+    val get_Real_t : E.expr -&gt; Real.t
     val get_Map_t :
-      (E.Model.t -&gt; Imandra_reasoning.Expr.t -&gt; &#39;a_0) -&gt;
-      (E.Model.t -&gt; Imandra_reasoning.Expr.t -&gt; &#39;a_1) -&gt;
-      E.Model.t -&gt; Imandra_reasoning.Expr.t -&gt; (&#39;a_0, &#39;a_1) Map.t
-    val get_Multiset_t :
-      (E.Model.t -&gt; Imandra_reasoning.Expr.t -&gt; &#39;a_0) -&gt;
-      E.Model.t -&gt; Imandra_reasoning.Expr.t -&gt; &#39;a_0 Multiset.t
-    val get_Set_t :
-      (E.Model.t -&gt; Imandra_reasoning.Expr.t -&gt; &#39;a_0) -&gt;
-      E.Model.t -&gt; Imandra_reasoning.Expr.t -&gt; &#39;a_0 Set.t
-    val get_String_t : E.Model.t -&gt; Imandra_reasoning.Expr.t -&gt; String.t
-    val get_Float_t : E.Model.t -&gt; Imandra_reasoning.Expr.t -&gt; Float.t
-    val get_Model_message :
-      E.Model.t -&gt; Imandra_reasoning.Expr.t -&gt; Model.message
-    val get_Model_counter_state :
-      E.Model.t -&gt; Imandra_reasoning.Expr.t -&gt; Model.counter_state
-    val get_DecompositionConfig_event :
-      E.Model.t -&gt; Imandra_reasoning.Expr.t -&gt; DecompositionConfig.event
-    val get_DecompositionConfig_state :
-      E.Model.t -&gt; Imandra_reasoning.Expr.t -&gt; DecompositionConfig.state
-    val get_Template_t : E.Model.t -&gt; Imandra_reasoning.Expr.t -&gt; Template.t
+      (E.expr -&gt; &#39;a_0) -&gt; (E.expr -&gt; &#39;a_1) -&gt; E.expr -&gt; (&#39;a_0, &#39;a_1) Map.t
+    val get_Multiset_t : (E.expr -&gt; &#39;a_0) -&gt; E.expr -&gt; &#39;a_0 Multiset.t
+    val get_Set_t : (E.expr -&gt; &#39;a_0) -&gt; E.expr -&gt; &#39;a_0 Set.t
+    val get_String_t : E.expr -&gt; String.t
+    val get_Float_t : E.expr -&gt; Float.t
+    val get_Model_message : E.expr -&gt; Model.message
+    val get_Model_counter_state : E.expr -&gt; Model.counter_state
+    val get_DecompositionConfig_event : E.expr -&gt; DecompositionConfig.event
+    val get_DecompositionConfig_state : E.expr -&gt; DecompositionConfig.state
+    val get_Template_t : E.expr -&gt; Template.t
     type e_t = DecompositionConfig.event list
     type extract_type = { e : e_t; }
     val ret_e : extract_type -&gt; e_t
-    val extract :
+    val of_model :
       ?signature:string -&gt;
-      Imandra_reasoning.State.t -&gt; E.Smt.Model.t -&gt; extract_type
-    val of_region : ?signature:string -&gt; E.Decompose.t -&gt; extract_type
-    val of_region_multi :
-      ?signature:string -&gt; ?k:int -&gt; E.Decompose.t -&gt; extract_type list
+      Imandra_surface.Top_result.term_model -&gt; extract_type
   end
 - : unit = ()
 module D :
@@ -871,10 +856,9 @@ module D :
       sig
         type event = DecompositionConfig.event
         val events_of_region :
-          strategy:Imandra_tools__Idf.strategy -&gt;
           arg:Imandra_prelude.Caml.Int.t -&gt;
           signature:Imandra_prelude.string -&gt;
-          Imandra_lib.Decompose.t -&gt; event Imandra_tools__Idf.gen
+          Imandra_tools__Idf.Decompose.t -&gt; event Imandra_tools__Idf.gen
       end
     module Strategy :
       sig
@@ -892,26 +876,20 @@ module D :
               node:node_t -&gt;
               signature:Imandra_prelude.string -&gt;
               Imandra_prelude.Caml.Int.t -&gt;
-              Imandra_lib.Decompose.t -&gt;
+              Imandra_tools__Idf.Decompose.t -&gt;
               (event * node_t) Imandra_tools__Idf.gen
-            val enough_samples :
-              strategy:Imandra_tools__Idf.strategy -&gt;
-              arg:Imandra_prelude.Caml.Int.t -&gt;
-              region:Imandra_lib.Decompose.t -&gt; event list -&gt; bool
             val strategy : Imandra_tools__Idf.strategy
           end
         type node_t =
           Imandra_tools__Idf.Make(DecompositionConfig)(Mex)(Template).Strategy.node_t =
-            Expr of
-              (Imandra_lib.Expr.t * Imandra_lib.Expr.t list *
-               Imandra_lib.Expr.t option)
+            Expr of (Imandra_surface.Term.t * Imandra_surface.Term.t list)
           | Str of Imandra_prelude.string * Imandra_prelude.string
         module Symbolic :
           sig
             type state = DecompositionConfig.state
             type event = DecompositionConfig.event
             type node_t = node_t
-            type edge_t = Imandra_lib.Expr.t list
+            type edge_t = Imandra_surface.Term.t list
             val module_name : Imandra_prelude.string
             val root_node : node_t
             val node_tpl_for_target : node_t -&gt; Imandra_prelude.string
@@ -920,12 +898,8 @@ module D :
               node:node_t -&gt;
               signature:Imandra_prelude.string -&gt;
               Imandra_prelude.Caml.Int.t -&gt;
-              Imandra_lib.Decompose.t -&gt;
+              Imandra_tools__Idf.Decompose.t -&gt;
               (event * node_t) Imandra_tools__Idf.gen
-            val enough_samples :
-              strategy:Imandra_tools__Idf.strategy -&gt;
-              arg:Imandra_prelude.Caml.Int.t -&gt;
-              region:Imandra_lib.Decompose.t -&gt; event list -&gt; bool
             val strategy : Imandra_tools__Idf.strategy
           end
       end
@@ -944,18 +918,14 @@ module D :
                  node:node_t -&gt;
                  signature:Imandra_prelude.string -&gt;
                  Imandra_prelude.Caml.Int.t -&gt;
-                 Imandra_lib.Decompose.t -&gt;
+                 Imandra_tools__Idf.Decompose.t -&gt;
                  (event * node_t) Imandra_tools__Idf.gen
-               val enough_samples :
-                 strategy:Imandra_tools__Idf.strategy -&gt;
-                 arg:Imandra_prelude.Caml.Int.t -&gt;
-                 region:Imandra_lib.Decompose.t -&gt; event list -&gt; bool
                val strategy : Imandra_tools__Idf.strategy
              end) -&gt;
         sig
           type decomp_step = {
             sample : S.event;
-            region : Imandra_lib.Decompose.t;
+            region : Imandra_tools__Idf.Decompose.t;
             signature : Imandra_prelude.string;
           }
           type indexed_state = {
@@ -1037,12 +1007,13 @@ module D :
             end
           type step = indexed_state * decomp_step * indexed_state
           type path = step list
-          type t = path L.t * G.t
+          type t = path L.t * G.t option
           val paths : ?v:G.vertex -&gt; G.t -&gt; path L.t
-          val region_of_path : path -&gt; Imandra_lib.Decompose.t list
-          val regions : path L.t -&gt; Imandra_lib.Decompose.t list L.t
+          val region_of_path : path -&gt; Imandra_tools__Idf.Decompose.t list
+          val regions : path L.t -&gt; Imandra_tools__Idf.Decompose.t list L.t
           val replay_path : path -&gt; (S.state * S.event * S.state) list
-          type decomp_data = S.event * S.node_t * Imandra_lib.Decompose.t
+          type decomp_data =
+              S.event * S.node_t * Imandra_tools__Idf.Decompose.t
           type &#39;a prod = [ `Prod of &#39;a ]
           type consumable_step =
               (decomp_data * step * bool) *
@@ -1087,19 +1058,15 @@ module D :
                  node:node_t -&gt;
                  signature:Imandra_prelude.string -&gt;
                  Imandra_prelude.Caml.Int.t -&gt;
-                 Imandra_lib.Decompose.t -&gt;
+                 Imandra_tools__Idf.Decompose.t -&gt;
                  (event * node_t) Imandra_tools__Idf.gen
-               val enough_samples :
-                 strategy:Imandra_tools__Idf.strategy -&gt;
-                 arg:Imandra_prelude.Caml.Int.t -&gt;
-                 region:Imandra_lib.Decompose.t -&gt; event list -&gt; bool
                val strategy : Imandra_tools__Idf.strategy
              end) -&gt;
         sig
           type decomp_step =
             Imandra_tools__Idf.Make(DecompositionConfig)(Mex)(Template).WithStrategy(S).decomp_step = {
             sample : S.event;
-            region : Imandra_lib.Decompose.t;
+            region : Imandra_tools__Idf.Decompose.t;
             signature : Imandra_prelude.string;
           }
           type indexed_state =
@@ -1205,12 +1172,13 @@ module D :
             end
           type step = indexed_state * decomp_step * indexed_state
           type path = step list
-          type t = path L.t * G.t
+          type t = path L.t * G.t option
           val paths : ?v:G.vertex -&gt; G.t -&gt; path L.t
-          val region_of_path : path -&gt; Imandra_lib.Decompose.t list
-          val regions : path L.t -&gt; Imandra_lib.Decompose.t list L.t
+          val region_of_path : path -&gt; Imandra_tools__Idf.Decompose.t list
+          val regions : path L.t -&gt; Imandra_tools__Idf.Decompose.t list L.t
           val replay_path : path -&gt; (S.state * S.event * S.state) list
-          type decomp_data = S.event * S.node_t * Imandra_lib.Decompose.t
+          type decomp_data =
+              S.event * S.node_t * Imandra_tools__Idf.Decompose.t
           type &#39;a prod = [ `Prod of &#39;a ]
           type consumable_step =
               (decomp_data * step * bool) *
@@ -1245,7 +1213,7 @@ module D :
         type decomp_step =
           WithStrategy(Strategy.Concrete).decomp_step = {
           sample : Strategy.Concrete.event;
-          region : Imandra_lib.Decompose.t;
+          region : Imandra_tools__Idf.Decompose.t;
           signature : Imandra_prelude.string;
         }
         type indexed_state =
@@ -1344,10 +1312,10 @@ module D :
           end
         type step = indexed_state * decomp_step * indexed_state
         type path = step list
-        type t = path L.t * G.t
+        type t = path L.t * G.t option
         val paths : ?v:G.vertex -&gt; G.t -&gt; path L.t
-        val region_of_path : path -&gt; Imandra_lib.Decompose.t list
-        val regions : path L.t -&gt; Imandra_lib.Decompose.t list L.t
+        val region_of_path : path -&gt; Imandra_tools__Idf.Decompose.t list
+        val regions : path L.t -&gt; Imandra_tools__Idf.Decompose.t list L.t
         val replay_path :
           path -&gt;
           (Strategy.Concrete.state * Strategy.Concrete.event *
@@ -1355,7 +1323,7 @@ module D :
           list
         type decomp_data =
             Strategy.Concrete.event * Strategy.Concrete.node_t *
-            Imandra_lib.Decompose.t
+            Imandra_tools__Idf.Decompose.t
         type &#39;a prod = [ `Prod of &#39;a ]
         type consumable_step =
             (decomp_data * step * bool) *
@@ -1391,7 +1359,7 @@ module D :
         type decomp_step =
           WithStrategy(Strategy.Symbolic).decomp_step = {
           sample : Strategy.Symbolic.event;
-          region : Imandra_lib.Decompose.t;
+          region : Imandra_tools__Idf.Decompose.t;
           signature : Imandra_prelude.string;
         }
         type indexed_state =
@@ -1490,10 +1458,10 @@ module D :
           end
         type step = indexed_state * decomp_step * indexed_state
         type path = step list
-        type t = path L.t * G.t
+        type t = path L.t * G.t option
         val paths : ?v:G.vertex -&gt; G.t -&gt; path L.t
-        val region_of_path : path -&gt; Imandra_lib.Decompose.t list
-        val regions : path L.t -&gt; Imandra_lib.Decompose.t list L.t
+        val region_of_path : path -&gt; Imandra_tools__Idf.Decompose.t list
+        val regions : path L.t -&gt; Imandra_tools__Idf.Decompose.t list L.t
         val replay_path :
           path -&gt;
           (Strategy.Symbolic.state * Strategy.Symbolic.event *
@@ -1501,7 +1469,7 @@ module D :
           list
         type decomp_data =
             Strategy.Symbolic.event * Strategy.Symbolic.node_t *
-            Imandra_lib.Decompose.t
+            Imandra_tools__Idf.Decompose.t
         type &#39;a prod = [ `Prod of &#39;a ]
         type consumable_step =
             (decomp_data * step * bool) *
@@ -1606,113 +1574,524 @@ val imandra_gensym__4 :
 val imandra_gensym__33 : DecompositionConfig.event list -&gt; bool = &lt;fun&gt;
 val imandra_gensym__34 : Model.message list -&gt; DecompositionConfig.state =
   &lt;fun&gt;
-val imandra_gensym__55 : DecompositionConfig.event list -&gt; bool = &lt;fun&gt;
-val imandra_gensym__56 :
+val imandra_gensym__59 : DecompositionConfig.event list -&gt; bool = &lt;fun&gt;
+val imandra_gensym__60 :
   DecompositionConfig.event list -&gt; DecompositionConfig.state = &lt;fun&gt;
 val first_path : D.Symbolic.path =
   [({D.Symbolic.state =
-      D.Strategy.Expr
-       ((|\|rec_mk.Model.counter_state_2311\|| 0 23), [], None);
+      D.Strategy.Expr ({Model.counter = 0; Model.default = 23}, []);
      idx = 0i},
-    {D.Symbolic.sample = Model.Add 1337; region = &lt;region&gt;;
+    {D.Symbolic.sample = Model.Add 1337; region = &lt;abstr&gt;;
      signature = &#34;imandra_gensym__4&#34;},
     {D.Symbolic.state =
       D.Strategy.Expr
-       ((|\|rec_mk.Model.counter_state_2311\||
-         (|\|get.Model.Add.0_2309\|| (|\|get.::.0_2347\|| e_2407)) 23),
-        [(=
-          (|\|get.::.1_2348\||
-           (|\|get.::.1_2348\|| (|\|get.::.1_2348\|| e_2407)))
-          |\|[]_2\||);
-         (|is_::_3| (|\|get.::.1_2348\|| (|\|get.::.1_2348\|| e_2407)));
-         (|is_\|Model.Add_2293\||
-          (|\|get.::.0_2347\|| (|\|get.::.1_2348\|| e_2407)));
-         (|is_::_3| (|\|get.::.1_2348\|| e_2407)); (|is_::_3| e_2407);
-         (not (= (|\|get.::.0_2347\|| e_2407) |\|Model.Reset_2295\||));
-         (|is_\|Model.Add_2293\|| (|\|get.::.0_2347\|| e_2407));
-         (&lt;= (|\|get.Model.Add.0_2309\|| (|\|get.::.0_2347\|| e_2407)) 9000)],
-        Some e_2407);
+       ({Model.counter = Destruct(Model.Add, 0, List.hd e);
+         Model.default = 23},
+        [List.tl (List.tl (List.tl e)) = []; (List.tl (List.tl e)) &lt;&gt; [];
+         Is_a(Model.Add, List.hd (List.tl e)); (List.tl e) &lt;&gt; []; e &lt;&gt; [];
+         not (List.hd e = Model.Reset); Is_a(Model.Add, List.hd e);
+         Destruct(Model.Add, 0, List.hd e) &lt;= 9000]);
      idx = 1i});
    ({D.Symbolic.state =
       D.Strategy.Expr
-       ((|\|rec_mk.Model.counter_state_2311\||
-         (|\|get.Model.Add.0_2309\|| (|\|get.::.0_2347\|| e_2407)) 23),
-        [(=
-          (|\|get.::.1_2348\||
-           (|\|get.::.1_2348\|| (|\|get.::.1_2348\|| e_2407)))
-          |\|[]_2\||);
-         (|is_::_3| (|\|get.::.1_2348\|| (|\|get.::.1_2348\|| e_2407)));
-         (|is_\|Model.Add_2293\||
-          (|\|get.::.0_2347\|| (|\|get.::.1_2348\|| e_2407)));
-         (|is_::_3| (|\|get.::.1_2348\|| e_2407)); (|is_::_3| e_2407);
-         (not (= (|\|get.::.0_2347\|| e_2407) |\|Model.Reset_2295\||));
-         (|is_\|Model.Add_2293\|| (|\|get.::.0_2347\|| e_2407));
-         (&lt;= (|\|get.Model.Add.0_2309\|| (|\|get.::.0_2347\|| e_2407)) 9000)],
-        Some e_2407);
+       ({Model.counter = Destruct(Model.Add, 0, List.hd e);
+         Model.default = 23},
+        [List.tl (List.tl (List.tl e)) = []; (List.tl (List.tl e)) &lt;&gt; [];
+         Is_a(Model.Add, List.hd (List.tl e)); (List.tl e) &lt;&gt; []; e &lt;&gt; [];
+         not (List.hd e = Model.Reset); Is_a(Model.Add, List.hd e);
+         Destruct(Model.Add, 0, List.hd e) &lt;= 9000]);
      idx = 1i},
-    {D.Symbolic.sample = Model.Add 1; region = &lt;region&gt;;
+    {D.Symbolic.sample = Model.Add 1; region = &lt;abstr&gt;;
      signature = &#34;imandra_gensym__34&#34;},
     {D.Symbolic.state =
       D.Strategy.Expr
-       ((|\|rec_mk.Model.counter_state_2311\|| 23 23),
-        [(|is_::_3| e_2421);
-         (|is_\|Model.Add_2293\|| (|\|get.::.0_2347\|| e_2421));
-         (|is_::_3| (|\|get.::.1_2348\|| e_2421));
-         (=
-          (|\|get.::.1_2348\||
-           (|\|get.::.1_2348\|| (|\|get.::.1_2348\|| e_2421)))
-          |\|[]_2\||);
-         (|is_::_3| (|\|get.::.1_2348\|| (|\|get.::.1_2348\|| e_2421)));
-         (|is_\|Model.Add_2293\||
-          (|\|get.::.0_2347\|| (|\|get.::.1_2348\|| e_2421)));
-         (&lt;= (|\|get.Model.Add.0_2309\|| (|\|get.::.0_2347\|| e_2421)) 9000);
-         (= (|\|get.Model.Add.0_2309\|| (|\|get.::.0_2347\|| e_2421)) 1337);
-         (not (= (|\|get.::.0_2347\|| e_2421) |\|Model.Reset_2295\||))],
-        Some e_2421);
+       ({Model.counter = 23; Model.default = 23},
+        [e &lt;&gt; []; Is_a(Model.Add, List.hd e); (List.tl e) &lt;&gt; [];
+         List.tl (List.tl (List.tl e)) = []; (List.tl (List.tl e)) &lt;&gt; [];
+         Is_a(Model.Add, List.hd (List.tl e));
+         Destruct(Model.Add, 0, List.hd e) &lt;= 9000;
+         Destruct(Model.Add, 0, List.hd e) = 1337;
+         not (List.hd e = Model.Reset)]);
      idx = 2i});
    ({D.Symbolic.state =
       D.Strategy.Expr
-       ((|\|rec_mk.Model.counter_state_2311\|| 23 23),
-        [(|is_::_3| e_2421);
-         (|is_\|Model.Add_2293\|| (|\|get.::.0_2347\|| e_2421));
-         (|is_::_3| (|\|get.::.1_2348\|| e_2421));
-         (=
-          (|\|get.::.1_2348\||
-           (|\|get.::.1_2348\|| (|\|get.::.1_2348\|| e_2421)))
-          |\|[]_2\||);
-         (|is_::_3| (|\|get.::.1_2348\|| (|\|get.::.1_2348\|| e_2421)));
-         (|is_\|Model.Add_2293\||
-          (|\|get.::.0_2347\|| (|\|get.::.1_2348\|| e_2421)));
-         (&lt;= (|\|get.Model.Add.0_2309\|| (|\|get.::.0_2347\|| e_2421)) 9000);
-         (= (|\|get.Model.Add.0_2309\|| (|\|get.::.0_2347\|| e_2421)) 1337);
-         (not (= (|\|get.::.0_2347\|| e_2421) |\|Model.Reset_2295\||))],
-        Some e_2421);
+       ({Model.counter = 23; Model.default = 23},
+        [e &lt;&gt; []; Is_a(Model.Add, List.hd e); (List.tl e) &lt;&gt; [];
+         List.tl (List.tl (List.tl e)) = []; (List.tl (List.tl e)) &lt;&gt; [];
+         Is_a(Model.Add, List.hd (List.tl e));
+         Destruct(Model.Add, 0, List.hd e) &lt;= 9000;
+         Destruct(Model.Add, 0, List.hd e) = 1337;
+         not (List.hd e = Model.Reset)]);
      idx = 2i},
-    {D.Symbolic.sample = Model.Reset; region = &lt;region&gt;;
-     signature = &#34;imandra_gensym__56&#34;},
+    {D.Symbolic.sample = Model.Reset; region = &lt;abstr&gt;;
+     signature = &#34;imandra_gensym__60&#34;},
     {D.Symbolic.state =
       D.Strategy.Expr
-       ((|\|rec_mk.Model.counter_state_2311\|| 0 23),
-        [(|is_::_3| e_2440);
-         (|is_\|Model.Add_2293\|| (|\|get.::.0_2347\|| e_2440));
-         (|is_::_3| (|\|get.::.1_2348\|| e_2440));
-         (=
-          (|\|get.::.1_2348\||
-           (|\|get.::.1_2348\|| (|\|get.::.1_2348\|| e_2440)))
-          |\|[]_2\||);
-         (|is_::_3| (|\|get.::.1_2348\|| (|\|get.::.1_2348\|| e_2440)));
-         (|is_\|Model.Add_2293\||
-          (|\|get.::.0_2347\|| (|\|get.::.1_2348\|| e_2440)));
-         (= (|\|get.Model.Add.0_2309\|| (|\|get.::.0_2347\|| e_2440)) 1337);
-         (=
-          (|\|get.::.0_2347\||
-           (|\|get.::.1_2348\|| (|\|get.::.1_2348\|| e_2440)))
-          |\|Model.Reset_2295\||);
-         (&lt;= (|\|get.Model.Add.0_2309\|| (|\|get.::.0_2347\|| e_2440)) 9000);
-         (not (= (|\|get.::.0_2347\|| e_2440) |\|Model.Reset_2295\||))],
-        Some e_2440);
+       ({Model.counter = 0; Model.default = 23},
+        [e &lt;&gt; []; Is_a(Model.Add, List.hd e); (List.tl e) &lt;&gt; [];
+         List.tl (List.tl (List.tl e)) = []; (List.tl (List.tl e)) &lt;&gt; [];
+         Is_a(Model.Add, List.hd (List.tl e));
+         Destruct(Model.Add, 0, List.hd e) = 1337;
+         List.hd (List.tl (List.tl e)) = Model.Reset;
+         Destruct(Model.Add, 0, List.hd e) &lt;= 9000;
+         not (List.hd e = Model.Reset)]);
      idx = 3i})]
 </pre>
+</div>
+
+</div>
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+
+<div class="output_html rendered_html output_subarea ">
+<div class="imandra-alternatives" id="alt-b48f702e-8c9b-4925-873f-f3fdc1000815"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-68131b9c-36f7-4bed-bc63-9a45ea48b78e" class="decompose"><textarea class="display-none">{
+  &quot;regions&quot;: [
+    {
+      &quot;constraints&quot;: [
+        &quot;(List.tl (List.tl e)) &lt;&gt; []&quot;, &quot;(List.tl e) &lt;&gt; []&quot;,
+        &quot;Is_a(Model.Add, List.hd (List.tl e))&quot;,
+        &quot;List.tl (List.tl (List.tl e)) = []&quot;, &quot;e &lt;&gt; []&quot;
+      ],
+      &quot;region&quot;: null,
+      &quot;groups&quot;: [
+        {
+          &quot;constraints&quot;: [
+            &quot;(List.tl (List.tl e)) &lt;&gt; []&quot;, &quot;(List.tl e) &lt;&gt; []&quot;,
+            &quot;Is_a(Model.Add, List.hd (List.tl e))&quot;,
+            &quot;List.tl (List.tl (List.tl e)) = []&quot;, &quot;e &lt;&gt; []&quot;,
+            &quot;List.hd e = Model.Reset&quot;
+          ],
+          &quot;region&quot;: {
+            &quot;constraints&quot;: [
+              &quot;List.tl (List.tl (List.tl e)) = []&quot;,
+              &quot;(List.tl (List.tl e)) &lt;&gt; []&quot;,
+              &quot;Is_a(Model.Add, List.hd (List.tl e))&quot;, &quot;(List.tl e) &lt;&gt; []&quot;,
+              &quot;e &lt;&gt; []&quot;, &quot;List.hd e = Model.Reset&quot;
+            ],
+            &quot;invariant&quot;: &quot;F = {Model.counter = 0; Model.default = 23}&quot;
+          },
+          &quot;groups&quot;: [],
+          &quot;label&quot;: &quot;R[1.1.1.1.1.2]&quot;,
+          &quot;weight&quot;: 1
+        },
+        {
+          &quot;constraints&quot;: [
+            &quot;(List.tl (List.tl e)) &lt;&gt; []&quot;, &quot;(List.tl e) &lt;&gt; []&quot;,
+            &quot;Is_a(Model.Add, List.hd (List.tl e))&quot;,
+            &quot;List.tl (List.tl (List.tl e)) = []&quot;, &quot;e &lt;&gt; []&quot;,
+            &quot;Is_a(Model.Add, List.hd e)&quot;, &quot;not (List.hd e = Model.Reset)&quot;
+          ],
+          &quot;region&quot;: null,
+          &quot;groups&quot;: [
+            {
+              &quot;constraints&quot;: [
+                &quot;(List.tl (List.tl e)) &lt;&gt; []&quot;, &quot;(List.tl e) &lt;&gt; []&quot;,
+                &quot;Is_a(Model.Add, List.hd (List.tl e))&quot;,
+                &quot;List.tl (List.tl (List.tl e)) = []&quot;, &quot;e &lt;&gt; []&quot;,
+                &quot;Is_a(Model.Add, List.hd e)&quot;,
+                &quot;not (List.hd e = Model.Reset)&quot;,
+                &quot;not (Destruct(Model.Add, 0, List.hd e) &lt;= 9000)&quot;
+              ],
+              &quot;region&quot;: {
+                &quot;constraints&quot;: [
+                  &quot;List.tl (List.tl (List.tl e)) = []&quot;,
+                  &quot;(List.tl (List.tl e)) &lt;&gt; []&quot;,
+                  &quot;Is_a(Model.Add, List.hd (List.tl e))&quot;,
+                  &quot;(List.tl e) &lt;&gt; []&quot;, &quot;e &lt;&gt; []&quot;,
+                  &quot;not (List.hd e = Model.Reset)&quot;,
+                  &quot;Is_a(Model.Add, List.hd e)&quot;,
+                  &quot;not (Destruct(Model.Add, 0, List.hd e) &lt;= 9000)&quot;
+                ],
+                &quot;invariant&quot;: &quot;F = {Model.counter = 0; Model.default = 23}&quot;
+              },
+              &quot;groups&quot;: [],
+              &quot;label&quot;: &quot;R[1.1.1.1.1.1.1.2]&quot;,
+              &quot;weight&quot;: 1
+            },
+            {
+              &quot;constraints&quot;: [
+                &quot;(List.tl (List.tl e)) &lt;&gt; []&quot;, &quot;(List.tl e) &lt;&gt; []&quot;,
+                &quot;Is_a(Model.Add, List.hd (List.tl e))&quot;,
+                &quot;List.tl (List.tl (List.tl e)) = []&quot;, &quot;e &lt;&gt; []&quot;,
+                &quot;Is_a(Model.Add, List.hd e)&quot;,
+                &quot;not (List.hd e = Model.Reset)&quot;,
+                &quot;Destruct(Model.Add, 0, List.hd e) &lt;= 9000&quot;
+              ],
+              &quot;region&quot;: {
+                &quot;constraints&quot;: [
+                  &quot;List.tl (List.tl (List.tl e)) = []&quot;,
+                  &quot;(List.tl (List.tl e)) &lt;&gt; []&quot;,
+                  &quot;Is_a(Model.Add, List.hd (List.tl e))&quot;,
+                  &quot;(List.tl e) &lt;&gt; []&quot;, &quot;e &lt;&gt; []&quot;,
+                  &quot;not (List.hd e = Model.Reset)&quot;,
+                  &quot;Is_a(Model.Add, List.hd e)&quot;,
+                  &quot;Destruct(Model.Add, 0, List.hd e) &lt;= 9000&quot;
+                ],
+                &quot;invariant&quot;:
+                  &quot;F = {Model.counter = Destruct(Model.Add, 0, List.hd e); Model.default = 23}&quot;
+              },
+              &quot;groups&quot;: [],
+              &quot;label&quot;: &quot;R[1.1.1.1.1.1.1.1]&quot;,
+              &quot;weight&quot;: 1
+            }
+          ],
+          &quot;label&quot;: &quot;(1.1.1.1.1.1.1)&quot;,
+          &quot;weight&quot;: 2
+        }
+      ],
+      &quot;label&quot;: &quot;(1.1.1.1.1)&quot;,
+      &quot;weight&quot;: 3
+    }
+  ]
+}</textarea><div class="decompose-foamtree"></div><div class="decompose-details"><div class="decompose-details-header">Regions details</div><div class="decompose-details-no-selection">No group selected.</div><div class="decompose-details-selection hidden"><div><span class="decompose-details-label">Direct sub-regions: </span><span class="decompose-details-direct-sub-regions-text">-</span></div><div><span class="decompose-details-label">Contained regions: </span><span class="decompose-details-contained-regions-text">-</span></div><div class="decompose-details-section-header">Constraints</div><div class="decompose-details-constraints"><pre class="decompose-details-constraint">&lt;constraint&gt;</pre></div><div class="decompose-details-invariant"><div class="decompose-details-section-header">Invariant</div><pre class="decompose-details-invariant-text">&lt;invariant&gt;</pre></div></div></div><script>
+(function () {
+  require(['nbextensions/nbimandra/regions'], function (regions) {
+    var target = '#decompose-68131b9c-36f7-4bed-bc63-9a45ea48b78e';
+    regions.hydrate(target);
+  });
+})();
+</script></div></div><div class="tab-pane"><div><div class="imandra-table" id="table-b059e6fb-204c-4b84-875d-8702a38a3d63"><table><thead><tr><th>Constraints</th><th>Invariant</th></tr></thead><tr><td><ul><li><pre>List.tl (List.tl (List.tl e)) = []</pre></li><li><pre>(List.tl (List.tl e)) &lt;&gt; []</pre></li><li><pre>Is_a(Model.Add, List.hd (List.tl e))</pre></li><li><pre>(List.tl e) &lt;&gt; []</pre></li><li><pre>e &lt;&gt; []</pre></li><li><pre>List.hd e = Model.Reset</pre></li></ul></td><td><pre>F = {Model.counter = 0; Model.default = 23}</pre></td></tr><tr><td><ul><li><pre>List.tl (List.tl (List.tl e)) = []</pre></li><li><pre>(List.tl (List.tl e)) &lt;&gt; []</pre></li><li><pre>Is_a(Model.Add, List.hd (List.tl e))</pre></li><li><pre>(List.tl e) &lt;&gt; []</pre></li><li><pre>e &lt;&gt; []</pre></li><li><pre>not (List.hd e = Model.Reset)</pre></li><li><pre>Is_a(Model.Add, List.hd e)</pre></li><li><pre>not (Destruct(Model.Add, 0, List.hd e) &lt;= 9000)</pre></li></ul></td><td><pre>F = {Model.counter = 0; Model.default = 23}</pre></td></tr><tr><td><ul><li><pre>List.tl (List.tl (List.tl e)) = []</pre></li><li><pre>(List.tl (List.tl e)) &lt;&gt; []</pre></li><li><pre>Is_a(Model.Add, List.hd (List.tl e))</pre></li><li><pre>(List.tl e) &lt;&gt; []</pre></li><li><pre>e &lt;&gt; []</pre></li><li><pre>not (List.hd e = Model.Reset)</pre></li><li><pre>Is_a(Model.Add, List.hd e)</pre></li><li><pre>Destruct(Model.Add, 0, List.hd e) &lt;= 9000</pre></li></ul></td><td><pre>F = {Model.counter = Destruct(Model.Add, 0, List.hd e); Model.default = 23}</pre></td></tr></table></div></div></div></div><script>
+require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
+  var target = '#alt-b48f702e-8c9b-4925-873f-f3fdc1000815';
+  alternatives.hydrate(target);
+});
+</script></div>
+
+</div>
+
+</div>
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+
+<div class="output_html rendered_html output_subarea ">
+<div class="imandra-alternatives" id="alt-9195f49e-7202-4c4c-9080-2239b95dd70c"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-2bccc98f-d1bd-4310-a3b9-829e88c9ef58" class="decompose"><textarea class="display-none">{
+  &quot;regions&quot;: [
+    {
+      &quot;constraints&quot;: [
+        &quot;(List.tl (List.tl e)) &lt;&gt; []&quot;, &quot;(List.tl e) &lt;&gt; []&quot;,
+        &quot;Destruct(Model.Add, 0, List.hd e) &lt;= 9000&quot;,
+        &quot;Is_a(Model.Add, List.hd (List.tl e))&quot;, &quot;Is_a(Model.Add, List.hd e)&quot;,
+        &quot;List.tl (List.tl (List.tl e)) = []&quot;, &quot;e &lt;&gt; []&quot;
+      ],
+      &quot;region&quot;: null,
+      &quot;groups&quot;: [
+        {
+          &quot;constraints&quot;: [
+            &quot;(List.tl (List.tl e)) &lt;&gt; []&quot;, &quot;(List.tl e) &lt;&gt; []&quot;,
+            &quot;Destruct(Model.Add, 0, List.hd e) &lt;= 9000&quot;,
+            &quot;Is_a(Model.Add, List.hd (List.tl e))&quot;,
+            &quot;Is_a(Model.Add, List.hd e)&quot;,
+            &quot;List.tl (List.tl (List.tl e)) = []&quot;, &quot;e &lt;&gt; []&quot;,
+            &quot;Destruct(Model.Add, 0, List.hd e) = 1337&quot;
+          ],
+          &quot;region&quot;: {
+            &quot;constraints&quot;: [
+              &quot;e &lt;&gt; []&quot;, &quot;Is_a(Model.Add, List.hd e)&quot;, &quot;(List.tl e) &lt;&gt; []&quot;,
+              &quot;List.tl (List.tl (List.tl e)) = []&quot;,
+              &quot;(List.tl (List.tl e)) &lt;&gt; []&quot;,
+              &quot;Is_a(Model.Add, List.hd (List.tl e))&quot;,
+              &quot;Destruct(Model.Add, 0, List.hd e) &lt;= 9000&quot;,
+              &quot;Destruct(Model.Add, 0, List.hd e) = 1337&quot;
+            ],
+            &quot;invariant&quot;: &quot;F = {Model.counter = 23; Model.default = 23}&quot;
+          },
+          &quot;groups&quot;: [],
+          &quot;label&quot;: &quot;R[1.1.1.1.1.1.1.2]&quot;,
+          &quot;weight&quot;: 1
+        },
+        {
+          &quot;constraints&quot;: [
+            &quot;(List.tl (List.tl e)) &lt;&gt; []&quot;, &quot;(List.tl e) &lt;&gt; []&quot;,
+            &quot;Destruct(Model.Add, 0, List.hd e) &lt;= 9000&quot;,
+            &quot;Is_a(Model.Add, List.hd (List.tl e))&quot;,
+            &quot;Is_a(Model.Add, List.hd e)&quot;,
+            &quot;List.tl (List.tl (List.tl e)) = []&quot;, &quot;e &lt;&gt; []&quot;,
+            &quot;not (Destruct(Model.Add, 0, List.hd e) = 1337)&quot;
+          ],
+          &quot;region&quot;: null,
+          &quot;groups&quot;: [
+            {
+              &quot;constraints&quot;: [
+                &quot;(List.tl (List.tl e)) &lt;&gt; []&quot;, &quot;(List.tl e) &lt;&gt; []&quot;,
+                &quot;Destruct(Model.Add, 0, List.hd e) &lt;= 9000&quot;,
+                &quot;Is_a(Model.Add, List.hd (List.tl e))&quot;,
+                &quot;Is_a(Model.Add, List.hd e)&quot;,
+                &quot;List.tl (List.tl (List.tl e)) = []&quot;, &quot;e &lt;&gt; []&quot;,
+                &quot;not (Destruct(Model.Add, 0, List.hd e) = 1337)&quot;,
+                &quot;not\n((Destruct(Model.Add, 0, List.hd e)\n  + Destruct(Model.Add, 0, List.hd (List.tl e)))\n &lt;= 9000)&quot;
+              ],
+              &quot;region&quot;: {
+                &quot;constraints&quot;: [
+                  &quot;e &lt;&gt; []&quot;, &quot;Is_a(Model.Add, List.hd e)&quot;,
+                  &quot;(List.tl e) &lt;&gt; []&quot;, &quot;List.tl (List.tl (List.tl e)) = []&quot;,
+                  &quot;(List.tl (List.tl e)) &lt;&gt; []&quot;,
+                  &quot;Is_a(Model.Add, List.hd (List.tl e))&quot;,
+                  &quot;Destruct(Model.Add, 0, List.hd e) &lt;= 9000&quot;,
+                  &quot;not (Destruct(Model.Add, 0, List.hd e) = 1337)&quot;,
+                  &quot;not\n((Destruct(Model.Add, 0, List.hd e)\n  + Destruct(Model.Add, 0, List.hd (List.tl e)))\n &lt;= 9000)&quot;
+                ],
+                &quot;invariant&quot;: &quot;F = {Model.counter = 0; Model.default = 23}&quot;
+              },
+              &quot;groups&quot;: [],
+              &quot;label&quot;: &quot;R[1.1.1.1.1.1.1.1.2]&quot;,
+              &quot;weight&quot;: 1
+            },
+            {
+              &quot;constraints&quot;: [
+                &quot;(List.tl (List.tl e)) &lt;&gt; []&quot;, &quot;(List.tl e) &lt;&gt; []&quot;,
+                &quot;Destruct(Model.Add, 0, List.hd e) &lt;= 9000&quot;,
+                &quot;Is_a(Model.Add, List.hd (List.tl e))&quot;,
+                &quot;Is_a(Model.Add, List.hd e)&quot;,
+                &quot;List.tl (List.tl (List.tl e)) = []&quot;, &quot;e &lt;&gt; []&quot;,
+                &quot;not (Destruct(Model.Add, 0, List.hd e) = 1337)&quot;,
+                &quot;(Destruct(Model.Add, 0, List.hd e)\n + Destruct(Model.Add, 0, List.hd (List.tl e)))\n&lt;= 9000&quot;
+              ],
+              &quot;region&quot;: {
+                &quot;constraints&quot;: [
+                  &quot;e &lt;&gt; []&quot;, &quot;Is_a(Model.Add, List.hd e)&quot;,
+                  &quot;(List.tl e) &lt;&gt; []&quot;, &quot;List.tl (List.tl (List.tl e)) = []&quot;,
+                  &quot;(List.tl (List.tl e)) &lt;&gt; []&quot;,
+                  &quot;Is_a(Model.Add, List.hd (List.tl e))&quot;,
+                  &quot;Destruct(Model.Add, 0, List.hd e) &lt;= 9000&quot;,
+                  &quot;not (Destruct(Model.Add, 0, List.hd e) = 1337)&quot;,
+                  &quot;(Destruct(Model.Add, 0, List.hd e)\n + Destruct(Model.Add, 0, List.hd (List.tl e)))\n&lt;= 9000&quot;
+                ],
+                &quot;invariant&quot;:
+                  &quot;F =\n{Model.counter =\n Destruct(Model.Add, 0, List.hd e)\n + Destruct(Model.Add, 0, List.hd (List.tl e)); Model.default = 23}&quot;
+              },
+              &quot;groups&quot;: [],
+              &quot;label&quot;: &quot;R[1.1.1.1.1.1.1.1.1]&quot;,
+              &quot;weight&quot;: 1
+            }
+          ],
+          &quot;label&quot;: &quot;(1.1.1.1.1.1.1.1)&quot;,
+          &quot;weight&quot;: 2
+        }
+      ],
+      &quot;label&quot;: &quot;(1.1.1.1.1.1.1)&quot;,
+      &quot;weight&quot;: 3
+    }
+  ]
+}</textarea><div class="decompose-foamtree"></div><div class="decompose-details"><div class="decompose-details-header">Regions details</div><div class="decompose-details-no-selection">No group selected.</div><div class="decompose-details-selection hidden"><div><span class="decompose-details-label">Direct sub-regions: </span><span class="decompose-details-direct-sub-regions-text">-</span></div><div><span class="decompose-details-label">Contained regions: </span><span class="decompose-details-contained-regions-text">-</span></div><div class="decompose-details-section-header">Constraints</div><div class="decompose-details-constraints"><pre class="decompose-details-constraint">&lt;constraint&gt;</pre></div><div class="decompose-details-invariant"><div class="decompose-details-section-header">Invariant</div><pre class="decompose-details-invariant-text">&lt;invariant&gt;</pre></div></div></div><script>
+(function () {
+  require(['nbextensions/nbimandra/regions'], function (regions) {
+    var target = '#decompose-2bccc98f-d1bd-4310-a3b9-829e88c9ef58';
+    regions.hydrate(target);
+  });
+})();
+</script></div></div><div class="tab-pane"><div><div class="imandra-table" id="table-406f063b-1ceb-46b6-b33a-d2bcab76f831"><table><thead><tr><th>Constraints</th><th>Invariant</th></tr></thead><tr><td><ul><li><pre>e &lt;&gt; []</pre></li><li><pre>Is_a(Model.Add, List.hd e)</pre></li><li><pre>(List.tl e) &lt;&gt; []</pre></li><li><pre>List.tl (List.tl (List.tl e)) = []</pre></li><li><pre>(List.tl (List.tl e)) &lt;&gt; []</pre></li><li><pre>Is_a(Model.Add, List.hd (List.tl e))</pre></li><li><pre>Destruct(Model.Add, 0, List.hd e) &lt;= 9000</pre></li><li><pre>not (Destruct(Model.Add, 0, List.hd e) = 1337)</pre></li><li><pre>not
+((Destruct(Model.Add, 0, List.hd e)
+  + Destruct(Model.Add, 0, List.hd (List.tl e)))
+ &lt;= 9000)</pre></li></ul></td><td><pre>F = {Model.counter = 0; Model.default = 23}</pre></td></tr><tr><td><ul><li><pre>e &lt;&gt; []</pre></li><li><pre>Is_a(Model.Add, List.hd e)</pre></li><li><pre>(List.tl e) &lt;&gt; []</pre></li><li><pre>List.tl (List.tl (List.tl e)) = []</pre></li><li><pre>(List.tl (List.tl e)) &lt;&gt; []</pre></li><li><pre>Is_a(Model.Add, List.hd (List.tl e))</pre></li><li><pre>Destruct(Model.Add, 0, List.hd e) &lt;= 9000</pre></li><li><pre>not (Destruct(Model.Add, 0, List.hd e) = 1337)</pre></li><li><pre>(Destruct(Model.Add, 0, List.hd e)
+ + Destruct(Model.Add, 0, List.hd (List.tl e)))
+&lt;= 9000</pre></li></ul></td><td><pre>F =
+{Model.counter =
+ Destruct(Model.Add, 0, List.hd e)
+ + Destruct(Model.Add, 0, List.hd (List.tl e)); Model.default = 23}</pre></td></tr><tr><td><ul><li><pre>e &lt;&gt; []</pre></li><li><pre>Is_a(Model.Add, List.hd e)</pre></li><li><pre>(List.tl e) &lt;&gt; []</pre></li><li><pre>List.tl (List.tl (List.tl e)) = []</pre></li><li><pre>(List.tl (List.tl e)) &lt;&gt; []</pre></li><li><pre>Is_a(Model.Add, List.hd (List.tl e))</pre></li><li><pre>Destruct(Model.Add, 0, List.hd e) &lt;= 9000</pre></li><li><pre>Destruct(Model.Add, 0, List.hd e) = 1337</pre></li></ul></td><td><pre>F = {Model.counter = 23; Model.default = 23}</pre></td></tr></table></div></div></div></div><script>
+require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
+  var target = '#alt-9195f49e-7202-4c4c-9080-2239b95dd70c';
+  alternatives.hydrate(target);
+});
+</script></div>
+
+</div>
+
+</div>
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+
+<div class="output_html rendered_html output_subarea ">
+<div class="imandra-alternatives" id="alt-103a9b54-b36c-4459-913f-8cb1bcd23a35"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-07bc7f48-da6a-4e88-80f1-bf3e9389e19f" class="decompose"><textarea class="display-none">{
+  &quot;regions&quot;: [
+    {
+      &quot;constraints&quot;: [
+        &quot;(List.tl (List.tl e)) &lt;&gt; []&quot;, &quot;(List.tl e) &lt;&gt; []&quot;,
+        &quot;Destruct(Model.Add, 0, List.hd e) = 1337&quot;,
+        &quot;Is_a(Model.Add, List.hd (List.tl e))&quot;, &quot;Is_a(Model.Add, List.hd e)&quot;,
+        &quot;List.tl (List.tl (List.tl e)) = []&quot;, &quot;e &lt;&gt; []&quot;
+      ],
+      &quot;region&quot;: null,
+      &quot;groups&quot;: [
+        {
+          &quot;constraints&quot;: [
+            &quot;(List.tl (List.tl e)) &lt;&gt; []&quot;, &quot;(List.tl e) &lt;&gt; []&quot;,
+            &quot;Destruct(Model.Add, 0, List.hd e) = 1337&quot;,
+            &quot;Is_a(Model.Add, List.hd (List.tl e))&quot;,
+            &quot;Is_a(Model.Add, List.hd e)&quot;,
+            &quot;List.tl (List.tl (List.tl e)) = []&quot;, &quot;e &lt;&gt; []&quot;,
+            &quot;List.hd (List.tl (List.tl e)) = Model.Reset&quot;
+          ],
+          &quot;region&quot;: {
+            &quot;constraints&quot;: [
+              &quot;e &lt;&gt; []&quot;, &quot;Is_a(Model.Add, List.hd e)&quot;, &quot;(List.tl e) &lt;&gt; []&quot;,
+              &quot;List.tl (List.tl (List.tl e)) = []&quot;,
+              &quot;(List.tl (List.tl e)) &lt;&gt; []&quot;,
+              &quot;Is_a(Model.Add, List.hd (List.tl e))&quot;,
+              &quot;Destruct(Model.Add, 0, List.hd e) = 1337&quot;,
+              &quot;List.hd (List.tl (List.tl e)) = Model.Reset&quot;
+            ],
+            &quot;invariant&quot;: &quot;F = {Model.counter = 0; Model.default = 23}&quot;
+          },
+          &quot;groups&quot;: [],
+          &quot;label&quot;: &quot;R[1.1.1.1.1.1.1.2]&quot;,
+          &quot;weight&quot;: 1
+        },
+        {
+          &quot;constraints&quot;: [
+            &quot;(List.tl (List.tl e)) &lt;&gt; []&quot;, &quot;(List.tl e) &lt;&gt; []&quot;,
+            &quot;Destruct(Model.Add, 0, List.hd e) = 1337&quot;,
+            &quot;Is_a(Model.Add, List.hd (List.tl e))&quot;,
+            &quot;Is_a(Model.Add, List.hd e)&quot;,
+            &quot;List.tl (List.tl (List.tl e)) = []&quot;, &quot;e &lt;&gt; []&quot;,
+            &quot;not (List.hd (List.tl (List.tl e)) = Model.Reset)&quot;
+          ],
+          &quot;region&quot;: null,
+          &quot;groups&quot;: [
+            {
+              &quot;constraints&quot;: [
+                &quot;(List.tl (List.tl e)) &lt;&gt; []&quot;, &quot;(List.tl e) &lt;&gt; []&quot;,
+                &quot;Destruct(Model.Add, 0, List.hd e) = 1337&quot;,
+                &quot;Is_a(Model.Add, List.hd (List.tl e))&quot;,
+                &quot;Is_a(Model.Add, List.hd e)&quot;,
+                &quot;List.tl (List.tl (List.tl e)) = []&quot;, &quot;e &lt;&gt; []&quot;,
+                &quot;not (List.hd (List.tl (List.tl e)) = Model.Reset)&quot;,
+                &quot;Destruct(Model.Sub, 0, List.hd (List.tl (List.tl e))) &lt;= 23&quot;,
+                &quot;not Is_a(Model.Add, List.hd (List.tl (List.tl e)))&quot;
+              ],
+              &quot;region&quot;: {
+                &quot;constraints&quot;: [
+                  &quot;e &lt;&gt; []&quot;, &quot;Is_a(Model.Add, List.hd e)&quot;,
+                  &quot;(List.tl e) &lt;&gt; []&quot;, &quot;List.tl (List.tl (List.tl e)) = []&quot;,
+                  &quot;(List.tl (List.tl e)) &lt;&gt; []&quot;,
+                  &quot;Is_a(Model.Add, List.hd (List.tl e))&quot;,
+                  &quot;Destruct(Model.Add, 0, List.hd e) = 1337&quot;,
+                  &quot;not (List.hd (List.tl (List.tl e)) = Model.Reset)&quot;,
+                  &quot;not Is_a(Model.Add, List.hd (List.tl (List.tl e)))&quot;,
+                  &quot;Destruct(Model.Sub, 0, List.hd (List.tl (List.tl e))) &lt;= 23&quot;
+                ],
+                &quot;invariant&quot;:
+                  &quot;F =\n{Model.counter =\n 23 + -1 * Destruct(Model.Sub, 0, List.hd (List.tl (List.tl e)));\n Model.default = 23}&quot;
+              },
+              &quot;groups&quot;: [],
+              &quot;label&quot;: &quot;R[1.1.1.1.1.1.1.1.2.1]&quot;,
+              &quot;weight&quot;: 1
+            },
+            {
+              &quot;constraints&quot;: [
+                &quot;(List.tl (List.tl e)) &lt;&gt; []&quot;, &quot;(List.tl e) &lt;&gt; []&quot;,
+                &quot;Destruct(Model.Add, 0, List.hd e) = 1337&quot;,
+                &quot;Is_a(Model.Add, List.hd (List.tl e))&quot;,
+                &quot;Is_a(Model.Add, List.hd e)&quot;,
+                &quot;List.tl (List.tl (List.tl e)) = []&quot;, &quot;e &lt;&gt; []&quot;,
+                &quot;not (List.hd (List.tl (List.tl e)) = Model.Reset)&quot;,
+                &quot;Is_a(Model.Add, List.hd (List.tl (List.tl e)))&quot;
+              ],
+              &quot;region&quot;: null,
+              &quot;groups&quot;: [
+                {
+                  &quot;constraints&quot;: [
+                    &quot;(List.tl (List.tl e)) &lt;&gt; []&quot;, &quot;(List.tl e) &lt;&gt; []&quot;,
+                    &quot;Destruct(Model.Add, 0, List.hd e) = 1337&quot;,
+                    &quot;Is_a(Model.Add, List.hd (List.tl e))&quot;,
+                    &quot;Is_a(Model.Add, List.hd e)&quot;,
+                    &quot;List.tl (List.tl (List.tl e)) = []&quot;, &quot;e &lt;&gt; []&quot;,
+                    &quot;not (List.hd (List.tl (List.tl e)) = Model.Reset)&quot;,
+                    &quot;Is_a(Model.Add, List.hd (List.tl (List.tl e)))&quot;,
+                    &quot;not (Destruct(Model.Add, 0, List.hd (List.tl (List.tl e))) &lt;= 8977)&quot;
+                  ],
+                  &quot;region&quot;: {
+                    &quot;constraints&quot;: [
+                      &quot;e &lt;&gt; []&quot;, &quot;Is_a(Model.Add, List.hd e)&quot;,
+                      &quot;(List.tl e) &lt;&gt; []&quot;,
+                      &quot;List.tl (List.tl (List.tl e)) = []&quot;,
+                      &quot;(List.tl (List.tl e)) &lt;&gt; []&quot;,
+                      &quot;Is_a(Model.Add, List.hd (List.tl e))&quot;,
+                      &quot;Destruct(Model.Add, 0, List.hd e) = 1337&quot;,
+                      &quot;not (List.hd (List.tl (List.tl e)) = Model.Reset)&quot;,
+                      &quot;Is_a(Model.Add, List.hd (List.tl (List.tl e)))&quot;,
+                      &quot;not (Destruct(Model.Add, 0, List.hd (List.tl (List.tl e))) &lt;= 8977)&quot;
+                    ],
+                    &quot;invariant&quot;:
+                      &quot;F = {Model.counter = 0; Model.default = 23}&quot;
+                  },
+                  &quot;groups&quot;: [],
+                  &quot;label&quot;: &quot;R[1.1.1.1.1.1.1.1.1.2]&quot;,
+                  &quot;weight&quot;: 1
+                },
+                {
+                  &quot;constraints&quot;: [
+                    &quot;(List.tl (List.tl e)) &lt;&gt; []&quot;, &quot;(List.tl e) &lt;&gt; []&quot;,
+                    &quot;Destruct(Model.Add, 0, List.hd e) = 1337&quot;,
+                    &quot;Is_a(Model.Add, List.hd (List.tl e))&quot;,
+                    &quot;Is_a(Model.Add, List.hd e)&quot;,
+                    &quot;List.tl (List.tl (List.tl e)) = []&quot;, &quot;e &lt;&gt; []&quot;,
+                    &quot;not (List.hd (List.tl (List.tl e)) = Model.Reset)&quot;,
+                    &quot;Is_a(Model.Add, List.hd (List.tl (List.tl e)))&quot;,
+                    &quot;Destruct(Model.Add, 0, List.hd (List.tl (List.tl e))) &lt;= 8977&quot;
+                  ],
+                  &quot;region&quot;: {
+                    &quot;constraints&quot;: [
+                      &quot;e &lt;&gt; []&quot;, &quot;Is_a(Model.Add, List.hd e)&quot;,
+                      &quot;(List.tl e) &lt;&gt; []&quot;,
+                      &quot;List.tl (List.tl (List.tl e)) = []&quot;,
+                      &quot;(List.tl (List.tl e)) &lt;&gt; []&quot;,
+                      &quot;Is_a(Model.Add, List.hd (List.tl e))&quot;,
+                      &quot;Destruct(Model.Add, 0, List.hd e) = 1337&quot;,
+                      &quot;not (List.hd (List.tl (List.tl e)) = Model.Reset)&quot;,
+                      &quot;Is_a(Model.Add, List.hd (List.tl (List.tl e)))&quot;,
+                      &quot;Destruct(Model.Add, 0, List.hd (List.tl (List.tl e))) &lt;= 8977&quot;
+                    ],
+                    &quot;invariant&quot;:
+                      &quot;F =\n{Model.counter = 23 + Destruct(Model.Add, 0, List.hd (List.tl (List.tl e)));\n Model.default = 23}&quot;
+                  },
+                  &quot;groups&quot;: [],
+                  &quot;label&quot;: &quot;R[1.1.1.1.1.1.1.1.1.1]&quot;,
+                  &quot;weight&quot;: 1
+                }
+              ],
+              &quot;label&quot;: &quot;(1.1.1.1.1.1.1.1.1)&quot;,
+              &quot;weight&quot;: 2
+            }
+          ],
+          &quot;label&quot;: &quot;(1.1.1.1.1.1.1.1)&quot;,
+          &quot;weight&quot;: 3
+        }
+      ],
+      &quot;label&quot;: &quot;(1.1.1.1.1.1.1)&quot;,
+      &quot;weight&quot;: 4
+    }
+  ]
+}</textarea><div class="decompose-foamtree"></div><div class="decompose-details"><div class="decompose-details-header">Regions details</div><div class="decompose-details-no-selection">No group selected.</div><div class="decompose-details-selection hidden"><div><span class="decompose-details-label">Direct sub-regions: </span><span class="decompose-details-direct-sub-regions-text">-</span></div><div><span class="decompose-details-label">Contained regions: </span><span class="decompose-details-contained-regions-text">-</span></div><div class="decompose-details-section-header">Constraints</div><div class="decompose-details-constraints"><pre class="decompose-details-constraint">&lt;constraint&gt;</pre></div><div class="decompose-details-invariant"><div class="decompose-details-section-header">Invariant</div><pre class="decompose-details-invariant-text">&lt;invariant&gt;</pre></div></div></div><script>
+(function () {
+  require(['nbextensions/nbimandra/regions'], function (regions) {
+    var target = '#decompose-07bc7f48-da6a-4e88-80f1-bf3e9389e19f';
+    regions.hydrate(target);
+  });
+})();
+</script></div></div><div class="tab-pane"><div><div class="imandra-table" id="table-1304a20d-3743-43ac-9df1-5aa7e33177e4"><table><thead><tr><th>Constraints</th><th>Invariant</th></tr></thead><tr><td><ul><li><pre>e &lt;&gt; []</pre></li><li><pre>Is_a(Model.Add, List.hd e)</pre></li><li><pre>(List.tl e) &lt;&gt; []</pre></li><li><pre>List.tl (List.tl (List.tl e)) = []</pre></li><li><pre>(List.tl (List.tl e)) &lt;&gt; []</pre></li><li><pre>Is_a(Model.Add, List.hd (List.tl e))</pre></li><li><pre>Destruct(Model.Add, 0, List.hd e) = 1337</pre></li><li><pre>not (List.hd (List.tl (List.tl e)) = Model.Reset)</pre></li><li><pre>not Is_a(Model.Add, List.hd (List.tl (List.tl e)))</pre></li><li><pre>Destruct(Model.Sub, 0, List.hd (List.tl (List.tl e))) &lt;= 23</pre></li></ul></td><td><pre>F =
+{Model.counter =
+ 23 + -1 * Destruct(Model.Sub, 0, List.hd (List.tl (List.tl e)));
+ Model.default = 23}</pre></td></tr><tr><td><ul><li><pre>e &lt;&gt; []</pre></li><li><pre>Is_a(Model.Add, List.hd e)</pre></li><li><pre>(List.tl e) &lt;&gt; []</pre></li><li><pre>List.tl (List.tl (List.tl e)) = []</pre></li><li><pre>(List.tl (List.tl e)) &lt;&gt; []</pre></li><li><pre>Is_a(Model.Add, List.hd (List.tl e))</pre></li><li><pre>Destruct(Model.Add, 0, List.hd e) = 1337</pre></li><li><pre>not (List.hd (List.tl (List.tl e)) = Model.Reset)</pre></li><li><pre>Is_a(Model.Add, List.hd (List.tl (List.tl e)))</pre></li><li><pre>not (Destruct(Model.Add, 0, List.hd (List.tl (List.tl e))) &lt;= 8977)</pre></li></ul></td><td><pre>F = {Model.counter = 0; Model.default = 23}</pre></td></tr><tr><td><ul><li><pre>e &lt;&gt; []</pre></li><li><pre>Is_a(Model.Add, List.hd e)</pre></li><li><pre>(List.tl e) &lt;&gt; []</pre></li><li><pre>List.tl (List.tl (List.tl e)) = []</pre></li><li><pre>(List.tl (List.tl e)) &lt;&gt; []</pre></li><li><pre>Is_a(Model.Add, List.hd (List.tl e))</pre></li><li><pre>Destruct(Model.Add, 0, List.hd e) = 1337</pre></li><li><pre>not (List.hd (List.tl (List.tl e)) = Model.Reset)</pre></li><li><pre>Is_a(Model.Add, List.hd (List.tl (List.tl e)))</pre></li><li><pre>Destruct(Model.Add, 0, List.hd (List.tl (List.tl e))) &lt;= 8977</pre></li></ul></td><td><pre>F =
+{Model.counter = 23 + Destruct(Model.Add, 0, List.hd (List.tl (List.tl e)));
+ Model.default = 23}</pre></td></tr><tr><td><ul><li><pre>e &lt;&gt; []</pre></li><li><pre>Is_a(Model.Add, List.hd e)</pre></li><li><pre>(List.tl e) &lt;&gt; []</pre></li><li><pre>List.tl (List.tl (List.tl e)) = []</pre></li><li><pre>(List.tl (List.tl e)) &lt;&gt; []</pre></li><li><pre>Is_a(Model.Add, List.hd (List.tl e))</pre></li><li><pre>Destruct(Model.Add, 0, List.hd e) = 1337</pre></li><li><pre>List.hd (List.tl (List.tl e)) = Model.Reset</pre></li></ul></td><td><pre>F = {Model.counter = 0; Model.default = 23}</pre></td></tr></table></div></div></div></div><script>
+require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
+  var target = '#alt-103a9b54-b36c-4459-913f-8cb1bcd23a35';
+  alternatives.hydrate(target);
+});
+</script></div>
+
 </div>
 
 </div>
@@ -1818,47 +2197,32 @@ val first_path : D.Symbolic.path =
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>val first_path_regions : Imandra_lib.Decompose.t list =
-  [---[region]---
-   Constraints:
-    [List.tl (List.tl (List.tl e)) = [];
-     (List.tl (List.tl e)) &lt;&gt; [];
-     Is_a(Model.Add, List.hd (List.tl e));
-     (List.tl e) &lt;&gt; [];
-     e &lt;&gt; [];
-     not (List.hd e = Model.Reset);
-     Is_a(Model.Add, List.hd e);
-     Destruct(Model.Add, 0, List.hd e) &lt;= 9000]
-   Invariant:
-    F =
-    {Model.counter = Destruct(Model.Add, 0, List.hd e); Model.default = 23}
-   -------------;
-   ---[region]---
-   Constraints:
-    [e &lt;&gt; [];
-     Is_a(Model.Add, List.hd e);
-     (List.tl e) &lt;&gt; [];
-     List.tl (List.tl (List.tl e)) = [];
-     (List.tl (List.tl e)) &lt;&gt; [];
-     Is_a(Model.Add, List.hd (List.tl e));
-     Destruct(Model.Add, 0, List.hd e) &lt;= 9000;
-     Destruct(Model.Add, 0, List.hd e) = 1337]
-   Invariant:
-    F = {Model.counter = 23; Model.default = 23}
-   -------------;
-   ---[region]---
-   Constraints:
-    [e &lt;&gt; [];
-     Is_a(Model.Add, List.hd e);
-     (List.tl e) &lt;&gt; [];
-     List.tl (List.tl (List.tl e)) = [];
-     (List.tl (List.tl e)) &lt;&gt; [];
-     Is_a(Model.Add, List.hd (List.tl e));
-     Destruct(Model.Add, 0, List.hd e) = 1337;
-     List.hd (List.tl (List.tl e)) = Model.Reset]
-   Invariant:
-    F = {Model.counter = 0; Model.default = 23}
-   -------------]
+<pre>val first_path_regions : Imandra_tools__Idf.Decompose.t list =
+  [{Imandra_tools__Idf.Decompose.reg_session = 1i; reg_id = 3i;
+    reg_constraints =
+     [List.tl (List.tl (List.tl e)) = []; (List.tl (List.tl e)) &lt;&gt; [];
+      Is_a(Model.Add, List.hd (List.tl e)); (List.tl e) &lt;&gt; []; e &lt;&gt; [];
+      not (List.hd e = Model.Reset); Is_a(Model.Add, List.hd e);
+      Destruct(Model.Add, 0, List.hd e) &lt;= 9000];
+    reg_invariant =
+     F =
+     {Model.counter = Destruct(Model.Add, 0, List.hd e); Model.default = 23}};
+   {Imandra_tools__Idf.Decompose.reg_session = 2i; reg_id = 9i;
+    reg_constraints =
+     [e &lt;&gt; []; Is_a(Model.Add, List.hd e); (List.tl e) &lt;&gt; [];
+      List.tl (List.tl (List.tl e)) = []; (List.tl (List.tl e)) &lt;&gt; [];
+      Is_a(Model.Add, List.hd (List.tl e));
+      Destruct(Model.Add, 0, List.hd e) &lt;= 9000;
+      Destruct(Model.Add, 0, List.hd e) = 1337];
+    reg_invariant = F = {Model.counter = 23; Model.default = 23}};
+   {Imandra_tools__Idf.Decompose.reg_session = 3i; reg_id = 16i;
+    reg_constraints =
+     [e &lt;&gt; []; Is_a(Model.Add, List.hd e); (List.tl e) &lt;&gt; [];
+      List.tl (List.tl (List.tl e)) = []; (List.tl (List.tl e)) &lt;&gt; [];
+      Is_a(Model.Add, List.hd (List.tl e));
+      Destruct(Model.Add, 0, List.hd e) = 1337;
+      List.hd (List.tl (List.tl e)) = Model.Reset];
+    reg_invariant = F = {Model.counter = 0; Model.default = 23}}]
 </pre>
 </div>
 
@@ -1912,7 +2276,7 @@ val first_path : D.Symbolic.path =
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>- : Imandra_lib.Decompose.t list =
+<pre>- : Imandra_tools__Idf.Decompose.t list =
 [---[region]---
  Constraints:
    [ (List.tl (List.tl (List.tl e))) = []
@@ -2003,15 +2367,15 @@ val first_path : D.Symbolic.path =
 val rs : Imandra_reasoning.Decompose.t list =
   [---[region]---
    Constraints:
-     [ y = (Set.union x y) ]
+    [y = Set.union x y]
    Invariant:
-     F = (Map.add&#39; x z true)
+    F = Map.add&#39; x z true
    -------------;
    ---[region]---
    Constraints:
-     [ y &lt;&gt; (Set.union x y) ]
+    [not (y = Set.union x y)]
    Invariant:
-     F = (Map.add&#39; (Map.const false) z true)
+    F = Map.add&#39; (Map.const false) z true
    -------------]
 </pre>
 </div>
@@ -2025,7 +2389,7 @@ val rs : Imandra_reasoning.Decompose.t list =
 
 
 <div class="output_html rendered_html output_subarea ">
-<div class="imandra-alternatives" id="alt-345557bf-c6b5-442c-a7d4-6a8f436fb84e"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-910e683c-3478-4930-a597-42ee810ef3e7" class="decompose"><textarea class="display-none">{
+<div class="imandra-alternatives" id="alt-22992365-cf58-41b8-8ea7-6caede912abd"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-84db96a1-ffb0-4789-a385-728446baadc8" class="decompose"><textarea class="display-none">{
   &quot;regions&quot;: [
     {
       &quot;constraints&quot;: [ &quot;y = Set.union x y&quot; ],
@@ -2051,13 +2415,13 @@ val rs : Imandra_reasoning.Decompose.t list =
 }</textarea><div class="decompose-foamtree"></div><div class="decompose-details"><div class="decompose-details-header">Regions details</div><div class="decompose-details-no-selection">No group selected.</div><div class="decompose-details-selection hidden"><div><span class="decompose-details-label">Direct sub-regions: </span><span class="decompose-details-direct-sub-regions-text">-</span></div><div><span class="decompose-details-label">Contained regions: </span><span class="decompose-details-contained-regions-text">-</span></div><div class="decompose-details-section-header">Constraints</div><div class="decompose-details-constraints"><pre class="decompose-details-constraint">&lt;constraint&gt;</pre></div><div class="decompose-details-invariant"><div class="decompose-details-section-header">Invariant</div><pre class="decompose-details-invariant-text">&lt;invariant&gt;</pre></div></div></div><script>
 (function () {
   require(['nbextensions/nbimandra/regions'], function (regions) {
-    var target = '#decompose-910e683c-3478-4930-a597-42ee810ef3e7';
+    var target = '#decompose-84db96a1-ffb0-4789-a385-728446baadc8';
     regions.hydrate(target);
   });
 })();
-</script></div></div><div class="tab-pane"><div><div class="imandra-table" id="table-855db5e2-7fc1-49ea-a3ba-e7e0e0f0c30d"><table><thead><tr><th>Constraints</th><th>Invariant</th></tr></thead><tr><td><ul><li><pre>not (y = Set.union x y)</pre></li></ul></td><td><pre>F = Map.add' (Map.const false) z true</pre></td></tr><tr><td><ul><li><pre>y = Set.union x y</pre></li></ul></td><td><pre>F = Map.add' x z true</pre></td></tr></table></div></div></div></div><script>
+</script></div></div><div class="tab-pane"><div><div class="imandra-table" id="table-04549920-a149-4646-b6b2-485c58eac7c9"><table><thead><tr><th>Constraints</th><th>Invariant</th></tr></thead><tr><td><ul><li><pre>not (y = Set.union x y)</pre></li></ul></td><td><pre>F = Map.add' (Map.const false) z true</pre></td></tr><tr><td><ul><li><pre>y = Set.union x y</pre></li></ul></td><td><pre>F = Map.add' x z true</pre></td></tr></table></div></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-345557bf-c6b5-442c-a7d4-6a8f436fb84e';
+  var target = '#alt-22992365-cf58-41b8-8ea7-6caede912abd';
   alternatives.hydrate(target);
 });
 </script></div>
@@ -2253,10 +2617,10 @@ module PPrinter :
       end
     module Parser :
       sig
-        module T = Imandra_lib.Term
-        module Ty = Imandra_lib.Type
-        module V = Imandra_lib.Var
-        module U = Imandra_lib.Uid
+        module T = Imandra_surface.Term
+        module Ty = Imandra_surface.Type
+        module V = Imandra_surface.Var
+        module U = Imandra_surface.Uid
         exception Discarded of T.t
         val discard : T.t -&gt; &#39;a
         val parse_binary_function :
@@ -2269,16 +2633,16 @@ module PPrinter :
       end
     val pp :
       ?unify:(node -&gt; node -&gt; node option) -&gt;
-      ?refine:(node -&gt; node) -&gt;
-      ?focus:&#39;a -&gt; Imandra_reasoning.Expr.t CCList.t -&gt; node list
+      ?refine:(node -&gt; node) -&gt; ?focus:&#39;a -&gt; Parser.T.t CCList.t -&gt; node list
     val print :
       ?unify:(node -&gt; node -&gt; node option) -&gt;
       ?refine:(node -&gt; node) -&gt;
       Imandra_prelude.unit -&gt;
-      Format.formatter -&gt; Imandra_lib.Decompose.t -&gt; unit
+      Format.formatter -&gt; Imandra_surface.Top_result.decompose_region -&gt; unit
     val to_string :
       ?unify:(node -&gt; node -&gt; node option) -&gt;
-      ?refine:(node -&gt; node) -&gt; Imandra_lib.Decompose.t -&gt; string
+      ?refine:(node -&gt; node) -&gt;
+      Imandra_surface.Top_result.decompose_region -&gt; string
   end
 val refine_ :
   Custom.t Imandra_tools.Region_pp.node_ -&gt;
@@ -2288,7 +2652,9 @@ val gather_keys :
   Custom.t Imandra_tools.Region_pp.node_ list = &lt;fun&gt;
 val is_proper_set : Custom.t Imandra_tools.Region_pp.node_ -&gt; bool = &lt;fun&gt;
 val refine : PPrinter.node -&gt; PPrinter.node = &lt;fun&gt;
-val print : Format.formatter -&gt; Imandra_lib.Decompose.t -&gt; unit = &lt;fun&gt;
+val print :
+  Format.formatter -&gt; Imandra_surface.Top_result.decompose_region -&gt; unit =
+  &lt;fun&gt;
 </pre>
 </div>
 
@@ -2346,15 +2712,15 @@ val print : Format.formatter -&gt; Imandra_lib.Decompose.t -&gt; unit = &lt;fun&
 <pre>- : Imandra_reasoning.Decompose.t list =
 [---[region]---
  Constraints:
-   [ (Set.subset x y) = true ]
+  [y = Set.union x y]
  Invariant:
-   F = (Set.add x z)
+  F = Map.add&#39; x z true
  -------------;
  ---[region]---
  Constraints:
-   [ (Set.subset x y) = false ]
+  [not (y = Set.union x y)]
  Invariant:
-   F = { z }
+  F = Map.add&#39; (Map.const false) z true
  -------------]
 </pre>
 </div>
