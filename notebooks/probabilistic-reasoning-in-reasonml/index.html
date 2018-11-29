@@ -34,7 +34,7 @@
         <link rel="stylesheet" href="/imandra-docs/static/nbextensions/nbimandra/styles.c7ed3d1a.css" type="text/css">
         <link rel="stylesheet" href="/imandra-docs/static/docs-styles.86fc0481.css" type="text/css">
         
-        <link rel="stylesheet" href="/imandra-docs/static/jekyll-styles.8dbeaac3.css" type="text/css">
+        <link rel="stylesheet" href="/imandra-docs/static/jekyll-styles.04a0e3a4.css" type="text/css">
         
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
@@ -144,13 +144,30 @@
 <header class="header">
     <div class="top-row-container">
         <div class="top-row">
-            <div id="toggler--left" class="side__left-menu-toggler"><a href="#" class="side__toggle">≡ <span class="side__toggle-text">Docs</span></a></div>
+
+            <div id="toggler--left" class="side__left-menu-toggler">
+                <div class="side__toggle">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+                <p class="side__toggle-text">Docs</p>
+            </div>
+
             <div class="side__logo-container">
                 <a class="side__logo-link" href="/">
                     <img class="side__logo " src = "/imandra-docs/jekyll-resources/assets/img/ai_logo_green.svg">
                 </a>
             </div>
-            <div id="toggler--right" class="side__right-menu-toggler"><a href="#" class="side__toggle"><span class="side__toggle-text">Pages</span> ≡</a></div>
+
+            <div id="toggler--right" class="side__right-menu-toggler">
+                <p class="side__toggle-text">Pages</p>
+                <div class="side__toggle">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
 
             <nav class="side__nav-container side__nav-container--hidden">
 
@@ -409,21 +426,30 @@
                 </ul>
             </nav>
         </div>
+
         <div class="template-header__image-container template-header__image-container--jupyter">
             <div class="template-header__image" href ="/imandra-docs">
                 <img class="SiteSpecificImage" src="/imandra-docs/static/img/site_specific_image_v_2.svg">
             </div>
         </div>
+        
     </div>
+
     <script>
-     document.getElementById('toggler--left').addEventListener('click', function () {
-         document.getElementsByClassName('side__nav-container')[0].classList.toggle('side__nav-container--hidden');
-         document.getElementsByClassName('top-bar__nav-list')[0].classList.add('top-bar__nav-list--hidden');
-     });
-     document.getElementById('toggler--right').addEventListener('click', function () {
-         document.getElementsByClassName('side__nav-container')[0].classList.add('side__nav-container--hidden');
-         document.getElementsByClassName('top-bar__nav-list')[0].classList.toggle('top-bar__nav-list--hidden');
-     });
+        document.getElementById('toggler--left').addEventListener('click', function () {
+            document.querySelector('.side__right-menu-toggler .side__toggle').classList.remove('side__toggle--active');
+            document.querySelector('.side__left-menu-toggler .side__toggle').classList.toggle('side__toggle--active');
+            document.getElementsByClassName('side__nav-container')[0].classList.toggle('side__nav-container--hidden');
+            document.getElementsByClassName('top-bar__nav-list')[0].classList.add('top-bar__nav-list--hidden');
+        });
+
+        document.getElementById('toggler--right').addEventListener('click', function () {
+            document.querySelector('.side__left-menu-toggler .side__toggle').classList.remove('side__toggle--active');
+            document.querySelector('.side__right-menu-toggler .side__toggle').classList.toggle('side__toggle--active');
+            document.getElementsByClassName('side__nav-container')[0].classList.add('side__nav-container--hidden');
+            document.getElementsByClassName('top-bar__nav-list')[0].classList.toggle('top-bar__nav-list--hidden');
+        });
+
     </script>
 </header>
                 <article class="article__container article__container--notebooks">
@@ -531,7 +557,7 @@ module CX : sig val f : t -&gt; Z.t end
 
 
 <div class="output_html rendered_html output_subarea ">
-<div><pre>Instance (after 0 steps, 0.020s):
+<div><pre>Instance (after 0 steps, 0.019s):
  let f = function
    | C -&gt; 40
    | _ -&gt; 1
@@ -549,32 +575,32 @@ module CX : sig val f : t -&gt; Z.t end
 
 
 <div class="output_html rendered_html output_subarea ">
-<div><div class="imandra-vr imandra-vr-proved"><i class="fa fa-check-circle"></i><span>Instance</span></div><div><div class="imandra-alternatives" id="alt-1e3ca3c6-3ff6-4afc-9ecd-017d8d86c213"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>call graph</a></li><li class="" data-toggle="tab"><a>proof-attempt</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-graphviz" id="graphviz-873ece52-4139-4ec1-9c0f-454b35d3a9df"><textarea style="display: none">digraph &quot;call graph&quot; {
+<div><div class="imandra-vr imandra-vr-proved"><i class="fa fa-check-circle"></i><span>Instance</span></div><div><div class="imandra-alternatives" id="alt-18cf2b40-b229-41ea-9154-f0326bcae441"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>call graph</a></li><li class="" data-toggle="tab"><a>proof-attempt</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-graphviz" id="graphviz-0136ab4b-327a-4727-93e1-e06e02c72549"><textarea style="display: none">digraph &quot;call graph&quot; {
 goal [label=&quot;(not (sko_f_0 A \&lt;= 0) &amp;&amp; not (sko_f_0 B \&lt;= 0))\l&amp;&amp; (sko_f_0 A + sko_f_0 B) + sko_f_0 C = 42&quot;,shape=box,style=filled,color=&quot;cyan&quot;,fontname=&quot;courier&quot;,fontsize=14];
 }
 </textarea><button class="btn btn-primary">Load graph</button><div class="imandra-graphviz-loading display-none">Loading..</div><div class="imandra-graphviz-target"></div><script>
 require(['nbextensions/nbimandra/graphviz'], function (graphviz) {
-  var target = '#graphviz-873ece52-4139-4ec1-9c0f-454b35d3a9df';
+  var target = '#graphviz-0136ab4b-327a-4727-93e1-e06e02c72549';
   graphviz.hydrate(target);
 });
-</script></div></div><div class="tab-pane"><div class="imandra-proof-top"><div class="imandra-fold panel panel-default" id="fold-568eac6a-787e-4bc7-ba43-56c000876dc1"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>proof attempt</span></div></div><div class="panel-body collapse"><div class="imandra-proof"><div class="imandra-alternatives" id="alt-0c52074c-1258-4523-80ba-f52d0a8440ab"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>summary</a></li><li class="" data-toggle="tab"><a>full</a></li><li class="" data-toggle="tab"><a>graph</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-table" id="table-86a3006d-7b45-4a55-b59f-63b07abcacc3"><table><tr><td><b>ground_instances</b></td><td>0</td></tr><tr><td><b>definitions</b></td><td>0</td></tr><tr><td><b>inductions</b></td><td>0</td></tr><tr><td><b>search_time</b></td><td><pre>0.020s</pre></td></tr><tr><td><b>details</b></td><td><div class="imandra-fold panel panel-default" id="fold-7f735c72-5804-4d8a-87c4-eeb0f90beba3"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><div class="imandra-table" id="table-f25be33d-80f1-489d-a85b-c619998b4f6b"><table><tr><td><b>smt_stats</b></td><td><div class="imandra-table" id="table-6964a96b-1150-4085-afa1-36b408dd6790"><table><tr><td><b>num checks</b></td><td>1</td></tr><tr><td><b>arith assert lower</b></td><td>3</td></tr><tr><td><b>arith pivots</b></td><td>1</td></tr><tr><td><b>rlimit count</b></td><td>235</td></tr><tr><td><b>mk clause</b></td><td>3</td></tr><tr><td><b>datatype occurs check</b></td><td>3</td></tr><tr><td><b>mk bool var</b></td><td>11</td></tr><tr><td><b>arith assert upper</b></td><td>1</td></tr><tr><td><b>propagations</b></td><td>2</td></tr><tr><td><b>datatype accessor ax</b></td><td>3</td></tr><tr><td><b>num allocs</b></td><td>1173410065</td></tr><tr><td><b>final checks</b></td><td>1</td></tr><tr><td><b>added eqs</b></td><td>1</td></tr><tr><td><b>del clause</b></td><td>3</td></tr><tr><td><b>arith eq adapter</b></td><td>1</td></tr><tr><td><b>memory</b></td><td>24.010000</td></tr><tr><td><b>max memory</b></td><td>24.280000</td></tr></table></div></td></tr></table></div></div><script>
+</script></div></div><div class="tab-pane"><div class="imandra-proof-top"><div class="imandra-fold panel panel-default" id="fold-999fc2a3-b87c-4866-a5f9-0400d3e32e08"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>proof attempt</span></div></div><div class="panel-body collapse"><div class="imandra-proof"><div class="imandra-alternatives" id="alt-2aba9e03-fc90-4c14-b37a-df537020721f"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>summary</a></li><li class="" data-toggle="tab"><a>full</a></li><li class="" data-toggle="tab"><a>graph</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-table" id="table-e92d8721-637e-4c7f-8147-1fbc3f997348"><table><tr><td><b>ground_instances</b></td><td>0</td></tr><tr><td><b>definitions</b></td><td>0</td></tr><tr><td><b>inductions</b></td><td>0</td></tr><tr><td><b>search_time</b></td><td><pre>0.019s</pre></td></tr><tr><td><b>details</b></td><td><div class="imandra-fold panel panel-default" id="fold-5f35be1f-9c57-4c6f-94ee-35af17e429c5"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><div class="imandra-table" id="table-6e10d291-34a2-48c6-a849-ae82d86988ac"><table><tr><td><b>smt_stats</b></td><td><div class="imandra-table" id="table-031312e7-e3e7-4674-a5c2-8a8edaa3634a"><table><tr><td><b>num checks</b></td><td>1</td></tr><tr><td><b>arith assert lower</b></td><td>3</td></tr><tr><td><b>arith pivots</b></td><td>1</td></tr><tr><td><b>rlimit count</b></td><td>235</td></tr><tr><td><b>mk clause</b></td><td>3</td></tr><tr><td><b>datatype occurs check</b></td><td>3</td></tr><tr><td><b>mk bool var</b></td><td>11</td></tr><tr><td><b>arith assert upper</b></td><td>1</td></tr><tr><td><b>propagations</b></td><td>2</td></tr><tr><td><b>datatype accessor ax</b></td><td>3</td></tr><tr><td><b>num allocs</b></td><td>1173410065</td></tr><tr><td><b>final checks</b></td><td>1</td></tr><tr><td><b>added eqs</b></td><td>1</td></tr><tr><td><b>del clause</b></td><td>3</td></tr><tr><td><b>arith eq adapter</b></td><td>1</td></tr><tr><td><b>memory</b></td><td>24.010000</td></tr><tr><td><b>max memory</b></td><td>24.280000</td></tr></table></div></td></tr></table></div></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-7f735c72-5804-4d8a-87c4-eeb0f90beba3';
+  var target = '#fold-5f35be1f-9c57-4c6f-94ee-35af17e429c5';
   fold.hydrate(target);
 });
-</script></div></td></tr></table></div></div><div class="tab-pane"><div class="imandra-fold panel panel-default" id="fold-4d51eaa1-ff06-4fd6-8ba3-b93807125c16"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.020s]
-  sko_f_0 A &gt; 0 &amp;&amp; sko_f_0 B &gt; 0 &amp;&amp; (sko_f_0 A + sko_f_0 B) + sko_f_0 C = 42</pre></li><li><div><h4>simplify</h4><div class="imandra-table" id="table-68bf7ff6-9c33-4111-9deb-46c4a3249406"><table><tr><td><b>into</b></td><td><pre>(not (sko_f_0 A &lt;= 0) &amp;&amp; not (sko_f_0 B &lt;= 0))
+</script></div></td></tr></table></div></div><div class="tab-pane"><div class="imandra-fold panel panel-default" id="fold-79101f11-b660-4b18-b59f-3b513669a947"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.019s]
+  sko_f_0 A &gt; 0 &amp;&amp; sko_f_0 B &gt; 0 &amp;&amp; (sko_f_0 A + sko_f_0 B) + sko_f_0 C = 42</pre></li><li><div><h4>simplify</h4><div class="imandra-table" id="table-3b142e10-6fd1-4e36-8c3d-42b7f7734601"><table><tr><td><b>into</b></td><td><pre>(not (sko_f_0 A &lt;= 0) &amp;&amp; not (sko_f_0 B &lt;= 0))
 &amp;&amp; (sko_f_0 A + sko_f_0 B) + sko_f_0 C = 42</pre></td></tr><tr><td><b>expansions</b></td><td><pre>[]</pre></td></tr><tr><td><b>rewrite_steps</b></td><td><ul></ul></td></tr><tr><td><b>forward_chaining</b></td><td><ul></ul></td></tr></table></div></div></li><li>Sat (Some  let f = function
    | C -&gt; 40
    | _ -&gt; 1
  
 )</li></ul></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-4d51eaa1-ff06-4fd6-8ba3-b93807125c16';
+  var target = '#fold-79101f11-b660-4b18-b59f-3b513669a947';
   fold.hydrate(target);
 });
-</script></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-ef42b27d-79e8-4f4c-951e-3aeeca125906"><textarea style="display: none">digraph &quot;proof&quot; {
-p_263 [label=&quot;Start (sko_f_0 A \&gt; 0\l       &amp;&amp; sko_f_0 B \&gt; 0 &amp;&amp; (sko_f_0 A + sko_f_0 B) + sko_f_0 C = 42\l       :time 0.020s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+</script></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-d7dbcff0-2562-46f5-a568-f9103b8a6e10"><textarea style="display: none">digraph &quot;proof&quot; {
+p_263 [label=&quot;Start (sko_f_0 A \&gt; 0\l       &amp;&amp; sko_f_0 B \&gt; 0 &amp;&amp; (sko_f_0 A + sko_f_0 B) + sko_f_0 C = 42\l       :time 0.019s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_263 -&gt; p_262 [label=&quot;&quot;];
 p_262 [label=&quot;Simplify ((not (sko_f_0 A \&lt;= 0) &amp;&amp; not (sko_f_0 B \&lt;= 0))\l          &amp;&amp; (sko_f_0 A + sko_f_0 B) + sko_f_0 C = 42 :expansions [] \l          :rw [] :fc [])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_262 -&gt; p_261 [label=&quot;&quot;];
@@ -582,22 +608,22 @@ p_261 [label=&quot;Sat (Some  let f = function\l   \| C -\&gt; 40\l   \| _ -\&gt
 }
 </textarea><button class="btn btn-primary">Load graph</button><div class="imandra-graphviz-loading display-none">Loading..</div><div class="imandra-graphviz-target"></div><script>
 require(['nbextensions/nbimandra/graphviz'], function (graphviz) {
-  var target = '#graphviz-ef42b27d-79e8-4f4c-951e-3aeeca125906';
+  var target = '#graphviz-d7dbcff0-2562-46f5-a568-f9103b8a6e10';
   graphviz.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-0c52074c-1258-4523-80ba-f52d0a8440ab';
+  var target = '#alt-2aba9e03-fc90-4c14-b37a-df537020721f';
   alternatives.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-568eac6a-787e-4bc7-ba43-56c000876dc1';
+  var target = '#fold-999fc2a3-b87c-4866-a5f9-0400d3e32e08';
   fold.hydrate(target);
 });
 </script></div></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-1e3ca3c6-3ff6-4afc-9ecd-017d8d86c213';
+  var target = '#alt-18cf2b40-b229-41ea-9154-f0326bcae441';
   alternatives.hydrate(target);
 });
 </script></div></div></div>
@@ -1318,20 +1344,20 @@ module CX : sig val strategy : door -&gt; choice -&gt; Q.t end
 
 
 <div class="output_html rendered_html output_subarea ">
-<div><div class="imandra-vr imandra-vr-refuted"><i class="fa fa-times-circle-o"></i><span>Refuted</span></div><div><div class="imandra-alternatives" id="alt-9081f310-3c90-4675-8dd5-e5b0e2b751ff"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>call graph</a></li><li class="" data-toggle="tab"><a>proof-attempt</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-graphviz" id="graphviz-bd528bfb-8c2d-4532-8e35-582c355abd93"><textarea style="display: none">digraph &quot;call graph&quot; {
+<div><div class="imandra-vr imandra-vr-refuted"><i class="fa fa-times-circle-o"></i><span>Refuted</span></div><div><div class="imandra-alternatives" id="alt-f1707875-4045-4501-89fc-79c46b80477e"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>call graph</a></li><li class="" data-toggle="tab"><a>proof-attempt</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-graphviz" id="graphviz-00b4ab3f-1b30-47a6-bec3-e8fc950413c2"><textarea style="display: none">digraph &quot;call graph&quot; {
 goal [label=&quot;not\l(not\l ((((((sko_strategy_0 DoorA Stay \&gt;=. 0 &amp;&amp; sko_strategy_0 DoorA Swap \&gt;=. 0)\l      &amp;&amp; sko_strategy_0 DoorB Stay \&gt;=. 0)\l     &amp;&amp; sko_strategy_0 DoorB Swap \&gt;=. 0)\l    &amp;&amp; sko_strategy_0 DoorC Stay \&gt;=. 0)\l   &amp;&amp; sko_strategy_0 DoorC Swap \&gt;=. 0)\l  &amp;&amp; ((((sko_strategy_0 DoorA Stay +. sko_strategy_0 DoorA Swap)\l        +. sko_strategy_0 DoorB Stay)\l       +. sko_strategy_0 DoorB Swap)\l      +. sko_strategy_0 DoorC Stay)\l     +. sko_strategy_0 DoorC Swap = 1)\l \|\| (((((1000000/3 *. sko_strategy_0 DoorA Stay\l         +. 1000000/3 *. sko_strategy_0 DoorB Stay)\l        +. 1000000/3 *. sko_strategy_0 DoorC Stay)\l       +. 2000000/3 *. sko_strategy_0 DoorA Swap)\l      +. 2000000/3 *. sko_strategy_0 DoorB Swap)\l     +. 2000000/3 *. sko_strategy_0 DoorC Swap)\l    \&lt;=. 1000000/3)&quot;,shape=box,style=filled,color=&quot;cyan&quot;,fontname=&quot;courier&quot;,fontsize=14];
 }
 </textarea><button class="btn btn-primary">Load graph</button><div class="imandra-graphviz-loading display-none">Loading..</div><div class="imandra-graphviz-target"></div><script>
 require(['nbextensions/nbimandra/graphviz'], function (graphviz) {
-  var target = '#graphviz-bd528bfb-8c2d-4532-8e35-582c355abd93';
+  var target = '#graphviz-00b4ab3f-1b30-47a6-bec3-e8fc950413c2';
   graphviz.hydrate(target);
 });
-</script></div></div><div class="tab-pane"><div class="imandra-proof-top"><div class="imandra-fold panel panel-default" id="fold-34a459ee-2e40-47cd-bc7d-83bfab823146"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>proof attempt</span></div></div><div class="panel-body collapse"><div class="imandra-proof"><div class="imandra-alternatives" id="alt-74c2193f-97f1-4878-a3c2-312ec1574c70"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>summary</a></li><li class="" data-toggle="tab"><a>full</a></li><li class="" data-toggle="tab"><a>graph</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-table" id="table-cbec825a-bbe3-4705-922b-3cb30fced823"><table><tr><td><b>ground_instances</b></td><td>0</td></tr><tr><td><b>definitions</b></td><td>0</td></tr><tr><td><b>inductions</b></td><td>0</td></tr><tr><td><b>search_time</b></td><td><pre>0.022s</pre></td></tr><tr><td><b>details</b></td><td><div class="imandra-fold panel panel-default" id="fold-bc9eba71-d381-4a84-8be9-47d03df2f022"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><div class="imandra-table" id="table-7ef294eb-6502-4553-85b1-2760ba085009"><table><tr><td><b>smt_stats</b></td><td><div class="imandra-table" id="table-2a7654e9-1dd4-4d89-b951-c9f985bdc738"><table><tr><td><b>num checks</b></td><td>1</td></tr><tr><td><b>arith assert lower</b></td><td>8</td></tr><tr><td><b>arith pivots</b></td><td>2</td></tr><tr><td><b>rlimit count</b></td><td>1557</td></tr><tr><td><b>mk clause</b></td><td>3</td></tr><tr><td><b>datatype occurs check</b></td><td>5</td></tr><tr><td><b>mk bool var</b></td><td>16</td></tr><tr><td><b>arith assert upper</b></td><td>1</td></tr><tr><td><b>arith add rows</b></td><td>2</td></tr><tr><td><b>propagations</b></td><td>2</td></tr><tr><td><b>datatype accessor ax</b></td><td>5</td></tr><tr><td><b>num allocs</b></td><td>1237066914</td></tr><tr><td><b>final checks</b></td><td>1</td></tr><tr><td><b>added eqs</b></td><td>1</td></tr><tr><td><b>del clause</b></td><td>3</td></tr><tr><td><b>arith eq adapter</b></td><td>1</td></tr><tr><td><b>memory</b></td><td>6.900000</td></tr><tr><td><b>max memory</b></td><td>24.280000</td></tr></table></div></td></tr></table></div></div><script>
+</script></div></div><div class="tab-pane"><div class="imandra-proof-top"><div class="imandra-fold panel panel-default" id="fold-e703786a-9eee-4d52-936b-da3793ee72d7"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>proof attempt</span></div></div><div class="panel-body collapse"><div class="imandra-proof"><div class="imandra-alternatives" id="alt-79c2f2c5-2d65-4d87-ae9d-d9fa1423c168"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>summary</a></li><li class="" data-toggle="tab"><a>full</a></li><li class="" data-toggle="tab"><a>graph</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-table" id="table-ce46fcbf-1c25-4bbe-8519-6bcbb0af3560"><table><tr><td><b>ground_instances</b></td><td>0</td></tr><tr><td><b>definitions</b></td><td>0</td></tr><tr><td><b>inductions</b></td><td>0</td></tr><tr><td><b>search_time</b></td><td><pre>0.022s</pre></td></tr><tr><td><b>details</b></td><td><div class="imandra-fold panel panel-default" id="fold-4e8bbd7b-9913-460b-87be-fb3f539cbb22"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><div class="imandra-table" id="table-a42489ac-dd13-4bc4-ac0e-97d2f2b9c762"><table><tr><td><b>smt_stats</b></td><td><div class="imandra-table" id="table-f092acf3-8c22-448f-814d-e0e07dc1f32b"><table><tr><td><b>num checks</b></td><td>1</td></tr><tr><td><b>arith assert lower</b></td><td>8</td></tr><tr><td><b>arith pivots</b></td><td>2</td></tr><tr><td><b>rlimit count</b></td><td>1557</td></tr><tr><td><b>mk clause</b></td><td>3</td></tr><tr><td><b>datatype occurs check</b></td><td>5</td></tr><tr><td><b>mk bool var</b></td><td>16</td></tr><tr><td><b>arith assert upper</b></td><td>1</td></tr><tr><td><b>arith add rows</b></td><td>2</td></tr><tr><td><b>propagations</b></td><td>2</td></tr><tr><td><b>datatype accessor ax</b></td><td>5</td></tr><tr><td><b>num allocs</b></td><td>1237066914</td></tr><tr><td><b>final checks</b></td><td>1</td></tr><tr><td><b>added eqs</b></td><td>1</td></tr><tr><td><b>del clause</b></td><td>3</td></tr><tr><td><b>arith eq adapter</b></td><td>1</td></tr><tr><td><b>memory</b></td><td>6.900000</td></tr><tr><td><b>max memory</b></td><td>24.280000</td></tr></table></div></td></tr></table></div></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-bc9eba71-d381-4a84-8be9-47d03df2f022';
+  var target = '#fold-4e8bbd7b-9913-460b-87be-fb3f539cbb22';
   fold.hydrate(target);
 });
-</script></div></td></tr></table></div></div><div class="tab-pane"><div class="imandra-fold panel panel-default" id="fold-1cf42041-6ad2-461c-9443-509910388ff7"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.022s]
+</script></div></td></tr></table></div></div><div class="tab-pane"><div class="imandra-fold panel panel-default" id="fold-523fc593-f917-4bb3-b4dc-e80835bf0c5a"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.022s]
   sko_strategy_0 DoorA Stay &gt;=. 0
   &amp;&amp; sko_strategy_0 DoorA Swap &gt;=. 0
      &amp;&amp; sko_strategy_0 DoorB Stay &gt;=. 0
@@ -1354,7 +1380,7 @@ require(['nbextensions/nbimandra/fold'], function (fold) {
          +. …)
         +. …)
        +. …)
-      &lt;=. …</pre></li><li><div><h4>simplify</h4><div class="imandra-table" id="table-fdb187f8-27ad-4e4e-943a-7ce1aea8a8c8"><table><tr><td><b>into</b></td><td><pre>not
+      &lt;=. …</pre></li><li><div><h4>simplify</h4><div class="imandra-table" id="table-f98586a2-4a1a-479e-8a90-7c9a18afbc13"><table><tr><td><b>into</b></td><td><pre>not
 ((((((sko_strategy_0 DoorA Stay &gt;=. 0 &amp;&amp; sko_strategy_0 DoorA Swap &gt;=. 0)
      &amp;&amp; sko_strategy_0 DoorB Stay &gt;=. 0)
     &amp;&amp; sko_strategy_0 DoorB Swap &gt;=. 0)
@@ -1379,10 +1405,10 @@ require(['nbextensions/nbimandra/fold'], function (fold) {
  
 )</li></ul></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-1cf42041-6ad2-461c-9443-509910388ff7';
+  var target = '#fold-523fc593-f917-4bb3-b4dc-e80835bf0c5a';
   fold.hydrate(target);
 });
-</script></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-ee5c7676-1b61-473d-89a5-e4cfdef72826"><textarea style="display: none">digraph &quot;proof&quot; {
+</script></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-e06f2f07-62f4-4b86-b39c-a6705957a5c2"><textarea style="display: none">digraph &quot;proof&quot; {
 p_266 [label=&quot;Start (sko_strategy_0 DoorA Stay \&gt;=. 0\l       &amp;&amp; sko_strategy_0 DoorA Swap \&gt;=. 0\l          &amp;&amp; sko_strategy_0 DoorB Stay \&gt;=. 0\l             &amp;&amp; sko_strategy_0 DoorB Swap \&gt;=. 0\l                &amp;&amp; sko_strategy_0 DoorC Stay \&gt;=. 0\l                   &amp;&amp; sko_strategy_0 DoorC Swap \&gt;=. 0\l                      &amp;&amp; ((((sko_strategy_0 DoorA Stay\l                             +. sko_strategy_0 DoorA Swap)\l                            +. sko_strategy_0 DoorB Stay)\l                           +. sko_strategy_0 DoorB Swap)\l                          +. sko_strategy_0 DoorC Stay)\l                         +. sko_strategy_0 DoorC Swap = 1\l       ==\&gt; ((((((1 /. 3 *. sko_strategy_0 DoorA Stay)\l                *. (if DoorA = DoorA then if Stay = Stay then 1000000 else 0\l                    else if Stay = Swap then 1000000 else 0)\l                +. (1 /. 3 *. sko_strategy_0 DoorA Stay)\l                   *. (if DoorB = DoorA\l                       then if Stay = Stay then 1000000 else 0\l                       else if … then 1000000 else 0))\l               +. …)\l              +. …)\l             +. …)\l            +. …)\l           \&lt;=. …\l       :time 0.022s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_266 -&gt; p_265 [label=&quot;&quot;];
 p_265 [label=&quot;Simplify (not\l          ((((((sko_strategy_0 DoorA Stay \&gt;=. 0\l                &amp;&amp; sko_strategy_0 DoorA Swap \&gt;=. 0)\l               &amp;&amp; sko_strategy_0 DoorB Stay \&gt;=. 0)\l              &amp;&amp; sko_strategy_0 DoorB Swap \&gt;=. 0)\l             &amp;&amp; sko_strategy_0 DoorC Stay \&gt;=. 0)\l            &amp;&amp; sko_strategy_0 DoorC Swap \&gt;=. 0)\l           &amp;&amp; ((((sko_strategy_0 DoorA Stay +. sko_strategy_0 DoorA Swap)\l                 +. sko_strategy_0 DoorB Stay)\l                +. sko_strategy_0 DoorB Swap)\l               +. sko_strategy_0 DoorC Stay)\l              +. sko_strategy_0 DoorC Swap = 1)\l          \|\| (((((1000000/3 *. sko_strategy_0 DoorA Stay\l                  +. 1000000/3 *. sko_strategy_0 DoorB Stay)\l                 +. 1000000/3 *. sko_strategy_0 DoorC Stay)\l                +. 2000000/3 *. sko_strategy_0 DoorA Swap)\l               +. 2000000/3 *. sko_strategy_0 DoorB Swap)\l              +. 2000000/3 *. sko_strategy_0 DoorC Swap)\l             \&lt;=. 1000000/3\l          :expansions [] :rw [] :fc [])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
@@ -1391,22 +1417,22 @@ p_264 [label=&quot;Sat (Some  let strategy x_0 x_1 =\l   match (x_0, x_1) with\l
 }
 </textarea><button class="btn btn-primary">Load graph</button><div class="imandra-graphviz-loading display-none">Loading..</div><div class="imandra-graphviz-target"></div><script>
 require(['nbextensions/nbimandra/graphviz'], function (graphviz) {
-  var target = '#graphviz-ee5c7676-1b61-473d-89a5-e4cfdef72826';
+  var target = '#graphviz-e06f2f07-62f4-4b86-b39c-a6705957a5c2';
   graphviz.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-74c2193f-97f1-4878-a3c2-312ec1574c70';
+  var target = '#alt-79c2f2c5-2d65-4d87-ae9d-d9fa1423c168';
   alternatives.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-34a459ee-2e40-47cd-bc7d-83bfab823146';
+  var target = '#fold-e703786a-9eee-4d52-936b-da3793ee72d7';
   fold.hydrate(target);
 });
 </script></div></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-9081f310-3c90-4675-8dd5-e5b0e2b751ff';
+  var target = '#alt-f1707875-4045-4501-89fc-79c46b80477e';
   alternatives.hydrate(target);
 });
 </script></div></div></div>
@@ -1578,12 +1604,12 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
 
 
 <div class="output_html rendered_html output_subarea ">
-<div><div class="imandra-vr imandra-vr-proved"><i class="fa fa-check-circle"></i><span>Proved</span></div><div><div class="imandra-alternatives" id="alt-f7e95034-772c-4f56-9ec7-82799d25787b"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>proof</a></li><li class="" data-toggle="tab"><a>call graph</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-proof-top"><div class="imandra-fold panel panel-default" id="fold-8f6f7bf9-ec60-4aa0-ae93-dc702e870f1f"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>proof</span></div></div><div class="panel-body collapse"><div class="imandra-proof"><div class="imandra-alternatives" id="alt-1c590e95-3a77-439b-b3be-765d5b3488f9"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>summary</a></li><li class="" data-toggle="tab"><a>full</a></li><li class="" data-toggle="tab"><a>graph</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-table" id="table-38a136a1-0bb7-4b90-89ba-6fb6499b7136"><table><tr><td><b>ground_instances</b></td><td>0</td></tr><tr><td><b>definitions</b></td><td>0</td></tr><tr><td><b>inductions</b></td><td>0</td></tr><tr><td><b>search_time</b></td><td><pre>0.020s</pre></td></tr><tr><td><b>details</b></td><td><div class="imandra-fold panel panel-default" id="fold-97dd845f-beef-45a1-ae73-6f834512ec62"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><div class="imandra-table" id="table-f8fc8734-ccad-4b0e-ae6c-d6144d394ef1"><table><tr><td><b>smt_stats</b></td><td><div class="imandra-table" id="table-bf0b1dbc-9fbf-4275-b205-a48af185d073"><table><tr><td><b>num checks</b></td><td>1</td></tr><tr><td><b>arith assert lower</b></td><td>8</td></tr><tr><td><b>arith pivots</b></td><td>2</td></tr><tr><td><b>rlimit count</b></td><td>1538</td></tr><tr><td><b>mk clause</b></td><td>3</td></tr><tr><td><b>mk bool var</b></td><td>16</td></tr><tr><td><b>arith assert upper</b></td><td>1</td></tr><tr><td><b>arith add rows</b></td><td>2</td></tr><tr><td><b>propagations</b></td><td>2</td></tr><tr><td><b>conflicts</b></td><td>1</td></tr><tr><td><b>datatype accessor ax</b></td><td>5</td></tr><tr><td><b>arith conflicts</b></td><td>1</td></tr><tr><td><b>num allocs</b></td><td>1300172997</td></tr><tr><td><b>added eqs</b></td><td>1</td></tr><tr><td><b>arith eq adapter</b></td><td>1</td></tr><tr><td><b>memory</b></td><td>9.850000</td></tr><tr><td><b>max memory</b></td><td>24.280000</td></tr></table></div></td></tr></table></div></div><script>
+<div><div class="imandra-vr imandra-vr-proved"><i class="fa fa-check-circle"></i><span>Proved</span></div><div><div class="imandra-alternatives" id="alt-b68ccb8c-61b8-4f72-9937-fa22832ac22d"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>proof</a></li><li class="" data-toggle="tab"><a>call graph</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-proof-top"><div class="imandra-fold panel panel-default" id="fold-43cc291e-9f94-4841-b850-05a78378b613"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>proof</span></div></div><div class="panel-body collapse"><div class="imandra-proof"><div class="imandra-alternatives" id="alt-355cb3aa-17f1-4995-832d-7fbaaa1d0301"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>summary</a></li><li class="" data-toggle="tab"><a>full</a></li><li class="" data-toggle="tab"><a>graph</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-table" id="table-c6ddb873-b538-442d-ac3a-807bb9034639"><table><tr><td><b>ground_instances</b></td><td>0</td></tr><tr><td><b>definitions</b></td><td>0</td></tr><tr><td><b>inductions</b></td><td>0</td></tr><tr><td><b>search_time</b></td><td><pre>0.019s</pre></td></tr><tr><td><b>details</b></td><td><div class="imandra-fold panel panel-default" id="fold-a218d7d6-de17-4989-a309-12c7f2021032"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><div class="imandra-table" id="table-9db6a0a1-fe00-4a99-9813-7e7ebb44f659"><table><tr><td><b>smt_stats</b></td><td><div class="imandra-table" id="table-649e9e86-3632-4537-9ed4-749a199a7af8"><table><tr><td><b>num checks</b></td><td>1</td></tr><tr><td><b>arith assert lower</b></td><td>8</td></tr><tr><td><b>arith pivots</b></td><td>2</td></tr><tr><td><b>rlimit count</b></td><td>1538</td></tr><tr><td><b>mk clause</b></td><td>3</td></tr><tr><td><b>mk bool var</b></td><td>16</td></tr><tr><td><b>arith assert upper</b></td><td>1</td></tr><tr><td><b>arith add rows</b></td><td>2</td></tr><tr><td><b>propagations</b></td><td>2</td></tr><tr><td><b>conflicts</b></td><td>1</td></tr><tr><td><b>datatype accessor ax</b></td><td>5</td></tr><tr><td><b>arith conflicts</b></td><td>1</td></tr><tr><td><b>num allocs</b></td><td>1300172997</td></tr><tr><td><b>added eqs</b></td><td>1</td></tr><tr><td><b>arith eq adapter</b></td><td>1</td></tr><tr><td><b>memory</b></td><td>9.850000</td></tr><tr><td><b>max memory</b></td><td>24.280000</td></tr></table></div></td></tr></table></div></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-97dd845f-beef-45a1-ae73-6f834512ec62';
+  var target = '#fold-a218d7d6-de17-4989-a309-12c7f2021032';
   fold.hydrate(target);
 });
-</script></div></td></tr></table></div></div><div class="tab-pane"><div class="imandra-fold panel panel-default" id="fold-401fdd85-cf51-4334-8c03-09ca822e576b"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.020s]
+</script></div></td></tr></table></div></div><div class="tab-pane"><div class="imandra-fold panel panel-default" id="fold-f6caeb64-44e3-4cdf-93f1-aad88be1cd68"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.019s]
   sko_strategy_0 DoorA Stay &gt;=. 0
   &amp;&amp; sko_strategy_0 DoorA Swap &gt;=. 0
      &amp;&amp; sko_strategy_0 DoorB Stay &gt;=. 0
@@ -1606,7 +1632,7 @@ require(['nbextensions/nbimandra/fold'], function (fold) {
          +. …)
         +. …)
        +. …)
-      &lt;=. …</pre></li><li><div><h4>simplify</h4><div class="imandra-table" id="table-400072e5-850d-4960-be9b-74263fb05d86"><table><tr><td><b>into</b></td><td><pre>not
+      &lt;=. …</pre></li><li><div><h4>simplify</h4><div class="imandra-table" id="table-65a4826b-670b-4f70-aa14-f6aefef1ada5"><table><tr><td><b>into</b></td><td><pre>not
 ((((((sko_strategy_0 DoorA Stay &gt;=. 0 &amp;&amp; sko_strategy_0 DoorA Swap &gt;=. 0)
      &amp;&amp; sko_strategy_0 DoorB Stay &gt;=. 0)
     &amp;&amp; sko_strategy_0 DoorB Swap &gt;=. 0)
@@ -1626,11 +1652,11 @@ require(['nbextensions/nbimandra/fold'], function (fold) {
    &lt;=. 2000000/3</pre></td></tr><tr><td><b>expansions</b></td><td><pre>[]</pre></td></tr><tr><td><b>rewrite_steps</b></td><td><ul></ul></td></tr><tr><td><b>forward_chaining</b></td><td><ul></ul></td></tr></table></div></div></li><li><div><h4>unsat</h4><pre>(let ((a!1 (+ (sko_strategy_0_2449 DoorA_2326 Stay_2330)
               (sko_strategy_0_2449 DoorA_23…</pre></div></li></ul></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-401fdd85-cf51-4334-8c03-09ca822e576b';
+  var target = '#fold-f6caeb64-44e3-4cdf-93f1-aad88be1cd68';
   fold.hydrate(target);
 });
-</script></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-1f0d9d3c-b83a-4ab8-86bf-880e49bb59ae"><textarea style="display: none">digraph &quot;proof&quot; {
-p_269 [label=&quot;Start (sko_strategy_0 DoorA Stay \&gt;=. 0\l       &amp;&amp; sko_strategy_0 DoorA Swap \&gt;=. 0\l          &amp;&amp; sko_strategy_0 DoorB Stay \&gt;=. 0\l             &amp;&amp; sko_strategy_0 DoorB Swap \&gt;=. 0\l                &amp;&amp; sko_strategy_0 DoorC Stay \&gt;=. 0\l                   &amp;&amp; sko_strategy_0 DoorC Swap \&gt;=. 0\l                      &amp;&amp; ((((sko_strategy_0 DoorA Stay\l                             +. sko_strategy_0 DoorA Swap)\l                            +. sko_strategy_0 DoorB Stay)\l                           +. sko_strategy_0 DoorB Swap)\l                          +. sko_strategy_0 DoorC Stay)\l                         +. sko_strategy_0 DoorC Swap = 1\l       ==\&gt; ((((((1 /. 3 *. sko_strategy_0 DoorA Stay)\l                *. (if DoorA = DoorA then if Stay = Stay then 1000000 else 0\l                    else if Stay = Swap then 1000000 else 0)\l                +. (1 /. 3 *. sko_strategy_0 DoorA Stay)\l                   *. (if DoorB = DoorA\l                       then if Stay = Stay then 1000000 else 0\l                       else if … then 1000000 else 0))\l               +. …)\l              +. …)\l             +. …)\l            +. …)\l           \&lt;=. …\l       :time 0.020s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+</script></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-c20210db-300b-4654-bf96-44975b5b94ab"><textarea style="display: none">digraph &quot;proof&quot; {
+p_269 [label=&quot;Start (sko_strategy_0 DoorA Stay \&gt;=. 0\l       &amp;&amp; sko_strategy_0 DoorA Swap \&gt;=. 0\l          &amp;&amp; sko_strategy_0 DoorB Stay \&gt;=. 0\l             &amp;&amp; sko_strategy_0 DoorB Swap \&gt;=. 0\l                &amp;&amp; sko_strategy_0 DoorC Stay \&gt;=. 0\l                   &amp;&amp; sko_strategy_0 DoorC Swap \&gt;=. 0\l                      &amp;&amp; ((((sko_strategy_0 DoorA Stay\l                             +. sko_strategy_0 DoorA Swap)\l                            +. sko_strategy_0 DoorB Stay)\l                           +. sko_strategy_0 DoorB Swap)\l                          +. sko_strategy_0 DoorC Stay)\l                         +. sko_strategy_0 DoorC Swap = 1\l       ==\&gt; ((((((1 /. 3 *. sko_strategy_0 DoorA Stay)\l                *. (if DoorA = DoorA then if Stay = Stay then 1000000 else 0\l                    else if Stay = Swap then 1000000 else 0)\l                +. (1 /. 3 *. sko_strategy_0 DoorA Stay)\l                   *. (if DoorB = DoorA\l                       then if Stay = Stay then 1000000 else 0\l                       else if … then 1000000 else 0))\l               +. …)\l              +. …)\l             +. …)\l            +. …)\l           \&lt;=. …\l       :time 0.019s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_269 -&gt; p_268 [label=&quot;&quot;];
 p_268 [label=&quot;Simplify (not\l          ((((((sko_strategy_0 DoorA Stay \&gt;=. 0\l                &amp;&amp; sko_strategy_0 DoorA Swap \&gt;=. 0)\l               &amp;&amp; sko_strategy_0 DoorB Stay \&gt;=. 0)\l              &amp;&amp; sko_strategy_0 DoorB Swap \&gt;=. 0)\l             &amp;&amp; sko_strategy_0 DoorC Stay \&gt;=. 0)\l            &amp;&amp; sko_strategy_0 DoorC Swap \&gt;=. 0)\l           &amp;&amp; ((((sko_strategy_0 DoorA Stay +. sko_strategy_0 DoorA Swap)\l                 +. sko_strategy_0 DoorB Stay)\l                +. sko_strategy_0 DoorB Swap)\l               +. sko_strategy_0 DoorC Stay)\l              +. sko_strategy_0 DoorC Swap = 1)\l          \|\| (((((1000000/3 *. sko_strategy_0 DoorA Stay\l                  +. 1000000/3 *. sko_strategy_0 DoorB Stay)\l                 +. 1000000/3 *. sko_strategy_0 DoorC Stay)\l                +. 2000000/3 *. sko_strategy_0 DoorA Swap)\l               +. 2000000/3 *. sko_strategy_0 DoorB Swap)\l              +. 2000000/3 *. sko_strategy_0 DoorC Swap)\l             \&lt;=. 2000000/3\l          :expansions [] :rw [] :fc [])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_268 -&gt; p_267 [label=&quot;&quot;];
@@ -1640,30 +1666,30 @@ p_z3_740 [label=&quot;(let ((a!1 (+ (sko_strategy_0_2449 DoorA_2326 Stay_2330)
 }
 </textarea><button class="btn btn-primary">Load graph</button><div class="imandra-graphviz-loading display-none">Loading..</div><div class="imandra-graphviz-target"></div><script>
 require(['nbextensions/nbimandra/graphviz'], function (graphviz) {
-  var target = '#graphviz-1f0d9d3c-b83a-4ab8-86bf-880e49bb59ae';
+  var target = '#graphviz-c20210db-300b-4654-bf96-44975b5b94ab';
   graphviz.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-1c590e95-3a77-439b-b3be-765d5b3488f9';
+  var target = '#alt-355cb3aa-17f1-4995-832d-7fbaaa1d0301';
   alternatives.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-8f6f7bf9-ec60-4aa0-ae93-dc702e870f1f';
+  var target = '#fold-43cc291e-9f94-4841-b850-05a78378b613';
   fold.hydrate(target);
 });
-</script></div></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-c92a4c84-b9f5-4c9b-8dea-7751268db945"><textarea style="display: none">digraph &quot;call graph&quot; {
+</script></div></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-3586cca8-54a0-40b2-8a0f-881e3e3da6f7"><textarea style="display: none">digraph &quot;call graph&quot; {
 goal [label=&quot;not\l(not\l ((((((sko_strategy_0 DoorA Stay \&gt;=. 0 &amp;&amp; sko_strategy_0 DoorA Swap \&gt;=. 0)\l      &amp;&amp; sko_strategy_0 DoorB Stay \&gt;=. 0)\l     &amp;&amp; sko_strategy_0 DoorB Swap \&gt;=. 0)\l    &amp;&amp; sko_strategy_0 DoorC Stay \&gt;=. 0)\l   &amp;&amp; sko_strategy_0 DoorC Swap \&gt;=. 0)\l  &amp;&amp; ((((sko_strategy_0 DoorA Stay +. sko_strategy_0 DoorA Swap)\l        +. sko_strategy_0 DoorB Stay)\l       +. sko_strategy_0 DoorB Swap)\l      +. sko_strategy_0 DoorC Stay)\l     +. sko_strategy_0 DoorC Swap = 1)\l \|\| (((((1000000/3 *. sko_strategy_0 DoorA Stay\l         +. 1000000/3 *. sko_strategy_0 DoorB Stay)\l        +. 1000000/3 *. sko_strategy_0 DoorC Stay)\l       +. 2000000/3 *. sko_strategy_0 DoorA Swap)\l      +. 2000000/3 *. sko_strategy_0 DoorB Swap)\l     +. 2000000/3 *. sko_strategy_0 DoorC Swap)\l    \&lt;=. 2000000/3)&quot;,shape=box,style=filled,color=&quot;cyan&quot;,fontname=&quot;courier&quot;,fontsize=14];
 }
 </textarea><button class="btn btn-primary">Load graph</button><div class="imandra-graphviz-loading display-none">Loading..</div><div class="imandra-graphviz-target"></div><script>
 require(['nbextensions/nbimandra/graphviz'], function (graphviz) {
-  var target = '#graphviz-c92a4c84-b9f5-4c9b-8dea-7751268db945';
+  var target = '#graphviz-3586cca8-54a0-40b2-8a0f-881e3e3da6f7';
   graphviz.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-f7e95034-772c-4f56-9ec7-82799d25787b';
+  var target = '#alt-b68ccb8c-61b8-4f72-9937-fa22832ac22d';
   alternatives.hydrate(target);
 });
 </script></div></div></div>
@@ -1753,20 +1779,20 @@ module CX : sig val strategy : door -&gt; choice -&gt; Q.t end
 
 
 <div class="output_html rendered_html output_subarea ">
-<div><div class="imandra-vr imandra-vr-proved"><i class="fa fa-check-circle"></i><span>Instance</span></div><div><div class="imandra-alternatives" id="alt-7fb67330-f002-4748-848c-36e54737461a"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>call graph</a></li><li class="" data-toggle="tab"><a>proof-attempt</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-graphviz" id="graphviz-d37b33ea-2b8a-46a3-8fa7-b27aa2defeb7"><textarea style="display: none">digraph &quot;call graph&quot; {
+<div><div class="imandra-vr imandra-vr-proved"><i class="fa fa-check-circle"></i><span>Instance</span></div><div><div class="imandra-alternatives" id="alt-2ea3c58e-6270-41dd-9593-c54736db0bfe"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>call graph</a></li><li class="" data-toggle="tab"><a>proof-attempt</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-graphviz" id="graphviz-3ad20705-6df0-436d-b37e-768093da441b"><textarea style="display: none">digraph &quot;call graph&quot; {
 goal [label=&quot;((((((sko_strategy_0 DoorA Stay \&gt;=. 0 &amp;&amp; sko_strategy_0 DoorA Swap \&gt;=. 0)\l     &amp;&amp; sko_strategy_0 DoorB Stay \&gt;=. 0)\l    &amp;&amp; sko_strategy_0 DoorB Swap \&gt;=. 0)\l   &amp;&amp; sko_strategy_0 DoorC Stay \&gt;=. 0)\l  &amp;&amp; sko_strategy_0 DoorC Swap \&gt;=. 0)\l &amp;&amp; ((((sko_strategy_0 DoorA Stay +. sko_strategy_0 DoorA Swap)\l       +. sko_strategy_0 DoorB Stay)\l      +. sko_strategy_0 DoorB Swap)\l     +. sko_strategy_0 DoorC Stay)\l    +. sko_strategy_0 DoorC Swap = 1)\l&amp;&amp; ((((1000000/3 *. sko_strategy_0 DoorA Stay\l       +. 1000000/3 *. sko_strategy_0 DoorB Stay)\l      +. 1000000/3 *. sko_strategy_0 DoorC Stay)\l     +. 2000000/3 *. sko_strategy_0 DoorA Swap)\l    +. 2000000/3 *. sko_strategy_0 DoorB Swap)\l   +. 2000000/3 *. sko_strategy_0 DoorC Swap = 2000000/3&quot;,shape=box,style=filled,color=&quot;cyan&quot;,fontname=&quot;courier&quot;,fontsize=14];
 }
 </textarea><button class="btn btn-primary">Load graph</button><div class="imandra-graphviz-loading display-none">Loading..</div><div class="imandra-graphviz-target"></div><script>
 require(['nbextensions/nbimandra/graphviz'], function (graphviz) {
-  var target = '#graphviz-d37b33ea-2b8a-46a3-8fa7-b27aa2defeb7';
+  var target = '#graphviz-3ad20705-6df0-436d-b37e-768093da441b';
   graphviz.hydrate(target);
 });
-</script></div></div><div class="tab-pane"><div class="imandra-proof-top"><div class="imandra-fold panel panel-default" id="fold-e7ae3502-014e-4640-b27e-ea9b42382d8f"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>proof attempt</span></div></div><div class="panel-body collapse"><div class="imandra-proof"><div class="imandra-alternatives" id="alt-7c45812a-1e9f-45d0-9dd8-2b484447cd29"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>summary</a></li><li class="" data-toggle="tab"><a>full</a></li><li class="" data-toggle="tab"><a>graph</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-table" id="table-be020b30-718e-43c0-b61c-d108acc501ec"><table><tr><td><b>ground_instances</b></td><td>0</td></tr><tr><td><b>definitions</b></td><td>0</td></tr><tr><td><b>inductions</b></td><td>0</td></tr><tr><td><b>search_time</b></td><td><pre>0.020s</pre></td></tr><tr><td><b>details</b></td><td><div class="imandra-fold panel panel-default" id="fold-22fbcfa5-cc28-4b5e-a96b-d3061913d6aa"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><div class="imandra-table" id="table-973660dd-1101-49de-a9fd-8582118bc5af"><table><tr><td><b>smt_stats</b></td><td><div class="imandra-table" id="table-aae79bc5-64c6-46f2-810f-3400cdda6a51"><table><tr><td><b>num checks</b></td><td>1</td></tr><tr><td><b>arith assert lower</b></td><td>8</td></tr><tr><td><b>arith pivots</b></td><td>2</td></tr><tr><td><b>rlimit count</b></td><td>1547</td></tr><tr><td><b>mk clause</b></td><td>6</td></tr><tr><td><b>datatype occurs check</b></td><td>5</td></tr><tr><td><b>mk bool var</b></td><td>18</td></tr><tr><td><b>arith assert upper</b></td><td>2</td></tr><tr><td><b>arith add rows</b></td><td>2</td></tr><tr><td><b>propagations</b></td><td>4</td></tr><tr><td><b>datatype accessor ax</b></td><td>5</td></tr><tr><td><b>num allocs</b></td><td>1369561985</td></tr><tr><td><b>final checks</b></td><td>1</td></tr><tr><td><b>added eqs</b></td><td>2</td></tr><tr><td><b>del clause</b></td><td>6</td></tr><tr><td><b>arith eq adapter</b></td><td>2</td></tr><tr><td><b>memory</b></td><td>12.880000</td></tr><tr><td><b>max memory</b></td><td>24.280000</td></tr></table></div></td></tr></table></div></div><script>
+</script></div></div><div class="tab-pane"><div class="imandra-proof-top"><div class="imandra-fold panel panel-default" id="fold-61a2475d-b2c9-428a-9219-df9ecc78ccb2"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>proof attempt</span></div></div><div class="panel-body collapse"><div class="imandra-proof"><div class="imandra-alternatives" id="alt-cf8f79d7-15d2-48c8-b545-0caa33c8a5e0"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>summary</a></li><li class="" data-toggle="tab"><a>full</a></li><li class="" data-toggle="tab"><a>graph</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-table" id="table-107ddd93-2c77-4f0b-b966-97f2c886cf62"><table><tr><td><b>ground_instances</b></td><td>0</td></tr><tr><td><b>definitions</b></td><td>0</td></tr><tr><td><b>inductions</b></td><td>0</td></tr><tr><td><b>search_time</b></td><td><pre>0.020s</pre></td></tr><tr><td><b>details</b></td><td><div class="imandra-fold panel panel-default" id="fold-fa8ce2d6-5ba6-4bea-9c66-c1c7af9d01b1"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><div class="imandra-table" id="table-5c91c17a-4062-4224-bf73-ff1c124be7f6"><table><tr><td><b>smt_stats</b></td><td><div class="imandra-table" id="table-22daccdb-b6eb-4798-ae6a-3c4069acaae0"><table><tr><td><b>num checks</b></td><td>1</td></tr><tr><td><b>arith assert lower</b></td><td>8</td></tr><tr><td><b>arith pivots</b></td><td>2</td></tr><tr><td><b>rlimit count</b></td><td>1547</td></tr><tr><td><b>mk clause</b></td><td>6</td></tr><tr><td><b>datatype occurs check</b></td><td>5</td></tr><tr><td><b>mk bool var</b></td><td>18</td></tr><tr><td><b>arith assert upper</b></td><td>2</td></tr><tr><td><b>arith add rows</b></td><td>2</td></tr><tr><td><b>propagations</b></td><td>4</td></tr><tr><td><b>datatype accessor ax</b></td><td>5</td></tr><tr><td><b>num allocs</b></td><td>1369561985</td></tr><tr><td><b>final checks</b></td><td>1</td></tr><tr><td><b>added eqs</b></td><td>2</td></tr><tr><td><b>del clause</b></td><td>6</td></tr><tr><td><b>arith eq adapter</b></td><td>2</td></tr><tr><td><b>memory</b></td><td>12.880000</td></tr><tr><td><b>max memory</b></td><td>24.280000</td></tr></table></div></td></tr></table></div></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-22fbcfa5-cc28-4b5e-a96b-d3061913d6aa';
+  var target = '#fold-fa8ce2d6-5ba6-4bea-9c66-c1c7af9d01b1';
   fold.hydrate(target);
 });
-</script></div></td></tr></table></div></div><div class="tab-pane"><div class="imandra-fold panel panel-default" id="fold-cf51c766-3a95-4b7a-9e25-078588398444"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.020s]
+</script></div></td></tr></table></div></div><div class="tab-pane"><div class="imandra-fold panel panel-default" id="fold-8b6dd070-55a2-4d17-a6de-0d99856f54c4"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.020s]
   (sko_strategy_0 DoorA Stay &gt;=. 0
    &amp;&amp; sko_strategy_0 DoorA Swap &gt;=. 0
       &amp;&amp; sko_strategy_0 DoorB Stay &gt;=. 0
@@ -1788,7 +1814,7 @@ require(['nbextensions/nbimandra/fold'], function (fold) {
         +. …)
        +. …)
       +. …)
-     +. … = …</pre></li><li><div><h4>simplify</h4><div class="imandra-table" id="table-004ad6ae-5b92-42c0-a3be-2c6e2ff96cff"><table><tr><td><b>into</b></td><td><pre>((((((sko_strategy_0 DoorA Stay &gt;=. 0 &amp;&amp; sko_strategy_0 DoorA Swap &gt;=. 0)
+     +. … = …</pre></li><li><div><h4>simplify</h4><div class="imandra-table" id="table-745fefbb-db89-415e-a7b7-4978c9bd9320"><table><tr><td><b>into</b></td><td><pre>((((((sko_strategy_0 DoorA Stay &gt;=. 0 &amp;&amp; sko_strategy_0 DoorA Swap &gt;=. 0)
      &amp;&amp; sko_strategy_0 DoorB Stay &gt;=. 0)
     &amp;&amp; sko_strategy_0 DoorB Swap &gt;=. 0)
    &amp;&amp; sko_strategy_0 DoorC Stay &gt;=. 0)
@@ -1810,10 +1836,10 @@ require(['nbextensions/nbimandra/fold'], function (fold) {
  
 )</li></ul></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-cf51c766-3a95-4b7a-9e25-078588398444';
+  var target = '#fold-8b6dd070-55a2-4d17-a6de-0d99856f54c4';
   fold.hydrate(target);
 });
-</script></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-643aa06e-208c-4d5c-9d73-760c7783b665"><textarea style="display: none">digraph &quot;proof&quot; {
+</script></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-0415efea-e796-470c-ae87-15d44f8574b4"><textarea style="display: none">digraph &quot;proof&quot; {
 p_272 [label=&quot;Start ((sko_strategy_0 DoorA Stay \&gt;=. 0\l        &amp;&amp; sko_strategy_0 DoorA Swap \&gt;=. 0\l           &amp;&amp; sko_strategy_0 DoorB Stay \&gt;=. 0\l              &amp;&amp; sko_strategy_0 DoorB Swap \&gt;=. 0\l                 &amp;&amp; sko_strategy_0 DoorC Stay \&gt;=. 0\l                    &amp;&amp; sko_strategy_0 DoorC Swap \&gt;=. 0\l                       &amp;&amp; ((((sko_strategy_0 DoorA Stay\l                              +. sko_strategy_0 DoorA Swap)\l                             +. sko_strategy_0 DoorB Stay)\l                            +. sko_strategy_0 DoorB Swap)\l                           +. sko_strategy_0 DoorC Stay)\l                          +. sko_strategy_0 DoorC Swap = 1)\l       &amp;&amp; (((((1 /. 3 *. sko_strategy_0 DoorA Stay)\l              *. (if DoorA = DoorA then if Stay = Stay then 1000000 else 0\l                  else if Stay = Swap then 1000000 else 0)\l              +. (1 /. 3 *. sko_strategy_0 DoorA Stay)\l                 *. (if DoorB = DoorA then if Stay = Stay then 1000000 else 0\l                     else if … then 1000000 else 0))\l             +. …)\l            +. …)\l           +. …)\l          +. … = …\l       :time 0.020s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_272 -&gt; p_271 [label=&quot;&quot;];
 p_271 [label=&quot;Simplify (((((((sko_strategy_0 DoorA Stay \&gt;=. 0\l                &amp;&amp; sko_strategy_0 DoorA Swap \&gt;=. 0)\l               &amp;&amp; sko_strategy_0 DoorB Stay \&gt;=. 0)\l              &amp;&amp; sko_strategy_0 DoorB Swap \&gt;=. 0)\l             &amp;&amp; sko_strategy_0 DoorC Stay \&gt;=. 0)\l            &amp;&amp; sko_strategy_0 DoorC Swap \&gt;=. 0)\l           &amp;&amp; ((((sko_strategy_0 DoorA Stay +. sko_strategy_0 DoorA Swap)\l                 +. sko_strategy_0 DoorB Stay)\l                +. sko_strategy_0 DoorB Swap)\l               +. sko_strategy_0 DoorC Stay)\l              +. sko_strategy_0 DoorC Swap = 1)\l          &amp;&amp; ((((1000000/3 *. sko_strategy_0 DoorA Stay\l                 +. 1000000/3 *. sko_strategy_0 DoorB Stay)\l                +. 1000000/3 *. sko_strategy_0 DoorC Stay)\l               +. 2000000/3 *. sko_strategy_0 DoorA Swap)\l              +. 2000000/3 *. sko_strategy_0 DoorB Swap)\l             +. 2000000/3 *. sko_strategy_0 DoorC Swap = 2000000/3\l          :expansions [] :rw [] :fc [])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
@@ -1822,22 +1848,22 @@ p_270 [label=&quot;Sat (Some  let strategy x_0 x_1 =\l   match (x_0, x_1) with\l
 }
 </textarea><button class="btn btn-primary">Load graph</button><div class="imandra-graphviz-loading display-none">Loading..</div><div class="imandra-graphviz-target"></div><script>
 require(['nbextensions/nbimandra/graphviz'], function (graphviz) {
-  var target = '#graphviz-643aa06e-208c-4d5c-9d73-760c7783b665';
+  var target = '#graphviz-0415efea-e796-470c-ae87-15d44f8574b4';
   graphviz.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-7c45812a-1e9f-45d0-9dd8-2b484447cd29';
+  var target = '#alt-cf8f79d7-15d2-48c8-b545-0caa33c8a5e0';
   alternatives.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-e7ae3502-014e-4640-b27e-ea9b42382d8f';
+  var target = '#fold-61a2475d-b2c9-428a-9219-df9ecc78ccb2';
   fold.hydrate(target);
 });
 </script></div></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-7fb67330-f002-4748-848c-36e54737461a';
+  var target = '#alt-2ea3c58e-6270-41dd-9593-c54736db0bfe';
   alternatives.hydrate(target);
 });
 </script></div></div></div>
@@ -1965,7 +1991,7 @@ module CX : sig val strategy : door -&gt; choice -&gt; Q.t end
 
 
 <div class="output_html rendered_html output_subarea ">
-<div><pre>Counterexample (after 0 steps, 0.021s):
+<div><pre>Counterexample (after 0 steps, 0.019s):
  let strategy x_0 x_1 =
    match (x_0, x_1) with
    | (DoorA, Stay) -&gt; (Real.mk_of_string &quot;399997/600000&quot;)
@@ -1985,20 +2011,20 @@ module CX : sig val strategy : door -&gt; choice -&gt; Q.t end
 
 
 <div class="output_html rendered_html output_subarea ">
-<div><div class="imandra-vr imandra-vr-refuted"><i class="fa fa-times-circle-o"></i><span>Refuted</span></div><div><div class="imandra-alternatives" id="alt-998847e1-f137-4b07-b1e7-5fe165dd22b8"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>call graph</a></li><li class="" data-toggle="tab"><a>proof-attempt</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-graphviz" id="graphviz-eace0008-bf1b-46a4-b11e-1d0ebcdb3fb9"><textarea style="display: none">digraph &quot;call graph&quot; {
+<div><div class="imandra-vr imandra-vr-refuted"><i class="fa fa-times-circle-o"></i><span>Refuted</span></div><div><div class="imandra-alternatives" id="alt-c8a46647-7639-4f49-9e1e-816133470102"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>call graph</a></li><li class="" data-toggle="tab"><a>proof-attempt</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-graphviz" id="graphviz-669e4999-8bc7-4d7f-a98d-3ca272621469"><textarea style="display: none">digraph &quot;call graph&quot; {
 goal [label=&quot;not\l(not\l ((((((sko_strategy_0 DoorA Stay \&gt;=. 0 &amp;&amp; sko_strategy_0 DoorA Swap \&gt;=. 0)\l      &amp;&amp; sko_strategy_0 DoorB Stay \&gt;=. 0)\l     &amp;&amp; sko_strategy_0 DoorB Swap \&gt;=. 0)\l    &amp;&amp; sko_strategy_0 DoorC Stay \&gt;=. 0)\l   &amp;&amp; sko_strategy_0 DoorC Swap \&gt;=. 0)\l  &amp;&amp; ((((sko_strategy_0 DoorA Stay +. sko_strategy_0 DoorA Swap)\l        +. sko_strategy_0 DoorB Stay)\l       +. sko_strategy_0 DoorB Swap)\l      +. sko_strategy_0 DoorC Stay)\l     +. sko_strategy_0 DoorC Swap = 1)\l \|\| (((((600000 *. sko_strategy_0 DoorA Stay\l         +. 200000 *. sko_strategy_0 DoorB Stay)\l        +. 200000 *. sko_strategy_0 DoorC Stay)\l       +. 400000 *. sko_strategy_0 DoorA Swap)\l      +. 800000 *. sko_strategy_0 DoorB Swap)\l     +. 800000 *. sko_strategy_0 DoorC Swap)\l    \&lt;=. 2000000/3)&quot;,shape=box,style=filled,color=&quot;cyan&quot;,fontname=&quot;courier&quot;,fontsize=14];
 }
 </textarea><button class="btn btn-primary">Load graph</button><div class="imandra-graphviz-loading display-none">Loading..</div><div class="imandra-graphviz-target"></div><script>
 require(['nbextensions/nbimandra/graphviz'], function (graphviz) {
-  var target = '#graphviz-eace0008-bf1b-46a4-b11e-1d0ebcdb3fb9';
+  var target = '#graphviz-669e4999-8bc7-4d7f-a98d-3ca272621469';
   graphviz.hydrate(target);
 });
-</script></div></div><div class="tab-pane"><div class="imandra-proof-top"><div class="imandra-fold panel panel-default" id="fold-7643c0a6-c4bf-44a7-8abd-778de98173c2"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>proof attempt</span></div></div><div class="panel-body collapse"><div class="imandra-proof"><div class="imandra-alternatives" id="alt-6985aa23-666a-4e75-9d5a-624c85440267"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>summary</a></li><li class="" data-toggle="tab"><a>full</a></li><li class="" data-toggle="tab"><a>graph</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-table" id="table-df70fcdd-85c1-4146-8eaf-a5e5e1bdf2cf"><table><tr><td><b>ground_instances</b></td><td>0</td></tr><tr><td><b>definitions</b></td><td>0</td></tr><tr><td><b>inductions</b></td><td>0</td></tr><tr><td><b>search_time</b></td><td><pre>0.021s</pre></td></tr><tr><td><b>details</b></td><td><div class="imandra-fold panel panel-default" id="fold-954eeb97-f10f-4999-ab90-bc75cac67506"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><div class="imandra-table" id="table-ae962e99-a61c-4b84-bb99-59d11bb5f597"><table><tr><td><b>smt_stats</b></td><td><div class="imandra-table" id="table-c2d9e4ed-76a9-4d56-8f21-e8616249d268"><table><tr><td><b>num checks</b></td><td>1</td></tr><tr><td><b>arith assert lower</b></td><td>8</td></tr><tr><td><b>arith pivots</b></td><td>3</td></tr><tr><td><b>rlimit count</b></td><td>1857</td></tr><tr><td><b>mk clause</b></td><td>3</td></tr><tr><td><b>datatype occurs check</b></td><td>5</td></tr><tr><td><b>mk bool var</b></td><td>16</td></tr><tr><td><b>arith assert upper</b></td><td>1</td></tr><tr><td><b>arith add rows</b></td><td>3</td></tr><tr><td><b>propagations</b></td><td>2</td></tr><tr><td><b>datatype accessor ax</b></td><td>5</td></tr><tr><td><b>num allocs</b></td><td>1440348640</td></tr><tr><td><b>final checks</b></td><td>1</td></tr><tr><td><b>added eqs</b></td><td>1</td></tr><tr><td><b>del clause</b></td><td>3</td></tr><tr><td><b>arith eq adapter</b></td><td>1</td></tr><tr><td><b>memory</b></td><td>15.890000</td></tr><tr><td><b>max memory</b></td><td>24.280000</td></tr></table></div></td></tr></table></div></div><script>
+</script></div></div><div class="tab-pane"><div class="imandra-proof-top"><div class="imandra-fold panel panel-default" id="fold-380f6824-ff45-4d8f-bb23-30653ecbfbb2"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>proof attempt</span></div></div><div class="panel-body collapse"><div class="imandra-proof"><div class="imandra-alternatives" id="alt-9a963ef1-0996-47ad-853e-842859966ebf"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>summary</a></li><li class="" data-toggle="tab"><a>full</a></li><li class="" data-toggle="tab"><a>graph</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-table" id="table-86c1e14c-12ad-44c1-950f-2c56ab872980"><table><tr><td><b>ground_instances</b></td><td>0</td></tr><tr><td><b>definitions</b></td><td>0</td></tr><tr><td><b>inductions</b></td><td>0</td></tr><tr><td><b>search_time</b></td><td><pre>0.019s</pre></td></tr><tr><td><b>details</b></td><td><div class="imandra-fold panel panel-default" id="fold-01c64550-19dd-46bb-948b-56b5326de5c2"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><div class="imandra-table" id="table-a42ee971-a356-4e0c-af71-cdd9c0ed6f58"><table><tr><td><b>smt_stats</b></td><td><div class="imandra-table" id="table-8361d0a6-dae2-47c7-af99-e980693eefb0"><table><tr><td><b>num checks</b></td><td>1</td></tr><tr><td><b>arith assert lower</b></td><td>8</td></tr><tr><td><b>arith pivots</b></td><td>3</td></tr><tr><td><b>rlimit count</b></td><td>1857</td></tr><tr><td><b>mk clause</b></td><td>3</td></tr><tr><td><b>datatype occurs check</b></td><td>5</td></tr><tr><td><b>mk bool var</b></td><td>16</td></tr><tr><td><b>arith assert upper</b></td><td>1</td></tr><tr><td><b>arith add rows</b></td><td>3</td></tr><tr><td><b>propagations</b></td><td>2</td></tr><tr><td><b>datatype accessor ax</b></td><td>5</td></tr><tr><td><b>num allocs</b></td><td>1440348642</td></tr><tr><td><b>final checks</b></td><td>1</td></tr><tr><td><b>added eqs</b></td><td>1</td></tr><tr><td><b>del clause</b></td><td>3</td></tr><tr><td><b>arith eq adapter</b></td><td>1</td></tr><tr><td><b>memory</b></td><td>15.890000</td></tr><tr><td><b>max memory</b></td><td>24.280000</td></tr></table></div></td></tr></table></div></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-954eeb97-f10f-4999-ab90-bc75cac67506';
+  var target = '#fold-01c64550-19dd-46bb-948b-56b5326de5c2';
   fold.hydrate(target);
 });
-</script></div></td></tr></table></div></div><div class="tab-pane"><div class="imandra-fold panel panel-default" id="fold-434aa790-c512-49ae-b4d0-5dd206965c23"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.021s]
+</script></div></td></tr></table></div></div><div class="tab-pane"><div class="imandra-fold panel panel-default" id="fold-ec84bd57-7f2e-4abf-b362-abf1c57bc73d"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.019s]
   sko_strategy_0 DoorA Stay &gt;=. 0
   &amp;&amp; sko_strategy_0 DoorA Swap &gt;=. 0
      &amp;&amp; sko_strategy_0 DoorB Stay &gt;=. 0
@@ -2022,7 +2048,7 @@ require(['nbextensions/nbimandra/fold'], function (fold) {
          +. …)
         +. …)
        +. …)
-      &lt;=. …</pre></li><li><div><h4>simplify</h4><div class="imandra-table" id="table-650b2d82-a3bc-4cb4-bd4e-35b9fb601b27"><table><tr><td><b>into</b></td><td><pre>not
+      &lt;=. …</pre></li><li><div><h4>simplify</h4><div class="imandra-table" id="table-7db6728f-48eb-4a89-9b41-f1f3b500205a"><table><tr><td><b>into</b></td><td><pre>not
 ((((((sko_strategy_0 DoorA Stay &gt;=. 0 &amp;&amp; sko_strategy_0 DoorA Swap &gt;=. 0)
      &amp;&amp; sko_strategy_0 DoorB Stay &gt;=. 0)
     &amp;&amp; sko_strategy_0 DoorB Swap &gt;=. 0)
@@ -2047,11 +2073,11 @@ require(['nbextensions/nbimandra/fold'], function (fold) {
  
 )</li></ul></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-434aa790-c512-49ae-b4d0-5dd206965c23';
+  var target = '#fold-ec84bd57-7f2e-4abf-b362-abf1c57bc73d';
   fold.hydrate(target);
 });
-</script></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-1fe245d8-53ae-4fc0-bb69-a25005c4c734"><textarea style="display: none">digraph &quot;proof&quot; {
-p_275 [label=&quot;Start (sko_strategy_0 DoorA Stay \&gt;=. 0\l       &amp;&amp; sko_strategy_0 DoorA Swap \&gt;=. 0\l          &amp;&amp; sko_strategy_0 DoorB Stay \&gt;=. 0\l             &amp;&amp; sko_strategy_0 DoorB Swap \&gt;=. 0\l                &amp;&amp; sko_strategy_0 DoorC Stay \&gt;=. 0\l                   &amp;&amp; sko_strategy_0 DoorC Swap \&gt;=. 0\l                      &amp;&amp; ((((sko_strategy_0 DoorA Stay\l                             +. sko_strategy_0 DoorA Swap)\l                            +. sko_strategy_0 DoorB Stay)\l                           +. sko_strategy_0 DoorB Swap)\l                          +. sko_strategy_0 DoorC Stay)\l                         +. sko_strategy_0 DoorC Swap = 1\l       ==\&gt; (((((((if DoorA = DoorA then 3 /. 5 else 1 /. 5)\l                 *. sko_strategy_0 DoorA Stay)\l                *. (if DoorA = DoorA then if Stay = Stay then 1000000 else 0\l                    else if Stay = Swap then 1000000 else 0)\l                +. ((if DoorB = DoorA then 3 /. 5 else 1 /. 5)\l                    *. sko_strategy_0 DoorA Stay)\l                   *. (if … then … else …))\l               +. …)\l              +. …)\l             +. …)\l            +. …)\l           \&lt;=. …\l       :time 0.021s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+</script></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-40bdd3a3-d65d-4109-b62b-c4ef11f2ad03"><textarea style="display: none">digraph &quot;proof&quot; {
+p_275 [label=&quot;Start (sko_strategy_0 DoorA Stay \&gt;=. 0\l       &amp;&amp; sko_strategy_0 DoorA Swap \&gt;=. 0\l          &amp;&amp; sko_strategy_0 DoorB Stay \&gt;=. 0\l             &amp;&amp; sko_strategy_0 DoorB Swap \&gt;=. 0\l                &amp;&amp; sko_strategy_0 DoorC Stay \&gt;=. 0\l                   &amp;&amp; sko_strategy_0 DoorC Swap \&gt;=. 0\l                      &amp;&amp; ((((sko_strategy_0 DoorA Stay\l                             +. sko_strategy_0 DoorA Swap)\l                            +. sko_strategy_0 DoorB Stay)\l                           +. sko_strategy_0 DoorB Swap)\l                          +. sko_strategy_0 DoorC Stay)\l                         +. sko_strategy_0 DoorC Swap = 1\l       ==\&gt; (((((((if DoorA = DoorA then 3 /. 5 else 1 /. 5)\l                 *. sko_strategy_0 DoorA Stay)\l                *. (if DoorA = DoorA then if Stay = Stay then 1000000 else 0\l                    else if Stay = Swap then 1000000 else 0)\l                +. ((if DoorB = DoorA then 3 /. 5 else 1 /. 5)\l                    *. sko_strategy_0 DoorA Stay)\l                   *. (if … then … else …))\l               +. …)\l              +. …)\l             +. …)\l            +. …)\l           \&lt;=. …\l       :time 0.019s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_275 -&gt; p_274 [label=&quot;&quot;];
 p_274 [label=&quot;Simplify (not\l          ((((((sko_strategy_0 DoorA Stay \&gt;=. 0\l                &amp;&amp; sko_strategy_0 DoorA Swap \&gt;=. 0)\l               &amp;&amp; sko_strategy_0 DoorB Stay \&gt;=. 0)\l              &amp;&amp; sko_strategy_0 DoorB Swap \&gt;=. 0)\l             &amp;&amp; sko_strategy_0 DoorC Stay \&gt;=. 0)\l            &amp;&amp; sko_strategy_0 DoorC Swap \&gt;=. 0)\l           &amp;&amp; ((((sko_strategy_0 DoorA Stay +. sko_strategy_0 DoorA Swap)\l                 +. sko_strategy_0 DoorB Stay)\l                +. sko_strategy_0 DoorB Swap)\l               +. sko_strategy_0 DoorC Stay)\l              +. sko_strategy_0 DoorC Swap = 1)\l          \|\| (((((600000 *. sko_strategy_0 DoorA Stay\l                  +. 200000 *. sko_strategy_0 DoorB Stay)\l                 +. 200000 *. sko_strategy_0 DoorC Stay)\l                +. 400000 *. sko_strategy_0 DoorA Swap)\l               +. 800000 *. sko_strategy_0 DoorB Swap)\l              +. 800000 *. sko_strategy_0 DoorC Swap)\l             \&lt;=. 2000000/3\l          :expansions [] :rw [] :fc [])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_274 -&gt; p_273 [label=&quot;&quot;];
@@ -2059,22 +2085,22 @@ p_273 [label=&quot;Sat (Some  let strategy x_0 x_1 =\l   match (x_0, x_1) with\l
 }
 </textarea><button class="btn btn-primary">Load graph</button><div class="imandra-graphviz-loading display-none">Loading..</div><div class="imandra-graphviz-target"></div><script>
 require(['nbextensions/nbimandra/graphviz'], function (graphviz) {
-  var target = '#graphviz-1fe245d8-53ae-4fc0-bb69-a25005c4c734';
+  var target = '#graphviz-40bdd3a3-d65d-4109-b62b-c4ef11f2ad03';
   graphviz.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-6985aa23-666a-4e75-9d5a-624c85440267';
+  var target = '#alt-9a963ef1-0996-47ad-853e-842859966ebf';
   alternatives.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-7643c0a6-c4bf-44a7-8abd-778de98173c2';
+  var target = '#fold-380f6824-ff45-4d8f-bb23-30653ecbfbb2';
   fold.hydrate(target);
 });
 </script></div></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-998847e1-f137-4b07-b1e7-5fe165dd22b8';
+  var target = '#alt-c8a46647-7639-4f49-9e1e-816133470102';
   alternatives.hydrate(target);
 });
 </script></div></div></div>
@@ -2203,12 +2229,12 @@ val cSwapStrategy : door -&gt; choice -&gt; Q.t = &lt;fun&gt;
 
 
 <div class="output_html rendered_html output_subarea ">
-<div><div class="imandra-vr imandra-vr-proved"><i class="fa fa-check-circle"></i><span>Proved</span></div><div><div class="imandra-alternatives" id="alt-d79bfdbe-12bb-4d20-8bb8-1f376b247040"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>proof</a></li><li class="" data-toggle="tab"><a>call graph</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-proof-top"><div class="imandra-fold panel panel-default" id="fold-36494579-11aa-4dab-96af-7bd7ba559074"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>proof</span></div></div><div class="panel-body collapse"><div class="imandra-proof"><div class="imandra-alternatives" id="alt-bf087851-49c0-45db-9ab7-3b5e35ae2f66"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>summary</a></li><li class="" data-toggle="tab"><a>full</a></li><li class="" data-toggle="tab"><a>graph</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-table" id="table-150b672d-0538-40a8-ba5e-c539dc447d9b"><table><tr><td><b>ground_instances</b></td><td>0</td></tr><tr><td><b>definitions</b></td><td>0</td></tr><tr><td><b>inductions</b></td><td>0</td></tr><tr><td><b>search_time</b></td><td><pre>0.020s</pre></td></tr><tr><td><b>details</b></td><td><div class="imandra-fold panel panel-default" id="fold-9a00b395-a3ab-43f1-8dea-c9a476980981"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><div class="imandra-table" id="table-80192dc7-b362-4fc9-9766-f7de2969c517"><table><tr><td><b>smt_stats</b></td><td><div class="imandra-table" id="table-3be28c47-04ea-47fb-9b3a-d3e832cb8ca7"><table><tr><td><b>num checks</b></td><td>1</td></tr><tr><td><b>arith assert lower</b></td><td>8</td></tr><tr><td><b>arith pivots</b></td><td>3</td></tr><tr><td><b>rlimit count</b></td><td>1836</td></tr><tr><td><b>mk clause</b></td><td>3</td></tr><tr><td><b>mk bool var</b></td><td>16</td></tr><tr><td><b>arith assert upper</b></td><td>1</td></tr><tr><td><b>arith add rows</b></td><td>3</td></tr><tr><td><b>propagations</b></td><td>2</td></tr><tr><td><b>conflicts</b></td><td>1</td></tr><tr><td><b>datatype accessor ax</b></td><td>5</td></tr><tr><td><b>arith conflicts</b></td><td>1</td></tr><tr><td><b>num allocs</b></td><td>1511168929</td></tr><tr><td><b>added eqs</b></td><td>1</td></tr><tr><td><b>arith eq adapter</b></td><td>1</td></tr><tr><td><b>memory</b></td><td>18.890000</td></tr><tr><td><b>max memory</b></td><td>24.280000</td></tr></table></div></td></tr></table></div></div><script>
+<div><div class="imandra-vr imandra-vr-proved"><i class="fa fa-check-circle"></i><span>Proved</span></div><div><div class="imandra-alternatives" id="alt-7c232651-a347-4386-8e75-de3d3750e3ff"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>proof</a></li><li class="" data-toggle="tab"><a>call graph</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-proof-top"><div class="imandra-fold panel panel-default" id="fold-c9429a0c-0bbc-440c-a619-72eb50cb81de"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>proof</span></div></div><div class="panel-body collapse"><div class="imandra-proof"><div class="imandra-alternatives" id="alt-4be1e8aa-7c80-4a88-92a4-0d6b142b82e3"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>summary</a></li><li class="" data-toggle="tab"><a>full</a></li><li class="" data-toggle="tab"><a>graph</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-table" id="table-12d5c9d9-1ee1-49c6-8d2e-5cfe211f1462"><table><tr><td><b>ground_instances</b></td><td>0</td></tr><tr><td><b>definitions</b></td><td>0</td></tr><tr><td><b>inductions</b></td><td>0</td></tr><tr><td><b>search_time</b></td><td><pre>0.020s</pre></td></tr><tr><td><b>details</b></td><td><div class="imandra-fold panel panel-default" id="fold-04c4989b-9aba-4b28-99ac-8a023a53c8d1"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><div class="imandra-table" id="table-50aaef88-49f9-40c3-8040-1005d6ac397b"><table><tr><td><b>smt_stats</b></td><td><div class="imandra-table" id="table-02b7d304-ced2-41e9-8a4a-4d678f160ea9"><table><tr><td><b>num checks</b></td><td>1</td></tr><tr><td><b>arith assert lower</b></td><td>8</td></tr><tr><td><b>arith pivots</b></td><td>3</td></tr><tr><td><b>rlimit count</b></td><td>1836</td></tr><tr><td><b>mk clause</b></td><td>3</td></tr><tr><td><b>mk bool var</b></td><td>16</td></tr><tr><td><b>arith assert upper</b></td><td>1</td></tr><tr><td><b>arith add rows</b></td><td>3</td></tr><tr><td><b>propagations</b></td><td>2</td></tr><tr><td><b>conflicts</b></td><td>1</td></tr><tr><td><b>datatype accessor ax</b></td><td>5</td></tr><tr><td><b>arith conflicts</b></td><td>1</td></tr><tr><td><b>num allocs</b></td><td>1511168931</td></tr><tr><td><b>added eqs</b></td><td>1</td></tr><tr><td><b>arith eq adapter</b></td><td>1</td></tr><tr><td><b>memory</b></td><td>18.890000</td></tr><tr><td><b>max memory</b></td><td>24.280000</td></tr></table></div></td></tr></table></div></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-9a00b395-a3ab-43f1-8dea-c9a476980981';
+  var target = '#fold-04c4989b-9aba-4b28-99ac-8a023a53c8d1';
   fold.hydrate(target);
 });
-</script></div></td></tr></table></div></div><div class="tab-pane"><div class="imandra-fold panel panel-default" id="fold-f630f677-b0f1-4a64-b208-ca6c5e5c579b"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.020s]
+</script></div></td></tr></table></div></div><div class="tab-pane"><div class="imandra-fold panel panel-default" id="fold-74882568-1e2a-4917-b87e-d26ebc62afc8"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.020s]
   sko_strategy_0 DoorA Stay &gt;=. 0
   &amp;&amp; sko_strategy_0 DoorA Swap &gt;=. 0
      &amp;&amp; sko_strategy_0 DoorB Stay &gt;=. 0
@@ -2232,7 +2258,7 @@ require(['nbextensions/nbimandra/fold'], function (fold) {
          +. …)
         +. …)
        +. …)
-      &lt;=. 800000</pre></li><li><div><h4>simplify</h4><div class="imandra-table" id="table-a50ace2b-0096-4a25-896f-469b2e67319c"><table><tr><td><b>into</b></td><td><pre>not
+      &lt;=. 800000</pre></li><li><div><h4>simplify</h4><div class="imandra-table" id="table-bba86bad-1ae3-49bd-9cd0-b0d871d12b4c"><table><tr><td><b>into</b></td><td><pre>not
 ((((((sko_strategy_0 DoorA Stay &gt;=. 0 &amp;&amp; sko_strategy_0 DoorA Swap &gt;=. 0)
      &amp;&amp; sko_strategy_0 DoorB Stay &gt;=. 0)
     &amp;&amp; sko_strategy_0 DoorB Swap &gt;=. 0)
@@ -2252,10 +2278,10 @@ require(['nbextensions/nbimandra/fold'], function (fold) {
    &lt;=. 800000</pre></td></tr><tr><td><b>expansions</b></td><td><pre>[]</pre></td></tr><tr><td><b>rewrite_steps</b></td><td><ul></ul></td></tr><tr><td><b>forward_chaining</b></td><td><ul></ul></td></tr></table></div></div></li><li><div><h4>unsat</h4><pre>(let ((a!1 (+ (* 600000.0 (sko_strategy_0_2583 DoorA_2326 Stay_2330))
               (* 200000.0 (sko…</pre></div></li></ul></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-f630f677-b0f1-4a64-b208-ca6c5e5c579b';
+  var target = '#fold-74882568-1e2a-4917-b87e-d26ebc62afc8';
   fold.hydrate(target);
 });
-</script></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-b61f2465-c6ef-4e6a-840a-8b6324079fc4"><textarea style="display: none">digraph &quot;proof&quot; {
+</script></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-9814ca76-9e9e-4476-9e95-ce5f92beecb1"><textarea style="display: none">digraph &quot;proof&quot; {
 p_278 [label=&quot;Start (sko_strategy_0 DoorA Stay \&gt;=. 0\l       &amp;&amp; sko_strategy_0 DoorA Swap \&gt;=. 0\l          &amp;&amp; sko_strategy_0 DoorB Stay \&gt;=. 0\l             &amp;&amp; sko_strategy_0 DoorB Swap \&gt;=. 0\l                &amp;&amp; sko_strategy_0 DoorC Stay \&gt;=. 0\l                   &amp;&amp; sko_strategy_0 DoorC Swap \&gt;=. 0\l                      &amp;&amp; ((((sko_strategy_0 DoorA Stay\l                             +. sko_strategy_0 DoorA Swap)\l                            +. sko_strategy_0 DoorB Stay)\l                           +. sko_strategy_0 DoorB Swap)\l                          +. sko_strategy_0 DoorC Stay)\l                         +. sko_strategy_0 DoorC Swap = 1\l       ==\&gt; (((((((if DoorA = DoorA then 3 /. 5 else 1 /. 5)\l                 *. sko_strategy_0 DoorA Stay)\l                *. (if DoorA = DoorA then if Stay = Stay then 1000000 else 0\l                    else if Stay = Swap then 1000000 else 0)\l                +. ((if DoorB = DoorA then 3 /. 5 else 1 /. 5)\l                    *. sko_strategy_0 DoorA Stay)\l                   *. (if … then … else …))\l               +. …)\l              +. …)\l             +. …)\l            +. …)\l           \&lt;=. 800000\l       :time 0.020s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_278 -&gt; p_277 [label=&quot;&quot;];
 p_277 [label=&quot;Simplify (not\l          ((((((sko_strategy_0 DoorA Stay \&gt;=. 0\l                &amp;&amp; sko_strategy_0 DoorA Swap \&gt;=. 0)\l               &amp;&amp; sko_strategy_0 DoorB Stay \&gt;=. 0)\l              &amp;&amp; sko_strategy_0 DoorB Swap \&gt;=. 0)\l             &amp;&amp; sko_strategy_0 DoorC Stay \&gt;=. 0)\l            &amp;&amp; sko_strategy_0 DoorC Swap \&gt;=. 0)\l           &amp;&amp; ((((sko_strategy_0 DoorA Stay +. sko_strategy_0 DoorA Swap)\l                 +. sko_strategy_0 DoorB Stay)\l                +. sko_strategy_0 DoorB Swap)\l               +. sko_strategy_0 DoorC Stay)\l              +. sko_strategy_0 DoorC Swap = 1)\l          \|\| (((((600000 *. sko_strategy_0 DoorA Stay\l                  +. 200000 *. sko_strategy_0 DoorB Stay)\l                 +. 200000 *. sko_strategy_0 DoorC Stay)\l                +. 400000 *. sko_strategy_0 DoorA Swap)\l               +. 800000 *. sko_strategy_0 DoorB Swap)\l              +. 800000 *. sko_strategy_0 DoorC Swap)\l             \&lt;=. 800000\l          :expansions [] :rw [] :fc [])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
@@ -2266,30 +2292,30 @@ p_z3_1032 [label=&quot;(let ((a!1 (+ (* 600000.0 (sko_strategy_0_2583 DoorA_2326
 }
 </textarea><button class="btn btn-primary">Load graph</button><div class="imandra-graphviz-loading display-none">Loading..</div><div class="imandra-graphviz-target"></div><script>
 require(['nbextensions/nbimandra/graphviz'], function (graphviz) {
-  var target = '#graphviz-b61f2465-c6ef-4e6a-840a-8b6324079fc4';
+  var target = '#graphviz-9814ca76-9e9e-4476-9e95-ce5f92beecb1';
   graphviz.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-bf087851-49c0-45db-9ab7-3b5e35ae2f66';
+  var target = '#alt-4be1e8aa-7c80-4a88-92a4-0d6b142b82e3';
   alternatives.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-36494579-11aa-4dab-96af-7bd7ba559074';
+  var target = '#fold-c9429a0c-0bbc-440c-a619-72eb50cb81de';
   fold.hydrate(target);
 });
-</script></div></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-339e53fa-d614-45fd-94c6-8973cc984a58"><textarea style="display: none">digraph &quot;call graph&quot; {
+</script></div></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-e3106802-53e6-4ad8-9da1-0f34efba9cd7"><textarea style="display: none">digraph &quot;call graph&quot; {
 goal [label=&quot;not\l(not\l ((((((sko_strategy_0 DoorA Stay \&gt;=. 0 &amp;&amp; sko_strategy_0 DoorA Swap \&gt;=. 0)\l      &amp;&amp; sko_strategy_0 DoorB Stay \&gt;=. 0)\l     &amp;&amp; sko_strategy_0 DoorB Swap \&gt;=. 0)\l    &amp;&amp; sko_strategy_0 DoorC Stay \&gt;=. 0)\l   &amp;&amp; sko_strategy_0 DoorC Swap \&gt;=. 0)\l  &amp;&amp; ((((sko_strategy_0 DoorA Stay +. sko_strategy_0 DoorA Swap)\l        +. sko_strategy_0 DoorB Stay)\l       +. sko_strategy_0 DoorB Swap)\l      +. sko_strategy_0 DoorC Stay)\l     +. sko_strategy_0 DoorC Swap = 1)\l \|\| (((((600000 *. sko_strategy_0 DoorA Stay\l         +. 200000 *. sko_strategy_0 DoorB Stay)\l        +. 200000 *. sko_strategy_0 DoorC Stay)\l       +. 400000 *. sko_strategy_0 DoorA Swap)\l      +. 800000 *. sko_strategy_0 DoorB Swap)\l     +. 800000 *. sko_strategy_0 DoorC Swap)\l    \&lt;=. 800000)&quot;,shape=box,style=filled,color=&quot;cyan&quot;,fontname=&quot;courier&quot;,fontsize=14];
 }
 </textarea><button class="btn btn-primary">Load graph</button><div class="imandra-graphviz-loading display-none">Loading..</div><div class="imandra-graphviz-target"></div><script>
 require(['nbextensions/nbimandra/graphviz'], function (graphviz) {
-  var target = '#graphviz-339e53fa-d614-45fd-94c6-8973cc984a58';
+  var target = '#graphviz-e3106802-53e6-4ad8-9da1-0f34efba9cd7';
   graphviz.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-d79bfdbe-12bb-4d20-8bb8-1f376b247040';
+  var target = '#alt-7c232651-a347-4386-8e75-de3d3750e3ff';
   alternatives.hydrate(target);
 });
 </script></div></div></div>
@@ -2433,12 +2459,12 @@ val expected_reward_complex : (scenario -&gt; real) -&gt; real = &lt;fun&gt;
 
 
 <div class="output_html rendered_html output_subarea ">
-<div><div class="imandra-vr imandra-vr-proved"><i class="fa fa-check-circle"></i><span>Proved</span></div><div><div class="imandra-alternatives" id="alt-d86cc57e-98c2-4135-8969-b6c78b304f0a"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>proof</a></li><li class="" data-toggle="tab"><a>call graph</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-proof-top"><div class="imandra-fold panel panel-default" id="fold-814c83be-cbb2-4b50-b1ac-5c70dea478e9"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>proof</span></div></div><div class="panel-body collapse"><div class="imandra-proof"><div class="imandra-alternatives" id="alt-87f6d362-a546-4c8f-bcf2-01669a5a5499"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>summary</a></li><li class="" data-toggle="tab"><a>full</a></li><li class="" data-toggle="tab"><a>graph</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-table" id="table-b214aaa4-0d0b-41e1-bfea-31c2263360e4"><table><tr><td><b>ground_instances</b></td><td>0</td></tr><tr><td><b>definitions</b></td><td>0</td></tr><tr><td><b>inductions</b></td><td>0</td></tr><tr><td><b>search_time</b></td><td><pre>0.020s</pre></td></tr><tr><td><b>details</b></td><td><div class="imandra-fold panel panel-default" id="fold-51a2de4e-f9eb-480d-82d0-8d4a97c5463e"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><div class="imandra-table" id="table-8c8837f3-7496-4db9-8277-1ea0bdeef083"><table><tr><td><b>smt_stats</b></td><td><div class="imandra-table" id="table-a4dddf9a-16b8-41aa-9463-e9d2f55a87db"><table><tr><td><b>num checks</b></td><td>1</td></tr><tr><td><b>arith assert lower</b></td><td>8</td></tr><tr><td><b>arith pivots</b></td><td>2</td></tr><tr><td><b>rlimit count</b></td><td>2238</td></tr><tr><td><b>mk clause</b></td><td>3</td></tr><tr><td><b>mk bool var</b></td><td>16</td></tr><tr><td><b>arith assert upper</b></td><td>1</td></tr><tr><td><b>arith add rows</b></td><td>2</td></tr><tr><td><b>propagations</b></td><td>2</td></tr><tr><td><b>conflicts</b></td><td>1</td></tr><tr><td><b>datatype accessor ax</b></td><td>5</td></tr><tr><td><b>arith conflicts</b></td><td>1</td></tr><tr><td><b>num allocs</b></td><td>1588630297</td></tr><tr><td><b>added eqs</b></td><td>1</td></tr><tr><td><b>arith eq adapter</b></td><td>1</td></tr><tr><td><b>memory</b></td><td>22.010000</td></tr><tr><td><b>max memory</b></td><td>24.280000</td></tr></table></div></td></tr></table></div></div><script>
+<div><div class="imandra-vr imandra-vr-proved"><i class="fa fa-check-circle"></i><span>Proved</span></div><div><div class="imandra-alternatives" id="alt-8040b2d6-1ce4-4f2c-9421-320cea302254"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>proof</a></li><li class="" data-toggle="tab"><a>call graph</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-proof-top"><div class="imandra-fold panel panel-default" id="fold-32f623a0-f320-4a78-aa79-ec63f0b7eccc"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>proof</span></div></div><div class="panel-body collapse"><div class="imandra-proof"><div class="imandra-alternatives" id="alt-f1110344-9e5e-485f-8e19-226e121f0d06"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>summary</a></li><li class="" data-toggle="tab"><a>full</a></li><li class="" data-toggle="tab"><a>graph</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-table" id="table-0dc1c609-7c0a-4f19-be31-9e809020f1fd"><table><tr><td><b>ground_instances</b></td><td>0</td></tr><tr><td><b>definitions</b></td><td>0</td></tr><tr><td><b>inductions</b></td><td>0</td></tr><tr><td><b>search_time</b></td><td><pre>0.018s</pre></td></tr><tr><td><b>details</b></td><td><div class="imandra-fold panel panel-default" id="fold-828cb2e5-ebb1-4053-b186-d2156f96eeec"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><div class="imandra-table" id="table-e818fff3-4f21-483c-873d-6dd901656d8d"><table><tr><td><b>smt_stats</b></td><td><div class="imandra-table" id="table-7a1e823d-9277-4fa1-ae14-0896fdd99e94"><table><tr><td><b>num checks</b></td><td>1</td></tr><tr><td><b>arith assert lower</b></td><td>8</td></tr><tr><td><b>arith pivots</b></td><td>2</td></tr><tr><td><b>rlimit count</b></td><td>2238</td></tr><tr><td><b>mk clause</b></td><td>3</td></tr><tr><td><b>mk bool var</b></td><td>16</td></tr><tr><td><b>arith assert upper</b></td><td>1</td></tr><tr><td><b>arith add rows</b></td><td>2</td></tr><tr><td><b>propagations</b></td><td>2</td></tr><tr><td><b>conflicts</b></td><td>1</td></tr><tr><td><b>datatype accessor ax</b></td><td>5</td></tr><tr><td><b>arith conflicts</b></td><td>1</td></tr><tr><td><b>num allocs</b></td><td>1588630299</td></tr><tr><td><b>added eqs</b></td><td>1</td></tr><tr><td><b>arith eq adapter</b></td><td>1</td></tr><tr><td><b>memory</b></td><td>22.010000</td></tr><tr><td><b>max memory</b></td><td>24.280000</td></tr></table></div></td></tr></table></div></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-51a2de4e-f9eb-480d-82d0-8d4a97c5463e';
+  var target = '#fold-828cb2e5-ebb1-4053-b186-d2156f96eeec';
   fold.hydrate(target);
 });
-</script></div></td></tr></table></div></div><div class="tab-pane"><div class="imandra-fold panel panel-default" id="fold-48c3d32c-3598-4cff-909e-9d0e722760a7"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.020s]
+</script></div></td></tr></table></div></div><div class="tab-pane"><div class="imandra-fold panel panel-default" id="fold-53b21301-f5b0-4a1d-a07d-3734d768c9b8"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.018s]
   sko_strategy_0 DoorA Stay &gt;=. 0
   &amp;&amp; sko_strategy_0 DoorA Swap &gt;=. 0
      &amp;&amp; sko_strategy_0 DoorB Stay &gt;=. 0
@@ -2469,7 +2495,7 @@ require(['nbextensions/nbimandra/fold'], function (fold) {
          +. …)
         +. …)
        +. …)
-      &lt;=. 1400000</pre></li><li><div><h4>simplify</h4><div class="imandra-table" id="table-d02ee57b-31b1-4957-ba7d-99d23a31b23d"><table><tr><td><b>into</b></td><td><pre>not
+      &lt;=. 1400000</pre></li><li><div><h4>simplify</h4><div class="imandra-table" id="table-386cdac6-b588-4ced-9b57-b3bf225a8d0b"><table><tr><td><b>into</b></td><td><pre>not
 ((((((sko_strategy_0 DoorA Stay &gt;=. 0 &amp;&amp; sko_strategy_0 DoorA Swap &gt;=. 0)
      &amp;&amp; sko_strategy_0 DoorB Stay &gt;=. 0)
     &amp;&amp; sko_strategy_0 DoorB Swap &gt;=. 0)
@@ -2489,11 +2515,11 @@ require(['nbextensions/nbimandra/fold'], function (fold) {
    &lt;=. 1400000</pre></td></tr><tr><td><b>expansions</b></td><td><pre>[]</pre></td></tr><tr><td><b>rewrite_steps</b></td><td><ul></ul></td></tr><tr><td><b>forward_chaining</b></td><td><ul></ul></td></tr></table></div></div></li><li><div><h4>unsat</h4><pre>(let ((a!1 (+ (sko_strategy_0_2665 DoorA_2326 Stay_2330)
               (sko_strategy_0_2665 DoorA_23…</pre></div></li></ul></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-48c3d32c-3598-4cff-909e-9d0e722760a7';
+  var target = '#fold-53b21301-f5b0-4a1d-a07d-3734d768c9b8';
   fold.hydrate(target);
 });
-</script></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-00dcab9a-0405-4be9-8cb1-f08edff4ad41"><textarea style="display: none">digraph &quot;proof&quot; {
-p_281 [label=&quot;Start (sko_strategy_0 DoorA Stay \&gt;=. 0\l       &amp;&amp; sko_strategy_0 DoorA Swap \&gt;=. 0\l          &amp;&amp; sko_strategy_0 DoorB Stay \&gt;=. 0\l             &amp;&amp; sko_strategy_0 DoorB Swap \&gt;=. 0\l                &amp;&amp; sko_strategy_0 DoorC Stay \&gt;=. 0\l                   &amp;&amp; sko_strategy_0 DoorC Swap \&gt;=. 0\l                      &amp;&amp; ((((sko_strategy_0 DoorA Stay\l                             +. sko_strategy_0 DoorA Swap)\l                            +. sko_strategy_0 DoorB Stay)\l                           +. sko_strategy_0 DoorB Swap)\l                          +. sko_strategy_0 DoorC Stay)\l                         +. sko_strategy_0 DoorC Swap = 1\l       ==\&gt; (((((((if DoorA = DoorA then 5 /. 10\l                  else if DoorA = DoorB then 3 /. 10 else 2 /. 10)\l                 *. sko_strategy_0 DoorA Stay)\l                *. (if DoorA = DoorA\l                    then\l                      if Stay = Stay\l                      then\l                        if DoorA = DoorA then 1000000\l                        else if DoorA = DoorB then 2000000 else 4000000\l                      else 0\l                    else\l                    if Stay = Swap\l                    then if DoorA = DoorA then 1000000 else … else 0)\l                +. …)\l               +. …)\l              +. …)\l             +. …)\l            +. …)\l           \&lt;=. 1400000\l       :time 0.020s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+</script></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-6e7c2cb5-b7ce-40b8-93c4-a68fdffec92b"><textarea style="display: none">digraph &quot;proof&quot; {
+p_281 [label=&quot;Start (sko_strategy_0 DoorA Stay \&gt;=. 0\l       &amp;&amp; sko_strategy_0 DoorA Swap \&gt;=. 0\l          &amp;&amp; sko_strategy_0 DoorB Stay \&gt;=. 0\l             &amp;&amp; sko_strategy_0 DoorB Swap \&gt;=. 0\l                &amp;&amp; sko_strategy_0 DoorC Stay \&gt;=. 0\l                   &amp;&amp; sko_strategy_0 DoorC Swap \&gt;=. 0\l                      &amp;&amp; ((((sko_strategy_0 DoorA Stay\l                             +. sko_strategy_0 DoorA Swap)\l                            +. sko_strategy_0 DoorB Stay)\l                           +. sko_strategy_0 DoorB Swap)\l                          +. sko_strategy_0 DoorC Stay)\l                         +. sko_strategy_0 DoorC Swap = 1\l       ==\&gt; (((((((if DoorA = DoorA then 5 /. 10\l                  else if DoorA = DoorB then 3 /. 10 else 2 /. 10)\l                 *. sko_strategy_0 DoorA Stay)\l                *. (if DoorA = DoorA\l                    then\l                      if Stay = Stay\l                      then\l                        if DoorA = DoorA then 1000000\l                        else if DoorA = DoorB then 2000000 else 4000000\l                      else 0\l                    else\l                    if Stay = Swap\l                    then if DoorA = DoorA then 1000000 else … else 0)\l                +. …)\l               +. …)\l              +. …)\l             +. …)\l            +. …)\l           \&lt;=. 1400000\l       :time 0.018s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_281 -&gt; p_280 [label=&quot;&quot;];
 p_280 [label=&quot;Simplify (not\l          ((((((sko_strategy_0 DoorA Stay \&gt;=. 0\l                &amp;&amp; sko_strategy_0 DoorA Swap \&gt;=. 0)\l               &amp;&amp; sko_strategy_0 DoorB Stay \&gt;=. 0)\l              &amp;&amp; sko_strategy_0 DoorB Swap \&gt;=. 0)\l             &amp;&amp; sko_strategy_0 DoorC Stay \&gt;=. 0)\l            &amp;&amp; sko_strategy_0 DoorC Swap \&gt;=. 0)\l           &amp;&amp; ((((sko_strategy_0 DoorA Stay +. sko_strategy_0 DoorA Swap)\l                 +. sko_strategy_0 DoorB Stay)\l                +. sko_strategy_0 DoorB Swap)\l               +. sko_strategy_0 DoorC Stay)\l              +. sko_strategy_0 DoorC Swap = 1)\l          \|\| (((((500000 *. sko_strategy_0 DoorA Stay\l                  +. 600000 *. sko_strategy_0 DoorB Stay)\l                 +. 800000 *. sko_strategy_0 DoorC Stay)\l                +. 1400000 *. sko_strategy_0 DoorA Swap)\l               +. 1300000 *. sko_strategy_0 DoorB Swap)\l              +. 1100000 *. sko_strategy_0 DoorC Swap)\l             \&lt;=. 1400000\l          :expansions [] :rw [] :fc [])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_280 -&gt; p_279 [label=&quot;&quot;];
@@ -2503,30 +2529,30 @@ p_z3_689 [label=&quot;(let ((a!1 (+ (sko_strategy_0_2665 DoorA_2326 Stay_2330)
 }
 </textarea><button class="btn btn-primary">Load graph</button><div class="imandra-graphviz-loading display-none">Loading..</div><div class="imandra-graphviz-target"></div><script>
 require(['nbextensions/nbimandra/graphviz'], function (graphviz) {
-  var target = '#graphviz-00dcab9a-0405-4be9-8cb1-f08edff4ad41';
+  var target = '#graphviz-6e7c2cb5-b7ce-40b8-93c4-a68fdffec92b';
   graphviz.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-87f6d362-a546-4c8f-bcf2-01669a5a5499';
+  var target = '#alt-f1110344-9e5e-485f-8e19-226e121f0d06';
   alternatives.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-814c83be-cbb2-4b50-b1ac-5c70dea478e9';
+  var target = '#fold-32f623a0-f320-4a78-aa79-ec63f0b7eccc';
   fold.hydrate(target);
 });
-</script></div></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-be4512ba-3d8f-408d-85f8-fa56f46ea2f7"><textarea style="display: none">digraph &quot;call graph&quot; {
+</script></div></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-e0e04630-c85a-4994-991c-13f8e9b82454"><textarea style="display: none">digraph &quot;call graph&quot; {
 goal [label=&quot;not\l(not\l ((((((sko_strategy_0 DoorA Stay \&gt;=. 0 &amp;&amp; sko_strategy_0 DoorA Swap \&gt;=. 0)\l      &amp;&amp; sko_strategy_0 DoorB Stay \&gt;=. 0)\l     &amp;&amp; sko_strategy_0 DoorB Swap \&gt;=. 0)\l    &amp;&amp; sko_strategy_0 DoorC Stay \&gt;=. 0)\l   &amp;&amp; sko_strategy_0 DoorC Swap \&gt;=. 0)\l  &amp;&amp; ((((sko_strategy_0 DoorA Stay +. sko_strategy_0 DoorA Swap)\l        +. sko_strategy_0 DoorB Stay)\l       +. sko_strategy_0 DoorB Swap)\l      +. sko_strategy_0 DoorC Stay)\l     +. sko_strategy_0 DoorC Swap = 1)\l \|\| (((((500000 *. sko_strategy_0 DoorA Stay\l         +. 600000 *. sko_strategy_0 DoorB Stay)\l        +. 800000 *. sko_strategy_0 DoorC Stay)\l       +. 1400000 *. sko_strategy_0 DoorA Swap)\l      +. 1300000 *. sko_strategy_0 DoorB Swap)\l     +. 1100000 *. sko_strategy_0 DoorC Swap)\l    \&lt;=. 1400000)&quot;,shape=box,style=filled,color=&quot;cyan&quot;,fontname=&quot;courier&quot;,fontsize=14];
 }
 </textarea><button class="btn btn-primary">Load graph</button><div class="imandra-graphviz-loading display-none">Loading..</div><div class="imandra-graphviz-target"></div><script>
 require(['nbextensions/nbimandra/graphviz'], function (graphviz) {
-  var target = '#graphviz-be4512ba-3d8f-408d-85f8-fa56f46ea2f7';
+  var target = '#graphviz-e0e04630-c85a-4994-991c-13f8e9b82454';
   graphviz.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-d86cc57e-98c2-4135-8969-b6c78b304f0a';
+  var target = '#alt-8040b2d6-1ce4-4f2c-9421-320cea302254';
   alternatives.hydrate(target);
 });
 </script></div></div></div>
@@ -2587,7 +2613,7 @@ module CX : sig val strategy : door -&gt; choice -&gt; Q.t end
 
 
 <div class="output_html rendered_html output_subarea ">
-<div><pre>Instance (after 0 steps, 0.022s):
+<div><pre>Instance (after 0 steps, 0.021s):
  let strategy x_0 x_1 =
    match (x_0, x_1) with
    | (DoorA, Swap) -&gt; 1.
@@ -2606,20 +2632,20 @@ module CX : sig val strategy : door -&gt; choice -&gt; Q.t end
 
 
 <div class="output_html rendered_html output_subarea ">
-<div><div class="imandra-vr imandra-vr-proved"><i class="fa fa-check-circle"></i><span>Instance</span></div><div><div class="imandra-alternatives" id="alt-ea622419-2d9a-47d8-a77d-74ea97b1a8e7"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>call graph</a></li><li class="" data-toggle="tab"><a>proof-attempt</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-graphviz" id="graphviz-24398b65-6270-4c35-9a0c-20391c262fbb"><textarea style="display: none">digraph &quot;call graph&quot; {
+<div><div class="imandra-vr imandra-vr-proved"><i class="fa fa-check-circle"></i><span>Instance</span></div><div><div class="imandra-alternatives" id="alt-c6750df7-1586-47f1-8b7d-915e761e1e86"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>call graph</a></li><li class="" data-toggle="tab"><a>proof-attempt</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-graphviz" id="graphviz-4ec049fe-a99a-43d8-8ffd-e71791f71979"><textarea style="display: none">digraph &quot;call graph&quot; {
 goal [label=&quot;((((((sko_strategy_0 DoorA Stay \&gt;=. 0 &amp;&amp; sko_strategy_0 DoorA Swap \&gt;=. 0)\l     &amp;&amp; sko_strategy_0 DoorB Stay \&gt;=. 0)\l    &amp;&amp; sko_strategy_0 DoorB Swap \&gt;=. 0)\l   &amp;&amp; sko_strategy_0 DoorC Stay \&gt;=. 0)\l  &amp;&amp; sko_strategy_0 DoorC Swap \&gt;=. 0)\l &amp;&amp; ((((sko_strategy_0 DoorA Stay +. sko_strategy_0 DoorA Swap)\l       +. sko_strategy_0 DoorB Stay)\l      +. sko_strategy_0 DoorB Swap)\l     +. sko_strategy_0 DoorC Stay)\l    +. sko_strategy_0 DoorC Swap = 1)\l&amp;&amp; ((((500000 *. sko_strategy_0 DoorA Stay\l       +. 600000 *. sko_strategy_0 DoorB Stay)\l      +. 800000 *. sko_strategy_0 DoorC Stay)\l     +. 1400000 *. sko_strategy_0 DoorA Swap)\l    +. 1300000 *. sko_strategy_0 DoorB Swap)\l   +. 1100000 *. sko_strategy_0 DoorC Swap = 1400000&quot;,shape=box,style=filled,color=&quot;cyan&quot;,fontname=&quot;courier&quot;,fontsize=14];
 }
 </textarea><button class="btn btn-primary">Load graph</button><div class="imandra-graphviz-loading display-none">Loading..</div><div class="imandra-graphviz-target"></div><script>
 require(['nbextensions/nbimandra/graphviz'], function (graphviz) {
-  var target = '#graphviz-24398b65-6270-4c35-9a0c-20391c262fbb';
+  var target = '#graphviz-4ec049fe-a99a-43d8-8ffd-e71791f71979';
   graphviz.hydrate(target);
 });
-</script></div></div><div class="tab-pane"><div class="imandra-proof-top"><div class="imandra-fold panel panel-default" id="fold-9f37d530-4e8a-4e11-91da-c11ae1336256"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>proof attempt</span></div></div><div class="panel-body collapse"><div class="imandra-proof"><div class="imandra-alternatives" id="alt-efee4435-54b7-42a2-9830-4253839321ea"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>summary</a></li><li class="" data-toggle="tab"><a>full</a></li><li class="" data-toggle="tab"><a>graph</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-table" id="table-b6096adf-490a-4b6c-9483-52deb4a2d136"><table><tr><td><b>ground_instances</b></td><td>0</td></tr><tr><td><b>definitions</b></td><td>0</td></tr><tr><td><b>inductions</b></td><td>0</td></tr><tr><td><b>search_time</b></td><td><pre>0.022s</pre></td></tr><tr><td><b>details</b></td><td><div class="imandra-fold panel panel-default" id="fold-ba6f1de5-c004-402b-a8e5-65ad02490841"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><div class="imandra-table" id="table-208b3c74-4614-45a3-8dbc-d381b4f1a929"><table><tr><td><b>smt_stats</b></td><td><div class="imandra-table" id="table-c5009ae3-0781-480b-b064-655e11d4f4a7"><table><tr><td><b>num checks</b></td><td>1</td></tr><tr><td><b>arith assert lower</b></td><td>8</td></tr><tr><td><b>arith pivots</b></td><td>2</td></tr><tr><td><b>rlimit count</b></td><td>2247</td></tr><tr><td><b>mk clause</b></td><td>6</td></tr><tr><td><b>datatype occurs check</b></td><td>5</td></tr><tr><td><b>mk bool var</b></td><td>18</td></tr><tr><td><b>arith assert upper</b></td><td>2</td></tr><tr><td><b>arith add rows</b></td><td>2</td></tr><tr><td><b>propagations</b></td><td>4</td></tr><tr><td><b>datatype accessor ax</b></td><td>5</td></tr><tr><td><b>num allocs</b></td><td>1669020671</td></tr><tr><td><b>final checks</b></td><td>1</td></tr><tr><td><b>added eqs</b></td><td>2</td></tr><tr><td><b>del clause</b></td><td>6</td></tr><tr><td><b>arith eq adapter</b></td><td>2</td></tr><tr><td><b>memory</b></td><td>25.140000</td></tr><tr><td><b>max memory</b></td><td>25.520000</td></tr></table></div></td></tr></table></div></div><script>
+</script></div></div><div class="tab-pane"><div class="imandra-proof-top"><div class="imandra-fold panel panel-default" id="fold-a620e7f8-fc48-4ade-9d1c-33951b5ad9f2"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>proof attempt</span></div></div><div class="panel-body collapse"><div class="imandra-proof"><div class="imandra-alternatives" id="alt-768fddfe-b11c-4013-9b06-73a92b6b58ad"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>summary</a></li><li class="" data-toggle="tab"><a>full</a></li><li class="" data-toggle="tab"><a>graph</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-table" id="table-2adcb84c-ac81-41f8-afa3-006f070b909c"><table><tr><td><b>ground_instances</b></td><td>0</td></tr><tr><td><b>definitions</b></td><td>0</td></tr><tr><td><b>inductions</b></td><td>0</td></tr><tr><td><b>search_time</b></td><td><pre>0.021s</pre></td></tr><tr><td><b>details</b></td><td><div class="imandra-fold panel panel-default" id="fold-a8212144-c8be-41f8-9b27-c6e1def556c8"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><div class="imandra-table" id="table-5fe022f6-e375-4b0c-be7e-8351e3295801"><table><tr><td><b>smt_stats</b></td><td><div class="imandra-table" id="table-0b55cbde-0c7a-4370-b87e-3766c584526f"><table><tr><td><b>num checks</b></td><td>1</td></tr><tr><td><b>arith assert lower</b></td><td>8</td></tr><tr><td><b>arith pivots</b></td><td>2</td></tr><tr><td><b>rlimit count</b></td><td>2247</td></tr><tr><td><b>mk clause</b></td><td>6</td></tr><tr><td><b>datatype occurs check</b></td><td>5</td></tr><tr><td><b>mk bool var</b></td><td>18</td></tr><tr><td><b>arith assert upper</b></td><td>2</td></tr><tr><td><b>arith add rows</b></td><td>2</td></tr><tr><td><b>propagations</b></td><td>4</td></tr><tr><td><b>datatype accessor ax</b></td><td>5</td></tr><tr><td><b>num allocs</b></td><td>1669020793</td></tr><tr><td><b>final checks</b></td><td>1</td></tr><tr><td><b>added eqs</b></td><td>2</td></tr><tr><td><b>del clause</b></td><td>6</td></tr><tr><td><b>arith eq adapter</b></td><td>2</td></tr><tr><td><b>memory</b></td><td>25.140000</td></tr><tr><td><b>max memory</b></td><td>25.520000</td></tr></table></div></td></tr></table></div></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-ba6f1de5-c004-402b-a8e5-65ad02490841';
+  var target = '#fold-a8212144-c8be-41f8-9b27-c6e1def556c8';
   fold.hydrate(target);
 });
-</script></div></td></tr></table></div></div><div class="tab-pane"><div class="imandra-fold panel panel-default" id="fold-d87c5c44-615c-40e6-9863-afd6207f5995"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.022s]
+</script></div></td></tr></table></div></div><div class="tab-pane"><div class="imandra-fold panel panel-default" id="fold-35e87277-18d6-471c-b1e6-f5f2c431d0a0"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.021s]
   (sko_strategy_0 DoorA Stay &gt;=. 0
    &amp;&amp; sko_strategy_0 DoorA Swap &gt;=. 0
       &amp;&amp; sko_strategy_0 DoorB Stay &gt;=. 0
@@ -2649,7 +2675,7 @@ require(['nbextensions/nbimandra/fold'], function (fold) {
         +. …)
        +. …)
       +. …)
-     +. … = 1400000</pre></li><li><div><h4>simplify</h4><div class="imandra-table" id="table-9fd6de2b-2a39-4855-aeb6-78bc810d359c"><table><tr><td><b>into</b></td><td><pre>((((((sko_strategy_0 DoorA Stay &gt;=. 0 &amp;&amp; sko_strategy_0 DoorA Swap &gt;=. 0)
+     +. … = 1400000</pre></li><li><div><h4>simplify</h4><div class="imandra-table" id="table-09a32d4c-2f8b-4f5c-89c9-1f1edfb3c88f"><table><tr><td><b>into</b></td><td><pre>((((((sko_strategy_0 DoorA Stay &gt;=. 0 &amp;&amp; sko_strategy_0 DoorA Swap &gt;=. 0)
      &amp;&amp; sko_strategy_0 DoorB Stay &gt;=. 0)
     &amp;&amp; sko_strategy_0 DoorB Swap &gt;=. 0)
    &amp;&amp; sko_strategy_0 DoorC Stay &gt;=. 0)
@@ -2671,11 +2697,11 @@ require(['nbextensions/nbimandra/fold'], function (fold) {
  
 )</li></ul></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-d87c5c44-615c-40e6-9863-afd6207f5995';
+  var target = '#fold-35e87277-18d6-471c-b1e6-f5f2c431d0a0';
   fold.hydrate(target);
 });
-</script></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-8c200b23-db87-49f2-9edd-695c9556f420"><textarea style="display: none">digraph &quot;proof&quot; {
-p_284 [label=&quot;Start ((sko_strategy_0 DoorA Stay \&gt;=. 0\l        &amp;&amp; sko_strategy_0 DoorA Swap \&gt;=. 0\l           &amp;&amp; sko_strategy_0 DoorB Stay \&gt;=. 0\l              &amp;&amp; sko_strategy_0 DoorB Swap \&gt;=. 0\l                 &amp;&amp; sko_strategy_0 DoorC Stay \&gt;=. 0\l                    &amp;&amp; sko_strategy_0 DoorC Swap \&gt;=. 0\l                       &amp;&amp; ((((sko_strategy_0 DoorA Stay\l                              +. sko_strategy_0 DoorA Swap)\l                             +. sko_strategy_0 DoorB Stay)\l                            +. sko_strategy_0 DoorB Swap)\l                           +. sko_strategy_0 DoorC Stay)\l                          +. sko_strategy_0 DoorC Swap = 1)\l       &amp;&amp; ((((((if DoorA = DoorA then 5 /. 10\l                else if DoorA = DoorB then 3 /. 10 else 2 /. 10)\l               *. sko_strategy_0 DoorA Stay)\l              *. (if DoorA = DoorA\l                  then\l                    if Stay = Stay\l                    then\l                      if DoorA = DoorA then 1000000\l                      else if DoorA = DoorB then 2000000 else 4000000\l                    else 0\l                  else\l                  if Stay = Swap then if DoorA = DoorA then 1000000 else …\l                  else 0)\l              +. …)\l             +. …)\l            +. …)\l           +. …)\l          +. … = 1400000\l       :time 0.022s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+</script></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-8837897f-8345-45d8-a1a3-8a1b434da87e"><textarea style="display: none">digraph &quot;proof&quot; {
+p_284 [label=&quot;Start ((sko_strategy_0 DoorA Stay \&gt;=. 0\l        &amp;&amp; sko_strategy_0 DoorA Swap \&gt;=. 0\l           &amp;&amp; sko_strategy_0 DoorB Stay \&gt;=. 0\l              &amp;&amp; sko_strategy_0 DoorB Swap \&gt;=. 0\l                 &amp;&amp; sko_strategy_0 DoorC Stay \&gt;=. 0\l                    &amp;&amp; sko_strategy_0 DoorC Swap \&gt;=. 0\l                       &amp;&amp; ((((sko_strategy_0 DoorA Stay\l                              +. sko_strategy_0 DoorA Swap)\l                             +. sko_strategy_0 DoorB Stay)\l                            +. sko_strategy_0 DoorB Swap)\l                           +. sko_strategy_0 DoorC Stay)\l                          +. sko_strategy_0 DoorC Swap = 1)\l       &amp;&amp; ((((((if DoorA = DoorA then 5 /. 10\l                else if DoorA = DoorB then 3 /. 10 else 2 /. 10)\l               *. sko_strategy_0 DoorA Stay)\l              *. (if DoorA = DoorA\l                  then\l                    if Stay = Stay\l                    then\l                      if DoorA = DoorA then 1000000\l                      else if DoorA = DoorB then 2000000 else 4000000\l                    else 0\l                  else\l                  if Stay = Swap then if DoorA = DoorA then 1000000 else …\l                  else 0)\l              +. …)\l             +. …)\l            +. …)\l           +. …)\l          +. … = 1400000\l       :time 0.021s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_284 -&gt; p_283 [label=&quot;&quot;];
 p_283 [label=&quot;Simplify (((((((sko_strategy_0 DoorA Stay \&gt;=. 0\l                &amp;&amp; sko_strategy_0 DoorA Swap \&gt;=. 0)\l               &amp;&amp; sko_strategy_0 DoorB Stay \&gt;=. 0)\l              &amp;&amp; sko_strategy_0 DoorB Swap \&gt;=. 0)\l             &amp;&amp; sko_strategy_0 DoorC Stay \&gt;=. 0)\l            &amp;&amp; sko_strategy_0 DoorC Swap \&gt;=. 0)\l           &amp;&amp; ((((sko_strategy_0 DoorA Stay +. sko_strategy_0 DoorA Swap)\l                 +. sko_strategy_0 DoorB Stay)\l                +. sko_strategy_0 DoorB Swap)\l               +. sko_strategy_0 DoorC Stay)\l              +. sko_strategy_0 DoorC Swap = 1)\l          &amp;&amp; ((((500000 *. sko_strategy_0 DoorA Stay\l                 +. 600000 *. sko_strategy_0 DoorB Stay)\l                +. 800000 *. sko_strategy_0 DoorC Stay)\l               +. 1400000 *. sko_strategy_0 DoorA Swap)\l              +. 1300000 *. sko_strategy_0 DoorB Swap)\l             +. 1100000 *. sko_strategy_0 DoorC Swap = 1400000\l          :expansions [] :rw [] :fc [])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_283 -&gt; p_282 [label=&quot;&quot;];
@@ -2683,22 +2709,22 @@ p_282 [label=&quot;Sat (Some  let strategy x_0 x_1 =\l   match (x_0, x_1) with\l
 }
 </textarea><button class="btn btn-primary">Load graph</button><div class="imandra-graphviz-loading display-none">Loading..</div><div class="imandra-graphviz-target"></div><script>
 require(['nbextensions/nbimandra/graphviz'], function (graphviz) {
-  var target = '#graphviz-8c200b23-db87-49f2-9edd-695c9556f420';
+  var target = '#graphviz-8837897f-8345-45d8-a1a3-8a1b434da87e';
   graphviz.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-efee4435-54b7-42a2-9830-4253839321ea';
+  var target = '#alt-768fddfe-b11c-4013-9b06-73a92b6b58ad';
   alternatives.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-9f37d530-4e8a-4e11-91da-c11ae1336256';
+  var target = '#fold-a620e7f8-fc48-4ade-9d1c-33951b5ad9f2';
   fold.hydrate(target);
 });
 </script></div></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-ea622419-2d9a-47d8-a77d-74ea97b1a8e7';
+  var target = '#alt-c6750df7-1586-47f1-8b7d-915e761e1e86';
   alternatives.hydrate(target);
 });
 </script></div></div></div>
@@ -2744,13 +2770,9 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
                 <a class="Copyrights"href="http://imandra.ai">&#9400; 2018 Aesthetic Integration Ltd. All rights reserved.</a>
             </footer>
         </div>
-    </body>
     
  
 
 
-        </div>
-        </div>
-        </div>
     </body>
 </html>

@@ -6,7 +6,7 @@
         <meta property="og:url" content="https://docs.imandra.ai/imandra-docs/notebooks/installation-docker/">
         <meta property="og:type" content="website">
         <meta property="og:title" content="Imandra Documentation - Installation - Docker">
-        <meta property="og:description" content="Getting set up with a local installation of Imandra">
+        <meta property="og:description" content="Getting set up with Imandra using Docker">
         <meta property="og:image" content="https://storage.googleapis.com/imandra-assets/images/og_image_default_i78.jpg">
 
         
@@ -34,7 +34,7 @@
         <link rel="stylesheet" href="/imandra-docs/static/nbextensions/nbimandra/styles.c7ed3d1a.css" type="text/css">
         <link rel="stylesheet" href="/imandra-docs/static/docs-styles.86fc0481.css" type="text/css">
         
-        <link rel="stylesheet" href="/imandra-docs/static/jekyll-styles.8dbeaac3.css" type="text/css">
+        <link rel="stylesheet" href="/imandra-docs/static/jekyll-styles.04a0e3a4.css" type="text/css">
         
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
@@ -144,13 +144,30 @@
 <header class="header">
     <div class="top-row-container">
         <div class="top-row">
-            <div id="toggler--left" class="side__left-menu-toggler"><a href="#" class="side__toggle">≡ <span class="side__toggle-text">Docs</span></a></div>
+
+            <div id="toggler--left" class="side__left-menu-toggler">
+                <div class="side__toggle">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+                <p class="side__toggle-text">Docs</p>
+            </div>
+
             <div class="side__logo-container">
                 <a class="side__logo-link" href="/">
                     <img class="side__logo " src = "/imandra-docs/jekyll-resources/assets/img/ai_logo_green.svg">
                 </a>
             </div>
-            <div id="toggler--right" class="side__right-menu-toggler"><a href="#" class="side__toggle"><span class="side__toggle-text">Pages</span> ≡</a></div>
+
+            <div id="toggler--right" class="side__right-menu-toggler">
+                <p class="side__toggle-text">Pages</p>
+                <div class="side__toggle">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
 
             <nav class="side__nav-container side__nav-container--hidden">
 
@@ -409,21 +426,30 @@
                 </ul>
             </nav>
         </div>
+
         <div class="template-header__image-container template-header__image-container--jupyter">
             <div class="template-header__image" href ="/imandra-docs">
                 <img class="SiteSpecificImage" src="/imandra-docs/static/img/site_specific_image_v_2.svg">
             </div>
         </div>
+        
     </div>
+
     <script>
-     document.getElementById('toggler--left').addEventListener('click', function () {
-         document.getElementsByClassName('side__nav-container')[0].classList.toggle('side__nav-container--hidden');
-         document.getElementsByClassName('top-bar__nav-list')[0].classList.add('top-bar__nav-list--hidden');
-     });
-     document.getElementById('toggler--right').addEventListener('click', function () {
-         document.getElementsByClassName('side__nav-container')[0].classList.add('side__nav-container--hidden');
-         document.getElementsByClassName('top-bar__nav-list')[0].classList.toggle('top-bar__nav-list--hidden');
-     });
+        document.getElementById('toggler--left').addEventListener('click', function () {
+            document.querySelector('.side__right-menu-toggler .side__toggle').classList.remove('side__toggle--active');
+            document.querySelector('.side__left-menu-toggler .side__toggle').classList.toggle('side__toggle--active');
+            document.getElementsByClassName('side__nav-container')[0].classList.toggle('side__nav-container--hidden');
+            document.getElementsByClassName('top-bar__nav-list')[0].classList.add('top-bar__nav-list--hidden');
+        });
+
+        document.getElementById('toggler--right').addEventListener('click', function () {
+            document.querySelector('.side__left-menu-toggler .side__toggle').classList.remove('side__toggle--active');
+            document.querySelector('.side__right-menu-toggler .side__toggle').classList.toggle('side__toggle--active');
+            document.getElementsByClassName('side__nav-container')[0].classList.add('side__nav-container--hidden');
+            document.getElementsByClassName('top-bar__nav-list')[0].classList.toggle('top-bar__nav-list--hidden');
+        });
+
     </script>
 </header>
                 <article class="article__container article__container--notebooks">
@@ -449,6 +475,17 @@
 </div>
 </div>
 </div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>The above container contains a stripped down version of the tools provided through the local installer, and crucially, doesn't include a functional opam switch.</p>
+<p>If you need a Docker image that includes a functional opam switch, you can use the <code>imandra/imandra-client-switch</code> image instead. The above script should be used, simply replacing <code>imandra-client</code> with <code>imandra-client-switch</code>.</p>
+<p>For the moment we only support Docker images based either <code>debian:9</code> or <code>ocaml/opam2:debian-9</code>, and we suggest using <code>imandra/imandra-client-switch</code> as a base image if you need to create custom Docker images to run Imandra on.</p>
+
+</div>
+</div>
+</div>
                     </div>
 
                     </article>
@@ -457,13 +494,9 @@
                 <a class="Copyrights"href="http://imandra.ai">&#9400; 2018 Aesthetic Integration Ltd. All rights reserved.</a>
             </footer>
         </div>
-    </body>
     
  
 
 
-        </div>
-        </div>
-        </div>
     </body>
 </html>

@@ -34,7 +34,7 @@
         <link rel="stylesheet" href="/imandra-docs/static/nbextensions/nbimandra/styles.c7ed3d1a.css" type="text/css">
         <link rel="stylesheet" href="/imandra-docs/static/docs-styles.86fc0481.css" type="text/css">
         
-        <link rel="stylesheet" href="/imandra-docs/static/jekyll-styles.8dbeaac3.css" type="text/css">
+        <link rel="stylesheet" href="/imandra-docs/static/jekyll-styles.04a0e3a4.css" type="text/css">
         
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
@@ -144,13 +144,30 @@
 <header class="header">
     <div class="top-row-container">
         <div class="top-row">
-            <div id="toggler--left" class="side__left-menu-toggler"><a href="#" class="side__toggle">≡ <span class="side__toggle-text">Docs</span></a></div>
+
+            <div id="toggler--left" class="side__left-menu-toggler">
+                <div class="side__toggle">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+                <p class="side__toggle-text">Docs</p>
+            </div>
+
             <div class="side__logo-container">
                 <a class="side__logo-link" href="/">
                     <img class="side__logo " src = "/imandra-docs/jekyll-resources/assets/img/ai_logo_green.svg">
                 </a>
             </div>
-            <div id="toggler--right" class="side__right-menu-toggler"><a href="#" class="side__toggle"><span class="side__toggle-text">Pages</span> ≡</a></div>
+
+            <div id="toggler--right" class="side__right-menu-toggler">
+                <p class="side__toggle-text">Pages</p>
+                <div class="side__toggle">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
 
             <nav class="side__nav-container side__nav-container--hidden">
 
@@ -409,21 +426,30 @@
                 </ul>
             </nav>
         </div>
+
         <div class="template-header__image-container template-header__image-container--jupyter">
             <div class="template-header__image" href ="/imandra-docs">
                 <img class="SiteSpecificImage" src="/imandra-docs/static/img/site_specific_image_v_2.svg">
             </div>
         </div>
+        
     </div>
+
     <script>
-     document.getElementById('toggler--left').addEventListener('click', function () {
-         document.getElementsByClassName('side__nav-container')[0].classList.toggle('side__nav-container--hidden');
-         document.getElementsByClassName('top-bar__nav-list')[0].classList.add('top-bar__nav-list--hidden');
-     });
-     document.getElementById('toggler--right').addEventListener('click', function () {
-         document.getElementsByClassName('side__nav-container')[0].classList.add('side__nav-container--hidden');
-         document.getElementsByClassName('top-bar__nav-list')[0].classList.toggle('top-bar__nav-list--hidden');
-     });
+        document.getElementById('toggler--left').addEventListener('click', function () {
+            document.querySelector('.side__right-menu-toggler .side__toggle').classList.remove('side__toggle--active');
+            document.querySelector('.side__left-menu-toggler .side__toggle').classList.toggle('side__toggle--active');
+            document.getElementsByClassName('side__nav-container')[0].classList.toggle('side__nav-container--hidden');
+            document.getElementsByClassName('top-bar__nav-list')[0].classList.add('top-bar__nav-list--hidden');
+        });
+
+        document.getElementById('toggler--right').addEventListener('click', function () {
+            document.querySelector('.side__left-menu-toggler .side__toggle').classList.remove('side__toggle--active');
+            document.querySelector('.side__right-menu-toggler .side__toggle').classList.toggle('side__toggle--active');
+            document.getElementsByClassName('side__nav-container')[0].classList.add('side__nav-container--hidden');
+            document.getElementsByClassName('top-bar__nav-list')[0].classList.toggle('top-bar__nav-list--hidden');
+        });
+
     </script>
 </header>
                 <article class="article__container article__container--notebooks">
@@ -721,46 +747,46 @@ type state = {
 
 
 <div class="output_html rendered_html output_subarea ">
-<div><div class="imandra-fold panel panel-default" id="fold-0e27e93c-2441-465a-ad4c-8b476c96eb29"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>termination proof</span></div></div><div class="panel-body collapse"><div><h3>Termination proof</h3><p></p><div class="imandra-fold panel panel-default" id="fold-fd97d906-3142-4024-89b5-052fd2c1bdb1"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>call `foldi base (Some ((if Is_a(Some, *opt*) then Option.get *opt* else 0) + 1))
-f_2 (List.tl l)` from `foldi base *opt* f_2 l`</span></div></div><div class="panel-body collapse"><div class="imandra-table" id="table-9bae28f2-dd2e-4ed6-81ac-213fb931de2f"><table><tr><td><b>original</b></td><td>foldi base *opt* f_2 l</td></tr><tr><td><b>sub</b></td><td>foldi base (Some ((if Is_a(Some, *opt*) then Option.get *opt* else 0) + 1))
-f_2 (List.tl l)</td></tr><tr><td><b>original ordinal</b></td><td>Ordinal.Int (Ordinal.count l)</td></tr><tr><td><b>sub ordinal</b></td><td>Ordinal.Int (Ordinal.count (List.tl l))</td></tr><tr><td><b>path</b></td><td>[not (l = [])]</td></tr><tr><td><b>proof</b></td><td><div class="imandra-fold panel panel-default" id="fold-acae491b-8e72-4d7e-afa4-7462551f9041"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>detailed proof</span></div></div><div class="panel-body collapse"><div class="imandra-proof"><div class="imandra-alternatives" id="alt-2fc83bb4-f668-4fea-b06b-8f753d416012"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>summary</a></li><li class="" data-toggle="tab"><a>full</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-table" id="table-aec526ca-b689-474d-b46b-7fad6015dcff"><table><tr><td><b>ground_instances</b></td><td>3</td></tr><tr><td><b>definitions</b></td><td>0</td></tr><tr><td><b>inductions</b></td><td>0</td></tr><tr><td><b>search_time</b></td><td><pre>0.024s</pre></td></tr><tr><td><b>details</b></td><td><div class="imandra-fold panel panel-default" id="fold-a5c0e5bb-0b30-4487-bd7b-83ea1c7a00ed"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><div class="imandra-table" id="table-6dd3a9b4-6caa-461a-8173-0e7155d64430"><table><tr><td><b>smt_stats</b></td><td><div class="imandra-table" id="table-8b481b50-6bb9-493f-91f4-783ee726aa5a"><table><tr><td><b>num checks</b></td><td>7</td></tr><tr><td><b>arith assert lower</b></td><td>6</td></tr><tr><td><b>arith pivots</b></td><td>3</td></tr><tr><td><b>rlimit count</b></td><td>1821</td></tr><tr><td><b>mk clause</b></td><td>3</td></tr><tr><td><b>datatype occurs check</b></td><td>21</td></tr><tr><td><b>mk bool var</b></td><td>50</td></tr><tr><td><b>arith assert upper</b></td><td>4</td></tr><tr><td><b>datatype splits</b></td><td>3</td></tr><tr><td><b>decisions</b></td><td>7</td></tr><tr><td><b>arith add rows</b></td><td>7</td></tr><tr><td><b>propagations</b></td><td>2</td></tr><tr><td><b>conflicts</b></td><td>7</td></tr><tr><td><b>arith fixed eqs</b></td><td>4</td></tr><tr><td><b>datatype accessor ax</b></td><td>5</td></tr><tr><td><b>arith conflicts</b></td><td>1</td></tr><tr><td><b>datatype constructor ax</b></td><td>8</td></tr><tr><td><b>num allocs</b></td><td>1192366362</td></tr><tr><td><b>final checks</b></td><td>6</td></tr><tr><td><b>added eqs</b></td><td>33</td></tr><tr><td><b>del clause</b></td><td>1</td></tr><tr><td><b>arith eq adapter</b></td><td>3</td></tr><tr><td><b>memory</b></td><td>15.290000</td></tr><tr><td><b>max memory</b></td><td>15.340000</td></tr></table></div></td></tr></table></div></div><script>
+<div><div class="imandra-fold panel panel-default" id="fold-d8c6db71-7045-4b39-8cf8-c87ed2c9bf99"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>termination proof</span></div></div><div class="panel-body collapse"><div><h3>Termination proof</h3><p></p><div class="imandra-fold panel panel-default" id="fold-e4a0e5ac-48ac-443e-bf99-be1be49412e5"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>call `foldi base (Some ((if Is_a(Some, *opt*) then Option.get *opt* else 0) + 1))
+f_2 (List.tl l)` from `foldi base *opt* f_2 l`</span></div></div><div class="panel-body collapse"><div class="imandra-table" id="table-ce2bf35f-41d3-45da-b4a0-c98b9cba8893"><table><tr><td><b>original</b></td><td>foldi base *opt* f_2 l</td></tr><tr><td><b>sub</b></td><td>foldi base (Some ((if Is_a(Some, *opt*) then Option.get *opt* else 0) + 1))
+f_2 (List.tl l)</td></tr><tr><td><b>original ordinal</b></td><td>Ordinal.Int (Ordinal.count l)</td></tr><tr><td><b>sub ordinal</b></td><td>Ordinal.Int (Ordinal.count (List.tl l))</td></tr><tr><td><b>path</b></td><td>[not (l = [])]</td></tr><tr><td><b>proof</b></td><td><div class="imandra-fold panel panel-default" id="fold-424279e4-6a69-4b74-b33c-0ba88185ccc9"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>detailed proof</span></div></div><div class="panel-body collapse"><div class="imandra-proof"><div class="imandra-alternatives" id="alt-a25f01e9-b78e-4dda-ac58-35697cc92429"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>summary</a></li><li class="" data-toggle="tab"><a>full</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-table" id="table-336fe2b9-bf76-4c5f-8c98-341544f275e9"><table><tr><td><b>ground_instances</b></td><td>3</td></tr><tr><td><b>definitions</b></td><td>0</td></tr><tr><td><b>inductions</b></td><td>0</td></tr><tr><td><b>search_time</b></td><td><pre>0.024s</pre></td></tr><tr><td><b>details</b></td><td><div class="imandra-fold panel panel-default" id="fold-7a24e05e-12e7-461c-b9e4-2488b2683c67"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><div class="imandra-table" id="table-13f2a48f-799f-44e5-8ab6-fea7912bc1be"><table><tr><td><b>smt_stats</b></td><td><div class="imandra-table" id="table-c85acb5f-41d1-4346-851e-daba9d8350d6"><table><tr><td><b>num checks</b></td><td>7</td></tr><tr><td><b>arith assert lower</b></td><td>5</td></tr><tr><td><b>arith pivots</b></td><td>3</td></tr><tr><td><b>rlimit count</b></td><td>1821</td></tr><tr><td><b>mk clause</b></td><td>3</td></tr><tr><td><b>datatype occurs check</b></td><td>21</td></tr><tr><td><b>mk bool var</b></td><td>50</td></tr><tr><td><b>arith assert upper</b></td><td>5</td></tr><tr><td><b>datatype splits</b></td><td>3</td></tr><tr><td><b>decisions</b></td><td>7</td></tr><tr><td><b>arith add rows</b></td><td>7</td></tr><tr><td><b>propagations</b></td><td>2</td></tr><tr><td><b>conflicts</b></td><td>7</td></tr><tr><td><b>arith fixed eqs</b></td><td>4</td></tr><tr><td><b>datatype accessor ax</b></td><td>5</td></tr><tr><td><b>arith conflicts</b></td><td>1</td></tr><tr><td><b>datatype constructor ax</b></td><td>8</td></tr><tr><td><b>num allocs</b></td><td>1190944659</td></tr><tr><td><b>final checks</b></td><td>6</td></tr><tr><td><b>added eqs</b></td><td>33</td></tr><tr><td><b>del clause</b></td><td>1</td></tr><tr><td><b>arith eq adapter</b></td><td>3</td></tr><tr><td><b>memory</b></td><td>17.860000</td></tr><tr><td><b>max memory</b></td><td>17.910000</td></tr></table></div></td></tr></table></div></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-a5c0e5bb-0b30-4487-bd7b-83ea1c7a00ed';
+  var target = '#fold-7a24e05e-12e7-461c-b9e4-2488b2683c67';
   fold.hydrate(target);
 });
-</script></div></td></tr></table></div></div><div class="tab-pane"><div class="imandra-fold panel panel-default" id="fold-dd4fbc6d-08ad-41d8-a963-125deedfc648"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.024s]
+</script></div></td></tr></table></div></div><div class="tab-pane"><div class="imandra-fold panel panel-default" id="fold-66d6696d-64be-41df-a01a-35b4c97f9da5"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.024s]
   not (l = []) &amp;&amp; Ordinal.count l &gt;= 0 &amp;&amp; Ordinal.count (List.tl l) &gt;= 0
   ==&gt; List.tl l = []
       || Ordinal.Int (Ordinal.count (List.tl l)) Ordinal.&lt;&lt;
-         Ordinal.Int (Ordinal.count l)</pre></li><li><div><h5>simplify</h5><div class="imandra-table" id="table-aa08ecbc-504c-4a31-ae47-7c0e94a1d2d3"><table><tr><td><b>into</b></td><td><pre>(not
+         Ordinal.Int (Ordinal.count l)</pre></li><li><div><h5>simplify</h5><div class="imandra-table" id="table-c3bb06c6-9452-4d78-96a1-2cd79174ae42"><table><tr><td><b>into</b></td><td><pre>(not
  ((not (l = []) &amp;&amp; Ordinal.count l &gt;= 0) &amp;&amp; Ordinal.count (List.tl l) &gt;= 0)
  || List.tl l = [])
 || Ordinal.Int (Ordinal.count (List.tl l)) Ordinal.&lt;&lt;
-   Ordinal.Int (Ordinal.count l)</pre></td></tr><tr><td><b>expansions</b></td><td><pre>[]</pre></td></tr><tr><td><b>rewrite_steps</b></td><td><ul></ul></td></tr><tr><td><b>forward_chaining</b></td><td><ul></ul></td></tr></table></div></div></li><li><div>unroll<div class="imandra-table" id="table-9c03182c-c8bf-4f80-9cf5-2f957cc94d11"><table><tr><td><b>expr</b></td><td><pre>(|Ordinal.&lt;&lt;_121| (|Ordinal.Int_112|
-                    (|count_`ty_1 list`_2422| (|get.::.1_2400| …</pre></td></tr><tr><td><b>expansions</b></td><td><ul></ul></td></tr></table></div></div></li><li><div>unroll<div class="imandra-table" id="table-5e0333d8-0c90-47aa-a562-8387e0181959"><table><tr><td><b>expr</b></td><td><pre>(|count_`ty_1 list`_2422| (|get.::.1_2400| l_2411))</pre></td></tr><tr><td><b>expansions</b></td><td><ul></ul></td></tr></table></div></div></li><li><div>unroll<div class="imandra-table" id="table-bb81de9c-f7ea-4100-b4b9-3567dfa4577f"><table><tr><td><b>expr</b></td><td><pre>(|count_`ty_1 list`_2422| l_2411)</pre></td></tr><tr><td><b>expansions</b></td><td><ul></ul></td></tr></table></div></div></li><li><div><h5>unsat</h5><pre>(let ((a!1 (= (|count_`ty_1 list`_2422| l_2411)
+   Ordinal.Int (Ordinal.count l)</pre></td></tr><tr><td><b>expansions</b></td><td><pre>[]</pre></td></tr><tr><td><b>rewrite_steps</b></td><td><ul></ul></td></tr><tr><td><b>forward_chaining</b></td><td><ul></ul></td></tr></table></div></div></li><li><div>unroll<div class="imandra-table" id="table-26956f27-2a43-4eda-b00a-7a134ba47861"><table><tr><td><b>expr</b></td><td><pre>(|Ordinal.&lt;&lt;_121| (|Ordinal.Int_112|
+                    (|count_`ty_1 list`_2422| (|get.::.1_2400| …</pre></td></tr><tr><td><b>expansions</b></td><td><ul></ul></td></tr></table></div></div></li><li><div>unroll<div class="imandra-table" id="table-8bd3625e-c222-4aeb-b323-d6367e4a48df"><table><tr><td><b>expr</b></td><td><pre>(|count_`ty_1 list`_2422| (|get.::.1_2400| l_2411))</pre></td></tr><tr><td><b>expansions</b></td><td><ul></ul></td></tr></table></div></div></li><li><div>unroll<div class="imandra-table" id="table-179daf7f-62ea-40ce-8171-684f89c85b2b"><table><tr><td><b>expr</b></td><td><pre>(|count_`ty_1 list`_2422| l_2411)</pre></td></tr><tr><td><b>expansions</b></td><td><ul></ul></td></tr></table></div></div></li><li><div><h5>unsat</h5><pre>(let ((a!1 (= (|count_`ty_1 list`_2422| l_2411)
               (+ 1 (|count_`ty_1 list`_2422| (|get.:…</pre></div></li></ul></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-dd4fbc6d-08ad-41d8-a963-125deedfc648';
+  var target = '#fold-66d6696d-64be-41df-a01a-35b4c97f9da5';
   fold.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-2fc83bb4-f668-4fea-b06b-8f753d416012';
+  var target = '#alt-a25f01e9-b78e-4dda-ac58-35697cc92429';
   alternatives.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-acae491b-8e72-4d7e-afa4-7462551f9041';
+  var target = '#fold-424279e4-6a69-4b74-b33c-0ba88185ccc9';
   fold.hydrate(target);
 });
 </script></div></td></tr></table></div></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-fd97d906-3142-4024-89b5-052fd2c1bdb1';
+  var target = '#fold-e4a0e5ac-48ac-443e-bf99-be1be49412e5';
   fold.hydrate(target);
 });
 </script></div><p></p></div></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-0e27e93c-2441-465a-ad4c-8b476c96eb29';
+  var target = '#fold-d8c6db71-7045-4b39-8cf8-c87ed2c9bf99';
   fold.hydrate(target);
 });
 </script></div></div>
@@ -1076,12 +1102,12 @@ val clock_creates_outbound : state -&gt; bool = &lt;fun&gt;
 
 
 <div class="output_html rendered_html output_subarea ">
-<div><div class="imandra-vr imandra-vr-proved"><i class="fa fa-check-circle"></i><span>Proved</span></div><div><div class="imandra-alternatives" id="alt-75acfe60-b826-4bcb-8804-4ec3b8e1b4cb"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>proof</a></li><li class="" data-toggle="tab"><a>call graph</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-proof-top"><div class="imandra-fold panel panel-default" id="fold-9fc7e7c3-3023-4102-a1da-71f634645906"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>proof</span></div></div><div class="panel-body collapse"><div class="imandra-proof"><div class="imandra-alternatives" id="alt-a16e48ac-a5bb-4ab2-bd07-5004cfbb44a1"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>summary</a></li><li class="" data-toggle="tab"><a>full</a></li><li class="" data-toggle="tab"><a>graph</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-table" id="table-afad2b42-8fa1-4660-bc58-8892847ac3be"><table><tr><td><b>ground_instances</b></td><td>0</td></tr><tr><td><b>definitions</b></td><td>0</td></tr><tr><td><b>inductions</b></td><td>0</td></tr><tr><td><b>search_time</b></td><td><pre>0.012s</pre></td></tr><tr><td><b>details</b></td><td><div class="imandra-fold panel panel-default" id="fold-25b6976c-5995-4dbf-b785-f992e5775424"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><div class="imandra-table" id="table-8ac60d11-1d8b-47d2-8cd3-f7bf1abdb73b"><table><tr><td><b>smt_stats</b></td><td><div class="imandra-table" id="table-0c46d4f4-17f0-4993-b2af-87ca6c44ea59"><table><tr><td><b>num checks</b></td><td>2</td></tr><tr><td><b>arith assert lower</b></td><td>2</td></tr><tr><td><b>rlimit count</b></td><td>2447</td></tr><tr><td><b>mk clause</b></td><td>39</td></tr><tr><td><b>mk bool var</b></td><td>209</td></tr><tr><td><b>arith assert upper</b></td><td>2</td></tr><tr><td><b>datatype splits</b></td><td>26</td></tr><tr><td><b>decisions</b></td><td>17</td></tr><tr><td><b>propagations</b></td><td>35</td></tr><tr><td><b>conflicts</b></td><td>10</td></tr><tr><td><b>datatype accessor ax</b></td><td>47</td></tr><tr><td><b>datatype constructor ax</b></td><td>33</td></tr><tr><td><b>num allocs</b></td><td>1233043709</td></tr><tr><td><b>added eqs</b></td><td>284</td></tr><tr><td><b>del clause</b></td><td>3</td></tr><tr><td><b>arith eq adapter</b></td><td>1</td></tr><tr><td><b>memory</b></td><td>15.930000</td></tr><tr><td><b>max memory</b></td><td>15.930000</td></tr></table></div></td></tr></table></div></div><script>
+<div><div class="imandra-vr imandra-vr-proved"><i class="fa fa-check-circle"></i><span>Proved</span></div><div><div class="imandra-alternatives" id="alt-3df6b03e-4532-4fee-9723-f84d38ee59e2"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>proof</a></li><li class="" data-toggle="tab"><a>call graph</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-proof-top"><div class="imandra-fold panel panel-default" id="fold-9073984f-015d-40e4-acb5-51eea8ba56c1"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>proof</span></div></div><div class="panel-body collapse"><div class="imandra-proof"><div class="imandra-alternatives" id="alt-92627794-4ac7-43ca-af81-9eed0fe63578"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>summary</a></li><li class="" data-toggle="tab"><a>full</a></li><li class="" data-toggle="tab"><a>graph</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-table" id="table-4f862851-b492-41c6-9bea-717f91ec563a"><table><tr><td><b>ground_instances</b></td><td>0</td></tr><tr><td><b>definitions</b></td><td>0</td></tr><tr><td><b>inductions</b></td><td>0</td></tr><tr><td><b>search_time</b></td><td><pre>0.012s</pre></td></tr><tr><td><b>details</b></td><td><div class="imandra-fold panel panel-default" id="fold-aa17f9fc-72dd-4fae-ac4b-fe4b5d782097"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><div class="imandra-table" id="table-21bb5b08-a8b8-4669-afd7-f6d11fea7f16"><table><tr><td><b>smt_stats</b></td><td><div class="imandra-table" id="table-a76c6e48-659a-45c5-ac02-a7ab95114b49"><table><tr><td><b>num checks</b></td><td>2</td></tr><tr><td><b>arith assert lower</b></td><td>2</td></tr><tr><td><b>rlimit count</b></td><td>2447</td></tr><tr><td><b>mk clause</b></td><td>39</td></tr><tr><td><b>mk bool var</b></td><td>209</td></tr><tr><td><b>arith assert upper</b></td><td>2</td></tr><tr><td><b>datatype splits</b></td><td>26</td></tr><tr><td><b>decisions</b></td><td>17</td></tr><tr><td><b>propagations</b></td><td>35</td></tr><tr><td><b>conflicts</b></td><td>10</td></tr><tr><td><b>datatype accessor ax</b></td><td>47</td></tr><tr><td><b>datatype constructor ax</b></td><td>33</td></tr><tr><td><b>num allocs</b></td><td>1231447516</td></tr><tr><td><b>added eqs</b></td><td>284</td></tr><tr><td><b>del clause</b></td><td>3</td></tr><tr><td><b>arith eq adapter</b></td><td>1</td></tr><tr><td><b>memory</b></td><td>18.530000</td></tr><tr><td><b>max memory</b></td><td>18.530000</td></tr></table></div></td></tr></table></div></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-25b6976c-5995-4dbf-b785-f992e5775424';
+  var target = '#fold-aa17f9fc-72dd-4fae-ac4b-fe4b5d782097';
   fold.hydrate(target);
 });
-</script></div></td></tr></table></div></div><div class="tab-pane"><div class="imandra-fold panel panel-default" id="fold-d45fad9d-da0a-4bf4-8040-f849553559cf"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.012s]
+</script></div></td></tr></table></div></div><div class="tab-pane"><div class="imandra-fold panel panel-default" id="fold-63a7e960-bc45-44ca-9f8f-b3a7973764a1"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.012s]
   (if Is_a(Clock, Option.get :var_0:.incoming)
       &amp;&amp; Is_a(Some, :var_0:.incoming)
    then true else false)
@@ -1090,7 +1116,7 @@ require(['nbextensions/nbimandra/fold'], function (fold) {
           (if :var_0:.incoming = None then :var_0: else …).outgoing)
           &amp;&amp; Is_a(Some,
              (if :var_0:.incoming = None then :var_0: else …).outgoing)
-       then true else false)</pre></li><li><div><h4>simplify</h4><div class="imandra-table" id="table-a813843a-7bb2-46e8-ac57-cdbd5dc09bbd"><table><tr><td><b>into</b></td><td><pre>not
+       then true else false)</pre></li><li><div><h4>simplify</h4><div class="imandra-table" id="table-9a649e6e-9953-4808-abc7-0d83fe77d236"><table><tr><td><b>into</b></td><td><pre>not
 (Is_a(Clock, Option.get :var_0:.incoming) &amp;&amp; Is_a(Some, :var_0:.incoming))
 || Is_a(Twist,
    Option.get (if :var_0:.incoming = None then :var_0: else …).outgoing)
@@ -1098,10 +1124,10 @@ require(['nbextensions/nbimandra/fold'], function (fold) {
              (|get.Sensor.0_2548|
                (|g…</pre></div></li></ul></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-d45fad9d-da0a-4bf4-8040-f849553559cf';
+  var target = '#fold-63a7e960-bc45-44ca-9f8f-b3a7973764a1';
   fold.hydrate(target);
 });
-</script></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-edbc3e97-2c8e-4c03-adb2-fb0ce1c9d765"><textarea style="display: none">digraph &quot;proof&quot; {
+</script></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-a446d693-8ec6-436e-9a0b-167ca8d65220"><textarea style="display: none">digraph &quot;proof&quot; {
 p_269 [label=&quot;Start ((if Is_a(Clock, Option.get :var_0:.incoming)\l           &amp;&amp; Is_a(Some, :var_0:.incoming)\l        then true else false)\l       ==\&gt; (if Is_a(Twist,\l               Option.get\l               (if :var_0:.incoming = None then :var_0: else …).outgoing)\l               &amp;&amp; Is_a(Some,\l                  (if :var_0:.incoming = None then :var_0: else …).outgoing)\l            then true else false)\l       :time 0.012s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_269 -&gt; p_268 [label=&quot;&quot;];
 p_268 [label=&quot;Simplify (not\l          (Is_a(Clock, Option.get :var_0:.incoming)\l           &amp;&amp; Is_a(Some, :var_0:.incoming))\l          \|\| Is_a(Twist,\l             Option.get\l             (if :var_0:.incoming = None then :var_0: else …).outgoing)\l             &amp;&amp; Is_a(Some,\l                (if :var_0:.incoming = None then :var_0: else …).outgoing)\l          :expansions [] :rw [] :fc [])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
@@ -1113,20 +1139,20 @@ p_z3_988 [label=&quot;(let ((a!1 (|Sensor_msgs.laserScan_ranges_2324|
 }
 </textarea><button class="btn btn-primary">Load graph</button><div class="imandra-graphviz-loading display-none">Loading..</div><div class="imandra-graphviz-target"></div><script>
 require(['nbextensions/nbimandra/graphviz'], function (graphviz) {
-  var target = '#graphviz-edbc3e97-2c8e-4c03-adb2-fb0ce1c9d765';
+  var target = '#graphviz-a446d693-8ec6-436e-9a0b-167ca8d65220';
   graphviz.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-a16e48ac-a5bb-4ab2-bd07-5004cfbb44a1';
+  var target = '#alt-92627794-4ac7-43ca-af81-9eed0fe63578';
   alternatives.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-9fc7e7c3-3023-4102-a1da-71f634645906';
+  var target = '#fold-9073984f-015d-40e4-acb5-51eea8ba56c1';
   fold.hydrate(target);
 });
-</script></div></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-bfb21837-019b-450b-a299-bc88d1b684f3"><textarea style="display: none">digraph &quot;call graph&quot; {
+</script></div></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-a23e5520-cd16-4ce6-915d-95de80adaa26"><textarea style="display: none">digraph &quot;call graph&quot; {
 goal [label=&quot;not\l(not (Is_a(Clock, Option.get state.incoming) &amp;&amp; Is_a(Some, state.incoming))\l \|\| Is_a(Twist,\l    Option.get (if state.incoming = None then state else …).outgoing)\l    &amp;&amp; Is_a(Some, (if state.incoming = None then state else …).outgoing))&quot;,shape=box,style=filled,color=&quot;cyan&quot;,fontname=&quot;courier&quot;,fontsize=14];
 call_182 [label=&quot;List.fold_right anon_fun.get_min_range.0\l(Destruct(Sensor, 0, Option.get …)).Sensor_msgs.laserScan_range_max\l(Destruct(Sensor, 0, Option.get …)).Sensor_msgs.laserScan_ranges&quot;,shape=box,style=filled,color=&quot;yellow&quot;,fontname=&quot;courier&quot;,fontsize=14];
 goal -&gt; call_182 [label=&quot;calls&quot;];
@@ -1137,12 +1163,12 @@ goal -&gt; call_174 [label=&quot;calls&quot;];
 }
 </textarea><button class="btn btn-primary">Load graph</button><div class="imandra-graphviz-loading display-none">Loading..</div><div class="imandra-graphviz-target"></div><script>
 require(['nbextensions/nbimandra/graphviz'], function (graphviz) {
-  var target = '#graphviz-bfb21837-019b-450b-a299-bc88d1b684f3';
+  var target = '#graphviz-a23e5520-cd16-4ce6-915d-95de80adaa26';
   graphviz.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-75acfe60-b826-4bcb-8804-4ec3b8e1b4cb';
+  var target = '#alt-3df6b03e-4532-4fee-9723-f84d38ee59e2';
   alternatives.hydrate(target);
 });
 </script></div></div></div>
@@ -1214,7 +1240,7 @@ module CX : sig val state : state end
 
 
 <div class="output_html rendered_html output_subarea ">
-<div><pre>Counterexample (after 3 steps, 0.028s):
+<div><pre>Counterexample (after 3 steps, 0.025s):
  let state =
    {mode = Turning; min_range = (Some 2282); direction = None;
     incoming = None;
@@ -1240,7 +1266,7 @@ module CX : sig val state : state end
 
 
 <div class="output_html rendered_html output_subarea ">
-<div><div class="imandra-vr imandra-vr-refuted"><i class="fa fa-times-circle-o"></i><span>Refuted</span></div><div><div class="imandra-alternatives" id="alt-3d85d877-e0e6-47ef-b1c9-c48c394d1efe"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>call graph</a></li><li class="" data-toggle="tab"><a>proof-attempt</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-graphviz" id="graphviz-68df0e86-01fa-47a5-b2e8-9d6c123d8b33"><textarea style="display: none">digraph &quot;call graph&quot; {
+<div><div class="imandra-vr imandra-vr-refuted"><i class="fa fa-times-circle-o"></i><span>Refuted</span></div><div><div class="imandra-alternatives" id="alt-c7fe613d-0118-444f-b079-4f537a9a3c9d"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>call graph</a></li><li class="" data-toggle="tab"><a>proof-attempt</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-graphviz" id="graphviz-e546c754-47c3-4fc7-8d6f-54e8700f8a6f"><textarea style="display: none">digraph &quot;call graph&quot; {
 goal [label=&quot;not\l((if state.incoming = None then state\l  else\l  if Is_a(Sensor, Option.get state.incoming)\l  then if state.mode = Driving then … else …\l  else if state.mode = Driving then … else …).outgoing\l = None\l \|\| (Destruct(Twist, 0,\l              Option.get\l              (if state.incoming = None then state\l               else\l               if Is_a(Sensor, Option.get state.incoming)\l               then if state.mode = Driving then … else …\l               else if state.mode = Driving then … else …).outgoing)).Geometry_msgs.twist_linear.Geometry_msgs.vector3_x\l    \&gt;= 0)&quot;,shape=box,style=filled,color=&quot;cyan&quot;,fontname=&quot;courier&quot;,fontsize=14];
 call_174 [label=&quot;foldi ((Destruct(Sensor, 0, …)).Sensor_msgs.laserScan_range_max, 0) None\lanon_fun.get_min_and_direction.0\l(Destruct(Sensor, 0, …)).Sensor_msgs.laserScan_ranges&quot;,shape=box,style=filled,color=&quot;green&quot;,fontname=&quot;courier&quot;,fontsize=14];
 call_174 -&gt; expr_1186 [label=&quot;=&quot;];
@@ -1265,15 +1291,15 @@ expr_1047 -&gt; call_1042 [label=&quot;calls&quot;];
 }
 </textarea><button class="btn btn-primary">Load graph</button><div class="imandra-graphviz-loading display-none">Loading..</div><div class="imandra-graphviz-target"></div><script>
 require(['nbextensions/nbimandra/graphviz'], function (graphviz) {
-  var target = '#graphviz-68df0e86-01fa-47a5-b2e8-9d6c123d8b33';
+  var target = '#graphviz-e546c754-47c3-4fc7-8d6f-54e8700f8a6f';
   graphviz.hydrate(target);
 });
-</script></div></div><div class="tab-pane"><div class="imandra-proof-top"><div class="imandra-fold panel panel-default" id="fold-9b181728-b265-4d27-b51f-15eee17539a3"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>proof attempt</span></div></div><div class="panel-body collapse"><div class="imandra-proof"><div class="imandra-alternatives" id="alt-4fce72dc-bf5e-41b6-946b-3d39e41b44c9"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>summary</a></li><li class="" data-toggle="tab"><a>full</a></li><li class="" data-toggle="tab"><a>graph</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-table" id="table-bd165eef-e364-4fc6-a53b-864d6f7bb6b5"><table><tr><td><b>ground_instances</b></td><td>3</td></tr><tr><td><b>definitions</b></td><td>0</td></tr><tr><td><b>inductions</b></td><td>0</td></tr><tr><td><b>search_time</b></td><td><pre>0.028s</pre></td></tr><tr><td><b>details</b></td><td><div class="imandra-fold panel panel-default" id="fold-b1f0f150-a99c-4389-b5dc-7e23abd129c0"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><div class="imandra-table" id="table-1eb77e60-07cd-43df-be46-087c12054ee9"><table><tr><td><b>smt_stats</b></td><td><div class="imandra-table" id="table-a7ed288d-2d89-40d5-8e24-90024b6ae315"><table><tr><td><b>arith offset eqs</b></td><td>2</td></tr><tr><td><b>num checks</b></td><td>7</td></tr><tr><td><b>arith assert lower</b></td><td>5</td></tr><tr><td><b>arith pivots</b></td><td>2</td></tr><tr><td><b>rlimit count</b></td><td>7439</td></tr><tr><td><b>mk clause</b></td><td>57</td></tr><tr><td><b>datatype occurs check</b></td><td>309</td></tr><tr><td><b>mk bool var</b></td><td>477</td></tr><tr><td><b>arith assert upper</b></td><td>13</td></tr><tr><td><b>datatype splits</b></td><td>46</td></tr><tr><td><b>decisions</b></td><td>251</td></tr><tr><td><b>arith add rows</b></td><td>1</td></tr><tr><td><b>propagations</b></td><td>239</td></tr><tr><td><b>conflicts</b></td><td>13</td></tr><tr><td><b>datatype accessor ax</b></td><td>77</td></tr><tr><td><b>datatype constructor ax</b></td><td>218</td></tr><tr><td><b>num allocs</b></td><td>1281476849</td></tr><tr><td><b>final checks</b></td><td>10</td></tr><tr><td><b>added eqs</b></td><td>1031</td></tr><tr><td><b>del clause</b></td><td>4</td></tr><tr><td><b>arith eq adapter</b></td><td>4</td></tr><tr><td><b>memory</b></td><td>17.010000</td></tr><tr><td><b>max memory</b></td><td>17.010000</td></tr></table></div></td></tr></table></div></div><script>
+</script></div></div><div class="tab-pane"><div class="imandra-proof-top"><div class="imandra-fold panel panel-default" id="fold-9e9fcfa2-47d9-41f8-97e2-918c8d28a144"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>proof attempt</span></div></div><div class="panel-body collapse"><div class="imandra-proof"><div class="imandra-alternatives" id="alt-2fb4f88a-daf3-4c63-8e01-d529ba3dc8d8"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>summary</a></li><li class="" data-toggle="tab"><a>full</a></li><li class="" data-toggle="tab"><a>graph</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-table" id="table-0f69f4d0-76ce-4209-b525-8eb30d549414"><table><tr><td><b>ground_instances</b></td><td>3</td></tr><tr><td><b>definitions</b></td><td>0</td></tr><tr><td><b>inductions</b></td><td>0</td></tr><tr><td><b>search_time</b></td><td><pre>0.025s</pre></td></tr><tr><td><b>details</b></td><td><div class="imandra-fold panel panel-default" id="fold-32f8641b-ee8c-43cb-8a2d-0f47a1533719"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><div class="imandra-table" id="table-a91cac9a-43d9-4bd0-ab16-e02bf076b3d1"><table><tr><td><b>smt_stats</b></td><td><div class="imandra-table" id="table-8a306ab7-a8d7-4a9b-ab68-c5f0a26b38c8"><table><tr><td><b>arith offset eqs</b></td><td>2</td></tr><tr><td><b>num checks</b></td><td>7</td></tr><tr><td><b>arith assert lower</b></td><td>5</td></tr><tr><td><b>arith pivots</b></td><td>2</td></tr><tr><td><b>rlimit count</b></td><td>7439</td></tr><tr><td><b>mk clause</b></td><td>57</td></tr><tr><td><b>datatype occurs check</b></td><td>309</td></tr><tr><td><b>mk bool var</b></td><td>477</td></tr><tr><td><b>arith assert upper</b></td><td>13</td></tr><tr><td><b>datatype splits</b></td><td>46</td></tr><tr><td><b>decisions</b></td><td>251</td></tr><tr><td><b>arith add rows</b></td><td>1</td></tr><tr><td><b>propagations</b></td><td>239</td></tr><tr><td><b>conflicts</b></td><td>13</td></tr><tr><td><b>datatype accessor ax</b></td><td>77</td></tr><tr><td><b>datatype constructor ax</b></td><td>218</td></tr><tr><td><b>num allocs</b></td><td>1279690370</td></tr><tr><td><b>final checks</b></td><td>10</td></tr><tr><td><b>added eqs</b></td><td>1031</td></tr><tr><td><b>del clause</b></td><td>4</td></tr><tr><td><b>arith eq adapter</b></td><td>4</td></tr><tr><td><b>memory</b></td><td>19.600000</td></tr><tr><td><b>max memory</b></td><td>19.600000</td></tr></table></div></td></tr></table></div></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-b1f0f150-a99c-4389-b5dc-7e23abd129c0';
+  var target = '#fold-32f8641b-ee8c-43cb-8a2d-0f47a1533719';
   fold.hydrate(target);
 });
-</script></div></td></tr></table></div></div><div class="tab-pane"><div class="imandra-fold panel panel-default" id="fold-b60df979-4c28-4f57-8602-a60626e38494"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.028s]
+</script></div></td></tr></table></div></div><div class="tab-pane"><div class="imandra-fold panel panel-default" id="fold-d8921a70-1e43-4790-b52c-151594daa606"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.025s]
   if (if :var_0:.incoming = None then :var_0:
       else
       if Is_a(Sensor, Option.get :var_0:.incoming)
@@ -1283,7 +1309,7 @@ require(['nbextensions/nbimandra/fold'], function (fold) {
   then true
   else
     (Destruct(Twist, 0, …)).Geometry_msgs.twist_linear.Geometry_msgs.vector3_x
-    &gt;= 0</pre></li><li><div><h4>simplify</h4><div class="imandra-table" id="table-1e374a5c-ed45-4c66-9c8e-7bf53d55d71c"><table><tr><td><b>into</b></td><td><pre>(if :var_0:.incoming = None then :var_0:
+    &gt;= 0</pre></li><li><div><h4>simplify</h4><div class="imandra-table" id="table-23138b81-4b40-4608-a2d9-46fe83b9687f"><table><tr><td><b>into</b></td><td><pre>(if :var_0:.incoming = None then :var_0:
  else
  if Is_a(Sensor, Option.get :var_0:.incoming)
  then if :var_0:.mode = Driving then … else …
@@ -1296,11 +1322,11 @@ require(['nbextensions/nbimandra/fold'], function (fold) {
               if Is_a(Sensor, Option.get :var_0:.incoming)
               then if :var_0:.mode = Driving then … else …
               else if :var_0:.mode = Driving then … else …).outgoing)).Geometry_msgs.twist_linear.Geometry_msgs.vector3_x
-   &gt;= 0</pre></td></tr><tr><td><b>expansions</b></td><td><pre>[]</pre></td></tr><tr><td><b>rewrite_steps</b></td><td><ul></ul></td></tr><tr><td><b>forward_chaining</b></td><td><ul></ul></td></tr></table></div></div></li><li><div>unroll<div class="imandra-table" id="table-96cf135f-7cc5-4cd3-9b22-50d7fe8bdfb5"><table><tr><td><b>expr</b></td><td><pre>(let ((a!1 (|Sensor_msgs.laserScan_range_max_2323|
+   &gt;= 0</pre></td></tr><tr><td><b>expansions</b></td><td><pre>[]</pre></td></tr><tr><td><b>rewrite_steps</b></td><td><ul></ul></td></tr><tr><td><b>forward_chaining</b></td><td><ul></ul></td></tr></table></div></div></li><li><div>unroll<div class="imandra-table" id="table-0720acd2-0295-4126-b710-4b4ecf97a7c7"><table><tr><td><b>expr</b></td><td><pre>(let ((a!1 (|Sensor_msgs.laserScan_range_max_2323|
              (|get.Sensor.0_2617|
-               …</pre></td></tr><tr><td><b>expansions</b></td><td><ul></ul></td></tr></table></div></div></li><li><div>unroll<div class="imandra-table" id="table-280f61b1-2fe3-4141-9287-ac7442c767db"><table><tr><td><b>expr</b></td><td><pre>(let ((a!1 (|Sensor_msgs.laserScan_range_max_2323|
+               …</pre></td></tr><tr><td><b>expansions</b></td><td><ul></ul></td></tr></table></div></div></li><li><div>unroll<div class="imandra-table" id="table-9e174d6c-2352-4c97-9260-60e95747f95d"><table><tr><td><b>expr</b></td><td><pre>(let ((a!1 (|Sensor_msgs.laserScan_range_max_2323|
              (|get.Sensor.0_2617|
-               …</pre></td></tr><tr><td><b>expansions</b></td><td><ul></ul></td></tr></table></div></div></li><li><div>unroll<div class="imandra-table" id="table-4169882f-3e88-45b2-9f00-ece5a08b829a"><table><tr><td><b>expr</b></td><td><pre>(let ((a!1 (|Sensor_msgs.laserScan_ranges_2324|
+               …</pre></td></tr><tr><td><b>expansions</b></td><td><ul></ul></td></tr></table></div></div></li><li><div>unroll<div class="imandra-table" id="table-3d96ae66-cfa2-4fa6-9a18-bf71d20ffac9"><table><tr><td><b>expr</b></td><td><pre>(let ((a!1 (|Sensor_msgs.laserScan_ranges_2324|
              (|get.Sensor.0_2617|
                (|g…</pre></td></tr><tr><td><b>expansions</b></td><td><ul></ul></td></tr></table></div></div></li><li>Sat (Some  let state =
    {mode = Turning; min_range = (Some 2282); direction = None;
@@ -1316,11 +1342,11 @@ require(['nbextensions/nbimandra/fold'], function (fold) {
              Geometry_msgs.vector3_z = 13}})))}
 )</li></ul></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-b60df979-4c28-4f57-8602-a60626e38494';
+  var target = '#fold-d8921a70-1e43-4790-b52c-151594daa606';
   fold.hydrate(target);
 });
-</script></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-b2c8d052-1858-44ab-a2cc-02404ec3d3a2"><textarea style="display: none">digraph &quot;proof&quot; {
-p_275 [label=&quot;Start (if (if :var_0:.incoming = None then :var_0:\l           else\l           if Is_a(Sensor, Option.get :var_0:.incoming)\l           then if ….mode = Driving then … else …\l           else if ….mode = Driving then … else …).outgoing\l          = None\l       then true\l       else\l         (Destruct(Twist, 0, …)).Geometry_msgs.twist_linear.Geometry_msgs.vector3_x\l         \&gt;= 0\l       :time 0.028s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+</script></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-ac18725a-b0b7-4591-90e6-22ff959d357d"><textarea style="display: none">digraph &quot;proof&quot; {
+p_275 [label=&quot;Start (if (if :var_0:.incoming = None then :var_0:\l           else\l           if Is_a(Sensor, Option.get :var_0:.incoming)\l           then if ….mode = Driving then … else …\l           else if ….mode = Driving then … else …).outgoing\l          = None\l       then true\l       else\l         (Destruct(Twist, 0, …)).Geometry_msgs.twist_linear.Geometry_msgs.vector3_x\l         \&gt;= 0\l       :time 0.025s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_275 -&gt; p_274 [label=&quot;&quot;];
 p_274 [label=&quot;Simplify ((if :var_0:.incoming = None then :var_0:\l           else\l           if Is_a(Sensor, Option.get :var_0:.incoming)\l           then if :var_0:.mode = Driving then … else …\l           else if :var_0:.mode = Driving then … else …).outgoing\l          = None\l          \|\| (Destruct(Twist, 0,\l                       Option.get\l                       (if :var_0:.incoming = None then :var_0:\l                        else\l                        if Is_a(Sensor, Option.get :var_0:.incoming)\l                        then if :var_0:.mode = Driving then … else …\l                        else if :var_0:.mode = Driving then … else …).outgoing)).Geometry_msgs.twist_linear.Geometry_msgs.vector3_x\l             \&gt;= 0\l          :expansions [] :rw [] :fc [])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_274 -&gt; p_273 [label=&quot;&quot;];
@@ -1334,22 +1360,22 @@ p_270 [label=&quot;Sat (Some  let state =\l   \{mode = Turning; min_range = (Som
 }
 </textarea><button class="btn btn-primary">Load graph</button><div class="imandra-graphviz-loading display-none">Loading..</div><div class="imandra-graphviz-target"></div><script>
 require(['nbextensions/nbimandra/graphviz'], function (graphviz) {
-  var target = '#graphviz-b2c8d052-1858-44ab-a2cc-02404ec3d3a2';
+  var target = '#graphviz-ac18725a-b0b7-4591-90e6-22ff959d357d';
   graphviz.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-4fce72dc-bf5e-41b6-946b-3d39e41b44c9';
+  var target = '#alt-2fb4f88a-daf3-4c63-8e01-d529ba3dc8d8';
   alternatives.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-9b181728-b265-4d27-b51f-15eee17539a3';
+  var target = '#fold-9e9fcfa2-47d9-41f8-97e2-918c8d28a144';
   fold.hydrate(target);
 });
 </script></div></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-3d85d877-e0e6-47ef-b1c9-c48c394d1efe';
+  var target = '#alt-c7fe613d-0118-444f-b079-4f537a9a3c9d';
   alternatives.hydrate(target);
 });
 </script></div></div></div>
@@ -1473,12 +1499,12 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
 
 
 <div class="output_html rendered_html output_subarea ">
-<div><div class="imandra-vr imandra-vr-proved"><i class="fa fa-check-circle"></i><span>Proved</span></div><div><div class="imandra-alternatives" id="alt-550b0db6-eac4-4108-b20c-14a32e3ef12b"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>proof</a></li><li class="" data-toggle="tab"><a>call graph</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-proof-top"><div class="imandra-fold panel panel-default" id="fold-325c6fe9-239f-45af-a3b0-7d171efb5f0f"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>proof</span></div></div><div class="panel-body collapse"><div class="imandra-proof"><div class="imandra-alternatives" id="alt-d892b88b-4476-41a1-9c8a-89f6234f9fc8"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>summary</a></li><li class="" data-toggle="tab"><a>full</a></li><li class="" data-toggle="tab"><a>graph</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-table" id="table-b9540b55-6920-4f8f-9bbd-4c574ece3b77"><table><tr><td><b>ground_instances</b></td><td>0</td></tr><tr><td><b>definitions</b></td><td>0</td></tr><tr><td><b>inductions</b></td><td>0</td></tr><tr><td><b>search_time</b></td><td><pre>0.015s</pre></td></tr><tr><td><b>details</b></td><td><div class="imandra-fold panel panel-default" id="fold-8e3b1a53-cbf5-4222-a725-675d8781f06d"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><div class="imandra-table" id="table-acec7a71-e012-4257-a1b6-588d2ac9d8ff"><table><tr><td><b>smt_stats</b></td><td><div class="imandra-table" id="table-6fdcf7bc-0953-4a25-a325-35af0cd61aab"><table><tr><td><b>num checks</b></td><td>2</td></tr><tr><td><b>arith assert lower</b></td><td>4</td></tr><tr><td><b>arith pivots</b></td><td>1</td></tr><tr><td><b>rlimit count</b></td><td>3396</td></tr><tr><td><b>mk clause</b></td><td>46</td></tr><tr><td><b>mk bool var</b></td><td>275</td></tr><tr><td><b>arith assert upper</b></td><td>9</td></tr><tr><td><b>datatype splits</b></td><td>27</td></tr><tr><td><b>decisions</b></td><td>66</td></tr><tr><td><b>propagations</b></td><td>152</td></tr><tr><td><b>conflicts</b></td><td>20</td></tr><tr><td><b>datatype accessor ax</b></td><td>54</td></tr><tr><td><b>minimized lits</b></td><td>1</td></tr><tr><td><b>arith assert diseq</b></td><td>2</td></tr><tr><td><b>datatype constructor ax</b></td><td>82</td></tr><tr><td><b>num allocs</b></td><td>1324304697</td></tr><tr><td><b>added eqs</b></td><td>501</td></tr><tr><td><b>del clause</b></td><td>26</td></tr><tr><td><b>arith eq adapter</b></td><td>5</td></tr><tr><td><b>memory</b></td><td>20.230000</td></tr><tr><td><b>max memory</b></td><td>20.230000</td></tr></table></div></td></tr></table></div></div><script>
+<div><div class="imandra-vr imandra-vr-proved"><i class="fa fa-check-circle"></i><span>Proved</span></div><div><div class="imandra-alternatives" id="alt-27baa8e9-0d2b-481d-980a-457a6739ada1"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>proof</a></li><li class="" data-toggle="tab"><a>call graph</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-proof-top"><div class="imandra-fold panel panel-default" id="fold-5e26e4f5-0fd3-4195-bd0d-2c1a7abbe5ec"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>proof</span></div></div><div class="panel-body collapse"><div class="imandra-proof"><div class="imandra-alternatives" id="alt-ce8eacf4-ae7c-4ad7-8db1-a35eeb73f0c1"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>summary</a></li><li class="" data-toggle="tab"><a>full</a></li><li class="" data-toggle="tab"><a>graph</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-table" id="table-5a4c3511-9df3-4116-98a3-1fafc16ff76f"><table><tr><td><b>ground_instances</b></td><td>0</td></tr><tr><td><b>definitions</b></td><td>0</td></tr><tr><td><b>inductions</b></td><td>0</td></tr><tr><td><b>search_time</b></td><td><pre>0.014s</pre></td></tr><tr><td><b>details</b></td><td><div class="imandra-fold panel panel-default" id="fold-0ad88bc2-3aea-4f27-82a8-ce179af8a9f3"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><div class="imandra-table" id="table-fb33d10b-9b6a-4f0f-b7eb-c7d1bd18a8d0"><table><tr><td><b>smt_stats</b></td><td><div class="imandra-table" id="table-8577ef5c-7919-4d47-8954-69556e9d0027"><table><tr><td><b>num checks</b></td><td>2</td></tr><tr><td><b>arith assert lower</b></td><td>4</td></tr><tr><td><b>arith pivots</b></td><td>1</td></tr><tr><td><b>rlimit count</b></td><td>3396</td></tr><tr><td><b>mk clause</b></td><td>46</td></tr><tr><td><b>mk bool var</b></td><td>275</td></tr><tr><td><b>arith assert upper</b></td><td>9</td></tr><tr><td><b>datatype splits</b></td><td>27</td></tr><tr><td><b>decisions</b></td><td>66</td></tr><tr><td><b>propagations</b></td><td>152</td></tr><tr><td><b>conflicts</b></td><td>20</td></tr><tr><td><b>datatype accessor ax</b></td><td>54</td></tr><tr><td><b>minimized lits</b></td><td>1</td></tr><tr><td><b>arith assert diseq</b></td><td>2</td></tr><tr><td><b>datatype constructor ax</b></td><td>82</td></tr><tr><td><b>num allocs</b></td><td>1322377137</td></tr><tr><td><b>added eqs</b></td><td>501</td></tr><tr><td><b>del clause</b></td><td>26</td></tr><tr><td><b>arith eq adapter</b></td><td>5</td></tr><tr><td><b>memory</b></td><td>22.820000</td></tr><tr><td><b>max memory</b></td><td>22.820000</td></tr></table></div></td></tr></table></div></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-8e3b1a53-cbf5-4222-a725-675d8781f06d';
+  var target = '#fold-0ad88bc2-3aea-4f27-82a8-ce179af8a9f3';
   fold.hydrate(target);
 });
-</script></div></td></tr></table></div></div><div class="tab-pane"><div class="imandra-fold panel panel-default" id="fold-1fb513ae-45e3-496a-9e1a-0333861075ba"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.015s]
+</script></div></td></tr></table></div></div><div class="tab-pane"><div class="imandra-fold panel panel-default" id="fold-5cd79add-bc1c-4df3-98ea-d96e30f37ed5"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.014s]
   not (:var_0:.incoming = None)
   ==&gt; (if (if :var_0:.incoming = None then :var_0:
            else
@@ -1489,7 +1515,7 @@ require(['nbextensions/nbimandra/fold'], function (fold) {
        then true
        else
          (Destruct(Twist, 0, …)).Geometry_msgs.twist_linear.Geometry_msgs.vector3_x
-         &gt;= 0)</pre></li><li><div><h4>simplify</h4><div class="imandra-table" id="table-a85bd944-07c8-4539-823b-b9fdc7f46152"><table><tr><td><b>into</b></td><td><pre>(:var_0:.incoming = None
+         &gt;= 0)</pre></li><li><div><h4>simplify</h4><div class="imandra-table" id="table-aa0d1320-da81-4ab7-9783-b84f1a6eda94"><table><tr><td><b>into</b></td><td><pre>(:var_0:.incoming = None
  || (if :var_0:.incoming = None then :var_0:
      else
      if Is_a(Sensor, Option.get :var_0:.incoming)
@@ -1507,11 +1533,11 @@ require(['nbextensions/nbimandra/fold'], function (fold) {
              (|get.Sensor.0_2711|
                (|g…</pre></div></li></ul></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-1fb513ae-45e3-496a-9e1a-0333861075ba';
+  var target = '#fold-5cd79add-bc1c-4df3-98ea-d96e30f37ed5';
   fold.hydrate(target);
 });
-</script></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-c703000c-4651-4b33-89e5-e57ced38209a"><textarea style="display: none">digraph &quot;proof&quot; {
-p_278 [label=&quot;Start (not (:var_0:.incoming = None)\l       ==\&gt; (if (if :var_0:.incoming = None then :var_0:\l                else\l                if Is_a(Sensor, Option.get :var_0:.incoming)\l                then if ….mode = Driving then … else …\l                else if ….mode = Driving then … else …).outgoing\l               = None\l            then true\l            else\l              (Destruct(Twist, 0, …)).Geometry_msgs.twist_linear.Geometry_msgs.vector3_x\l              \&gt;= 0)\l       :time 0.015s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+</script></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-252ff853-4f28-4670-932e-8a9a329d893d"><textarea style="display: none">digraph &quot;proof&quot; {
+p_278 [label=&quot;Start (not (:var_0:.incoming = None)\l       ==\&gt; (if (if :var_0:.incoming = None then :var_0:\l                else\l                if Is_a(Sensor, Option.get :var_0:.incoming)\l                then if ….mode = Driving then … else …\l                else if ….mode = Driving then … else …).outgoing\l               = None\l            then true\l            else\l              (Destruct(Twist, 0, …)).Geometry_msgs.twist_linear.Geometry_msgs.vector3_x\l              \&gt;= 0)\l       :time 0.014s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_278 -&gt; p_277 [label=&quot;&quot;];
 p_277 [label=&quot;Simplify ((:var_0:.incoming = None\l           \|\| (if :var_0:.incoming = None then :var_0:\l               else\l               if Is_a(Sensor, Option.get :var_0:.incoming)\l               then if :var_0:.mode = Driving then … else …\l               else if :var_0:.mode = Driving then … else …).outgoing\l              = None)\l          \|\| (Destruct(Twist, 0,\l                       Option.get\l                       (if :var_0:.incoming = None then :var_0:\l                        else\l                        if Is_a(Sensor, Option.get :var_0:.incoming)\l                        then if :var_0:.mode = Driving then … else …\l                        else if :var_0:.mode = Driving then … else …).outgoing)).Geometry_msgs.twist_linear.Geometry_msgs.vector3_x\l             \&gt;= 0\l          :expansions [] :rw [] :fc [])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_277 -&gt; p_276 [label=&quot;&quot;];
@@ -1522,20 +1548,20 @@ p_z3_1233 [label=&quot;(let ((a!1 (|Sensor_msgs.laserScan_ranges_2324|
 }
 </textarea><button class="btn btn-primary">Load graph</button><div class="imandra-graphviz-loading display-none">Loading..</div><div class="imandra-graphviz-target"></div><script>
 require(['nbextensions/nbimandra/graphviz'], function (graphviz) {
-  var target = '#graphviz-c703000c-4651-4b33-89e5-e57ced38209a';
+  var target = '#graphviz-252ff853-4f28-4670-932e-8a9a329d893d';
   graphviz.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-d892b88b-4476-41a1-9c8a-89f6234f9fc8';
+  var target = '#alt-ce8eacf4-ae7c-4ad7-8db1-a35eeb73f0c1';
   alternatives.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-325c6fe9-239f-45af-a3b0-7d171efb5f0f';
+  var target = '#fold-5e26e4f5-0fd3-4195-bd0d-2c1a7abbe5ec';
   fold.hydrate(target);
 });
-</script></div></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-0513fe03-a790-440a-9566-902e3e8056d2"><textarea style="display: none">digraph &quot;call graph&quot; {
+</script></div></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-60c2658c-c58d-4f17-b814-f30b199d54e0"><textarea style="display: none">digraph &quot;call graph&quot; {
 goal [label=&quot;not\l((state.incoming = None\l  \|\| (if state.incoming = None then state\l      else\l      if Is_a(Sensor, Option.get state.incoming)\l      then if state.mode = Driving then … else …\l      else if state.mode = Driving then … else …).outgoing\l     = None)\l \|\| (Destruct(Twist, 0,\l              Option.get\l              (if state.incoming = None then state\l               else\l               if Is_a(Sensor, Option.get state.incoming)\l               then if state.mode = Driving then … else …\l               else if state.mode = Driving then … else …).outgoing)).Geometry_msgs.twist_linear.Geometry_msgs.vector3_x\l    \&gt;= 0)&quot;,shape=box,style=filled,color=&quot;cyan&quot;,fontname=&quot;courier&quot;,fontsize=14];
 call_225 [label=&quot;List.fold_right anon_fun.get_min_range.0\l(Destruct(Sensor, 0, Option.get …)).Sensor_msgs.laserScan_range_max\l(Destruct(Sensor, 0, Option.get …)).Sensor_msgs.laserScan_ranges&quot;,shape=box,style=filled,color=&quot;yellow&quot;,fontname=&quot;courier&quot;,fontsize=14];
 goal -&gt; call_225 [label=&quot;calls&quot;];
@@ -1546,12 +1572,12 @@ goal -&gt; call_172 [label=&quot;calls&quot;];
 }
 </textarea><button class="btn btn-primary">Load graph</button><div class="imandra-graphviz-loading display-none">Loading..</div><div class="imandra-graphviz-target"></div><script>
 require(['nbextensions/nbimandra/graphviz'], function (graphviz) {
-  var target = '#graphviz-0513fe03-a790-440a-9566-902e3e8056d2';
+  var target = '#graphviz-60c2658c-c58d-4f17-b814-f30b199d54e0';
   graphviz.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-550b0db6-eac4-4108-b20c-14a32e3ef12b';
+  var target = '#alt-27baa8e9-0d2b-481d-980a-457a6739ada1';
   alternatives.hydrate(target);
 });
 </script></div></div></div>
@@ -1618,12 +1644,12 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
 
 
 <div class="output_html rendered_html output_subarea ">
-<div><div class="imandra-vr imandra-vr-proved"><i class="fa fa-check-circle"></i><span>Proved</span></div><div><div class="imandra-alternatives" id="alt-e50e3efc-7f08-4002-830d-5d7a1a57507c"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>proof</a></li><li class="" data-toggle="tab"><a>call graph</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-proof-top"><div class="imandra-fold panel panel-default" id="fold-a38778cf-dafd-4742-8214-6c67be55f68a"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>proof</span></div></div><div class="panel-body collapse"><div class="imandra-proof"><div class="imandra-alternatives" id="alt-81e350fc-3bd7-4c48-b96e-10574d2febb2"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>summary</a></li><li class="" data-toggle="tab"><a>full</a></li><li class="" data-toggle="tab"><a>graph</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-table" id="table-142f18fe-0795-4358-8388-323d931b4ee0"><table><tr><td><b>ground_instances</b></td><td>0</td></tr><tr><td><b>definitions</b></td><td>0</td></tr><tr><td><b>inductions</b></td><td>0</td></tr><tr><td><b>search_time</b></td><td><pre>0.013s</pre></td></tr><tr><td><b>details</b></td><td><div class="imandra-fold panel panel-default" id="fold-6499b60d-3c98-4821-a10c-b5eb1968b85c"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><div class="imandra-table" id="table-a0abb2eb-2dd9-4a40-bcd9-5b07394f8d87"><table><tr><td><b>smt_stats</b></td><td><div class="imandra-table" id="table-a9c80b75-7341-4627-b298-dc288fd567ba"><table><tr><td><b>num checks</b></td><td>2</td></tr><tr><td><b>arith assert lower</b></td><td>3</td></tr><tr><td><b>rlimit count</b></td><td>3295</td></tr><tr><td><b>mk clause</b></td><td>51</td></tr><tr><td><b>mk bool var</b></td><td>265</td></tr><tr><td><b>arith assert upper</b></td><td>10</td></tr><tr><td><b>datatype splits</b></td><td>27</td></tr><tr><td><b>decisions</b></td><td>53</td></tr><tr><td><b>propagations</b></td><td>178</td></tr><tr><td><b>conflicts</b></td><td>23</td></tr><tr><td><b>datatype accessor ax</b></td><td>58</td></tr><tr><td><b>minimized lits</b></td><td>5</td></tr><tr><td><b>arith assert diseq</b></td><td>2</td></tr><tr><td><b>datatype constructor ax</b></td><td>63</td></tr><tr><td><b>num allocs</b></td><td>1432171682</td></tr><tr><td><b>added eqs</b></td><td>495</td></tr><tr><td><b>del clause</b></td><td>5</td></tr><tr><td><b>arith eq adapter</b></td><td>5</td></tr><tr><td><b>memory</b></td><td>21.700000</td></tr><tr><td><b>max memory</b></td><td>21.700000</td></tr></table></div></td></tr></table></div></div><script>
+<div><div class="imandra-vr imandra-vr-proved"><i class="fa fa-check-circle"></i><span>Proved</span></div><div><div class="imandra-alternatives" id="alt-9d07653e-ed67-4d2f-8415-c61ca4d61f0d"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>proof</a></li><li class="" data-toggle="tab"><a>call graph</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-proof-top"><div class="imandra-fold panel panel-default" id="fold-55af285c-7024-4105-9b6b-26bfe4b6b8f9"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>proof</span></div></div><div class="panel-body collapse"><div class="imandra-proof"><div class="imandra-alternatives" id="alt-dccccc9d-c6ac-4369-8b55-c2f2c971014b"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>summary</a></li><li class="" data-toggle="tab"><a>full</a></li><li class="" data-toggle="tab"><a>graph</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-table" id="table-4176a247-1cc1-438a-ab69-9e23d0e67f77"><table><tr><td><b>ground_instances</b></td><td>0</td></tr><tr><td><b>definitions</b></td><td>0</td></tr><tr><td><b>inductions</b></td><td>0</td></tr><tr><td><b>search_time</b></td><td><pre>0.012s</pre></td></tr><tr><td><b>details</b></td><td><div class="imandra-fold panel panel-default" id="fold-814c7fcf-fc74-4300-9777-87d4b4ed635b"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><div class="imandra-table" id="table-fe1b6cfe-3684-44e5-963d-0a0ab3e1fd4f"><table><tr><td><b>smt_stats</b></td><td><div class="imandra-table" id="table-c99c9558-bb7d-4950-a45a-b5f58e05b45e"><table><tr><td><b>num checks</b></td><td>2</td></tr><tr><td><b>arith assert lower</b></td><td>3</td></tr><tr><td><b>rlimit count</b></td><td>3295</td></tr><tr><td><b>mk clause</b></td><td>51</td></tr><tr><td><b>mk bool var</b></td><td>265</td></tr><tr><td><b>arith assert upper</b></td><td>10</td></tr><tr><td><b>datatype splits</b></td><td>27</td></tr><tr><td><b>decisions</b></td><td>53</td></tr><tr><td><b>propagations</b></td><td>178</td></tr><tr><td><b>conflicts</b></td><td>23</td></tr><tr><td><b>datatype accessor ax</b></td><td>58</td></tr><tr><td><b>minimized lits</b></td><td>5</td></tr><tr><td><b>arith assert diseq</b></td><td>2</td></tr><tr><td><b>datatype constructor ax</b></td><td>63</td></tr><tr><td><b>num allocs</b></td><td>1429923830</td></tr><tr><td><b>added eqs</b></td><td>495</td></tr><tr><td><b>del clause</b></td><td>5</td></tr><tr><td><b>arith eq adapter</b></td><td>5</td></tr><tr><td><b>memory</b></td><td>24.300000</td></tr><tr><td><b>max memory</b></td><td>24.300000</td></tr></table></div></td></tr></table></div></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-6499b60d-3c98-4821-a10c-b5eb1968b85c';
+  var target = '#fold-814c7fcf-fc74-4300-9777-87d4b4ed635b';
   fold.hydrate(target);
 });
-</script></div></td></tr></table></div></div><div class="tab-pane"><div class="imandra-fold panel panel-default" id="fold-c5887c6d-6032-4069-bc47-51b33dc6ba27"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.013s]
+</script></div></td></tr></table></div></div><div class="tab-pane"><div class="imandra-fold panel panel-default" id="fold-321ffef0-9e0f-445f-a941-0edb5d9ae557"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.012s]
   :var_0:.outgoing = None
   ==&gt; (if (if :var_0:.incoming = None then :var_0:
            else
@@ -1634,7 +1660,7 @@ require(['nbextensions/nbimandra/fold'], function (fold) {
        then true
        else
          (Destruct(Twist, 0, …)).Geometry_msgs.twist_linear.Geometry_msgs.vector3_x
-         &gt;= 0)</pre></li><li><div><h4>simplify</h4><div class="imandra-table" id="table-05dfb184-ae47-4542-a507-2dbed6a64ef4"><table><tr><td><b>into</b></td><td><pre>(not (:var_0:.outgoing = None)
+         &gt;= 0)</pre></li><li><div><h4>simplify</h4><div class="imandra-table" id="table-67ea46db-f725-459c-9ef2-74c988d7d4f2"><table><tr><td><b>into</b></td><td><pre>(not (:var_0:.outgoing = None)
  || (if :var_0:.incoming = None then :var_0:
      else
      if Is_a(Sensor, Option.get :var_0:.incoming)
@@ -1652,11 +1678,11 @@ require(['nbextensions/nbimandra/fold'], function (fold) {
              (|get.Sensor.0_2802|
                (|g…</pre></div></li></ul></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-c5887c6d-6032-4069-bc47-51b33dc6ba27';
+  var target = '#fold-321ffef0-9e0f-445f-a941-0edb5d9ae557';
   fold.hydrate(target);
 });
-</script></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-c6b99cd7-a609-475c-a7a7-1ef8fd707fb2"><textarea style="display: none">digraph &quot;proof&quot; {
-p_281 [label=&quot;Start (:var_0:.outgoing = None\l       ==\&gt; (if (if :var_0:.incoming = None then :var_0:\l                else\l                if Is_a(Sensor, Option.get :var_0:.incoming)\l                then if ….mode = Driving then … else …\l                else if ….mode = Driving then … else …).outgoing\l               = None\l            then true\l            else\l              (Destruct(Twist, 0, …)).Geometry_msgs.twist_linear.Geometry_msgs.vector3_x\l              \&gt;= 0)\l       :time 0.013s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+</script></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-1806a8f5-f490-4360-b3a0-06ab13af5b0e"><textarea style="display: none">digraph &quot;proof&quot; {
+p_281 [label=&quot;Start (:var_0:.outgoing = None\l       ==\&gt; (if (if :var_0:.incoming = None then :var_0:\l                else\l                if Is_a(Sensor, Option.get :var_0:.incoming)\l                then if ….mode = Driving then … else …\l                else if ….mode = Driving then … else …).outgoing\l               = None\l            then true\l            else\l              (Destruct(Twist, 0, …)).Geometry_msgs.twist_linear.Geometry_msgs.vector3_x\l              \&gt;= 0)\l       :time 0.012s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_281 -&gt; p_280 [label=&quot;&quot;];
 p_280 [label=&quot;Simplify ((not (:var_0:.outgoing = None)\l           \|\| (if :var_0:.incoming = None then :var_0:\l               else\l               if Is_a(Sensor, Option.get :var_0:.incoming)\l               then if :var_0:.mode = Driving then … else …\l               else if :var_0:.mode = Driving then … else …).outgoing\l              = None)\l          \|\| (Destruct(Twist, 0,\l                       Option.get\l                       (if :var_0:.incoming = None then :var_0:\l                        else\l                        if Is_a(Sensor, Option.get :var_0:.incoming)\l                        then if :var_0:.mode = Driving then … else …\l                        else if :var_0:.mode = Driving then … else …).outgoing)).Geometry_msgs.twist_linear.Geometry_msgs.vector3_x\l             \&gt;= 0\l          :expansions [] :rw [] :fc [])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_280 -&gt; p_279 [label=&quot;&quot;];
@@ -1667,20 +1693,20 @@ p_z3_1271 [label=&quot;(let ((a!1 (|Sensor_msgs.laserScan_ranges_2324|
 }
 </textarea><button class="btn btn-primary">Load graph</button><div class="imandra-graphviz-loading display-none">Loading..</div><div class="imandra-graphviz-target"></div><script>
 require(['nbextensions/nbimandra/graphviz'], function (graphviz) {
-  var target = '#graphviz-c6b99cd7-a609-475c-a7a7-1ef8fd707fb2';
+  var target = '#graphviz-1806a8f5-f490-4360-b3a0-06ab13af5b0e';
   graphviz.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-81e350fc-3bd7-4c48-b96e-10574d2febb2';
+  var target = '#alt-dccccc9d-c6ac-4369-8b55-c2f2c971014b';
   alternatives.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-a38778cf-dafd-4742-8214-6c67be55f68a';
+  var target = '#fold-55af285c-7024-4105-9b6b-26bfe4b6b8f9';
   fold.hydrate(target);
 });
-</script></div></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-afd750ef-27d1-4285-8a92-b69a8dba74ee"><textarea style="display: none">digraph &quot;call graph&quot; {
+</script></div></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-fb6c1e6e-7bc5-46bb-9c9f-31c0136dfa3b"><textarea style="display: none">digraph &quot;call graph&quot; {
 goal [label=&quot;not\l((not (state.outgoing = None)\l  \|\| (if state.incoming = None then state\l      else\l      if Is_a(Sensor, Option.get state.incoming)\l      then if state.mode = Driving then … else …\l      else if state.mode = Driving then … else …).outgoing\l     = None)\l \|\| (Destruct(Twist, 0,\l              Option.get\l              (if state.incoming = None then state\l               else\l               if Is_a(Sensor, Option.get state.incoming)\l               then if state.mode = Driving then … else …\l               else if state.mode = Driving then … else …).outgoing)).Geometry_msgs.twist_linear.Geometry_msgs.vector3_x\l    \&gt;= 0)&quot;,shape=box,style=filled,color=&quot;cyan&quot;,fontname=&quot;courier&quot;,fontsize=14];
 call_179 [label=&quot;List.length\l(Destruct(Sensor, 0, Option.get …)).Sensor_msgs.laserScan_ranges&quot;,shape=box,style=filled,color=&quot;yellow&quot;,fontname=&quot;courier&quot;,fontsize=14];
 goal -&gt; call_179 [label=&quot;calls&quot;];
@@ -1691,12 +1717,12 @@ goal -&gt; call_194 [label=&quot;calls&quot;];
 }
 </textarea><button class="btn btn-primary">Load graph</button><div class="imandra-graphviz-loading display-none">Loading..</div><div class="imandra-graphviz-target"></div><script>
 require(['nbextensions/nbimandra/graphviz'], function (graphviz) {
-  var target = '#graphviz-afd750ef-27d1-4285-8a92-b69a8dba74ee';
+  var target = '#graphviz-fb6c1e6e-7bc5-46bb-9c9f-31c0136dfa3b';
   graphviz.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-e50e3efc-7f08-4002-830d-5d7a1a57507c';
+  var target = '#alt-9d07653e-ed67-4d2f-8415-c61ca4d61f0d';
   alternatives.hydrate(target);
 });
 </script></div></div></div>
@@ -1767,7 +1793,7 @@ module CX : sig val state : state end
 
 
 <div class="output_html rendered_html output_subarea ">
-<div><pre>Counterexample (after 4 steps, 0.034s):
+<div><pre>Counterexample (after 4 steps, 0.031s):
  let state =
    {mode = Turning; min_range = (Some 7719); direction = None;
     incoming =
@@ -1790,7 +1816,7 @@ module CX : sig val state : state end
 
 
 <div class="output_html rendered_html output_subarea ">
-<div><div class="imandra-vr imandra-vr-refuted"><i class="fa fa-times-circle-o"></i><span>Refuted</span></div><div><div class="imandra-alternatives" id="alt-1b01a216-b821-4463-becc-0a43b1acd0d8"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>call graph</a></li><li class="" data-toggle="tab"><a>proof-attempt</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-graphviz" id="graphviz-6b5b3899-16be-42d9-bf6a-a76f4b4516fa"><textarea style="display: none">digraph &quot;call graph&quot; {
+<div><div class="imandra-vr imandra-vr-refuted"><i class="fa fa-times-circle-o"></i><span>Refuted</span></div><div><div class="imandra-alternatives" id="alt-68d4e9c4-85dc-4d46-8658-4e3373bd9463"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>call graph</a></li><li class="" data-toggle="tab"><a>proof-attempt</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-graphviz" id="graphviz-9df727ad-1ec7-4119-9282-97c4920de718"><textarea style="display: none">digraph &quot;call graph&quot; {
 goal [label=&quot;not\l(((state.incoming = None\l   \|\| Is_a(Some, state.incoming) &amp;&amp; Is_a(Clock, Option.get state.incoming))\l  \|\| not\l     (List.for_all anon_fun._verify_target.0\l      (Destruct(Sensor, 0, Option.get state.incoming)).Sensor_msgs.laserScan_ranges))\l \|\| (if state.incoming = None then state\l     else\l     if Is_a(Sensor, Option.get state.incoming)\l     then if state.mode = Driving then … else …\l     else if state.mode = Driving then … else …).mode\l    = Turning)&quot;,shape=box,style=filled,color=&quot;cyan&quot;,fontname=&quot;courier&quot;,fontsize=14];
 call_1012 [label=&quot;List.fold_right anon_fun.get_min_range.0\l(Destruct(Sensor, 0, Option.get …)).Sensor_msgs.laserScan_range_max\l(List.tl (Destruct(Sensor, 0, Option.get …)).Sensor_msgs.laserScan_ranges)&quot;,shape=box,style=filled,color=&quot;yellow&quot;,fontname=&quot;courier&quot;,fontsize=14];
 expr_1017 -&gt; call_1012 [label=&quot;calls&quot;];
@@ -1821,15 +1847,15 @@ goal -&gt; call_178 [label=&quot;calls&quot;];
 }
 </textarea><button class="btn btn-primary">Load graph</button><div class="imandra-graphviz-loading display-none">Loading..</div><div class="imandra-graphviz-target"></div><script>
 require(['nbextensions/nbimandra/graphviz'], function (graphviz) {
-  var target = '#graphviz-6b5b3899-16be-42d9-bf6a-a76f4b4516fa';
+  var target = '#graphviz-9df727ad-1ec7-4119-9282-97c4920de718';
   graphviz.hydrate(target);
 });
-</script></div></div><div class="tab-pane"><div class="imandra-proof-top"><div class="imandra-fold panel panel-default" id="fold-888234fa-679b-435d-adc2-68adb86daad3"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>proof attempt</span></div></div><div class="panel-body collapse"><div class="imandra-proof"><div class="imandra-alternatives" id="alt-e695f413-b090-4242-9c4b-0178339749e2"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>summary</a></li><li class="" data-toggle="tab"><a>full</a></li><li class="" data-toggle="tab"><a>graph</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-table" id="table-f0d52ebc-da8c-4703-9be4-0e3bcd005113"><table><tr><td><b>ground_instances</b></td><td>4</td></tr><tr><td><b>definitions</b></td><td>0</td></tr><tr><td><b>inductions</b></td><td>0</td></tr><tr><td><b>search_time</b></td><td><pre>0.034s</pre></td></tr><tr><td><b>details</b></td><td><div class="imandra-fold panel panel-default" id="fold-f41600f2-f88b-4e88-a39b-ee6a8c1571e9"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><div class="imandra-table" id="table-c6e32bfb-6101-49b1-a9ec-42b7ca5aeea1"><table><tr><td><b>smt_stats</b></td><td><div class="imandra-table" id="table-1d904225-86a0-46ef-b5a3-e0f5a2edd395"><table><tr><td><b>arith offset eqs</b></td><td>2</td></tr><tr><td><b>num checks</b></td><td>9</td></tr><tr><td><b>arith assert lower</b></td><td>16</td></tr><tr><td><b>arith pivots</b></td><td>2</td></tr><tr><td><b>rlimit count</b></td><td>7836</td></tr><tr><td><b>mk clause</b></td><td>66</td></tr><tr><td><b>datatype occurs check</b></td><td>351</td></tr><tr><td><b>mk bool var</b></td><td>448</td></tr><tr><td><b>arith assert upper</b></td><td>17</td></tr><tr><td><b>datatype splits</b></td><td>46</td></tr><tr><td><b>decisions</b></td><td>255</td></tr><tr><td><b>arith add rows</b></td><td>1</td></tr><tr><td><b>arith bound prop</b></td><td>1</td></tr><tr><td><b>propagations</b></td><td>216</td></tr><tr><td><b>conflicts</b></td><td>18</td></tr><tr><td><b>datatype accessor ax</b></td><td>55</td></tr><tr><td><b>minimized lits</b></td><td>1</td></tr><tr><td><b>datatype constructor ax</b></td><td>219</td></tr><tr><td><b>num allocs</b></td><td>1507513553</td></tr><tr><td><b>final checks</b></td><td>13</td></tr><tr><td><b>added eqs</b></td><td>979</td></tr><tr><td><b>del clause</b></td><td>9</td></tr><tr><td><b>arith eq adapter</b></td><td>6</td></tr><tr><td><b>memory</b></td><td>26.150000</td></tr><tr><td><b>max memory</b></td><td>26.150000</td></tr></table></div></td></tr></table></div></div><script>
+</script></div></div><div class="tab-pane"><div class="imandra-proof-top"><div class="imandra-fold panel panel-default" id="fold-a65de950-99cf-4ebe-8887-c292825cbab5"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>proof attempt</span></div></div><div class="panel-body collapse"><div class="imandra-proof"><div class="imandra-alternatives" id="alt-f02736bf-fe7c-43e4-9e35-f7b201ce8631"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>summary</a></li><li class="" data-toggle="tab"><a>full</a></li><li class="" data-toggle="tab"><a>graph</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-table" id="table-ecb186b9-ea5d-4886-b4b0-aa8c543b99ca"><table><tr><td><b>ground_instances</b></td><td>4</td></tr><tr><td><b>definitions</b></td><td>0</td></tr><tr><td><b>inductions</b></td><td>0</td></tr><tr><td><b>search_time</b></td><td><pre>0.031s</pre></td></tr><tr><td><b>details</b></td><td><div class="imandra-fold panel panel-default" id="fold-0bb17a3a-56e2-4ed8-9016-e82819b8727a"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><div class="imandra-table" id="table-64219a77-ae09-4c6e-b79e-a524893aed7c"><table><tr><td><b>smt_stats</b></td><td><div class="imandra-table" id="table-54df55af-a525-437d-a7a3-824d18245b44"><table><tr><td><b>arith offset eqs</b></td><td>2</td></tr><tr><td><b>num checks</b></td><td>9</td></tr><tr><td><b>arith assert lower</b></td><td>16</td></tr><tr><td><b>arith pivots</b></td><td>2</td></tr><tr><td><b>rlimit count</b></td><td>7836</td></tr><tr><td><b>mk clause</b></td><td>66</td></tr><tr><td><b>datatype occurs check</b></td><td>351</td></tr><tr><td><b>mk bool var</b></td><td>448</td></tr><tr><td><b>arith assert upper</b></td><td>17</td></tr><tr><td><b>datatype splits</b></td><td>46</td></tr><tr><td><b>decisions</b></td><td>255</td></tr><tr><td><b>arith add rows</b></td><td>1</td></tr><tr><td><b>arith bound prop</b></td><td>1</td></tr><tr><td><b>propagations</b></td><td>216</td></tr><tr><td><b>conflicts</b></td><td>18</td></tr><tr><td><b>datatype accessor ax</b></td><td>55</td></tr><tr><td><b>minimized lits</b></td><td>1</td></tr><tr><td><b>datatype constructor ax</b></td><td>219</td></tr><tr><td><b>num allocs</b></td><td>1505082677</td></tr><tr><td><b>final checks</b></td><td>13</td></tr><tr><td><b>added eqs</b></td><td>979</td></tr><tr><td><b>del clause</b></td><td>9</td></tr><tr><td><b>arith eq adapter</b></td><td>6</td></tr><tr><td><b>memory</b></td><td>28.740000</td></tr><tr><td><b>max memory</b></td><td>28.740000</td></tr></table></div></td></tr></table></div></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-f41600f2-f88b-4e88-a39b-ee6a8c1571e9';
+  var target = '#fold-0bb17a3a-56e2-4ed8-9016-e82819b8727a';
   fold.hydrate(target);
 });
-</script></div></td></tr></table></div></div><div class="tab-pane"><div class="imandra-fold panel panel-default" id="fold-3103c478-7682-4a47-99d1-ba188c3cec7e"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.034s]
+</script></div></td></tr></table></div></div><div class="tab-pane"><div class="imandra-fold panel panel-default" id="fold-7fa0d4ec-dee3-4395-8e8d-747a29faee76"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.031s]
   if :var_0:.incoming = None
      || Is_a(Some, :var_0:.incoming)
         &amp;&amp; Is_a(Clock, Option.get :var_0:.incoming)
@@ -1839,7 +1865,7 @@ require(['nbextensions/nbimandra/fold'], function (fold) {
     (Destruct(Sensor, 0, Option.get :var_0:.incoming)).Sensor_msgs.laserScan_ranges
     ==&gt; (if :var_0:.incoming = None then :var_0:
          else if Is_a(Sensor, Option.get :var_0:.incoming) then … else …).mode
-        = Turning</pre></li><li><div><h4>simplify</h4><div class="imandra-table" id="table-16b704a9-af12-480b-8da7-81ddf85c0c71"><table><tr><td><b>into</b></td><td><pre>((:var_0:.incoming = None
+        = Turning</pre></li><li><div><h4>simplify</h4><div class="imandra-table" id="table-9aa89a14-1f0f-4e83-a7e8-151db7ce0bf5"><table><tr><td><b>into</b></td><td><pre>((:var_0:.incoming = None
   || Is_a(Some, :var_0:.incoming) &amp;&amp; Is_a(Clock, Option.get :var_0:.incoming))
  || not
     (List.for_all anon_fun._verify_target.0
@@ -1849,13 +1875,13 @@ require(['nbextensions/nbimandra/fold'], function (fold) {
     if Is_a(Sensor, Option.get :var_0:.incoming)
     then if :var_0:.mode = Driving then … else …
     else if :var_0:.mode = Driving then … else …).mode
-   = Turning</pre></td></tr><tr><td><b>expansions</b></td><td><pre>[]</pre></td></tr><tr><td><b>rewrite_steps</b></td><td><ul></ul></td></tr><tr><td><b>forward_chaining</b></td><td><ul></ul></td></tr></table></div></div></li><li><div>unroll<div class="imandra-table" id="table-d831816e-282a-4848-b70e-bf03434e3a61"><table><tr><td><b>expr</b></td><td><pre>(let ((a!1 (|Sensor_msgs.laserScan_range_max_2323|
+   = Turning</pre></td></tr><tr><td><b>expansions</b></td><td><pre>[]</pre></td></tr><tr><td><b>rewrite_steps</b></td><td><ul></ul></td></tr><tr><td><b>forward_chaining</b></td><td><ul></ul></td></tr></table></div></div></li><li><div>unroll<div class="imandra-table" id="table-06e0b6d8-b4cb-4ed9-a85a-99511f8cf432"><table><tr><td><b>expr</b></td><td><pre>(let ((a!1 (|Sensor_msgs.laserScan_range_max_2323|
              (|get.Sensor.0_2898|
-               …</pre></td></tr><tr><td><b>expansions</b></td><td><ul></ul></td></tr></table></div></div></li><li><div>unroll<div class="imandra-table" id="table-54cbcdd9-6f28-4a78-ac36-a49ac9b2df10"><table><tr><td><b>expr</b></td><td><pre>(let ((a!1 (|Sensor_msgs.laserScan_range_max_2323|
+               …</pre></td></tr><tr><td><b>expansions</b></td><td><ul></ul></td></tr></table></div></div></li><li><div>unroll<div class="imandra-table" id="table-ca3badac-6835-45c3-958a-8947139b8aa3"><table><tr><td><b>expr</b></td><td><pre>(let ((a!1 (|Sensor_msgs.laserScan_range_max_2323|
              (|get.Sensor.0_2898|
-               …</pre></td></tr><tr><td><b>expansions</b></td><td><ul></ul></td></tr></table></div></div></li><li><div>unroll<div class="imandra-table" id="table-110d0824-539c-4c68-b529-5b603766d90c"><table><tr><td><b>expr</b></td><td><pre>(let ((a!1 (|Sensor_msgs.laserScan_ranges_2324|
+               …</pre></td></tr><tr><td><b>expansions</b></td><td><ul></ul></td></tr></table></div></div></li><li><div>unroll<div class="imandra-table" id="table-7a9f1cf9-c70e-4e01-a2dd-7f7611063185"><table><tr><td><b>expr</b></td><td><pre>(let ((a!1 (|Sensor_msgs.laserScan_ranges_2324|
              (|get.Sensor.0_2898|
-               (|g…</pre></td></tr><tr><td><b>expansions</b></td><td><ul></ul></td></tr></table></div></div></li><li><div>unroll<div class="imandra-table" id="table-67fd9078-ecec-4382-a745-34702f545ac7"><table><tr><td><b>expr</b></td><td><pre>(let ((a!1 (|Sensor_msgs.laserScan_ranges_2324|
+               (|g…</pre></td></tr><tr><td><b>expansions</b></td><td><ul></ul></td></tr></table></div></div></li><li><div>unroll<div class="imandra-table" id="table-877421a1-d04d-4ec9-8a6c-f55f43b87f6d"><table><tr><td><b>expr</b></td><td><pre>(let ((a!1 (|Sensor_msgs.laserScan_ranges_2324|
              (|get.Sensor.0_2898|
                (|g…</pre></td></tr><tr><td><b>expansions</b></td><td><ul></ul></td></tr></table></div></div></li><li>Sat (Some  let state =
    {mode = Turning; min_range = (Some 7719); direction = None;
@@ -1868,11 +1894,11 @@ require(['nbextensions/nbimandra/fold'], function (fold) {
     outgoing = None}
 )</li></ul></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-3103c478-7682-4a47-99d1-ba188c3cec7e';
+  var target = '#fold-7fa0d4ec-dee3-4395-8e8d-747a29faee76';
   fold.hydrate(target);
 });
-</script></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-df95ef2c-6b5f-46c3-9738-ebf88928d65f"><textarea style="display: none">digraph &quot;proof&quot; {
-p_288 [label=&quot;Start (if :var_0:.incoming = None\l          \|\| Is_a(Some, :var_0:.incoming)\l             &amp;&amp; Is_a(Clock, Option.get :var_0:.incoming)\l       then true\l       else\l         List.for_all anon_fun._verify_target.0\l         (Destruct(Sensor, 0, Option.get :var_0:.incoming)).Sensor_msgs.laserScan_ranges\l         ==\&gt; (if :var_0:.incoming = None then :var_0:\l              else\l              if Is_a(Sensor, Option.get :var_0:.incoming) then … else …).mode\l             = Turning\l       :time 0.034s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+</script></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-3b288bde-39a4-40a6-ac66-a61910d11fdf"><textarea style="display: none">digraph &quot;proof&quot; {
+p_288 [label=&quot;Start (if :var_0:.incoming = None\l          \|\| Is_a(Some, :var_0:.incoming)\l             &amp;&amp; Is_a(Clock, Option.get :var_0:.incoming)\l       then true\l       else\l         List.for_all anon_fun._verify_target.0\l         (Destruct(Sensor, 0, Option.get :var_0:.incoming)).Sensor_msgs.laserScan_ranges\l         ==\&gt; (if :var_0:.incoming = None then :var_0:\l              else\l              if Is_a(Sensor, Option.get :var_0:.incoming) then … else …).mode\l             = Turning\l       :time 0.031s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_288 -&gt; p_287 [label=&quot;&quot;];
 p_287 [label=&quot;Simplify (((:var_0:.incoming = None\l            \|\| Is_a(Some, :var_0:.incoming)\l               &amp;&amp; Is_a(Clock, Option.get :var_0:.incoming))\l           \|\| not\l              (List.for_all anon_fun._verify_target.0\l               (Destruct(Sensor, 0, Option.get :var_0:.incoming)).Sensor_msgs.laserScan_ranges))\l          \|\| (if :var_0:.incoming = None then :var_0:\l              else\l              if Is_a(Sensor, Option.get :var_0:.incoming)\l              then if :var_0:.mode = Driving then … else …\l              else if :var_0:.mode = Driving then … else …).mode\l             = Turning\l          :expansions [] :rw [] :fc [])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_287 -&gt; p_286 [label=&quot;&quot;];
@@ -1888,22 +1914,22 @@ p_282 [label=&quot;Sat (Some  let state =\l   \{mode = Turning; min_range = (Som
 }
 </textarea><button class="btn btn-primary">Load graph</button><div class="imandra-graphviz-loading display-none">Loading..</div><div class="imandra-graphviz-target"></div><script>
 require(['nbextensions/nbimandra/graphviz'], function (graphviz) {
-  var target = '#graphviz-df95ef2c-6b5f-46c3-9738-ebf88928d65f';
+  var target = '#graphviz-3b288bde-39a4-40a6-ac66-a61910d11fdf';
   graphviz.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-e695f413-b090-4242-9c4b-0178339749e2';
+  var target = '#alt-f02736bf-fe7c-43e4-9e35-f7b201ce8631';
   alternatives.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-888234fa-679b-435d-adc2-68adb86daad3';
+  var target = '#fold-a65de950-99cf-4ebe-8887-c292825cbab5';
   fold.hydrate(target);
 });
 </script></div></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-1b01a216-b821-4463-becc-0a43b1acd0d8';
+  var target = '#alt-68d4e9c4-85dc-4d46-8658-4e3373bd9463';
   alternatives.hydrate(target);
 });
 </script></div></div></div>
@@ -2028,12 +2054,12 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
 
 
 <div class="output_html rendered_html output_subarea ">
-<div><div class="imandra-vr imandra-vr-proved"><i class="fa fa-check-circle"></i><span>Proved</span></div><div><div class="imandra-alternatives" id="alt-47f367c0-5be1-43d1-9957-1e45d6696aad"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>proof</a></li><li class="" data-toggle="tab"><a>call graph</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-proof-top"><div class="imandra-fold panel panel-default" id="fold-c1a827bd-cde0-4259-92cf-766b4d8696de"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>proof</span></div></div><div class="panel-body collapse"><div class="imandra-proof"><div class="imandra-alternatives" id="alt-651b2e30-4715-4c0f-a00d-53f9f9e3b44a"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>summary</a></li><li class="" data-toggle="tab"><a>full</a></li><li class="" data-toggle="tab"><a>graph</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-table" id="table-7dc17900-6df4-4334-9338-57ca20e7b731"><table><tr><td><b>ground_instances</b></td><td>4</td></tr><tr><td><b>definitions</b></td><td>0</td></tr><tr><td><b>inductions</b></td><td>0</td></tr><tr><td><b>search_time</b></td><td><pre>0.036s</pre></td></tr><tr><td><b>details</b></td><td><div class="imandra-fold panel panel-default" id="fold-f61dddc8-dcaf-4f05-b391-69dbfe39df14"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><div class="imandra-table" id="table-16c3ce88-025c-48f3-86ec-35331f5353da"><table><tr><td><b>smt_stats</b></td><td><div class="imandra-table" id="table-543c0223-2613-4668-938d-9128de46c342"><table><tr><td><b>num checks</b></td><td>10</td></tr><tr><td><b>arith assert lower</b></td><td>37</td></tr><tr><td><b>arith pivots</b></td><td>14</td></tr><tr><td><b>rlimit count</b></td><td>9361</td></tr><tr><td><b>mk clause</b></td><td>71</td></tr><tr><td><b>datatype occurs check</b></td><td>328</td></tr><tr><td><b>mk bool var</b></td><td>542</td></tr><tr><td><b>arith assert upper</b></td><td>38</td></tr><tr><td><b>datatype splits</b></td><td>49</td></tr><tr><td><b>decisions</b></td><td>318</td></tr><tr><td><b>arith add rows</b></td><td>16</td></tr><tr><td><b>propagations</b></td><td>349</td></tr><tr><td><b>conflicts</b></td><td>34</td></tr><tr><td><b>arith fixed eqs</b></td><td>7</td></tr><tr><td><b>datatype accessor ax</b></td><td>51</td></tr><tr><td><b>minimized lits</b></td><td>2</td></tr><tr><td><b>arith conflicts</b></td><td>2</td></tr><tr><td><b>arith assert diseq</b></td><td>14</td></tr><tr><td><b>datatype constructor ax</b></td><td>301</td></tr><tr><td><b>num allocs</b></td><td>1571764678</td></tr><tr><td><b>final checks</b></td><td>12</td></tr><tr><td><b>added eqs</b></td><td>1365</td></tr><tr><td><b>del clause</b></td><td>28</td></tr><tr><td><b>arith eq adapter</b></td><td>16</td></tr><tr><td><b>memory</b></td><td>29.560000</td></tr><tr><td><b>max memory</b></td><td>29.560000</td></tr></table></div></td></tr></table></div></div><script>
+<div><div class="imandra-vr imandra-vr-proved"><i class="fa fa-check-circle"></i><span>Proved</span></div><div><div class="imandra-alternatives" id="alt-ad36e881-173b-4f28-9138-1ddd9a73d2fe"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>proof</a></li><li class="" data-toggle="tab"><a>call graph</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-proof-top"><div class="imandra-fold panel panel-default" id="fold-296c57fd-8c04-48ee-bf94-4feff8f17af4"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>proof</span></div></div><div class="panel-body collapse"><div class="imandra-proof"><div class="imandra-alternatives" id="alt-547cf8cb-58ef-489c-9d16-d6f410d403c7"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>summary</a></li><li class="" data-toggle="tab"><a>full</a></li><li class="" data-toggle="tab"><a>graph</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-table" id="table-8ebcd6a2-166e-4388-9255-4a8ca03966e3"><table><tr><td><b>ground_instances</b></td><td>4</td></tr><tr><td><b>definitions</b></td><td>0</td></tr><tr><td><b>inductions</b></td><td>0</td></tr><tr><td><b>search_time</b></td><td><pre>0.033s</pre></td></tr><tr><td><b>details</b></td><td><div class="imandra-fold panel panel-default" id="fold-d6be3956-58bb-474f-a584-a0168d5f3376"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><div class="imandra-table" id="table-68344814-bfab-4857-886e-ce5ed214cb58"><table><tr><td><b>smt_stats</b></td><td><div class="imandra-table" id="table-12b59666-4bcd-44eb-bb81-0311d8205773"><table><tr><td><b>num checks</b></td><td>10</td></tr><tr><td><b>arith assert lower</b></td><td>37</td></tr><tr><td><b>arith pivots</b></td><td>14</td></tr><tr><td><b>rlimit count</b></td><td>9361</td></tr><tr><td><b>mk clause</b></td><td>71</td></tr><tr><td><b>datatype occurs check</b></td><td>328</td></tr><tr><td><b>mk bool var</b></td><td>542</td></tr><tr><td><b>arith assert upper</b></td><td>38</td></tr><tr><td><b>datatype splits</b></td><td>49</td></tr><tr><td><b>decisions</b></td><td>318</td></tr><tr><td><b>arith add rows</b></td><td>16</td></tr><tr><td><b>propagations</b></td><td>349</td></tr><tr><td><b>conflicts</b></td><td>34</td></tr><tr><td><b>arith fixed eqs</b></td><td>7</td></tr><tr><td><b>datatype accessor ax</b></td><td>51</td></tr><tr><td><b>minimized lits</b></td><td>2</td></tr><tr><td><b>arith conflicts</b></td><td>2</td></tr><tr><td><b>arith assert diseq</b></td><td>14</td></tr><tr><td><b>datatype constructor ax</b></td><td>301</td></tr><tr><td><b>num allocs</b></td><td>1569185095</td></tr><tr><td><b>final checks</b></td><td>12</td></tr><tr><td><b>added eqs</b></td><td>1365</td></tr><tr><td><b>del clause</b></td><td>28</td></tr><tr><td><b>arith eq adapter</b></td><td>16</td></tr><tr><td><b>memory</b></td><td>32.160000</td></tr><tr><td><b>max memory</b></td><td>32.160000</td></tr></table></div></td></tr></table></div></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-f61dddc8-dcaf-4f05-b391-69dbfe39df14';
+  var target = '#fold-d6be3956-58bb-474f-a584-a0168d5f3376';
   fold.hydrate(target);
 });
-</script></div></td></tr></table></div></div><div class="tab-pane"><div class="imandra-fold panel panel-default" id="fold-184ddfed-7195-4e7f-ad31-f95a61077dfd"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.036s]
+</script></div></td></tr></table></div></div><div class="tab-pane"><div class="imandra-fold panel panel-default" id="fold-b3bb7a3f-a5d8-46eb-bd1e-75ea5cdb7dbd"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.033s]
   if :var_0:.incoming = None
      || Is_a(Some, :var_0:.incoming)
         &amp;&amp; Is_a(Clock, Option.get :var_0:.incoming)
@@ -2046,7 +2072,7 @@ require(['nbextensions/nbimandra/fold'], function (fold) {
        (Destruct(Sensor, 0, Option.get :var_0:.incoming)).Sensor_msgs.laserScan_ranges
     ==&gt; (if :var_0:.incoming = None then :var_0:
          else if Is_a(Sensor, Option.get :var_0:.incoming) then … else …).mode
-        = Turning</pre></li><li><div><h4>simplify</h4><div class="imandra-table" id="table-696a65f3-7be9-4c1a-acfb-a9ea35765f0b"><table><tr><td><b>into</b></td><td><pre>((:var_0:.incoming = None
+        = Turning</pre></li><li><div><h4>simplify</h4><div class="imandra-table" id="table-7600343f-9235-48f4-b183-74cb50c1ed97"><table><tr><td><b>into</b></td><td><pre>((:var_0:.incoming = None
   || Is_a(Some, :var_0:.incoming) &amp;&amp; Is_a(Clock, Option.get :var_0:.incoming))
  || not
     (not
@@ -2059,23 +2085,23 @@ require(['nbextensions/nbimandra/fold'], function (fold) {
     if Is_a(Sensor, Option.get :var_0:.incoming)
     then if :var_0:.mode = Driving then … else …
     else if :var_0:.mode = Driving then … else …).mode
-   = Turning</pre></td></tr><tr><td><b>expansions</b></td><td><pre>[]</pre></td></tr><tr><td><b>rewrite_steps</b></td><td><ul></ul></td></tr><tr><td><b>forward_chaining</b></td><td><ul></ul></td></tr></table></div></div></li><li><div>unroll<div class="imandra-table" id="table-1abf031d-998d-4c62-ad89-aea8d8393f30"><table><tr><td><b>expr</b></td><td><pre>(let ((a!1 (|Sensor_msgs.laserScan_range_max_2323|
+   = Turning</pre></td></tr><tr><td><b>expansions</b></td><td><pre>[]</pre></td></tr><tr><td><b>rewrite_steps</b></td><td><ul></ul></td></tr><tr><td><b>forward_chaining</b></td><td><ul></ul></td></tr></table></div></div></li><li><div>unroll<div class="imandra-table" id="table-7bf8bb3d-1e83-4690-a512-678bf2334802"><table><tr><td><b>expr</b></td><td><pre>(let ((a!1 (|Sensor_msgs.laserScan_range_max_2323|
              (|get.Sensor.0_2997|
-               …</pre></td></tr><tr><td><b>expansions</b></td><td><ul></ul></td></tr></table></div></div></li><li><div>unroll<div class="imandra-table" id="table-245985e1-6ae8-421e-acb7-1621d30925f2"><table><tr><td><b>expr</b></td><td><pre>(let ((a!1 (|Sensor_msgs.laserScan_range_max_2323|
+               …</pre></td></tr><tr><td><b>expansions</b></td><td><ul></ul></td></tr></table></div></div></li><li><div>unroll<div class="imandra-table" id="table-81588fd5-c94e-4893-adc8-5ef3a58b5527"><table><tr><td><b>expr</b></td><td><pre>(let ((a!1 (|Sensor_msgs.laserScan_range_max_2323|
              (|get.Sensor.0_2997|
-               …</pre></td></tr><tr><td><b>expansions</b></td><td><ul></ul></td></tr></table></div></div></li><li><div>unroll<div class="imandra-table" id="table-cb3e82bf-0c60-4066-8d8d-85a35c325386"><table><tr><td><b>expr</b></td><td><pre>(let ((a!1 (|Sensor_msgs.laserScan_ranges_2324|
+               …</pre></td></tr><tr><td><b>expansions</b></td><td><ul></ul></td></tr></table></div></div></li><li><div>unroll<div class="imandra-table" id="table-e24c4783-792c-4917-87f4-fb243ba2298b"><table><tr><td><b>expr</b></td><td><pre>(let ((a!1 (|Sensor_msgs.laserScan_ranges_2324|
              (|get.Sensor.0_2997|
-               (|g…</pre></td></tr><tr><td><b>expansions</b></td><td><ul></ul></td></tr></table></div></div></li><li><div>unroll<div class="imandra-table" id="table-24b4dc43-9c48-4e50-b03a-2ac7271c3f22"><table><tr><td><b>expr</b></td><td><pre>(let ((a!1 (|Sensor_msgs.laserScan_ranges_2324|
+               (|g…</pre></td></tr><tr><td><b>expansions</b></td><td><ul></ul></td></tr></table></div></div></li><li><div>unroll<div class="imandra-table" id="table-b1e18532-1415-44e6-b75a-68e97974549c"><table><tr><td><b>expr</b></td><td><pre>(let ((a!1 (|Sensor_msgs.laserScan_ranges_2324|
              (|get.Sensor.0_2997|
                (|g…</pre></td></tr><tr><td><b>expansions</b></td><td><ul></ul></td></tr></table></div></div></li><li><div><h4>unsat</h4><pre>(let ((a!1 (|Sensor_msgs.laserScan_ranges_2324|
              (|get.Sensor.0_2997|
                (|g…</pre></div></li></ul></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-184ddfed-7195-4e7f-ad31-f95a61077dfd';
+  var target = '#fold-b3bb7a3f-a5d8-46eb-bd1e-75ea5cdb7dbd';
   fold.hydrate(target);
 });
-</script></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-81da76cc-1ac0-4b3d-a141-0ce57e7ff93f"><textarea style="display: none">digraph &quot;proof&quot; {
-p_295 [label=&quot;Start (if :var_0:.incoming = None\l          \|\| Is_a(Some, :var_0:.incoming)\l             &amp;&amp; Is_a(Clock, Option.get :var_0:.incoming)\l       then true\l       else\l         not\l         ((Destruct(Sensor, 0, Option.get :var_0:.incoming)).Sensor_msgs.laserScan_ranges\l          = [])\l         &amp;&amp; List.for_all anon_fun._verify_target.0\l            (Destruct(Sensor, 0, Option.get :var_0:.incoming)).Sensor_msgs.laserScan_ranges\l         ==\&gt; (if :var_0:.incoming = None then :var_0:\l              else\l              if Is_a(Sensor, Option.get :var_0:.incoming) then … else …).mode\l             = Turning\l       :time 0.036s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+</script></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-a44ff294-487f-4530-a63a-28d217676851"><textarea style="display: none">digraph &quot;proof&quot; {
+p_295 [label=&quot;Start (if :var_0:.incoming = None\l          \|\| Is_a(Some, :var_0:.incoming)\l             &amp;&amp; Is_a(Clock, Option.get :var_0:.incoming)\l       then true\l       else\l         not\l         ((Destruct(Sensor, 0, Option.get :var_0:.incoming)).Sensor_msgs.laserScan_ranges\l          = [])\l         &amp;&amp; List.for_all anon_fun._verify_target.0\l            (Destruct(Sensor, 0, Option.get :var_0:.incoming)).Sensor_msgs.laserScan_ranges\l         ==\&gt; (if :var_0:.incoming = None then :var_0:\l              else\l              if Is_a(Sensor, Option.get :var_0:.incoming) then … else …).mode\l             = Turning\l       :time 0.033s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_295 -&gt; p_294 [label=&quot;&quot;];
 p_294 [label=&quot;Simplify (((:var_0:.incoming = None\l            \|\| Is_a(Some, :var_0:.incoming)\l               &amp;&amp; Is_a(Clock, Option.get :var_0:.incoming))\l           \|\| not\l              (not\l               ((Destruct(Sensor, 0, Option.get :var_0:.incoming)).Sensor_msgs.laserScan_ranges\l                = [])\l               &amp;&amp; List.for_all anon_fun._verify_target.0\l                  (Destruct(Sensor, 0, Option.get :var_0:.incoming)).Sensor_msgs.laserScan_ranges))\l          \|\| (if :var_0:.incoming = None then :var_0:\l              else\l              if Is_a(Sensor, Option.get :var_0:.incoming)\l              then if :var_0:.mode = Driving then … else …\l              else if :var_0:.mode = Driving then … else …).mode\l             = Turning\l          :expansions [] :rw [] :fc [])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_294 -&gt; p_293 [label=&quot;&quot;];
@@ -2094,20 +2120,20 @@ p_z3_1480 [label=&quot;(let ((a!1 (|Sensor_msgs.laserScan_ranges_2324|
 }
 </textarea><button class="btn btn-primary">Load graph</button><div class="imandra-graphviz-loading display-none">Loading..</div><div class="imandra-graphviz-target"></div><script>
 require(['nbextensions/nbimandra/graphviz'], function (graphviz) {
-  var target = '#graphviz-81da76cc-1ac0-4b3d-a141-0ce57e7ff93f';
+  var target = '#graphviz-a44ff294-487f-4530-a63a-28d217676851';
   graphviz.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-651b2e30-4715-4c0f-a00d-53f9f9e3b44a';
+  var target = '#alt-547cf8cb-58ef-489c-9d16-d6f410d403c7';
   alternatives.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-c1a827bd-cde0-4259-92cf-766b4d8696de';
+  var target = '#fold-296c57fd-8c04-48ee-bf94-4feff8f17af4';
   fold.hydrate(target);
 });
-</script></div></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-ae473552-e516-457e-9026-1f8567f5851b"><textarea style="display: none">digraph &quot;call graph&quot; {
+</script></div></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-fc4ce4df-4389-4933-b1a0-86adea87d265"><textarea style="display: none">digraph &quot;call graph&quot; {
 goal [label=&quot;not\l(((state.incoming = None\l   \|\| Is_a(Some, state.incoming) &amp;&amp; Is_a(Clock, Option.get state.incoming))\l  \|\| not\l     (not\l      ((Destruct(Sensor, 0, Option.get state.incoming)).Sensor_msgs.laserScan_ranges\l       = [])\l      &amp;&amp; List.for_all anon_fun._verify_target.0\l         (Destruct(Sensor, 0, Option.get state.incoming)).Sensor_msgs.laserScan_ranges))\l \|\| (if state.incoming = None then state\l     else\l     if Is_a(Sensor, Option.get state.incoming)\l     then if state.mode = Driving then … else …\l     else if state.mode = Driving then … else …).mode\l    = Turning)&quot;,shape=box,style=filled,color=&quot;cyan&quot;,fontname=&quot;courier&quot;,fontsize=14];
 call_1226 [label=&quot;List.length\l(List.tl (Destruct(Sensor, 0, Option.get …)).Sensor_msgs.laserScan_ranges)&quot;,shape=box,style=filled,color=&quot;yellow&quot;,fontname=&quot;courier&quot;,fontsize=14];
 expr_1228 -&gt; call_1226 [label=&quot;calls&quot;];
@@ -2138,12 +2164,12 @@ goal -&gt; call_222 [label=&quot;calls&quot;];
 }
 </textarea><button class="btn btn-primary">Load graph</button><div class="imandra-graphviz-loading display-none">Loading..</div><div class="imandra-graphviz-target"></div><script>
 require(['nbextensions/nbimandra/graphviz'], function (graphviz) {
-  var target = '#graphviz-ae473552-e516-457e-9026-1f8567f5851b';
+  var target = '#graphviz-fc4ce4df-4389-4933-b1a0-86adea87d265';
   graphviz.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-47f367c0-5be1-43d1-9957-1e45d6696aad';
+  var target = '#alt-ad36e881-173b-4f28-9138-1ddd9a73d2fe';
   alternatives.hydrate(target);
 });
 </script></div></div></div>
@@ -2217,12 +2243,12 @@ val lemma1 : state -&gt; bool = &lt;fun&gt;
 
 
 <div class="output_html rendered_html output_subarea ">
-<div><div class="imandra-vr imandra-vr-proved"><i class="fa fa-check-circle"></i><span>Proved</span></div><div><div class="imandra-alternatives" id="alt-b05b338e-1dad-47de-a5e8-8bf0be8c3ccf"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>proof</a></li><li class="" data-toggle="tab"><a>call graph</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-proof-top"><div class="imandra-fold panel panel-default" id="fold-9261f9e5-4f83-4a1c-abe6-a0db6cd355d0"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>proof</span></div></div><div class="panel-body collapse"><div class="imandra-proof"><div class="imandra-alternatives" id="alt-a7da2903-f556-4b94-8ea4-ee4e4940e639"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>summary</a></li><li class="" data-toggle="tab"><a>full</a></li><li class="" data-toggle="tab"><a>graph</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-table" id="table-7a1de5ae-ff24-4473-8b0a-3ca9729714a7"><table><tr><td><b>ground_instances</b></td><td>0</td></tr><tr><td><b>definitions</b></td><td>0</td></tr><tr><td><b>inductions</b></td><td>0</td></tr><tr><td><b>search_time</b></td><td><pre>0.016s</pre></td></tr><tr><td><b>details</b></td><td><div class="imandra-fold panel panel-default" id="fold-e468f830-ee85-463b-8867-7e8d4cc18adb"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><div class="imandra-table" id="table-d1d1e746-e414-4cde-aada-da2838b95201"><table><tr><td><b>smt_stats</b></td><td><div class="imandra-table" id="table-9e409bf4-d32a-4585-a863-b3bb0f4edac1"><table><tr><td><b>num checks</b></td><td>2</td></tr><tr><td><b>arith assert lower</b></td><td>11</td></tr><tr><td><b>arith pivots</b></td><td>4</td></tr><tr><td><b>rlimit count</b></td><td>3694</td></tr><tr><td><b>mk clause</b></td><td>46</td></tr><tr><td><b>mk bool var</b></td><td>277</td></tr><tr><td><b>arith assert upper</b></td><td>13</td></tr><tr><td><b>datatype splits</b></td><td>26</td></tr><tr><td><b>decisions</b></td><td>90</td></tr><tr><td><b>arith add rows</b></td><td>1</td></tr><tr><td><b>propagations</b></td><td>130</td></tr><tr><td><b>conflicts</b></td><td>18</td></tr><tr><td><b>arith fixed eqs</b></td><td>2</td></tr><tr><td><b>datatype accessor ax</b></td><td>49</td></tr><tr><td><b>minimized lits</b></td><td>1</td></tr><tr><td><b>arith conflicts</b></td><td>1</td></tr><tr><td><b>arith assert diseq</b></td><td>1</td></tr><tr><td><b>datatype constructor ax</b></td><td>92</td></tr><tr><td><b>num allocs</b></td><td>1656067399</td></tr><tr><td><b>added eqs</b></td><td>470</td></tr><tr><td><b>del clause</b></td><td>25</td></tr><tr><td><b>arith eq adapter</b></td><td>5</td></tr><tr><td><b>memory</b></td><td>33.710000</td></tr><tr><td><b>max memory</b></td><td>33.710000</td></tr></table></div></td></tr></table></div></div><script>
+<div><div class="imandra-vr imandra-vr-proved"><i class="fa fa-check-circle"></i><span>Proved</span></div><div><div class="imandra-alternatives" id="alt-af21aa00-fa70-4cb9-a442-a834c20f57cd"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>proof</a></li><li class="" data-toggle="tab"><a>call graph</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-proof-top"><div class="imandra-fold panel panel-default" id="fold-72e05417-f85b-478a-99be-1def48ebfc30"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>proof</span></div></div><div class="panel-body collapse"><div class="imandra-proof"><div class="imandra-alternatives" id="alt-5453c810-4ea7-4ddb-9360-31950108a9f0"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>summary</a></li><li class="" data-toggle="tab"><a>full</a></li><li class="" data-toggle="tab"><a>graph</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-table" id="table-e0495c1b-3771-4ded-a84e-503aa75be444"><table><tr><td><b>ground_instances</b></td><td>0</td></tr><tr><td><b>definitions</b></td><td>0</td></tr><tr><td><b>inductions</b></td><td>0</td></tr><tr><td><b>search_time</b></td><td><pre>0.014s</pre></td></tr><tr><td><b>details</b></td><td><div class="imandra-fold panel panel-default" id="fold-486e2f84-8fff-4f00-b0c1-86fc4af15509"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><div class="imandra-table" id="table-b1fc98bc-8da9-45a5-8f3a-02ff55de0e6f"><table><tr><td><b>smt_stats</b></td><td><div class="imandra-table" id="table-9cb32b99-f5da-4459-8cf8-fd7addc70352"><table><tr><td><b>num checks</b></td><td>2</td></tr><tr><td><b>arith assert lower</b></td><td>11</td></tr><tr><td><b>arith pivots</b></td><td>4</td></tr><tr><td><b>rlimit count</b></td><td>3694</td></tr><tr><td><b>mk clause</b></td><td>46</td></tr><tr><td><b>mk bool var</b></td><td>277</td></tr><tr><td><b>arith assert upper</b></td><td>13</td></tr><tr><td><b>datatype splits</b></td><td>26</td></tr><tr><td><b>decisions</b></td><td>90</td></tr><tr><td><b>arith add rows</b></td><td>1</td></tr><tr><td><b>propagations</b></td><td>130</td></tr><tr><td><b>conflicts</b></td><td>18</td></tr><tr><td><b>arith fixed eqs</b></td><td>2</td></tr><tr><td><b>datatype accessor ax</b></td><td>49</td></tr><tr><td><b>minimized lits</b></td><td>1</td></tr><tr><td><b>arith conflicts</b></td><td>1</td></tr><tr><td><b>arith assert diseq</b></td><td>1</td></tr><tr><td><b>datatype constructor ax</b></td><td>92</td></tr><tr><td><b>num allocs</b></td><td>1653308605</td></tr><tr><td><b>added eqs</b></td><td>470</td></tr><tr><td><b>del clause</b></td><td>25</td></tr><tr><td><b>arith eq adapter</b></td><td>5</td></tr><tr><td><b>memory</b></td><td>36.300000</td></tr><tr><td><b>max memory</b></td><td>36.300000</td></tr></table></div></td></tr></table></div></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-e468f830-ee85-463b-8867-7e8d4cc18adb';
+  var target = '#fold-486e2f84-8fff-4f00-b0c1-86fc4af15509';
   fold.hydrate(target);
 });
-</script></div></td></tr></table></div></div><div class="tab-pane"><div class="imandra-fold panel panel-default" id="fold-3d0df126-068b-42fb-b944-7f5f97d3ce42"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.016s]
+</script></div></td></tr></table></div></div><div class="tab-pane"><div class="imandra-fold panel panel-default" id="fold-f4f53e54-1629-4f4d-a47f-8b4ca06ce991"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.014s]
   if :var_0:.incoming = None
      || Is_a(Some, :var_0:.incoming)
         &amp;&amp; Is_a(Clock, Option.get :var_0:.incoming)
@@ -2237,7 +2263,7 @@ require(['nbextensions/nbimandra/fold'], function (fold) {
        &lt; 20000
     ==&gt; (if :var_0:.incoming = None then :var_0:
          else if Is_a(Sensor, Option.get :var_0:.incoming) then … else …).mode
-        = Turning</pre></li><li><div><h4>simplify</h4><div class="imandra-table" id="table-e22f16af-876b-488f-861d-c59e81d21892"><table><tr><td><b>into</b></td><td><pre>((:var_0:.incoming = None
+        = Turning</pre></li><li><div><h4>simplify</h4><div class="imandra-table" id="table-ff6cf94a-67b3-4f3e-982b-e67a76613080"><table><tr><td><b>into</b></td><td><pre>((:var_0:.incoming = None
   || Is_a(Some, :var_0:.incoming) &amp;&amp; Is_a(Clock, Option.get :var_0:.incoming))
  || not
     (not
@@ -2257,11 +2283,11 @@ require(['nbextensions/nbimandra/fold'], function (fold) {
              (|get.Sensor.0_3109|
                (|g…</pre></div></li></ul></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-3d0df126-068b-42fb-b944-7f5f97d3ce42';
+  var target = '#fold-f4f53e54-1629-4f4d-a47f-8b4ca06ce991';
   fold.hydrate(target);
 });
-</script></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-f75c3246-bf58-4dfc-be03-f074de00b5d6"><textarea style="display: none">digraph &quot;proof&quot; {
-p_298 [label=&quot;Start (if :var_0:.incoming = None\l          \|\| Is_a(Some, :var_0:.incoming)\l             &amp;&amp; Is_a(Clock, Option.get :var_0:.incoming)\l       then true\l       else\l         not\l         ((Destruct(Sensor, 0, Option.get :var_0:.incoming)).Sensor_msgs.laserScan_ranges\l          = [])\l         &amp;&amp; List.fold_right anon_fun.get_min_range.0\l            (Destruct(Sensor, 0, Option.get :var_0:.incoming)).Sensor_msgs.laserScan_range_max\l            (Destruct(Sensor, 0, Option.get :var_0:.incoming)).Sensor_msgs.laserScan_ranges\l            \&lt; 20000\l         ==\&gt; (if :var_0:.incoming = None then :var_0:\l              else\l              if Is_a(Sensor, Option.get :var_0:.incoming) then … else …).mode\l             = Turning\l       :time 0.016s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+</script></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-dbcdd818-5057-4907-b65c-f3e84b70a2fa"><textarea style="display: none">digraph &quot;proof&quot; {
+p_298 [label=&quot;Start (if :var_0:.incoming = None\l          \|\| Is_a(Some, :var_0:.incoming)\l             &amp;&amp; Is_a(Clock, Option.get :var_0:.incoming)\l       then true\l       else\l         not\l         ((Destruct(Sensor, 0, Option.get :var_0:.incoming)).Sensor_msgs.laserScan_ranges\l          = [])\l         &amp;&amp; List.fold_right anon_fun.get_min_range.0\l            (Destruct(Sensor, 0, Option.get :var_0:.incoming)).Sensor_msgs.laserScan_range_max\l            (Destruct(Sensor, 0, Option.get :var_0:.incoming)).Sensor_msgs.laserScan_ranges\l            \&lt; 20000\l         ==\&gt; (if :var_0:.incoming = None then :var_0:\l              else\l              if Is_a(Sensor, Option.get :var_0:.incoming) then … else …).mode\l             = Turning\l       :time 0.014s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_298 -&gt; p_297 [label=&quot;&quot;];
 p_297 [label=&quot;Simplify (((:var_0:.incoming = None\l            \|\| Is_a(Some, :var_0:.incoming)\l               &amp;&amp; Is_a(Clock, Option.get :var_0:.incoming))\l           \|\| not\l              (not\l               ((Destruct(Sensor, 0, Option.get :var_0:.incoming)).Sensor_msgs.laserScan_ranges\l                = [])\l               &amp;&amp; not\l                  (20000 \&lt;=\l                   List.fold_right anon_fun.get_min_range.0\l                   (Destruct(Sensor, 0, Option.get :var_0:.incoming)).Sensor_msgs.laserScan_range_max\l                   (Destruct(Sensor, 0, Option.get :var_0:.incoming)).Sensor_msgs.laserScan_ranges)))\l          \|\| (if :var_0:.incoming = None then :var_0:\l              else\l              if Is_a(Sensor, Option.get :var_0:.incoming)\l              then if :var_0:.mode = Driving then … else …\l              else if :var_0:.mode = Driving then … else …).mode\l             = Turning\l          :expansions [] :rw [] :fc [])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_297 -&gt; p_296 [label=&quot;&quot;];
@@ -2272,20 +2298,20 @@ p_z3_1034 [label=&quot;(let ((a!1 (|Sensor_msgs.laserScan_ranges_2324|
 }
 </textarea><button class="btn btn-primary">Load graph</button><div class="imandra-graphviz-loading display-none">Loading..</div><div class="imandra-graphviz-target"></div><script>
 require(['nbextensions/nbimandra/graphviz'], function (graphviz) {
-  var target = '#graphviz-f75c3246-bf58-4dfc-be03-f074de00b5d6';
+  var target = '#graphviz-dbcdd818-5057-4907-b65c-f3e84b70a2fa';
   graphviz.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-a7da2903-f556-4b94-8ea4-ee4e4940e639';
+  var target = '#alt-5453c810-4ea7-4ddb-9360-31950108a9f0';
   alternatives.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-9261f9e5-4f83-4a1c-abe6-a0db6cd355d0';
+  var target = '#fold-72e05417-f85b-478a-99be-1def48ebfc30';
   fold.hydrate(target);
 });
-</script></div></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-d7658460-8405-4298-ad80-4275d403c891"><textarea style="display: none">digraph &quot;call graph&quot; {
+</script></div></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-8d71c677-13cc-473b-bc9a-91dc80140c68"><textarea style="display: none">digraph &quot;call graph&quot; {
 goal [label=&quot;not\l(((state.incoming = None\l   \|\| Is_a(Some, state.incoming) &amp;&amp; Is_a(Clock, Option.get state.incoming))\l  \|\| not\l     (not\l      ((Destruct(Sensor, 0, Option.get state.incoming)).Sensor_msgs.laserScan_ranges\l       = [])\l      &amp;&amp; not\l         (20000 \&lt;=\l          List.fold_right anon_fun.get_min_range.0\l          (Destruct(Sensor, 0, Option.get state.incoming)).Sensor_msgs.laserScan_range_max\l          (Destruct(Sensor, 0, Option.get state.incoming)).Sensor_msgs.laserScan_ranges)))\l \|\| (if state.incoming = None then state\l     else\l     if Is_a(Sensor, Option.get state.incoming)\l     then if state.mode = Driving then … else …\l     else if state.mode = Driving then … else …).mode\l    = Turning)&quot;,shape=box,style=filled,color=&quot;cyan&quot;,fontname=&quot;courier&quot;,fontsize=14];
 call_188 [label=&quot;foldi ((Destruct(Sensor, 0, …)).Sensor_msgs.laserScan_range_max, 0) None\lanon_fun.get_min_and_direction.0\l(Destruct(Sensor, 0, …)).Sensor_msgs.laserScan_ranges&quot;,shape=box,style=filled,color=&quot;yellow&quot;,fontname=&quot;courier&quot;,fontsize=14];
 goal -&gt; call_188 [label=&quot;calls&quot;];
@@ -2296,12 +2322,12 @@ goal -&gt; call_184 [label=&quot;calls&quot;];
 }
 </textarea><button class="btn btn-primary">Load graph</button><div class="imandra-graphviz-loading display-none">Loading..</div><div class="imandra-graphviz-target"></div><script>
 require(['nbextensions/nbimandra/graphviz'], function (graphviz) {
-  var target = '#graphviz-d7658460-8405-4298-ad80-4275d403c891';
+  var target = '#graphviz-8d71c677-13cc-473b-bc9a-91dc80140c68';
   graphviz.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-b05b338e-1dad-47de-a5e8-8bf0be8c3ccf';
+  var target = '#alt-af21aa00-fa70-4cb9-a442-a834c20f57cd';
   alternatives.hydrate(target);
 });
 </script></div></div></div>
@@ -2382,7 +2408,7 @@ List.exists under_threshold lst ==&gt; under_threshold (get_min_range max lst).
 |---------------------------------------------------------------------------
  false
 
-Verified up to bound 10 (after 0.056s).
+Verified up to bound 10 (after 0.055s).
 
 Must try induction.
 
@@ -3692,10 +3718,10 @@ But simplification reduces this to true, using the definition of
 
 
 <div class="output_html rendered_html output_subarea ">
-<div><div class="imandra-vr imandra-vr-proved"><i class="fa fa-check-circle"></i><span>Proved</span></div><div><div class="imandra-proof-top"><div class="imandra-fold panel panel-default" id="fold-2ffffd61-90aa-44c1-ab7a-39c56dfee743"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>proof</span></div></div><div class="panel-body collapse"><div class="imandra-proof"><div class="imandra-alternatives" id="alt-a4c1bf91-1433-4aec-9576-0ee9bbe82d58"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>summary</a></li><li class="" data-toggle="tab"><a>full</a></li><li class="" data-toggle="tab"><a>graph</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-table" id="table-a7c42214-6b23-4a00-b722-8c64cdeacd40"><table><tr><td><b>ground_instances</b></td><td>0</td></tr><tr><td><b>definitions</b></td><td>9</td></tr><tr><td><b>inductions</b></td><td>1</td></tr><tr><td><b>search_time</b></td><td><pre>0.427s</pre></td></tr></table></div></div><div class="tab-pane"><div class="imandra-fold panel panel-default" id="fold-ef3728a4-c732-4380-91d5-4b2f6c4cab4d"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.427s, &quot;Goal&quot;]
+<div><div class="imandra-vr imandra-vr-proved"><i class="fa fa-check-circle"></i><span>Proved</span></div><div><div class="imandra-proof-top"><div class="imandra-fold panel panel-default" id="fold-403acea1-8ce9-4042-9b19-813f4ba88148"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>proof</span></div></div><div class="panel-body collapse"><div class="imandra-proof"><div class="imandra-alternatives" id="alt-054990ca-7715-474d-be65-31fc57c2438a"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>summary</a></li><li class="" data-toggle="tab"><a>full</a></li><li class="" data-toggle="tab"><a>graph</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-table" id="table-0d9f324a-5083-43ae-9458-ec4574aaf370"><table><tr><td><b>ground_instances</b></td><td>0</td></tr><tr><td><b>definitions</b></td><td>9</td></tr><tr><td><b>inductions</b></td><td>1</td></tr><tr><td><b>search_time</b></td><td><pre>0.417s</pre></td></tr></table></div></div><div class="tab-pane"><div class="imandra-fold panel panel-default" id="fold-2dd3d1ca-81f1-4730-8624-e5f8495d1c2a"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.417s, &quot;Goal&quot;]
   List.exists under_threshold :var_0:
-  ==&gt; List.fold_right anon_fun.get_min_range.0 :var_1: :var_0: &lt; 20000</pre></li><li><div><h4>subproof</h4><div class="imandra-fold panel panel-default" id="fold-1d06c6ec-2c61-477d-ad3f-8138a435876e"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>not (List.exists under_threshold lst)
-|| not (20000 &lt;= List.fold_right anon_fun.get_min_range.0 max lst)</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.427s, &quot;1&quot;]
+  ==&gt; List.fold_right anon_fun.get_min_range.0 :var_1: :var_0: &lt; 20000</pre></li><li><div><h4>subproof</h4><div class="imandra-fold panel panel-default" id="fold-970fc7bf-0a0b-4a37-9b7b-037209bee21e"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>not (List.exists under_threshold lst)
+|| not (20000 &lt;= List.fold_right anon_fun.get_min_range.0 max lst)</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.416s, &quot;1&quot;]
   not (List.exists under_threshold lst)
   || not (20000 &lt;= List.fold_right anon_fun.get_min_range.0 max lst)</pre></li><li><pre>induction on (functional )
 :scheme (lst = []
@@ -3767,13 +3793,13 @@ But simplification reduces this to true, using the definition of
                          (List.tl lst))))
                 || not (List.exists under_threshold lst))
                || not
-                  (20000 &lt;= List.fold_right anon_fun.get_min_range.0 max lst)])</pre><ul><li><div><h5>subproof</h5><div class="imandra-fold panel panel-default" id="fold-36a692fd-745d-434f-9a4e-35ba4dce7cc2"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>((lst = []
+                  (20000 &lt;= List.fold_right anon_fun.get_min_range.0 max lst)])</pre><ul><li><div><h5>subproof</h5><div class="imandra-fold panel panel-default" id="fold-6492e8a8-3409-4855-aeeb-dfae242cbe0e"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>((lst = []
   || not
      (not (List.exists under_threshold (List.tl lst))
       || not
          (20000 &lt;= List.fold_right anon_fun.get_min_range.0 max (List.tl lst))))
  || not (List.exists under_threshold lst))
-|| not (20000 &lt;= List.fold_right anon_fun.get_min_range.0 max lst)</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.304s, &quot;1.1&quot;]
+|| not (20000 &lt;= List.fold_right anon_fun.get_min_range.0 max lst)</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.297s, &quot;1.1&quot;]
   ((lst = []
     || not
        (not (List.exists under_threshold (List.tl lst))
@@ -3781,12 +3807,12 @@ But simplification reduces this to true, using the definition of
            (20000 &lt;=
             List.fold_right anon_fun.get_min_range.0 max (List.tl lst))))
    || not (List.exists under_threshold lst))
-  || not (20000 &lt;= List.fold_right anon_fun.get_min_range.0 max lst)</pre></li><li><div><h6>simplify</h6><div class="imandra-table" id="table-26848818-fcd4-490f-9a4e-ea40147fe9e7"><table><tr><td><b>into</b></td><td><pre>true</pre></td></tr><tr><td><b>expansions</b></td><td><pre>[List.fold_right, List.exists, List.fold_right, List.exists]</pre></td></tr><tr><td><b>rewrite_steps</b></td><td><ul></ul></td></tr><tr><td><b>forward_chaining</b></td><td><ul></ul></td></tr></table></div></div></li></ul></div><script>
+  || not (20000 &lt;= List.fold_right anon_fun.get_min_range.0 max lst)</pre></li><li><div><h6>simplify</h6><div class="imandra-table" id="table-19eb2bfe-4bb0-42d0-9f0c-1aad417344b4"><table><tr><td><b>into</b></td><td><pre>true</pre></td></tr><tr><td><b>expansions</b></td><td><pre>[List.fold_right, List.exists, List.fold_right, List.exists]</pre></td></tr><tr><td><b>rewrite_steps</b></td><td><ul></ul></td></tr><tr><td><b>forward_chaining</b></td><td><ul></ul></td></tr></table></div></div></li></ul></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-36a692fd-745d-434f-9a4e-35ba4dce7cc2';
+  var target = '#fold-6492e8a8-3409-4855-aeeb-dfae242cbe0e';
   fold.hydrate(target);
 });
-</script></div></div></li><li><div><h5>subproof</h5><div class="imandra-fold panel panel-default" id="fold-8fad2930-1d9a-484f-957f-94dce4bfe9ca"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>(((lst = []
+</script></div></div></li><li><div><h5>subproof</h5><div class="imandra-fold panel panel-default" id="fold-5d5438dc-36c7-4c03-a1b5-236f8f5817cb"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>(((lst = []
    || not
       (List.fold_right anon_fun.get_min_range.0 max (List.tl lst) &lt;=
        List.hd lst))
@@ -3795,7 +3821,7 @@ require(['nbextensions/nbimandra/fold'], function (fold) {
       || not
          (20000 &lt;= List.fold_right anon_fun.get_min_range.0 max (List.tl lst))))
  || not (List.exists under_threshold lst))
-|| not (20000 &lt;= List.fold_right anon_fun.get_min_range.0 max lst)</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.304s, &quot;1.2&quot;]
+|| not (20000 &lt;= List.fold_right anon_fun.get_min_range.0 max lst)</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.297s, &quot;1.2&quot;]
   (((lst = []
      || not
         (List.fold_right anon_fun.get_min_range.0 max (List.tl lst) &lt;=
@@ -3806,41 +3832,41 @@ require(['nbextensions/nbimandra/fold'], function (fold) {
            (20000 &lt;=
             List.fold_right anon_fun.get_min_range.0 max (List.tl lst))))
    || not (List.exists under_threshold lst))
-  || not (20000 &lt;= List.fold_right anon_fun.get_min_range.0 max lst)</pre></li><li><div><h6>simplify</h6><div class="imandra-table" id="table-84166f93-f57f-4cf0-908d-2fbf35cab06d"><table><tr><td><b>into</b></td><td><pre>true</pre></td></tr><tr><td><b>expansions</b></td><td><pre>[List.fold_right, List.exists, List.fold_right, List.exists]</pre></td></tr><tr><td><b>rewrite_steps</b></td><td><ul></ul></td></tr><tr><td><b>forward_chaining</b></td><td><ul></ul></td></tr></table></div></div></li></ul></div><script>
+  || not (20000 &lt;= List.fold_right anon_fun.get_min_range.0 max lst)</pre></li><li><div><h6>simplify</h6><div class="imandra-table" id="table-527cdf54-62e6-44c6-8998-d81092a75412"><table><tr><td><b>into</b></td><td><pre>true</pre></td></tr><tr><td><b>expansions</b></td><td><pre>[List.fold_right, List.exists, List.fold_right, List.exists]</pre></td></tr><tr><td><b>rewrite_steps</b></td><td><ul></ul></td></tr><tr><td><b>forward_chaining</b></td><td><ul></ul></td></tr></table></div></div></li></ul></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-8fad2930-1d9a-484f-957f-94dce4bfe9ca';
+  var target = '#fold-5d5438dc-36c7-4c03-a1b5-236f8f5817cb';
   fold.hydrate(target);
 });
-</script></div></div></li><li><div><h5>subproof</h5><div class="imandra-fold panel panel-default" id="fold-4ee955de-f666-4279-8997-644cb2f3c5b6"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>((not (lst = [])
+</script></div></div></li><li><div><h5>subproof</h5><div class="imandra-fold panel panel-default" id="fold-4d68bc4a-b443-4276-940a-9b04dbf4b1ba"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>((not (lst = [])
   || List.fold_right anon_fun.get_min_range.0 max (List.tl lst) &lt;=
      List.hd lst &amp;&amp; not (lst = []))
  || not (List.exists under_threshold lst))
-|| not (20000 &lt;= List.fold_right anon_fun.get_min_range.0 max lst)</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.304s, &quot;1.3&quot;]
+|| not (20000 &lt;= List.fold_right anon_fun.get_min_range.0 max lst)</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.297s, &quot;1.3&quot;]
   ((not (lst = [])
     || List.fold_right anon_fun.get_min_range.0 max (List.tl lst) &lt;=
        List.hd lst &amp;&amp; not (lst = []))
    || not (List.exists under_threshold lst))
-  || not (20000 &lt;= List.fold_right anon_fun.get_min_range.0 max lst)</pre></li><li><div><h6>simplify</h6><div class="imandra-table" id="table-28a5b9b6-6b6f-49bc-a4bb-a2d8325bba1f"><table><tr><td><b>into</b></td><td><pre>true</pre></td></tr><tr><td><b>expansions</b></td><td><pre>List.exists</pre></td></tr><tr><td><b>rewrite_steps</b></td><td><ul></ul></td></tr><tr><td><b>forward_chaining</b></td><td><ul></ul></td></tr></table></div></div></li></ul></div><script>
+  || not (20000 &lt;= List.fold_right anon_fun.get_min_range.0 max lst)</pre></li><li><div><h6>simplify</h6><div class="imandra-table" id="table-ab648f46-b8fe-4c27-9a6d-27aabcf031cf"><table><tr><td><b>into</b></td><td><pre>true</pre></td></tr><tr><td><b>expansions</b></td><td><pre>List.exists</pre></td></tr><tr><td><b>rewrite_steps</b></td><td><ul></ul></td></tr><tr><td><b>forward_chaining</b></td><td><ul></ul></td></tr></table></div></div></li></ul></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-4ee955de-f666-4279-8997-644cb2f3c5b6';
+  var target = '#fold-4d68bc4a-b443-4276-940a-9b04dbf4b1ba';
   fold.hydrate(target);
 });
 </script></div></div></li></ul></div></li></ul></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-1d06c6ec-2c61-477d-ad3f-8138a435876e';
+  var target = '#fold-970fc7bf-0a0b-4a37-9b7b-037209bee21e';
   fold.hydrate(target);
 });
 </script></div></div></li></ul></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-ef3728a4-c732-4380-91d5-4b2f6c4cab4d';
+  var target = '#fold-2dd3d1ca-81f1-4730-8624-e5f8495d1c2a';
   fold.hydrate(target);
 });
-</script></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-7a0d78f7-0751-4662-84d7-897dce947f4f"><textarea style="display: none">digraph &quot;proof&quot; {
-p_323 [label=&quot;Start (List.exists under_threshold :var_0:\l       ==\&gt; List.fold_right anon_fun.get_min_range.0 :var_1: :var_0: \&lt; 20000\l       :name \&quot;Goal\&quot; :time 0.427s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+</script></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-df7cfb7d-cabb-40f7-a9ad-0573cef4de78"><textarea style="display: none">digraph &quot;proof&quot; {
+p_323 [label=&quot;Start (List.exists under_threshold :var_0:\l       ==\&gt; List.fold_right anon_fun.get_min_range.0 :var_1: :var_0: \&lt; 20000\l       :name \&quot;Goal\&quot; :time 0.417s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_323 -&gt; p_321 [label=&quot;&quot;];
 subgraph cluster_322 {
   color=blue;
-p_321 [label=&quot;Start (not (List.exists under_threshold lst)\l       \|\| not (20000 \&lt;= List.fold_right anon_fun.get_min_range.0 max lst)\l       :name \&quot;1\&quot; :time 0.427s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+p_321 [label=&quot;Start (not (List.exists under_threshold lst)\l       \|\| not (20000 \&lt;= List.fold_right anon_fun.get_min_range.0 max lst)\l       :name \&quot;1\&quot; :time 0.416s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_321 -&gt; p_320 [label=&quot;&quot;];
 p_320 [label=&quot;Induct ((functional ),\l        :scheme (lst = []\l                 &amp;&amp; not\l                    (not\l                     (List.hd lst \&lt;\l                      List.fold_right anon_fun.get_min_range.0 max\l                      (List.tl lst))\l                     &amp;&amp; not (lst = []))\l                 ==\&gt; φ lst max)\l                &amp;&amp; (not (lst = [])\l                    &amp;&amp; not\l                       (List.hd lst \&lt;\l                        List.fold_right anon_fun.get_min_range.0 max\l                        (List.tl lst))\l                       &amp;&amp; φ (List.tl lst) max\l                    ==\&gt; φ lst max)\l                   &amp;&amp; (not (lst = []) &amp;&amp; φ (List.tl lst) max ==\&gt; φ lst max))&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_320 -&gt; p_319 [label=&quot;&quot;];
@@ -3848,21 +3874,21 @@ p_319 [label=&quot;Split ((((not\l          (lst = []\l           &amp;&amp; not
 p_319 -&gt; p_311 [label=&quot;&quot;];
 subgraph cluster_312 {
   color=blue;
-p_311 [label=&quot;Start (((lst = []\l         \|\| not\l            (not (List.exists under_threshold (List.tl lst))\l             \|\| not\l                (20000 \&lt;=\l                 List.fold_right anon_fun.get_min_range.0 max (List.tl lst))))\l        \|\| not (List.exists under_threshold lst))\l       \|\| not (20000 \&lt;= List.fold_right anon_fun.get_min_range.0 max lst)\l       :name \&quot;1.1\&quot; :time 0.304s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+p_311 [label=&quot;Start (((lst = []\l         \|\| not\l            (not (List.exists under_threshold (List.tl lst))\l             \|\| not\l                (20000 \&lt;=\l                 List.fold_right anon_fun.get_min_range.0 max (List.tl lst))))\l        \|\| not (List.exists under_threshold lst))\l       \|\| not (20000 \&lt;= List.fold_right anon_fun.get_min_range.0 max lst)\l       :name \&quot;1.1\&quot; :time 0.297s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_311 -&gt; p_310 [label=&quot;&quot;];
 p_310 [label=&quot;Simplify (true\l          :expansions [List.fold_right;\l                       List.exists;\l                       List.fold_right;\l                       List.exists]\l          :rw [] :fc [])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 }
 p_319 -&gt; p_314 [label=&quot;&quot;];
 subgraph cluster_315 {
   color=blue;
-p_314 [label=&quot;Start ((((lst = []\l          \|\| not\l             (List.fold_right anon_fun.get_min_range.0 max (List.tl lst) \&lt;=\l              List.hd lst))\l         \|\| not\l            (not (List.exists under_threshold (List.tl lst))\l             \|\| not\l                (20000 \&lt;=\l                 List.fold_right anon_fun.get_min_range.0 max (List.tl lst))))\l        \|\| not (List.exists under_threshold lst))\l       \|\| not (20000 \&lt;= List.fold_right anon_fun.get_min_range.0 max lst)\l       :name \&quot;1.2\&quot; :time 0.304s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+p_314 [label=&quot;Start ((((lst = []\l          \|\| not\l             (List.fold_right anon_fun.get_min_range.0 max (List.tl lst) \&lt;=\l              List.hd lst))\l         \|\| not\l            (not (List.exists under_threshold (List.tl lst))\l             \|\| not\l                (20000 \&lt;=\l                 List.fold_right anon_fun.get_min_range.0 max (List.tl lst))))\l        \|\| not (List.exists under_threshold lst))\l       \|\| not (20000 \&lt;= List.fold_right anon_fun.get_min_range.0 max lst)\l       :name \&quot;1.2\&quot; :time 0.297s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_314 -&gt; p_313 [label=&quot;&quot;];
 p_313 [label=&quot;Simplify (true\l          :expansions [List.fold_right;\l                       List.exists;\l                       List.fold_right;\l                       List.exists]\l          :rw [] :fc [])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 }
 p_319 -&gt; p_317 [label=&quot;&quot;];
 subgraph cluster_318 {
   color=blue;
-p_317 [label=&quot;Start (((not (lst = [])\l         \|\| List.fold_right anon_fun.get_min_range.0 max (List.tl lst) \&lt;=\l            List.hd lst &amp;&amp; not (lst = []))\l        \|\| not (List.exists under_threshold lst))\l       \|\| not (20000 \&lt;= List.fold_right anon_fun.get_min_range.0 max lst)\l       :name \&quot;1.3\&quot; :time 0.304s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+p_317 [label=&quot;Start (((not (lst = [])\l         \|\| List.fold_right anon_fun.get_min_range.0 max (List.tl lst) \&lt;=\l            List.hd lst &amp;&amp; not (lst = []))\l        \|\| not (List.exists under_threshold lst))\l       \|\| not (20000 \&lt;= List.fold_right anon_fun.get_min_range.0 max lst)\l       :name \&quot;1.3\&quot; :time 0.297s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_317 -&gt; p_316 [label=&quot;&quot;];
 p_316 [label=&quot;Simplify (true :expansions [List.exists] :rw [] :fc [])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 }
@@ -3870,17 +3896,17 @@ p_316 [label=&quot;Simplify (true :expansions [List.exists] :rw [] :fc [])&quot;
 }
 </textarea><button class="btn btn-primary">Load graph</button><div class="imandra-graphviz-loading display-none">Loading..</div><div class="imandra-graphviz-target"></div><script>
 require(['nbextensions/nbimandra/graphviz'], function (graphviz) {
-  var target = '#graphviz-7a0d78f7-0751-4662-84d7-897dce947f4f';
+  var target = '#graphviz-df7cfb7d-cabb-40f7-a9ad-0573cef4de78';
   graphviz.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-a4c1bf91-1433-4aec-9576-0ee9bbe82d58';
+  var target = '#alt-054990ca-7715-474d-be65-31fc57c2438a';
   alternatives.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-2ffffd61-90aa-44c1-ab7a-39c56dfee743';
+  var target = '#fold-403acea1-8ce9-4042-9b19-813f4ba88148';
   fold.hydrate(target);
 });
 </script></div></div></div></div>
@@ -3896,7 +3922,7 @@ require(['nbextensions/nbimandra/fold'], function (fold) {
 
 
 <div class="output_html rendered_html output_subarea ">
-<div><div class="imandra-vr imandra-vr-proved"><i class="fa fa-check-circle"></i><span>Proved</span></div><div><div class="imandra-proof-top"><div class="imandra-fold panel panel-default" id="fold-93ac7298-184d-484b-803f-26b54c7fb925"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>proof</span></div></div><div class="panel-body collapse"><div class="imandra-proof"><div class="imandra-alternatives" id="alt-b76e8130-a2f2-4190-a8a6-7c0175f069ba"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>summary</a></li><li class="" data-toggle="tab"><a>full</a></li><li class="" data-toggle="tab"><a>graph</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-table" id="table-e7022531-dea1-401b-adcb-cb1efa7b5f83"><table><tr><td><b>ground_instances</b></td><td>0</td></tr><tr><td><b>definitions</b></td><td>1</td></tr><tr><td><b>inductions</b></td><td>0</td></tr><tr><td><b>search_time</b></td><td><pre>0.084s</pre></td></tr></table></div></div><div class="tab-pane"><div class="imandra-fold panel panel-default" id="fold-b773f235-16b7-4d49-8f36-e89b3b9ae720"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.084s, &quot;Goal&quot;]
+<div><div class="imandra-vr imandra-vr-proved"><i class="fa fa-check-circle"></i><span>Proved</span></div><div><div class="imandra-proof-top"><div class="imandra-fold panel panel-default" id="fold-4953a1b0-a4bb-4280-818f-b35129ce6d00"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>proof</span></div></div><div class="panel-body collapse"><div class="imandra-proof"><div class="imandra-alternatives" id="alt-a106e89f-b587-4c72-8c3d-9488215b933b"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>summary</a></li><li class="" data-toggle="tab"><a>full</a></li><li class="" data-toggle="tab"><a>graph</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-table" id="table-4b9e8313-fed0-4187-8b86-cbade2351dbc"><table><tr><td><b>ground_instances</b></td><td>0</td></tr><tr><td><b>definitions</b></td><td>1</td></tr><tr><td><b>inductions</b></td><td>0</td></tr><tr><td><b>search_time</b></td><td><pre>0.072s</pre></td></tr></table></div></div><div class="tab-pane"><div class="imandra-fold panel panel-default" id="fold-f22172f7-72c7-4684-ad2f-47de1359f4f9"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.072s, &quot;Goal&quot;]
   (if :var_0:.incoming = None
       || Is_a(Some, :var_0:.incoming)
          &amp;&amp; Is_a(Clock, Option.get :var_0:.incoming)
@@ -3944,7 +3970,7 @@ require(['nbextensions/nbimandra/fold'], function (fold) {
          ==&gt; (if :var_0:.incoming = None then :var_0:
               else
               if Is_a(Sensor, Option.get :var_0:.incoming) then … else …).mode
-             = Turning)</pre></li><li><div><h4>subproof</h4><div class="imandra-fold panel panel-default" id="fold-ef5c3e14-1a17-45f8-83b9-a45d097154f5"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>(((((not
+             = Turning)</pre></li><li><div><h4>subproof</h4><div class="imandra-fold panel panel-default" id="fold-114d8457-9998-4788-8ba3-ded3915355cb"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>(((((not
      (((state.incoming = None
         || Is_a(Some, state.incoming)
            &amp;&amp; Is_a(Clock, Option.get state.incoming))
@@ -3996,7 +4022,7 @@ require(['nbextensions/nbimandra/fold'], function (fold) {
     if Is_a(Sensor, Option.get state.incoming)
     then if state.mode = Driving then … else …
     else if state.mode = Driving then … else …).mode
-   = Turning</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.078s, &quot;1&quot;]
+   = Turning</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.067s, &quot;1&quot;]
   (((((not
        (((state.incoming = None
           || Is_a(Some, state.incoming)
@@ -4049,39 +4075,39 @@ require(['nbextensions/nbimandra/fold'], function (fold) {
       if Is_a(Sensor, Option.get state.incoming)
       then if state.mode = Driving then … else …
       else if state.mode = Driving then … else …).mode
-     = Turning</pre></li><li><div><h5>simplify</h5><div class="imandra-table" id="table-eea30786-094d-47f9-8155-3bb1eb0869b6"><table><tr><td><b>into</b></td><td><pre>true</pre></td></tr><tr><td><b>expansions</b></td><td><pre>List.fold_right</pre></td></tr><tr><td><b>rewrite_steps</b></td><td><ul></ul></td></tr><tr><td><b>forward_chaining</b></td><td><pre>List.len_nonnegative</pre></td></tr></table></div></div></li></ul></div><script>
+     = Turning</pre></li><li><div><h5>simplify</h5><div class="imandra-table" id="table-43badfce-c8ab-475c-9fd7-d5adef78ba82"><table><tr><td><b>into</b></td><td><pre>true</pre></td></tr><tr><td><b>expansions</b></td><td><pre>List.fold_right</pre></td></tr><tr><td><b>rewrite_steps</b></td><td><ul></ul></td></tr><tr><td><b>forward_chaining</b></td><td><pre>List.len_nonnegative</pre></td></tr></table></div></div></li></ul></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-ef5c3e14-1a17-45f8-83b9-a45d097154f5';
+  var target = '#fold-114d8457-9998-4788-8ba3-ded3915355cb';
   fold.hydrate(target);
 });
 </script></div></div></li></ul></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-b773f235-16b7-4d49-8f36-e89b3b9ae720';
+  var target = '#fold-f22172f7-72c7-4684-ad2f-47de1359f4f9';
   fold.hydrate(target);
 });
-</script></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-fffc56d8-de59-4ad6-8f93-c7cb5bcee086"><textarea style="display: none">digraph &quot;proof&quot; {
-p_327 [label=&quot;Start ((if :var_0:.incoming = None\l           \|\| Is_a(Some, :var_0:.incoming)\l              &amp;&amp; Is_a(Clock, Option.get :var_0:.incoming)\l        then true\l        else\l          (not\l           ((Destruct(Sensor, 0, Option.get :var_0:.incoming)).Sensor_msgs.laserScan_ranges\l            = [])\l           &amp;&amp; List.fold_right anon_fun.get_min_range.0\l              (Destruct(Sensor, 0, Option.get :var_0:.incoming)).Sensor_msgs.laserScan_range_max\l              (Destruct(Sensor, 0, Option.get :var_0:.incoming)).Sensor_msgs.laserScan_ranges\l              \&lt; 20000\l           ==\&gt; (if :var_0:.incoming = None then :var_0:\l                else\l                if Is_a(Sensor, Option.get :var_0:.incoming) then …\l                else …).mode\l               = Turning))\l       &amp;&amp; (List.exists under_threshold\l           (if Is_a(Sensor, Option.get :var_0:.incoming)\l               &amp;&amp; Is_a(Some, :var_0:.incoming)\l            then\l              (Destruct(Sensor, 0, Option.get :var_0:.incoming)).Sensor_msgs.laserScan_ranges\l            else [])\l           ==\&gt; List.fold_right anon_fun.get_min_range.0\l               (if Is_a(Sensor, Option.get :var_0:.incoming)\l                   &amp;&amp; Is_a(Some, :var_0:.incoming)\l                then\l                  (Destruct(Sensor, 0, Option.get :var_0:.incoming)).Sensor_msgs.laserScan_range_max\l                else 0)\l               (if Is_a(Sensor, Option.get :var_0:.incoming)\l                   &amp;&amp; Is_a(Some, :var_0:.incoming)\l                then\l                  (Destruct(Sensor, 0, Option.get :var_0:.incoming)).Sensor_msgs.laserScan_ranges\l                else [])\l               \&lt; 20000)\l       ==\&gt; (if :var_0:.incoming = None\l               \|\| Is_a(Some, :var_0:.incoming)\l                  &amp;&amp; Is_a(Clock, Option.get :var_0:.incoming)\l            then true\l            else\l              not\l              ((Destruct(Sensor, 0, Option.get :var_0:.incoming)).Sensor_msgs.laserScan_ranges\l               = [])\l              &amp;&amp; List.exists under_threshold\l                 (Destruct(Sensor, 0, Option.get :var_0:.incoming)).Sensor_msgs.laserScan_ranges\l              ==\&gt; (if :var_0:.incoming = None then :var_0:\l                   else\l                   if Is_a(Sensor, Option.get :var_0:.incoming) then …\l                   else …).mode\l                  = Turning)\l       :name \&quot;Goal\&quot; :time 0.084s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+</script></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-38cd70cf-7f57-46dd-982c-39baf4891323"><textarea style="display: none">digraph &quot;proof&quot; {
+p_327 [label=&quot;Start ((if :var_0:.incoming = None\l           \|\| Is_a(Some, :var_0:.incoming)\l              &amp;&amp; Is_a(Clock, Option.get :var_0:.incoming)\l        then true\l        else\l          (not\l           ((Destruct(Sensor, 0, Option.get :var_0:.incoming)).Sensor_msgs.laserScan_ranges\l            = [])\l           &amp;&amp; List.fold_right anon_fun.get_min_range.0\l              (Destruct(Sensor, 0, Option.get :var_0:.incoming)).Sensor_msgs.laserScan_range_max\l              (Destruct(Sensor, 0, Option.get :var_0:.incoming)).Sensor_msgs.laserScan_ranges\l              \&lt; 20000\l           ==\&gt; (if :var_0:.incoming = None then :var_0:\l                else\l                if Is_a(Sensor, Option.get :var_0:.incoming) then …\l                else …).mode\l               = Turning))\l       &amp;&amp; (List.exists under_threshold\l           (if Is_a(Sensor, Option.get :var_0:.incoming)\l               &amp;&amp; Is_a(Some, :var_0:.incoming)\l            then\l              (Destruct(Sensor, 0, Option.get :var_0:.incoming)).Sensor_msgs.laserScan_ranges\l            else [])\l           ==\&gt; List.fold_right anon_fun.get_min_range.0\l               (if Is_a(Sensor, Option.get :var_0:.incoming)\l                   &amp;&amp; Is_a(Some, :var_0:.incoming)\l                then\l                  (Destruct(Sensor, 0, Option.get :var_0:.incoming)).Sensor_msgs.laserScan_range_max\l                else 0)\l               (if Is_a(Sensor, Option.get :var_0:.incoming)\l                   &amp;&amp; Is_a(Some, :var_0:.incoming)\l                then\l                  (Destruct(Sensor, 0, Option.get :var_0:.incoming)).Sensor_msgs.laserScan_ranges\l                else [])\l               \&lt; 20000)\l       ==\&gt; (if :var_0:.incoming = None\l               \|\| Is_a(Some, :var_0:.incoming)\l                  &amp;&amp; Is_a(Clock, Option.get :var_0:.incoming)\l            then true\l            else\l              not\l              ((Destruct(Sensor, 0, Option.get :var_0:.incoming)).Sensor_msgs.laserScan_ranges\l               = [])\l              &amp;&amp; List.exists under_threshold\l                 (Destruct(Sensor, 0, Option.get :var_0:.incoming)).Sensor_msgs.laserScan_ranges\l              ==\&gt; (if :var_0:.incoming = None then :var_0:\l                   else\l                   if Is_a(Sensor, Option.get :var_0:.incoming) then …\l                   else …).mode\l                  = Turning)\l       :name \&quot;Goal\&quot; :time 0.072s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_327 -&gt; p_325 [label=&quot;&quot;];
 subgraph cluster_326 {
   color=blue;
-p_325 [label=&quot;Start ((((((not\l            (((state.incoming = None\l               \|\| Is_a(Some, state.incoming)\l                  &amp;&amp; Is_a(Clock, Option.get state.incoming))\l              \|\| not\l                 (not\l                  ((Destruct(Sensor, 0, Option.get state.incoming)).Sensor_msgs.laserScan_ranges\l                   = [])\l                  &amp;&amp; not\l                     (20000 \&lt;=\l                      List.fold_right anon_fun.get_min_range.0\l                      (Destruct(Sensor, 0, Option.get state.incoming)).Sensor_msgs.laserScan_range_max\l                      (Destruct(Sensor, 0, Option.get state.incoming)).Sensor_msgs.laserScan_ranges)))\l             \|\| (if state.incoming = None then state\l                 else\l                 if Is_a(Sensor, Option.get state.incoming)\l                 then if state.mode = Driving then … else …\l                 else if state.mode = Driving then … else …).mode\l                = Turning)\l            \|\| not\l               (not\l                (List.exists under_threshold\l                 (if Is_a(Sensor, Option.get state.incoming)\l                     &amp;&amp; Is_a(Some, state.incoming)\l                  then\l                    (Destruct(Sensor, 0, Option.get state.incoming)).Sensor_msgs.laserScan_ranges\l                  else []))\l                \|\| not\l                   (20000 \&lt;=\l                    List.fold_right anon_fun.get_min_range.0\l                    (if Is_a(Sensor, Option.get state.incoming)\l                        &amp;&amp; Is_a(Some, state.incoming)\l                     then\l                       (Destruct(Sensor, 0, Option.get state.incoming)).Sensor_msgs.laserScan_range_max\l                     else 0)\l                    (if Is_a(Sensor, Option.get state.incoming)\l                        &amp;&amp; Is_a(Some, state.incoming)\l                     then\l                       (Destruct(Sensor, 0, Option.get state.incoming)).Sensor_msgs.laserScan_ranges\l                     else []))))\l           \|\| (Destruct(Sensor, 0, Option.get state.incoming)).Sensor_msgs.laserScan_ranges\l              = [])\l          \|\| not\l             (List.exists under_threshold\l              (Destruct(Sensor, 0, Option.get state.incoming)).Sensor_msgs.laserScan_ranges))\l         \|\| state.incoming = None)\l        \|\| Is_a(Some, state.incoming)\l           &amp;&amp; Is_a(Clock, Option.get state.incoming))\l       \|\| (if state.incoming = None then state\l           else\l           if Is_a(Sensor, Option.get state.incoming)\l           then if state.mode = Driving then … else …\l           else if state.mode = Driving then … else …).mode\l          = Turning\l       :name \&quot;1\&quot; :time 0.078s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+p_325 [label=&quot;Start ((((((not\l            (((state.incoming = None\l               \|\| Is_a(Some, state.incoming)\l                  &amp;&amp; Is_a(Clock, Option.get state.incoming))\l              \|\| not\l                 (not\l                  ((Destruct(Sensor, 0, Option.get state.incoming)).Sensor_msgs.laserScan_ranges\l                   = [])\l                  &amp;&amp; not\l                     (20000 \&lt;=\l                      List.fold_right anon_fun.get_min_range.0\l                      (Destruct(Sensor, 0, Option.get state.incoming)).Sensor_msgs.laserScan_range_max\l                      (Destruct(Sensor, 0, Option.get state.incoming)).Sensor_msgs.laserScan_ranges)))\l             \|\| (if state.incoming = None then state\l                 else\l                 if Is_a(Sensor, Option.get state.incoming)\l                 then if state.mode = Driving then … else …\l                 else if state.mode = Driving then … else …).mode\l                = Turning)\l            \|\| not\l               (not\l                (List.exists under_threshold\l                 (if Is_a(Sensor, Option.get state.incoming)\l                     &amp;&amp; Is_a(Some, state.incoming)\l                  then\l                    (Destruct(Sensor, 0, Option.get state.incoming)).Sensor_msgs.laserScan_ranges\l                  else []))\l                \|\| not\l                   (20000 \&lt;=\l                    List.fold_right anon_fun.get_min_range.0\l                    (if Is_a(Sensor, Option.get state.incoming)\l                        &amp;&amp; Is_a(Some, state.incoming)\l                     then\l                       (Destruct(Sensor, 0, Option.get state.incoming)).Sensor_msgs.laserScan_range_max\l                     else 0)\l                    (if Is_a(Sensor, Option.get state.incoming)\l                        &amp;&amp; Is_a(Some, state.incoming)\l                     then\l                       (Destruct(Sensor, 0, Option.get state.incoming)).Sensor_msgs.laserScan_ranges\l                     else []))))\l           \|\| (Destruct(Sensor, 0, Option.get state.incoming)).Sensor_msgs.laserScan_ranges\l              = [])\l          \|\| not\l             (List.exists under_threshold\l              (Destruct(Sensor, 0, Option.get state.incoming)).Sensor_msgs.laserScan_ranges))\l         \|\| state.incoming = None)\l        \|\| Is_a(Some, state.incoming)\l           &amp;&amp; Is_a(Clock, Option.get state.incoming))\l       \|\| (if state.incoming = None then state\l           else\l           if Is_a(Sensor, Option.get state.incoming)\l           then if state.mode = Driving then … else …\l           else if state.mode = Driving then … else …).mode\l          = Turning\l       :name \&quot;1\&quot; :time 0.067s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_325 -&gt; p_324 [label=&quot;&quot;];
 p_324 [label=&quot;Simplify (true :expansions [List.fold_right] :rw []\l          :fc [List.len_nonnegative])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 }
 }
 </textarea><button class="btn btn-primary">Load graph</button><div class="imandra-graphviz-loading display-none">Loading..</div><div class="imandra-graphviz-target"></div><script>
 require(['nbextensions/nbimandra/graphviz'], function (graphviz) {
-  var target = '#graphviz-fffc56d8-de59-4ad6-8f93-c7cb5bcee086';
+  var target = '#graphviz-38cd70cf-7f57-46dd-982c-39baf4891323';
   graphviz.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-b76e8130-a2f2-4190-a8a6-7c0175f069ba';
+  var target = '#alt-a106e89f-b587-4c72-8c3d-9488215b933b';
   alternatives.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-93ac7298-184d-484b-803f-26b54c7fb925';
+  var target = '#fold-4953a1b0-a4bb-4280-818f-b35129ce6d00';
   fold.hydrate(target);
 });
 </script></div></div></div></div>
@@ -4126,13 +4152,9 @@ require(['nbextensions/nbimandra/fold'], function (fold) {
                 <a class="Copyrights"href="http://imandra.ai">&#9400; 2018 Aesthetic Integration Ltd. All rights reserved.</a>
             </footer>
         </div>
-    </body>
     
  
 
 
-        </div>
-        </div>
-        </div>
     </body>
 </html>

@@ -34,7 +34,7 @@
         <link rel="stylesheet" href="/imandra-docs/static/nbextensions/nbimandra/styles.c7ed3d1a.css" type="text/css">
         <link rel="stylesheet" href="/imandra-docs/static/docs-styles.86fc0481.css" type="text/css">
         
-        <link rel="stylesheet" href="/imandra-docs/static/jekyll-styles.8dbeaac3.css" type="text/css">
+        <link rel="stylesheet" href="/imandra-docs/static/jekyll-styles.04a0e3a4.css" type="text/css">
         
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
@@ -144,13 +144,30 @@
 <header class="header">
     <div class="top-row-container">
         <div class="top-row">
-            <div id="toggler--left" class="side__left-menu-toggler"><a href="#" class="side__toggle">≡ <span class="side__toggle-text">Docs</span></a></div>
+
+            <div id="toggler--left" class="side__left-menu-toggler">
+                <div class="side__toggle">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+                <p class="side__toggle-text">Docs</p>
+            </div>
+
             <div class="side__logo-container">
                 <a class="side__logo-link" href="/">
                     <img class="side__logo " src = "/imandra-docs/jekyll-resources/assets/img/ai_logo_green.svg">
                 </a>
             </div>
-            <div id="toggler--right" class="side__right-menu-toggler"><a href="#" class="side__toggle"><span class="side__toggle-text">Pages</span> ≡</a></div>
+
+            <div id="toggler--right" class="side__right-menu-toggler">
+                <p class="side__toggle-text">Pages</p>
+                <div class="side__toggle">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
 
             <nav class="side__nav-container side__nav-container--hidden">
 
@@ -409,21 +426,30 @@
                 </ul>
             </nav>
         </div>
+
         <div class="template-header__image-container template-header__image-container--jupyter">
             <div class="template-header__image" href ="/imandra-docs">
                 <img class="SiteSpecificImage" src="/imandra-docs/static/img/site_specific_image_v_2.svg">
             </div>
         </div>
+        
     </div>
+
     <script>
-     document.getElementById('toggler--left').addEventListener('click', function () {
-         document.getElementsByClassName('side__nav-container')[0].classList.toggle('side__nav-container--hidden');
-         document.getElementsByClassName('top-bar__nav-list')[0].classList.add('top-bar__nav-list--hidden');
-     });
-     document.getElementById('toggler--right').addEventListener('click', function () {
-         document.getElementsByClassName('side__nav-container')[0].classList.add('side__nav-container--hidden');
-         document.getElementsByClassName('top-bar__nav-list')[0].classList.toggle('top-bar__nav-list--hidden');
-     });
+        document.getElementById('toggler--left').addEventListener('click', function () {
+            document.querySelector('.side__right-menu-toggler .side__toggle').classList.remove('side__toggle--active');
+            document.querySelector('.side__left-menu-toggler .side__toggle').classList.toggle('side__toggle--active');
+            document.getElementsByClassName('side__nav-container')[0].classList.toggle('side__nav-container--hidden');
+            document.getElementsByClassName('top-bar__nav-list')[0].classList.add('top-bar__nav-list--hidden');
+        });
+
+        document.getElementById('toggler--right').addEventListener('click', function () {
+            document.querySelector('.side__left-menu-toggler .side__toggle').classList.remove('side__toggle--active');
+            document.querySelector('.side__right-menu-toggler .side__toggle').classList.toggle('side__toggle--active');
+            document.getElementsByClassName('side__nav-container')[0].classList.add('side__nav-container--hidden');
+            document.getElementsByClassName('top-bar__nav-list')[0].classList.toggle('top-bar__nav-list--hidden');
+        });
+
     </script>
 </header>
                 <article class="article__container article__container--notebooks">
@@ -700,7 +726,7 @@ module CX : sig val u : user end
 
 
 <div class="output_html rendered_html output_subarea ">
-<div><pre>Counterexample (after 1 steps, 0.015s):
+<div><pre>Counterexample (after 1 steps, 0.016s):
  let u = {is_admin = false; username = &quot;diego&quot;; email = &quot;diego&quot;}
 </pre></div>
 
@@ -715,7 +741,7 @@ module CX : sig val u : user end
 
 
 <div class="output_html rendered_html output_subarea ">
-<div><div class="imandra-vr imandra-vr-refuted"><i class="fa fa-times-circle-o"></i><span>Refuted</span></div><div><div class="imandra-alternatives" id="alt-d6e5aa10-80c3-4a70-aff4-cfe0ac081c50"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>call graph</a></li><li class="" data-toggle="tab"><a>proof-attempt</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-graphviz" id="graphviz-21fd4a37-108b-483b-8138-1d4572e5767a"><textarea style="display: none">digraph &quot;call graph&quot; {
+<div><div class="imandra-vr imandra-vr-refuted"><i class="fa fa-times-circle-o"></i><span>Refuted</span></div><div><div class="imandra-alternatives" id="alt-f34fcb91-c668-4077-b345-a0fad950b333"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>call graph</a></li><li class="" data-toggle="tab"><a>proof-attempt</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-graphviz" id="graphviz-ddcd0934-f73f-4dcd-8600-4a24df4a7d93"><textarea style="display: none">digraph &quot;call graph&quot; {
 goal [label=&quot;not\l(u.is_admin\l \|\| (if u.is_admin then Authed\l     else\l     if List.exists (anon_fun.get_auth_result.0 u) (\&quot;diego\&quot; :: (… :: …))\l     then Authed else Not_authed)\l    = Not_authed)&quot;,shape=box,style=filled,color=&quot;cyan&quot;,fontname=&quot;courier&quot;,fontsize=14];
 call_291 [label=&quot;List.exists (anon_fun.get_auth_result.0 u) (List.tl [\&quot;diego\&quot;; \&quot;shannon\&quot;])&quot;,shape=box,style=filled,color=&quot;yellow&quot;,fontname=&quot;courier&quot;,fontsize=14];
 expr_293 -&gt; call_291 [label=&quot;calls&quot;];
@@ -726,15 +752,15 @@ goal -&gt; call_49 [label=&quot;calls&quot;];
 }
 </textarea><button class="btn btn-primary">Load graph</button><div class="imandra-graphviz-loading display-none">Loading..</div><div class="imandra-graphviz-target"></div><script>
 require(['nbextensions/nbimandra/graphviz'], function (graphviz) {
-  var target = '#graphviz-21fd4a37-108b-483b-8138-1d4572e5767a';
+  var target = '#graphviz-ddcd0934-f73f-4dcd-8600-4a24df4a7d93';
   graphviz.hydrate(target);
 });
-</script></div></div><div class="tab-pane"><div class="imandra-proof-top"><div class="imandra-fold panel panel-default" id="fold-8ea3ba0f-7817-4720-85e0-dab525cf2f01"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>proof attempt</span></div></div><div class="panel-body collapse"><div class="imandra-proof"><div class="imandra-alternatives" id="alt-eebb7a06-69d3-4047-a380-648b3c2428e2"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>summary</a></li><li class="" data-toggle="tab"><a>full</a></li><li class="" data-toggle="tab"><a>graph</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-table" id="table-ed6f3835-bcb2-4e93-9c3a-23a0d5c5950a"><table><tr><td><b>ground_instances</b></td><td>1</td></tr><tr><td><b>definitions</b></td><td>0</td></tr><tr><td><b>inductions</b></td><td>0</td></tr><tr><td><b>search_time</b></td><td><pre>0.015s</pre></td></tr><tr><td><b>details</b></td><td><div class="imandra-fold panel panel-default" id="fold-b7bf2a7c-3e46-456c-a9ca-7cbdd557dd0d"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><div class="imandra-table" id="table-6c043078-180e-4732-9b90-f3c583e59ce8"><table><tr><td><b>smt_stats</b></td><td><div class="imandra-table" id="table-28e3778f-86f6-4b2b-bcb6-c5af03bdc4bd"><table><tr><td><b>num checks</b></td><td>3</td></tr><tr><td><b>rlimit count</b></td><td>721</td></tr><tr><td><b>mk clause</b></td><td>10</td></tr><tr><td><b>datatype occurs check</b></td><td>24</td></tr><tr><td><b>seq add axiom</b></td><td>2</td></tr><tr><td><b>mk bool var</b></td><td>24</td></tr><tr><td><b>decisions</b></td><td>4</td></tr><tr><td><b>seq num reductions</b></td><td>10</td></tr><tr><td><b>propagations</b></td><td>4</td></tr><tr><td><b>interface eqs</b></td><td>2</td></tr><tr><td><b>conflicts</b></td><td>1</td></tr><tr><td><b>datatype accessor ax</b></td><td>6</td></tr><tr><td><b>datatype constructor ax</b></td><td>1</td></tr><tr><td><b>seq extensionality</b></td><td>2</td></tr><tr><td><b>num allocs</b></td><td>1194409877</td></tr><tr><td><b>final checks</b></td><td>4</td></tr><tr><td><b>added eqs</b></td><td>20</td></tr><tr><td><b>del clause</b></td><td>6</td></tr><tr><td><b>memory</b></td><td>15.490000</td></tr><tr><td><b>max memory</b></td><td>15.490000</td></tr></table></div></td></tr></table></div></div><script>
+</script></div></div><div class="tab-pane"><div class="imandra-proof-top"><div class="imandra-fold panel panel-default" id="fold-c414a172-d4fb-423f-b936-9342c0146046"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>proof attempt</span></div></div><div class="panel-body collapse"><div class="imandra-proof"><div class="imandra-alternatives" id="alt-0ee278cd-8010-44e7-a2c5-c5690a8bbadd"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>summary</a></li><li class="" data-toggle="tab"><a>full</a></li><li class="" data-toggle="tab"><a>graph</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-table" id="table-5fcf28a9-4456-4dd3-affa-0549a0bdc8ed"><table><tr><td><b>ground_instances</b></td><td>1</td></tr><tr><td><b>definitions</b></td><td>0</td></tr><tr><td><b>inductions</b></td><td>0</td></tr><tr><td><b>search_time</b></td><td><pre>0.016s</pre></td></tr><tr><td><b>details</b></td><td><div class="imandra-fold panel panel-default" id="fold-5f0b1ed6-cb61-4037-b0cb-0b86054455bc"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><div class="imandra-table" id="table-8c1ae62b-dc79-4121-8825-6c4ea0501982"><table><tr><td><b>smt_stats</b></td><td><div class="imandra-table" id="table-9057f70c-01d0-4b34-bfc4-d2ef9af30d42"><table><tr><td><b>num checks</b></td><td>3</td></tr><tr><td><b>rlimit count</b></td><td>721</td></tr><tr><td><b>mk clause</b></td><td>10</td></tr><tr><td><b>datatype occurs check</b></td><td>24</td></tr><tr><td><b>seq add axiom</b></td><td>2</td></tr><tr><td><b>mk bool var</b></td><td>24</td></tr><tr><td><b>decisions</b></td><td>4</td></tr><tr><td><b>seq num reductions</b></td><td>10</td></tr><tr><td><b>propagations</b></td><td>4</td></tr><tr><td><b>interface eqs</b></td><td>2</td></tr><tr><td><b>conflicts</b></td><td>1</td></tr><tr><td><b>datatype accessor ax</b></td><td>6</td></tr><tr><td><b>datatype constructor ax</b></td><td>1</td></tr><tr><td><b>seq extensionality</b></td><td>2</td></tr><tr><td><b>num allocs</b></td><td>1192980119</td></tr><tr><td><b>final checks</b></td><td>4</td></tr><tr><td><b>added eqs</b></td><td>20</td></tr><tr><td><b>del clause</b></td><td>6</td></tr><tr><td><b>memory</b></td><td>18.060000</td></tr><tr><td><b>max memory</b></td><td>18.060000</td></tr></table></div></td></tr></table></div></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-b7bf2a7c-3e46-456c-a9ca-7cbdd557dd0d';
+  var target = '#fold-5f0b1ed6-cb61-4037-b0cb-0b86054455bc';
   fold.hydrate(target);
 });
-</script></div></td></tr></table></div></div><div class="tab-pane"><div class="imandra-fold panel panel-default" id="fold-36bdc040-9754-4666-aafb-7f922d9cfe30"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.015s]
+</script></div></td></tr></table></div></div><div class="tab-pane"><div class="imandra-fold panel panel-default" id="fold-3fce2a03-cc6c-4831-bfd4-df222318f405"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.016s]
   :var_0:.is_admin = false
   ==&gt; (if String.prefix &quot;/user/&quot; &quot;/admin&quot;
        then
@@ -748,22 +774,22 @@ require(['nbextensions/nbimandra/fold'], function (fold) {
          if List.exists (anon_fun.get_auth_result.0 :var_0:) … then Authed
          else Not_authed
        else Authed)
-      = Not_authed</pre></li><li><div><h4>simplify</h4><div class="imandra-table" id="table-d61080a6-0cde-4969-b20c-02d22c3cf171"><table><tr><td><b>into</b></td><td><pre>:var_0:.is_admin
+      = Not_authed</pre></li><li><div><h4>simplify</h4><div class="imandra-table" id="table-a0730d48-5832-410d-975c-3b48ddeb8851"><table><tr><td><b>into</b></td><td><pre>:var_0:.is_admin
 || (if :var_0:.is_admin then Authed
     else
     if List.exists (anon_fun.get_auth_result.0 :var_0:)
        (&quot;diego&quot; :: (… :: …))
     then Authed else Not_authed)
-   = Not_authed</pre></td></tr><tr><td><b>expansions</b></td><td><pre>[]</pre></td></tr><tr><td><b>rewrite_steps</b></td><td><ul></ul></td></tr><tr><td><b>forward_chaining</b></td><td><ul></ul></td></tr></table></div></div></li><li><div>unroll<div class="imandra-table" id="table-4eb321d6-b449-47da-a7d8-81df526e91e7"><table><tr><td><b>expr</b></td><td><pre>(|`List.exists (anon_fun.get_auth_result.0 (u : user))[0]`_2346|
+   = Not_authed</pre></td></tr><tr><td><b>expansions</b></td><td><pre>[]</pre></td></tr><tr><td><b>rewrite_steps</b></td><td><ul></ul></td></tr><tr><td><b>forward_chaining</b></td><td><ul></ul></td></tr></table></div></div></li><li><div>unroll<div class="imandra-table" id="table-df042427-d390-48ee-bdeb-0fbb6ee4cfb1"><table><tr><td><b>expr</b></td><td><pre>(|`List.exists (anon_fun.get_auth_result.0 (u : user))[0]`_2346|
   u_2339
   (|::_3| &quot;diego&quot; (|::_3| …</pre></td></tr><tr><td><b>expansions</b></td><td><ul></ul></td></tr></table></div></div></li><li>Sat (Some  let u = {is_admin = false; username = &quot;diego&quot;; email = &quot;diego&quot;}
 )</li></ul></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-36bdc040-9754-4666-aafb-7f922d9cfe30';
+  var target = '#fold-3fce2a03-cc6c-4831-bfd4-df222318f405';
   fold.hydrate(target);
 });
-</script></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-58556135-bc7f-4e29-bd8f-33873385a7dc"><textarea style="display: none">digraph &quot;proof&quot; {
-p_264 [label=&quot;Start (:var_0:.is_admin = false\l       ==\&gt; (if String.prefix \&quot;/user/\&quot; \&quot;/admin\&quot;\l            then\l              if String.prefix (String.append \&quot;/user/\&quot; :var_0:.username)\l                 \&quot;/admin\&quot;\l              then Authed else Not_authed\l            else\l            if String.prefix \&quot;/admin\&quot; \&quot;/admin\&quot;\l            then\l              if :var_0:.is_admin then Authed\l              else\l              if List.exists (anon_fun.get_auth_result.0 :var_0:) …\l              then Authed else Not_authed\l            else Authed)\l           = Not_authed\l       :time 0.015s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+</script></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-1f5110e9-379c-43a9-adfd-97295438e905"><textarea style="display: none">digraph &quot;proof&quot; {
+p_264 [label=&quot;Start (:var_0:.is_admin = false\l       ==\&gt; (if String.prefix \&quot;/user/\&quot; \&quot;/admin\&quot;\l            then\l              if String.prefix (String.append \&quot;/user/\&quot; :var_0:.username)\l                 \&quot;/admin\&quot;\l              then Authed else Not_authed\l            else\l            if String.prefix \&quot;/admin\&quot; \&quot;/admin\&quot;\l            then\l              if :var_0:.is_admin then Authed\l              else\l              if List.exists (anon_fun.get_auth_result.0 :var_0:) …\l              then Authed else Not_authed\l            else Authed)\l           = Not_authed\l       :time 0.016s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_264 -&gt; p_263 [label=&quot;&quot;];
 p_263 [label=&quot;Simplify (:var_0:.is_admin\l          \|\| (if :var_0:.is_admin then Authed\l              else\l              if List.exists (anon_fun.get_auth_result.0 :var_0:)\l                 (\&quot;diego\&quot; :: (… :: …))\l              then Authed else Not_authed)\l             = Not_authed\l          :expansions [] :rw [] :fc [])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_263 -&gt; p_262 [label=&quot;&quot;];
@@ -773,22 +799,22 @@ p_261 [label=&quot;Sat (Some  let u = \{is_admin = false; username = \&quot;dieg
 }
 </textarea><button class="btn btn-primary">Load graph</button><div class="imandra-graphviz-loading display-none">Loading..</div><div class="imandra-graphviz-target"></div><script>
 require(['nbextensions/nbimandra/graphviz'], function (graphviz) {
-  var target = '#graphviz-58556135-bc7f-4e29-bd8f-33873385a7dc';
+  var target = '#graphviz-1f5110e9-379c-43a9-adfd-97295438e905';
   graphviz.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-eebb7a06-69d3-4047-a380-648b3c2428e2';
+  var target = '#alt-0ee278cd-8010-44e7-a2c5-c5690a8bbadd';
   alternatives.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-8ea3ba0f-7817-4720-85e0-dab525cf2f01';
+  var target = '#fold-c414a172-d4fb-423f-b936-9342c0146046';
   fold.hydrate(target);
 });
 </script></div></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-d6e5aa10-80c3-4a70-aff4-cfe0ac081c50';
+  var target = '#alt-f34fcb91-c668-4077-b345-a0fad950b333';
   alternatives.hydrate(target);
 });
 </script></div></div></div>
@@ -854,7 +880,7 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
 
 
 <div class="output_html rendered_html output_subarea ">
-<div class="imandra-alternatives" id="alt-a7cca811-5566-4e21-8bee-d302899729f5"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-e88f743e-11bb-4907-98c9-4ba89e943bb9" class="decompose"><textarea class="display-none">{
+<div class="imandra-alternatives" id="alt-e592e528-4dfd-4150-b2f3-4f8467939e7b"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-92ea100e-e174-4cb7-b703-8c7eeb9bc58c" class="decompose"><textarea class="display-none">{
   &quot;regions&quot;: [
     {
       &quot;constraints&quot;: [
@@ -1050,13 +1076,13 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
 }</textarea><div class="decompose-foamtree"></div><div class="decompose-details"><div class="decompose-details-header">Regions details</div><div class="decompose-details-no-selection">No group selected.</div><div class="decompose-details-selection hidden"><div><span class="decompose-details-label">Direct sub-regions: </span><span class="decompose-details-direct-sub-regions-text">-</span></div><div><span class="decompose-details-label">Contained regions: </span><span class="decompose-details-contained-regions-text">-</span></div><div class="decompose-details-section-header">Constraints</div><div class="decompose-details-constraints"><pre class="decompose-details-constraint">&lt;constraint&gt;</pre></div><div class="decompose-details-invariant"><div class="decompose-details-section-header">Invariant</div><pre class="decompose-details-invariant-text">&lt;invariant&gt;</pre></div></div></div><script>
 (function () {
   require(['nbextensions/nbimandra/regions'], function (regions) {
-    var target = '#decompose-e88f743e-11bb-4907-98c9-4ba89e943bb9';
+    var target = '#decompose-92ea100e-e174-4cb7-b703-8c7eeb9bc58c';
     regions.hydrate(target);
   });
 })();
-</script></div></div><div class="tab-pane"><div><div class="imandra-table" id="table-04e23f66-a569-4c15-8728-48fb29c9a9c9"><table><thead><tr><th>Constraints</th><th>Invariant</th></tr></thead><tr><td><ul><li><pre>not (String.prefix (String.append &quot;/user/&quot; u.username) path)</pre></li><li><pre>String.prefix &quot;/user/&quot; path</pre></li></ul></td><td><pre>F = Not_authed</pre></td></tr><tr><td><ul><li><pre>not (String.prefix (String.append &quot;/user/&quot; u.username) path)</pre></li><li><pre>not (String.prefix &quot;/user/&quot; path)</pre></li><li><pre>not (String.prefix &quot;/admin&quot; path)</pre></li></ul></td><td><pre>F = Authed</pre></td></tr><tr><td><ul><li><pre>not (String.prefix (String.append &quot;/user/&quot; u.username) path)</pre></li><li><pre>not (String.prefix &quot;/user/&quot; path)</pre></li><li><pre>String.prefix &quot;/admin&quot; path</pre></li><li><pre>not u.is_admin</pre></li><li><pre>not (&quot;diego&quot; = u.username)</pre></li><li><pre>not (&quot;shannon&quot; = u.username)</pre></li></ul></td><td><pre>F = Not_authed</pre></td></tr><tr><td><ul><li><pre>not (String.prefix (String.append &quot;/user/&quot; u.username) path)</pre></li><li><pre>not (String.prefix &quot;/user/&quot; path)</pre></li><li><pre>String.prefix &quot;/admin&quot; path</pre></li><li><pre>not u.is_admin</pre></li><li><pre>not (&quot;diego&quot; = u.username)</pre></li><li><pre>&quot;shannon&quot; = u.username</pre></li></ul></td><td><pre>F = Authed</pre></td></tr><tr><td><ul><li><pre>not (String.prefix (String.append &quot;/user/&quot; u.username) path)</pre></li><li><pre>not (String.prefix &quot;/user/&quot; path)</pre></li><li><pre>String.prefix &quot;/admin&quot; path</pre></li><li><pre>not u.is_admin</pre></li><li><pre>&quot;diego&quot; = u.username</pre></li></ul></td><td><pre>F = Authed</pre></td></tr><tr><td><ul><li><pre>not (String.prefix (String.append &quot;/user/&quot; u.username) path)</pre></li><li><pre>not (String.prefix &quot;/user/&quot; path)</pre></li><li><pre>String.prefix &quot;/admin&quot; path</pre></li><li><pre>u.is_admin</pre></li></ul></td><td><pre>F = Authed</pre></td></tr><tr><td><ul><li><pre>String.prefix (String.append &quot;/user/&quot; u.username) path</pre></li></ul></td><td><pre>F = Authed</pre></td></tr></table></div></div></div></div><script>
+</script></div></div><div class="tab-pane"><div><div class="imandra-table" id="table-6b6e4d60-e4db-4566-9a2b-7f3692226013"><table><thead><tr><th>Constraints</th><th>Invariant</th></tr></thead><tr><td><ul><li><pre>not (String.prefix (String.append &quot;/user/&quot; u.username) path)</pre></li><li><pre>String.prefix &quot;/user/&quot; path</pre></li></ul></td><td><pre>F = Not_authed</pre></td></tr><tr><td><ul><li><pre>not (String.prefix (String.append &quot;/user/&quot; u.username) path)</pre></li><li><pre>not (String.prefix &quot;/user/&quot; path)</pre></li><li><pre>not (String.prefix &quot;/admin&quot; path)</pre></li></ul></td><td><pre>F = Authed</pre></td></tr><tr><td><ul><li><pre>not (String.prefix (String.append &quot;/user/&quot; u.username) path)</pre></li><li><pre>not (String.prefix &quot;/user/&quot; path)</pre></li><li><pre>String.prefix &quot;/admin&quot; path</pre></li><li><pre>not u.is_admin</pre></li><li><pre>not (&quot;diego&quot; = u.username)</pre></li><li><pre>not (&quot;shannon&quot; = u.username)</pre></li></ul></td><td><pre>F = Not_authed</pre></td></tr><tr><td><ul><li><pre>not (String.prefix (String.append &quot;/user/&quot; u.username) path)</pre></li><li><pre>not (String.prefix &quot;/user/&quot; path)</pre></li><li><pre>String.prefix &quot;/admin&quot; path</pre></li><li><pre>not u.is_admin</pre></li><li><pre>not (&quot;diego&quot; = u.username)</pre></li><li><pre>&quot;shannon&quot; = u.username</pre></li></ul></td><td><pre>F = Authed</pre></td></tr><tr><td><ul><li><pre>not (String.prefix (String.append &quot;/user/&quot; u.username) path)</pre></li><li><pre>not (String.prefix &quot;/user/&quot; path)</pre></li><li><pre>String.prefix &quot;/admin&quot; path</pre></li><li><pre>not u.is_admin</pre></li><li><pre>&quot;diego&quot; = u.username</pre></li></ul></td><td><pre>F = Authed</pre></td></tr><tr><td><ul><li><pre>not (String.prefix (String.append &quot;/user/&quot; u.username) path)</pre></li><li><pre>not (String.prefix &quot;/user/&quot; path)</pre></li><li><pre>String.prefix &quot;/admin&quot; path</pre></li><li><pre>u.is_admin</pre></li></ul></td><td><pre>F = Authed</pre></td></tr><tr><td><ul><li><pre>String.prefix (String.append &quot;/user/&quot; u.username) path</pre></li></ul></td><td><pre>F = Authed</pre></td></tr></table></div></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-a7cca811-5566-4e21-8bee-d302899729f5';
+  var target = '#alt-e592e528-4dfd-4150-b2f3-4f8467939e7b';
   alternatives.hydrate(target);
 });
 </script></div>
@@ -1077,13 +1103,9 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
                 <a class="Copyrights"href="http://imandra.ai">&#9400; 2018 Aesthetic Integration Ltd. All rights reserved.</a>
             </footer>
         </div>
-    </body>
     
  
 
 
-        </div>
-        </div>
-        </div>
     </body>
 </html>
