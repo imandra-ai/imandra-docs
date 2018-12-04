@@ -276,6 +276,11 @@
                                     </li>
                                     
                                     <li class="side__nav-list-item--sub-level-2">
+                                        <a class="side__nav-link" href="/imandra-docs/notebooks/verification/#Blast">Blast</a>
+                                        
+                                    </li>
+                                    
+                                    <li class="side__nav-list-item--sub-level-2">
                                         <a class="side__nav-link" href="/imandra-docs/notebooks/verification/#Induction">Induction</a>
                                         
                                         <ul class="side__nav-list--sub-level-3">
@@ -479,9 +484,28 @@
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>The above container contains a stripped down version of the tools provided through the local installer, and crucially, doesn't include a functional opam switch.</p>
-<p>If you need a Docker image that includes a functional opam switch, you can use the <code>imandra/imandra-client-switch</code> image instead. The above script should be used, simply replacing <code>imandra-client</code> with <code>imandra-client-switch</code>.</p>
-<p>For the moment we only support Docker images based either <code>debian:9</code> or <code>ocaml/opam2:debian-9</code>, and we suggest using <code>imandra/imandra-client-switch</code> as a base image if you need to create custom Docker images to run Imandra on.</p>
+<p>The above container contains a stripped down version of the tools provided through the local installer, installed in a <code>debian:9</code> base image, and crucially, doesn't include a functional opam environment in order to minimize the image size.</p>
+<p>If you need a Docker image that includes a functional opam switch in order to extend the set of libraries available from Imandra, you can use the <code>imandra/imandra-client-switch</code> image instead. The available tags are <code>ubuntu</code>, <code>debian</code> and <code>latest</code>, with <code>latest</code> aliasing <code>debian</code>.</p>
+<p>The command to run Imandra using one of those images is:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<div class="highlight"><pre><span></span>docker pull imandra/imandra-client-switch:latest <span class="o">&amp;&amp;</span> docker run -it --rm -v <span class="si">${</span><span class="nv">HOME</span><span class="si">}</span>/.imandra:/home/opam/.imandra -p <span class="m">8000</span>:8000 imandra/imandra-client-switch:latest
+</pre></div>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>In order to ensure that the set of runtime dependencies for Imandra is correctly installed, for the moment we only officially support using one of those images as a base for your custom Docker images.</p>
 
 </div>
 </div>
