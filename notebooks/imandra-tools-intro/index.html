@@ -9,6 +9,7 @@
         <meta property="og:description" content="In this notebook we’re going to introduce the imandra-tools library and explore how it extends Imandra's principal region decomposition utilities.">
         <meta property="og:image" content="https://storage.googleapis.com/imandra-assets/images/og_image_default_i78.jpg">
 
+
         
         <!-- Global site tag (gtag.js) - Google Analytics -->
         <script async src="https://www.googletagmanager.com/gtag/js?id=UA-116937440-6"></script>
@@ -34,7 +35,7 @@
         <link rel="stylesheet" href="/imandra-docs/static/nbextensions/nbimandra/styles.c7ed3d1a.css" type="text/css">
         <link rel="stylesheet" href="/imandra-docs/static/docs-styles.86fc0481.css" type="text/css">
         
-        <link rel="stylesheet" href="/imandra-docs/static/jekyll-styles.04a0e3a4.css" type="text/css">
+        <link rel="stylesheet" href="/imandra-docs/static/jekyll-styles.73f39aa7.css" type="text/css">
         
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
@@ -134,7 +135,88 @@
         }
     });
     </script>
-    <!-- End of mathjax configuration --></head>
+    <!-- End of mathjax configuration --><script>
+  function handleCopyClick() {
+      var el = this;
+      var terminal = el.closest('.terminal');
+      var highlight = terminal.getElementsByClassName('highlight')[0];
+      copyToClipboardMsg(highlight);
+
+      terminal.classList.add('terminal--hide');
+      setTimeout(function () {
+          terminal.classList.remove('terminal--hide');
+      }, 2000);
+
+
+      function copyToClipboardMsg(elem) {
+          var succeed = copyToClipboard(elem);
+          var msg;
+          if (!succeed) {
+              msg = 'Error!';
+          } else {
+              msg = 'Copied!';
+          }
+
+          var msgElem = terminal.querySelector('.terminal__copy-msg');
+          msgElem.innerHTML = msg;
+          setTimeout(function () {
+              msgElem.innerHTML = 'You rock!';
+          }, 1000);
+      }
+
+      function copyToClipboard(elem) {
+          // create hidden text element, if it doesn't already exist
+          var targetId = '_hiddenCopyText_';
+          var isInput = elem.tagName === 'INPUT' || elem.tagName === 'TEXTAREA';
+          var origSelectionStart, origSelectionEnd;
+          if (isInput) {
+              // can just use the original source element for the selection and copy
+              target = elem;
+              origSelectionStart = elem.selectionStart;
+              origSelectionEnd = elem.selectionEnd;
+          } else {
+              // must use a temporary form element for the selection and copy
+              target = terminal.querySelector('#' + targetId);
+              if (!target) {
+                  var target = document.createElement('textarea');
+                  // target.style.display = 'flex';
+                  // target.style.position = 'absolute';
+                  // target.style.left = '-1000%';
+                  target.id = targetId;
+                 elem.appendChild(target);
+              }
+              target.textContent = elem.textContent.trim();
+          }
+          
+          // select the content
+          var currentFocus = document.activeElement;
+          target.focus();
+          target.setSelectionRange(0, target.value.length);
+
+          // copy the selection
+          var succeed;
+          try {
+              succeed = document.execCommand('copy');
+          } catch (e) {
+              succeed = false;
+          }
+          // restore original focus
+          if (currentFocus && typeof currentFocus.focus === 'function') {
+              currentFocus.focus();
+          }
+
+          if (isInput) {
+              // restore prior selection
+              elem.setSelectionRange(origSelectionStart, origSelectionEnd);
+          } else {
+              // clear temporary content
+              elem.removeChild(target);
+          }
+          return succeed;
+      }
+  }
+</script>
+    </head>
     <body>
         <div class="background">
         </div>
@@ -463,11 +545,9 @@
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="An-introduction-to-imandra-tools">An introduction to <code>imandra-tools</code><a class="anchor-link" href="#An-introduction-to-imandra-tools">&#182;</a></h1><p>In this notebook, we'll introduce the <code>imandra-tools</code> library and go through how to use its powerful modules to augment Imandra's decomposition facilities.</p>
+<div class="text_cell_render border-box-sizing rendered_html"><h1 id="An-introduction-to-imandra-tools">An introduction to <code>imandra-tools</code><a class="anchor-link" href="#An-introduction-to-imandra-tools">&#182;</a></h1><p>In this notebook, we'll introduce the <code>imandra-tools</code> library and go through how to use its powerful modules to augment Imandra's decomposition facilities.</p>
 <p>Normally, before using <code>imandra-tools</code>, one would have to require it in their Imandra toplevel by executing the require statement <code>#require "imandra-tools"</code>. Since the <code>#require</code> directive is disabled for security reasons in this notebook, this step won't be necessary as we've pre-loaded imandra-tools.</p>
 <p>Let's make sure this is actually the case before starting.</p>
-
 </div>
 </div>
 </div>
@@ -518,8 +598,7 @@
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>Great! Let's start exploring <code>imandra-tools</code>.</p>
+<div class="text_cell_render border-box-sizing rendered_html"><p>Great! Let's start exploring <code>imandra-tools</code>.</p>
 <ul>
 <li><a href="#Iterative-Decomposition-Framework-%28Idf%29">Idf</a></li>
 <li><a href="#Region-Pretty-Printer-%28Region_pp%29">Region_pp</a></li>
@@ -529,7 +608,6 @@
 Note: this is an introductory walkthrough of the capabilities of `imandra-tools`, much more than what's described in this notebook is possible with it, but we'll defer a more in-depth explanation of each module in future notebooks.
 </div><h1 id="Iterative-Decomposition-Framework-(Idf)">Iterative Decomposition Framework (Idf)<a class="anchor-link" href="#Iterative-Decomposition-Framework-(Idf)">&#182;</a></h1><p>The first module we're going to explore is <code>Imandra_tools.Idf</code>. Its broad purpose is to provide a framework allowing for iterative, lazy decomposition of state-machine models.</p>
 <p>Before diving into its usage, let's first define a simple example of such a model.</p>
-
 </div>
 </div>
 </div>
@@ -602,8 +680,7 @@ Note: this is an introductory walkthrough of the capabilities of `imandra-tools`
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>The above model is not very interesting but it exemplifies all that's needed for a model to be suitable for usage with <code>Idf</code>:</p>
+<div class="text_cell_render border-box-sizing rendered_html"><p>The above model is not very interesting but it exemplifies all that's needed for a model to be suitable for usage with <code>Idf</code>:</p>
 <ul>
 <li>A variant type describing all the possible messages a model can react to (<code>message</code>)</li>
 <li>A record type describing the current state of the model (<code>counter_state</code>)</li>
@@ -621,7 +698,6 @@ Note: this is an introductory walkthrough of the capabilities of `imandra-tools`
 <li>a <code>module_name</code> value mapping to the name of the module being defined (this is necessary for reflection purposes)</li>
 <li>an <code>enough_samples</code> function (we'll gloss over describing what this does for now and defer to a more in-depth tutorial specific to <code>Idf</code>, a default implementation just returns <code>true</code>)</li>
 </ul>
-
 </div>
 </div>
 </div>
@@ -706,13 +782,11 @@ Note: this is an introductory walkthrough of the capabilities of `imandra-tools`
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>The second thing we need to do is to define a <code>Template</code> module implementing the <code>Idf.Template.SIG</code> module signature:</p>
+<div class="text_cell_render border-box-sizing rendered_html"><p>The second thing we need to do is to define a <code>Template</code> module implementing the <code>Idf.Template.SIG</code> module signature:</p>
 <ul>
 <li>a <code>t</code> variant type symbolically describing events from our model</li>
 <li>a <code>concrete</code> function from <code>t</code> to a list of strings mapping the symbolic event to concrete <code>event</code> type names</li>
 </ul>
-
 </div>
 </div>
 </div>
@@ -767,8 +841,7 @@ Note: this is an introductory walkthrough of the capabilities of `imandra-tools`
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>We're now ready to create a decomposition recipe and apply it to an event template:</p>
+<div class="text_cell_render border-box-sizing rendered_html"><p>We're now ready to create a decomposition recipe and apply it to an event template:</p>
 <p>First we use <code>Idf.mex_for</code> to create an imandra <code>Mex</code> module (this is just a convenience function wrapping imandra's <code>Extract</code> module)</p>
 <p>Second we can finally hook it all together by passing <code>DecompositionConfig</code>, <code>Mex</code>, and <code>Template</code> as parameters to the <code>Idf.Make</code> functor, and obtain a <code>D</code> module of signature <code>Idf.SIG</code>.</p>
 <p>We can use the <code>D</code> module to start decomposing any sequences of events, by using either <code>D.Symbolic.decompose</code> or <code>D.Concrete.decompose</code>, depending on which decomposition strategy we want:</p>
@@ -777,7 +850,6 @@ Note: this is an introductory walkthrough of the capabilities of `imandra-tools`
 <li>symbolic: this strategy will synthesize the constraints and invariants of each region as ocaml code and inject them into the decomposition of the next event, no sampling is done and thus this strategy is complete, but can also be much slower than concrete.</li>
 </ul>
 <p>Let's use <code>D.Symbolic.decompose</code> for this notebook, over a template of <code>[any; add; any]</code> events:</p>
-
 </div>
 </div>
 </div>
@@ -821,6 +893,7 @@ module Mex :
   sig
     module E = Imandra_interactive.Extract_frontend
     val get_option : (E.expr -&gt; &#39;a_0) -&gt; E.expr -&gt; &#39;a_0 option
+    val get_Peano_nat_t : E.expr -&gt; Peano_nat.t
     val get_unit : E.expr -&gt; unit
     val get_result :
       (E.expr -&gt; &#39;a_0) -&gt; (E.expr -&gt; &#39;a_1) -&gt; E.expr -&gt; (&#39;a_0, &#39;a_1) result
@@ -1563,10 +1636,8 @@ val paths : D.Symbolic.path D.L.t = &lt;abstr&gt;
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>Something odd has happened: we've asked <code>Idf</code> to decompose our template, but nothing happened!</p>
+<div class="text_cell_render border-box-sizing rendered_html"><p>Something odd has happened: we've asked <code>Idf</code> to decompose our template, but nothing happened!</p>
 <p>This is because <code>Idf</code> is a <em>lazy</em> framework, we need to tell it how many paths we want to produce:</p>
-
 </div>
 </div>
 </div>
@@ -1679,7 +1750,7 @@ val first_path : D.Symbolic.path =
 
 
 <div class="output_html rendered_html output_subarea ">
-<div class="imandra-alternatives" id="alt-b0b02350-cdd2-4d1a-acfb-a55909ffd516"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-f844c6b8-6902-421a-8508-1a79eab1da61" class="decompose"><textarea class="display-none">{
+<div class="imandra-alternatives" id="alt-4fbdaf48-42d5-41d7-938b-59d45cd5593e"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-7b0d963a-af24-4745-9a69-a998dd7b2b3d" class="decompose"><textarea class="display-none">{
   &quot;regions&quot;: [
     {
       &quot;constraints&quot;: [
@@ -1781,13 +1852,13 @@ val first_path : D.Symbolic.path =
 }</textarea><div class="decompose-foamtree"></div><div class="decompose-details"><div class="decompose-details-header">Regions details</div><div class="decompose-details-no-selection">No group selected.</div><div class="decompose-details-selection hidden"><div><span class="decompose-details-label">Direct sub-regions: </span><span class="decompose-details-direct-sub-regions-text">-</span></div><div><span class="decompose-details-label">Contained regions: </span><span class="decompose-details-contained-regions-text">-</span></div><div class="decompose-details-section-header">Constraints</div><div class="decompose-details-constraints"><pre class="decompose-details-constraint">&lt;constraint&gt;</pre></div><div class="decompose-details-invariant"><div class="decompose-details-section-header">Invariant</div><pre class="decompose-details-invariant-text">&lt;invariant&gt;</pre></div></div></div><script>
 (function () {
   require(['nbextensions/nbimandra/regions'], function (regions) {
-    var target = '#decompose-f844c6b8-6902-421a-8508-1a79eab1da61';
+    var target = '#decompose-7b0d963a-af24-4745-9a69-a998dd7b2b3d';
     regions.hydrate(target);
   });
 })();
-</script></div></div><div class="tab-pane"><div><div class="imandra-table" id="table-0feb43f3-fb2a-48fd-b971-b3e07605640f"><table><thead><tr><th>Constraints</th><th>Invariant</th></tr></thead><tr><td><ul><li><pre>List.tl (List.tl (List.tl e)) = []</pre></li><li><pre>(List.tl (List.tl e)) &lt;&gt; []</pre></li><li><pre>Is_a(Model.Add, List.hd (List.tl e))</pre></li><li><pre>(List.tl e) &lt;&gt; []</pre></li><li><pre>e &lt;&gt; []</pre></li><li><pre>List.hd e = Model.Reset</pre></li></ul></td><td><pre>F = {Model.counter = 0; Model.default = 23}</pre></td></tr><tr><td><ul><li><pre>List.tl (List.tl (List.tl e)) = []</pre></li><li><pre>(List.tl (List.tl e)) &lt;&gt; []</pre></li><li><pre>Is_a(Model.Add, List.hd (List.tl e))</pre></li><li><pre>(List.tl e) &lt;&gt; []</pre></li><li><pre>e &lt;&gt; []</pre></li><li><pre>not (List.hd e = Model.Reset)</pre></li><li><pre>Is_a(Model.Add, List.hd e)</pre></li><li><pre>not (Destruct(Model.Add, 0, List.hd e) &lt;= 9000)</pre></li></ul></td><td><pre>F = {Model.counter = 0; Model.default = 23}</pre></td></tr><tr><td><ul><li><pre>List.tl (List.tl (List.tl e)) = []</pre></li><li><pre>(List.tl (List.tl e)) &lt;&gt; []</pre></li><li><pre>Is_a(Model.Add, List.hd (List.tl e))</pre></li><li><pre>(List.tl e) &lt;&gt; []</pre></li><li><pre>e &lt;&gt; []</pre></li><li><pre>not (List.hd e = Model.Reset)</pre></li><li><pre>Is_a(Model.Add, List.hd e)</pre></li><li><pre>Destruct(Model.Add, 0, List.hd e) &lt;= 9000</pre></li></ul></td><td><pre>F = {Model.counter = Destruct(Model.Add, 0, List.hd e); Model.default = 23}</pre></td></tr></table></div></div></div></div><script>
+</script></div></div><div class="tab-pane"><div><div class="imandra-table" id="table-ade2394c-4f12-426c-9a33-22049ce08887"><table><thead><tr><th>Constraints</th><th>Invariant</th></tr></thead><tr><td><ul><li><pre>List.tl (List.tl (List.tl e)) = []</pre></li><li><pre>(List.tl (List.tl e)) &lt;&gt; []</pre></li><li><pre>Is_a(Model.Add, List.hd (List.tl e))</pre></li><li><pre>(List.tl e) &lt;&gt; []</pre></li><li><pre>e &lt;&gt; []</pre></li><li><pre>List.hd e = Model.Reset</pre></li></ul></td><td><pre>F = {Model.counter = 0; Model.default = 23}</pre></td></tr><tr><td><ul><li><pre>List.tl (List.tl (List.tl e)) = []</pre></li><li><pre>(List.tl (List.tl e)) &lt;&gt; []</pre></li><li><pre>Is_a(Model.Add, List.hd (List.tl e))</pre></li><li><pre>(List.tl e) &lt;&gt; []</pre></li><li><pre>e &lt;&gt; []</pre></li><li><pre>not (List.hd e = Model.Reset)</pre></li><li><pre>Is_a(Model.Add, List.hd e)</pre></li><li><pre>not (Destruct(Model.Add, 0, List.hd e) &lt;= 9000)</pre></li></ul></td><td><pre>F = {Model.counter = 0; Model.default = 23}</pre></td></tr><tr><td><ul><li><pre>List.tl (List.tl (List.tl e)) = []</pre></li><li><pre>(List.tl (List.tl e)) &lt;&gt; []</pre></li><li><pre>Is_a(Model.Add, List.hd (List.tl e))</pre></li><li><pre>(List.tl e) &lt;&gt; []</pre></li><li><pre>e &lt;&gt; []</pre></li><li><pre>not (List.hd e = Model.Reset)</pre></li><li><pre>Is_a(Model.Add, List.hd e)</pre></li><li><pre>Destruct(Model.Add, 0, List.hd e) &lt;= 9000</pre></li></ul></td><td><pre>F = {Model.counter = Destruct(Model.Add, 0, List.hd e); Model.default = 23}</pre></td></tr></table></div></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-b0b02350-cdd2-4d1a-acfb-a55909ffd516';
+  var target = '#alt-4fbdaf48-42d5-41d7-938b-59d45cd5593e';
   alternatives.hydrate(target);
 });
 </script></div>
@@ -1803,7 +1874,7 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
 
 
 <div class="output_html rendered_html output_subarea ">
-<div class="imandra-alternatives" id="alt-82608cd2-9d65-490c-bf56-455bdfcbf904"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-80e8a649-147a-4a67-9616-7544c724dce2" class="decompose"><textarea class="display-none">{
+<div class="imandra-alternatives" id="alt-e6e6c16c-fd5d-48a6-84f0-715d18737305"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-74b03b74-758d-4479-9d80-8fa296d0d080" class="decompose"><textarea class="display-none">{
   &quot;regions&quot;: [
     {
       &quot;constraints&quot;: [
@@ -1914,11 +1985,11 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
 }</textarea><div class="decompose-foamtree"></div><div class="decompose-details"><div class="decompose-details-header">Regions details</div><div class="decompose-details-no-selection">No group selected.</div><div class="decompose-details-selection hidden"><div><span class="decompose-details-label">Direct sub-regions: </span><span class="decompose-details-direct-sub-regions-text">-</span></div><div><span class="decompose-details-label">Contained regions: </span><span class="decompose-details-contained-regions-text">-</span></div><div class="decompose-details-section-header">Constraints</div><div class="decompose-details-constraints"><pre class="decompose-details-constraint">&lt;constraint&gt;</pre></div><div class="decompose-details-invariant"><div class="decompose-details-section-header">Invariant</div><pre class="decompose-details-invariant-text">&lt;invariant&gt;</pre></div></div></div><script>
 (function () {
   require(['nbextensions/nbimandra/regions'], function (regions) {
-    var target = '#decompose-80e8a649-147a-4a67-9616-7544c724dce2';
+    var target = '#decompose-74b03b74-758d-4479-9d80-8fa296d0d080';
     regions.hydrate(target);
   });
 })();
-</script></div></div><div class="tab-pane"><div><div class="imandra-table" id="table-19e6d13e-79d2-4425-9223-6958bb1b882d"><table><thead><tr><th>Constraints</th><th>Invariant</th></tr></thead><tr><td><ul><li><pre>e &lt;&gt; []</pre></li><li><pre>Is_a(Model.Add, List.hd e)</pre></li><li><pre>(List.tl e) &lt;&gt; []</pre></li><li><pre>List.tl (List.tl (List.tl e)) = []</pre></li><li><pre>(List.tl (List.tl e)) &lt;&gt; []</pre></li><li><pre>Is_a(Model.Add, List.hd (List.tl e))</pre></li><li><pre>Destruct(Model.Add, 0, List.hd e) &lt;= 9000</pre></li><li><pre>not (Destruct(Model.Add, 0, List.hd e) = 1337)</pre></li><li><pre>not
+</script></div></div><div class="tab-pane"><div><div class="imandra-table" id="table-55bf4c3f-3067-4d0c-98f5-8c8b1f7bafbf"><table><thead><tr><th>Constraints</th><th>Invariant</th></tr></thead><tr><td><ul><li><pre>e &lt;&gt; []</pre></li><li><pre>Is_a(Model.Add, List.hd e)</pre></li><li><pre>(List.tl e) &lt;&gt; []</pre></li><li><pre>List.tl (List.tl (List.tl e)) = []</pre></li><li><pre>(List.tl (List.tl e)) &lt;&gt; []</pre></li><li><pre>Is_a(Model.Add, List.hd (List.tl e))</pre></li><li><pre>Destruct(Model.Add, 0, List.hd e) &lt;= 9000</pre></li><li><pre>not (Destruct(Model.Add, 0, List.hd e) = 1337)</pre></li><li><pre>not
 ((Destruct(Model.Add, 0, List.hd e)
   + Destruct(Model.Add, 0, List.hd (List.tl e)))
  &lt;= 9000)</pre></li></ul></td><td><pre>F = {Model.counter = 0; Model.default = 23}</pre></td></tr><tr><td><ul><li><pre>e &lt;&gt; []</pre></li><li><pre>Is_a(Model.Add, List.hd e)</pre></li><li><pre>(List.tl e) &lt;&gt; []</pre></li><li><pre>List.tl (List.tl (List.tl e)) = []</pre></li><li><pre>(List.tl (List.tl e)) &lt;&gt; []</pre></li><li><pre>Is_a(Model.Add, List.hd (List.tl e))</pre></li><li><pre>Destruct(Model.Add, 0, List.hd e) &lt;= 9000</pre></li><li><pre>not (Destruct(Model.Add, 0, List.hd e) = 1337)</pre></li><li><pre>(Destruct(Model.Add, 0, List.hd e)
@@ -1928,7 +1999,7 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
  Destruct(Model.Add, 0, List.hd e)
  + Destruct(Model.Add, 0, List.hd (List.tl e)); Model.default = 23}</pre></td></tr><tr><td><ul><li><pre>e &lt;&gt; []</pre></li><li><pre>Is_a(Model.Add, List.hd e)</pre></li><li><pre>(List.tl e) &lt;&gt; []</pre></li><li><pre>List.tl (List.tl (List.tl e)) = []</pre></li><li><pre>(List.tl (List.tl e)) &lt;&gt; []</pre></li><li><pre>Is_a(Model.Add, List.hd (List.tl e))</pre></li><li><pre>Destruct(Model.Add, 0, List.hd e) &lt;= 9000</pre></li><li><pre>Destruct(Model.Add, 0, List.hd e) = 1337</pre></li></ul></td><td><pre>F = {Model.counter = 23; Model.default = 23}</pre></td></tr></table></div></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-82608cd2-9d65-490c-bf56-455bdfcbf904';
+  var target = '#alt-e6e6c16c-fd5d-48a6-84f0-715d18737305';
   alternatives.hydrate(target);
 });
 </script></div>
@@ -1944,7 +2015,7 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
 
 
 <div class="output_html rendered_html output_subarea ">
-<div class="imandra-alternatives" id="alt-2f80ff8f-019b-4eb4-8487-101842d84e89"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-0d5dacd5-3d29-4eac-853e-8a83ec86f76e" class="decompose"><textarea class="display-none">{
+<div class="imandra-alternatives" id="alt-79cd67e2-a1d7-4bb6-b10a-36a2c881a8c6"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-4c94f726-d0ce-4e36-8a6b-6a39b734770a" class="decompose"><textarea class="display-none">{
   &quot;regions&quot;: [
     {
       &quot;constraints&quot;: [
@@ -2107,18 +2178,18 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
 }</textarea><div class="decompose-foamtree"></div><div class="decompose-details"><div class="decompose-details-header">Regions details</div><div class="decompose-details-no-selection">No group selected.</div><div class="decompose-details-selection hidden"><div><span class="decompose-details-label">Direct sub-regions: </span><span class="decompose-details-direct-sub-regions-text">-</span></div><div><span class="decompose-details-label">Contained regions: </span><span class="decompose-details-contained-regions-text">-</span></div><div class="decompose-details-section-header">Constraints</div><div class="decompose-details-constraints"><pre class="decompose-details-constraint">&lt;constraint&gt;</pre></div><div class="decompose-details-invariant"><div class="decompose-details-section-header">Invariant</div><pre class="decompose-details-invariant-text">&lt;invariant&gt;</pre></div></div></div><script>
 (function () {
   require(['nbextensions/nbimandra/regions'], function (regions) {
-    var target = '#decompose-0d5dacd5-3d29-4eac-853e-8a83ec86f76e';
+    var target = '#decompose-4c94f726-d0ce-4e36-8a6b-6a39b734770a';
     regions.hydrate(target);
   });
 })();
-</script></div></div><div class="tab-pane"><div><div class="imandra-table" id="table-4d06b44a-44d7-434f-af7c-1dfc7d349537"><table><thead><tr><th>Constraints</th><th>Invariant</th></tr></thead><tr><td><ul><li><pre>e &lt;&gt; []</pre></li><li><pre>Is_a(Model.Add, List.hd e)</pre></li><li><pre>(List.tl e) &lt;&gt; []</pre></li><li><pre>List.tl (List.tl (List.tl e)) = []</pre></li><li><pre>(List.tl (List.tl e)) &lt;&gt; []</pre></li><li><pre>Is_a(Model.Add, List.hd (List.tl e))</pre></li><li><pre>Destruct(Model.Add, 0, List.hd e) = 1337</pre></li><li><pre>not (List.hd (List.tl (List.tl e)) = Model.Reset)</pre></li><li><pre>not Is_a(Model.Add, List.hd (List.tl (List.tl e)))</pre></li><li><pre>Destruct(Model.Sub, 0, List.hd (List.tl (List.tl e))) &lt;= 23</pre></li></ul></td><td><pre>F =
+</script></div></div><div class="tab-pane"><div><div class="imandra-table" id="table-0a99c92b-3a28-4426-9f28-513381b2e79f"><table><thead><tr><th>Constraints</th><th>Invariant</th></tr></thead><tr><td><ul><li><pre>e &lt;&gt; []</pre></li><li><pre>Is_a(Model.Add, List.hd e)</pre></li><li><pre>(List.tl e) &lt;&gt; []</pre></li><li><pre>List.tl (List.tl (List.tl e)) = []</pre></li><li><pre>(List.tl (List.tl e)) &lt;&gt; []</pre></li><li><pre>Is_a(Model.Add, List.hd (List.tl e))</pre></li><li><pre>Destruct(Model.Add, 0, List.hd e) = 1337</pre></li><li><pre>not (List.hd (List.tl (List.tl e)) = Model.Reset)</pre></li><li><pre>not Is_a(Model.Add, List.hd (List.tl (List.tl e)))</pre></li><li><pre>Destruct(Model.Sub, 0, List.hd (List.tl (List.tl e))) &lt;= 23</pre></li></ul></td><td><pre>F =
 {Model.counter =
  23 + -1 * Destruct(Model.Sub, 0, List.hd (List.tl (List.tl e)));
  Model.default = 23}</pre></td></tr><tr><td><ul><li><pre>e &lt;&gt; []</pre></li><li><pre>Is_a(Model.Add, List.hd e)</pre></li><li><pre>(List.tl e) &lt;&gt; []</pre></li><li><pre>List.tl (List.tl (List.tl e)) = []</pre></li><li><pre>(List.tl (List.tl e)) &lt;&gt; []</pre></li><li><pre>Is_a(Model.Add, List.hd (List.tl e))</pre></li><li><pre>Destruct(Model.Add, 0, List.hd e) = 1337</pre></li><li><pre>not (List.hd (List.tl (List.tl e)) = Model.Reset)</pre></li><li><pre>Is_a(Model.Add, List.hd (List.tl (List.tl e)))</pre></li><li><pre>not (Destruct(Model.Add, 0, List.hd (List.tl (List.tl e))) &lt;= 8977)</pre></li></ul></td><td><pre>F = {Model.counter = 0; Model.default = 23}</pre></td></tr><tr><td><ul><li><pre>e &lt;&gt; []</pre></li><li><pre>Is_a(Model.Add, List.hd e)</pre></li><li><pre>(List.tl e) &lt;&gt; []</pre></li><li><pre>List.tl (List.tl (List.tl e)) = []</pre></li><li><pre>(List.tl (List.tl e)) &lt;&gt; []</pre></li><li><pre>Is_a(Model.Add, List.hd (List.tl e))</pre></li><li><pre>Destruct(Model.Add, 0, List.hd e) = 1337</pre></li><li><pre>not (List.hd (List.tl (List.tl e)) = Model.Reset)</pre></li><li><pre>Is_a(Model.Add, List.hd (List.tl (List.tl e)))</pre></li><li><pre>Destruct(Model.Add, 0, List.hd (List.tl (List.tl e))) &lt;= 8977</pre></li></ul></td><td><pre>F =
 {Model.counter = 23 + Destruct(Model.Add, 0, List.hd (List.tl (List.tl e)));
  Model.default = 23}</pre></td></tr><tr><td><ul><li><pre>e &lt;&gt; []</pre></li><li><pre>Is_a(Model.Add, List.hd e)</pre></li><li><pre>(List.tl e) &lt;&gt; []</pre></li><li><pre>List.tl (List.tl (List.tl e)) = []</pre></li><li><pre>(List.tl (List.tl e)) &lt;&gt; []</pre></li><li><pre>Is_a(Model.Add, List.hd (List.tl e))</pre></li><li><pre>Destruct(Model.Add, 0, List.hd e) = 1337</pre></li><li><pre>List.hd (List.tl (List.tl e)) = Model.Reset</pre></li></ul></td><td><pre>F = {Model.counter = 0; Model.default = 23}</pre></td></tr></table></div></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-2f80ff8f-019b-4eb4-8487-101842d84e89';
+  var target = '#alt-79cd67e2-a1d7-4bb6-b10a-36a2c881a8c6';
   alternatives.hydrate(target);
 });
 </script></div>
@@ -2134,9 +2205,7 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>This output is not very useful, but we can ask <code>Idf</code> to play out a sample execution of that path:</p>
-
+<div class="text_cell_render border-box-sizing rendered_html"><p>This output is not very useful, but we can ask <code>Idf</code> to play out a sample execution of that path:</p>
 </div>
 </div>
 </div>
@@ -2191,9 +2260,7 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>Or we can ask <code>Idf</code> to let us inspect the regions for that path (each region in the list will correspond to the constraints and invariant of the model at each event in the template):</p>
-
+<div class="text_cell_render border-box-sizing rendered_html"><p>Or we can ask <code>Idf</code> to let us inspect the regions for that path (each region in the list will correspond to the constraints and invariant of the model at each event in the template):</p>
 </div>
 </div>
 </div>
@@ -2266,13 +2333,11 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p><code>Idf</code> has many more capabilities and entry points than we've just described and we haven't even touched on its scalability properties but looking at the above regions we can spot a common problem with decompositions: the regions become very hard to read, even with quite simple models.</p>
+<div class="text_cell_render border-box-sizing rendered_html"><p><code>Idf</code> has many more capabilities and entry points than we've just described and we haven't even touched on its scalability properties but looking at the above regions we can spot a common problem with decompositions: the regions become very hard to read, even with quite simple models.</p>
 <p>This is a good moment to introduce a second <code>imandra-tools</code> module:</p>
 <h1 id="Region-Pretty-Printer-(Region_pp)">Region Pretty Printer (Region_pp)<a class="anchor-link" href="#Region-Pretty-Printer-(Region_pp)">&#182;</a></h1><p>The purpose of the <code>Region_pp</code> module is twofold: it provides a <em>default</em> drop-in pretty printer for regions, much more powerful than <code>Decompose.print</code> <em>and</em> it also provides an extensible framework for creating powerful printers with semantic and ontologic understanding of the model being decomposed.</p>
 <p>Behind the scenes, the printer has phases for constraint unification, merging, normalisation and pruning, symbolic evaluation, and much more - all of it is user-extensible and customizable.</p>
 <p>All it takes to start reaping the benefits is to install the default pretty printer:</p>
-
 </div>
 </div>
 </div>
@@ -2348,10 +2413,8 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>We can immediately appreciate that just under half the total constraints have been identified as redundant and eliminated.</p>
+<div class="text_cell_render border-box-sizing rendered_html"><p>We can immediately appreciate that just under half the total constraints have been identified as redundant and eliminated.</p>
 <p>Let's look at another example:</p>
-
 </div>
 </div>
 </div>
@@ -2420,7 +2483,7 @@ val rs : Imandra_reasoning.Decompose.t list =
 
 
 <div class="output_html rendered_html output_subarea ">
-<div class="imandra-alternatives" id="alt-c1840d04-ef68-4999-bf75-43c99ad5f718"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-7cb48269-b146-4a32-b30c-ca7e9d199e9b" class="decompose"><textarea class="display-none">{
+<div class="imandra-alternatives" id="alt-eacb23fd-9ef3-455b-bc2c-8be62c908b8b"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-3a37f140-16b0-4646-9d65-5f281e76867e" class="decompose"><textarea class="display-none">{
   &quot;regions&quot;: [
     {
       &quot;constraints&quot;: [ &quot;y = Set.union x y&quot; ],
@@ -2446,13 +2509,13 @@ val rs : Imandra_reasoning.Decompose.t list =
 }</textarea><div class="decompose-foamtree"></div><div class="decompose-details"><div class="decompose-details-header">Regions details</div><div class="decompose-details-no-selection">No group selected.</div><div class="decompose-details-selection hidden"><div><span class="decompose-details-label">Direct sub-regions: </span><span class="decompose-details-direct-sub-regions-text">-</span></div><div><span class="decompose-details-label">Contained regions: </span><span class="decompose-details-contained-regions-text">-</span></div><div class="decompose-details-section-header">Constraints</div><div class="decompose-details-constraints"><pre class="decompose-details-constraint">&lt;constraint&gt;</pre></div><div class="decompose-details-invariant"><div class="decompose-details-section-header">Invariant</div><pre class="decompose-details-invariant-text">&lt;invariant&gt;</pre></div></div></div><script>
 (function () {
   require(['nbextensions/nbimandra/regions'], function (regions) {
-    var target = '#decompose-7cb48269-b146-4a32-b30c-ca7e9d199e9b';
+    var target = '#decompose-3a37f140-16b0-4646-9d65-5f281e76867e';
     regions.hydrate(target);
   });
 })();
-</script></div></div><div class="tab-pane"><div><div class="imandra-table" id="table-95cacf3f-9b5f-419c-ba18-fad8db530078"><table><thead><tr><th>Constraints</th><th>Invariant</th></tr></thead><tr><td><ul><li><pre>not (y = Set.union x y)</pre></li></ul></td><td><pre>F = Map.add' (Map.const false) z true</pre></td></tr><tr><td><ul><li><pre>y = Set.union x y</pre></li></ul></td><td><pre>F = Map.add' x z true</pre></td></tr></table></div></div></div></div><script>
+</script></div></div><div class="tab-pane"><div><div class="imandra-table" id="table-6470c208-e5f7-4bc1-87ae-ac5ebf3320c1"><table><thead><tr><th>Constraints</th><th>Invariant</th></tr></thead><tr><td><ul><li><pre>not (y = Set.union x y)</pre></li></ul></td><td><pre>F = Map.add' (Map.const false) z true</pre></td></tr><tr><td><ul><li><pre>y = Set.union x y</pre></li></ul></td><td><pre>F = Map.add' x z true</pre></td></tr></table></div></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-c1840d04-ef68-4999-bf75-43c99ad5f718';
+  var target = '#alt-eacb23fd-9ef3-455b-bc2c-8be62c908b8b';
   alternatives.hydrate(target);
 });
 </script></div>
@@ -2468,15 +2531,13 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>It seems like <code>Region_pp</code> could do a better job here:</p>
+<div class="text_cell_render border-box-sizing rendered_html"><p>It seems like <code>Region_pp</code> could do a better job here:</p>
 <ul>
 <li><code>Set.subset x y</code> is printed as <code>Set.union x y = y</code> </li>
 <li><code>Set.add x y</code> is printed as <code>Map.add x y true</code></li>
 <li><code>Set.add z (Set.empty)</code> is printed as <code>Map.add' (Map.const false) z true</code> instead of using a more desiderable set syntax like <code>{ z }</code></li>
 </ul>
 <p>Let's use the extension mechanisms of <code>Region_pp</code> to achieve just that:</p>
-
 </div>
 </div>
 </div>
@@ -2698,15 +2759,13 @@ val print :
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>Let's look at what we've done:</p>
+<div class="text_cell_render border-box-sizing rendered_html"><p>Let's look at what we've done:</p>
 <ul>
 <li>first we've defined a <code>Custom</code> module whose signature includes the signature of <code>Region_pp.SIG</code>, defining <code>map</code>ping, <code>print</code>ing and <code>compare</code>ing functions for an abstract <code>Set</code> value</li>
 <li>next we instantiate <code>Region_pp.PP</code> using this <code>Custom</code> module, creating a <code>PPrinter</code> module that is <code>Set</code>-aware</li>
 <li>finally we define a <code>refine</code> function that transforms a <code>PPrinter.node</code> into custom <code>Set</code> values or converts <code>Map.</code> invocations into appropriate <code>Set.</code> ones.</li>
 </ul>
 <p>Let's install this printer and look at the regions again:</p>
-
 </div>
 </div>
 </div>
@@ -2765,14 +2824,12 @@ val print :
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>Great! Exactly what we wanted to be printed.</p>
+<div class="text_cell_render border-box-sizing rendered_html"><p>Great! Exactly what we wanted to be printed.</p>
 <p><code>Region_pp</code> provides more extension hooks and utilities than just the <code>PP</code> functor and <code>~refine</code>, but we'll go over that in more detail in a dedicated notebook.</p>
 <p>Let's explore the last <code>imandra-tools</code> module</p>
 <h1 id="Term-Synthesizer-(Term_synth)">Term Synthesizer (Term_synth)<a class="anchor-link" href="#Term-Synthesizer-(Term_synth)">&#182;</a></h1><p><code>Imandra</code>'s ability to both reify failed proofs into counter-examples and sample values from regions provides a lot of power. <code>Term_synth</code> extends this power, allowing <code>Imandra</code> to synthesize any <code>Term</code> (such as a regions' constraints or invariant) as code.</p>
 <p>This, combined with <code>Imandra</code>'s decomposition facilities, allow us to generate powerful and complete regression test suites, analyse existing test suites to detect region coverage, and much more.</p>
 <p>Let's see a quick example of how this works in practice:</p>
-
 </div>
 </div>
 </div>
@@ -2827,8 +2884,7 @@ val region_1 : &#39;a Set.t -&gt; &#39;a Set.t -&gt; bool = &lt;fun&gt;
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>The above should be quite straightforward:</p>
+<div class="text_cell_render border-box-sizing rendered_html"><p>The above should be quite straightforward:</p>
 <ul>
 <li>We extract the constraints from the region</li>
 <li>We convert each constraint to a <code>Term</code>, using Imandra's <code>Expr_trans</code> facility and we conjoin them into a single <code>Term</code></li>
@@ -2836,7 +2892,6 @@ val region_1 : &#39;a Set.t -&gt; &#39;a Set.t -&gt; bool = &lt;fun&gt;
 <li>Finally we generate a string representation of a function using the synthesized term as its body, and evaluate it</li>
 </ul>
 <p>We can start playing with those functions immediately:</p>
-
 </div>
 </div>
 </div>
@@ -2889,10 +2944,8 @@ val region_1 : &#39;a Set.t -&gt; &#39;a Set.t -&gt; bool = &lt;fun&gt;
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>Great! <code>region_0</code> is now a boolean function that checks whether or not certain values of <code>x</code> and <code>y</code> belong to the region of behaviour 0. <code>region_1</code> does the same for the region of behaviour 1.</p>
+<div class="text_cell_render border-box-sizing rendered_html"><p>Great! <code>region_0</code> is now a boolean function that checks whether or not certain values of <code>x</code> and <code>y</code> belong to the region of behaviour 0. <code>region_1</code> does the same for the region of behaviour 1.</p>
 <p>This ability to generate <em>total</em> functions from <em>partial regions of behaviour</em> is immensely powerful and at the core of <code>Idf</code> and other powerful analysis tools we build.</p>
-
 </div>
 </div>
 </div>

@@ -9,6 +9,7 @@
         <meta property="og:description" content="Getting set up with a local installation of Imandra">
         <meta property="og:image" content="https://storage.googleapis.com/imandra-assets/images/og_image_default_i78.jpg">
 
+
         
         <!-- Global site tag (gtag.js) - Google Analytics -->
         <script async src="https://www.googletagmanager.com/gtag/js?id=UA-116937440-6"></script>
@@ -34,7 +35,7 @@
         <link rel="stylesheet" href="/imandra-docs/static/nbextensions/nbimandra/styles.c7ed3d1a.css" type="text/css">
         <link rel="stylesheet" href="/imandra-docs/static/docs-styles.86fc0481.css" type="text/css">
         
-        <link rel="stylesheet" href="/imandra-docs/static/jekyll-styles.04a0e3a4.css" type="text/css">
+        <link rel="stylesheet" href="/imandra-docs/static/jekyll-styles.73f39aa7.css" type="text/css">
         
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
@@ -134,7 +135,88 @@
         }
     });
     </script>
-    <!-- End of mathjax configuration --></head>
+    <!-- End of mathjax configuration --><script>
+  function handleCopyClick() {
+      var el = this;
+      var terminal = el.closest('.terminal');
+      var highlight = terminal.getElementsByClassName('highlight')[0];
+      copyToClipboardMsg(highlight);
+
+      terminal.classList.add('terminal--hide');
+      setTimeout(function () {
+          terminal.classList.remove('terminal--hide');
+      }, 2000);
+
+
+      function copyToClipboardMsg(elem) {
+          var succeed = copyToClipboard(elem);
+          var msg;
+          if (!succeed) {
+              msg = 'Error!';
+          } else {
+              msg = 'Copied!';
+          }
+
+          var msgElem = terminal.querySelector('.terminal__copy-msg');
+          msgElem.innerHTML = msg;
+          setTimeout(function () {
+              msgElem.innerHTML = 'You rock!';
+          }, 1000);
+      }
+
+      function copyToClipboard(elem) {
+          // create hidden text element, if it doesn't already exist
+          var targetId = '_hiddenCopyText_';
+          var isInput = elem.tagName === 'INPUT' || elem.tagName === 'TEXTAREA';
+          var origSelectionStart, origSelectionEnd;
+          if (isInput) {
+              // can just use the original source element for the selection and copy
+              target = elem;
+              origSelectionStart = elem.selectionStart;
+              origSelectionEnd = elem.selectionEnd;
+          } else {
+              // must use a temporary form element for the selection and copy
+              target = terminal.querySelector('#' + targetId);
+              if (!target) {
+                  var target = document.createElement('textarea');
+                  // target.style.display = 'flex';
+                  // target.style.position = 'absolute';
+                  // target.style.left = '-1000%';
+                  target.id = targetId;
+                 elem.appendChild(target);
+              }
+              target.textContent = elem.textContent.trim();
+          }
+          
+          // select the content
+          var currentFocus = document.activeElement;
+          target.focus();
+          target.setSelectionRange(0, target.value.length);
+
+          // copy the selection
+          var succeed;
+          try {
+              succeed = document.execCommand('copy');
+          } catch (e) {
+              succeed = false;
+          }
+          // restore original focus
+          if (currentFocus && typeof currentFocus.focus === 'function') {
+              currentFocus.focus();
+          }
+
+          if (isInput) {
+              // restore prior selection
+              elem.setSelectionRange(origSelectionStart, origSelectionEnd);
+          } else {
+              // clear temporary content
+              elem.removeChild(target);
+          }
+          return succeed;
+      }
+  }
+</script>
+    </head>
     <body>
         <div class="background">
         </div>
@@ -463,12 +545,10 @@
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Installation">Installation<a class="anchor-link" href="#Installation">&#182;</a></h1><p>Next, we’ll set up a local installation of the Imandra client - we recommend you follow through the rest of the documentation with the client running and type out the examples yourself, in order to help things stick as you learn them.</p>
+<div class="text_cell_render border-box-sizing rendered_html"><h1 id="Installation">Installation<a class="anchor-link" href="#Installation">&#182;</a></h1><p>Next, we’ll set up a local installation of the Imandra client - we recommend you follow through the rest of the documentation with the client running and type out the examples yourself, in order to help things stick as you learn them.</p>
 <h1 id="Simple-Installer-(macOS-and-Linux-only)">Simple Installer (macOS and Linux only)<a class="anchor-link" href="#Simple-Installer-(macOS-and-Linux-only)">&#182;</a></h1><p>If you’re new to the OCaml ecosystem, the simplest way to go from zero to a working Imandra installation is to use the <a href="/imandra-docs/notebooks/installation-simple/">Imandra simple installer</a>.</p>
 <h1 id="Docker-Installer">Docker Installer<a class="anchor-link" href="#Docker-Installer">&#182;</a></h1><p>If you don't want to bother with setting up a native environment, you can use our <a href="/imandra-docs/notebooks/installation-docker/">docker image</a></p>
 <h1 id="VSCode">VSCode<a class="anchor-link" href="#VSCode">&#182;</a></h1><p>Once you've got a working Imandra installation, you may find it helpful to <a href="/imandra-docs/notebooks/installation-vscode/">install our VSCode extension</a> to aid development.</p>
-
 </div>
 </div>
 </div>
