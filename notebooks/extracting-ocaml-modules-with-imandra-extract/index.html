@@ -2,11 +2,11 @@
 <html>
     <head><meta charset="utf-8" />
         <meta content="width=device-width, initial-scale=1.0" name="viewport">
-        <title>Imandra Documentation - Installation - VSCode</title>
-        <meta property="og:url" content="https://docs.imandra.ai/imandra-docs/notebooks/installation-vscode/">
+        <title>Imandra Documentation - Extracting OCaml modules with imandra-extract</title>
+        <meta property="og:url" content="https://docs.imandra.ai/imandra-docs/notebooks/extracting-ocaml-modules-with-imandra-extract/">
         <meta property="og:type" content="website">
-        <meta property="og:title" content="Imandra Documentation - Installation - VSCode">
-        <meta property="og:description" content="Installing the Imandra IDE plugin in VSCode">
+        <meta property="og:title" content="Imandra Documentation - Extracting OCaml modules with imandra-extract">
+        <meta property="og:description" content="How to use your verified code as an OCaml module">
         <meta property="og:image" content="https://storage.googleapis.com/imandra-assets/images/og_image_default_i78.jpg">
 
 
@@ -291,7 +291,7 @@
                                     </li>
                                     
                                     <li class="side__nav-list-item--sub-level-2">
-                                        <a class="side__nav-link side__nav-link--active" href="/imandra-docs/notebooks/installation-vscode">VSCode</a>
+                                        <a class="side__nav-link" href="/imandra-docs/notebooks/installation-vscode">VSCode</a>
                                         
                                     </li>
                                     
@@ -384,7 +384,7 @@
                             
                             <li class="side__nav-list-item--sub-level-1">
                                 
-                                <a class="side__nav-link" href="/imandra-docs/notebooks/extracting-ocaml-modules-with-imandra-extract">Extracting OCaml modules with imandra-extract</a>
+                                <a class="side__nav-link side__nav-link--active" href="/imandra-docs/notebooks/extracting-ocaml-modules-with-imandra-extract">Extracting OCaml modules with imandra-extract</a>
                                 
                                 <ul class="side__nav-list--sub-level-2">
                                     
@@ -554,19 +554,110 @@
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html"><h1 id="VS-Code">VS Code<a class="anchor-link" href="#VS-Code">&#182;</a></h1><p>If you use VS Code, you can also install the <a href="https://marketplace.visualstudio.com/items?itemName=aestheticintegration.iml-vscode">Imandra IDE Extension</a> plugin to help with development, providing things like completion and syntax highlighting. We also have a version in development which incorporates automatic proof and refutation information as you type. In order to install the standard extension, first follow the instructions above for installing imandra. Then in VSCode itself VSCode go to the extensions view by following the instructions about the <a href="https://code.visualstudio.com/docs/editor/extension-gallery">Extension Marketplace</a> and searching for <code>Imandra IDE</code>.</p>
-<p>The extension will open automatically when a file with extension <code>.iml</code> or <code>.ire</code> is opened. The extension will look for the correct version of <code>ocamlmerlin</code> on the opam switch associated with the folder in which the opened <code>.iml</code> or <code>.ire</code> file resides (defaulting to the current global switch). We recommend that the current global switch is that produced by the <a href="/imandra-docs/notebooks/installation-simple/">recommended installation</a> of imandra, as that contains all the artifacts to facilitate correct imandra type inference and other language server features. Below are example images of the type information the Imandra IDE provides in VSCode.</p>
-<table style="width:100%">
-<tr>
-    <th><img src="https://storage.googleapis.com/imandra-assets/images/docs/ImandraVSCodeIDE1.png"></th>
-    <th><img src = "https://storage.googleapis.com/imandra-assets/images/docs/ImandraVSCodeIDE2.png"></th>
-</tr>
-</table></div>
+<div class="text_cell_render border-box-sizing rendered_html"><h1 id="Extracting-OCaml-modules-with-imandra-extract">Extracting OCaml modules with <code>imandra-extract</code><a class="anchor-link" href="#Extracting-OCaml-modules-with-imandra-extract">&#182;</a></h1><p>When developing code with Imandra, we write our programs in <code>.iml</code> (Imandra-ml),
+or <code>.ire</code> (Imandra-reason) for Reason syntax.</p>
+<p>Imandra deviates from 'standard' <code>.ml</code> to provide a few conveniences to help
+make verifying code simpler. For example, int and rational literals are parsed
+as values of the arbitrary precision <code>Z.t</code> and <code>Q.t</code> types, rather than standard
+machine integers and floats which are much harder to reason about.</p>
+<p>Imandra also comes with its own prelude of functions that have been
+pre-verified, <code>imandra-prelude</code>.</p>
+<p>As well as reasoning about them, you can execute your <code>.iml</code> and <code>.ire</code> programs
+directly with Imandra itself. However at some point you will probably want to
+compile a verified module or group of modules into a larger program using an
+OCaml toolchain (either the standard OCaml toolchain or Bucklescript). This is
+where <code>imandra-extract</code> fits in, allowing you to extract <code>.ml</code> and <code>.re</code> files.</p>
+<p>The <code>imandra-extract</code> binary comes bundled with your <a href="/imandra-docs/notebooks/installation/">Imandra
+installation</a>.</p>
+<h2 id="Example">Example<a class="anchor-link" href="#Example">&#182;</a></h2></div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html"><div class="highlight"><pre><span></span><span class="k">let</span> <span class="n">int_of_bit</span> <span class="o">(</span><span class="n">a</span> <span class="o">:</span> <span class="kt">bool</span><span class="o">)</span> <span class="o">:</span> <span class="nn">Z</span><span class="p">.</span><span class="n">t</span> <span class="o">=</span>
+ <span class="k">if</span> <span class="n">a</span> <span class="k">then</span> <span class="mi">1</span> <span class="k">else</span> <span class="mi">0</span>
+
+<span class="k">let</span> <span class="k">rec</span> <span class="n">int_of_bits</span> <span class="o">(</span><span class="n">a</span> <span class="o">:</span> <span class="kt">bool</span> <span class="kt">list</span><span class="o">)</span> <span class="o">:</span> <span class="nn">Z</span><span class="p">.</span><span class="n">t</span> <span class="o">=</span>
+  <span class="k">match</span> <span class="n">a</span> <span class="k">with</span>
+   <span class="o">|</span> <span class="bp">[]</span> <span class="o">-&gt;</span> <span class="mi">0</span>
+   <span class="o">|</span> <span class="n">a</span> <span class="o">::</span> <span class="n">a&#39;</span> <span class="o">-&gt;</span> <span class="n">int_of_bit</span> <span class="n">a</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="o">(</span><span class="n">int_of_bits</span> <span class="n">a&#39;</span><span class="o">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html"><p>We can then use <code>imandra-extract</code> on this file:</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html"><div class="highlight"><pre><span></span>imandra-extract my_module.iml -o my_module.ml
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html"><p>This creates an <code>.ml</code> file similar to the following:</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html"><div class="highlight"><pre><span></span><span class="c">(* generated by imandra-extract from &quot;my_module.iml&quot; *)</span>
+
+<span class="k">open</span> <span class="nc">Imandra_prelude</span><span class="o">;;</span>
+
+<span class="c">(* start generated code here *)</span>
+
+
+
+<span class="o">#</span><span class="mi">1</span> <span class="s2">&quot;test.iml&quot;</span>
+<span class="k">let</span> <span class="n">int_of_bit</span> <span class="o">(</span><span class="n">a</span> <span class="o">:</span> <span class="kt">bool</span><span class="o">)</span> <span class="o">=</span>
+                <span class="o">(</span><span class="k">if</span> <span class="n">a</span> <span class="k">then</span> <span class="nn">Z</span><span class="p">.</span><span class="n">of_string</span> <span class="s2">&quot;1&quot;</span> <span class="k">else</span> <span class="nn">Z</span><span class="p">.</span><span class="n">of_string</span> <span class="s2">&quot;0&quot;</span> <span class="o">:</span> <span class="nn">Z</span><span class="p">.</span><span class="n">t</span><span class="o">)</span>
+
+<span class="o">#</span><span class="mi">4</span> <span class="s2">&quot;test.iml&quot;</span>
+<span class="k">let</span> <span class="k">rec</span> <span class="n">int_of_bits</span> <span class="o">(</span><span class="n">a</span> <span class="o">:</span> <span class="kt">bool</span> <span class="kt">list</span><span class="o">)</span> <span class="o">=</span>
+                <span class="o">(</span><span class="k">match</span> <span class="n">a</span> <span class="k">with</span>
+                 <span class="o">|</span> <span class="bp">[]</span> <span class="o">-&gt;</span> <span class="nn">Z</span><span class="p">.</span><span class="n">of_string</span> <span class="s2">&quot;0&quot;</span>
+                 <span class="o">|</span> <span class="n">a</span><span class="o">::</span><span class="n">a&#39;</span> <span class="o">-&gt;</span>
+                     <span class="o">(</span><span class="n">int_of_bit</span> <span class="n">a</span><span class="o">)</span> <span class="o">+</span> <span class="o">((</span><span class="nn">Z</span><span class="p">.</span><span class="n">of_string</span> <span class="s2">&quot;2&quot;</span><span class="o">)</span> <span class="o">*</span> <span class="o">(</span><span class="n">int_of_bits</span> <span class="n">a&#39;</span><span class="o">))</span> <span class="o">:</span>
+                <span class="nn">Z</span><span class="p">.</span><span class="n">t</span><span class="o">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html"><p>As you can see, the literals are wrapped with the appropriate <code>Z</code> conversion
+functions, and the <code>Imandra_prelude</code> module has been opened (which is opened
+implicitly when running Imandra).</p>
+<p>As this is now just a regular <code>.ml</code> program, it can be compiled alongside other
+OCaml modules - you will however need to install the extracted <code>imandra-prelude</code>
+as a dependency in your project. View the project and README for
+<code>imandra-prelude</code> on GitHub: <a href="https://github.com/aestheticIntegration/imandra-prelude">https://github.com/aestheticIntegration/imandra-prelude</a>.</p>
+</div>
 </div>
 </div>
                     </div>
 
-                    </article>
+                    <div class="sidebar-right">
+                        <div class="sidebar-right__menu">
+                            
+                            <a class="sidebar-right__menu-item sidebar-right__menu-item--h1" href="#Extracting-OCaml-modules-with-imandra-extract">Extracting OCaml modules with imandra-extract</a>
+                            
+                            <a class="sidebar-right__menu-item sidebar-right__menu-item--h2" href="#Example">Example</a>
+                            
+                        </div>
+                    </div></article>
             </main>
             <footer class="Footer">
                 <a class="Copyrights"href="http://imandra.ai">&#9400; 2018 Aesthetic Integration Ltd. All rights reserved.</a>
