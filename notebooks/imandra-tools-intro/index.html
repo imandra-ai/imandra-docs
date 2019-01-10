@@ -971,7 +971,9 @@ module D :
         val events_of_region :
           arg:Imandra_prelude.Caml.Int.t -&gt;
           signature:Imandra_prelude.string -&gt;
-          Imandra_tools__Idf.Decompose.t -&gt; event Imandra_tools__Idf.gen
+          Imandra_tools__Idf.Decompose.t -&gt;
+          (Imandra_surface.Top_result.term_model * event)
+          Imandra_tools__Idf.gen
       end
     module Strategy :
       sig
@@ -980,17 +982,19 @@ module D :
             type state = DecompositionConfig.state
             type event = DecompositionConfig.event
             type node_t = DecompositionConfig.state
-            type edge_t = DecompositionConfig.event
             val module_name : Imandra_prelude.string
             val root_node : node_t
             val node_tpl_for_target : node_t -&gt; Imandra_prelude.string
             val node_tpl_for_side_cond : node_t -&gt; Imandra_prelude.string
+            val node_hash : node_t -&gt; Imandra_prelude.Caml.Int.t
+            val node_equal : node_t -&gt; node_t -&gt; bool
             val step_into_region :
               node:node_t -&gt;
               signature:Imandra_prelude.string -&gt;
               Imandra_prelude.Caml.Int.t -&gt;
               Imandra_tools__Idf.Decompose.t -&gt;
-              (event * node_t) Imandra_tools__Idf.gen
+              (Imandra_surface.Top_result.term_model * event * node_t)
+              Imandra_tools__Idf.gen
             val strategy : Imandra_tools__Idf.strategy
           end
         type node_t =
@@ -1002,17 +1006,19 @@ module D :
             type state = DecompositionConfig.state
             type event = DecompositionConfig.event
             type node_t = node_t
-            type edge_t = Imandra_surface.Term.t list
             val module_name : Imandra_prelude.string
             val root_node : node_t
             val node_tpl_for_target : node_t -&gt; Imandra_prelude.string
             val node_tpl_for_side_cond : node_t -&gt; Imandra_prelude.string
+            val node_hash : node_t -&gt; Imandra_prelude.Caml.Int.t
+            val node_equal : node_t -&gt; node_t -&gt; bool
             val step_into_region :
               node:node_t -&gt;
               signature:Imandra_prelude.string -&gt;
               Imandra_prelude.Caml.Int.t -&gt;
               Imandra_tools__Idf.Decompose.t -&gt;
-              (event * node_t) Imandra_tools__Idf.gen
+              (Imandra_surface.Top_result.term_model * event * node_t)
+              Imandra_tools__Idf.gen
             val strategy : Imandra_tools__Idf.strategy
           end
       end
@@ -1022,17 +1028,19 @@ module D :
                type state = DecompositionConfig.state
                type event = DecompositionConfig.event
                type node_t
-               type edge_t
                val module_name : Imandra_prelude.string
                val root_node : node_t
                val node_tpl_for_target : node_t -&gt; Imandra_prelude.string
                val node_tpl_for_side_cond : node_t -&gt; Imandra_prelude.string
+               val node_hash : node_t -&gt; Imandra_prelude.Caml.Int.t
+               val node_equal : node_t -&gt; node_t -&gt; bool
                val step_into_region :
                  node:node_t -&gt;
                  signature:Imandra_prelude.string -&gt;
                  Imandra_prelude.Caml.Int.t -&gt;
                  Imandra_tools__Idf.Decompose.t -&gt;
-                 (event * node_t) Imandra_tools__Idf.gen
+                 (Imandra_surface.Top_result.term_model * event * node_t)
+                 Imandra_tools__Idf.gen
                val strategy : Imandra_tools__Idf.strategy
              end) -&gt;
         sig
@@ -1040,6 +1048,7 @@ module D :
             sample : S.event;
             region : Imandra_tools__Idf.Decompose.t;
             signature : Imandra_prelude.string;
+            model : Imandra_surface.Top_result.term_model;
           }
           type indexed_state = {
             state : S.node_t;
@@ -1120,7 +1129,7 @@ module D :
             end
           type step = indexed_state * decomp_step * indexed_state
           type path = step list
-          type t = path L.t * G.t option
+          type t = path L.t * G.t
           val paths : ?v:G.vertex -&gt; G.t -&gt; path L.t
           val region_of_path : path -&gt; Imandra_tools__Idf.Decompose.t list
           val regions : path L.t -&gt; Imandra_tools__Idf.Decompose.t list L.t
@@ -1162,17 +1171,19 @@ module D :
                type state = DecompositionConfig.state
                type event = DecompositionConfig.event
                type node_t
-               type edge_t
                val module_name : Imandra_prelude.string
                val root_node : node_t
                val node_tpl_for_target : node_t -&gt; Imandra_prelude.string
                val node_tpl_for_side_cond : node_t -&gt; Imandra_prelude.string
+               val node_hash : node_t -&gt; Imandra_prelude.Caml.Int.t
+               val node_equal : node_t -&gt; node_t -&gt; bool
                val step_into_region :
                  node:node_t -&gt;
                  signature:Imandra_prelude.string -&gt;
                  Imandra_prelude.Caml.Int.t -&gt;
                  Imandra_tools__Idf.Decompose.t -&gt;
-                 (event * node_t) Imandra_tools__Idf.gen
+                 (Imandra_surface.Top_result.term_model * event * node_t)
+                 Imandra_tools__Idf.gen
                val strategy : Imandra_tools__Idf.strategy
              end) -&gt;
         sig
@@ -1181,6 +1192,7 @@ module D :
             sample : S.event;
             region : Imandra_tools__Idf.Decompose.t;
             signature : Imandra_prelude.string;
+            model : Imandra_surface.Top_result.term_model;
           }
           type indexed_state =
             Imandra_tools__Idf.Make(DecompositionConfig)(Mex)(Template).WithStrategy(S).indexed_state = {
@@ -1285,7 +1297,7 @@ module D :
             end
           type step = indexed_state * decomp_step * indexed_state
           type path = step list
-          type t = path L.t * G.t option
+          type t = path L.t * G.t
           val paths : ?v:G.vertex -&gt; G.t -&gt; path L.t
           val region_of_path : path -&gt; Imandra_tools__Idf.Decompose.t list
           val regions : path L.t -&gt; Imandra_tools__Idf.Decompose.t list L.t
@@ -1328,6 +1340,7 @@ module D :
           sample : Strategy.Concrete.event;
           region : Imandra_tools__Idf.Decompose.t;
           signature : Imandra_prelude.string;
+          model : Imandra_surface.Top_result.term_model;
         }
         type indexed_state =
           WithStrategy(Strategy.Concrete).indexed_state = {
@@ -1425,7 +1438,7 @@ module D :
           end
         type step = indexed_state * decomp_step * indexed_state
         type path = step list
-        type t = path L.t * G.t option
+        type t = path L.t * G.t
         val paths : ?v:G.vertex -&gt; G.t -&gt; path L.t
         val region_of_path : path -&gt; Imandra_tools__Idf.Decompose.t list
         val regions : path L.t -&gt; Imandra_tools__Idf.Decompose.t list L.t
@@ -1474,6 +1487,7 @@ module D :
           sample : Strategy.Symbolic.event;
           region : Imandra_tools__Idf.Decompose.t;
           signature : Imandra_prelude.string;
+          model : Imandra_surface.Top_result.term_model;
         }
         type indexed_state =
           WithStrategy(Strategy.Symbolic).indexed_state = {
@@ -1571,7 +1585,7 @@ module D :
           end
         type step = indexed_state * decomp_step * indexed_state
         type path = step list
-        type t = path L.t * G.t option
+        type t = path L.t * G.t
         val paths : ?v:G.vertex -&gt; G.t -&gt; path L.t
         val region_of_path : path -&gt; Imandra_tools__Idf.Decompose.t list
         val regions : path L.t -&gt; Imandra_tools__Idf.Decompose.t list L.t
@@ -1693,7 +1707,13 @@ val first_path : D.Symbolic.path =
       D.Strategy.Expr ({Model.counter = 0; Model.default = 23}, []);
      idx = 0i},
     {D.Symbolic.sample = Model.Add 1337; region = &lt;abstr&gt;;
-     signature = &#34;imandra_gensym__4&#34;},
+     signature = &#34;imandra_gensym__4&#34;;
+     model =
+      {Imandra_surface.Term.Model.tys = [];
+       consts =
+        [((e : DecompositionConfig.event list),
+          [Model.Add 1337; Model.Add 1; Model.Reset])];
+       funs = []}},
     {D.Symbolic.state =
       D.Strategy.Expr
        ({Model.counter = Destruct(Model.Add, 0, List.hd e);
@@ -1713,7 +1733,13 @@ val first_path : D.Symbolic.path =
          Destruct(Model.Add, 0, List.hd e) &lt;= 9000]);
      idx = 1i},
     {D.Symbolic.sample = Model.Add 1; region = &lt;abstr&gt;;
-     signature = &#34;imandra_gensym__34&#34;},
+     signature = &#34;imandra_gensym__34&#34;;
+     model =
+      {Imandra_surface.Term.Model.tys = [];
+       consts =
+        [((e : Model.message list),
+          [Model.Add 1337; Model.Add 1; Model.Reset])];
+       funs = []}},
     {D.Symbolic.state =
       D.Strategy.Expr
        ({Model.counter = 23; Model.default = 23},
@@ -1735,7 +1761,13 @@ val first_path : D.Symbolic.path =
          not (List.hd e = Model.Reset)]);
      idx = 2i},
     {D.Symbolic.sample = Model.Reset; region = &lt;abstr&gt;;
-     signature = &#34;imandra_gensym__60&#34;},
+     signature = &#34;imandra_gensym__60&#34;;
+     model =
+      {Imandra_surface.Term.Model.tys = [];
+       consts =
+        [((e : DecompositionConfig.event list),
+          [Model.Add 1337; Model.Add 0; Model.Reset])];
+       funs = []}},
     {D.Symbolic.state =
       D.Strategy.Expr
        ({Model.counter = 0; Model.default = 23},
@@ -1759,7 +1791,7 @@ val first_path : D.Symbolic.path =
 
 
 <div class="output_html rendered_html output_subarea ">
-<div class="imandra-alternatives" id="alt-85b5e5f3-984c-40b6-9812-5ea64812b92e"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-153eddde-79a3-4efa-b180-52168c9570b2" class="decompose"><textarea class="display-none">{
+<div class="imandra-alternatives" id="alt-71be3796-075d-4b89-8637-f18fbf9f2b4d"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-ff5e89d4-c6ad-4c4f-8aff-233f0629f9eb" class="decompose"><textarea class="display-none">{
   &quot;regions&quot;: [
     {
       &quot;constraints&quot;: [
@@ -1861,13 +1893,13 @@ val first_path : D.Symbolic.path =
 }</textarea><div class="decompose-foamtree"></div><div class="decompose-details"><div class="decompose-details-header">Regions details</div><div class="decompose-details-no-selection">No group selected.</div><div class="decompose-details-selection hidden"><div><span class="decompose-details-label">Direct sub-regions: </span><span class="decompose-details-direct-sub-regions-text">-</span></div><div><span class="decompose-details-label">Contained regions: </span><span class="decompose-details-contained-regions-text">-</span></div><div class="decompose-details-section-header">Constraints</div><div class="decompose-details-constraints"><pre class="decompose-details-constraint">&lt;constraint&gt;</pre></div><div class="decompose-details-invariant"><div class="decompose-details-section-header">Invariant</div><pre class="decompose-details-invariant-text">&lt;invariant&gt;</pre></div></div></div><script>
 (function () {
   require(['nbextensions/nbimandra/regions'], function (regions) {
-    var target = '#decompose-153eddde-79a3-4efa-b180-52168c9570b2';
+    var target = '#decompose-ff5e89d4-c6ad-4c4f-8aff-233f0629f9eb';
     regions.hydrate(target);
   });
 })();
-</script></div></div><div class="tab-pane"><div><div class="imandra-table" id="table-8da23c36-192a-4db8-a2d7-13b4fca4df20"><table><thead><tr><th>Constraints</th><th>Invariant</th></tr></thead><tr><td><ul><li><pre>List.tl (List.tl (List.tl e)) = []</pre></li><li><pre>(List.tl (List.tl e)) &lt;&gt; []</pre></li><li><pre>Is_a(Model.Add, List.hd (List.tl e))</pre></li><li><pre>(List.tl e) &lt;&gt; []</pre></li><li><pre>e &lt;&gt; []</pre></li><li><pre>List.hd e = Model.Reset</pre></li></ul></td><td><pre>F = {Model.counter = 0; Model.default = 23}</pre></td></tr><tr><td><ul><li><pre>List.tl (List.tl (List.tl e)) = []</pre></li><li><pre>(List.tl (List.tl e)) &lt;&gt; []</pre></li><li><pre>Is_a(Model.Add, List.hd (List.tl e))</pre></li><li><pre>(List.tl e) &lt;&gt; []</pre></li><li><pre>e &lt;&gt; []</pre></li><li><pre>not (List.hd e = Model.Reset)</pre></li><li><pre>Is_a(Model.Add, List.hd e)</pre></li><li><pre>not (Destruct(Model.Add, 0, List.hd e) &lt;= 9000)</pre></li></ul></td><td><pre>F = {Model.counter = 0; Model.default = 23}</pre></td></tr><tr><td><ul><li><pre>List.tl (List.tl (List.tl e)) = []</pre></li><li><pre>(List.tl (List.tl e)) &lt;&gt; []</pre></li><li><pre>Is_a(Model.Add, List.hd (List.tl e))</pre></li><li><pre>(List.tl e) &lt;&gt; []</pre></li><li><pre>e &lt;&gt; []</pre></li><li><pre>not (List.hd e = Model.Reset)</pre></li><li><pre>Is_a(Model.Add, List.hd e)</pre></li><li><pre>Destruct(Model.Add, 0, List.hd e) &lt;= 9000</pre></li></ul></td><td><pre>F = {Model.counter = Destruct(Model.Add, 0, List.hd e); Model.default = 23}</pre></td></tr></table></div></div></div></div><script>
+</script></div></div><div class="tab-pane"><div><div class="imandra-table" id="table-6b5f321c-b25f-4526-8c24-022c2852a110"><table><thead><tr><th>Constraints</th><th>Invariant</th></tr></thead><tr><td><ul><li><pre>List.tl (List.tl (List.tl e)) = []</pre></li><li><pre>(List.tl (List.tl e)) &lt;&gt; []</pre></li><li><pre>Is_a(Model.Add, List.hd (List.tl e))</pre></li><li><pre>(List.tl e) &lt;&gt; []</pre></li><li><pre>e &lt;&gt; []</pre></li><li><pre>List.hd e = Model.Reset</pre></li></ul></td><td><pre>F = {Model.counter = 0; Model.default = 23}</pre></td></tr><tr><td><ul><li><pre>List.tl (List.tl (List.tl e)) = []</pre></li><li><pre>(List.tl (List.tl e)) &lt;&gt; []</pre></li><li><pre>Is_a(Model.Add, List.hd (List.tl e))</pre></li><li><pre>(List.tl e) &lt;&gt; []</pre></li><li><pre>e &lt;&gt; []</pre></li><li><pre>not (List.hd e = Model.Reset)</pre></li><li><pre>Is_a(Model.Add, List.hd e)</pre></li><li><pre>not (Destruct(Model.Add, 0, List.hd e) &lt;= 9000)</pre></li></ul></td><td><pre>F = {Model.counter = 0; Model.default = 23}</pre></td></tr><tr><td><ul><li><pre>List.tl (List.tl (List.tl e)) = []</pre></li><li><pre>(List.tl (List.tl e)) &lt;&gt; []</pre></li><li><pre>Is_a(Model.Add, List.hd (List.tl e))</pre></li><li><pre>(List.tl e) &lt;&gt; []</pre></li><li><pre>e &lt;&gt; []</pre></li><li><pre>not (List.hd e = Model.Reset)</pre></li><li><pre>Is_a(Model.Add, List.hd e)</pre></li><li><pre>Destruct(Model.Add, 0, List.hd e) &lt;= 9000</pre></li></ul></td><td><pre>F = {Model.counter = Destruct(Model.Add, 0, List.hd e); Model.default = 23}</pre></td></tr></table></div></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-85b5e5f3-984c-40b6-9812-5ea64812b92e';
+  var target = '#alt-71be3796-075d-4b89-8637-f18fbf9f2b4d';
   alternatives.hydrate(target);
 });
 </script></div>
@@ -1883,7 +1915,7 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
 
 
 <div class="output_html rendered_html output_subarea ">
-<div class="imandra-alternatives" id="alt-597871cb-af70-4e43-8643-35f10942233a"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-b75dae51-da55-4620-bd3e-b1d42f6af8c0" class="decompose"><textarea class="display-none">{
+<div class="imandra-alternatives" id="alt-44563770-1593-4e84-9500-694568f103eb"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-67f5e0ee-86ea-4b8d-b837-9b5f08744836" class="decompose"><textarea class="display-none">{
   &quot;regions&quot;: [
     {
       &quot;constraints&quot;: [
@@ -1994,11 +2026,11 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
 }</textarea><div class="decompose-foamtree"></div><div class="decompose-details"><div class="decompose-details-header">Regions details</div><div class="decompose-details-no-selection">No group selected.</div><div class="decompose-details-selection hidden"><div><span class="decompose-details-label">Direct sub-regions: </span><span class="decompose-details-direct-sub-regions-text">-</span></div><div><span class="decompose-details-label">Contained regions: </span><span class="decompose-details-contained-regions-text">-</span></div><div class="decompose-details-section-header">Constraints</div><div class="decompose-details-constraints"><pre class="decompose-details-constraint">&lt;constraint&gt;</pre></div><div class="decompose-details-invariant"><div class="decompose-details-section-header">Invariant</div><pre class="decompose-details-invariant-text">&lt;invariant&gt;</pre></div></div></div><script>
 (function () {
   require(['nbextensions/nbimandra/regions'], function (regions) {
-    var target = '#decompose-b75dae51-da55-4620-bd3e-b1d42f6af8c0';
+    var target = '#decompose-67f5e0ee-86ea-4b8d-b837-9b5f08744836';
     regions.hydrate(target);
   });
 })();
-</script></div></div><div class="tab-pane"><div><div class="imandra-table" id="table-1fc31c79-ac40-48fb-a442-67a1c52ca969"><table><thead><tr><th>Constraints</th><th>Invariant</th></tr></thead><tr><td><ul><li><pre>e &lt;&gt; []</pre></li><li><pre>Is_a(Model.Add, List.hd e)</pre></li><li><pre>(List.tl e) &lt;&gt; []</pre></li><li><pre>List.tl (List.tl (List.tl e)) = []</pre></li><li><pre>(List.tl (List.tl e)) &lt;&gt; []</pre></li><li><pre>Is_a(Model.Add, List.hd (List.tl e))</pre></li><li><pre>Destruct(Model.Add, 0, List.hd e) &lt;= 9000</pre></li><li><pre>not (Destruct(Model.Add, 0, List.hd e) = 1337)</pre></li><li><pre>not
+</script></div></div><div class="tab-pane"><div><div class="imandra-table" id="table-e7e38ead-b0a4-43f6-9eca-5b17302f5a75"><table><thead><tr><th>Constraints</th><th>Invariant</th></tr></thead><tr><td><ul><li><pre>e &lt;&gt; []</pre></li><li><pre>Is_a(Model.Add, List.hd e)</pre></li><li><pre>(List.tl e) &lt;&gt; []</pre></li><li><pre>List.tl (List.tl (List.tl e)) = []</pre></li><li><pre>(List.tl (List.tl e)) &lt;&gt; []</pre></li><li><pre>Is_a(Model.Add, List.hd (List.tl e))</pre></li><li><pre>Destruct(Model.Add, 0, List.hd e) &lt;= 9000</pre></li><li><pre>not (Destruct(Model.Add, 0, List.hd e) = 1337)</pre></li><li><pre>not
 ((Destruct(Model.Add, 0, List.hd e)
   + Destruct(Model.Add, 0, List.hd (List.tl e)))
  &lt;= 9000)</pre></li></ul></td><td><pre>F = {Model.counter = 0; Model.default = 23}</pre></td></tr><tr><td><ul><li><pre>e &lt;&gt; []</pre></li><li><pre>Is_a(Model.Add, List.hd e)</pre></li><li><pre>(List.tl e) &lt;&gt; []</pre></li><li><pre>List.tl (List.tl (List.tl e)) = []</pre></li><li><pre>(List.tl (List.tl e)) &lt;&gt; []</pre></li><li><pre>Is_a(Model.Add, List.hd (List.tl e))</pre></li><li><pre>Destruct(Model.Add, 0, List.hd e) &lt;= 9000</pre></li><li><pre>not (Destruct(Model.Add, 0, List.hd e) = 1337)</pre></li><li><pre>(Destruct(Model.Add, 0, List.hd e)
@@ -2008,7 +2040,7 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
  Destruct(Model.Add, 0, List.hd e)
  + Destruct(Model.Add, 0, List.hd (List.tl e)); Model.default = 23}</pre></td></tr><tr><td><ul><li><pre>e &lt;&gt; []</pre></li><li><pre>Is_a(Model.Add, List.hd e)</pre></li><li><pre>(List.tl e) &lt;&gt; []</pre></li><li><pre>List.tl (List.tl (List.tl e)) = []</pre></li><li><pre>(List.tl (List.tl e)) &lt;&gt; []</pre></li><li><pre>Is_a(Model.Add, List.hd (List.tl e))</pre></li><li><pre>Destruct(Model.Add, 0, List.hd e) &lt;= 9000</pre></li><li><pre>Destruct(Model.Add, 0, List.hd e) = 1337</pre></li></ul></td><td><pre>F = {Model.counter = 23; Model.default = 23}</pre></td></tr></table></div></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-597871cb-af70-4e43-8643-35f10942233a';
+  var target = '#alt-44563770-1593-4e84-9500-694568f103eb';
   alternatives.hydrate(target);
 });
 </script></div>
@@ -2024,7 +2056,7 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
 
 
 <div class="output_html rendered_html output_subarea ">
-<div class="imandra-alternatives" id="alt-5070cfd2-b3ca-46f4-8313-0a86ad97acfc"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-d42832a7-cbc7-4ddd-a091-442580c3651e" class="decompose"><textarea class="display-none">{
+<div class="imandra-alternatives" id="alt-0618cbe0-82e0-4a7e-b287-fe7f56e3f64f"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-01e106b0-4a9f-4043-90fc-ceb5f8050537" class="decompose"><textarea class="display-none">{
   &quot;regions&quot;: [
     {
       &quot;constraints&quot;: [
@@ -2187,18 +2219,18 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
 }</textarea><div class="decompose-foamtree"></div><div class="decompose-details"><div class="decompose-details-header">Regions details</div><div class="decompose-details-no-selection">No group selected.</div><div class="decompose-details-selection hidden"><div><span class="decompose-details-label">Direct sub-regions: </span><span class="decompose-details-direct-sub-regions-text">-</span></div><div><span class="decompose-details-label">Contained regions: </span><span class="decompose-details-contained-regions-text">-</span></div><div class="decompose-details-section-header">Constraints</div><div class="decompose-details-constraints"><pre class="decompose-details-constraint">&lt;constraint&gt;</pre></div><div class="decompose-details-invariant"><div class="decompose-details-section-header">Invariant</div><pre class="decompose-details-invariant-text">&lt;invariant&gt;</pre></div></div></div><script>
 (function () {
   require(['nbextensions/nbimandra/regions'], function (regions) {
-    var target = '#decompose-d42832a7-cbc7-4ddd-a091-442580c3651e';
+    var target = '#decompose-01e106b0-4a9f-4043-90fc-ceb5f8050537';
     regions.hydrate(target);
   });
 })();
-</script></div></div><div class="tab-pane"><div><div class="imandra-table" id="table-edbfac3b-5495-4569-9153-dc3a5e336fba"><table><thead><tr><th>Constraints</th><th>Invariant</th></tr></thead><tr><td><ul><li><pre>e &lt;&gt; []</pre></li><li><pre>Is_a(Model.Add, List.hd e)</pre></li><li><pre>(List.tl e) &lt;&gt; []</pre></li><li><pre>List.tl (List.tl (List.tl e)) = []</pre></li><li><pre>(List.tl (List.tl e)) &lt;&gt; []</pre></li><li><pre>Is_a(Model.Add, List.hd (List.tl e))</pre></li><li><pre>Destruct(Model.Add, 0, List.hd e) = 1337</pre></li><li><pre>not (List.hd (List.tl (List.tl e)) = Model.Reset)</pre></li><li><pre>not Is_a(Model.Add, List.hd (List.tl (List.tl e)))</pre></li><li><pre>Destruct(Model.Sub, 0, List.hd (List.tl (List.tl e))) &lt;= 23</pre></li></ul></td><td><pre>F =
+</script></div></div><div class="tab-pane"><div><div class="imandra-table" id="table-e20dd0d2-ab5d-4f7b-939f-06d92de3058f"><table><thead><tr><th>Constraints</th><th>Invariant</th></tr></thead><tr><td><ul><li><pre>e &lt;&gt; []</pre></li><li><pre>Is_a(Model.Add, List.hd e)</pre></li><li><pre>(List.tl e) &lt;&gt; []</pre></li><li><pre>List.tl (List.tl (List.tl e)) = []</pre></li><li><pre>(List.tl (List.tl e)) &lt;&gt; []</pre></li><li><pre>Is_a(Model.Add, List.hd (List.tl e))</pre></li><li><pre>Destruct(Model.Add, 0, List.hd e) = 1337</pre></li><li><pre>not (List.hd (List.tl (List.tl e)) = Model.Reset)</pre></li><li><pre>not Is_a(Model.Add, List.hd (List.tl (List.tl e)))</pre></li><li><pre>Destruct(Model.Sub, 0, List.hd (List.tl (List.tl e))) &lt;= 23</pre></li></ul></td><td><pre>F =
 {Model.counter =
  23 + -1 * Destruct(Model.Sub, 0, List.hd (List.tl (List.tl e)));
  Model.default = 23}</pre></td></tr><tr><td><ul><li><pre>e &lt;&gt; []</pre></li><li><pre>Is_a(Model.Add, List.hd e)</pre></li><li><pre>(List.tl e) &lt;&gt; []</pre></li><li><pre>List.tl (List.tl (List.tl e)) = []</pre></li><li><pre>(List.tl (List.tl e)) &lt;&gt; []</pre></li><li><pre>Is_a(Model.Add, List.hd (List.tl e))</pre></li><li><pre>Destruct(Model.Add, 0, List.hd e) = 1337</pre></li><li><pre>not (List.hd (List.tl (List.tl e)) = Model.Reset)</pre></li><li><pre>Is_a(Model.Add, List.hd (List.tl (List.tl e)))</pre></li><li><pre>not (Destruct(Model.Add, 0, List.hd (List.tl (List.tl e))) &lt;= 8977)</pre></li></ul></td><td><pre>F = {Model.counter = 0; Model.default = 23}</pre></td></tr><tr><td><ul><li><pre>e &lt;&gt; []</pre></li><li><pre>Is_a(Model.Add, List.hd e)</pre></li><li><pre>(List.tl e) &lt;&gt; []</pre></li><li><pre>List.tl (List.tl (List.tl e)) = []</pre></li><li><pre>(List.tl (List.tl e)) &lt;&gt; []</pre></li><li><pre>Is_a(Model.Add, List.hd (List.tl e))</pre></li><li><pre>Destruct(Model.Add, 0, List.hd e) = 1337</pre></li><li><pre>not (List.hd (List.tl (List.tl e)) = Model.Reset)</pre></li><li><pre>Is_a(Model.Add, List.hd (List.tl (List.tl e)))</pre></li><li><pre>Destruct(Model.Add, 0, List.hd (List.tl (List.tl e))) &lt;= 8977</pre></li></ul></td><td><pre>F =
 {Model.counter = 23 + Destruct(Model.Add, 0, List.hd (List.tl (List.tl e)));
  Model.default = 23}</pre></td></tr><tr><td><ul><li><pre>e &lt;&gt; []</pre></li><li><pre>Is_a(Model.Add, List.hd e)</pre></li><li><pre>(List.tl e) &lt;&gt; []</pre></li><li><pre>List.tl (List.tl (List.tl e)) = []</pre></li><li><pre>(List.tl (List.tl e)) &lt;&gt; []</pre></li><li><pre>Is_a(Model.Add, List.hd (List.tl e))</pre></li><li><pre>Destruct(Model.Add, 0, List.hd e) = 1337</pre></li><li><pre>List.hd (List.tl (List.tl e)) = Model.Reset</pre></li></ul></td><td><pre>F = {Model.counter = 0; Model.default = 23}</pre></td></tr></table></div></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-5070cfd2-b3ca-46f4-8313-0a86ad97acfc';
+  var target = '#alt-0618cbe0-82e0-4a7e-b287-fe7f56e3f64f';
   alternatives.hydrate(target);
 });
 </script></div>
@@ -2492,7 +2524,7 @@ val rs : Imandra_reasoning.Decompose.t list =
 
 
 <div class="output_html rendered_html output_subarea ">
-<div class="imandra-alternatives" id="alt-977d8a8d-ae8b-4938-8a02-ce595fe8da29"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-8da85a23-6122-4274-9442-da4935aafa49" class="decompose"><textarea class="display-none">{
+<div class="imandra-alternatives" id="alt-120ef7c8-40af-48b6-8c12-771a04393ad8"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-79998d0f-7d32-4a65-ac12-ae6362dd79aa" class="decompose"><textarea class="display-none">{
   &quot;regions&quot;: [
     {
       &quot;constraints&quot;: [ &quot;y = Set.union x y&quot; ],
@@ -2518,13 +2550,13 @@ val rs : Imandra_reasoning.Decompose.t list =
 }</textarea><div class="decompose-foamtree"></div><div class="decompose-details"><div class="decompose-details-header">Regions details</div><div class="decompose-details-no-selection">No group selected.</div><div class="decompose-details-selection hidden"><div><span class="decompose-details-label">Direct sub-regions: </span><span class="decompose-details-direct-sub-regions-text">-</span></div><div><span class="decompose-details-label">Contained regions: </span><span class="decompose-details-contained-regions-text">-</span></div><div class="decompose-details-section-header">Constraints</div><div class="decompose-details-constraints"><pre class="decompose-details-constraint">&lt;constraint&gt;</pre></div><div class="decompose-details-invariant"><div class="decompose-details-section-header">Invariant</div><pre class="decompose-details-invariant-text">&lt;invariant&gt;</pre></div></div></div><script>
 (function () {
   require(['nbextensions/nbimandra/regions'], function (regions) {
-    var target = '#decompose-8da85a23-6122-4274-9442-da4935aafa49';
+    var target = '#decompose-79998d0f-7d32-4a65-ac12-ae6362dd79aa';
     regions.hydrate(target);
   });
 })();
-</script></div></div><div class="tab-pane"><div><div class="imandra-table" id="table-37d1382e-e8c5-44ce-b956-046277bcaae6"><table><thead><tr><th>Constraints</th><th>Invariant</th></tr></thead><tr><td><ul><li><pre>not (y = Set.union x y)</pre></li></ul></td><td><pre>F = Map.add' (Map.const false) z true</pre></td></tr><tr><td><ul><li><pre>y = Set.union x y</pre></li></ul></td><td><pre>F = Map.add' x z true</pre></td></tr></table></div></div></div></div><script>
+</script></div></div><div class="tab-pane"><div><div class="imandra-table" id="table-f510a0f3-3c81-417b-a66a-b277d6bdaf97"><table><thead><tr><th>Constraints</th><th>Invariant</th></tr></thead><tr><td><ul><li><pre>not (y = Set.union x y)</pre></li></ul></td><td><pre>F = Map.add' (Map.const false) z true</pre></td></tr><tr><td><ul><li><pre>y = Set.union x y</pre></li></ul></td><td><pre>F = Map.add' x z true</pre></td></tr></table></div></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-977d8a8d-ae8b-4938-8a02-ce595fe8da29';
+  var target = '#alt-120ef7c8-40af-48b6-8c12-771a04393ad8';
   alternatives.hydrate(target);
 });
 </script></div>
