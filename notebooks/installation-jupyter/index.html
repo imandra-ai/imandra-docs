@@ -2,11 +2,11 @@
 <html>
     <head><meta charset="utf-8" />
         <meta content="width=device-width, initial-scale=1.0" name="viewport">
-        <title>Imandra Documentation - Installation - Docker</title>
-        <meta property="og:url" content="https://docs.imandra.ai/imandra-docs/notebooks/installation-docker/">
+        <title>Imandra Documentation - Installation - Jupyter Notebook</title>
+        <meta property="og:url" content="https://docs.imandra.ai/imandra-docs/notebooks/installation-jupyter/">
         <meta property="og:type" content="website">
-        <meta property="og:title" content="Imandra Documentation - Installation - Docker">
-        <meta property="og:description" content="Getting set up with Imandra using Docker">
+        <meta property="og:title" content="Imandra Documentation - Installation - Jupyter Notebook">
+        <meta property="og:description" content="Using Imandra via a local Jupyter notebook">
         <meta property="og:image" content="https://storage.googleapis.com/imandra-assets/images/og_image_default_i78.jpg">
 
 
@@ -286,7 +286,7 @@
                                     </li>
                                     
                                     <li class="side__nav-list-item--sub-level-2">
-                                        <a class="side__nav-link side__nav-link--active" href="/imandra-docs/notebooks/installation-docker">Docker Image</a>
+                                        <a class="side__nav-link" href="/imandra-docs/notebooks/installation-docker">Docker Image</a>
                                         
                                     </li>
                                     
@@ -296,7 +296,7 @@
                                     </li>
                                     
                                     <li class="side__nav-list-item--sub-level-2">
-                                        <a class="side__nav-link" href="/imandra-docs/notebooks/installation-jupyter">Jupyter</a>
+                                        <a class="side__nav-link side__nav-link--active" href="/imandra-docs/notebooks/installation-jupyter">Jupyter</a>
                                         
                                     </li>
                                     
@@ -564,74 +564,27 @@
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html"><h1 id="Docker-Installation">Docker Installation<a class="anchor-link" href="#Docker-Installation">&#182;</a></h1><p>If you want to run Imandra in a container, you can use our official Docker image (You first need to have <a href="https://www.docker.com/get-started">Docker</a> installed in your machine)</p>
-<p>From a terminal execute:</p>
+<div class="text_cell_render border-box-sizing rendered_html"><h1 id="Jupyter-notebook-setup">Jupyter notebook setup<a class="anchor-link" href="#Jupyter-notebook-setup">&#182;</a></h1><p>You'll first need to run the <a href="/imandra-docs/notebooks/installation-simple/">recommended, simple installation of Imandra</a>.</p>
+<p>After running the simple installer, you should see <code>imandra-jupyter-kernel</code> on your path. You'll now need to install the kernel as part of your local Jupyter setup in order to invoke this.</p>
+<p>To install the Imandra and Imandra-reason kernels, run the following commands:</p>
+<p>(Note: if you have a more intricate Jupyter environment setup or if you use <code>conda</code>, you'll need to adjust the commands accordingly to install things into the correct location).</p>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html"><div class="terminal">
-    <div class="terminal__copy-ready">
-      <div class="terminal__copy-ready--top"><span class="terminal__copy-msg">Ready!</span></div>
-      <div class="terminal__copy-ready--bottom"></div>
-    </div>
-    <code>
-    <div class="highlight"><pre><span></span>docker pull imandra/imandra-client:latest <span class="o">&amp;&amp;</span> <span class="se">\</span>
-  docker run -it --rm -v <span class="si">${</span><span class="nv">HOME</span><span class="si">}</span>/.imandra:/root/.imandra -p <span class="m">8000</span>:8000 <span class="se">\</span>
-  imandra/imandra-client:latest
-</pre></div>
+<div class="text_cell_render border-box-sizing rendered_html">
+<pre><code># install imandra and imandra kernels
+jupyter kernelspec install /usr/local/var/imandra/_opam/share/jupyter/kernelspec/imandra
+jupyter kernelspec install /usr/local/var/imandra/_opam/share/jupyter/kernelspec/imandra-reason
 
-    </code>
-    <div id="copy-button-id--1" class="terminal__copy-cover">
-      <img src="/imandra-docs/static/img/copy.svg">
-    </div>
-  </div>
-  <script>document.getElementById('copy-button-id--1').addEventListener('click', handleCopyClick);</script>
+#install nbimandra notebook extensions as a python package (assumes this is in the same package target as jupyter itself)
+pip install /usr/local/var/imandra/_opam/share/jupyter/nbextensions/nbimandra
 
-  
-  </div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html"><p>The above container contains a stripped down version of the tools provided through the local installer, installed in a <code>debian:9</code> base image, and crucially, doesn't include a functional opam environment in order to minimize the image size.</p>
-<p>If you need a Docker image that includes a functional opam switch in order to extend the set of libraries available from Imandra, you can use the <code>imandra/imandra-client-switch</code> image instead. The available tags are <code>ubuntu</code>, <code>debian</code> and <code>latest</code>, with <code>latest</code> aliasing <code>debian</code>.</p>
-<p>The command to run Imandra using one of those images is:</p>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html"><div class="terminal">
-    <div class="terminal__copy-ready">
-      <div class="terminal__copy-ready--top"><span class="terminal__copy-msg">Ready!</span></div>
-      <div class="terminal__copy-ready--bottom"></div>
-    </div>
-    <code>
-    <div class="highlight"><pre><span></span>docker pull imandra/imandra-client-switch:latest <span class="o">&amp;&amp;</span> <span class="se">\</span>
-  docker run -it --rm -v <span class="si">${</span><span class="nv">HOME</span><span class="si">}</span>/.imandra:/home/opam/.imandra -p <span class="m">8000</span>:8000 <span class="se">\</span>
-  imandra/imandra-client-switch:latest
-</pre></div>
-
-    </code>
-    <div id="copy-button-id--2" class="terminal__copy-cover">
-      <img src="/imandra-docs/static/img/copy.svg">
-    </div>
-  </div>
-  <script>document.getElementById('copy-button-id--2').addEventListener('click', handleCopyClick);</script>
-
-  
-  </div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html"><p>In order to ensure that the set of runtime dependencies for Imandra is correctly installed, for the moment we only officially support using one of those images as a base for your custom Docker images.</p>
+#install nbimandra as an extension from the installed python package
+jupyter nbextension install --py nbimandra
+jupyter nbextension enable --py nbimandra</code></pre>
 </div>
 </div>
 </div>
