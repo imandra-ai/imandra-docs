@@ -564,7 +564,7 @@
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html"><h1 id="Decomposition-flags">Decomposition flags<a class="anchor-link" href="#Decomposition-flags">&#182;</a></h1><p>In this article we'll go over various important flags and arguments accepted by Imandra's <code>Decompose_frontend.top</code> entrypoint into its Principal Region Decomposition machinery. As much as possible, we'll use concrete examples to clarify their behaviour.</p>
+<div class="text_cell_render border-box-sizing rendered_html"><h1 id="Decomposition-flags">Decomposition flags<a class="anchor-link" href="#Decomposition-flags">&#182;</a></h1><p>In this article we'll go over various important flags and arguments accepted by Imandra's <code>Decompose.top</code> entrypoint into its Principal Region Decomposition machinery. As much as possible, we'll use concrete examples to clarify their behaviour.</p>
 <ul>
 <li><a href="#Assuming">Assuming</a></li>
 <li><a href="#Compound">Compound</a></li>
@@ -647,7 +647,7 @@ val g : int -&gt; int -&gt; bool = &lt;fun&gt;
 <div class="prompt input_prompt">In&nbsp;[2]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ocaml"><pre><span></span><span class="nn">Decompose_frontend</span><span class="p">.</span><span class="n">top</span> <span class="o">~</span><span class="n">assuming</span><span class="o">:</span><span class="s2">&quot;g&quot;</span> <span class="s2">&quot;f&quot;</span>
+<div class=" highlight hl-ocaml"><pre><span></span><span class="nn">Decompose</span><span class="p">.</span><span class="n">top</span> <span class="o">~</span><span class="n">assuming</span><span class="o">:</span><span class="s2">&quot;g&quot;</span> <span class="s2">&quot;f&quot;</span>
 </pre></div>
 
 </div>
@@ -666,13 +666,7 @@ val g : int -&gt; int -&gt; bool = &lt;fun&gt;
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>- : Imandra_interactive.Decompose_frontend.t list =
-[{Imandra_interactive.Decompose_frontend.reg_session = &lt;abstr&gt;; reg_id = 2i;
-  reg_constraints = [not (x &lt;= 0); x &lt;= y];
-  reg_invariant = F = Some (y + -1 * x)};
- {Imandra_interactive.Decompose_frontend.reg_session = &lt;abstr&gt;; reg_id = 3i;
-  reg_constraints = [not (x &lt;= 0); not (x &lt;= y)];
-  reg_invariant = F = Some (x + -1 * y)}]
+<pre>- : Imandra_interactive.Decompose.t list = [&lt;region&gt;; &lt;region&gt;]
 </pre>
 </div>
 
@@ -685,7 +679,7 @@ val g : int -&gt; int -&gt; bool = &lt;fun&gt;
 
 
 <div class="output_html rendered_html output_subarea ">
-<div class="imandra-alternatives" id="alt-816f8139-a5d5-4d1b-b7c7-8ffc39b56e93"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-e8484bd5-23b3-4f72-af2d-b112814f735e" class="decompose"><textarea class="display-none">{
+<div class="imandra-alternatives" id="alt-0f6a2ee5-25bf-4b8a-8f00-522eb1a85612"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-2c541a33-e4c1-42cd-80d3-4d3a3d955312" class="decompose"><textarea class="display-none">{
   &quot;regions&quot;: [
     {
       &quot;constraints&quot;: [ &quot;not (x &lt;= 0)&quot; ],
@@ -719,13 +713,13 @@ val g : int -&gt; int -&gt; bool = &lt;fun&gt;
 }</textarea><div class="decompose-foamtree"></div><div class="decompose-details"><div class="decompose-details-header">Regions details</div><div class="decompose-details-no-selection">No group selected.</div><div class="decompose-details-selection hidden"><div><span class="decompose-details-label">Direct sub-regions: </span><span class="decompose-details-direct-sub-regions-text">-</span></div><div><span class="decompose-details-label">Contained regions: </span><span class="decompose-details-contained-regions-text">-</span></div><div class="decompose-details-section-header">Constraints</div><div class="decompose-details-constraints"><pre class="decompose-details-constraint">&lt;constraint&gt;</pre></div><div class="decompose-details-invariant"><div class="decompose-details-section-header">Invariant</div><pre class="decompose-details-invariant-text">&lt;invariant&gt;</pre></div></div></div><script>
 (function () {
   require(['nbextensions/nbimandra/regions'], function (regions) {
-    var target = '#decompose-e8484bd5-23b3-4f72-af2d-b112814f735e';
+    var target = '#decompose-2c541a33-e4c1-42cd-80d3-4d3a3d955312';
     regions.hydrate(target);
   });
 })();
-</script></div></div><div class="tab-pane"><div><div class="imandra-table" id="table-31f9d078-b75e-407c-8967-827afc0efa1f"><table><thead><tr><th>Constraints</th><th>Invariant</th></tr></thead><tr><td><ul><li><pre>not (x &lt;= 0)</pre></li><li><pre>not (x &lt;= y)</pre></li></ul></td><td><pre>F = Some (x + -1 * y)</pre></td></tr><tr><td><ul><li><pre>not (x &lt;= 0)</pre></li><li><pre>x &lt;= y</pre></li></ul></td><td><pre>F = Some (y + -1 * x)</pre></td></tr></table></div></div></div></div><script>
+</script></div></div><div class="tab-pane"><div><div class="imandra-table" id="table-f33ded09-c3e4-4ddc-b2b9-96dbca4ed776"><table><thead><tr><th>Constraints</th><th>Invariant</th></tr></thead><tr><td><ul><li><pre>not (x &lt;= 0)</pre></li><li><pre>not (x &lt;= y)</pre></li></ul></td><td><pre>F = Some (x + -1 * y)</pre></td></tr><tr><td><ul><li><pre>not (x &lt;= 0)</pre></li><li><pre>x &lt;= y</pre></li></ul></td><td><pre>F = Some (y + -1 * x)</pre></td></tr></table></div></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-816f8139-a5d5-4d1b-b7c7-8ffc39b56e93';
+  var target = '#alt-0f6a2ee5-25bf-4b8a-8f00-522eb1a85612';
   alternatives.hydrate(target);
 });
 </script></div>
@@ -741,7 +735,7 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html"><p>As we can see, the call to <code>Decompose_frontend.top</code> pruned away the region where <code>g</code> didn't hold.</p>
+<div class="text_cell_render border-box-sizing rendered_html"><p>As we can see, the call to <code>Decompose.top</code> pruned away the region where <code>g</code> didn't hold.</p>
 <h1 id="Compound">Compound<a class="anchor-link" href="#Compound">&#182;</a></h1><p>The <code>~compound</code> flag instructs Imandra whether or not to expand compound logical statements in conditionals, such as conjunctions and disjunctions, into their constituent parts. With <code>~compound:true</code>, the decomposition may in general be possible with fewer regions than otherwise, but region constraints and invariants may involve <code>&amp;&amp;</code> and <code>||</code>. This flag doesn't cause any constraints to be removed.</p>
 <p>By default, <code>~compound:false</code> is used.</p>
 <p>Let's see how <code>~compound</code> works in practice on a target function with a compound conditional:</p>
@@ -808,7 +802,7 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
 <div class="prompt input_prompt">In&nbsp;[4]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ocaml"><pre><span></span><span class="nn">Decompose_frontend</span><span class="p">.</span><span class="n">top</span> <span class="o">~</span><span class="n">compound</span><span class="o">:</span><span class="bp">false</span> <span class="s2">&quot;f&quot;</span>
+<div class=" highlight hl-ocaml"><pre><span></span><span class="nn">Decompose</span><span class="p">.</span><span class="n">top</span> <span class="o">~</span><span class="n">compound</span><span class="o">:</span><span class="bp">false</span> <span class="s2">&quot;f&quot;</span>
 </pre></div>
 
 </div>
@@ -827,13 +821,7 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>- : Imandra_interactive.Decompose_frontend.t list =
-[{Imandra_interactive.Decompose_frontend.reg_session = &lt;abstr&gt;; reg_id = 7i;
-  reg_constraints = [not (x &lt;= 10)]; reg_invariant = F = 1};
- {Imandra_interactive.Decompose_frontend.reg_session = &lt;abstr&gt;; reg_id = 8i;
-  reg_constraints = [x &lt;= 10; not (20 &lt;= y)]; reg_invariant = F = 1};
- {Imandra_interactive.Decompose_frontend.reg_session = &lt;abstr&gt;; reg_id = 9i;
-  reg_constraints = [x &lt;= 10; 20 &lt;= y]; reg_invariant = F = 2}]
+<pre>- : Imandra_interactive.Decompose.t list = [&lt;region&gt;; &lt;region&gt;; &lt;region&gt;]
 </pre>
 </div>
 
@@ -846,7 +834,7 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
 
 
 <div class="output_html rendered_html output_subarea ">
-<div class="imandra-alternatives" id="alt-ebb7092e-e8fc-44b3-9315-679575914aa8"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-e083688a-bbd0-4891-91b8-3eb708711d9a" class="decompose"><textarea class="display-none">{
+<div class="imandra-alternatives" id="alt-db02c946-f3c7-4df6-a618-06a4830e9d5d"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-8a704902-bb49-46bf-8441-bbdcb3ecb9ca" class="decompose"><textarea class="display-none">{
   &quot;regions&quot;: [
     {
       &quot;constraints&quot;: [ &quot;not (x &lt;= 10)&quot; ],
@@ -887,13 +875,13 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
 }</textarea><div class="decompose-foamtree"></div><div class="decompose-details"><div class="decompose-details-header">Regions details</div><div class="decompose-details-no-selection">No group selected.</div><div class="decompose-details-selection hidden"><div><span class="decompose-details-label">Direct sub-regions: </span><span class="decompose-details-direct-sub-regions-text">-</span></div><div><span class="decompose-details-label">Contained regions: </span><span class="decompose-details-contained-regions-text">-</span></div><div class="decompose-details-section-header">Constraints</div><div class="decompose-details-constraints"><pre class="decompose-details-constraint">&lt;constraint&gt;</pre></div><div class="decompose-details-invariant"><div class="decompose-details-section-header">Invariant</div><pre class="decompose-details-invariant-text">&lt;invariant&gt;</pre></div></div></div><script>
 (function () {
   require(['nbextensions/nbimandra/regions'], function (regions) {
-    var target = '#decompose-e083688a-bbd0-4891-91b8-3eb708711d9a';
+    var target = '#decompose-8a704902-bb49-46bf-8441-bbdcb3ecb9ca';
     regions.hydrate(target);
   });
 })();
-</script></div></div><div class="tab-pane"><div><div class="imandra-table" id="table-2068ca7d-39bd-4897-b819-f3bc91e4ad9c"><table><thead><tr><th>Constraints</th><th>Invariant</th></tr></thead><tr><td><ul><li><pre>x &lt;= 10</pre></li><li><pre>20 &lt;= y</pre></li></ul></td><td><pre>F = 2</pre></td></tr><tr><td><ul><li><pre>x &lt;= 10</pre></li><li><pre>not (20 &lt;= y)</pre></li></ul></td><td><pre>F = 1</pre></td></tr><tr><td><ul><li><pre>not (x &lt;= 10)</pre></li></ul></td><td><pre>F = 1</pre></td></tr></table></div></div></div></div><script>
+</script></div></div><div class="tab-pane"><div><div class="imandra-table" id="table-461583c4-cbbe-4ce8-b7d6-cb8e0c559c87"><table><thead><tr><th>Constraints</th><th>Invariant</th></tr></thead><tr><td><ul><li><pre>x &lt;= 10</pre></li><li><pre>20 &lt;= y</pre></li></ul></td><td><pre>F = 2</pre></td></tr><tr><td><ul><li><pre>x &lt;= 10</pre></li><li><pre>not (20 &lt;= y)</pre></li></ul></td><td><pre>F = 1</pre></td></tr><tr><td><ul><li><pre>not (x &lt;= 10)</pre></li></ul></td><td><pre>F = 1</pre></td></tr></table></div></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-ebb7092e-e8fc-44b3-9315-679575914aa8';
+  var target = '#alt-db02c946-f3c7-4df6-a618-06a4830e9d5d';
   alternatives.hydrate(target);
 });
 </script></div>
@@ -923,7 +911,7 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
 <div class="prompt input_prompt">In&nbsp;[5]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ocaml"><pre><span></span><span class="nn">Decompose_frontend</span><span class="p">.</span><span class="n">top</span> <span class="o">~</span><span class="n">compound</span><span class="o">:</span><span class="bp">true</span> <span class="s2">&quot;f&quot;</span>
+<div class=" highlight hl-ocaml"><pre><span></span><span class="nn">Decompose</span><span class="p">.</span><span class="n">top</span> <span class="o">~</span><span class="n">compound</span><span class="o">:</span><span class="bp">true</span> <span class="s2">&quot;f&quot;</span>
 </pre></div>
 
 </div>
@@ -942,11 +930,7 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>- : Imandra_interactive.Decompose_frontend.t list =
-[{Imandra_interactive.Decompose_frontend.reg_session = &lt;abstr&gt;; reg_id = 12i;
-  reg_constraints = [not (x &lt;= 10) || not (20 &lt;= y)]; reg_invariant = F = 1};
- {Imandra_interactive.Decompose_frontend.reg_session = &lt;abstr&gt;; reg_id = 13i;
-  reg_constraints = [x &lt;= 10; 20 &lt;= y]; reg_invariant = F = 2}]
+<pre>- : Imandra_interactive.Decompose.t list = [&lt;region&gt;; &lt;region&gt;]
 </pre>
 </div>
 
@@ -959,7 +943,7 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
 
 
 <div class="output_html rendered_html output_subarea ">
-<div class="imandra-alternatives" id="alt-b8f8d416-70f7-49c3-a82a-baeead1ee793"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-ed0bad4d-c44b-40a7-9b64-fbb753738066" class="decompose"><textarea class="display-none">{
+<div class="imandra-alternatives" id="alt-543543a3-ed02-4024-ad82-f997f97d5771"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-5d31b23e-f724-4f88-ba7d-62512e63dffe" class="decompose"><textarea class="display-none">{
   &quot;regions&quot;: [
     {
       &quot;constraints&quot;: [ &quot;not (x &lt;= 10) || not (20 &lt;= y)&quot; ],
@@ -985,13 +969,13 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
 }</textarea><div class="decompose-foamtree"></div><div class="decompose-details"><div class="decompose-details-header">Regions details</div><div class="decompose-details-no-selection">No group selected.</div><div class="decompose-details-selection hidden"><div><span class="decompose-details-label">Direct sub-regions: </span><span class="decompose-details-direct-sub-regions-text">-</span></div><div><span class="decompose-details-label">Contained regions: </span><span class="decompose-details-contained-regions-text">-</span></div><div class="decompose-details-section-header">Constraints</div><div class="decompose-details-constraints"><pre class="decompose-details-constraint">&lt;constraint&gt;</pre></div><div class="decompose-details-invariant"><div class="decompose-details-section-header">Invariant</div><pre class="decompose-details-invariant-text">&lt;invariant&gt;</pre></div></div></div><script>
 (function () {
   require(['nbextensions/nbimandra/regions'], function (regions) {
-    var target = '#decompose-ed0bad4d-c44b-40a7-9b64-fbb753738066';
+    var target = '#decompose-5d31b23e-f724-4f88-ba7d-62512e63dffe';
     regions.hydrate(target);
   });
 })();
-</script></div></div><div class="tab-pane"><div><div class="imandra-table" id="table-bebe4a01-9345-45dc-a54f-ba158f61a68d"><table><thead><tr><th>Constraints</th><th>Invariant</th></tr></thead><tr><td><ul><li><pre>x &lt;= 10</pre></li><li><pre>20 &lt;= y</pre></li></ul></td><td><pre>F = 2</pre></td></tr><tr><td><ul><li><pre>not (x &lt;= 10) || not (20 &lt;= y)</pre></li></ul></td><td><pre>F = 1</pre></td></tr></table></div></div></div></div><script>
+</script></div></div><div class="tab-pane"><div><div class="imandra-table" id="table-a41b806e-3aeb-4607-b3f0-bc53d5539cf5"><table><thead><tr><th>Constraints</th><th>Invariant</th></tr></thead><tr><td><ul><li><pre>x &lt;= 10</pre></li><li><pre>20 &lt;= y</pre></li></ul></td><td><pre>F = 2</pre></td></tr><tr><td><ul><li><pre>not (x &lt;= 10) || not (20 &lt;= y)</pre></li></ul></td><td><pre>F = 1</pre></td></tr></table></div></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-b8f8d416-70f7-49c3-a82a-baeead1ee793';
+  var target = '#alt-543543a3-ed02-4024-ad82-f997f97d5771';
   alternatives.hydrate(target);
 });
 </script></div>
@@ -1079,7 +1063,7 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
 <div class="prompt input_prompt">In&nbsp;[7]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ocaml"><pre><span></span><span class="nn">Decompose_frontend</span><span class="p">.</span><span class="n">top</span> <span class="s2">&quot;f&quot;</span>
+<div class=" highlight hl-ocaml"><pre><span></span><span class="nn">Decompose</span><span class="p">.</span><span class="n">top</span> <span class="s2">&quot;f&quot;</span>
 </pre></div>
 
 </div>
@@ -1098,13 +1082,7 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>- : Imandra_interactive.Decompose_frontend.t list =
-[{Imandra_interactive.Decompose_frontend.reg_session = &lt;abstr&gt;; reg_id = 17i;
-  reg_constraints = [x + y = 10]; reg_invariant = F = 1};
- {Imandra_interactive.Decompose_frontend.reg_session = &lt;abstr&gt;; reg_id = 18i;
-  reg_constraints = [not (x + y = 10); not (x &lt;= y)]; reg_invariant = F = 1};
- {Imandra_interactive.Decompose_frontend.reg_session = &lt;abstr&gt;; reg_id = 19i;
-  reg_constraints = [not (x + y = 10); x &lt;= y]; reg_invariant = F = 2}]
+<pre>- : Imandra_interactive.Decompose.t list = [&lt;region&gt;; &lt;region&gt;; &lt;region&gt;]
 </pre>
 </div>
 
@@ -1117,7 +1095,7 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
 
 
 <div class="output_html rendered_html output_subarea ">
-<div class="imandra-alternatives" id="alt-16061c10-468a-471c-a4c6-e2dc8d4726a4"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-5d9f2d97-3daf-4110-8851-3a11d8443ac6" class="decompose"><textarea class="display-none">{
+<div class="imandra-alternatives" id="alt-867dd643-4cb9-48db-95f7-7fc4e8d3a283"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-6a369e72-974a-49a1-8b97-474adca3b7be" class="decompose"><textarea class="display-none">{
   &quot;regions&quot;: [
     {
       &quot;constraints&quot;: [ &quot;x + y = 10&quot; ],
@@ -1158,13 +1136,13 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
 }</textarea><div class="decompose-foamtree"></div><div class="decompose-details"><div class="decompose-details-header">Regions details</div><div class="decompose-details-no-selection">No group selected.</div><div class="decompose-details-selection hidden"><div><span class="decompose-details-label">Direct sub-regions: </span><span class="decompose-details-direct-sub-regions-text">-</span></div><div><span class="decompose-details-label">Contained regions: </span><span class="decompose-details-contained-regions-text">-</span></div><div class="decompose-details-section-header">Constraints</div><div class="decompose-details-constraints"><pre class="decompose-details-constraint">&lt;constraint&gt;</pre></div><div class="decompose-details-invariant"><div class="decompose-details-section-header">Invariant</div><pre class="decompose-details-invariant-text">&lt;invariant&gt;</pre></div></div></div><script>
 (function () {
   require(['nbextensions/nbimandra/regions'], function (regions) {
-    var target = '#decompose-5d9f2d97-3daf-4110-8851-3a11d8443ac6';
+    var target = '#decompose-6a369e72-974a-49a1-8b97-474adca3b7be';
     regions.hydrate(target);
   });
 })();
-</script></div></div><div class="tab-pane"><div><div class="imandra-table" id="table-763fa4ff-70e5-4230-932e-6c28cead777c"><table><thead><tr><th>Constraints</th><th>Invariant</th></tr></thead><tr><td><ul><li><pre>not (x + y = 10)</pre></li><li><pre>x &lt;= y</pre></li></ul></td><td><pre>F = 2</pre></td></tr><tr><td><ul><li><pre>not (x + y = 10)</pre></li><li><pre>not (x &lt;= y)</pre></li></ul></td><td><pre>F = 1</pre></td></tr><tr><td><ul><li><pre>x + y = 10</pre></li></ul></td><td><pre>F = 1</pre></td></tr></table></div></div></div></div><script>
+</script></div></div><div class="tab-pane"><div><div class="imandra-table" id="table-6a15866d-a69f-468b-85e0-2d183af290b8"><table><thead><tr><th>Constraints</th><th>Invariant</th></tr></thead><tr><td><ul><li><pre>not (x + y = 10)</pre></li><li><pre>x &lt;= y</pre></li></ul></td><td><pre>F = 2</pre></td></tr><tr><td><ul><li><pre>not (x + y = 10)</pre></li><li><pre>not (x &lt;= y)</pre></li></ul></td><td><pre>F = 1</pre></td></tr><tr><td><ul><li><pre>x + y = 10</pre></li></ul></td><td><pre>F = 1</pre></td></tr></table></div></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-16061c10-468a-471c-a4c6-e2dc8d4726a4';
+  var target = '#alt-867dd643-4cb9-48db-95f7-7fc4e8d3a283';
   alternatives.hydrate(target);
 });
 </script></div>
@@ -1196,7 +1174,7 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
     <div class="input_area">
 <div class=" highlight hl-ocaml"><pre><span></span><span class="k">let</span> <span class="n">g</span> <span class="o">(</span><span class="n">x</span><span class="o">:</span><span class="kt">int</span><span class="o">)</span> <span class="n">y</span> <span class="o">=</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="n">y</span><span class="o">;;</span>
 
-<span class="nn">Decompose_frontend</span><span class="p">.</span><span class="n">top</span> <span class="o">~</span><span class="n">assuming</span><span class="o">:</span><span class="s2">&quot;g&quot;</span> <span class="s2">&quot;f&quot;</span>
+<span class="nn">Decompose</span><span class="p">.</span><span class="n">top</span> <span class="o">~</span><span class="n">assuming</span><span class="o">:</span><span class="s2">&quot;g&quot;</span> <span class="s2">&quot;f&quot;</span>
 </pre></div>
 
 </div>
@@ -1216,11 +1194,7 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
 
 <div class="output_text output_subarea output_execute_result">
 <pre>val g : int -&gt; int -&gt; bool = &lt;fun&gt;
-- : Imandra_interactive.Decompose_frontend.t list =
-[{Imandra_interactive.Decompose_frontend.reg_session = &lt;abstr&gt;; reg_id = 22i;
-  reg_constraints = [x + y = 10]; reg_invariant = F = 1};
- {Imandra_interactive.Decompose_frontend.reg_session = &lt;abstr&gt;; reg_id = 23i;
-  reg_constraints = [not (x + y = 10); not (x &lt;= y)]; reg_invariant = F = 1}]
+- : Imandra_interactive.Decompose.t list = [&lt;region&gt;; &lt;region&gt;]
 </pre>
 </div>
 
@@ -1233,7 +1207,7 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
 
 
 <div class="output_html rendered_html output_subarea ">
-<div class="imandra-alternatives" id="alt-2b34a2e5-c9f8-4995-a17d-ae671d1bf2ca"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-5e1c9196-57d5-4b68-b253-952ff2f34bc9" class="decompose"><textarea class="display-none">{
+<div class="imandra-alternatives" id="alt-bc49fa14-472e-4435-8bf5-df0e79dd2fcf"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-8714aaba-dfff-4ec1-9b69-584d58a7c176" class="decompose"><textarea class="display-none">{
   &quot;regions&quot;: [
     {
       &quot;constraints&quot;: [ &quot;x + y = 10&quot; ],
@@ -1256,13 +1230,13 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
 }</textarea><div class="decompose-foamtree"></div><div class="decompose-details"><div class="decompose-details-header">Regions details</div><div class="decompose-details-no-selection">No group selected.</div><div class="decompose-details-selection hidden"><div><span class="decompose-details-label">Direct sub-regions: </span><span class="decompose-details-direct-sub-regions-text">-</span></div><div><span class="decompose-details-label">Contained regions: </span><span class="decompose-details-contained-regions-text">-</span></div><div class="decompose-details-section-header">Constraints</div><div class="decompose-details-constraints"><pre class="decompose-details-constraint">&lt;constraint&gt;</pre></div><div class="decompose-details-invariant"><div class="decompose-details-section-header">Invariant</div><pre class="decompose-details-invariant-text">&lt;invariant&gt;</pre></div></div></div><script>
 (function () {
   require(['nbextensions/nbimandra/regions'], function (regions) {
-    var target = '#decompose-5e1c9196-57d5-4b68-b253-952ff2f34bc9';
+    var target = '#decompose-8714aaba-dfff-4ec1-9b69-584d58a7c176';
     regions.hydrate(target);
   });
 })();
-</script></div></div><div class="tab-pane"><div><div class="imandra-table" id="table-b592e55c-7e46-4fb0-be90-0400937739e4"><table><thead><tr><th>Constraints</th><th>Invariant</th></tr></thead><tr><td><ul><li><pre>not (x + y = 10)</pre></li><li><pre>not (x &lt;= y)</pre></li></ul></td><td><pre>F = 1</pre></td></tr><tr><td><ul><li><pre>x + y = 10</pre></li></ul></td><td><pre>F = 1</pre></td></tr></table></div></div></div></div><script>
+</script></div></div><div class="tab-pane"><div><div class="imandra-table" id="table-1fb2369a-f179-4ea1-929e-b727da81d51f"><table><thead><tr><th>Constraints</th><th>Invariant</th></tr></thead><tr><td><ul><li><pre>not (x + y = 10)</pre></li><li><pre>not (x &lt;= y)</pre></li></ul></td><td><pre>F = 1</pre></td></tr><tr><td><ul><li><pre>x + y = 10</pre></li></ul></td><td><pre>F = 1</pre></td></tr></table></div></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-2b34a2e5-c9f8-4995-a17d-ae671d1bf2ca';
+  var target = '#alt-bc49fa14-472e-4435-8bf5-df0e79dd2fcf';
   alternatives.hydrate(target);
 });
 </script></div>
@@ -1344,7 +1318,7 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
 <div class="prompt input_prompt">In&nbsp;[10]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ocaml"><pre><span></span><span class="nn">Decompose_frontend</span><span class="p">.</span><span class="n">top</span> <span class="o">~</span><span class="n">assuming</span><span class="o">:</span><span class="s2">&quot;g&quot;</span> <span class="o">~</span><span class="n">reduce_symmetry</span><span class="o">:</span><span class="bp">true</span> <span class="s2">&quot;f&quot;</span>
+<div class=" highlight hl-ocaml"><pre><span></span><span class="nn">Decompose</span><span class="p">.</span><span class="n">top</span> <span class="o">~</span><span class="n">assuming</span><span class="o">:</span><span class="s2">&quot;g&quot;</span> <span class="o">~</span><span class="n">reduce_symmetry</span><span class="o">:</span><span class="bp">true</span> <span class="s2">&quot;f&quot;</span>
 </pre></div>
 
 </div>
@@ -1363,9 +1337,7 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>- : Imandra_interactive.Decompose_frontend.t list =
-[{Imandra_interactive.Decompose_frontend.reg_session = &lt;abstr&gt;; reg_id = 25i;
-  reg_constraints = []; reg_invariant = F = 1}]
+<pre>- : Imandra_interactive.Decompose.t list = [&lt;region&gt;]
 </pre>
 </div>
 
@@ -1378,7 +1350,7 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
 
 
 <div class="output_html rendered_html output_subarea ">
-<div class="imandra-alternatives" id="alt-0d4f2773-13a5-4cc8-abab-52a632c05b2f"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-39d91925-ccfd-47e8-8d5e-f26aa4298653" class="decompose"><textarea class="display-none">{
+<div class="imandra-alternatives" id="alt-6cd5c762-0d3d-45d4-946c-314f9507c8c9"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-36f5e295-7695-4339-94c0-f9cac8321d42" class="decompose"><textarea class="display-none">{
   &quot;regions&quot;: [
     {
       &quot;constraints&quot;: [ &quot;true&quot; ],
@@ -1391,13 +1363,13 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
 }</textarea><div class="decompose-foamtree"></div><div class="decompose-details"><div class="decompose-details-header">Regions details</div><div class="decompose-details-no-selection">No group selected.</div><div class="decompose-details-selection hidden"><div><span class="decompose-details-label">Direct sub-regions: </span><span class="decompose-details-direct-sub-regions-text">-</span></div><div><span class="decompose-details-label">Contained regions: </span><span class="decompose-details-contained-regions-text">-</span></div><div class="decompose-details-section-header">Constraints</div><div class="decompose-details-constraints"><pre class="decompose-details-constraint">&lt;constraint&gt;</pre></div><div class="decompose-details-invariant"><div class="decompose-details-section-header">Invariant</div><pre class="decompose-details-invariant-text">&lt;invariant&gt;</pre></div></div></div><script>
 (function () {
   require(['nbextensions/nbimandra/regions'], function (regions) {
-    var target = '#decompose-39d91925-ccfd-47e8-8d5e-f26aa4298653';
+    var target = '#decompose-36f5e295-7695-4339-94c0-f9cac8321d42';
     regions.hydrate(target);
   });
 })();
-</script></div></div><div class="tab-pane"><div><div class="imandra-table" id="table-c643aded-cfc9-4a3b-b9f7-c44949f821b5"><table><thead><tr><th>Constraints</th><th>Invariant</th></tr></thead><tr><td><ul></ul></td><td><pre>F = 1</pre></td></tr></table></div></div></div></div><script>
+</script></div></div><div class="tab-pane"><div><div class="imandra-table" id="table-df77301a-d56f-45af-81b6-c51dfaa287cc"><table><thead><tr><th>Constraints</th><th>Invariant</th></tr></thead><tr><td><ul></ul></td><td><pre>F = 1</pre></td></tr></table></div></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-0d4f2773-13a5-4cc8-abab-52a632c05b2f';
+  var target = '#alt-6cd5c762-0d3d-45d4-946c-314f9507c8c9';
   alternatives.hydrate(target);
 });
 </script></div>
@@ -1428,7 +1400,7 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
 <div class="prompt input_prompt">In&nbsp;[11]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ocaml"><pre><span></span><span class="nn">Decompose_frontend</span><span class="p">.</span><span class="n">top</span> <span class="o">~</span><span class="n">assuming</span><span class="o">:</span><span class="s2">&quot;g&quot;</span> <span class="o">~</span><span class="n">compound</span><span class="o">:</span><span class="bp">true</span> <span class="s2">&quot;f&quot;</span>
+<div class=" highlight hl-ocaml"><pre><span></span><span class="nn">Decompose</span><span class="p">.</span><span class="n">top</span> <span class="o">~</span><span class="n">assuming</span><span class="o">:</span><span class="s2">&quot;g&quot;</span> <span class="o">~</span><span class="n">compound</span><span class="o">:</span><span class="bp">true</span> <span class="s2">&quot;f&quot;</span>
 </pre></div>
 
 </div>
@@ -1447,9 +1419,7 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>- : Imandra_interactive.Decompose_frontend.t list =
-[{Imandra_interactive.Decompose_frontend.reg_session = &lt;abstr&gt;; reg_id = 27i;
-  reg_constraints = [x + y = 10 || not (x &lt;= y)]; reg_invariant = F = 1}]
+<pre>- : Imandra_interactive.Decompose.t list = [&lt;region&gt;]
 </pre>
 </div>
 
@@ -1462,7 +1432,7 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
 
 
 <div class="output_html rendered_html output_subarea ">
-<div class="imandra-alternatives" id="alt-69e3f028-b15e-4e60-a120-f3eb6d88b4d4"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-130f1066-bc0d-44d8-b21f-fd90d2654300" class="decompose"><textarea class="display-none">{
+<div class="imandra-alternatives" id="alt-d3084ac2-e275-493a-9943-f224b41586ec"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-64c038d3-ef4f-45f4-ba32-54d31c55d4f6" class="decompose"><textarea class="display-none">{
   &quot;regions&quot;: [
     {
       &quot;constraints&quot;: [ &quot;x + y = 10 || not (x &lt;= y)&quot; ],
@@ -1478,13 +1448,13 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
 }</textarea><div class="decompose-foamtree"></div><div class="decompose-details"><div class="decompose-details-header">Regions details</div><div class="decompose-details-no-selection">No group selected.</div><div class="decompose-details-selection hidden"><div><span class="decompose-details-label">Direct sub-regions: </span><span class="decompose-details-direct-sub-regions-text">-</span></div><div><span class="decompose-details-label">Contained regions: </span><span class="decompose-details-contained-regions-text">-</span></div><div class="decompose-details-section-header">Constraints</div><div class="decompose-details-constraints"><pre class="decompose-details-constraint">&lt;constraint&gt;</pre></div><div class="decompose-details-invariant"><div class="decompose-details-section-header">Invariant</div><pre class="decompose-details-invariant-text">&lt;invariant&gt;</pre></div></div></div><script>
 (function () {
   require(['nbextensions/nbimandra/regions'], function (regions) {
-    var target = '#decompose-130f1066-bc0d-44d8-b21f-fd90d2654300';
+    var target = '#decompose-64c038d3-ef4f-45f4-ba32-54d31c55d4f6';
     regions.hydrate(target);
   });
 })();
-</script></div></div><div class="tab-pane"><div><div class="imandra-table" id="table-49faf554-ec5c-4159-92d9-edd543277802"><table><thead><tr><th>Constraints</th><th>Invariant</th></tr></thead><tr><td><ul><li><pre>x + y = 10 || not (x &lt;= y)</pre></li></ul></td><td><pre>F = 1</pre></td></tr></table></div></div></div></div><script>
+</script></div></div><div class="tab-pane"><div><div class="imandra-table" id="table-20b53f52-3429-4af7-bc37-848916e03b64"><table><thead><tr><th>Constraints</th><th>Invariant</th></tr></thead><tr><td><ul><li><pre>x + y = 10 || not (x &lt;= y)</pre></li></ul></td><td><pre>F = 1</pre></td></tr></table></div></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-69e3f028-b15e-4e60-a120-f3eb6d88b4d4';
+  var target = '#alt-d3084ac2-e275-493a-9943-f224b41586ec';
   alternatives.hydrate(target);
 });
 </script></div>
@@ -1572,7 +1542,7 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
 <div class="prompt input_prompt">In&nbsp;[13]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ocaml"><pre><span></span><span class="nn">Decompose_frontend</span><span class="p">.</span><span class="n">top</span> <span class="s2">&quot;f&quot;</span>
+<div class=" highlight hl-ocaml"><pre><span></span><span class="nn">Decompose</span><span class="p">.</span><span class="n">top</span> <span class="s2">&quot;f&quot;</span>
 </pre></div>
 
 </div>
@@ -1591,15 +1561,8 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>- : Imandra_interactive.Decompose_frontend.t list =
-[{Imandra_interactive.Decompose_frontend.reg_session = &lt;abstr&gt;; reg_id = 32i;
-  reg_constraints = [y &lt;= 0; 0 &lt;= x]; reg_invariant = F = 2};
- {Imandra_interactive.Decompose_frontend.reg_session = &lt;abstr&gt;; reg_id = 33i;
-  reg_constraints = [y &lt;= 0; not (0 &lt;= x)]; reg_invariant = F = 3};
- {Imandra_interactive.Decompose_frontend.reg_session = &lt;abstr&gt;; reg_id = 34i;
-  reg_constraints = [not (y &lt;= 0); x &lt;= y]; reg_invariant = F = 2};
- {Imandra_interactive.Decompose_frontend.reg_session = &lt;abstr&gt;; reg_id = 35i;
-  reg_constraints = [not (y &lt;= 0); not (x &lt;= y)]; reg_invariant = F = 1}]
+<pre>- : Imandra_interactive.Decompose.t list =
+[&lt;region&gt;; &lt;region&gt;; &lt;region&gt;; &lt;region&gt;]
 </pre>
 </div>
 
@@ -1612,7 +1575,7 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
 
 
 <div class="output_html rendered_html output_subarea ">
-<div class="imandra-alternatives" id="alt-f5471d41-0933-4f9e-8a00-8101c7fbc339"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-76cf6c36-d10a-4503-8e5b-1995696cf419" class="decompose"><textarea class="display-none">{
+<div class="imandra-alternatives" id="alt-69b9b1ec-d547-4aba-b279-adadc5c39f44"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-183f8b4a-0321-4308-a5b7-597460f96b22" class="decompose"><textarea class="display-none">{
   &quot;regions&quot;: [
     {
       &quot;constraints&quot;: [ &quot;y &lt;= 0&quot; ],
@@ -1674,13 +1637,13 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
 }</textarea><div class="decompose-foamtree"></div><div class="decompose-details"><div class="decompose-details-header">Regions details</div><div class="decompose-details-no-selection">No group selected.</div><div class="decompose-details-selection hidden"><div><span class="decompose-details-label">Direct sub-regions: </span><span class="decompose-details-direct-sub-regions-text">-</span></div><div><span class="decompose-details-label">Contained regions: </span><span class="decompose-details-contained-regions-text">-</span></div><div class="decompose-details-section-header">Constraints</div><div class="decompose-details-constraints"><pre class="decompose-details-constraint">&lt;constraint&gt;</pre></div><div class="decompose-details-invariant"><div class="decompose-details-section-header">Invariant</div><pre class="decompose-details-invariant-text">&lt;invariant&gt;</pre></div></div></div><script>
 (function () {
   require(['nbextensions/nbimandra/regions'], function (regions) {
-    var target = '#decompose-76cf6c36-d10a-4503-8e5b-1995696cf419';
+    var target = '#decompose-183f8b4a-0321-4308-a5b7-597460f96b22';
     regions.hydrate(target);
   });
 })();
-</script></div></div><div class="tab-pane"><div><div class="imandra-table" id="table-c62454d7-f634-4f14-9cdb-40f62dfcc69b"><table><thead><tr><th>Constraints</th><th>Invariant</th></tr></thead><tr><td><ul><li><pre>not (y &lt;= 0)</pre></li><li><pre>not (x &lt;= y)</pre></li></ul></td><td><pre>F = 1</pre></td></tr><tr><td><ul><li><pre>not (y &lt;= 0)</pre></li><li><pre>x &lt;= y</pre></li></ul></td><td><pre>F = 2</pre></td></tr><tr><td><ul><li><pre>y &lt;= 0</pre></li><li><pre>not (0 &lt;= x)</pre></li></ul></td><td><pre>F = 3</pre></td></tr><tr><td><ul><li><pre>y &lt;= 0</pre></li><li><pre>0 &lt;= x</pre></li></ul></td><td><pre>F = 2</pre></td></tr></table></div></div></div></div><script>
+</script></div></div><div class="tab-pane"><div><div class="imandra-table" id="table-5232b3d2-05a1-4f2c-bd2c-329cb0322d33"><table><thead><tr><th>Constraints</th><th>Invariant</th></tr></thead><tr><td><ul><li><pre>not (y &lt;= 0)</pre></li><li><pre>not (x &lt;= y)</pre></li></ul></td><td><pre>F = 1</pre></td></tr><tr><td><ul><li><pre>not (y &lt;= 0)</pre></li><li><pre>x &lt;= y</pre></li></ul></td><td><pre>F = 2</pre></td></tr><tr><td><ul><li><pre>y &lt;= 0</pre></li><li><pre>not (0 &lt;= x)</pre></li></ul></td><td><pre>F = 3</pre></td></tr><tr><td><ul><li><pre>y &lt;= 0</pre></li><li><pre>0 &lt;= x</pre></li></ul></td><td><pre>F = 2</pre></td></tr></table></div></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-f5471d41-0933-4f9e-8a00-8101c7fbc339';
+  var target = '#alt-69b9b1ec-d547-4aba-b279-adadc5c39f44';
   alternatives.hydrate(target);
 });
 </script></div>
@@ -1713,7 +1676,7 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
 <div class=" highlight hl-ocaml"><pre><span></span><span class="k">let</span> <span class="n">g</span> <span class="n">x</span> <span class="n">y</span> <span class="o">=</span>
   <span class="n">x</span> <span class="o">+</span> <span class="n">y</span> <span class="o">=</span> <span class="mi">1</span><span class="o">;;</span>
 
-<span class="nn">Decompose_frontend</span><span class="p">.</span><span class="n">top</span> <span class="o">~</span><span class="n">assuming</span><span class="o">:</span><span class="s2">&quot;g&quot;</span> <span class="s2">&quot;f&quot;</span><span class="o">;;</span>
+<span class="nn">Decompose</span><span class="p">.</span><span class="n">top</span> <span class="o">~</span><span class="n">assuming</span><span class="o">:</span><span class="s2">&quot;g&quot;</span> <span class="s2">&quot;f&quot;</span><span class="o">;;</span>
 </pre></div>
 
 </div>
@@ -1733,11 +1696,7 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
 
 <div class="output_text output_subarea output_execute_result">
 <pre>val g : Z.t -&gt; Z.t -&gt; bool = &lt;fun&gt;
-- : Imandra_interactive.Decompose_frontend.t list =
-[{Imandra_interactive.Decompose_frontend.reg_session = &lt;abstr&gt;; reg_id = 38i;
-  reg_constraints = [y &lt;= 0; 0 &lt;= x]; reg_invariant = F = 2};
- {Imandra_interactive.Decompose_frontend.reg_session = &lt;abstr&gt;; reg_id = 39i;
-  reg_constraints = [not (y &lt;= 0); x &lt;= y]; reg_invariant = F = 2}]
+- : Imandra_interactive.Decompose.t list = [&lt;region&gt;; &lt;region&gt;]
 </pre>
 </div>
 
@@ -1750,7 +1709,7 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
 
 
 <div class="output_html rendered_html output_subarea ">
-<div class="imandra-alternatives" id="alt-14016f4c-f9a5-40ae-a451-bc2860d3bba8"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-ac39ba4a-c245-4262-bc6a-4dc54c7844a4" class="decompose"><textarea class="display-none">{
+<div class="imandra-alternatives" id="alt-64b5d0f4-1ece-4018-9e17-3787ead76d5d"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-8c7c56a3-5ce5-4451-96cc-c1aa9cacd78e" class="decompose"><textarea class="display-none">{
   &quot;regions&quot;: [
     {
       &quot;constraints&quot;: [ &quot;not (y &lt;= 0)&quot;, &quot;x &lt;= y&quot; ],
@@ -1776,13 +1735,13 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
 }</textarea><div class="decompose-foamtree"></div><div class="decompose-details"><div class="decompose-details-header">Regions details</div><div class="decompose-details-no-selection">No group selected.</div><div class="decompose-details-selection hidden"><div><span class="decompose-details-label">Direct sub-regions: </span><span class="decompose-details-direct-sub-regions-text">-</span></div><div><span class="decompose-details-label">Contained regions: </span><span class="decompose-details-contained-regions-text">-</span></div><div class="decompose-details-section-header">Constraints</div><div class="decompose-details-constraints"><pre class="decompose-details-constraint">&lt;constraint&gt;</pre></div><div class="decompose-details-invariant"><div class="decompose-details-section-header">Invariant</div><pre class="decompose-details-invariant-text">&lt;invariant&gt;</pre></div></div></div><script>
 (function () {
   require(['nbextensions/nbimandra/regions'], function (regions) {
-    var target = '#decompose-ac39ba4a-c245-4262-bc6a-4dc54c7844a4';
+    var target = '#decompose-8c7c56a3-5ce5-4451-96cc-c1aa9cacd78e';
     regions.hydrate(target);
   });
 })();
-</script></div></div><div class="tab-pane"><div><div class="imandra-table" id="table-1d13352e-c546-40ba-a78a-4d6552f5fc37"><table><thead><tr><th>Constraints</th><th>Invariant</th></tr></thead><tr><td><ul><li><pre>not (y &lt;= 0)</pre></li><li><pre>x &lt;= y</pre></li></ul></td><td><pre>F = 2</pre></td></tr><tr><td><ul><li><pre>y &lt;= 0</pre></li><li><pre>0 &lt;= x</pre></li></ul></td><td><pre>F = 2</pre></td></tr></table></div></div></div></div><script>
+</script></div></div><div class="tab-pane"><div><div class="imandra-table" id="table-c233cad9-8f1e-46b8-96f8-329fa18aed93"><table><thead><tr><th>Constraints</th><th>Invariant</th></tr></thead><tr><td><ul><li><pre>not (y &lt;= 0)</pre></li><li><pre>x &lt;= y</pre></li></ul></td><td><pre>F = 2</pre></td></tr><tr><td><ul><li><pre>y &lt;= 0</pre></li><li><pre>0 &lt;= x</pre></li></ul></td><td><pre>F = 2</pre></td></tr></table></div></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-14016f4c-f9a5-40ae-a451-bc2860d3bba8';
+  var target = '#alt-64b5d0f4-1ece-4018-9e17-3787ead76d5d';
   alternatives.hydrate(target);
 });
 </script></div>
@@ -1813,7 +1772,7 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
 <div class="prompt input_prompt">In&nbsp;[15]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ocaml"><pre><span></span><span class="nn">Decompose_frontend</span><span class="p">.</span><span class="n">top</span> <span class="o">~</span><span class="n">compound</span><span class="o">:</span><span class="bp">false</span> <span class="o">~</span><span class="n">ctx_asm_simp</span><span class="o">:</span><span class="bp">true</span> <span class="o">~</span><span class="n">assuming</span><span class="o">:</span><span class="s2">&quot;g&quot;</span> <span class="s2">&quot;f&quot;</span>
+<div class=" highlight hl-ocaml"><pre><span></span><span class="nn">Decompose</span><span class="p">.</span><span class="n">top</span> <span class="o">~</span><span class="n">compound</span><span class="o">:</span><span class="bp">false</span> <span class="o">~</span><span class="n">ctx_asm_simp</span><span class="o">:</span><span class="bp">true</span> <span class="o">~</span><span class="n">assuming</span><span class="o">:</span><span class="s2">&quot;g&quot;</span> <span class="s2">&quot;f&quot;</span>
 </pre></div>
 
 </div>
@@ -1832,9 +1791,7 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>- : Imandra_interactive.Decompose_frontend.t list =
-[{Imandra_interactive.Decompose_frontend.reg_session = &lt;abstr&gt;; reg_id = 41i;
-  reg_constraints = []; reg_invariant = F = 2}]
+<pre>- : Imandra_interactive.Decompose.t list = [&lt;region&gt;]
 </pre>
 </div>
 
@@ -1847,7 +1804,7 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
 
 
 <div class="output_html rendered_html output_subarea ">
-<div class="imandra-alternatives" id="alt-6b172f9d-1f32-48f0-a1e7-5d03aa021f6a"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-3d238030-f2b0-49e5-8b90-9e3d1517ce28" class="decompose"><textarea class="display-none">{
+<div class="imandra-alternatives" id="alt-2045e281-4170-4d8e-a749-b5ae3886c106"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-9e48d61d-1171-41f7-b9ec-d5b0c27371b8" class="decompose"><textarea class="display-none">{
   &quot;regions&quot;: [
     {
       &quot;constraints&quot;: [ &quot;true&quot; ],
@@ -1860,13 +1817,13 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
 }</textarea><div class="decompose-foamtree"></div><div class="decompose-details"><div class="decompose-details-header">Regions details</div><div class="decompose-details-no-selection">No group selected.</div><div class="decompose-details-selection hidden"><div><span class="decompose-details-label">Direct sub-regions: </span><span class="decompose-details-direct-sub-regions-text">-</span></div><div><span class="decompose-details-label">Contained regions: </span><span class="decompose-details-contained-regions-text">-</span></div><div class="decompose-details-section-header">Constraints</div><div class="decompose-details-constraints"><pre class="decompose-details-constraint">&lt;constraint&gt;</pre></div><div class="decompose-details-invariant"><div class="decompose-details-section-header">Invariant</div><pre class="decompose-details-invariant-text">&lt;invariant&gt;</pre></div></div></div><script>
 (function () {
   require(['nbextensions/nbimandra/regions'], function (regions) {
-    var target = '#decompose-3d238030-f2b0-49e5-8b90-9e3d1517ce28';
+    var target = '#decompose-9e48d61d-1171-41f7-b9ec-d5b0c27371b8';
     regions.hydrate(target);
   });
 })();
-</script></div></div><div class="tab-pane"><div><div class="imandra-table" id="table-02c9a605-9a9b-4ad7-86ff-17e9ac7579de"><table><thead><tr><th>Constraints</th><th>Invariant</th></tr></thead><tr><td><ul></ul></td><td><pre>F = 2</pre></td></tr></table></div></div></div></div><script>
+</script></div></div><div class="tab-pane"><div><div class="imandra-table" id="table-abbf8bf0-d6cf-46d9-a2ca-c1da1d44fce3"><table><thead><tr><th>Constraints</th><th>Invariant</th></tr></thead><tr><td><ul></ul></td><td><pre>F = 2</pre></td></tr></table></div></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-6b172f9d-1f32-48f0-a1e7-5d03aa021f6a';
+  var target = '#alt-2045e281-4170-4d8e-a749-b5ae3886c106';
   alternatives.hydrate(target);
 });
 </script></div>
@@ -1976,7 +1933,7 @@ val f : my_num -&gt; my_num -&gt; Z.t = &lt;fun&gt;
 <div class="prompt input_prompt">In&nbsp;[17]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ocaml"><pre><span></span><span class="nn">Decompose_frontend</span><span class="p">.</span><span class="n">top</span> <span class="s2">&quot;f&quot;</span>
+<div class=" highlight hl-ocaml"><pre><span></span><span class="nn">Decompose</span><span class="p">.</span><span class="n">top</span> <span class="s2">&quot;f&quot;</span>
 </pre></div>
 
 </div>
@@ -1995,36 +1952,8 @@ val f : my_num -&gt; my_num -&gt; Z.t = &lt;fun&gt;
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>- : Imandra_interactive.Decompose_frontend.t list =
-[{Imandra_interactive.Decompose_frontend.reg_session = &lt;abstr&gt;; reg_id = 49i;
-  reg_constraints =
-   [Is_a(Real, y); Is_a(Real, x);
-    not (&lt;=. (+. (Destruct(Real, 0, x)) (Destruct(Real, 0, y))) 0)];
-  reg_invariant = F = 1};
- {Imandra_interactive.Decompose_frontend.reg_session = &lt;abstr&gt;; reg_id = 50i;
-  reg_constraints =
-   [Is_a(Real, y); Is_a(Real, x);
-    &lt;=. (+. (Destruct(Real, 0, x)) (Destruct(Real, 0, y))) 0];
-  reg_invariant = F = 2};
- {Imandra_interactive.Decompose_frontend.reg_session = &lt;abstr&gt;; reg_id = 51i;
-  reg_constraints = [Is_a(Real, y); not Is_a(Real, x); not Is_a(Int, y)];
-  reg_invariant = F = 2};
- {Imandra_interactive.Decompose_frontend.reg_session = &lt;abstr&gt;; reg_id = 52i;
-  reg_constraints =
-   [not Is_a(Real, y); Is_a(Int, y); Is_a(Int, x);
-    not ((Destruct(Int, 0, x) + Destruct(Int, 0, y)) &lt;= 0)];
-  reg_invariant = F = 1};
- {Imandra_interactive.Decompose_frontend.reg_session = &lt;abstr&gt;; reg_id = 53i;
-  reg_constraints =
-   [not Is_a(Real, y); Is_a(Int, y); Is_a(Int, x);
-    (Destruct(Int, 0, x) + Destruct(Int, 0, y)) &lt;= 0];
-  reg_invariant = F = 2};
- {Imandra_interactive.Decompose_frontend.reg_session = &lt;abstr&gt;; reg_id = 54i;
-  reg_constraints = [not Is_a(Real, y); Is_a(Int, y); not Is_a(Int, x)];
-  reg_invariant = F = 2};
- {Imandra_interactive.Decompose_frontend.reg_session = &lt;abstr&gt;; reg_id = 55i;
-  reg_constraints = [not Is_a(Real, y); not Is_a(Int, y)];
-  reg_invariant = F = 2}]
+<pre>- : Imandra_interactive.Decompose.t list =
+[&lt;region&gt;; &lt;region&gt;; &lt;region&gt;; &lt;region&gt;; &lt;region&gt;; &lt;region&gt;; &lt;region&gt;]
 </pre>
 </div>
 
@@ -2037,7 +1966,7 @@ val f : my_num -&gt; my_num -&gt; Z.t = &lt;fun&gt;
 
 
 <div class="output_html rendered_html output_subarea ">
-<div class="imandra-alternatives" id="alt-cc4b9688-71ee-456a-8722-a3f7d839a271"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-4f089271-d8fa-46ed-a9ee-b44e49fda226" class="decompose"><textarea class="display-none">{
+<div class="imandra-alternatives" id="alt-f0aa52fb-894f-48e6-b9c9-3a0bd19f2143"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-7137a7c2-7f80-45fe-a5cc-1d41d8970387" class="decompose"><textarea class="display-none">{
   &quot;regions&quot;: [
     {
       &quot;constraints&quot;: [ &quot;Is_a(Real, y)&quot; ],
@@ -2187,13 +2116,13 @@ val f : my_num -&gt; my_num -&gt; Z.t = &lt;fun&gt;
 }</textarea><div class="decompose-foamtree"></div><div class="decompose-details"><div class="decompose-details-header">Regions details</div><div class="decompose-details-no-selection">No group selected.</div><div class="decompose-details-selection hidden"><div><span class="decompose-details-label">Direct sub-regions: </span><span class="decompose-details-direct-sub-regions-text">-</span></div><div><span class="decompose-details-label">Contained regions: </span><span class="decompose-details-contained-regions-text">-</span></div><div class="decompose-details-section-header">Constraints</div><div class="decompose-details-constraints"><pre class="decompose-details-constraint">&lt;constraint&gt;</pre></div><div class="decompose-details-invariant"><div class="decompose-details-section-header">Invariant</div><pre class="decompose-details-invariant-text">&lt;invariant&gt;</pre></div></div></div><script>
 (function () {
   require(['nbextensions/nbimandra/regions'], function (regions) {
-    var target = '#decompose-4f089271-d8fa-46ed-a9ee-b44e49fda226';
+    var target = '#decompose-7137a7c2-7f80-45fe-a5cc-1d41d8970387';
     regions.hydrate(target);
   });
 })();
-</script></div></div><div class="tab-pane"><div><div class="imandra-table" id="table-4c5577e8-6663-4b6d-a2cb-1e65f2db03c2"><table><thead><tr><th>Constraints</th><th>Invariant</th></tr></thead><tr><td><ul><li><pre>not Is_a(Real, y)</pre></li><li><pre>not Is_a(Int, y)</pre></li></ul></td><td><pre>F = 2</pre></td></tr><tr><td><ul><li><pre>not Is_a(Real, y)</pre></li><li><pre>Is_a(Int, y)</pre></li><li><pre>not Is_a(Int, x)</pre></li></ul></td><td><pre>F = 2</pre></td></tr><tr><td><ul><li><pre>not Is_a(Real, y)</pre></li><li><pre>Is_a(Int, y)</pre></li><li><pre>Is_a(Int, x)</pre></li><li><pre>(Destruct(Int, 0, x) + Destruct(Int, 0, y)) &lt;= 0</pre></li></ul></td><td><pre>F = 2</pre></td></tr><tr><td><ul><li><pre>not Is_a(Real, y)</pre></li><li><pre>Is_a(Int, y)</pre></li><li><pre>Is_a(Int, x)</pre></li><li><pre>not ((Destruct(Int, 0, x) + Destruct(Int, 0, y)) &lt;= 0)</pre></li></ul></td><td><pre>F = 1</pre></td></tr><tr><td><ul><li><pre>Is_a(Real, y)</pre></li><li><pre>not Is_a(Real, x)</pre></li><li><pre>not Is_a(Int, y)</pre></li></ul></td><td><pre>F = 2</pre></td></tr><tr><td><ul><li><pre>Is_a(Real, y)</pre></li><li><pre>Is_a(Real, x)</pre></li><li><pre>&lt;=. (+. (Destruct(Real, 0, x)) (Destruct(Real, 0, y))) 0</pre></li></ul></td><td><pre>F = 2</pre></td></tr><tr><td><ul><li><pre>Is_a(Real, y)</pre></li><li><pre>Is_a(Real, x)</pre></li><li><pre>not (&lt;=. (+. (Destruct(Real, 0, x)) (Destruct(Real, 0, y))) 0)</pre></li></ul></td><td><pre>F = 1</pre></td></tr></table></div></div></div></div><script>
+</script></div></div><div class="tab-pane"><div><div class="imandra-table" id="table-e5137d92-dcca-4063-84f1-0c567b02b568"><table><thead><tr><th>Constraints</th><th>Invariant</th></tr></thead><tr><td><ul><li><pre>not Is_a(Real, y)</pre></li><li><pre>not Is_a(Int, y)</pre></li></ul></td><td><pre>F = 2</pre></td></tr><tr><td><ul><li><pre>not Is_a(Real, y)</pre></li><li><pre>Is_a(Int, y)</pre></li><li><pre>not Is_a(Int, x)</pre></li></ul></td><td><pre>F = 2</pre></td></tr><tr><td><ul><li><pre>not Is_a(Real, y)</pre></li><li><pre>Is_a(Int, y)</pre></li><li><pre>Is_a(Int, x)</pre></li><li><pre>(Destruct(Int, 0, x) + Destruct(Int, 0, y)) &lt;= 0</pre></li></ul></td><td><pre>F = 2</pre></td></tr><tr><td><ul><li><pre>not Is_a(Real, y)</pre></li><li><pre>Is_a(Int, y)</pre></li><li><pre>Is_a(Int, x)</pre></li><li><pre>not ((Destruct(Int, 0, x) + Destruct(Int, 0, y)) &lt;= 0)</pre></li></ul></td><td><pre>F = 1</pre></td></tr><tr><td><ul><li><pre>Is_a(Real, y)</pre></li><li><pre>not Is_a(Real, x)</pre></li><li><pre>not Is_a(Int, y)</pre></li></ul></td><td><pre>F = 2</pre></td></tr><tr><td><ul><li><pre>Is_a(Real, y)</pre></li><li><pre>Is_a(Real, x)</pre></li><li><pre>&lt;=. (+. (Destruct(Real, 0, x)) (Destruct(Real, 0, y))) 0</pre></li></ul></td><td><pre>F = 2</pre></td></tr><tr><td><ul><li><pre>Is_a(Real, y)</pre></li><li><pre>Is_a(Real, x)</pre></li><li><pre>not (&lt;=. (+. (Destruct(Real, 0, x)) (Destruct(Real, 0, y))) 0)</pre></li></ul></td><td><pre>F = 1</pre></td></tr></table></div></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-cc4b9688-71ee-456a-8722-a3f7d839a271';
+  var target = '#alt-f0aa52fb-894f-48e6-b9c9-3a0bd19f2143';
   alternatives.hydrate(target);
 });
 </script></div>
@@ -2224,7 +2153,7 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
 <div class="prompt input_prompt">In&nbsp;[18]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ocaml"><pre><span></span><span class="nn">Decompose_frontend</span><span class="p">.</span><span class="n">top</span> <span class="o">~</span><span class="n">basis</span><span class="o">:[</span><span class="s2">&quot;add&quot;</span><span class="o">;</span><span class="s2">&quot;is_pos&quot;</span><span class="o">]</span> <span class="s2">&quot;f&quot;</span>
+<div class=" highlight hl-ocaml"><pre><span></span><span class="nn">Decompose</span><span class="p">.</span><span class="n">top</span> <span class="o">~</span><span class="n">basis</span><span class="o">:[</span><span class="s2">&quot;add&quot;</span><span class="o">;</span><span class="s2">&quot;is_pos&quot;</span><span class="o">]</span> <span class="s2">&quot;f&quot;</span>
 </pre></div>
 
 </div>
@@ -2243,11 +2172,7 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>- : Imandra_interactive.Decompose_frontend.t list =
-[{Imandra_interactive.Decompose_frontend.reg_session = &lt;abstr&gt;; reg_id = 58i;
-  reg_constraints = [is_pos (add x y)]; reg_invariant = F = 1};
- {Imandra_interactive.Decompose_frontend.reg_session = &lt;abstr&gt;; reg_id = 59i;
-  reg_constraints = [not (is_pos (add x y))]; reg_invariant = F = 2}]
+<pre>- : Imandra_interactive.Decompose.t list = [&lt;region&gt;; &lt;region&gt;]
 </pre>
 </div>
 
@@ -2260,7 +2185,7 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
 
 
 <div class="output_html rendered_html output_subarea ">
-<div class="imandra-alternatives" id="alt-c7a1b686-0e5e-4b88-80d0-3d6f2d913a2d"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-d4917fb9-5891-4920-b644-96ba8782b473" class="decompose"><textarea class="display-none">{
+<div class="imandra-alternatives" id="alt-18ffba89-d817-41cf-a31a-62b062826edd"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-c5613801-6a25-4131-a0a1-5d5956e107ab" class="decompose"><textarea class="display-none">{
   &quot;regions&quot;: [
     {
       &quot;constraints&quot;: [ &quot;not (is_pos (add x y))&quot; ],
@@ -2286,13 +2211,13 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
 }</textarea><div class="decompose-foamtree"></div><div class="decompose-details"><div class="decompose-details-header">Regions details</div><div class="decompose-details-no-selection">No group selected.</div><div class="decompose-details-selection hidden"><div><span class="decompose-details-label">Direct sub-regions: </span><span class="decompose-details-direct-sub-regions-text">-</span></div><div><span class="decompose-details-label">Contained regions: </span><span class="decompose-details-contained-regions-text">-</span></div><div class="decompose-details-section-header">Constraints</div><div class="decompose-details-constraints"><pre class="decompose-details-constraint">&lt;constraint&gt;</pre></div><div class="decompose-details-invariant"><div class="decompose-details-section-header">Invariant</div><pre class="decompose-details-invariant-text">&lt;invariant&gt;</pre></div></div></div><script>
 (function () {
   require(['nbextensions/nbimandra/regions'], function (regions) {
-    var target = '#decompose-d4917fb9-5891-4920-b644-96ba8782b473';
+    var target = '#decompose-c5613801-6a25-4131-a0a1-5d5956e107ab';
     regions.hydrate(target);
   });
 })();
-</script></div></div><div class="tab-pane"><div><div class="imandra-table" id="table-accce8d2-2eca-4712-9e5f-7cbe952e8589"><table><thead><tr><th>Constraints</th><th>Invariant</th></tr></thead><tr><td><ul><li><pre>not (is_pos (add x y))</pre></li></ul></td><td><pre>F = 2</pre></td></tr><tr><td><ul><li><pre>is_pos (add x y)</pre></li></ul></td><td><pre>F = 1</pre></td></tr></table></div></div></div></div><script>
+</script></div></div><div class="tab-pane"><div><div class="imandra-table" id="table-f367f0f6-8010-4d1b-8bf0-673246ff70c5"><table><thead><tr><th>Constraints</th><th>Invariant</th></tr></thead><tr><td><ul><li><pre>not (is_pos (add x y))</pre></li></ul></td><td><pre>F = 2</pre></td></tr><tr><td><ul><li><pre>is_pos (add x y)</pre></li></ul></td><td><pre>F = 1</pre></td></tr></table></div></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-c7a1b686-0e5e-4b88-80d0-3d6f2d913a2d';
+  var target = '#alt-18ffba89-d817-41cf-a31a-62b062826edd';
   alternatives.hydrate(target);
 });
 </script></div>
@@ -2382,7 +2307,7 @@ val f : int -&gt; int -&gt; Z.t = &lt;fun&gt;
 <div class="prompt input_prompt">In&nbsp;[20]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ocaml"><pre><span></span><span class="nn">Decompose_frontend</span><span class="p">.</span><span class="n">top</span> <span class="s2">&quot;f&quot;</span>
+<div class=" highlight hl-ocaml"><pre><span></span><span class="nn">Decompose</span><span class="p">.</span><span class="n">top</span> <span class="s2">&quot;f&quot;</span>
 </pre></div>
 
 </div>
@@ -2401,11 +2326,7 @@ val f : int -&gt; int -&gt; Z.t = &lt;fun&gt;
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>- : Imandra_interactive.Decompose_frontend.t list =
-[{Imandra_interactive.Decompose_frontend.reg_session = &lt;abstr&gt;; reg_id = 62i;
-  reg_constraints = [x &lt;= y]; reg_invariant = F = 3};
- {Imandra_interactive.Decompose_frontend.reg_session = &lt;abstr&gt;; reg_id = 63i;
-  reg_constraints = [not (x &lt;= y)]; reg_invariant = F = 2}]
+<pre>- : Imandra_interactive.Decompose.t list = [&lt;region&gt;; &lt;region&gt;]
 </pre>
 </div>
 
@@ -2418,7 +2339,7 @@ val f : int -&gt; int -&gt; Z.t = &lt;fun&gt;
 
 
 <div class="output_html rendered_html output_subarea ">
-<div class="imandra-alternatives" id="alt-a03518d1-f3fb-44db-bc5f-45b700ada21f"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-dba30cc5-a478-48a1-9677-7c1814cf90f4" class="decompose"><textarea class="display-none">{
+<div class="imandra-alternatives" id="alt-c35f5242-ec04-405c-b213-bd7aff63c828"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-53eefb8d-6581-48bc-8701-145dda163cda" class="decompose"><textarea class="display-none">{
   &quot;regions&quot;: [
     {
       &quot;constraints&quot;: [ &quot;x &lt;= y&quot; ],
@@ -2438,13 +2359,13 @@ val f : int -&gt; int -&gt; Z.t = &lt;fun&gt;
 }</textarea><div class="decompose-foamtree"></div><div class="decompose-details"><div class="decompose-details-header">Regions details</div><div class="decompose-details-no-selection">No group selected.</div><div class="decompose-details-selection hidden"><div><span class="decompose-details-label">Direct sub-regions: </span><span class="decompose-details-direct-sub-regions-text">-</span></div><div><span class="decompose-details-label">Contained regions: </span><span class="decompose-details-contained-regions-text">-</span></div><div class="decompose-details-section-header">Constraints</div><div class="decompose-details-constraints"><pre class="decompose-details-constraint">&lt;constraint&gt;</pre></div><div class="decompose-details-invariant"><div class="decompose-details-section-header">Invariant</div><pre class="decompose-details-invariant-text">&lt;invariant&gt;</pre></div></div></div><script>
 (function () {
   require(['nbextensions/nbimandra/regions'], function (regions) {
-    var target = '#decompose-dba30cc5-a478-48a1-9677-7c1814cf90f4';
+    var target = '#decompose-53eefb8d-6581-48bc-8701-145dda163cda';
     regions.hydrate(target);
   });
 })();
-</script></div></div><div class="tab-pane"><div><div class="imandra-table" id="table-f828bcfa-ef68-4173-b615-e0240f3c919b"><table><thead><tr><th>Constraints</th><th>Invariant</th></tr></thead><tr><td><ul><li><pre>not (x &lt;= y)</pre></li></ul></td><td><pre>F = 2</pre></td></tr><tr><td><ul><li><pre>x &lt;= y</pre></li></ul></td><td><pre>F = 3</pre></td></tr></table></div></div></div></div><script>
+</script></div></div><div class="tab-pane"><div><div class="imandra-table" id="table-9a0acbae-5f10-4595-ac90-e92318b071ea"><table><thead><tr><th>Constraints</th><th>Invariant</th></tr></thead><tr><td><ul><li><pre>not (x &lt;= y)</pre></li></ul></td><td><pre>F = 2</pre></td></tr><tr><td><ul><li><pre>x &lt;= y</pre></li></ul></td><td><pre>F = 3</pre></td></tr></table></div></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-a03518d1-f3fb-44db-bc5f-45b700ada21f';
+  var target = '#alt-c35f5242-ec04-405c-b213-bd7aff63c828';
   alternatives.hydrate(target);
 });
 </script></div>
@@ -2475,7 +2396,7 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
 <div class="prompt input_prompt">In&nbsp;[21]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ocaml"><pre><span></span><span class="nn">Decompose_frontend</span><span class="p">.</span><span class="n">top</span> <span class="o">~</span><span class="n">basis</span><span class="o">:[</span><span class="s2">&quot;gt&quot;</span><span class="o">]</span> <span class="s2">&quot;f&quot;</span>
+<div class=" highlight hl-ocaml"><pre><span></span><span class="nn">Decompose</span><span class="p">.</span><span class="n">top</span> <span class="o">~</span><span class="n">basis</span><span class="o">:[</span><span class="s2">&quot;gt&quot;</span><span class="o">]</span> <span class="s2">&quot;f&quot;</span>
 </pre></div>
 
 </div>
@@ -2494,13 +2415,7 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>- : Imandra_interactive.Decompose_frontend.t list =
-[{Imandra_interactive.Decompose_frontend.reg_session = &lt;abstr&gt;; reg_id = 67i;
-  reg_constraints = [gt x y; gt y x]; reg_invariant = F = 1};
- {Imandra_interactive.Decompose_frontend.reg_session = &lt;abstr&gt;; reg_id = 68i;
-  reg_constraints = [gt x y; not (gt y x)]; reg_invariant = F = 2};
- {Imandra_interactive.Decompose_frontend.reg_session = &lt;abstr&gt;; reg_id = 69i;
-  reg_constraints = [not (gt x y)]; reg_invariant = F = 3}]
+<pre>- : Imandra_interactive.Decompose.t list = [&lt;region&gt;; &lt;region&gt;; &lt;region&gt;]
 </pre>
 </div>
 
@@ -2513,7 +2428,7 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
 
 
 <div class="output_html rendered_html output_subarea ">
-<div class="imandra-alternatives" id="alt-74c720c8-4e03-4a65-bd7d-f537b9139fa5"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-08eccbca-e4e7-4302-8493-ef434e7f8c78" class="decompose"><textarea class="display-none">{
+<div class="imandra-alternatives" id="alt-30ecadc3-04a4-4353-8f22-a52cbeeba2cf"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-236827bb-4e8f-48cc-8708-887dd0f657d0" class="decompose"><textarea class="display-none">{
   &quot;regions&quot;: [
     {
       &quot;constraints&quot;: [ &quot;not (gt x y)&quot; ],
@@ -2554,13 +2469,13 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
 }</textarea><div class="decompose-foamtree"></div><div class="decompose-details"><div class="decompose-details-header">Regions details</div><div class="decompose-details-no-selection">No group selected.</div><div class="decompose-details-selection hidden"><div><span class="decompose-details-label">Direct sub-regions: </span><span class="decompose-details-direct-sub-regions-text">-</span></div><div><span class="decompose-details-label">Contained regions: </span><span class="decompose-details-contained-regions-text">-</span></div><div class="decompose-details-section-header">Constraints</div><div class="decompose-details-constraints"><pre class="decompose-details-constraint">&lt;constraint&gt;</pre></div><div class="decompose-details-invariant"><div class="decompose-details-section-header">Invariant</div><pre class="decompose-details-invariant-text">&lt;invariant&gt;</pre></div></div></div><script>
 (function () {
   require(['nbextensions/nbimandra/regions'], function (regions) {
-    var target = '#decompose-08eccbca-e4e7-4302-8493-ef434e7f8c78';
+    var target = '#decompose-236827bb-4e8f-48cc-8708-887dd0f657d0';
     regions.hydrate(target);
   });
 })();
-</script></div></div><div class="tab-pane"><div><div class="imandra-table" id="table-8eb45a5c-dba5-4d11-92fc-6075f69c0209"><table><thead><tr><th>Constraints</th><th>Invariant</th></tr></thead><tr><td><ul><li><pre>not (gt x y)</pre></li></ul></td><td><pre>F = 3</pre></td></tr><tr><td><ul><li><pre>gt x y</pre></li><li><pre>not (gt y x)</pre></li></ul></td><td><pre>F = 2</pre></td></tr><tr><td><ul><li><pre>gt x y</pre></li><li><pre>gt y x</pre></li></ul></td><td><pre>F = 1</pre></td></tr></table></div></div></div></div><script>
+</script></div></div><div class="tab-pane"><div><div class="imandra-table" id="table-540079e4-02e9-4347-a3cc-bdd547948eaa"><table><thead><tr><th>Constraints</th><th>Invariant</th></tr></thead><tr><td><ul><li><pre>not (gt x y)</pre></li></ul></td><td><pre>F = 3</pre></td></tr><tr><td><ul><li><pre>gt x y</pre></li><li><pre>not (gt y x)</pre></li></ul></td><td><pre>F = 2</pre></td></tr><tr><td><ul><li><pre>gt x y</pre></li><li><pre>gt y x</pre></li></ul></td><td><pre>F = 1</pre></td></tr></table></div></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-74c720c8-4e03-4a65-bd7d-f537b9139fa5';
+  var target = '#alt-30ecadc3-04a4-4353-8f22-a52cbeeba2cf';
   alternatives.hydrate(target);
 });
 </script></div>
@@ -2590,7 +2505,7 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
 <div class="prompt input_prompt">In&nbsp;[22]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ocaml"><pre><span></span><span class="nn">Decompose_frontend</span><span class="p">.</span><span class="n">top</span> <span class="o">~</span><span class="n">interpret_basis</span><span class="o">:</span><span class="bp">true</span> <span class="o">~</span><span class="n">basis</span><span class="o">:[</span><span class="s2">&quot;gt&quot;</span><span class="o">]</span> <span class="s2">&quot;f&quot;</span>
+<div class=" highlight hl-ocaml"><pre><span></span><span class="nn">Decompose</span><span class="p">.</span><span class="n">top</span> <span class="o">~</span><span class="n">interpret_basis</span><span class="o">:</span><span class="bp">true</span> <span class="o">~</span><span class="n">basis</span><span class="o">:[</span><span class="s2">&quot;gt&quot;</span><span class="o">]</span> <span class="s2">&quot;f&quot;</span>
 </pre></div>
 
 </div>
@@ -2609,11 +2524,7 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>- : Imandra_interactive.Decompose_frontend.t list =
-[{Imandra_interactive.Decompose_frontend.reg_session = &lt;abstr&gt;; reg_id = 72i;
-  reg_constraints = [gt x y; not (gt y x)]; reg_invariant = F = 2};
- {Imandra_interactive.Decompose_frontend.reg_session = &lt;abstr&gt;; reg_id = 73i;
-  reg_constraints = [not (gt x y)]; reg_invariant = F = 3}]
+<pre>- : Imandra_interactive.Decompose.t list = [&lt;region&gt;; &lt;region&gt;]
 </pre>
 </div>
 
@@ -2626,7 +2537,7 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
 
 
 <div class="output_html rendered_html output_subarea ">
-<div class="imandra-alternatives" id="alt-9768ae4f-132f-4626-9967-e3a2c1464037"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-bfbfa5db-de4e-462e-b2d6-8f19590ba730" class="decompose"><textarea class="display-none">{
+<div class="imandra-alternatives" id="alt-eadd96cb-eb79-41bc-868a-c987a74f0af8"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-4487fd44-b8b7-4084-b99f-0e766e324e29" class="decompose"><textarea class="display-none">{
   &quot;regions&quot;: [
     {
       &quot;constraints&quot;: [ &quot;not (gt x y)&quot; ],
@@ -2649,13 +2560,13 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
 }</textarea><div class="decompose-foamtree"></div><div class="decompose-details"><div class="decompose-details-header">Regions details</div><div class="decompose-details-no-selection">No group selected.</div><div class="decompose-details-selection hidden"><div><span class="decompose-details-label">Direct sub-regions: </span><span class="decompose-details-direct-sub-regions-text">-</span></div><div><span class="decompose-details-label">Contained regions: </span><span class="decompose-details-contained-regions-text">-</span></div><div class="decompose-details-section-header">Constraints</div><div class="decompose-details-constraints"><pre class="decompose-details-constraint">&lt;constraint&gt;</pre></div><div class="decompose-details-invariant"><div class="decompose-details-section-header">Invariant</div><pre class="decompose-details-invariant-text">&lt;invariant&gt;</pre></div></div></div><script>
 (function () {
   require(['nbextensions/nbimandra/regions'], function (regions) {
-    var target = '#decompose-bfbfa5db-de4e-462e-b2d6-8f19590ba730';
+    var target = '#decompose-4487fd44-b8b7-4084-b99f-0e766e324e29';
     regions.hydrate(target);
   });
 })();
-</script></div></div><div class="tab-pane"><div><div class="imandra-table" id="table-da491377-3b2f-43b5-8f6c-9f09ca45c5cc"><table><thead><tr><th>Constraints</th><th>Invariant</th></tr></thead><tr><td><ul><li><pre>not (gt x y)</pre></li></ul></td><td><pre>F = 3</pre></td></tr><tr><td><ul><li><pre>gt x y</pre></li><li><pre>not (gt y x)</pre></li></ul></td><td><pre>F = 2</pre></td></tr></table></div></div></div></div><script>
+</script></div></div><div class="tab-pane"><div><div class="imandra-table" id="table-3e002bfe-b6ff-4142-906c-b20198dfafbc"><table><thead><tr><th>Constraints</th><th>Invariant</th></tr></thead><tr><td><ul><li><pre>not (gt x y)</pre></li></ul></td><td><pre>F = 3</pre></td></tr><tr><td><ul><li><pre>gt x y</pre></li><li><pre>not (gt y x)</pre></li></ul></td><td><pre>F = 2</pre></td></tr></table></div></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-9768ae4f-132f-4626-9967-e3a2c1464037';
+  var target = '#alt-eadd96cb-eb79-41bc-868a-c987a74f0af8';
   alternatives.hydrate(target);
 });
 </script></div>
@@ -2722,47 +2633,47 @@ val g : int -&gt; Z.t = &lt;fun&gt;
 
 
 <div class="output_html rendered_html output_subarea ">
-<div><div class="imandra-fold panel panel-default" id="fold-0f9f4fee-8dd3-45a9-9e8d-664d10f11489"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>termination proof</span></div></div><div class="panel-body collapse"><div><h3>Termination proof</h3><p></p><div class="imandra-fold panel panel-default" id="fold-b69552f4-e19e-413d-a568-926cbe8a578b"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>call `f (x - 1)` from `f x`</span></div></div><div class="panel-body collapse"><div class="imandra-table" id="table-a6da37f4-6ef7-421e-a7d7-fc62cc6a79bb"><table><tr><td><b>original</b></td><td>f x</td></tr><tr><td><b>sub</b></td><td>f (x - 1)</td></tr><tr><td><b>original ordinal</b></td><td>Ordinal.Int (if x &gt;= 0 then x else 0)</td></tr><tr><td><b>sub ordinal</b></td><td>Ordinal.Int (if (x - 1) &gt;= 0 then x - 1 else 0)</td></tr><tr><td><b>path</b></td><td>[not (x &lt;= 0)]</td></tr><tr><td><b>proof</b></td><td><div class="imandra-fold panel panel-default" id="fold-6e8c6aa3-3572-4c65-86a3-3863859a42f5"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>detailed proof</span></div></div><div class="panel-body collapse"><div class="imandra-proof"><div class="imandra-alternatives" id="alt-e4a30e7a-2f64-4ecc-bd93-3305918c6bc2"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>summary</a></li><li class="" data-toggle="tab"><a>full</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-table" id="table-1eb36ac0-55f3-457b-be5f-aa8fd539cd52"><table><tr><td><b>ground_instances</b></td><td>1</td></tr><tr><td><b>definitions</b></td><td>0</td></tr><tr><td><b>inductions</b></td><td>0</td></tr><tr><td><b>search_time</b></td><td><pre>0.017s</pre></td></tr><tr><td><b>details</b></td><td><div class="imandra-fold panel panel-default" id="fold-c810b700-e2b1-4406-8cb8-eec907c74f59"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><div class="imandra-table" id="table-f8e02378-4996-4920-8ebc-79763249960f"><table><tr><td><b>smt_stats</b></td><td><div class="imandra-table" id="table-b7e6471a-18b7-48f6-8a91-0bbf6b3f993b"><table><tr><td><b>num checks</b></td><td>3</td></tr><tr><td><b>arith assert lower</b></td><td>9</td></tr><tr><td><b>arith pivots</b></td><td>2</td></tr><tr><td><b>rlimit count</b></td><td>4939</td></tr><tr><td><b>mk clause</b></td><td>4</td></tr><tr><td><b>datatype occurs check</b></td><td>2</td></tr><tr><td><b>mk bool var</b></td><td>20</td></tr><tr><td><b>arith assert upper</b></td><td>2</td></tr><tr><td><b>decisions</b></td><td>2</td></tr><tr><td><b>arith add rows</b></td><td>3</td></tr><tr><td><b>propagations</b></td><td>2</td></tr><tr><td><b>conflicts</b></td><td>2</td></tr><tr><td><b>arith fixed eqs</b></td><td>2</td></tr><tr><td><b>datatype accessor ax</b></td><td>2</td></tr><tr><td><b>arith conflicts</b></td><td>1</td></tr><tr><td><b>final checks</b></td><td>1</td></tr><tr><td><b>added eqs</b></td><td>6</td></tr><tr><td><b>del clause</b></td><td>4</td></tr><tr><td><b>arith eq adapter</b></td><td>2</td></tr><tr><td><b>memory</b></td><td>120.040000</td></tr><tr><td><b>max memory</b></td><td>220.090000</td></tr><tr><td><b>num allocs</b></td><td>47780331878.000000</td></tr></table></div></td></tr></table></div></div><script>
+<div><div class="imandra-fold panel panel-default" id="fold-9e473377-b3e8-4d40-8eeb-89c059c34247"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>termination proof</span></div></div><div class="panel-body collapse"><div><h3>Termination proof</h3><p></p><div class="imandra-fold panel panel-default" id="fold-9f19e12c-e3ee-42a1-a88a-af4432331765"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>call `f (x - 1)` from `f x`</span></div></div><div class="panel-body collapse"><div class="imandra-table" id="table-ae2c3eb1-2cff-47b0-aeb2-e4a806055942"><table><tr><td><b>original</b></td><td>f x</td></tr><tr><td><b>sub</b></td><td>f (x - 1)</td></tr><tr><td><b>original ordinal</b></td><td>Ordinal.Int (if x &gt;= 0 then x else 0)</td></tr><tr><td><b>sub ordinal</b></td><td>Ordinal.Int (if (x - 1) &gt;= 0 then x - 1 else 0)</td></tr><tr><td><b>path</b></td><td>[not (x &lt;= 0)]</td></tr><tr><td><b>proof</b></td><td><div class="imandra-fold panel panel-default" id="fold-c0bd8ebd-836d-489c-b741-7fcf48d9c0fe"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>detailed proof</span></div></div><div class="panel-body collapse"><div class="imandra-proof"><div class="imandra-alternatives" id="alt-c09c6292-943c-408d-b49c-8d8704ad4790"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>summary</a></li><li class="" data-toggle="tab"><a>full</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-table" id="table-60e6ebfa-9bd6-4bb2-85cf-703f9e404717"><table><tr><td><b>ground_instances</b></td><td>1</td></tr><tr><td><b>definitions</b></td><td>0</td></tr><tr><td><b>inductions</b></td><td>0</td></tr><tr><td><b>search_time</b></td><td><pre>0.023s</pre></td></tr><tr><td><b>details</b></td><td><div class="imandra-fold panel panel-default" id="fold-5d6bba4f-beb1-40c8-a5bc-2f577ab5d7cb"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><div class="imandra-table" id="table-48791669-c75a-40da-9eac-4107fbe0bbad"><table><tr><td><b>smt_stats</b></td><td><div class="imandra-table" id="table-9b539432-915b-4d7a-8ed0-d27ebfc20fe5"><table><tr><td><b>num checks</b></td><td>3</td></tr><tr><td><b>arith assert lower</b></td><td>9</td></tr><tr><td><b>arith pivots</b></td><td>2</td></tr><tr><td><b>rlimit count</b></td><td>4939</td></tr><tr><td><b>mk clause</b></td><td>4</td></tr><tr><td><b>datatype occurs check</b></td><td>2</td></tr><tr><td><b>mk bool var</b></td><td>20</td></tr><tr><td><b>arith assert upper</b></td><td>2</td></tr><tr><td><b>decisions</b></td><td>2</td></tr><tr><td><b>arith add rows</b></td><td>3</td></tr><tr><td><b>propagations</b></td><td>2</td></tr><tr><td><b>conflicts</b></td><td>2</td></tr><tr><td><b>arith fixed eqs</b></td><td>2</td></tr><tr><td><b>datatype accessor ax</b></td><td>2</td></tr><tr><td><b>arith conflicts</b></td><td>1</td></tr><tr><td><b>final checks</b></td><td>1</td></tr><tr><td><b>added eqs</b></td><td>6</td></tr><tr><td><b>del clause</b></td><td>4</td></tr><tr><td><b>arith eq adapter</b></td><td>2</td></tr><tr><td><b>memory</b></td><td>122.670000</td></tr><tr><td><b>max memory</b></td><td>220.080000</td></tr><tr><td><b>num allocs</b></td><td>56771930920.000000</td></tr></table></div></td></tr></table></div></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-c810b700-e2b1-4406-8cb8-eec907c74f59';
+  var target = '#fold-5d6bba4f-beb1-40c8-a5bc-2f577ab5d7cb';
   fold.hydrate(target);
 });
-</script></div></td></tr></table></div></div><div class="tab-pane"><div class="imandra-fold panel panel-default" id="fold-35836a5e-cceb-4c53-a69d-f3d7903b750f"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.017s]
+</script></div></td></tr></table></div></div><div class="tab-pane"><div class="imandra-fold panel panel-default" id="fold-0e1451e0-eead-44ce-8593-e8a4cc3a4a16"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.023s]
   not (x &lt;= 0)
   &amp;&amp; (if x &gt;= 0 then x else 0) &gt;= 0
      &amp;&amp; (if (x - 1) &gt;= 0 then x - 1 else 0) &gt;= 0
   ==&gt; (x - 1) &lt;= 0
       || Ordinal.&lt;&lt; (Ordinal.Int (if (x - 1) &gt;= 0 then x - 1 else 0))
-         (Ordinal.Int (if x &gt;= 0 then x else 0))</pre></li><li><div><h5>simplify</h5><div class="imandra-table" id="table-8e8e6530-6ec9-4b50-bee4-2d13cc277803"><table><tr><td><b>into</b></td><td><pre>(not
+         (Ordinal.Int (if x &gt;= 0 then x else 0))</pre></li><li><div><h5>simplify</h5><div class="imandra-table" id="table-336bfae6-daaf-47a0-bf8f-f02ae4d989be"><table><tr><td><b>into</b></td><td><pre>(not
  ((not (x &lt;= 0) &amp;&amp; (if x &gt;= 0 then x else 0) &gt;= 0)
   &amp;&amp; (if x &gt;= 1 then -1 + x else 0) &gt;= 0)
  || x &lt;= 1)
 || Ordinal.&lt;&lt; (Ordinal.Int (if x &gt;= 1 then -1 + x else 0))
-   (Ordinal.Int (if x &gt;= 0 then x else 0))</pre></td></tr><tr><td><b>expansions</b></td><td><pre>[]</pre></td></tr><tr><td><b>rewrite_steps</b></td><td><ul></ul></td></tr><tr><td><b>forward_chaining</b></td><td><ul></ul></td></tr></table></div></div></li><li><div>unroll<div class="imandra-table" id="table-f9f92f9c-3bdf-401b-ba8c-aa59bc27ccae"><table><tr><td><b>expr</b></td><td><pre>(|Ordinal.&lt;&lt;_122| (|Ordinal.Int_113| (ite (&gt;= x_2679 1) (+ (- 1) x_2679) 0))
-                  (|Ord…</pre></td></tr><tr><td><b>expansions</b></td><td><ul></ul></td></tr></table></div></div></li><li><div><h5>unsat</h5><pre>(let ((a!1 (= (ite (&gt;= x_2679 1) (+ (- 1) x_2679) 0) (+ (- 1) x_2679)))
+   (Ordinal.Int (if x &gt;= 0 then x else 0))</pre></td></tr><tr><td><b>expansions</b></td><td><pre>[]</pre></td></tr><tr><td><b>rewrite_steps</b></td><td><ul></ul></td></tr><tr><td><b>forward_chaining</b></td><td><ul></ul></td></tr></table></div></div></li><li><div>unroll<div class="imandra-table" id="table-3aa4bd1c-b1c3-4042-80d6-24cda906363a"><table><tr><td><b>expr</b></td><td><pre>(|Ordinal.&lt;&lt;_122| (|Ordinal.Int_113| (ite (&gt;= x_2684 1) (+ (- 1) x_2684) 0))
+                  (|Ord…</pre></td></tr><tr><td><b>expansions</b></td><td><ul></ul></td></tr></table></div></div></li><li><div><h5>unsat</h5><pre>(let ((a!1 (= (ite (&gt;= x_2684 1) (+ (- 1) x_2684) 0) (+ (- 1) x_2684)))
       (a!2 (&lt;= (+ (ite (&gt;= x…</pre></div></li></ul></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-35836a5e-cceb-4c53-a69d-f3d7903b750f';
+  var target = '#fold-0e1451e0-eead-44ce-8593-e8a4cc3a4a16';
   fold.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-e4a30e7a-2f64-4ecc-bd93-3305918c6bc2';
+  var target = '#alt-c09c6292-943c-408d-b49c-8d8704ad4790';
   alternatives.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-6e8c6aa3-3572-4c65-86a3-3863859a42f5';
+  var target = '#fold-c0bd8ebd-836d-489c-b741-7fcf48d9c0fe';
   fold.hydrate(target);
 });
 </script></div></td></tr></table></div></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-b69552f4-e19e-413d-a568-926cbe8a578b';
+  var target = '#fold-9f19e12c-e3ee-42a1-a88a-af4432331765';
   fold.hydrate(target);
 });
 </script></div><p></p></div></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-0f9f4fee-8dd3-45a9-9e8d-664d10f11489';
+  var target = '#fold-9e473377-b3e8-4d40-8eeb-89c059c34247';
   fold.hydrate(target);
 });
 </script></div></div>
@@ -2792,7 +2703,7 @@ require(['nbextensions/nbimandra/fold'], function (fold) {
 <div class="prompt input_prompt">In&nbsp;[24]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ocaml"><pre><span></span><span class="nn">Decompose_frontend</span><span class="p">.</span><span class="n">top</span> <span class="s2">&quot;g&quot;</span><span class="o">;;</span>
+<div class=" highlight hl-ocaml"><pre><span></span><span class="nn">Decompose</span><span class="p">.</span><span class="n">top</span> <span class="s2">&quot;g&quot;</span><span class="o">;;</span>
 </pre></div>
 
 </div>
@@ -2811,11 +2722,7 @@ require(['nbextensions/nbimandra/fold'], function (fold) {
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>- : Imandra_interactive.Decompose_frontend.t list =
-[{Imandra_interactive.Decompose_frontend.reg_session = &lt;abstr&gt;; reg_id = 76i;
-  reg_constraints = [f x = 23]; reg_invariant = F = 1};
- {Imandra_interactive.Decompose_frontend.reg_session = &lt;abstr&gt;; reg_id = 77i;
-  reg_constraints = [not (f x = 23)]; reg_invariant = F = 2}]
+<pre>- : Imandra_interactive.Decompose.t list = [&lt;region&gt;; &lt;region&gt;]
 </pre>
 </div>
 
@@ -2828,7 +2735,7 @@ require(['nbextensions/nbimandra/fold'], function (fold) {
 
 
 <div class="output_html rendered_html output_subarea ">
-<div class="imandra-alternatives" id="alt-098013d1-5b32-4796-80fc-c18fe2dffa9a"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-73efa178-4d7c-4131-839d-0ae23b4c2726" class="decompose"><textarea class="display-none">{
+<div class="imandra-alternatives" id="alt-a86fd497-326e-48cc-b9ff-d09441e61344"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-916e3b09-b065-4776-8f27-af9e1407239b" class="decompose"><textarea class="display-none">{
   &quot;regions&quot;: [
     {
       &quot;constraints&quot;: [ &quot;not (f x = 23)&quot; ],
@@ -2848,13 +2755,13 @@ require(['nbextensions/nbimandra/fold'], function (fold) {
 }</textarea><div class="decompose-foamtree"></div><div class="decompose-details"><div class="decompose-details-header">Regions details</div><div class="decompose-details-no-selection">No group selected.</div><div class="decompose-details-selection hidden"><div><span class="decompose-details-label">Direct sub-regions: </span><span class="decompose-details-direct-sub-regions-text">-</span></div><div><span class="decompose-details-label">Contained regions: </span><span class="decompose-details-contained-regions-text">-</span></div><div class="decompose-details-section-header">Constraints</div><div class="decompose-details-constraints"><pre class="decompose-details-constraint">&lt;constraint&gt;</pre></div><div class="decompose-details-invariant"><div class="decompose-details-section-header">Invariant</div><pre class="decompose-details-invariant-text">&lt;invariant&gt;</pre></div></div></div><script>
 (function () {
   require(['nbextensions/nbimandra/regions'], function (regions) {
-    var target = '#decompose-73efa178-4d7c-4131-839d-0ae23b4c2726';
+    var target = '#decompose-916e3b09-b065-4776-8f27-af9e1407239b';
     regions.hydrate(target);
   });
 })();
-</script></div></div><div class="tab-pane"><div><div class="imandra-table" id="table-9a3edb8b-7175-454a-ac32-fdc84ec1542d"><table><thead><tr><th>Constraints</th><th>Invariant</th></tr></thead><tr><td><ul><li><pre>not (f x = 23)</pre></li></ul></td><td><pre>F = 2</pre></td></tr><tr><td><ul><li><pre>f x = 23</pre></li></ul></td><td><pre>F = 1</pre></td></tr></table></div></div></div></div><script>
+</script></div></div><div class="tab-pane"><div><div class="imandra-table" id="table-7656152e-b6eb-4551-a15d-c352f3c06018"><table><thead><tr><th>Constraints</th><th>Invariant</th></tr></thead><tr><td><ul><li><pre>not (f x = 23)</pre></li></ul></td><td><pre>F = 2</pre></td></tr><tr><td><ul><li><pre>f x = 23</pre></li></ul></td><td><pre>F = 1</pre></td></tr></table></div></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-098013d1-5b32-4796-80fc-c18fe2dffa9a';
+  var target = '#alt-a86fd497-326e-48cc-b9ff-d09441e61344';
   alternatives.hydrate(target);
 });
 </script></div>
@@ -2915,7 +2822,7 @@ f x = 23.
 |---------------------------------------------------------------------------
  f x = 23
 
-Verified up to bound 10 (after 0.231s).
+Verified up to bound 10 (after 0.092s).
 
 Must try induction.
 
@@ -2956,36 +2863,36 @@ But simplification reduces this to true, using the definition of <span class="an
 
 
 <div class="output_html rendered_html output_subarea ">
-<div><div class="imandra-vr imandra-vr-proved"><i class="fa fa-check-circle"></i><span>Proved</span></div><div><div class="imandra-proof-top"><div class="imandra-fold panel panel-default" id="fold-ae2a0ab8-b6fa-4945-ad05-be1c6c9725ff"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>proof</span></div></div><div class="panel-body collapse"><div class="imandra-proof"><div class="imandra-alternatives" id="alt-fd66cc14-5dce-4ebb-83bf-16f71dc2967e"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>summary</a></li><li class="" data-toggle="tab"><a>full</a></li><li class="" data-toggle="tab"><a>graph</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-table" id="table-b12f6429-0373-4207-80cd-b52a71d83ed7"><table><tr><td><b>ground_instances</b></td><td>0</td></tr><tr><td><b>definitions</b></td><td>2</td></tr><tr><td><b>inductions</b></td><td>1</td></tr><tr><td><b>search_time</b></td><td><pre>0.338s</pre></td></tr></table></div></div><div class="tab-pane"><div class="imandra-fold panel panel-default" id="fold-46c0c884-b7c2-4ee4-813c-f9353d726f19"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.338s, &quot;Goal&quot;] f :var_0: = 23</pre></li><li><div><h4>subproof</h4><div class="imandra-fold panel panel-default" id="fold-0bfd1402-4ce2-48aa-ba94-c23d1de6327b"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>f x = 23</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.337s, &quot;1&quot;] f x = 23</pre></li><li><pre>induction on (functional f)
+<div><div class="imandra-vr imandra-vr-proved"><i class="fa fa-check-circle"></i><span>Proved</span></div><div><div class="imandra-proof-top"><div class="imandra-fold panel panel-default" id="fold-b2f748f2-b0c0-4213-b1e8-25bb69154138"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>proof</span></div></div><div class="panel-body collapse"><div class="imandra-proof"><div class="imandra-alternatives" id="alt-ceb0e6f1-5a89-4ee7-bbea-8cf746d8d7bf"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>summary</a></li><li class="" data-toggle="tab"><a>full</a></li><li class="" data-toggle="tab"><a>graph</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-table" id="table-b29ce628-8464-41ac-aedc-4bd667c71a66"><table><tr><td><b>ground_instances</b></td><td>0</td></tr><tr><td><b>definitions</b></td><td>2</td></tr><tr><td><b>inductions</b></td><td>1</td></tr><tr><td><b>search_time</b></td><td><pre>0.160s</pre></td></tr></table></div></div><div class="tab-pane"><div class="imandra-fold panel panel-default" id="fold-673048c1-2f33-4a74-bf9d-13b5e25beb16"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.160s, &quot;Goal&quot;] f :var_0: = 23</pre></li><li><div><h4>subproof</h4><div class="imandra-fold panel panel-default" id="fold-bcc2a1fa-a247-4797-9815-832cfb1f1bd5"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>f x = 23</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.160s, &quot;1&quot;] f x = 23</pre></li><li><pre>induction on (functional f)
 :scheme (x &lt;= 0 ==&gt; φ x) &amp;&amp; (not (x &lt;= 0) &amp;&amp; φ (x - 1) ==&gt; φ x)</pre></li><li><div><pre>Split ((not (x &lt;= 0) || f x = 23)
        &amp;&amp; (not (not (x &lt;= 0) &amp;&amp; f (-1 + x) = 23) || f x = 23)
        :cases [not (x &lt;= 0) || f x = 23;
-               (x &lt;= 0 || not (f (-1 + x) = 23)) || f x = 23])</pre><ul><li><div><h5>subproof</h5><div class="imandra-fold panel panel-default" id="fold-f054b86c-a956-4f9c-a05c-7b5156143124"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>(x &lt;= 0 || not (f (-1 + x) = 23)) || f x = 23</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.052s, &quot;1.1&quot;] (x &lt;= 0 || not (f (-1 + x) = 23)) || f x = 23</pre></li><li><div><h6>simplify</h6><div class="imandra-table" id="table-8e2ae9bd-291e-45d8-8537-15f8879495ae"><table><tr><td><b>into</b></td><td><pre>true</pre></td></tr><tr><td><b>expansions</b></td><td><pre>f</pre></td></tr><tr><td><b>rewrite_steps</b></td><td><ul></ul></td></tr><tr><td><b>forward_chaining</b></td><td><ul></ul></td></tr></table></div></div></li></ul></div><script>
+               (x &lt;= 0 || not (f (-1 + x) = 23)) || f x = 23])</pre><ul><li><div><h5>subproof</h5><div class="imandra-fold panel panel-default" id="fold-682eac8b-ccac-4ff7-9f97-b86a892b7c75"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>(x &lt;= 0 || not (f (-1 + x) = 23)) || f x = 23</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.034s, &quot;1.1&quot;] (x &lt;= 0 || not (f (-1 + x) = 23)) || f x = 23</pre></li><li><div><h6>simplify</h6><div class="imandra-table" id="table-7711abd5-53ab-4305-9577-943b3a489abb"><table><tr><td><b>into</b></td><td><pre>true</pre></td></tr><tr><td><b>expansions</b></td><td><pre>f</pre></td></tr><tr><td><b>rewrite_steps</b></td><td><ul></ul></td></tr><tr><td><b>forward_chaining</b></td><td><ul></ul></td></tr></table></div></div></li></ul></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-f054b86c-a956-4f9c-a05c-7b5156143124';
+  var target = '#fold-682eac8b-ccac-4ff7-9f97-b86a892b7c75';
   fold.hydrate(target);
 });
-</script></div></div></li><li><div><h5>subproof</h5><div class="imandra-fold panel panel-default" id="fold-37ad374e-291e-452b-a77b-9c5dbd06eeed"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>not (x &lt;= 0) || f x = 23</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.052s, &quot;1.2&quot;] not (x &lt;= 0) || f x = 23</pre></li><li><div><h6>simplify</h6><div class="imandra-table" id="table-0c458833-3a60-479c-95f1-2344b98cb07e"><table><tr><td><b>into</b></td><td><pre>true</pre></td></tr><tr><td><b>expansions</b></td><td><pre>f</pre></td></tr><tr><td><b>rewrite_steps</b></td><td><ul></ul></td></tr><tr><td><b>forward_chaining</b></td><td><ul></ul></td></tr></table></div></div></li></ul></div><script>
+</script></div></div></li><li><div><h5>subproof</h5><div class="imandra-fold panel panel-default" id="fold-d88b47e7-d724-43db-85c7-621b30a9a143"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>not (x &lt;= 0) || f x = 23</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.034s, &quot;1.2&quot;] not (x &lt;= 0) || f x = 23</pre></li><li><div><h6>simplify</h6><div class="imandra-table" id="table-c8b194ef-dc36-4194-ad73-ff1fdb5f11bc"><table><tr><td><b>into</b></td><td><pre>true</pre></td></tr><tr><td><b>expansions</b></td><td><pre>f</pre></td></tr><tr><td><b>rewrite_steps</b></td><td><ul></ul></td></tr><tr><td><b>forward_chaining</b></td><td><ul></ul></td></tr></table></div></div></li></ul></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-37ad374e-291e-452b-a77b-9c5dbd06eeed';
+  var target = '#fold-d88b47e7-d724-43db-85c7-621b30a9a143';
   fold.hydrate(target);
 });
 </script></div></div></li></ul></div></li></ul></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-0bfd1402-4ce2-48aa-ba94-c23d1de6327b';
+  var target = '#fold-bcc2a1fa-a247-4797-9815-832cfb1f1bd5';
   fold.hydrate(target);
 });
 </script></div></div></li></ul></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-46c0c884-b7c2-4ee4-813c-f9353d726f19';
+  var target = '#fold-673048c1-2f33-4a74-bf9d-13b5e25beb16';
   fold.hydrate(target);
 });
-</script></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-d7d561a7-b780-4dc8-a798-5cfb91840a12"><textarea style="display: none">digraph &quot;proof&quot; {
-p_302 [label=&quot;Start (f :var_0: = 23 :name \&quot;Goal\&quot; :time 0.338s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+</script></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-19599189-1e1c-497f-bc16-4c61d7985aa1"><textarea style="display: none">digraph &quot;proof&quot; {
+p_302 [label=&quot;Start (f :var_0: = 23 :name \&quot;Goal\&quot; :time 0.160s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_302 -&gt; p_300 [label=&quot;&quot;];
 subgraph cluster_301 {
   color=blue;
-p_300 [label=&quot;Start (f x = 23 :name \&quot;1\&quot; :time 0.337s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+p_300 [label=&quot;Start (f x = 23 :name \&quot;1\&quot; :time 0.160s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_300 -&gt; p_299 [label=&quot;&quot;];
 p_299 [label=&quot;Induct ((functional f),\l        :scheme (x \&lt;= 0 ==\&gt; φ x) &amp;&amp; (not (x \&lt;= 0) &amp;&amp; φ (x - 1) ==\&gt; φ x))&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_299 -&gt; p_298 [label=&quot;&quot;];
@@ -2993,14 +2900,14 @@ p_298 [label=&quot;Split ((not (x \&lt;= 0) \|\| f x = 23)\l       &amp;&amp; (n
 p_298 -&gt; p_293 [label=&quot;&quot;];
 subgraph cluster_294 {
   color=blue;
-p_293 [label=&quot;Start ((x \&lt;= 0 \|\| not (f (-1 + x) = 23)) \|\| f x = 23 :name \&quot;1.1\&quot; :time 0.052s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+p_293 [label=&quot;Start ((x \&lt;= 0 \|\| not (f (-1 + x) = 23)) \|\| f x = 23 :name \&quot;1.1\&quot; :time 0.034s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_293 -&gt; p_292 [label=&quot;&quot;];
 p_292 [label=&quot;Simplify (true :expansions [f] :rw [] :fc [])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 }
 p_298 -&gt; p_296 [label=&quot;&quot;];
 subgraph cluster_297 {
   color=blue;
-p_296 [label=&quot;Start (not (x \&lt;= 0) \|\| f x = 23 :name \&quot;1.2\&quot; :time 0.052s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+p_296 [label=&quot;Start (not (x \&lt;= 0) \|\| f x = 23 :name \&quot;1.2\&quot; :time 0.034s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_296 -&gt; p_295 [label=&quot;&quot;];
 p_295 [label=&quot;Simplify (true :expansions [f] :rw [] :fc [])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 }
@@ -3008,17 +2915,17 @@ p_295 [label=&quot;Simplify (true :expansions [f] :rw [] :fc [])&quot;,shape=box
 }
 </textarea><button class="btn btn-primary">Load graph</button><div class="imandra-graphviz-loading display-none">Loading..</div><div class="imandra-graphviz-target"></div><script>
 require(['nbextensions/nbimandra/graphviz'], function (graphviz) {
-  var target = '#graphviz-d7d561a7-b780-4dc8-a798-5cfb91840a12';
+  var target = '#graphviz-19599189-1e1c-497f-bc16-4c61d7985aa1';
   graphviz.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-fd66cc14-5dce-4ebb-83bf-16f71dc2967e';
+  var target = '#alt-ceb0e6f1-5a89-4ee7-bbea-8cf746d8d7bf';
   alternatives.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-ae2a0ab8-b6fa-4945-ad05-be1c6c9725ff';
+  var target = '#fold-b2f748f2-b0c0-4213-b1e8-25bb69154138';
   fold.hydrate(target);
 });
 </script></div></div></div></div>
@@ -3048,7 +2955,7 @@ require(['nbextensions/nbimandra/fold'], function (fold) {
 <div class="prompt input_prompt">In&nbsp;[26]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ocaml"><pre><span></span><span class="nn">Decompose_frontend</span><span class="p">.</span><span class="n">top</span> <span class="s2">&quot;g&quot;</span> <span class="o">~</span><span class="n">aggressive_rec</span><span class="o">:</span><span class="bp">true</span>
+<div class=" highlight hl-ocaml"><pre><span></span><span class="nn">Decompose</span><span class="p">.</span><span class="n">top</span> <span class="s2">&quot;g&quot;</span> <span class="o">~</span><span class="n">aggressive_rec</span><span class="o">:</span><span class="bp">true</span>
 </pre></div>
 
 </div>
@@ -3067,9 +2974,7 @@ require(['nbextensions/nbimandra/fold'], function (fold) {
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>- : Imandra_interactive.Decompose_frontend.t list =
-[{Imandra_interactive.Decompose_frontend.reg_session = &lt;abstr&gt;; reg_id = 79i;
-  reg_constraints = []; reg_invariant = F = 1}]
+<pre>- : Imandra_interactive.Decompose.t list = [&lt;region&gt;]
 </pre>
 </div>
 
@@ -3095,7 +3000,7 @@ require(['nbextensions/nbimandra/fold'], function (fold) {
 
 
 <div class="output_html rendered_html output_subarea ">
-<div class="imandra-alternatives" id="alt-35cc576d-18e2-46fd-b2a1-cea8af601a6b"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-0ede3b22-7815-4372-8c5c-8069ece2d091" class="decompose"><textarea class="display-none">{
+<div class="imandra-alternatives" id="alt-5e242a2c-3547-4b7a-a583-abbb8fd0b3eb"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-78e56a25-452f-493b-898a-cef66b7a6224" class="decompose"><textarea class="display-none">{
   &quot;regions&quot;: [
     {
       &quot;constraints&quot;: [ &quot;true&quot; ],
@@ -3108,13 +3013,13 @@ require(['nbextensions/nbimandra/fold'], function (fold) {
 }</textarea><div class="decompose-foamtree"></div><div class="decompose-details"><div class="decompose-details-header">Regions details</div><div class="decompose-details-no-selection">No group selected.</div><div class="decompose-details-selection hidden"><div><span class="decompose-details-label">Direct sub-regions: </span><span class="decompose-details-direct-sub-regions-text">-</span></div><div><span class="decompose-details-label">Contained regions: </span><span class="decompose-details-contained-regions-text">-</span></div><div class="decompose-details-section-header">Constraints</div><div class="decompose-details-constraints"><pre class="decompose-details-constraint">&lt;constraint&gt;</pre></div><div class="decompose-details-invariant"><div class="decompose-details-section-header">Invariant</div><pre class="decompose-details-invariant-text">&lt;invariant&gt;</pre></div></div></div><script>
 (function () {
   require(['nbextensions/nbimandra/regions'], function (regions) {
-    var target = '#decompose-0ede3b22-7815-4372-8c5c-8069ece2d091';
+    var target = '#decompose-78e56a25-452f-493b-898a-cef66b7a6224';
     regions.hydrate(target);
   });
 })();
-</script></div></div><div class="tab-pane"><div><div class="imandra-table" id="table-29a9621e-b5a9-43e8-851e-c89b5a08a8ff"><table><thead><tr><th>Constraints</th><th>Invariant</th></tr></thead><tr><td><ul></ul></td><td><pre>F = 1</pre></td></tr></table></div></div></div></div><script>
+</script></div></div><div class="tab-pane"><div><div class="imandra-table" id="table-56d17232-d6cc-4877-a54a-2ed4baf925e9"><table><thead><tr><th>Constraints</th><th>Invariant</th></tr></thead><tr><td><ul></ul></td><td><pre>F = 1</pre></td></tr></table></div></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-35cc576d-18e2-46fd-b2a1-cea8af601a6b';
+  var target = '#alt-5e242a2c-3547-4b7a-a583-abbb8fd0b3eb';
   alternatives.hydrate(target);
 });
 </script></div>

@@ -908,7 +908,7 @@ Note: this is an introductory walkthrough of the capabilities of `imandra-tools`
   DecompositionConfig.event list -&gt; DecompositionConfig.state = &lt;fun&gt;
 module Mex :
   sig
-    module E = Imandra_interactive.Extract_frontend
+    module E = Imandra_interactive.Extract
     val get_option : (E.expr -&gt; &#39;a_0) -&gt; E.expr -&gt; &#39;a_0 option
     val get_Peano_nat_t : E.expr -&gt; Peano_nat.t
     val get_unit : E.expr -&gt; unit
@@ -982,7 +982,7 @@ module D :
         val events_of_region :
           arg:Imandra_prelude.Caml.Int.t -&gt;
           signature:Imandra_prelude.string -&gt;
-          Imandra_tools__Idf.Decompose.t -&gt;
+          Imandra_interactive.Decompose.t -&gt;
           (Imandra_surface.Top_result.term_model * event)
           Imandra_tools__Idf.gen
       end
@@ -1003,15 +1003,17 @@ module D :
               node:node_t -&gt;
               signature:Imandra_prelude.string -&gt;
               Imandra_prelude.Caml.Int.t -&gt;
-              Imandra_tools__Idf.Decompose.t -&gt;
+              Imandra_interactive.Decompose.t -&gt;
               (Imandra_surface.Top_result.term_model * event * node_t)
               Imandra_tools__Idf.gen
             val strategy : Imandra_tools__Idf.strategy
           end
         type node_t =
-          Imandra_tools__Idf.Make(DecompositionConfig)(Mex)(Template).Strategy.node_t =
-            Expr of (Imandra_surface.Term.t * Imandra_surface.Term.t list)
-          | Str of Imandra_prelude.string * Imandra_prelude.string
+          Imandra_tools__Idf.Make(DecompositionConfig)(Mex)(Template).Strategy.node_t = {
+          invariant : Imandra_surface.Term.t;
+          constraints : Imandra_surface.Term.t list;
+          e : Imandra_surface.Term.t option;
+        }
         module Symbolic :
           sig
             type state = DecompositionConfig.state
@@ -1027,7 +1029,7 @@ module D :
               node:node_t -&gt;
               signature:Imandra_prelude.string -&gt;
               Imandra_prelude.Caml.Int.t -&gt;
-              Imandra_tools__Idf.Decompose.t -&gt;
+              Imandra_interactive.Decompose.t -&gt;
               (Imandra_surface.Top_result.term_model * event * node_t)
               Imandra_tools__Idf.gen
             val strategy : Imandra_tools__Idf.strategy
@@ -1049,7 +1051,7 @@ module D :
                  node:node_t -&gt;
                  signature:Imandra_prelude.string -&gt;
                  Imandra_prelude.Caml.Int.t -&gt;
-                 Imandra_tools__Idf.Decompose.t -&gt;
+                 Imandra_interactive.Decompose.t -&gt;
                  (Imandra_surface.Top_result.term_model * event * node_t)
                  Imandra_tools__Idf.gen
                val strategy : Imandra_tools__Idf.strategy
@@ -1057,7 +1059,7 @@ module D :
         sig
           type decomp_step = {
             sample : S.event;
-            region : Imandra_tools__Idf.Decompose.t;
+            region : Imandra_interactive.Decompose.t;
             signature : Imandra_prelude.string;
             model : Imandra_surface.Top_result.term_model;
           }
@@ -1140,17 +1142,19 @@ module D :
             end
           type step = indexed_state * decomp_step * indexed_state
           type path = step list
-          type t = path L.t * G.t
+          type t =
+              path L.t * G.t * (Imandra_prelude.unit -&gt; Imandra_prelude.unit)
           val paths : ?v:G.vertex -&gt; G.t -&gt; path L.t
-          val region_of_path : path -&gt; Imandra_tools__Idf.Decompose.t list
-          val regions : path L.t -&gt; Imandra_tools__Idf.Decompose.t list L.t
+          val region_of_path : path -&gt; Imandra_interactive.Decompose.t list
+          val regions : path L.t -&gt; Imandra_interactive.Decompose.t list L.t
           val replay_path : path -&gt; (S.state * S.event * S.state) list
-          type decomp_data =
-              S.event * S.node_t * Imandra_tools__Idf.Decompose.t
           type &#39;a prod = [ `Prod of &#39;a ]
-          type consumable_step =
-              (decomp_data * step * bool) *
-              (Imandra_prelude.unit -&gt; consumable_step L.t prod)
+          type consumable_step = {
+            step : step;
+            seen : bool;
+            prod : Imandra_prelude.unit -&gt; consumable_step L.t prod;
+            close : Imandra_prelude.unit -&gt; Imandra_prelude.unit;
+          }
           val decompose_one :
             ?g:G.t -&gt;
             ?root:S.node_t -&gt;
@@ -1194,7 +1198,7 @@ module D :
                  node:node_t -&gt;
                  signature:Imandra_prelude.string -&gt;
                  Imandra_prelude.Caml.Int.t -&gt;
-                 Imandra_tools__Idf.Decompose.t -&gt;
+                 Imandra_interactive.Decompose.t -&gt;
                  (Imandra_surface.Top_result.term_model * event * node_t)
                  Imandra_tools__Idf.gen
                val strategy : Imandra_tools__Idf.strategy
@@ -1203,7 +1207,7 @@ module D :
           type decomp_step =
             Imandra_tools__Idf.Make(DecompositionConfig)(Mex)(Template).WithStrategy(S).decomp_step = {
             sample : S.event;
-            region : Imandra_tools__Idf.Decompose.t;
+            region : Imandra_interactive.Decompose.t;
             signature : Imandra_prelude.string;
             model : Imandra_surface.Top_result.term_model;
           }
@@ -1310,17 +1314,20 @@ module D :
             end
           type step = indexed_state * decomp_step * indexed_state
           type path = step list
-          type t = path L.t * G.t
+          type t =
+              path L.t * G.t * (Imandra_prelude.unit -&gt; Imandra_prelude.unit)
           val paths : ?v:G.vertex -&gt; G.t -&gt; path L.t
-          val region_of_path : path -&gt; Imandra_tools__Idf.Decompose.t list
-          val regions : path L.t -&gt; Imandra_tools__Idf.Decompose.t list L.t
+          val region_of_path : path -&gt; Imandra_interactive.Decompose.t list
+          val regions : path L.t -&gt; Imandra_interactive.Decompose.t list L.t
           val replay_path : path -&gt; (S.state * S.event * S.state) list
-          type decomp_data =
-              S.event * S.node_t * Imandra_tools__Idf.Decompose.t
           type &#39;a prod = [ `Prod of &#39;a ]
           type consumable_step =
-              (decomp_data * step * bool) *
-              (Imandra_prelude.unit -&gt; consumable_step L.t prod)
+            Imandra_tools__Idf.Make(DecompositionConfig)(Mex)(Template).WithStrategy(S).consumable_step = {
+            step : step;
+            seen : bool;
+            prod : Imandra_prelude.unit -&gt; consumable_step L.t prod;
+            close : Imandra_prelude.unit -&gt; Imandra_prelude.unit;
+          }
           val decompose_one :
             ?g:G.t -&gt;
             ?root:S.node_t -&gt;
@@ -1353,7 +1360,7 @@ module D :
         type decomp_step =
           WithStrategy(Strategy.Concrete).decomp_step = {
           sample : Strategy.Concrete.event;
-          region : Imandra_tools__Idf.Decompose.t;
+          region : Imandra_interactive.Decompose.t;
           signature : Imandra_prelude.string;
           model : Imandra_surface.Top_result.term_model;
         }
@@ -1453,22 +1460,24 @@ module D :
           end
         type step = indexed_state * decomp_step * indexed_state
         type path = step list
-        type t = path L.t * G.t
+        type t =
+            path L.t * G.t * (Imandra_prelude.unit -&gt; Imandra_prelude.unit)
         val paths : ?v:G.vertex -&gt; G.t -&gt; path L.t
-        val region_of_path : path -&gt; Imandra_tools__Idf.Decompose.t list
-        val regions : path L.t -&gt; Imandra_tools__Idf.Decompose.t list L.t
+        val region_of_path : path -&gt; Imandra_interactive.Decompose.t list
+        val regions : path L.t -&gt; Imandra_interactive.Decompose.t list L.t
         val replay_path :
           path -&gt;
           (Strategy.Concrete.state * Strategy.Concrete.event *
            Strategy.Concrete.state)
           list
-        type decomp_data =
-            Strategy.Concrete.event * Strategy.Concrete.node_t *
-            Imandra_tools__Idf.Decompose.t
         type &#39;a prod = [ `Prod of &#39;a ]
         type consumable_step =
-            (decomp_data * step * bool) *
-            (Imandra_prelude.unit -&gt; consumable_step L.t prod)
+          WithStrategy(Strategy.Concrete).consumable_step = {
+          step : step;
+          seen : bool;
+          prod : Imandra_prelude.unit -&gt; consumable_step L.t prod;
+          close : Imandra_prelude.unit -&gt; Imandra_prelude.unit;
+        }
         val decompose_one :
           ?g:G.t -&gt;
           ?root:Strategy.Concrete.node_t -&gt;
@@ -1502,7 +1511,7 @@ module D :
         type decomp_step =
           WithStrategy(Strategy.Symbolic).decomp_step = {
           sample : Strategy.Symbolic.event;
-          region : Imandra_tools__Idf.Decompose.t;
+          region : Imandra_interactive.Decompose.t;
           signature : Imandra_prelude.string;
           model : Imandra_surface.Top_result.term_model;
         }
@@ -1602,22 +1611,24 @@ module D :
           end
         type step = indexed_state * decomp_step * indexed_state
         type path = step list
-        type t = path L.t * G.t
+        type t =
+            path L.t * G.t * (Imandra_prelude.unit -&gt; Imandra_prelude.unit)
         val paths : ?v:G.vertex -&gt; G.t -&gt; path L.t
-        val region_of_path : path -&gt; Imandra_tools__Idf.Decompose.t list
-        val regions : path L.t -&gt; Imandra_tools__Idf.Decompose.t list L.t
+        val region_of_path : path -&gt; Imandra_interactive.Decompose.t list
+        val regions : path L.t -&gt; Imandra_interactive.Decompose.t list L.t
         val replay_path :
           path -&gt;
           (Strategy.Symbolic.state * Strategy.Symbolic.event *
            Strategy.Symbolic.state)
           list
-        type decomp_data =
-            Strategy.Symbolic.event * Strategy.Symbolic.node_t *
-            Imandra_tools__Idf.Decompose.t
         type &#39;a prod = [ `Prod of &#39;a ]
         type consumable_step =
-            (decomp_data * step * bool) *
-            (Imandra_prelude.unit -&gt; consumable_step L.t prod)
+          WithStrategy(Strategy.Symbolic).consumable_step = {
+          step : step;
+          seen : bool;
+          prod : Imandra_prelude.unit -&gt; consumable_step L.t prod;
+          close : Imandra_prelude.unit -&gt; Imandra_prelude.unit;
+        }
         val decompose_one :
           ?g:G.t -&gt;
           ?root:Strategy.Symbolic.node_t -&gt;
@@ -1647,27 +1658,12 @@ module D :
           ?aggressive_rec:bool -&gt; ?compound:bool -&gt; target -&gt; t
       end
   end
-val imandra_gensym__2 :
-  DecompositionConfig.event -&gt; DecompositionConfig.state -&gt; bool = &lt;fun&gt;
-val side_cond_imandra_gensym__3_2 :
-  DecompositionConfig.event list -&gt; DecompositionConfig.state -&gt; int -&gt; bool =
-  &lt;fun&gt;
-val side_cond_imandra_gensym__3_1 :
-  DecompositionConfig.event list -&gt; DecompositionConfig.state -&gt; int -&gt; bool =
-  &lt;fun&gt;
-val side_cond_imandra_gensym__3_0 :
-  DecompositionConfig.event list -&gt; DecompositionConfig.state -&gt; int -&gt; bool =
-  &lt;fun&gt;
-val target_imandra_gensym__3_2 :
-  DecompositionConfig.event list -&gt;
-  DecompositionConfig.state -&gt; DecompositionConfig.state = &lt;fun&gt;
-val target_imandra_gensym__3_1 :
-  Model.message list -&gt;
-  DecompositionConfig.state -&gt; DecompositionConfig.state = &lt;fun&gt;
-val target_imandra_gensym__3_0 :
-  DecompositionConfig.event list -&gt;
-  DecompositionConfig.state -&gt; DecompositionConfig.state = &lt;fun&gt;
-val paths : D.Symbolic.path D.L.t = &lt;abstr&gt;
+File &#34;jupyter cell 5&#34;, line 6, characters 15-71:
+Error: This expression has type
+         D.Symbolic.t =
+           D.Symbolic.path D.L.t * D.Symbolic.G.t *
+           (Imandra_prelude.unit -&gt; Imandra_prelude.unit)
+       but an expression was expected of type &#39;a * &#39;b
 </pre>
 </div>
 
@@ -1714,670 +1710,9 @@ val paths : D.Symbolic.path D.L.t = &lt;abstr&gt;
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>val imandra_gensym__4 : DecompositionConfig.event list -&gt; bool = &lt;fun&gt;
-val imandra_gensym__5 :
-  DecompositionConfig.event list -&gt; DecompositionConfig.state = &lt;fun&gt;
-val imandra_gensym__50 : DecompositionConfig.event list -&gt; bool = &lt;fun&gt;
-val imandra_gensym__51 :
-  DecompositionConfig.event list -&gt; DecompositionConfig.state = &lt;fun&gt;
-val imandra_gensym__430 : DecompositionConfig.event list -&gt; bool = &lt;fun&gt;
-val imandra_gensym__431 :
-  DecompositionConfig.event list -&gt; DecompositionConfig.state = &lt;fun&gt;
-val first_path : D.Symbolic.path =
-  [({D.Symbolic.state =
-      D.Strategy.Expr ({Model.counter = 0; Model.default = 23}, []);
-     idx = 0i},
-    {D.Symbolic.sample = Model.Add 1337; region = &lt;abstr&gt;;
-     signature = &#34;imandra_gensym__5&#34;;
-     model =
-      {Imandra_surface.Term.Model.tys = [];
-       consts =
-        [((e : DecompositionConfig.event list),
-          [Model.Add 1337; Model.Add 1; Model.Reset])];
-       funs = []}},
-    {D.Symbolic.state =
-      D.Strategy.Expr
-       ({Model.counter = Destruct(Model.Add, 0, List.hd e);
-         Model.default = 23},
-        [List.tl (List.tl (List.tl e)) = []; (List.tl (List.tl e)) &lt;&gt; [];
-         Is_a(Model.Add, List.hd (List.tl e)); (List.tl e) &lt;&gt; []; e &lt;&gt; [];
-         imandra_gensym__2 (List.hd e)
-         {Model.counter = 0; Model.default = 23};
-         not (List.hd e = Model.Reset); Is_a(Model.Add, List.hd e);
-         Destruct(Model.Add, 0, List.hd e) &lt;= 9000]);
-     idx = 1i});
-   ({D.Symbolic.state =
-      D.Strategy.Expr
-       ({Model.counter = Destruct(Model.Add, 0, List.hd e);
-         Model.default = 23},
-        [List.tl (List.tl (List.tl e)) = []; (List.tl (List.tl e)) &lt;&gt; [];
-         Is_a(Model.Add, List.hd (List.tl e)); (List.tl e) &lt;&gt; []; e &lt;&gt; [];
-         imandra_gensym__2 (List.hd e)
-         {Model.counter = 0; Model.default = 23};
-         not (List.hd e = Model.Reset); Is_a(Model.Add, List.hd e);
-         Destruct(Model.Add, 0, List.hd e) &lt;= 9000]);
-     idx = 1i},
-    {D.Symbolic.sample = Model.Add 1; region = &lt;abstr&gt;;
-     signature = &#34;imandra_gensym__51&#34;;
-     model =
-      {Imandra_surface.Term.Model.tys = [];
-       consts =
-        [((e : DecompositionConfig.event list),
-          [Model.Add 1337; Model.Add 1; Model.Reset])];
-       funs = []}},
-    {D.Symbolic.state =
-      D.Strategy.Expr
-       ({Model.counter = 23; Model.default = 23},
-        [not (e = []); Is_a(Model.Add, List.hd e); not (List.tl e = []);
-         not (List.tl (List.tl e) = []); List.tl (List.tl (List.tl e)) = [];
-         Is_a(Model.Add, List.hd (List.tl e));
-         imandra_gensym__2 (List.hd e)
-         {Model.counter = 0; Model.default = 23};
-         Destruct(Model.Add, 0, List.hd e) &lt;= 9000;
-         imandra_gensym__2 (List.hd (List.tl e))
-         {Model.counter = Destruct(Model.Add, 0, List.hd e);
-          Model.default = 23};
-         Destruct(Model.Add, 0, List.hd e) = 1337;
-         List.tl (List.tl (List.tl e)) = []; (List.tl (List.tl e)) &lt;&gt; [];
-         Is_a(Model.Add, List.hd (List.tl e)); (List.tl e) &lt;&gt; []; e &lt;&gt; [];
-         imandra_gensym__2 (List.hd e)
-         {Model.counter = 0; Model.default = 23};
-         not (List.hd e = Model.Reset); Is_a(Model.Add, List.hd e);
-         Destruct(Model.Add, 0, List.hd e) &lt;= 9000]);
-     idx = 2i});
-   ({D.Symbolic.state =
-      D.Strategy.Expr
-       ({Model.counter = 23; Model.default = 23},
-        [not (e = []); Is_a(Model.Add, List.hd e); not (List.tl e = []);
-         not (List.tl (List.tl e) = []); List.tl (List.tl (List.tl e)) = [];
-         Is_a(Model.Add, List.hd (List.tl e));
-         imandra_gensym__2 (List.hd e)
-         {Model.counter = 0; Model.default = 23};
-         Destruct(Model.Add, 0, List.hd e) &lt;= 9000;
-         imandra_gensym__2 (List.hd (List.tl e))
-         {Model.counter = Destruct(Model.Add, 0, List.hd e);
-          Model.default = 23};
-         Destruct(Model.Add, 0, List.hd e) = 1337;
-         List.tl (List.tl (List.tl e)) = []; (List.tl (List.tl e)) &lt;&gt; [];
-         Is_a(Model.Add, List.hd (List.tl e)); (List.tl e) &lt;&gt; []; e &lt;&gt; [];
-         imandra_gensym__2 (List.hd e)
-         {Model.counter = 0; Model.default = 23};
-         not (List.hd e = Model.Reset); Is_a(Model.Add, List.hd e);
-         Destruct(Model.Add, 0, List.hd e) &lt;= 9000]);
-     idx = 2i},
-    {D.Symbolic.sample = Model.Reset; region = &lt;abstr&gt;;
-     signature = &#34;imandra_gensym__431&#34;;
-     model =
-      {Imandra_surface.Term.Model.tys = [];
-       consts =
-        [((e : DecompositionConfig.event list),
-          [Model.Add 1337; Model.Add 1; Model.Reset])];
-       funs = []}},
-    {D.Symbolic.state =
-      D.Strategy.Expr
-       ({Model.counter = 0; Model.default = 23},
-        [not (e = []); Is_a(Model.Add, List.hd e); not (List.tl e = []);
-         not (List.tl (List.tl e) = []); List.tl (List.tl (List.tl e)) = [];
-         Is_a(Model.Add, List.hd (List.tl e));
-         imandra_gensym__2 (List.hd e)
-         {Model.counter = 0; Model.default = 23};
-         imandra_gensym__2 (List.hd (List.tl e))
-         {Model.counter = 1337; Model.default = 23};
-         Destruct(Model.Add, 0, List.hd e) = 1337;
-         imandra_gensym__2 (List.hd (List.tl (List.tl e)))
-         {Model.counter = 23; Model.default = 23};
-         List.hd (List.tl (List.tl e)) = Model.Reset; not (e = []);
-         Is_a(Model.Add, List.hd e); not (List.tl e = []);
-         not (List.tl (List.tl e) = []); List.tl (List.tl (List.tl e)) = [];
-         Is_a(Model.Add, List.hd (List.tl e));
-         imandra_gensym__2 (List.hd e)
-         {Model.counter = 0; Model.default = 23};
-         Destruct(Model.Add, 0, List.hd e) &lt;= 9000;
-         imandra_gensym__2 (List.hd (List.tl e))
-         {Model.counter = Destruct(Model.Add, 0, List.hd e);
-          Model.default = 23};
-         Destruct(Model.Add, 0, List.hd e) = 1337;
-         List.tl (List.tl (List.tl e)) = []; (List.tl (List.tl e)) &lt;&gt; [];
-         Is_a(Model.Add, List.hd (List.tl e)); (List.tl e) &lt;&gt; []; e &lt;&gt; [];
-         imandra_gensym__2 (List.hd e)
-         {Model.counter = 0; Model.default = 23};
-         not (List.hd e = Model.Reset); Is_a(Model.Add, List.hd e);
-         Destruct(Model.Add, 0, List.hd e) &lt;= 9000]);
-     idx = 3i})]
+<pre>File &#34;jupyter cell 6&#34;, line 1, characters 30-35:
+Error: Unbound value paths
 </pre>
-</div>
-
-</div>
-
-<div class="output_area">
-
-<div class="prompt"></div>
-
-
-
-<div class="output_html rendered_html output_subarea ">
-<div class="imandra-alternatives" id="alt-0bc93860-4696-453b-b2ea-90904be3826a"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-3d15af4c-0fd5-40ee-85ce-eab6869570b7" class="decompose"><textarea class="display-none">{
-  &quot;regions&quot;: [
-    {
-      &quot;constraints&quot;: [
-        &quot;(List.tl (List.tl e)) &lt;&gt; []&quot;, &quot;(List.tl e) &lt;&gt; []&quot;,
-        &quot;Is_a(Model.Add, List.hd (List.tl e))&quot;,
-        &quot;List.tl (List.tl (List.tl e)) = []&quot;, &quot;e &lt;&gt; []&quot;,
-        &quot;imandra_gensym__2 (List.hd e) {Model.counter = 0; Model.default = 23}&quot;
-      ],
-      &quot;region&quot;: null,
-      &quot;groups&quot;: [
-        {
-          &quot;constraints&quot;: [
-            &quot;(List.tl (List.tl e)) &lt;&gt; []&quot;, &quot;(List.tl e) &lt;&gt; []&quot;,
-            &quot;Is_a(Model.Add, List.hd (List.tl e))&quot;,
-            &quot;List.tl (List.tl (List.tl e)) = []&quot;, &quot;e &lt;&gt; []&quot;,
-            &quot;imandra_gensym__2 (List.hd e) {Model.counter = 0; Model.default = 23}&quot;,
-            &quot;List.hd e = Model.Reset&quot;
-          ],
-          &quot;region&quot;: {
-            &quot;constraints&quot;: [
-              &quot;List.tl (List.tl (List.tl e)) = []&quot;,
-              &quot;(List.tl (List.tl e)) &lt;&gt; []&quot;,
-              &quot;Is_a(Model.Add, List.hd (List.tl e))&quot;, &quot;(List.tl e) &lt;&gt; []&quot;,
-              &quot;e &lt;&gt; []&quot;,
-              &quot;imandra_gensym__2 (List.hd e) {Model.counter = 0; Model.default = 23}&quot;,
-              &quot;List.hd e = Model.Reset&quot;
-            ],
-            &quot;invariant&quot;: &quot;F = {Model.counter = 0; Model.default = 23}&quot;
-          },
-          &quot;groups&quot;: [],
-          &quot;label&quot;: &quot;R[1.1.1.1.1.1.2]&quot;,
-          &quot;weight&quot;: 1
-        },
-        {
-          &quot;constraints&quot;: [
-            &quot;(List.tl (List.tl e)) &lt;&gt; []&quot;, &quot;(List.tl e) &lt;&gt; []&quot;,
-            &quot;Is_a(Model.Add, List.hd (List.tl e))&quot;,
-            &quot;List.tl (List.tl (List.tl e)) = []&quot;, &quot;e &lt;&gt; []&quot;,
-            &quot;imandra_gensym__2 (List.hd e) {Model.counter = 0; Model.default = 23}&quot;,
-            &quot;Is_a(Model.Add, List.hd e)&quot;, &quot;not (List.hd e = Model.Reset)&quot;
-          ],
-          &quot;region&quot;: null,
-          &quot;groups&quot;: [
-            {
-              &quot;constraints&quot;: [
-                &quot;(List.tl (List.tl e)) &lt;&gt; []&quot;, &quot;(List.tl e) &lt;&gt; []&quot;,
-                &quot;Is_a(Model.Add, List.hd (List.tl e))&quot;,
-                &quot;List.tl (List.tl (List.tl e)) = []&quot;, &quot;e &lt;&gt; []&quot;,
-                &quot;imandra_gensym__2 (List.hd e) {Model.counter = 0; Model.default = 23}&quot;,
-                &quot;Is_a(Model.Add, List.hd e)&quot;,
-                &quot;not (List.hd e = Model.Reset)&quot;,
-                &quot;not (Destruct(Model.Add, 0, List.hd e) &lt;= 9000)&quot;
-              ],
-              &quot;region&quot;: {
-                &quot;constraints&quot;: [
-                  &quot;List.tl (List.tl (List.tl e)) = []&quot;,
-                  &quot;(List.tl (List.tl e)) &lt;&gt; []&quot;,
-                  &quot;Is_a(Model.Add, List.hd (List.tl e))&quot;,
-                  &quot;(List.tl e) &lt;&gt; []&quot;, &quot;e &lt;&gt; []&quot;,
-                  &quot;imandra_gensym__2 (List.hd e) {Model.counter = 0; Model.default = 23}&quot;,
-                  &quot;not (List.hd e = Model.Reset)&quot;,
-                  &quot;Is_a(Model.Add, List.hd e)&quot;,
-                  &quot;not (Destruct(Model.Add, 0, List.hd e) &lt;= 9000)&quot;
-                ],
-                &quot;invariant&quot;: &quot;F = {Model.counter = 0; Model.default = 23}&quot;
-              },
-              &quot;groups&quot;: [],
-              &quot;label&quot;: &quot;R[1.1.1.1.1.1.1.1.2]&quot;,
-              &quot;weight&quot;: 1
-            },
-            {
-              &quot;constraints&quot;: [
-                &quot;(List.tl (List.tl e)) &lt;&gt; []&quot;, &quot;(List.tl e) &lt;&gt; []&quot;,
-                &quot;Is_a(Model.Add, List.hd (List.tl e))&quot;,
-                &quot;List.tl (List.tl (List.tl e)) = []&quot;, &quot;e &lt;&gt; []&quot;,
-                &quot;imandra_gensym__2 (List.hd e) {Model.counter = 0; Model.default = 23}&quot;,
-                &quot;Is_a(Model.Add, List.hd e)&quot;,
-                &quot;not (List.hd e = Model.Reset)&quot;,
-                &quot;Destruct(Model.Add, 0, List.hd e) &lt;= 9000&quot;
-              ],
-              &quot;region&quot;: {
-                &quot;constraints&quot;: [
-                  &quot;List.tl (List.tl (List.tl e)) = []&quot;,
-                  &quot;(List.tl (List.tl e)) &lt;&gt; []&quot;,
-                  &quot;Is_a(Model.Add, List.hd (List.tl e))&quot;,
-                  &quot;(List.tl e) &lt;&gt; []&quot;, &quot;e &lt;&gt; []&quot;,
-                  &quot;imandra_gensym__2 (List.hd e) {Model.counter = 0; Model.default = 23}&quot;,
-                  &quot;not (List.hd e = Model.Reset)&quot;,
-                  &quot;Is_a(Model.Add, List.hd e)&quot;,
-                  &quot;Destruct(Model.Add, 0, List.hd e) &lt;= 9000&quot;
-                ],
-                &quot;invariant&quot;:
-                  &quot;F = {Model.counter = Destruct(Model.Add, 0, List.hd e); Model.default = 23}&quot;
-              },
-              &quot;groups&quot;: [],
-              &quot;label&quot;: &quot;R[1.1.1.1.1.1.1.1.1]&quot;,
-              &quot;weight&quot;: 1
-            }
-          ],
-          &quot;label&quot;: &quot;(1.1.1.1.1.1.1.1)&quot;,
-          &quot;weight&quot;: 2
-        }
-      ],
-      &quot;label&quot;: &quot;(1.1.1.1.1.1)&quot;,
-      &quot;weight&quot;: 3
-    }
-  ]
-}</textarea><div class="decompose-foamtree"></div><div class="decompose-details"><div class="decompose-details-header">Regions details</div><div class="decompose-details-no-selection">No group selected.</div><div class="decompose-details-selection hidden"><div><span class="decompose-details-label">Direct sub-regions: </span><span class="decompose-details-direct-sub-regions-text">-</span></div><div><span class="decompose-details-label">Contained regions: </span><span class="decompose-details-contained-regions-text">-</span></div><div class="decompose-details-section-header">Constraints</div><div class="decompose-details-constraints"><pre class="decompose-details-constraint">&lt;constraint&gt;</pre></div><div class="decompose-details-invariant"><div class="decompose-details-section-header">Invariant</div><pre class="decompose-details-invariant-text">&lt;invariant&gt;</pre></div></div></div><script>
-(function () {
-  require(['nbextensions/nbimandra/regions'], function (regions) {
-    var target = '#decompose-3d15af4c-0fd5-40ee-85ce-eab6869570b7';
-    regions.hydrate(target);
-  });
-})();
-</script></div></div><div class="tab-pane"><div><div class="imandra-table" id="table-4118c798-23a0-4db1-93cb-c2bc138b39ec"><table><thead><tr><th>Constraints</th><th>Invariant</th></tr></thead><tr><td><ul><li><pre>List.tl (List.tl (List.tl e)) = []</pre></li><li><pre>(List.tl (List.tl e)) &lt;&gt; []</pre></li><li><pre>Is_a(Model.Add, List.hd (List.tl e))</pre></li><li><pre>(List.tl e) &lt;&gt; []</pre></li><li><pre>e &lt;&gt; []</pre></li><li><pre>imandra_gensym__2 (List.hd e) {Model.counter = 0; Model.default = 23}</pre></li><li><pre>List.hd e = Model.Reset</pre></li></ul></td><td><pre>F = {Model.counter = 0; Model.default = 23}</pre></td></tr><tr><td><ul><li><pre>List.tl (List.tl (List.tl e)) = []</pre></li><li><pre>(List.tl (List.tl e)) &lt;&gt; []</pre></li><li><pre>Is_a(Model.Add, List.hd (List.tl e))</pre></li><li><pre>(List.tl e) &lt;&gt; []</pre></li><li><pre>e &lt;&gt; []</pre></li><li><pre>imandra_gensym__2 (List.hd e) {Model.counter = 0; Model.default = 23}</pre></li><li><pre>not (List.hd e = Model.Reset)</pre></li><li><pre>Is_a(Model.Add, List.hd e)</pre></li><li><pre>not (Destruct(Model.Add, 0, List.hd e) &lt;= 9000)</pre></li></ul></td><td><pre>F = {Model.counter = 0; Model.default = 23}</pre></td></tr><tr><td><ul><li><pre>List.tl (List.tl (List.tl e)) = []</pre></li><li><pre>(List.tl (List.tl e)) &lt;&gt; []</pre></li><li><pre>Is_a(Model.Add, List.hd (List.tl e))</pre></li><li><pre>(List.tl e) &lt;&gt; []</pre></li><li><pre>e &lt;&gt; []</pre></li><li><pre>imandra_gensym__2 (List.hd e) {Model.counter = 0; Model.default = 23}</pre></li><li><pre>not (List.hd e = Model.Reset)</pre></li><li><pre>Is_a(Model.Add, List.hd e)</pre></li><li><pre>Destruct(Model.Add, 0, List.hd e) &lt;= 9000</pre></li></ul></td><td><pre>F = {Model.counter = Destruct(Model.Add, 0, List.hd e); Model.default = 23}</pre></td></tr></table></div></div></div></div><script>
-require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-0bc93860-4696-453b-b2ea-90904be3826a';
-  alternatives.hydrate(target);
-});
-</script></div>
-
-</div>
-
-</div>
-
-<div class="output_area">
-
-<div class="prompt"></div>
-
-
-
-<div class="output_html rendered_html output_subarea ">
-<div class="imandra-alternatives" id="alt-58170aa9-aca9-45a9-8726-704853e5b5f8"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-54fda659-f521-4856-904f-08d563e2cfb6" class="decompose"><textarea class="display-none">{
-  &quot;regions&quot;: [
-    {
-      &quot;constraints&quot;: [
-        &quot;Destruct(Model.Add, 0, List.hd e) &lt;= 9000&quot;,
-        &quot;Is_a(Model.Add, List.hd (List.tl e))&quot;, &quot;Is_a(Model.Add, List.hd e)&quot;,
-        &quot;List.tl (List.tl (List.tl e)) = []&quot;,
-        &quot;imandra_gensym__2 (List.hd (List.tl e))\n{Model.counter = Destruct(Model.Add, 0, List.hd e); Model.default = 23}&quot;,
-        &quot;imandra_gensym__2 (List.hd e) {Model.counter = 0; Model.default = 23}&quot;,
-        &quot;not (List.tl (List.tl e) = [])&quot;, &quot;not (List.tl e = [])&quot;,
-        &quot;not (e = [])&quot;
-      ],
-      &quot;region&quot;: null,
-      &quot;groups&quot;: [
-        {
-          &quot;constraints&quot;: [
-            &quot;Destruct(Model.Add, 0, List.hd e) &lt;= 9000&quot;,
-            &quot;Is_a(Model.Add, List.hd (List.tl e))&quot;,
-            &quot;Is_a(Model.Add, List.hd e)&quot;,
-            &quot;List.tl (List.tl (List.tl e)) = []&quot;,
-            &quot;imandra_gensym__2 (List.hd (List.tl e))\n{Model.counter = Destruct(Model.Add, 0, List.hd e); Model.default = 23}&quot;,
-            &quot;imandra_gensym__2 (List.hd e) {Model.counter = 0; Model.default = 23}&quot;,
-            &quot;not (List.tl (List.tl e) = [])&quot;, &quot;not (List.tl e = [])&quot;,
-            &quot;not (e = [])&quot;, &quot;Destruct(Model.Add, 0, List.hd e) = 1337&quot;
-          ],
-          &quot;region&quot;: {
-            &quot;constraints&quot;: [
-              &quot;not (e = [])&quot;, &quot;Is_a(Model.Add, List.hd e)&quot;,
-              &quot;not (List.tl e = [])&quot;, &quot;not (List.tl (List.tl e) = [])&quot;,
-              &quot;List.tl (List.tl (List.tl e)) = []&quot;,
-              &quot;Is_a(Model.Add, List.hd (List.tl e))&quot;,
-              &quot;imandra_gensym__2 (List.hd e) {Model.counter = 0; Model.default = 23}&quot;,
-              &quot;Destruct(Model.Add, 0, List.hd e) &lt;= 9000&quot;,
-              &quot;imandra_gensym__2 (List.hd (List.tl e))\n{Model.counter = Destruct(Model.Add, 0, List.hd e); Model.default = 23}&quot;,
-              &quot;Destruct(Model.Add, 0, List.hd e) = 1337&quot;
-            ],
-            &quot;invariant&quot;: &quot;F = {Model.counter = 23; Model.default = 23}&quot;
-          },
-          &quot;groups&quot;: [],
-          &quot;label&quot;: &quot;R[1.1.1.1.1.1.1.1.1.2]&quot;,
-          &quot;weight&quot;: 1
-        },
-        {
-          &quot;constraints&quot;: [
-            &quot;Destruct(Model.Add, 0, List.hd e) &lt;= 9000&quot;,
-            &quot;Is_a(Model.Add, List.hd (List.tl e))&quot;,
-            &quot;Is_a(Model.Add, List.hd e)&quot;,
-            &quot;List.tl (List.tl (List.tl e)) = []&quot;,
-            &quot;imandra_gensym__2 (List.hd (List.tl e))\n{Model.counter = Destruct(Model.Add, 0, List.hd e); Model.default = 23}&quot;,
-            &quot;imandra_gensym__2 (List.hd e) {Model.counter = 0; Model.default = 23}&quot;,
-            &quot;not (List.tl (List.tl e) = [])&quot;, &quot;not (List.tl e = [])&quot;,
-            &quot;not (e = [])&quot;, &quot;not (Destruct(Model.Add, 0, List.hd e) = 1337)&quot;
-          ],
-          &quot;region&quot;: null,
-          &quot;groups&quot;: [
-            {
-              &quot;constraints&quot;: [
-                &quot;Destruct(Model.Add, 0, List.hd e) &lt;= 9000&quot;,
-                &quot;Is_a(Model.Add, List.hd (List.tl e))&quot;,
-                &quot;Is_a(Model.Add, List.hd e)&quot;,
-                &quot;List.tl (List.tl (List.tl e)) = []&quot;,
-                &quot;imandra_gensym__2 (List.hd (List.tl e))\n{Model.counter = Destruct(Model.Add, 0, List.hd e); Model.default = 23}&quot;,
-                &quot;imandra_gensym__2 (List.hd e) {Model.counter = 0; Model.default = 23}&quot;,
-                &quot;not (List.tl (List.tl e) = [])&quot;, &quot;not (List.tl e = [])&quot;,
-                &quot;not (e = [])&quot;,
-                &quot;not (Destruct(Model.Add, 0, List.hd e) = 1337)&quot;,
-                &quot;not\n((Destruct(Model.Add, 0, List.hd e)\n  + Destruct(Model.Add, 0, List.hd (List.tl e)))\n &lt;= 9000)&quot;
-              ],
-              &quot;region&quot;: {
-                &quot;constraints&quot;: [
-                  &quot;not (e = [])&quot;, &quot;Is_a(Model.Add, List.hd e)&quot;,
-                  &quot;not (List.tl e = [])&quot;, &quot;not (List.tl (List.tl e) = [])&quot;,
-                  &quot;List.tl (List.tl (List.tl e)) = []&quot;,
-                  &quot;Is_a(Model.Add, List.hd (List.tl e))&quot;,
-                  &quot;imandra_gensym__2 (List.hd e) {Model.counter = 0; Model.default = 23}&quot;,
-                  &quot;Destruct(Model.Add, 0, List.hd e) &lt;= 9000&quot;,
-                  &quot;imandra_gensym__2 (List.hd (List.tl e))\n{Model.counter = Destruct(Model.Add, 0, List.hd e); Model.default = 23}&quot;,
-                  &quot;not (Destruct(Model.Add, 0, List.hd e) = 1337)&quot;,
-                  &quot;not\n((Destruct(Model.Add, 0, List.hd e)\n  + Destruct(Model.Add, 0, List.hd (List.tl e)))\n &lt;= 9000)&quot;
-                ],
-                &quot;invariant&quot;: &quot;F = {Model.counter = 0; Model.default = 23}&quot;
-              },
-              &quot;groups&quot;: [],
-              &quot;label&quot;: &quot;R[1.1.1.1.1.1.1.1.1.1.2]&quot;,
-              &quot;weight&quot;: 1
-            },
-            {
-              &quot;constraints&quot;: [
-                &quot;Destruct(Model.Add, 0, List.hd e) &lt;= 9000&quot;,
-                &quot;Is_a(Model.Add, List.hd (List.tl e))&quot;,
-                &quot;Is_a(Model.Add, List.hd e)&quot;,
-                &quot;List.tl (List.tl (List.tl e)) = []&quot;,
-                &quot;imandra_gensym__2 (List.hd (List.tl e))\n{Model.counter = Destruct(Model.Add, 0, List.hd e); Model.default = 23}&quot;,
-                &quot;imandra_gensym__2 (List.hd e) {Model.counter = 0; Model.default = 23}&quot;,
-                &quot;not (List.tl (List.tl e) = [])&quot;, &quot;not (List.tl e = [])&quot;,
-                &quot;not (e = [])&quot;,
-                &quot;not (Destruct(Model.Add, 0, List.hd e) = 1337)&quot;,
-                &quot;(Destruct(Model.Add, 0, List.hd e)\n + Destruct(Model.Add, 0, List.hd (List.tl e)))\n&lt;= 9000&quot;
-              ],
-              &quot;region&quot;: {
-                &quot;constraints&quot;: [
-                  &quot;not (e = [])&quot;, &quot;Is_a(Model.Add, List.hd e)&quot;,
-                  &quot;not (List.tl e = [])&quot;, &quot;not (List.tl (List.tl e) = [])&quot;,
-                  &quot;List.tl (List.tl (List.tl e)) = []&quot;,
-                  &quot;Is_a(Model.Add, List.hd (List.tl e))&quot;,
-                  &quot;imandra_gensym__2 (List.hd e) {Model.counter = 0; Model.default = 23}&quot;,
-                  &quot;Destruct(Model.Add, 0, List.hd e) &lt;= 9000&quot;,
-                  &quot;imandra_gensym__2 (List.hd (List.tl e))\n{Model.counter = Destruct(Model.Add, 0, List.hd e); Model.default = 23}&quot;,
-                  &quot;not (Destruct(Model.Add, 0, List.hd e) = 1337)&quot;,
-                  &quot;(Destruct(Model.Add, 0, List.hd e)\n + Destruct(Model.Add, 0, List.hd (List.tl e)))\n&lt;= 9000&quot;
-                ],
-                &quot;invariant&quot;:
-                  &quot;F =\n{Model.counter =\n Destruct(Model.Add, 0, List.hd e)\n + Destruct(Model.Add, 0, List.hd (List.tl e)); Model.default = 23}&quot;
-              },
-              &quot;groups&quot;: [],
-              &quot;label&quot;: &quot;R[1.1.1.1.1.1.1.1.1.1.1]&quot;,
-              &quot;weight&quot;: 1
-            }
-          ],
-          &quot;label&quot;: &quot;(1.1.1.1.1.1.1.1.1.1)&quot;,
-          &quot;weight&quot;: 2
-        }
-      ],
-      &quot;label&quot;: &quot;(1.1.1.1.1.1.1.1.1)&quot;,
-      &quot;weight&quot;: 3
-    }
-  ]
-}</textarea><div class="decompose-foamtree"></div><div class="decompose-details"><div class="decompose-details-header">Regions details</div><div class="decompose-details-no-selection">No group selected.</div><div class="decompose-details-selection hidden"><div><span class="decompose-details-label">Direct sub-regions: </span><span class="decompose-details-direct-sub-regions-text">-</span></div><div><span class="decompose-details-label">Contained regions: </span><span class="decompose-details-contained-regions-text">-</span></div><div class="decompose-details-section-header">Constraints</div><div class="decompose-details-constraints"><pre class="decompose-details-constraint">&lt;constraint&gt;</pre></div><div class="decompose-details-invariant"><div class="decompose-details-section-header">Invariant</div><pre class="decompose-details-invariant-text">&lt;invariant&gt;</pre></div></div></div><script>
-(function () {
-  require(['nbextensions/nbimandra/regions'], function (regions) {
-    var target = '#decompose-54fda659-f521-4856-904f-08d563e2cfb6';
-    regions.hydrate(target);
-  });
-})();
-</script></div></div><div class="tab-pane"><div><div class="imandra-table" id="table-2b0fc5e3-0190-4713-bec9-afc8efdb1e8a"><table><thead><tr><th>Constraints</th><th>Invariant</th></tr></thead><tr><td><ul><li><pre>not (e = [])</pre></li><li><pre>Is_a(Model.Add, List.hd e)</pre></li><li><pre>not (List.tl e = [])</pre></li><li><pre>not (List.tl (List.tl e) = [])</pre></li><li><pre>List.tl (List.tl (List.tl e)) = []</pre></li><li><pre>Is_a(Model.Add, List.hd (List.tl e))</pre></li><li><pre>imandra_gensym__2 (List.hd e) {Model.counter = 0; Model.default = 23}</pre></li><li><pre>Destruct(Model.Add, 0, List.hd e) &lt;= 9000</pre></li><li><pre>imandra_gensym__2 (List.hd (List.tl e))
-{Model.counter = Destruct(Model.Add, 0, List.hd e); Model.default = 23}</pre></li><li><pre>not (Destruct(Model.Add, 0, List.hd e) = 1337)</pre></li><li><pre>not
-((Destruct(Model.Add, 0, List.hd e)
-  + Destruct(Model.Add, 0, List.hd (List.tl e)))
- &lt;= 9000)</pre></li></ul></td><td><pre>F = {Model.counter = 0; Model.default = 23}</pre></td></tr><tr><td><ul><li><pre>not (e = [])</pre></li><li><pre>Is_a(Model.Add, List.hd e)</pre></li><li><pre>not (List.tl e = [])</pre></li><li><pre>not (List.tl (List.tl e) = [])</pre></li><li><pre>List.tl (List.tl (List.tl e)) = []</pre></li><li><pre>Is_a(Model.Add, List.hd (List.tl e))</pre></li><li><pre>imandra_gensym__2 (List.hd e) {Model.counter = 0; Model.default = 23}</pre></li><li><pre>Destruct(Model.Add, 0, List.hd e) &lt;= 9000</pre></li><li><pre>imandra_gensym__2 (List.hd (List.tl e))
-{Model.counter = Destruct(Model.Add, 0, List.hd e); Model.default = 23}</pre></li><li><pre>not (Destruct(Model.Add, 0, List.hd e) = 1337)</pre></li><li><pre>(Destruct(Model.Add, 0, List.hd e)
- + Destruct(Model.Add, 0, List.hd (List.tl e)))
-&lt;= 9000</pre></li></ul></td><td><pre>F =
-{Model.counter =
- Destruct(Model.Add, 0, List.hd e)
- + Destruct(Model.Add, 0, List.hd (List.tl e)); Model.default = 23}</pre></td></tr><tr><td><ul><li><pre>not (e = [])</pre></li><li><pre>Is_a(Model.Add, List.hd e)</pre></li><li><pre>not (List.tl e = [])</pre></li><li><pre>not (List.tl (List.tl e) = [])</pre></li><li><pre>List.tl (List.tl (List.tl e)) = []</pre></li><li><pre>Is_a(Model.Add, List.hd (List.tl e))</pre></li><li><pre>imandra_gensym__2 (List.hd e) {Model.counter = 0; Model.default = 23}</pre></li><li><pre>Destruct(Model.Add, 0, List.hd e) &lt;= 9000</pre></li><li><pre>imandra_gensym__2 (List.hd (List.tl e))
-{Model.counter = Destruct(Model.Add, 0, List.hd e); Model.default = 23}</pre></li><li><pre>Destruct(Model.Add, 0, List.hd e) = 1337</pre></li></ul></td><td><pre>F = {Model.counter = 23; Model.default = 23}</pre></td></tr></table></div></div></div></div><script>
-require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-58170aa9-aca9-45a9-8726-704853e5b5f8';
-  alternatives.hydrate(target);
-});
-</script></div>
-
-</div>
-
-</div>
-
-<div class="output_area">
-
-<div class="prompt"></div>
-
-
-
-<div class="output_html rendered_html output_subarea ">
-<div class="imandra-alternatives" id="alt-dcd68e47-2428-4ef1-96f7-8577029c446d"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-559d1def-87b0-4990-bc6a-2a72e1e9a98f" class="decompose"><textarea class="display-none">{
-  &quot;regions&quot;: [
-    {
-      &quot;constraints&quot;: [
-        &quot;Destruct(Model.Add, 0, List.hd e) = 1337&quot;,
-        &quot;Is_a(Model.Add, List.hd (List.tl e))&quot;, &quot;Is_a(Model.Add, List.hd e)&quot;,
-        &quot;List.tl (List.tl (List.tl e)) = []&quot;,
-        &quot;imandra_gensym__2 (List.hd (List.tl (List.tl e)))\n{Model.counter = 23; Model.default = 23}&quot;,
-        &quot;imandra_gensym__2 (List.hd (List.tl e))\n{Model.counter = 1337; Model.default = 23}&quot;,
-        &quot;imandra_gensym__2 (List.hd e) {Model.counter = 0; Model.default = 23}&quot;,
-        &quot;not (List.tl (List.tl e) = [])&quot;, &quot;not (List.tl e = [])&quot;,
-        &quot;not (e = [])&quot;
-      ],
-      &quot;region&quot;: null,
-      &quot;groups&quot;: [
-        {
-          &quot;constraints&quot;: [
-            &quot;Destruct(Model.Add, 0, List.hd e) = 1337&quot;,
-            &quot;Is_a(Model.Add, List.hd (List.tl e))&quot;,
-            &quot;Is_a(Model.Add, List.hd e)&quot;,
-            &quot;List.tl (List.tl (List.tl e)) = []&quot;,
-            &quot;imandra_gensym__2 (List.hd (List.tl (List.tl e)))\n{Model.counter = 23; Model.default = 23}&quot;,
-            &quot;imandra_gensym__2 (List.hd (List.tl e))\n{Model.counter = 1337; Model.default = 23}&quot;,
-            &quot;imandra_gensym__2 (List.hd e) {Model.counter = 0; Model.default = 23}&quot;,
-            &quot;not (List.tl (List.tl e) = [])&quot;, &quot;not (List.tl e = [])&quot;,
-            &quot;not (e = [])&quot;, &quot;List.hd (List.tl (List.tl e)) = Model.Reset&quot;
-          ],
-          &quot;region&quot;: {
-            &quot;constraints&quot;: [
-              &quot;not (e = [])&quot;, &quot;Is_a(Model.Add, List.hd e)&quot;,
-              &quot;not (List.tl e = [])&quot;, &quot;not (List.tl (List.tl e) = [])&quot;,
-              &quot;List.tl (List.tl (List.tl e)) = []&quot;,
-              &quot;Is_a(Model.Add, List.hd (List.tl e))&quot;,
-              &quot;imandra_gensym__2 (List.hd e) {Model.counter = 0; Model.default = 23}&quot;,
-              &quot;imandra_gensym__2 (List.hd (List.tl e))\n{Model.counter = 1337; Model.default = 23}&quot;,
-              &quot;Destruct(Model.Add, 0, List.hd e) = 1337&quot;,
-              &quot;imandra_gensym__2 (List.hd (List.tl (List.tl e)))\n{Model.counter = 23; Model.default = 23}&quot;,
-              &quot;List.hd (List.tl (List.tl e)) = Model.Reset&quot;
-            ],
-            &quot;invariant&quot;: &quot;F = {Model.counter = 0; Model.default = 23}&quot;
-          },
-          &quot;groups&quot;: [],
-          &quot;label&quot;: &quot;R[1.1.1.1.1.1.1.1.1.1.2]&quot;,
-          &quot;weight&quot;: 1
-        },
-        {
-          &quot;constraints&quot;: [
-            &quot;Destruct(Model.Add, 0, List.hd e) = 1337&quot;,
-            &quot;Is_a(Model.Add, List.hd (List.tl e))&quot;,
-            &quot;Is_a(Model.Add, List.hd e)&quot;,
-            &quot;List.tl (List.tl (List.tl e)) = []&quot;,
-            &quot;imandra_gensym__2 (List.hd (List.tl (List.tl e)))\n{Model.counter = 23; Model.default = 23}&quot;,
-            &quot;imandra_gensym__2 (List.hd (List.tl e))\n{Model.counter = 1337; Model.default = 23}&quot;,
-            &quot;imandra_gensym__2 (List.hd e) {Model.counter = 0; Model.default = 23}&quot;,
-            &quot;not (List.tl (List.tl e) = [])&quot;, &quot;not (List.tl e = [])&quot;,
-            &quot;not (e = [])&quot;,
-            &quot;not (List.hd (List.tl (List.tl e)) = Model.Reset)&quot;
-          ],
-          &quot;region&quot;: null,
-          &quot;groups&quot;: [
-            {
-              &quot;constraints&quot;: [
-                &quot;Destruct(Model.Add, 0, List.hd e) = 1337&quot;,
-                &quot;Is_a(Model.Add, List.hd (List.tl e))&quot;,
-                &quot;Is_a(Model.Add, List.hd e)&quot;,
-                &quot;List.tl (List.tl (List.tl e)) = []&quot;,
-                &quot;imandra_gensym__2 (List.hd (List.tl (List.tl e)))\n{Model.counter = 23; Model.default = 23}&quot;,
-                &quot;imandra_gensym__2 (List.hd (List.tl e))\n{Model.counter = 1337; Model.default = 23}&quot;,
-                &quot;imandra_gensym__2 (List.hd e) {Model.counter = 0; Model.default = 23}&quot;,
-                &quot;not (List.tl (List.tl e) = [])&quot;, &quot;not (List.tl e = [])&quot;,
-                &quot;not (e = [])&quot;,
-                &quot;not (List.hd (List.tl (List.tl e)) = Model.Reset)&quot;,
-                &quot;Destruct(Model.Sub, 0, List.hd (List.tl (List.tl e))) &lt;= 23&quot;,
-                &quot;not Is_a(Model.Add, List.hd (List.tl (List.tl e)))&quot;
-              ],
-              &quot;region&quot;: {
-                &quot;constraints&quot;: [
-                  &quot;not (e = [])&quot;, &quot;Is_a(Model.Add, List.hd e)&quot;,
-                  &quot;not (List.tl e = [])&quot;, &quot;not (List.tl (List.tl e) = [])&quot;,
-                  &quot;List.tl (List.tl (List.tl e)) = []&quot;,
-                  &quot;Is_a(Model.Add, List.hd (List.tl e))&quot;,
-                  &quot;imandra_gensym__2 (List.hd e) {Model.counter = 0; Model.default = 23}&quot;,
-                  &quot;imandra_gensym__2 (List.hd (List.tl e))\n{Model.counter = 1337; Model.default = 23}&quot;,
-                  &quot;Destruct(Model.Add, 0, List.hd e) = 1337&quot;,
-                  &quot;imandra_gensym__2 (List.hd (List.tl (List.tl e)))\n{Model.counter = 23; Model.default = 23}&quot;,
-                  &quot;not (List.hd (List.tl (List.tl e)) = Model.Reset)&quot;,
-                  &quot;not Is_a(Model.Add, List.hd (List.tl (List.tl e)))&quot;,
-                  &quot;Destruct(Model.Sub, 0, List.hd (List.tl (List.tl e))) &lt;= 23&quot;
-                ],
-                &quot;invariant&quot;:
-                  &quot;F =\n{Model.counter =\n 23 + -1 * Destruct(Model.Sub, 0, List.hd (List.tl (List.tl e)));\n Model.default = 23}&quot;
-              },
-              &quot;groups&quot;: [],
-              &quot;label&quot;: &quot;R[1.1.1.1.1.1.1.1.1.1.1.2.1]&quot;,
-              &quot;weight&quot;: 1
-            },
-            {
-              &quot;constraints&quot;: [
-                &quot;Destruct(Model.Add, 0, List.hd e) = 1337&quot;,
-                &quot;Is_a(Model.Add, List.hd (List.tl e))&quot;,
-                &quot;Is_a(Model.Add, List.hd e)&quot;,
-                &quot;List.tl (List.tl (List.tl e)) = []&quot;,
-                &quot;imandra_gensym__2 (List.hd (List.tl (List.tl e)))\n{Model.counter = 23; Model.default = 23}&quot;,
-                &quot;imandra_gensym__2 (List.hd (List.tl e))\n{Model.counter = 1337; Model.default = 23}&quot;,
-                &quot;imandra_gensym__2 (List.hd e) {Model.counter = 0; Model.default = 23}&quot;,
-                &quot;not (List.tl (List.tl e) = [])&quot;, &quot;not (List.tl e = [])&quot;,
-                &quot;not (e = [])&quot;,
-                &quot;not (List.hd (List.tl (List.tl e)) = Model.Reset)&quot;,
-                &quot;Is_a(Model.Add, List.hd (List.tl (List.tl e)))&quot;
-              ],
-              &quot;region&quot;: null,
-              &quot;groups&quot;: [
-                {
-                  &quot;constraints&quot;: [
-                    &quot;Destruct(Model.Add, 0, List.hd e) = 1337&quot;,
-                    &quot;Is_a(Model.Add, List.hd (List.tl e))&quot;,
-                    &quot;Is_a(Model.Add, List.hd e)&quot;,
-                    &quot;List.tl (List.tl (List.tl e)) = []&quot;,
-                    &quot;imandra_gensym__2 (List.hd (List.tl (List.tl e)))\n{Model.counter = 23; Model.default = 23}&quot;,
-                    &quot;imandra_gensym__2 (List.hd (List.tl e))\n{Model.counter = 1337; Model.default = 23}&quot;,
-                    &quot;imandra_gensym__2 (List.hd e) {Model.counter = 0; Model.default = 23}&quot;,
-                    &quot;not (List.tl (List.tl e) = [])&quot;, &quot;not (List.tl e = [])&quot;,
-                    &quot;not (e = [])&quot;,
-                    &quot;not (List.hd (List.tl (List.tl e)) = Model.Reset)&quot;,
-                    &quot;Is_a(Model.Add, List.hd (List.tl (List.tl e)))&quot;,
-                    &quot;not (Destruct(Model.Add, 0, List.hd (List.tl (List.tl e))) &lt;= 8977)&quot;
-                  ],
-                  &quot;region&quot;: {
-                    &quot;constraints&quot;: [
-                      &quot;not (e = [])&quot;, &quot;Is_a(Model.Add, List.hd e)&quot;,
-                      &quot;not (List.tl e = [])&quot;,
-                      &quot;not (List.tl (List.tl e) = [])&quot;,
-                      &quot;List.tl (List.tl (List.tl e)) = []&quot;,
-                      &quot;Is_a(Model.Add, List.hd (List.tl e))&quot;,
-                      &quot;imandra_gensym__2 (List.hd e) {Model.counter = 0; Model.default = 23}&quot;,
-                      &quot;imandra_gensym__2 (List.hd (List.tl e))\n{Model.counter = 1337; Model.default = 23}&quot;,
-                      &quot;Destruct(Model.Add, 0, List.hd e) = 1337&quot;,
-                      &quot;imandra_gensym__2 (List.hd (List.tl (List.tl e)))\n{Model.counter = 23; Model.default = 23}&quot;,
-                      &quot;not (List.hd (List.tl (List.tl e)) = Model.Reset)&quot;,
-                      &quot;Is_a(Model.Add, List.hd (List.tl (List.tl e)))&quot;,
-                      &quot;not (Destruct(Model.Add, 0, List.hd (List.tl (List.tl e))) &lt;= 8977)&quot;
-                    ],
-                    &quot;invariant&quot;:
-                      &quot;F = {Model.counter = 0; Model.default = 23}&quot;
-                  },
-                  &quot;groups&quot;: [],
-                  &quot;label&quot;: &quot;R[1.1.1.1.1.1.1.1.1.1.1.1.2]&quot;,
-                  &quot;weight&quot;: 1
-                },
-                {
-                  &quot;constraints&quot;: [
-                    &quot;Destruct(Model.Add, 0, List.hd e) = 1337&quot;,
-                    &quot;Is_a(Model.Add, List.hd (List.tl e))&quot;,
-                    &quot;Is_a(Model.Add, List.hd e)&quot;,
-                    &quot;List.tl (List.tl (List.tl e)) = []&quot;,
-                    &quot;imandra_gensym__2 (List.hd (List.tl (List.tl e)))\n{Model.counter = 23; Model.default = 23}&quot;,
-                    &quot;imandra_gensym__2 (List.hd (List.tl e))\n{Model.counter = 1337; Model.default = 23}&quot;,
-                    &quot;imandra_gensym__2 (List.hd e) {Model.counter = 0; Model.default = 23}&quot;,
-                    &quot;not (List.tl (List.tl e) = [])&quot;, &quot;not (List.tl e = [])&quot;,
-                    &quot;not (e = [])&quot;,
-                    &quot;not (List.hd (List.tl (List.tl e)) = Model.Reset)&quot;,
-                    &quot;Is_a(Model.Add, List.hd (List.tl (List.tl e)))&quot;,
-                    &quot;Destruct(Model.Add, 0, List.hd (List.tl (List.tl e))) &lt;= 8977&quot;
-                  ],
-                  &quot;region&quot;: {
-                    &quot;constraints&quot;: [
-                      &quot;not (e = [])&quot;, &quot;Is_a(Model.Add, List.hd e)&quot;,
-                      &quot;not (List.tl e = [])&quot;,
-                      &quot;not (List.tl (List.tl e) = [])&quot;,
-                      &quot;List.tl (List.tl (List.tl e)) = []&quot;,
-                      &quot;Is_a(Model.Add, List.hd (List.tl e))&quot;,
-                      &quot;imandra_gensym__2 (List.hd e) {Model.counter = 0; Model.default = 23}&quot;,
-                      &quot;imandra_gensym__2 (List.hd (List.tl e))\n{Model.counter = 1337; Model.default = 23}&quot;,
-                      &quot;Destruct(Model.Add, 0, List.hd e) = 1337&quot;,
-                      &quot;imandra_gensym__2 (List.hd (List.tl (List.tl e)))\n{Model.counter = 23; Model.default = 23}&quot;,
-                      &quot;not (List.hd (List.tl (List.tl e)) = Model.Reset)&quot;,
-                      &quot;Is_a(Model.Add, List.hd (List.tl (List.tl e)))&quot;,
-                      &quot;Destruct(Model.Add, 0, List.hd (List.tl (List.tl e))) &lt;= 8977&quot;
-                    ],
-                    &quot;invariant&quot;:
-                      &quot;F =\n{Model.counter = 23 + Destruct(Model.Add, 0, List.hd (List.tl (List.tl e)));\n Model.default = 23}&quot;
-                  },
-                  &quot;groups&quot;: [],
-                  &quot;label&quot;: &quot;R[1.1.1.1.1.1.1.1.1.1.1.1.1]&quot;,
-                  &quot;weight&quot;: 1
-                }
-              ],
-              &quot;label&quot;: &quot;(1.1.1.1.1.1.1.1.1.1.1.1)&quot;,
-              &quot;weight&quot;: 2
-            }
-          ],
-          &quot;label&quot;: &quot;(1.1.1.1.1.1.1.1.1.1.1)&quot;,
-          &quot;weight&quot;: 3
-        }
-      ],
-      &quot;label&quot;: &quot;(1.1.1.1.1.1.1.1.1.1)&quot;,
-      &quot;weight&quot;: 4
-    }
-  ]
-}</textarea><div class="decompose-foamtree"></div><div class="decompose-details"><div class="decompose-details-header">Regions details</div><div class="decompose-details-no-selection">No group selected.</div><div class="decompose-details-selection hidden"><div><span class="decompose-details-label">Direct sub-regions: </span><span class="decompose-details-direct-sub-regions-text">-</span></div><div><span class="decompose-details-label">Contained regions: </span><span class="decompose-details-contained-regions-text">-</span></div><div class="decompose-details-section-header">Constraints</div><div class="decompose-details-constraints"><pre class="decompose-details-constraint">&lt;constraint&gt;</pre></div><div class="decompose-details-invariant"><div class="decompose-details-section-header">Invariant</div><pre class="decompose-details-invariant-text">&lt;invariant&gt;</pre></div></div></div><script>
-(function () {
-  require(['nbextensions/nbimandra/regions'], function (regions) {
-    var target = '#decompose-559d1def-87b0-4990-bc6a-2a72e1e9a98f';
-    regions.hydrate(target);
-  });
-})();
-</script></div></div><div class="tab-pane"><div><div class="imandra-table" id="table-718f40ad-24b0-4c0d-a9c1-88529fcc0476"><table><thead><tr><th>Constraints</th><th>Invariant</th></tr></thead><tr><td><ul><li><pre>not (e = [])</pre></li><li><pre>Is_a(Model.Add, List.hd e)</pre></li><li><pre>not (List.tl e = [])</pre></li><li><pre>not (List.tl (List.tl e) = [])</pre></li><li><pre>List.tl (List.tl (List.tl e)) = []</pre></li><li><pre>Is_a(Model.Add, List.hd (List.tl e))</pre></li><li><pre>imandra_gensym__2 (List.hd e) {Model.counter = 0; Model.default = 23}</pre></li><li><pre>imandra_gensym__2 (List.hd (List.tl e))
-{Model.counter = 1337; Model.default = 23}</pre></li><li><pre>Destruct(Model.Add, 0, List.hd e) = 1337</pre></li><li><pre>imandra_gensym__2 (List.hd (List.tl (List.tl e)))
-{Model.counter = 23; Model.default = 23}</pre></li><li><pre>not (List.hd (List.tl (List.tl e)) = Model.Reset)</pre></li><li><pre>not Is_a(Model.Add, List.hd (List.tl (List.tl e)))</pre></li><li><pre>Destruct(Model.Sub, 0, List.hd (List.tl (List.tl e))) &lt;= 23</pre></li></ul></td><td><pre>F =
-{Model.counter =
- 23 + -1 * Destruct(Model.Sub, 0, List.hd (List.tl (List.tl e)));
- Model.default = 23}</pre></td></tr><tr><td><ul><li><pre>not (e = [])</pre></li><li><pre>Is_a(Model.Add, List.hd e)</pre></li><li><pre>not (List.tl e = [])</pre></li><li><pre>not (List.tl (List.tl e) = [])</pre></li><li><pre>List.tl (List.tl (List.tl e)) = []</pre></li><li><pre>Is_a(Model.Add, List.hd (List.tl e))</pre></li><li><pre>imandra_gensym__2 (List.hd e) {Model.counter = 0; Model.default = 23}</pre></li><li><pre>imandra_gensym__2 (List.hd (List.tl e))
-{Model.counter = 1337; Model.default = 23}</pre></li><li><pre>Destruct(Model.Add, 0, List.hd e) = 1337</pre></li><li><pre>imandra_gensym__2 (List.hd (List.tl (List.tl e)))
-{Model.counter = 23; Model.default = 23}</pre></li><li><pre>not (List.hd (List.tl (List.tl e)) = Model.Reset)</pre></li><li><pre>Is_a(Model.Add, List.hd (List.tl (List.tl e)))</pre></li><li><pre>not (Destruct(Model.Add, 0, List.hd (List.tl (List.tl e))) &lt;= 8977)</pre></li></ul></td><td><pre>F = {Model.counter = 0; Model.default = 23}</pre></td></tr><tr><td><ul><li><pre>not (e = [])</pre></li><li><pre>Is_a(Model.Add, List.hd e)</pre></li><li><pre>not (List.tl e = [])</pre></li><li><pre>not (List.tl (List.tl e) = [])</pre></li><li><pre>List.tl (List.tl (List.tl e)) = []</pre></li><li><pre>Is_a(Model.Add, List.hd (List.tl e))</pre></li><li><pre>imandra_gensym__2 (List.hd e) {Model.counter = 0; Model.default = 23}</pre></li><li><pre>imandra_gensym__2 (List.hd (List.tl e))
-{Model.counter = 1337; Model.default = 23}</pre></li><li><pre>Destruct(Model.Add, 0, List.hd e) = 1337</pre></li><li><pre>imandra_gensym__2 (List.hd (List.tl (List.tl e)))
-{Model.counter = 23; Model.default = 23}</pre></li><li><pre>not (List.hd (List.tl (List.tl e)) = Model.Reset)</pre></li><li><pre>Is_a(Model.Add, List.hd (List.tl (List.tl e)))</pre></li><li><pre>Destruct(Model.Add, 0, List.hd (List.tl (List.tl e))) &lt;= 8977</pre></li></ul></td><td><pre>F =
-{Model.counter = 23 + Destruct(Model.Add, 0, List.hd (List.tl (List.tl e)));
- Model.default = 23}</pre></td></tr><tr><td><ul><li><pre>not (e = [])</pre></li><li><pre>Is_a(Model.Add, List.hd e)</pre></li><li><pre>not (List.tl e = [])</pre></li><li><pre>not (List.tl (List.tl e) = [])</pre></li><li><pre>List.tl (List.tl (List.tl e)) = []</pre></li><li><pre>Is_a(Model.Add, List.hd (List.tl e))</pre></li><li><pre>imandra_gensym__2 (List.hd e) {Model.counter = 0; Model.default = 23}</pre></li><li><pre>imandra_gensym__2 (List.hd (List.tl e))
-{Model.counter = 1337; Model.default = 23}</pre></li><li><pre>Destruct(Model.Add, 0, List.hd e) = 1337</pre></li><li><pre>imandra_gensym__2 (List.hd (List.tl (List.tl e)))
-{Model.counter = 23; Model.default = 23}</pre></li><li><pre>List.hd (List.tl (List.tl e)) = Model.Reset</pre></li></ul></td><td><pre>F = {Model.counter = 0; Model.default = 23}</pre></td></tr></table></div></div></div></div><script>
-require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-dcd68e47-2428-4ef1-96f7-8577029c446d';
-  alternatives.hydrate(target);
-});
-</script></div>
-
 </div>
 
 </div>
@@ -2422,16 +1757,8 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>- : (D.Strategy.Symbolic.state * D.Strategy.Symbolic.event *
-     D.Strategy.Symbolic.state)
-    list
-=
-[({Model.counter = 0; default = 23}, Model.Add 1337,
-  {Model.counter = 1337; default = 23});
- ({Model.counter = 1337; default = 23}, Model.Add 1,
-  {Model.counter = 23; default = 23});
- ({Model.counter = 23; default = 23}, Model.Reset,
-  {Model.counter = 0; default = 23})]
+<pre>File &#34;jupyter cell 7&#34;, line 1, characters 23-33:
+Error: Unbound value first_path
 </pre>
 </div>
 
@@ -2458,7 +1785,7 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
 <div class="prompt input_prompt">In&nbsp;[8]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ocaml"><pre><span></span><span class="o">#</span><span class="n">install_printer</span> <span class="nn">Decompose_frontend</span><span class="p">.</span><span class="n">print</span><span class="o">;;</span>
+<div class=" highlight hl-ocaml"><pre><span></span><span class="o">#</span><span class="n">install_printer</span> <span class="nn">Decompose</span><span class="p">.</span><span class="n">print</span><span class="o">;;</span>
 
 <span class="k">let</span> <span class="n">first_path_regions</span> <span class="o">=</span> <span class="nn">D</span><span class="p">.</span><span class="nn">Symbolic</span><span class="p">.</span><span class="n">region_of_path</span> <span class="n">first_path</span>
 </pre></div>
@@ -2479,97 +1806,8 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>val first_path_regions : Imandra_tools__Idf.Decompose.t list =
-  [---[region]---
-   Constraints:
-    [List.tl (List.tl (List.tl e)) = [];
-     (List.tl (List.tl e)) &lt;&gt; [];
-     Is_a(Model.Add, List.hd (List.tl e));
-     (List.tl e) &lt;&gt; [];
-     e &lt;&gt; [];
-     not (List.hd e = Model.Reset);
-     Is_a(Model.Add, List.hd e);
-     Destruct(Model.Add, 0, List.hd e) &lt;= 9000;
-     if List.hd e = Model.Reset then true
-     else
-     if Is_a(Model.Add, List.hd e)
-     then let (n : int) = Destruct(Model.Add, 0, List.hd e) in n &gt; 0
-     else
-       let (n : int) = Destruct(Model.Sub, 0, List.hd e) in
-       n &gt; 0 &amp;&amp; n &lt;= {Model.counter = 0; Model.default = 23}.Model.counter]
-   Invariant:
-    F =
-    {Model.counter = Destruct(Model.Add, 0, List.hd e); Model.default = 23}
-   -------------;
-   ---[region]---
-   Constraints:
-    [not (e = []);
-     Is_a(Model.Add, List.hd e);
-     not (List.tl e = []);
-     not (List.tl (List.tl e) = []);
-     List.tl (List.tl (List.tl e)) = [];
-     Is_a(Model.Add, List.hd (List.tl e));
-     Destruct(Model.Add, 0, List.hd e) &lt;= 9000;
-     Destruct(Model.Add, 0, List.hd e) = 1337;
-     if List.hd e = Model.Reset then true
-     else
-     if Is_a(Model.Add, List.hd e)
-     then let (n : int) = Destruct(Model.Add, 0, List.hd e) in n &gt; 0
-     else
-       let (n : int) = Destruct(Model.Sub, 0, List.hd e) in
-       n &gt; 0 &amp;&amp; n &lt;= {Model.counter = 0; Model.default = 23}.Model.counter;
-     if List.hd (List.tl e) = Model.Reset then true
-     else
-     if Is_a(Model.Add, List.hd (List.tl e))
-     then
-       let (n : int) = Destruct(Model.Add, 0, List.hd (List.tl e)) in n &gt; 0
-     else
-       let (n : int) = Destruct(Model.Sub, 0, List.hd (List.tl e)) in
-       n &gt; 0
-       &amp;&amp; n &lt;=
-          {Model.counter = Destruct(Model.Add, 0, List.hd e);
-           Model.default = 23}.Model.counter]
-   Invariant:
-    F = {Model.counter = 23; Model.default = 23}
-   -------------;
-   ---[region]---
-   Constraints:
-    [not (e = []);
-     Is_a(Model.Add, List.hd e);
-     not (List.tl e = []);
-     not (List.tl (List.tl e) = []);
-     List.tl (List.tl (List.tl e)) = [];
-     Is_a(Model.Add, List.hd (List.tl e));
-     Destruct(Model.Add, 0, List.hd e) = 1337;
-     List.hd (List.tl (List.tl e)) = Model.Reset;
-     if List.hd e = Model.Reset then true
-     else
-     if Is_a(Model.Add, List.hd e)
-     then let (n : int) = Destruct(Model.Add, 0, List.hd e) in n &gt; 0
-     else
-       let (n : int) = Destruct(Model.Sub, 0, List.hd e) in
-       n &gt; 0 &amp;&amp; n &lt;= {Model.counter = 0; Model.default = 23}.Model.counter;
-     if List.hd (List.tl e) = Model.Reset then true
-     else
-     if Is_a(Model.Add, List.hd (List.tl e))
-     then
-       let (n : int) = Destruct(Model.Add, 0, List.hd (List.tl e)) in n &gt; 0
-     else
-       let (n : int) = Destruct(Model.Sub, 0, List.hd (List.tl e)) in
-       n &gt; 0 &amp;&amp; n &lt;= {Model.counter = 1337; Model.default = 23}.Model.counter;
-     if List.hd (List.tl (List.tl e)) = Model.Reset then true
-     else
-     if Is_a(Model.Add, List.hd (List.tl (List.tl e)))
-     then
-       let (n : int) = Destruct(Model.Add, 0, List.hd (List.tl (List.tl e)))
-       in n &gt; 0
-     else
-       let (n : int) = Destruct(Model.Sub, 0, List.hd (List.tl (List.tl e)))
-       in
-       n &gt; 0 &amp;&amp; n &lt;= {Model.counter = 23; Model.default = 23}.Model.counter]
-   Invariant:
-    F = {Model.counter = 0; Model.default = 23}
-   -------------]
+<pre>File &#34;jupyter cell 8&#34;, line 3, characters 51-61:
+Error: Unbound value first_path
 </pre>
 </div>
 
@@ -2621,99 +1859,8 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>- : Imandra_tools__Idf.Decompose.t list =
-[---[region]---
- Constraints:
-   [ (List.tl (List.tl (List.tl e))) = []
-   ; (List.hd (List.tl e)) is Model.Add
-   ; (List.hd e) is Model.Add
-   ; (List.hd e).Model.Add_0 &lt;= 9000
-   ; (((List.hd e) is Model.Reset) and true) or
-     (((List.hd e) isn&#39;t Model.Reset) and
-      ((((List.hd e) is Model.Add) and ((List.hd e).Model.Add_0 &gt; 0)) or
-       (((List.hd e) isn&#39;t Model.Add) and
-        (((List.hd e).Model.Sub_0 &gt; 0) and
-         ((List.hd e).Model.Sub_0 &lt;=
-            Model.{ counter = 0 ; default = 23 }.Model.counter))))) ]
- Invariant:
-   F = Model.{ counter = (List.hd e).Model.Add_0 ; default = 23 }
-  -------------;
- ---[region]---
- Constraints:
-   [ (List.hd e) is Model.Add
-   ; (List.tl (List.tl (List.tl e))) = []
-   ; (List.hd (List.tl e)) is Model.Add
-   ; (List.hd e).Model.Add_0 = 1337
-   ; (((List.hd e) is Model.Reset) and true) or
-     (((List.hd e) isn&#39;t Model.Reset) and
-      ((((List.hd e) is Model.Add) and ((List.hd e).Model.Add_0 &gt; 0))
-       or
-       (((List.hd e) isn&#39;t Model.Add) and
-        (((List.hd e).Model.Sub_0 &gt; 0) and
-         ((List.hd e).Model.Sub_0 &lt;=
-            Model.{ counter = 0 ; default = 23 }.Model.counter)))))
-   ; (((List.hd (List.tl e)) is Model.Reset) and true) or
-     (((List.hd (List.tl e)) isn&#39;t Model.Reset) and
-      ((((List.hd (List.tl e)) is Model.Add) and
-        ((List.hd (List.tl e)).Model.Add_0 &gt; 0))
-       or
-       (((List.hd (List.tl e)) isn&#39;t Model.Add) and
-        (((List.hd (List.tl e)).Model.Sub_0 &gt; 0) and
-         (Model.{
-            counter = (List.hd e).Model.Add_0
-          ; default = 23
-          }.Model.counter &gt;= (List.hd (List.tl e)).Model.Sub_0))))) ]
- Invariant:
-   F = Model.{ counter = 23 ; default = 23 }
-  -------------;
- ---[region]---
- Constraints:
-   [ (List.hd e) is Model.Add
-   ; (List.tl (List.tl (List.tl e))) = []
-   ; (List.hd (List.tl e)) is Model.Add
-   ; (List.hd e).Model.Add_0 = 1337
-   ; (List.hd (List.tl (List.tl e))) is Model.Reset
-   ; (((List.hd e) is Model.Reset) and true) or
-     (((List.hd e) isn&#39;t Model.Reset) and
-      ((((List.hd e) is Model.Add) and
-        ((List.hd e).Model.Add_0 &gt; 0))
-       or
-       (((List.hd e) isn&#39;t Model.Add) and
-        (((List.hd e).Model.Sub_0 &gt; 0) and
-         ((List.hd e).Model.Sub_0 &lt;=
-            Model.{ counter = 0 ; default = 23 }
-              .Model.counter)))))
-   ; (((List.hd (List.tl e)) is Model.Reset) and true) or
-     (((List.hd (List.tl e)) isn&#39;t Model.Reset) and
-      ((((List.hd (List.tl e)) is Model.Add) and
-        ((List.hd (List.tl e)).Model.Add_0 &gt; 0))
-       or
-       (((List.hd (List.tl e)) isn&#39;t Model.Add) and
-        (((List.hd (List.tl e)).Model.Sub_0 &gt; 0) and
-         ((List.hd (List.tl e)).Model.Sub_0 &lt;=
-            Model.{ counter = 1337 ; default = 23 }
-              .Model.counter)))))
-   ; (((List.hd (List.tl (List.tl e))) is Model.Reset)
-      and true) or
-     (((List.hd (List.tl (List.tl e))) isn&#39;t Model.Reset)
-      and
-      ((((List.hd (List.tl (List.tl e))) is Model.Add)
-        and
-        ((List.hd (List.tl (List.tl e))).Model.Add_0
-           &gt; 0))
-       or
-       (((List.hd (List.tl (List.tl e))) isn&#39;t Model.Add)
-        and
-        (((List.hd (List.tl (List.tl e))).Model.Sub_0
-            &gt; 0)
-         and
-         ((List.hd (List.tl (List.tl e))).Model.Sub_0
-            &lt;=
-            Model.{ counter = 23 ; default = 23 }
-              .Model.counter))))) ]
- Invariant:
-   F = Model.{ counter = 0 ; default = 23 }
-  -------------]
+<pre>File &#34;jupyter cell 9&#34;, line 3, characters 0-18:
+Error: Unbound value first_path_regions
 </pre>
 </div>
 
@@ -2751,7 +1898,7 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
 
 <span class="o">#</span><span class="n">program</span><span class="o">;;</span>
 
-<span class="k">let</span> <span class="n">rs</span> <span class="o">=</span> <span class="nn">Decompose_frontend</span><span class="p">.</span><span class="n">top</span> <span class="s2">&quot;f&quot;</span><span class="o">;;</span>
+<span class="k">let</span> <span class="n">rs</span> <span class="o">=</span> <span class="nn">Decompose</span><span class="p">.</span><span class="n">top</span> <span class="s2">&quot;f&quot;</span><span class="o">;;</span>
 </pre></div>
 
 </div>
@@ -2771,7 +1918,7 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
 
 <div class="output_text output_subarea output_execute_result">
 <pre>val f : int Set.t -&gt; int Set.t -&gt; int -&gt; int Set.t = &lt;fun&gt;
-val rs : Imandra_interactive.Decompose_frontend.t list =
+val rs : Imandra_interactive.Decompose.t list =
   [---[region]---
    Constraints:
      [ y = (Set.union x y) ]
@@ -2796,7 +1943,7 @@ val rs : Imandra_interactive.Decompose_frontend.t list =
 
 
 <div class="output_html rendered_html output_subarea ">
-<div class="imandra-alternatives" id="alt-c9f8f5ef-a7e0-48dd-99c3-f13840031d00"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-fb517289-5c80-44ae-895c-683f55e7a10c" class="decompose"><textarea class="display-none">{
+<div class="imandra-alternatives" id="alt-910ef20b-5dcb-4bcd-ae25-1869dd0a0d83"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-416481ad-e7de-4247-9fda-5d91a859551b" class="decompose"><textarea class="display-none">{
   &quot;regions&quot;: [
     {
       &quot;constraints&quot;: [ &quot;y = Set.union x y&quot; ],
@@ -2822,13 +1969,13 @@ val rs : Imandra_interactive.Decompose_frontend.t list =
 }</textarea><div class="decompose-foamtree"></div><div class="decompose-details"><div class="decompose-details-header">Regions details</div><div class="decompose-details-no-selection">No group selected.</div><div class="decompose-details-selection hidden"><div><span class="decompose-details-label">Direct sub-regions: </span><span class="decompose-details-direct-sub-regions-text">-</span></div><div><span class="decompose-details-label">Contained regions: </span><span class="decompose-details-contained-regions-text">-</span></div><div class="decompose-details-section-header">Constraints</div><div class="decompose-details-constraints"><pre class="decompose-details-constraint">&lt;constraint&gt;</pre></div><div class="decompose-details-invariant"><div class="decompose-details-section-header">Invariant</div><pre class="decompose-details-invariant-text">&lt;invariant&gt;</pre></div></div></div><script>
 (function () {
   require(['nbextensions/nbimandra/regions'], function (regions) {
-    var target = '#decompose-fb517289-5c80-44ae-895c-683f55e7a10c';
+    var target = '#decompose-416481ad-e7de-4247-9fda-5d91a859551b';
     regions.hydrate(target);
   });
 })();
-</script></div></div><div class="tab-pane"><div><div class="imandra-table" id="table-33e22a11-6f7e-4408-8071-7932ea7225af"><table><thead><tr><th>Constraints</th><th>Invariant</th></tr></thead><tr><td><ul><li><pre>not (y = Set.union x y)</pre></li></ul></td><td><pre>F = Map.add' (Map.const false) z true</pre></td></tr><tr><td><ul><li><pre>y = Set.union x y</pre></li></ul></td><td><pre>F = Map.add' x z true</pre></td></tr></table></div></div></div></div><script>
+</script></div></div><div class="tab-pane"><div><div class="imandra-table" id="table-a7b74449-d643-450e-926e-0695e08bb3b3"><table><thead><tr><th>Constraints</th><th>Invariant</th></tr></thead><tr><td><ul><li><pre>not (y = Set.union x y)</pre></li></ul></td><td><pre>F = Map.add' (Map.const false) z true</pre></td></tr><tr><td><ul><li><pre>y = Set.union x y</pre></li></ul></td><td><pre>F = Map.add' x z true</pre></td></tr></table></div></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-c9f8f5ef-a7e0-48dd-99c3-f13840031d00';
+  var target = '#alt-910ef20b-5dcb-4bcd-ae25-1869dd0a0d83';
   alternatives.hydrate(target);
 });
 </script></div>
@@ -3134,7 +2281,7 @@ val print :
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>- : Imandra_interactive.Decompose_frontend.t list =
+<pre>- : Imandra_interactive.Decompose.t list =
 [---[region]---
  Constraints:
    [ (Set.subset x y) = true ]
@@ -3178,7 +2325,7 @@ val print :
 <div class="prompt input_prompt">In&nbsp;[13]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ocaml"><pre><span></span><span class="nn">Caml</span><span class="p">.</span><span class="nn">List</span><span class="p">.</span><span class="n">mapi</span> <span class="o">(</span><span class="k">fun</span> <span class="n">i</span> <span class="o">{</span><span class="nn">Decompose_frontend</span><span class="p">.</span><span class="n">reg_constraints</span><span class="o">;</span> <span class="o">_}</span> <span class="o">-&gt;</span>
+<div class=" highlight hl-ocaml"><pre><span></span><span class="nn">Caml</span><span class="p">.</span><span class="nn">List</span><span class="p">.</span><span class="n">mapi</span> <span class="o">(</span><span class="k">fun</span> <span class="n">i</span> <span class="o">{</span><span class="nn">Decompose</span><span class="p">.</span><span class="n">reg_constraints</span><span class="o">;</span> <span class="o">_}</span> <span class="o">-&gt;</span>
   <span class="k">let</span> <span class="n">gs</span> <span class="o">=</span> <span class="s2">&quot;region_&quot;</span> <span class="o">^</span> <span class="o">(</span><span class="n">string_of_int</span> <span class="n">i</span><span class="o">)</span> <span class="k">in</span> <span class="c">(* Imandra_util.Util.gensym () *)</span>
   <span class="k">let</span> <span class="n">term</span> <span class="o">=</span> <span class="nn">Term</span><span class="p">.</span><span class="n">and_l</span> <span class="n">reg_constraints</span> <span class="k">in</span>
   <span class="k">let</span> <span class="n">body</span> <span class="o">=</span> <span class="nn">Region_term_synth</span><span class="p">.</span><span class="n">synthesize_region_term</span> <span class="o">~</span><span class="n">default</span><span class="o">:</span><span class="nn">Term</span><span class="p">.</span><span class="nn">Syn</span><span class="p">.</span><span class="nc">False</span> <span class="n">term</span> <span class="k">in</span>
