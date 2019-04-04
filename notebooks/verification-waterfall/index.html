@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html>
+    <head><meta charset="utf-8" />
+        <meta content="width=device-width, initial-scale=1.0" name="viewport">
+        <title>Imandra Documentation - Verification Waterfall</title>
+        <meta property="og:url" content="https://docs.imandra.ai/imandra-docs/notebooks/verification-waterfall/">
+        <meta property="og:type" content="website">
+        <meta property="og:title" content="Imandra Documentation - Verification Waterfall">
+        <meta property="og:description" content="A description of Imandra's Inductive Waterfall">
+        <meta property="og:image" content="https://storage.googleapis.com/imandra-assets/images/og_image_default_i78.jpg">
+
+
+        
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-116937440-6"></script>
+        <script>
+         window.dataLayer = window.dataLayer || [];
+         function gtag(){dataLayer.push(arguments);}
+         gtag('js', new Date());
+
+         gtag('config', 'UA-116937440-1');
+        </script>
+        <script type="text/javascript"> var sc_project=11767520; var sc_invisible=1; var sc_security="fa7e88d1"; </script>
+        <script type="text/javascript" src="https://www.statcounter.com/counter/counter.js" async></script>
+        <noscript><div class="statcounter">
+            <a title="Web Analytics" href="http://statcounter.com/" target="_blank">
+                <img class="statcounter" src="//c.statcounter.com/11767520/0/fa7e88d1/1/" alt="Web Analytics"></a>
+        </div></noscript>
+        
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Merriweather+Sans:300,300i,400,400i%7CMerriweather:300,300i,400,400i%7CRoboto+Slab:300,300i,400,400i">
+
+        <link rel="stylesheet" href="/imandra-docs/static/style/style.min.9ef6027e.css" type="text/css">
+        <link rel="stylesheet" href="/imandra-docs/static/nbextensions/nbimandra/styles.b466ce6f.css" type="text/css">
+        <link rel="stylesheet" href="/imandra-docs/static/docs-styles.86fc0481.css" type="text/css">
+        
+        <link rel="stylesheet" href="/imandra-docs/static/jekyll-styles.73f39aa7.css" type="text/css">
+        
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+        <script src="/imandra-docs/static/nbimandra-rjs-bundle.2469bcb7.js"></script>
+
+        <style type="text/css">
+         .highlight .hll { background-color: #ffffcc }
+         .highlight  { background: #f8f8f8; }
+         .highlight .c { color: #408080; font-style: italic } /* Comment */
+         .highlight .err { border: 1px solid #FF0000 } /* Error */
+         .highlight .k { color: #008000; font-weight: bold } /* Keyword */
+         .highlight .o { color: #666666 } /* Operator */
+         .highlight .ch { color: #408080; font-style: italic } /* Comment.Hashbang */
+         .highlight .cm { color: #408080; font-style: italic } /* Comment.Multiline */
+         .highlight .cp { color: #BC7A00 } /* Comment.Preproc */
+         .highlight .cpf { color: #408080; font-style: italic } /* Comment.PreprocFile */
+         .highlight .c1 { color: #408080; font-style: italic } /* Comment.Single */
+         .highlight .cs { color: #408080; font-style: italic } /* Comment.Special */
+         .highlight .gd { color: #A00000 } /* Generic.Deleted */
+         .highlight .ge { font-style: italic } /* Generic.Emph */
+         .highlight .gr { color: #FF0000 } /* Generic.Error */
+         .highlight .gh { color: #000080; font-weight: bold } /* Generic.Heading */
+         .highlight .gi { color: #00A000 } /* Generic.Inserted */
+         .highlight .go { color: #888888 } /* Generic.Output */
+         .highlight .gp { color: #000080; font-weight: bold } /* Generic.Prompt */
+         .highlight .gs { font-weight: bold } /* Generic.Strong */
+         .highlight .gu { color: #800080; font-weight: bold } /* Generic.Subheading */
+         .highlight .gt { color: #0044DD } /* Generic.Traceback */
+         .highlight .kc { color: #008000; font-weight: bold } /* Keyword.Constant */
+         .highlight .kd { color: #008000; font-weight: bold } /* Keyword.Declaration */
+         .highlight .kn { color: #008000; font-weight: bold } /* Keyword.Namespace */
+         .highlight .kp { color: #008000 } /* Keyword.Pseudo */
+         .highlight .kr { color: #008000; font-weight: bold } /* Keyword.Reserved */
+         .highlight .kt { color: #B00040 } /* Keyword.Type */
+         .highlight .m { color: #666666 } /* Literal.Number */
+         .highlight .s { color: #BA2121 } /* Literal.String */
+         .highlight .na { color: #7D9029 } /* Name.Attribute */
+         .highlight .nb { color: #008000 } /* Name.Builtin */
+         .highlight .nc { color: #0000FF; font-weight: bold } /* Name.Class */
+         .highlight .no { color: #880000 } /* Name.Constant */
+         .highlight .nd { color: #AA22FF } /* Name.Decorator */
+         .highlight .ni { color: #999999; font-weight: bold } /* Name.Entity */
+         .highlight .ne { color: #D2413A; font-weight: bold } /* Name.Exception */
+         .highlight .nf { color: #0000FF } /* Name.Function */
+         .highlight .nl { color: #A0A000 } /* Name.Label */
+         .highlight .nn { color: #0000FF; font-weight: bold } /* Name.Namespace */
+         .highlight .nt { color: #008000; font-weight: bold } /* Name.Tag */
+         .highlight .nv { color: #19177C } /* Name.Variable */
+         .highlight .ow { color: #AA22FF; font-weight: bold } /* Operator.Word */
+         .highlight .w { color: #bbbbbb } /* Text.Whitespace */
+         .highlight .mb { color: #666666 } /* Literal.Number.Bin */
+         .highlight .mf { color: #666666 } /* Literal.Number.Float */
+         .highlight .mh { color: #666666 } /* Literal.Number.Hex */
+         .highlight .mi { color: #666666 } /* Literal.Number.Integer */
+         .highlight .mo { color: #666666 } /* Literal.Number.Oct */
+         .highlight .sa { color: #BA2121 } /* Literal.String.Affix */
+         .highlight .sb { color: #BA2121 } /* Literal.String.Backtick */
+         .highlight .sc { color: #BA2121 } /* Literal.String.Char */
+         .highlight .dl { color: #BA2121 } /* Literal.String.Delimiter */
+         .highlight .sd { color: #BA2121; font-style: italic } /* Literal.String.Doc */
+         .highlight .s2 { color: #BA2121 } /* Literal.String.Double */
+         .highlight .se { color: #BB6622; font-weight: bold } /* Literal.String.Escape */
+         .highlight .sh { color: #BA2121 } /* Literal.String.Heredoc */
+         .highlight .si { color: #BB6688; font-weight: bold } /* Literal.String.Interpol */
+         .highlight .sx { color: #008000 } /* Literal.String.Other */
+         .highlight .sr { color: #BB6688 } /* Literal.String.Regex */
+         .highlight .s1 { color: #BA2121 } /* Literal.String.Single */
+         .highlight .ss { color: #19177C } /* Literal.String.Symbol */
+         .highlight .bp { color: #008000 } /* Name.Builtin.Pseudo */
+         .highlight .fm { color: #0000FF } /* Name.Function.Magic */
+         .highlight .vc { color: #19177C } /* Name.Variable.Class */
+         .highlight .vg { color: #19177C } /* Name.Variable.Global */
+         .highlight .vi { color: #19177C } /* Name.Variable.Instance */
+         .highlight .vm { color: #19177C } /* Name.Variable.Magic */
+         .highlight .il { color: #666666 } /* Literal.Number.Integer.Long */
+        </style>
+
+        <!-- Loading mathjax macro -->
+        <!-- Load mathjax -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS_HTML"></script>
+    <!-- MathJax configuration -->
+    <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+            displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+            processEscapes: true,
+            processEnvironments: true
+        },
+        // Center justify equations in code and markdown cells. Elsewhere
+        // we use CSS to left justify single line equations in code cells.
+        displayAlign: 'center',
+        "HTML-CSS": {
+            styles: {'.MathJax_Display': {"margin": 0}},
+            linebreaks: { automatic: true }
+        }
+    });
+    </script>
+    <!-- End of mathjax configuration --><script>
+  function handleCopyClick() {
+      var el = this;
+      var terminal = el.closest('.terminal');
+      var highlight = terminal.getElementsByClassName('highlight')[0];
+      copyToClipboardMsg(highlight);
+
+      terminal.classList.add('terminal--hide');
+      setTimeout(function () {
+          terminal.classList.remove('terminal--hide');
+      }, 2000);
+
+
+      function copyToClipboardMsg(elem) {
+          var succeed = copyToClipboard(elem);
+          var msg;
+          if (!succeed) {
+              msg = 'Error!';
+          } else {
+              msg = 'Copied!';
+          }
+
+          var msgElem = terminal.querySelector('.terminal__copy-msg');
+          msgElem.innerHTML = msg;
+          setTimeout(function () {
+              msgElem.innerHTML = 'You rock!';
+          }, 1000);
+      }
+
+      function copyToClipboard(elem) {
+          // create hidden text element, if it doesn't already exist
+          var targetId = '_hiddenCopyText_';
+          var isInput = elem.tagName === 'INPUT' || elem.tagName === 'TEXTAREA';
+          var origSelectionStart, origSelectionEnd;
+          if (isInput) {
+              // can just use the original source element for the selection and copy
+              target = elem;
+              origSelectionStart = elem.selectionStart;
+              origSelectionEnd = elem.selectionEnd;
+          } else {
+              // must use a temporary form element for the selection and copy
+              target = terminal.querySelector('#' + targetId);
+              if (!target) {
+                  var target = document.createElement('textarea');
+                  // target.style.display = 'flex';
+                  // target.style.position = 'absolute';
+                  // target.style.left = '-1000%';
+                  target.id = targetId;
+                 elem.appendChild(target);
+              }
+              target.textContent = elem.textContent.trim();
+          }
+          
+          // select the content
+          var currentFocus = document.activeElement;
+          target.focus();
+          target.setSelectionRange(0, target.value.length);
+
+          // copy the selection
+          var succeed;
+          try {
+              succeed = document.execCommand('copy');
+          } catch (e) {
+              succeed = false;
+          }
+          // restore original focus
+          if (currentFocus && typeof currentFocus.focus === 'function') {
+              currentFocus.focus();
+          }
+
+          if (isInput) {
+              // restore prior selection
+              elem.setSelectionRange(origSelectionStart, origSelectionEnd);
+          } else {
+              // clear temporary content
+              elem.removeChild(target);
+          }
+          return succeed;
+      }
+  }
+</script>
+    </head>
+    <body>
+        <div class="background">
+        </div>
+        <div class="page-container">
+            <main class="main-content-column">
+                <!-- Jupyter (Imandra core docs) version -->
+<header class="header">
+    <div class="top-row-container">
+        <div class="top-row">
+
+            <div id="toggler--left" class="side__left-menu-toggler">
+                <div class="side__toggle">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+                <p class="side__toggle-text">Docs</p>
+            </div>
+
+            <div class="side__logo-container">
+                <a class="side__logo-link" href="/">
+                    <img class="side__logo " src = "/imandra-docs/jekyll-resources/assets/img/ai_logo_green.svg">
+                </a>
+            </div>
+
+            <div id="toggler--right" class="side__right-menu-toggler">
+                <p class="side__toggle-text">Pages</p>
+                <div class="side__toggle">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+
+            <nav class="side__nav-container side__nav-container--hidden">
+
+                <ul class="side__nav-list">
+                    
+                    <li class="side__nav-list-item TopNavListItem">
+                        <a class="side__nav-link" href="/">Documentation Home</a>
+                        
+                    </li>
+                    
+                    <li class="side__nav-list-item TopNavListItem">
+                        <a class="side__nav-link side__nav-link--active" href="/imandra-docs">Imandra</a>
+                        
+                        <ul class="side__nav-list--sub-level-1">
+                            
+                            <li class="side__nav-list-item--sub-level-1">
+                                
+                                <a class="side__nav-link" href="/imandra-docs/notebooks/welcome">A Quick Tour</a>
+                                
+                                <ul class="side__nav-list--sub-level-2">
+                                    
+                                </ul>
+                            </li>
+                            
+                            <li class="side__nav-list-item--sub-level-1">
+                                
+                                <a class="side__nav-link" href="/imandra-docs/notebooks/installation">Installation</a>
+                                
+                                <ul class="side__nav-list--sub-level-2">
+                                    
+                                    <li class="side__nav-list-item--sub-level-2">
+                                        <a class="side__nav-link" href="/imandra-docs/notebooks/installation-simple">Installer</a>
+                                        
+                                    </li>
+                                    
+                                    <li class="side__nav-list-item--sub-level-2">
+                                        <a class="side__nav-link" href="/imandra-docs/notebooks/installation-docker">Docker Image</a>
+                                        
+                                    </li>
+                                    
+                                    <li class="side__nav-list-item--sub-level-2">
+                                        <a class="side__nav-link" href="/imandra-docs/notebooks/installation-vscode">VSCode</a>
+                                        
+                                    </li>
+                                    
+                                    <li class="side__nav-list-item--sub-level-2">
+                                        <a class="side__nav-link" href="/imandra-docs/notebooks/installation-jupyter">Jupyter</a>
+                                        
+                                    </li>
+                                    
+                                </ul>
+                            </li>
+                            
+                            <li class="side__nav-list-item--sub-level-1">
+                                
+                                <a class="side__nav-link" href="/imandra-docs/notebooks/logic-and-program-modes">Logic and Program Modes</a>
+                                
+                                <ul class="side__nav-list--sub-level-2">
+                                    
+                                </ul>
+                            </li>
+                            
+                            <li class="side__nav-list-item--sub-level-1">
+                                
+                                <a class="side__nav-link" href="/imandra-docs/notebooks/verification-commands">Verification</a>
+                                
+                                <ul class="side__nav-list--sub-level-2">
+                                    
+                                    <li class="side__nav-list-item--sub-level-2">
+                                        <a class="side__nav-link" href="/imandra-docs/notebooks/verification-commands">Commands</a>
+                                        
+                                    </li>
+                                    
+                                    <li class="side__nav-list-item--sub-level-2">
+                                        <a class="side__nav-link" href="/imandra-docs/notebooks/verification-attributes">Attributes</a>
+                                        
+                                        <ul class="side__nav-list--sub-level-3">
+                                            
+                                            <li class="side__nav-list-item--sub-level-3">
+                                              <a class="side__nav-link" href="/imandra-docs/notebooks/verification-attributes/#Verification-Hints">Verification Hints</a>
+                                            </li>
+                                            
+                                            <li class="side__nav-list-item--sub-level-3">
+                                              <a class="side__nav-link" href="/imandra-docs/notebooks/verification-attributes/#Rule-Classes">Rule Classes</a>
+                                            </li>
+                                            
+                                        </ul>
+                                        
+                                    </li>
+                                    
+                                    <li class="side__nav-list-item--sub-level-2">
+                                        <a class="side__nav-link" href="/imandra-docs/notebooks/verification-unrolling">Unrolling</a>
+                                        
+                                    </li>
+                                    
+                                    <li class="side__nav-list-item--sub-level-2">
+                                        <a class="side__nav-link" href="/imandra-docs/notebooks/verification-simplification">Simplification</a>
+                                        
+                                        <ul class="side__nav-list--sub-level-3">
+                                            
+                                            <li class="side__nav-list-item--sub-level-3">
+                                              <a class="side__nav-link" href="/imandra-docs/notebooks/verification-simplification/#Rewrite-Rules">Rewrite Rules</a>
+                                            </li>
+                                            
+                                            <li class="side__nav-list-item--sub-level-3">
+                                              <a class="side__nav-link" href="/imandra-docs/notebooks/verification-simplification/#Forward-chaining-Rules">Forward-chaining Rules</a>
+                                            </li>
+                                            
+                                        </ul>
+                                        
+                                    </li>
+                                    
+                                    <li class="side__nav-list-item--sub-level-2">
+                                        <a class="side__nav-link" href="/imandra-docs/notebooks/verification-blast">Blast</a>
+                                        
+                                    </li>
+                                    
+                                    <li class="side__nav-list-item--sub-level-2">
+                                        <a class="side__nav-link" href="/imandra-docs/notebooks/verification-induction">Induction</a>
+                                        
+                                        <ul class="side__nav-list--sub-level-3">
+                                            
+                                            <li class="side__nav-list-item--sub-level-3">
+                                              <a class="side__nav-link" href="/imandra-docs/notebooks/verification-induction/#Functional-Induction">Functional Induction</a>
+                                            </li>
+                                            
+                                            <li class="side__nav-list-item--sub-level-3">
+                                              <a class="side__nav-link" href="/imandra-docs/notebooks/verification-induction/#Structural-Induction">Structural Induction</a>
+                                            </li>
+                                            
+                                        </ul>
+                                        
+                                    </li>
+                                    
+                                    <li class="side__nav-list-item--sub-level-2">
+                                        <a class="side__nav-link side__nav-link--active" href="/imandra-docs/notebooks/verification-waterfall">Waterfall</a>
+                                        
+                                        <ul class="side__nav-list--sub-level-3">
+                                            
+                                            <li class="side__nav-list-item--sub-level-3">
+                                              <a class="side__nav-link" href="/imandra-docs/notebooks/verification-waterfall/#Simplification">Simplification</a>
+                                            </li>
+                                            
+                                            <li class="side__nav-list-item--sub-level-3">
+                                              <a class="side__nav-link" href="/imandra-docs/notebooks/verification-waterfall/#Unrolling-check">Unrolling check</a>
+                                            </li>
+                                            
+                                            <li class="side__nav-list-item--sub-level-3">
+                                              <a class="side__nav-link" href="/imandra-docs/notebooks/verification-waterfall/#Destructor-Elimination">Destructor Elimination</a>
+                                            </li>
+                                            
+                                            <li class="side__nav-list-item--sub-level-3">
+                                              <a class="side__nav-link" href="/imandra-docs/notebooks/verification-waterfall/#Fertilization">Fertilization</a>
+                                            </li>
+                                            
+                                            <li class="side__nav-list-item--sub-level-3">
+                                              <a class="side__nav-link" href="/imandra-docs/notebooks/verification-waterfall/#Generalization">Generalization</a>
+                                            </li>
+                                            
+                                            <li class="side__nav-list-item--sub-level-3">
+                                              <a class="side__nav-link" href="/imandra-docs/notebooks/verification-waterfall/#Induction">Induction</a>
+                                            </li>
+                                            
+                                        </ul>
+                                        
+                                    </li>
+                                    
+                                </ul>
+                            </li>
+                            
+                            <li class="side__nav-list-item--sub-level-1">
+                                
+                                <a class="side__nav-link" href="/imandra-docs/notebooks/extracting-ocaml-modules-with-imandra-extract">Extracting OCaml modules with imandra-extract</a>
+                                
+                                <ul class="side__nav-list--sub-level-2">
+                                    
+                                </ul>
+                            </li>
+                            
+                            <li class="side__nav-list-item--sub-level-1">
+                                
+                                <a class="side__nav-link" href="/imandra-docs/notebooks/proving-program-termination">Proving Program Termination</a>
+                                
+                                <ul class="side__nav-list--sub-level-2">
+                                    
+                                </ul>
+                            </li>
+                            
+                            <li class="side__nav-list-item--sub-level-1">
+                                
+                                Region Decomposition
+                                
+                                <ul class="side__nav-list--sub-level-2">
+                                    
+                                    <li class="side__nav-list-item--sub-level-2">
+                                        <a class="side__nav-link" href="/imandra-docs/notebooks/decomposition-flags">Decomposition Flags</a>
+                                        
+                                    </li>
+                                    
+                                    <li class="side__nav-list-item--sub-level-2">
+                                        <a class="side__nav-link" href="/imandra-docs/notebooks/imandra-tools-intro">Imandra Tools Introduction</a>
+                                        
+                                    </li>
+                                    
+                                </ul>
+                            </li>
+                            
+                            <li class="side__nav-list-item--sub-level-1">
+                                
+                                <a class="side__nav-link" href="/imandra-docs/notebooks/examples">Examples</a>
+                                
+                                <ul class="side__nav-list--sub-level-2">
+                                    
+                                    <li class="side__nav-list-item--sub-level-2">
+                                        <a class="side__nav-link" href="/imandra-docs/notebooks/recursion-induction-and-rewriting">Recursion, Induction and Rewriting</a>
+                                        
+                                    </li>
+                                    
+                                    <li class="side__nav-list-item--sub-level-2">
+                                        <a class="side__nav-link" href="/imandra-docs/notebooks/verifying-merge-sort">Verifying Merge Sort in Imandra</a>
+                                        
+                                    </li>
+                                    
+                                    <li class="side__nav-list-item--sub-level-2">
+                                        <a class="side__nav-link" href="/imandra-docs/notebooks/ubs-case-study">Analysing the UBS ATS Dark Pool</a>
+                                        
+                                    </li>
+                                    
+                                    <li class="side__nav-list-item--sub-level-2">
+                                        <a class="side__nav-link" href="/imandra-docs/notebooks/webservice-auth-logic">Analysing Web-app Authentication Logic</a>
+                                        
+                                    </li>
+                                    
+                                    <li class="side__nav-list-item--sub-level-2">
+                                        <a class="side__nav-link" href="/imandra-docs/notebooks/simple-vehicle-controller">Simple Vehicle Controller</a>
+                                        
+                                    </li>
+                                    
+                                    <li class="side__nav-list-item--sub-level-2">
+                                        <a class="side__nav-link" href="/imandra-docs/notebooks/ripple-carry-adder">Verifying a Ripple Carry Adder</a>
+                                        
+                                    </li>
+                                    
+                                    <li class="side__nav-list-item--sub-level-2">
+                                        <a class="side__nav-link" href="/imandra-docs/notebooks/verifying-an-ros-node">Creating and Verifying a ROS Node</a>
+                                        
+                                    </li>
+                                    
+                                    <li class="side__nav-list-item--sub-level-2">
+                                        <a class="side__nav-link" href="/imandra-docs/notebooks/reasonml-tic-tac-toe">Tic Tac Toe with ReasonML</a>
+                                        
+                                    </li>
+                                    
+                                    <li class="side__nav-list-item--sub-level-2">
+                                        <a class="side__nav-link" href="/imandra-docs/notebooks/probabilistic-reasoning-in-reasonml">Probabilistic Reasoning in ReasonML</a>
+                                        
+                                    </li>
+                                    
+                                    <li class="side__nav-list-item--sub-level-2">
+                                        <a class="side__nav-link" href="/imandra-docs/notebooks/sudoku">Solving Sudoku with Imandra</a>
+                                        
+                                    </li>
+                                    
+                                    <li class="side__nav-list-item--sub-level-2">
+                                        <a class="side__nav-link" href="/imandra-docs/notebooks/crossing-river-safely">Crossing the River Safely</a>
+                                        
+                                    </li>
+                                    
+                                    <li class="side__nav-list-item--sub-level-2">
+                                        <a class="side__nav-link" href="/imandra-docs/notebooks/reasonml-facetime-state-machines">Exploring The Apple FaceTime Bug with ReasonML State Machines</a>
+                                        
+                                    </li>
+                                    
+                                    <li class="side__nav-list-item--sub-level-2">
+                                        <a class="side__nav-link" href="/imandra-docs/notebooks/key-pair-security">Key Pair Security in Imandra</a>
+                                        
+                                    </li>
+                                    
+                                </ul>
+                            </li>
+                            
+                        </ul>
+                        
+                    </li>
+                    
+                    <li class="side__nav-list-item TopNavListItem">
+                        <a class="side__nav-link" href="/ipl">Imandra Protocol Language</a>
+                        
+                    </li>
+                    
+                    <li class="side__nav-list-item TopNavListItem">
+                        <a class="side__nav-link" href="/fix-engine">FIX Engine</a>
+                        
+                    </li>
+                    
+                </ul>
+            </nav>
+        </div>
+    </div>
+
+    <div class="background">
+    </div>
+
+    <div class="template-header">
+        <div class="top-bar">
+            <nav class="top-bar__nav-container">
+                <a href="#" class="top-bar__toggle">≡</a>
+                <ul class="top-bar__nav-list top-bar__nav-list--hidden">
+                    <li class="top-bar__nav-list-item"><a class="top-bar__nav-link" href="https://www.imandra.ai/">Home</a></li>
+                    <li class="top-bar__nav-list-item"><a class="top-bar__nav-link" href="https://try.imandra.ai/">Try</a></li>
+                    <li class="top-bar__nav-list-item"><a class="top-bar__nav-link" href="https://medium.com/imandra">Blog</a></li>
+                    <li class="top-bar__nav-list-item"><a class="top-bar__nav-link" href="https://www.imandra.ai/research">Research</a></li>
+                    <li class="top-bar__nav-list-item"><a class="top-bar__nav-link" href="https://docs.imandra.ai/">Docs</a></li>
+                    <li class="top-bar__nav-list-item"><a class="top-bar__nav-link" href="https://www.imandra.ai/media">Media</a></li>
+                    <li class="top-bar__nav-list-item"><a class="top-bar__nav-link" href="https://www.imandra.ai/about">About AI</a></li>
+                    <li class="top-bar__nav-list-item"><a class="top-bar__nav-link" href="https://www.imandra.ai/careers">CAREERS</a></li>
+                    <li class="top-bar__nav-list-item"><a class="top-bar__nav-link" href="https://www.imandra.ai/contact">CONTACT</a></li>
+                </ul>
+            </nav>
+        </div>
+
+        <div class="template-header__image-container template-header__image-container--jupyter">
+            <div class="template-header__image" href ="/imandra-docs">
+                <img class="SiteSpecificImage" src="/imandra-docs/static/img/site_specific_image_v_2.svg">
+            </div>
+        </div>
+        
+    </div>
+
+    <script>
+        document.getElementById('toggler--left').addEventListener('click', function () {
+            document.querySelector('.side__right-menu-toggler .side__toggle').classList.remove('side__toggle--active');
+            document.querySelector('.side__left-menu-toggler .side__toggle').classList.toggle('side__toggle--active');
+            document.getElementsByClassName('side__nav-container')[0].classList.toggle('side__nav-container--hidden');
+            document.getElementsByClassName('top-bar__nav-list')[0].classList.add('top-bar__nav-list--hidden');
+        });
+
+        document.getElementById('toggler--right').addEventListener('click', function () {
+            document.querySelector('.side__left-menu-toggler .side__toggle').classList.remove('side__toggle--active');
+            document.querySelector('.side__right-menu-toggler .side__toggle').classList.toggle('side__toggle--active');
+            document.getElementsByClassName('side__nav-container')[0].classList.add('side__nav-container--hidden');
+            document.getElementsByClassName('top-bar__nav-list')[0].classList.toggle('top-bar__nav-list--hidden');
+        });
+
+    </script>
+</header>
+                <article class="article__container article__container--notebooks">
+                    <div class="main-content main-content--jupyter">
+                        
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html"><h1 id="Waterfall">Waterfall<a class="anchor-link" href="#Waterfall">&#182;</a></h1><p>Imandra's inductive <em>waterfall</em> is the core of its automated proof capabilities,
+combining many lower-level proof strategies into a synergising pipeline.
+Imandra's waterfall is deeply inspired by the pioneering work of Boyer-Moore,
+and adapts many of their powerful ideas for automated induction to Imandra's
+typed, higher-order logic.</p>
+<p>The architecture of the waterfall is as follows:</p>
+<p><img src="https://storage.googleapis.com/imandra-notebook-assets/waterfall.svg" alt="Imandra Waterfall"></p>
+<p>The top level goal we're trying to prove is transformed into a clause, which then
+starts "flowing" through the waterfall.</p>
+<p>Once a step in the waterfall successfuly transforms a clause, the clause is
+pushed into a "pool" and the waterfall process recurses by picking clauses
+from it.</p>
+<p>If a clause flows through the entire waterfall unchanged, the top level goal can't
+be automatically proved (or refuted!), thus solving is aborted and checkpoints are
+suggested, informing the user what parts of the proof Imandra may need help with
+and suggesting lemmas to be proved.</p>
+<p>If a clause is refuted, the entire waterfall process is aborted and the top level
+goal is refuted, possibly with an explicit counterexample.</p>
+<p>If a clause is proved, it simply "evaporates" and the waterfall process
+continues by picking new clauses from the pool. The toplevel goal is considered
+to be proved if all the clauses in the pool evaporate.</p>
+<h2 id="Simplification">Simplification<a class="anchor-link" href="#Simplification">&#182;</a></h2><p>As the first step in the waterfall process, the
+full <a href="Verification%20-%20Simplification">simplifier</a> is applied to a clause,
+making use of all enabled rewrite and forward-chaining rules, decision
+procedures for algebraic datatypes and arithmetic, and performing case-splits.</p>
+<p>Once a clause cannot be simplified further, we call it "stable under simplification"
+and let it flow through the waterfall.</p>
+<p>Simplification is in may ways the most important part of the waterfall, and the
+step that most often causes a clause to evaporate or the goal to be refuted (the
+only other step that can do this is the <a href="#Unrolling-check">unrolling check</a>, but
+this is less common).</p>
+<p>For this reason, making good use
+of <a href="../verification-simplification#Rewrite-Rules">rewrite rules</a> in order to
+control simplification is perhaps the most powerful tool Imandra gives us. Thus
+it's important to spend as much time as possible teaching Imandra a good set of
+rules to apply.</p>
+<h2 id="Unrolling-check">Unrolling check<a class="anchor-link" href="#Unrolling-check">&#182;</a></h2><p>Once a clause is stable under simplification, <a href="/imandra-docs/notebooks/verification-unrolling/">unrolling</a>
+is applied, with the unrolling depth controlled via the <code>#induct_unroll</code> global
+limit, set to <code>10</code> by default (as opposed to the default global limit <code>#unroll</code>
+which is set to <code>100</code> by default).</p>
+<p>This step does not produce modified clauses, instead it is used as a lightweight
+check trying to find a contradiction and refute the (sub)goal, or in certain lucky
+instances proving it and thus evaporating the clause. This check (governed by the
+<code>#induct_unroll</code> limit) is also used to validate candidate generalizations and 
+cross-fertilizations.</p>
+<h2 id="Destructor-Elimination">Destructor Elimination<a class="anchor-link" href="#Destructor-Elimination">&#182;</a></h2><p>Destructor elimination is a step that deals with transforming the representation
+of a clause using "destructor" terms into an equivalent one that uses a
+"constructor" term instead.</p>
+<p>The term <em>destructor</em> is used to indicate a function call that "decomposes" a
+variable into its components under some representation, symmetrically the term
+<em>constructor</em> is used to indicate one that "combines" all the constituent
+destructor terms to form the original variable.</p>
+<p>As a concrete example, we know we can represent a non empty list <code>x</code> as
+<code>(List.hd x) :: (List.tl x)</code>. In this example we have two instances of destructors:
+<code>List.hd x</code> and <code>List.tl</code>, with <code>::</code> as the constructor function.</p>
+<p>After applying destructor elimination to a clause containing destructor terms on
+<code>x</code>, all instances of <code>List.hd x</code> become a new variable <code>a</code>, all instances of
+<code>List.tl x</code> become a new variable <code>b</code> and all instances of <code>x</code> itself become the
+term <code>a::b</code>. All the instances of the destructors are now replaced in favor of
+simple variables, and the variable that got destructed is instead replaced with
+an instance of the matching constructor.</p>
+<p>This change of representation may seem counterintuitive at first, but it's one
+of the strongest heuristics that Imandra uses in order to make a goal inductible.</p>
+<p>Imandra automatically knows how to apply destructor elimination on lists and
+algebraic datatypes, and allows users to register new ones through the
+introduction of elimination rules.</p>
+<h3 id="Elimination-Rules">Elimination Rules<a class="anchor-link" href="#Elimination-Rules">&#182;</a></h3><p>An elimination rule is a theorem of the form</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<pre><code>h_1 &amp;&amp; .. &amp;&amp; h_k ==&gt; lhs = x</code></pre>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html"><p>which Imandra can use to register a new destructor elimination heuristic for
+further use.</p>
+<p>In order for a theorem to be a valid elimination rule, <code>lhs</code> must contain at
+least one function invocation (called a <em>destructor term</em>) whose arguments must
+contain every variable in the goal exactly once, and <code>x</code> must appear in the
+<code>lhs</code> <em>only</em> in such destructor terms.</p>
+<p>As a concrete example, Imandra bakes in the list destructor elimination rule which
+would look like this:</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<pre><code>let hd_tl_elim x =
+  x &lt;&gt; [] ==&gt; (List.hd x) :: (List.tl x) = x
+[@@elim]</code></pre>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html"><p>Since this rule is in a sense built into Imandra, evaluation of this rule will not
+actually work (the entire body is simplified to true before Imandra can attempt
+to recognise and extract destructors). Nevertheless, this makes for a good conceptual
+example.</p>
+<p>We can see how this rule follows the pattern described above: the <code>lhs</code> contains
+two destructor terms <code>List.hd x</code> and <code>List.tl x</code> which are then combined using
+<code>::</code> to form <code>x</code>.</p>
+<p>When Imandra encounters a term matching such a destructor, provided that the
+instantiations of the hypotheses can be established, it will generalize all the
+instantiated destructor terms in the conjecture to new variables, and will then
+replace the instantiation of <code>x</code> in the conjecture with the newly instantiated
+<code>lhs</code> term.</p>
+<p>An example of an elimination rule as used in the wild is the following, trading
+a representation in terms of <code>difference</code>, for one in terms of the easier to reason
+about <code>plus</code> (the actual definitions are not included here, but they are the usual
+functions over Peano numbers).</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<pre><code>lemma difference_elim x y =
+  not (lessp y x) ==&gt; (plus x (difference y x)) = y
+[@@auto] [@@elim]</code></pre>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html"><h2 id="Fertilization">Fertilization<a class="anchor-link" href="#Fertilization">&#182;</a></h2><p>Once a clause is stable under simplification and no more destructors can be
+eliminated, the next step in the waterfall is fertilization.</p>
+<p>This step uses equalities in the hypothesis by substituting one side of the
+equality for the other in the conclusion and subsequently throwing away the
+original equality hypothesis. Cross-fertilization is preferred, which is
+a restriction of fertilization designed to facilitate uses of an inductive
+hypothesis.</p>
+<p>After this step is performed the resulting term is sometimes more amenable
+than the original for further simplification, but the main reason why this
+heuristic is important is in order to simplify the conjecture as much as
+possible preparing it for induction.</p>
+<p>If fertilization is applied to a clause that is already under induction, Imandra
+prefers to perform so called cross-fertilization instead of the more general
+uniform fertilization, by restricting it so that the substitution only happens
+into one side of the conclusion.</p>
+<h2 id="Generalization">Generalization<a class="anchor-link" href="#Generalization">&#182;</a></h2><p>This step attempts to generalize a conjecture into a stronger one which may be
+more amenable to proof by induction. It is only automatically applied when
+an ongoing proof attempt is already under a top-level induction.</p>
+<p>Whenever common subterms appear in multiple literals Imandra attempts to
+generalize them into new variables, assuming that those subterms represent
+place-holders for arbitrary objects whose properties are described by the
+hypotheses.</p>
+<p>For a term to be considered eligible for generalization, it must not be
+an <em>explicit value template</em>, an equality or a destructor term.</p>
+<p>A term is an explicit value template if it a variable (actually, a Skolem
+constant) such as <code>x</code>, a constant value such as <code>1</code> or <code>Some [1;2;3]</code>, or 
+the application of a constructor to explicit value templates such as <code>A [1;x;3]</code>.</p>
+<p>This generalisation process can sometimes produce goals that are "too general"
+and not theorems. This is called "over generalisation." In such a case, the
+proof attempt involving the generalised goal will fail. Imandra attempts to
+validate candidate generalisations by via recursive unrolling (up to
+<code>#induct_unroll</code>). If unrolling is able to find a counterexample to the
+candidate generalisation, then the generalisation is abandoned and the subgoal
+being processed is unchanged.</p>
+<h3 id="Generalization-Rules">Generalization Rules<a class="anchor-link" href="#Generalization-Rules">&#182;</a></h3><p>A generalization rule is a theorem that can be used to restrict generalisations.</p>
+<p>For example, consider a function <code>square = (fun (n : int) -&gt; n * n)</code>. If Imandra
+decides to generalise the term <code>square x</code> in a goal by replacing <code>square x</code> with
+a fresh variable <code>v</code>, it may be desirable for Imandra to "remember" the fact
+that <code>v</code> is non-negative, i.e., to adjoin an additional hypothesis stating 
+<code>v &gt;= 0</code>.</p>
+<p>Imandra can be instructed to do this through the a generalisation rule of the
+following form:</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<pre><code>lemma square_gen n =
+ (square n) [@trigger] &gt;= 0
+[@@gen]</code></pre>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html"><p>In general, such rules may have arbitrary boolean structure.</p>
+<p>In order for a theorem to be a valid generalization rule, it must contain at least
+one term which is a function application applied to at least one of the variables
+of the theorem and is marked as a <em>trigger</em> term using the <code>[@trigger]</code> annotation.</p>
+<p>If Imandra has decided to generalise a term <code>tm</code>, it searches through its
+database of generalisation rules for the most recent rule whose trigger matches
+<code>tm</code>. If such a rule is found, it is instantiated based upon the trigger match,
+and the corresponding instance is adjoined as an additional hypothesis to the
+generalised goal.</p>
+<h2 id="Induction">Induction<a class="anchor-link" href="#Induction">&#182;</a></h2><p>Finally, once a clause reaches the end of the waterfall, all that remains to be
+tried is to apply <a href="/imandra-docs/notebooks/verification-induction/">induction</a> on it.</p>
+<p>If an induction scheme can be found and synthesized, Imandra applies it to the
+clause by instantiating <code>phi</code> in the induction scheme to the goal being considered. This produces
+a single clause that is then case-split into base and inductive cases by
+simplification once the clause restarts the waterfall process.</p>
+</div>
+</div>
+</div>
+                    </div>
+
+                    <div class="sidebar-right">
+                        <div class="sidebar-right__menu">
+                            
+                            <a class="sidebar-right__menu-item sidebar-right__menu-item--h1" href="#Waterfall">Waterfall</a>
+                            
+                            <a class="sidebar-right__menu-item sidebar-right__menu-item--h2" href="#Simplification">Simplification</a>
+                            
+                            <a class="sidebar-right__menu-item sidebar-right__menu-item--h2" href="#Unrolling-check">Unrolling check</a>
+                            
+                            <a class="sidebar-right__menu-item sidebar-right__menu-item--h2" href="#Destructor-Elimination">Destructor Elimination</a>
+                            
+                            <a class="sidebar-right__menu-item sidebar-right__menu-item--h3" href="#Elimination-Rules">Elimination Rules</a>
+                            
+                            <a class="sidebar-right__menu-item sidebar-right__menu-item--h2" href="#Fertilization">Fertilization</a>
+                            
+                            <a class="sidebar-right__menu-item sidebar-right__menu-item--h2" href="#Generalization">Generalization</a>
+                            
+                            <a class="sidebar-right__menu-item sidebar-right__menu-item--h3" href="#Generalization-Rules">Generalization Rules</a>
+                            
+                            <a class="sidebar-right__menu-item sidebar-right__menu-item--h2" href="#Induction">Induction</a>
+                            
+                        </div>
+                    </div></article>
+            </main>
+            <footer class="Footer">
+                <a class="Copyrights"href="http://imandra.ai">&#9400; 2018 - 2019 Aesthetic Integration Ltd. All rights reserved.</a>
+            </footer>
+        </div>
+    
+ 
+
+
+    </body>
+</html>

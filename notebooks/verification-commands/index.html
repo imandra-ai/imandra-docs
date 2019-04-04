@@ -32,7 +32,7 @@
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Merriweather+Sans:300,300i,400,400i%7CMerriweather:300,300i,400,400i%7CRoboto+Slab:300,300i,400,400i">
 
         <link rel="stylesheet" href="/imandra-docs/static/style/style.min.9ef6027e.css" type="text/css">
-        <link rel="stylesheet" href="/imandra-docs/static/nbextensions/nbimandra/styles.c7ed3d1a.css" type="text/css">
+        <link rel="stylesheet" href="/imandra-docs/static/nbextensions/nbimandra/styles.b466ce6f.css" type="text/css">
         <link rel="stylesheet" href="/imandra-docs/static/docs-styles.86fc0481.css" type="text/css">
         
         <link rel="stylesheet" href="/imandra-docs/static/jekyll-styles.73f39aa7.css" type="text/css">
@@ -384,6 +384,39 @@
                                         
                                     </li>
                                     
+                                    <li class="side__nav-list-item--sub-level-2">
+                                        <a class="side__nav-link" href="/imandra-docs/notebooks/verification-waterfall">Waterfall</a>
+                                        
+                                        <ul class="side__nav-list--sub-level-3">
+                                            
+                                            <li class="side__nav-list-item--sub-level-3">
+                                              <a class="side__nav-link" href="/imandra-docs/notebooks/verification-waterfall/#Simplification">Simplification</a>
+                                            </li>
+                                            
+                                            <li class="side__nav-list-item--sub-level-3">
+                                              <a class="side__nav-link" href="/imandra-docs/notebooks/verification-waterfall/#Unrolling-check">Unrolling check</a>
+                                            </li>
+                                            
+                                            <li class="side__nav-list-item--sub-level-3">
+                                              <a class="side__nav-link" href="/imandra-docs/notebooks/verification-waterfall/#Destructor-Elimination">Destructor Elimination</a>
+                                            </li>
+                                            
+                                            <li class="side__nav-list-item--sub-level-3">
+                                              <a class="side__nav-link" href="/imandra-docs/notebooks/verification-waterfall/#Fertilization">Fertilization</a>
+                                            </li>
+                                            
+                                            <li class="side__nav-list-item--sub-level-3">
+                                              <a class="side__nav-link" href="/imandra-docs/notebooks/verification-waterfall/#Generalization">Generalization</a>
+                                            </li>
+                                            
+                                            <li class="side__nav-list-item--sub-level-3">
+                                              <a class="side__nav-link" href="/imandra-docs/notebooks/verification-waterfall/#Induction">Induction</a>
+                                            </li>
+                                            
+                                        </ul>
+                                        
+                                    </li>
+                                    
                                 </ul>
                             </li>
                             
@@ -490,6 +523,11 @@
                                         
                                     </li>
                                     
+                                    <li class="side__nav-list-item--sub-level-2">
+                                        <a class="side__nav-link" href="/imandra-docs/notebooks/key-pair-security">Key Pair Security in Imandra</a>
+                                        
+                                    </li>
+                                    
                                 </ul>
                             </li>
                             
@@ -566,17 +604,21 @@
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html"><h1 id="Commands">Commands<a class="anchor-link" href="#Commands">&#182;</a></h1><p>Imandra has a number of powerful verification commands:</p>
 <ul>
-<li><p><code>verify &lt;func&gt;</code>: takes a function representing a goal and attempts to prove it.
+<li><p><code>verify &lt;upto&gt; &lt;func&gt;</code>: takes a function representing a goal and attempts to prove it.
 If the proof attempt fails, Imandra will try to synthesize a concrete
 counterexample illustrating the failure. Found counterexamples are installed
 by Imandra in the <code>CX</code> module. When verifying a formula that doesn't depend on
-function parameters, <code>verify (&lt;expr&gt;)</code> is a shorthand for <code>verify (fun () -&gt; &lt;expr&gt;)</code></p>
+function parameters, <code>verify (&lt;expr&gt;)</code> is a shorthand for <code>verify (fun () -&gt; &lt;expr&gt;)</code>.
+If <code>&lt;upto&gt;</code> is provided as one of <code>~upto:&lt;n&gt;</code> or <code>~upto_bound:&lt;n&gt;</code>, verification
+will be bound by <a href="../verification-unrolling#Unrolling-limits">unrolling limits</a>.</p>
 </li>
-<li><p><code>instance &lt;func&gt;</code>: takes a function representing a goal and attempts to
+<li><p><code>instance &lt;upto&gt; &lt;func&gt;</code>: takes a function representing a goal and attempts to
 synthesize an instance (i.e., a concrete value) that satisfies it. It is
 useful for answering the question "What is an example value that satisfies
 this particular property?". Found instances are installed by Imandra in the
-<code>CX</code> module.</p>
+<code>CX</code> module.
+If <code>&lt;upto&gt;</code> is provided as one of <code>~upto:&lt;n&gt;</code> or <code>~upto_bound:&lt;n&gt;</code>, instance search
+will be bound by <a href="../verification-unrolling#Unrolling-limits">unrolling limits</a>.</p>
 </li>
 <li><p><code>theorem &lt;name&gt; &lt;vars&gt; = &lt;body&gt;</code>: takes a name, variables and a function of
 the variables representing a goal to be proved. If Imandra proves the goal,
@@ -639,18 +681,18 @@ counterexamples are installed by Imandra in the <code>CX</code> module.</p>
 
 
 <div class="output_html rendered_html output_subarea ">
-<div><div class="imandra-vr imandra-vr-proved"><i class="fa fa-check-circle"></i><span>Proved</span></div><div><div class="imandra-alternatives" id="alt-884a4af3-dc7e-41fc-9a89-9804ca91ded8"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>proof</a></li><li class="" data-toggle="tab"><a>call graph</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-proof-top"><div class="imandra-fold panel panel-default" id="fold-a371d057-4bf9-4186-b5b9-56c00202c988"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>proof</span></div></div><div class="panel-body collapse"><div class="imandra-proof"><div class="imandra-alternatives" id="alt-5314f235-d834-4f49-9c47-0e2805c197a9"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>summary</a></li><li class="" data-toggle="tab"><a>full</a></li><li class="" data-toggle="tab"><a>graph</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-table" id="table-cef57d81-5b00-4e8b-a7c7-2b850f7e147b"><table><tr><td><b>ground_instances</b></td><td>0</td></tr><tr><td><b>definitions</b></td><td>0</td></tr><tr><td><b>inductions</b></td><td>0</td></tr><tr><td><b>search_time</b></td><td><pre>0.025s</pre></td></tr><tr><td><b>details</b></td><td><div class="imandra-fold panel panel-default" id="fold-f75ff84b-d615-4698-93c1-d1fee5b21472"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><div class="imandra-table" id="table-aab387b8-ce3b-4dcb-a56f-4dad8181b117"><table><tr><td><b>smt_stats</b></td><td><div class="imandra-table" id="table-de4111c5-3ffe-4f70-83eb-b8cb1bc56833"><table><tr><td><b>rlimit count</b></td><td>10</td></tr><tr><td><b>mk bool var</b></td><td>5</td></tr><tr><td><b>num allocs</b></td><td>1557238520</td></tr><tr><td><b>memory</b></td><td>18.930000</td></tr><tr><td><b>max memory</b></td><td>21.900000</td></tr></table></div></td></tr></table></div></div><script>
+<div><div style="font-size: 1.2em; padding: 0.5em; border-top: 1px solid green; border-bottom: 1px solid green"><i class="fa fa-check-circle" style="margin-right: 0.5em; color: green"></i><span>Proved</span></div><div><div class="imandra-alternatives" id="alt-b71fe837-6f07-4bae-861d-4320a88a37de"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>proof</a></li><li class="" data-toggle="tab"><a>call graph</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-proof-top"><div class="imandra-fold panel panel-default" id="fold-88e88fce-2766-46fd-892a-4209d9e1b850"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>proof</span></div></div><div class="panel-body collapse"><div class="imandra-proof"><div class="imandra-alternatives" id="alt-58eb6711-20ff-4283-a977-334c7baa8ba3"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>summary</a></li><li class="" data-toggle="tab"><a>full</a></li><li class="" data-toggle="tab"><a>graph</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-table" id="table-1d37cef4-0c14-4bf8-a078-60219888c885"><table><tr><td><b>ground_instances</b></td><td>0</td></tr><tr><td><b>definitions</b></td><td>0</td></tr><tr><td><b>inductions</b></td><td>0</td></tr><tr><td><b>search_time</b></td><td><pre>0.021s</pre></td></tr><tr><td><b>details</b></td><td><div class="imandra-fold panel panel-default" id="fold-0075dacc-1053-4795-9a78-2d1aeb368d31"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><div class="imandra-table" id="table-0afb878a-3ef6-488e-a5a3-f5dc150898f8"><table><tr><td><b>smt_stats</b></td><td><div class="imandra-table" id="table-611d23cd-e8c7-41b3-bcad-bc56abd9eec8"><table><tr><td><b>rlimit count</b></td><td>10</td></tr><tr><td><b>mk bool var</b></td><td>5</td></tr><tr><td><b>num allocs</b></td><td>1309253033</td></tr><tr><td><b>memory</b></td><td>21.000000</td></tr><tr><td><b>max memory</b></td><td>26.990000</td></tr></table></div></td></tr></table></div></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-f75ff84b-d615-4698-93c1-d1fee5b21472';
+  var target = '#fold-0075dacc-1053-4795-9a78-2d1aeb368d31';
   fold.hydrate(target);
 });
-</script></div></td></tr></table></div></div><div class="tab-pane"><div class="imandra-fold panel panel-default" id="fold-9097b5e8-3783-46e9-868b-0ab3d8d4240f"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.025s] (:var_0: + 1) &gt; :var_0:</pre></li><li><div><h4>simplify</h4><div class="imandra-table" id="table-3b3d1819-9aa4-434d-bc25-e8be6bdb9e8d"><table><tr><td><b>into</b></td><td><pre>true</pre></td></tr><tr><td><b>expansions</b></td><td><pre>[]</pre></td></tr><tr><td><b>rewrite_steps</b></td><td><ul></ul></td></tr><tr><td><b>forward_chaining</b></td><td><ul></ul></td></tr></table></div></div></li><li><div><h4>unsat</h4><pre>(mp (asserted (not true)) (rewrite (= (not true) false)) false)</pre></div></li></ul></div><script>
+</script></div></td></tr></table></div></div><div class="tab-pane"><div class="imandra-fold panel panel-default" id="fold-d0abfe1c-5309-4e3b-8c7a-43a3bd9c5e38"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.021s] (:var_0: + 1) &gt; :var_0:</pre></li><li><div><h4>simplify</h4><div class="imandra-table" id="table-a7d116e9-4534-4cdb-9893-4ddeab26820b"><table><tr><td><b>into</b></td><td><pre>true</pre></td></tr><tr><td><b>expansions</b></td><td><pre>[]</pre></td></tr><tr><td><b>rewrite_steps</b></td><td><ul></ul></td></tr><tr><td><b>forward_chaining</b></td><td><ul></ul></td></tr></table></div></div></li><li><div><h4>unsat</h4><pre>(mp (asserted (not true)) (rewrite (= (not true) false)) false)</pre></div></li></ul></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-9097b5e8-3783-46e9-868b-0ab3d8d4240f';
+  var target = '#fold-d0abfe1c-5309-4e3b-8c7a-43a3bd9c5e38';
   fold.hydrate(target);
 });
-</script></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-f9673118-0c06-4a93-8ae3-d49e890ed579"><textarea style="display: none">digraph &quot;proof&quot; {
-p_279 [label=&quot;Start ((:var_0: + 1) \&gt; :var_0: :time 0.025s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+</script></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-3ba304b1-40c3-481e-891d-4169f4d57945"><textarea style="display: none">digraph &quot;proof&quot; {
+p_279 [label=&quot;Start ((:var_0: + 1) \&gt; :var_0: :time 0.021s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_279 -&gt; p_278 [label=&quot;&quot;];
 p_278 [label=&quot;Simplify (true :expansions [] :rw [] :fc [])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_278 -&gt; p_277 [label=&quot;&quot;];
@@ -659,30 +701,30 @@ p_z3_34 [label=&quot;(mp (asserted (not true)) (rewrite (= (not true) false)) fa
 }
 </textarea><button class="btn btn-primary">Load graph</button><div class="imandra-graphviz-loading display-none">Loading..</div><div class="imandra-graphviz-target"></div><script>
 require(['nbextensions/nbimandra/graphviz'], function (graphviz) {
-  var target = '#graphviz-f9673118-0c06-4a93-8ae3-d49e890ed579';
+  var target = '#graphviz-3ba304b1-40c3-481e-891d-4169f4d57945';
   graphviz.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-5314f235-d834-4f49-9c47-0e2805c197a9';
+  var target = '#alt-58eb6711-20ff-4283-a977-334c7baa8ba3';
   alternatives.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-a371d057-4bf9-4186-b5b9-56c00202c988';
+  var target = '#fold-88e88fce-2766-46fd-892a-4209d9e1b850';
   fold.hydrate(target);
 });
-</script></div></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-17b0560e-d44f-4041-a34c-2792e1819cd6"><textarea style="display: none">digraph &quot;call graph&quot; {
+</script></div></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-20794c60-3144-43ff-b735-56d4d77755f8"><textarea style="display: none">digraph &quot;call graph&quot; {
 goal [label=&quot;not true&quot;,shape=box,style=filled,color=&quot;cyan&quot;,fontname=&quot;courier&quot;,fontsize=14];
 }
 </textarea><button class="btn btn-primary">Load graph</button><div class="imandra-graphviz-loading display-none">Loading..</div><div class="imandra-graphviz-target"></div><script>
 require(['nbextensions/nbimandra/graphviz'], function (graphviz) {
-  var target = '#graphviz-17b0560e-d44f-4041-a34c-2792e1819cd6';
+  var target = '#graphviz-20794c60-3144-43ff-b735-56d4d77755f8';
   graphviz.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-884a4af3-dc7e-41fc-9a89-9804ca91ded8';
+  var target = '#alt-b71fe837-6f07-4bae-861d-4320a88a37de';
   alternatives.hydrate(target);
 });
 </script></div></div></div>
@@ -738,7 +780,7 @@ module CX : sig val x : int val y : int end
 
 
 <div class="output_html rendered_html output_subarea ">
-<div><pre>Instance (after 0 steps, 0.030s):
+<div><pre>Instance (after 0 steps, 0.021s):
  let (x : int) = (-1)
  let (y : int) = 5
 </pre></div>
@@ -754,28 +796,28 @@ module CX : sig val x : int val y : int end
 
 
 <div class="output_html rendered_html output_subarea ">
-<div><div class="imandra-vr imandra-vr-proved"><i class="fa fa-check-circle"></i><span>Instance</span></div><div><div class="imandra-alternatives" id="alt-b00db1df-e93e-483a-84e5-3b63f85cef3e"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>call graph</a></li><li class="" data-toggle="tab"><a>proof</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-graphviz" id="graphviz-1916d4e3-862f-4a42-a208-972f5db55e1c"><textarea style="display: none">digraph &quot;call graph&quot; {
+<div><div style="font-size: 1.2em; padding: 0.5em; border-top: 1px solid green; border-bottom: 1px solid green"><i class="fa fa-check-circle" style="margin-right: 0.5em; color: green"></i><span>Instance</span></div><div><div class="imandra-alternatives" id="alt-e029b074-064f-4535-9b33-67f87e830533"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>call graph</a></li><li class="" data-toggle="tab"><a>proof</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-graphviz" id="graphviz-e6af3452-b439-416c-8e67-b2e82972e25e"><textarea style="display: none">digraph &quot;call graph&quot; {
 goal [label=&quot;not (0 \&lt;= x) &amp;&amp; x + y = 4&quot;,shape=box,style=filled,color=&quot;cyan&quot;,fontname=&quot;courier&quot;,fontsize=14];
 }
 </textarea><button class="btn btn-primary">Load graph</button><div class="imandra-graphviz-loading display-none">Loading..</div><div class="imandra-graphviz-target"></div><script>
 require(['nbextensions/nbimandra/graphviz'], function (graphviz) {
-  var target = '#graphviz-1916d4e3-862f-4a42-a208-972f5db55e1c';
+  var target = '#graphviz-e6af3452-b439-416c-8e67-b2e82972e25e';
   graphviz.hydrate(target);
 });
-</script></div></div><div class="tab-pane"><div class="imandra-proof-top"><div class="imandra-fold panel panel-default" id="fold-7fc9c32d-7bf7-4a19-92f7-0248e5841585"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>proof attempt</span></div></div><div class="panel-body collapse"><div class="imandra-proof"><div class="imandra-alternatives" id="alt-494883b0-78a7-4c48-a19d-2e1f8bfa3d86"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>summary</a></li><li class="" data-toggle="tab"><a>full</a></li><li class="" data-toggle="tab"><a>graph</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-table" id="table-7449c732-519a-470c-b774-a7b7f79532c4"><table><tr><td><b>ground_instances</b></td><td>0</td></tr><tr><td><b>definitions</b></td><td>0</td></tr><tr><td><b>inductions</b></td><td>0</td></tr><tr><td><b>search_time</b></td><td><pre>0.030s</pre></td></tr><tr><td><b>details</b></td><td><div class="imandra-fold panel panel-default" id="fold-2cf2a896-a745-4712-8eef-3db6fc7fe5a8"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><div class="imandra-table" id="table-61677164-7cb2-4ca6-bf95-efc4650d9234"><table><tr><td><b>smt_stats</b></td><td><div class="imandra-table" id="table-096d5093-01b3-4949-9a2f-55ad29048b9f"><table><tr><td><b>num checks</b></td><td>1</td></tr><tr><td><b>eliminated vars</b></td><td>1</td></tr><tr><td><b>rlimit count</b></td><td>120</td></tr><tr><td><b>mk bool var</b></td><td>7</td></tr><tr><td><b>eliminated applications</b></td><td>2</td></tr><tr><td><b>num allocs</b></td><td>1641672481</td></tr><tr><td><b>final checks</b></td><td>1</td></tr><tr><td><b>memory</b></td><td>19.150000</td></tr><tr><td><b>max memory</b></td><td>21.900000</td></tr></table></div></td></tr></table></div></div><script>
+</script></div></div><div class="tab-pane"><div class="imandra-proof-top"><div class="imandra-fold panel panel-default" id="fold-7fb13f18-ee37-4188-b1ff-aa00b33775c4"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>proof attempt</span></div></div><div class="panel-body collapse"><div class="imandra-proof"><div class="imandra-alternatives" id="alt-a44676b3-bce6-4643-a51c-b00d2e932df9"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>summary</a></li><li class="" data-toggle="tab"><a>full</a></li><li class="" data-toggle="tab"><a>graph</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-table" id="table-1cccf2c2-779e-41d0-88f0-3cc33c70a7e9"><table><tr><td><b>ground_instances</b></td><td>0</td></tr><tr><td><b>definitions</b></td><td>0</td></tr><tr><td><b>inductions</b></td><td>0</td></tr><tr><td><b>search_time</b></td><td><pre>0.021s</pre></td></tr><tr><td><b>details</b></td><td><div class="imandra-fold panel panel-default" id="fold-ccc8f1f5-4894-46af-bf03-00b1692a0c6c"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><div class="imandra-table" id="table-9a935dbe-491c-44ae-a6a3-a387522f68ac"><table><tr><td><b>smt_stats</b></td><td><div class="imandra-table" id="table-a23686fa-710b-42d2-bb5f-b47a9b6ca785"><table><tr><td><b>num checks</b></td><td>1</td></tr><tr><td><b>eliminated vars</b></td><td>1</td></tr><tr><td><b>rlimit count</b></td><td>120</td></tr><tr><td><b>mk bool var</b></td><td>7</td></tr><tr><td><b>eliminated applications</b></td><td>2</td></tr><tr><td><b>num allocs</b></td><td>1379874175</td></tr><tr><td><b>final checks</b></td><td>1</td></tr><tr><td><b>memory</b></td><td>23.950000</td></tr><tr><td><b>max memory</b></td><td>26.990000</td></tr></table></div></td></tr></table></div></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-2cf2a896-a745-4712-8eef-3db6fc7fe5a8';
+  var target = '#fold-ccc8f1f5-4894-46af-bf03-00b1692a0c6c';
   fold.hydrate(target);
 });
-</script></div></td></tr></table></div></div><div class="tab-pane"><div class="imandra-fold panel panel-default" id="fold-34487c99-2902-4084-81e2-a57213320b3b"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.030s] :var_0: &lt; 0 &amp;&amp; :var_0: + :var_1: = 4</pre></li><li><div><h4>simplify</h4><div class="imandra-table" id="table-d6eb1c51-71f3-47b4-9872-b66bf69c52a2"><table><tr><td><b>into</b></td><td><pre>not (0 &lt;= :var_0:) &amp;&amp; :var_0: + :var_1: = 4</pre></td></tr><tr><td><b>expansions</b></td><td><pre>[]</pre></td></tr><tr><td><b>rewrite_steps</b></td><td><ul></ul></td></tr><tr><td><b>forward_chaining</b></td><td><ul></ul></td></tr></table></div></div></li><li>Sat (Some  let (x : int) = (-1)
+</script></div></td></tr></table></div></div><div class="tab-pane"><div class="imandra-fold panel panel-default" id="fold-f78d9960-929e-48e4-9772-9b55e6364e07"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.021s] :var_0: &lt; 0 &amp;&amp; :var_0: + :var_1: = 4</pre></li><li><div><h4>simplify</h4><div class="imandra-table" id="table-de872c91-3d0c-465c-96dc-b701c8c56070"><table><tr><td><b>into</b></td><td><pre>not (0 &lt;= :var_0:) &amp;&amp; :var_0: + :var_1: = 4</pre></td></tr><tr><td><b>expansions</b></td><td><pre>[]</pre></td></tr><tr><td><b>rewrite_steps</b></td><td><ul></ul></td></tr><tr><td><b>forward_chaining</b></td><td><ul></ul></td></tr></table></div></div></li><li>Sat (Some  let (x : int) = (-1)
  let (y : int) = 5
 )</li></ul></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-34487c99-2902-4084-81e2-a57213320b3b';
+  var target = '#fold-f78d9960-929e-48e4-9772-9b55e6364e07';
   fold.hydrate(target);
 });
-</script></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-aeb2d90e-d5d6-439a-9bef-c7fab7cd8a19"><textarea style="display: none">digraph &quot;proof&quot; {
-p_282 [label=&quot;Start (:var_0: \&lt; 0 &amp;&amp; :var_0: + :var_1: = 4 :time 0.030s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+</script></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-0b058bb8-f24f-439e-bf0c-89f9903b95dd"><textarea style="display: none">digraph &quot;proof&quot; {
+p_282 [label=&quot;Start (:var_0: \&lt; 0 &amp;&amp; :var_0: + :var_1: = 4 :time 0.021s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_282 -&gt; p_281 [label=&quot;&quot;];
 p_281 [label=&quot;Simplify (not (0 \&lt;= :var_0:) &amp;&amp; :var_0: + :var_1: = 4 :expansions [] \l          :rw [] :fc [])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_281 -&gt; p_280 [label=&quot;&quot;];
@@ -783,22 +825,22 @@ p_280 [label=&quot;Sat (Some  let (x : int) = (-1)\l let (y : int) = 5\l)&quot;,
 }
 </textarea><button class="btn btn-primary">Load graph</button><div class="imandra-graphviz-loading display-none">Loading..</div><div class="imandra-graphviz-target"></div><script>
 require(['nbextensions/nbimandra/graphviz'], function (graphviz) {
-  var target = '#graphviz-aeb2d90e-d5d6-439a-9bef-c7fab7cd8a19';
+  var target = '#graphviz-0b058bb8-f24f-439e-bf0c-89f9903b95dd';
   graphviz.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-494883b0-78a7-4c48-a19d-2e1f8bfa3d86';
+  var target = '#alt-a44676b3-bce6-4643-a51c-b00d2e932df9';
   alternatives.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-7fc9c32d-7bf7-4a19-92f7-0248e5841585';
+  var target = '#fold-7fb13f18-ee37-4188-b1ff-aa00b33775c4';
   fold.hydrate(target);
 });
 </script></div></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-b00db1df-e93e-483a-84e5-3b63f85cef3e';
+  var target = '#alt-e029b074-064f-4535-9b33-67f87e830533';
   alternatives.hydrate(target);
 });
 </script></div></div></div>
@@ -853,18 +895,18 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
 
 
 <div class="output_html rendered_html output_subarea ">
-<div><div class="imandra-vr imandra-vr-proved"><i class="fa fa-check-circle"></i><span>Proved</span></div><div><div class="imandra-alternatives" id="alt-20c9e86b-7ec8-4d21-9a53-9b5725e0513b"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>proof</a></li><li class="" data-toggle="tab"><a>call graph</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-proof-top"><div class="imandra-fold panel panel-default" id="fold-d5ffbef9-feb6-431c-8436-2a2617a2106a"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>proof</span></div></div><div class="panel-body collapse"><div class="imandra-proof"><div class="imandra-alternatives" id="alt-020af664-aca5-4781-9896-0da254f7244f"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>summary</a></li><li class="" data-toggle="tab"><a>full</a></li><li class="" data-toggle="tab"><a>graph</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-table" id="table-380a9126-a0fe-4f71-93b8-7c2d2f43e8f0"><table><tr><td><b>ground_instances</b></td><td>0</td></tr><tr><td><b>definitions</b></td><td>0</td></tr><tr><td><b>inductions</b></td><td>0</td></tr><tr><td><b>search_time</b></td><td><pre>0.026s</pre></td></tr><tr><td><b>details</b></td><td><div class="imandra-fold panel panel-default" id="fold-1a4b8254-02ec-4902-ba83-2a4b18ffeb88"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><div class="imandra-table" id="table-2e6544c4-6a57-44f3-89a9-71db06f40b42"><table><tr><td><b>smt_stats</b></td><td><div class="imandra-table" id="table-abe76f02-8876-4b95-b551-bb718f26889f"><table><tr><td><b>rlimit count</b></td><td>20</td></tr><tr><td><b>mk bool var</b></td><td>5</td></tr><tr><td><b>num allocs</b></td><td>1725330792</td></tr><tr><td><b>memory</b></td><td>19.500000</td></tr><tr><td><b>max memory</b></td><td>21.900000</td></tr></table></div></td></tr></table></div></div><script>
+<div><div style="font-size: 1.2em; padding: 0.5em; border-top: 1px solid green; border-bottom: 1px solid green"><i class="fa fa-check-circle" style="margin-right: 0.5em; color: green"></i><span>Proved</span></div><div><div class="imandra-alternatives" id="alt-c66221c2-2591-4102-a839-414f4627f733"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>proof</a></li><li class="" data-toggle="tab"><a>call graph</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-proof-top"><div class="imandra-fold panel panel-default" id="fold-9b2334a0-d866-4d56-ad58-89f0590f6096"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>proof</span></div></div><div class="panel-body collapse"><div class="imandra-proof"><div class="imandra-alternatives" id="alt-c5947f05-0b30-4e17-a0c4-68240226105b"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>summary</a></li><li class="" data-toggle="tab"><a>full</a></li><li class="" data-toggle="tab"><a>graph</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-table" id="table-f536c1a8-4579-49e7-b280-9f04123b9c0b"><table><tr><td><b>ground_instances</b></td><td>0</td></tr><tr><td><b>definitions</b></td><td>0</td></tr><tr><td><b>inductions</b></td><td>0</td></tr><tr><td><b>search_time</b></td><td><pre>0.019s</pre></td></tr><tr><td><b>details</b></td><td><div class="imandra-fold panel panel-default" id="fold-d4af85ba-c23d-474d-bddd-492ed2479523"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><div class="imandra-table" id="table-8e406293-774c-4090-89c3-f960df0dd6a1"><table><tr><td><b>smt_stats</b></td><td><div class="imandra-table" id="table-b67a9da1-63de-4247-b193-468b809740a1"><table><tr><td><b>rlimit count</b></td><td>20</td></tr><tr><td><b>mk bool var</b></td><td>5</td></tr><tr><td><b>num allocs</b></td><td>1451279689</td></tr><tr><td><b>memory</b></td><td>27.030000</td></tr><tr><td><b>max memory</b></td><td>27.330000</td></tr></table></div></td></tr></table></div></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-1a4b8254-02ec-4902-ba83-2a4b18ffeb88';
+  var target = '#fold-d4af85ba-c23d-474d-bddd-492ed2479523';
   fold.hydrate(target);
 });
-</script></div></td></tr></table></div></div><div class="tab-pane"><div class="imandra-fold panel panel-default" id="fold-3d4a208c-4a88-48c8-a994-3cb97ac75905"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.026s] (:var_0: + 1) &gt; (:var_1: + 1) = :var_0: &gt; :var_1:</pre></li><li><div><h4>simplify</h4><div class="imandra-table" id="table-6d39de39-9321-435e-a95f-e872a56098b6"><table><tr><td><b>into</b></td><td><pre>true</pre></td></tr><tr><td><b>expansions</b></td><td><pre>[]</pre></td></tr><tr><td><b>rewrite_steps</b></td><td><ul></ul></td></tr><tr><td><b>forward_chaining</b></td><td><ul></ul></td></tr></table></div></div></li><li><div><h4>unsat</h4><pre>(mp (asserted (not true)) (rewrite (= (not true) false)) false)</pre></div></li></ul></div><script>
+</script></div></td></tr></table></div></div><div class="tab-pane"><div class="imandra-fold panel panel-default" id="fold-b103f9e6-3cbf-4cc7-8a80-1950199b2870"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.019s] (:var_0: + 1) &gt; (:var_1: + 1) = :var_0: &gt; :var_1:</pre></li><li><div><h4>simplify</h4><div class="imandra-table" id="table-04f2986d-f4f4-43fb-a219-73589e6bff8d"><table><tr><td><b>into</b></td><td><pre>true</pre></td></tr><tr><td><b>expansions</b></td><td><pre>[]</pre></td></tr><tr><td><b>rewrite_steps</b></td><td><ul></ul></td></tr><tr><td><b>forward_chaining</b></td><td><ul></ul></td></tr></table></div></div></li><li><div><h4>unsat</h4><pre>(mp (asserted (not true)) (rewrite (= (not true) false)) false)</pre></div></li></ul></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-3d4a208c-4a88-48c8-a994-3cb97ac75905';
+  var target = '#fold-b103f9e6-3cbf-4cc7-8a80-1950199b2870';
   fold.hydrate(target);
 });
-</script></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-53797851-ff0e-40a9-9806-184c9cf6dc6f"><textarea style="display: none">digraph &quot;proof&quot; {
-p_285 [label=&quot;Start ((:var_0: + 1) \&gt; (:var_1: + 1) = :var_0: \&gt; :var_1: :time 0.026s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+</script></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-743d3cc7-261c-4f42-b615-4265853fd7e8"><textarea style="display: none">digraph &quot;proof&quot; {
+p_285 [label=&quot;Start ((:var_0: + 1) \&gt; (:var_1: + 1) = :var_0: \&gt; :var_1: :time 0.019s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_285 -&gt; p_284 [label=&quot;&quot;];
 p_284 [label=&quot;Simplify (true :expansions [] :rw [] :fc [])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_284 -&gt; p_283 [label=&quot;&quot;];
@@ -873,30 +915,30 @@ p_z3_38 [label=&quot;(mp (asserted (not true)) (rewrite (= (not true) false)) fa
 }
 </textarea><button class="btn btn-primary">Load graph</button><div class="imandra-graphviz-loading display-none">Loading..</div><div class="imandra-graphviz-target"></div><script>
 require(['nbextensions/nbimandra/graphviz'], function (graphviz) {
-  var target = '#graphviz-53797851-ff0e-40a9-9806-184c9cf6dc6f';
+  var target = '#graphviz-743d3cc7-261c-4f42-b615-4265853fd7e8';
   graphviz.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-020af664-aca5-4781-9896-0da254f7244f';
+  var target = '#alt-c5947f05-0b30-4e17-a0c4-68240226105b';
   alternatives.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-d5ffbef9-feb6-431c-8436-2a2617a2106a';
+  var target = '#fold-9b2334a0-d866-4d56-ad58-89f0590f6096';
   fold.hydrate(target);
 });
-</script></div></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-336f1423-c48f-4aa5-94c8-3dd6864362c3"><textarea style="display: none">digraph &quot;call graph&quot; {
+</script></div></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-82669c31-e2b0-41f1-8d6e-d87833d11048"><textarea style="display: none">digraph &quot;call graph&quot; {
 goal [label=&quot;not true&quot;,shape=box,style=filled,color=&quot;cyan&quot;,fontname=&quot;courier&quot;,fontsize=14];
 }
 </textarea><button class="btn btn-primary">Load graph</button><div class="imandra-graphviz-loading display-none">Loading..</div><div class="imandra-graphviz-target"></div><script>
 require(['nbextensions/nbimandra/graphviz'], function (graphviz) {
-  var target = '#graphviz-336f1423-c48f-4aa5-94c8-3dd6864362c3';
+  var target = '#graphviz-82669c31-e2b0-41f1-8d6e-d87833d11048';
   graphviz.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-20c9e86b-7ec8-4d21-9a53-9b5725e0513b';
+  var target = '#alt-c66221c2-2591-4102-a839-414f4627f733';
   alternatives.hydrate(target);
 });
 </script></div></div></div>
@@ -952,7 +994,7 @@ module CX : sig val n : int end
 
 
 <div class="output_html rendered_html output_subarea ">
-<div><pre>Counterexample (after 0 steps, 0.027s):
+<div><pre>Counterexample (after 0 steps, 0.023s):
  let (n : int) = 99
 </pre></div>
 
@@ -967,27 +1009,27 @@ module CX : sig val n : int end
 
 
 <div class="output_html rendered_html output_subarea ">
-<div><div class="imandra-vr imandra-vr-refuted"><i class="fa fa-times-circle-o"></i><span>Refuted</span></div><div><div class="imandra-alternatives" id="alt-526ec383-7325-4728-a9eb-e066301194cc"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>call graph</a></li><li class="" data-toggle="tab"><a>proof</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-graphviz" id="graphviz-c474eae7-8354-486f-81a8-bf1a26138d62"><textarea style="display: none">digraph &quot;call graph&quot; {
+<div><div style="font-size: 1.2em; padding: 0.5em; border-top: 1px dashed #D84315; border-bottom: 1px dashed #D84315"><i class="fa fa-times-circle-o" style="margin-right: 0.5em; color: #D84315"></i><span>Refuted</span></div><div><div class="imandra-alternatives" id="alt-7637c86a-a65b-4e70-9c5e-249237331b60"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>call graph</a></li><li class="" data-toggle="tab"><a>proof</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-graphviz" id="graphviz-04267fa0-2308-4051-aff6-d26a33b4b468"><textarea style="display: none">digraph &quot;call graph&quot; {
 goal [label=&quot;n = 99&quot;,shape=box,style=filled,color=&quot;cyan&quot;,fontname=&quot;courier&quot;,fontsize=14];
 }
 </textarea><button class="btn btn-primary">Load graph</button><div class="imandra-graphviz-loading display-none">Loading..</div><div class="imandra-graphviz-target"></div><script>
 require(['nbextensions/nbimandra/graphviz'], function (graphviz) {
-  var target = '#graphviz-c474eae7-8354-486f-81a8-bf1a26138d62';
+  var target = '#graphviz-04267fa0-2308-4051-aff6-d26a33b4b468';
   graphviz.hydrate(target);
 });
-</script></div></div><div class="tab-pane"><div class="imandra-proof-top"><div class="imandra-fold panel panel-default" id="fold-255ee9b9-4f9d-4562-9f42-e2a6b24285e7"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>proof attempt</span></div></div><div class="panel-body collapse"><div class="imandra-proof"><div class="imandra-alternatives" id="alt-973ed46d-ba2a-40d4-8f15-7365350c0355"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>summary</a></li><li class="" data-toggle="tab"><a>full</a></li><li class="" data-toggle="tab"><a>graph</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-table" id="table-7b68eab7-5648-4354-9d94-2339bfe3b4b2"><table><tr><td><b>ground_instances</b></td><td>0</td></tr><tr><td><b>definitions</b></td><td>0</td></tr><tr><td><b>inductions</b></td><td>0</td></tr><tr><td><b>search_time</b></td><td><pre>0.027s</pre></td></tr><tr><td><b>details</b></td><td><div class="imandra-fold panel panel-default" id="fold-713834a9-4aa4-42f7-9297-fc9ba5c14ae5"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><div class="imandra-table" id="table-e35fb4dc-d7db-4290-a562-aee4a1ec1933"><table><tr><td><b>smt_stats</b></td><td><div class="imandra-table" id="table-0cab1740-9966-4187-a53d-8b33dd5ac660"><table><tr><td><b>eliminated vars</b></td><td>1</td></tr><tr><td><b>rlimit count</b></td><td>29</td></tr><tr><td><b>mk bool var</b></td><td>5</td></tr><tr><td><b>num allocs</b></td><td>1810476148</td></tr><tr><td><b>memory</b></td><td>22.340000</td></tr><tr><td><b>max memory</b></td><td>22.640000</td></tr></table></div></td></tr></table></div></div><script>
+</script></div></div><div class="tab-pane"><div class="imandra-proof-top"><div class="imandra-fold panel panel-default" id="fold-22ed1bbd-4624-4c0e-a0ca-1839577eddd4"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>proof attempt</span></div></div><div class="panel-body collapse"><div class="imandra-proof"><div class="imandra-alternatives" id="alt-cc82e985-3941-4ca6-b26e-5d51fcb70641"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>summary</a></li><li class="" data-toggle="tab"><a>full</a></li><li class="" data-toggle="tab"><a>graph</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-table" id="table-286ec32f-2805-45d1-a634-293681d30c02"><table><tr><td><b>ground_instances</b></td><td>0</td></tr><tr><td><b>definitions</b></td><td>0</td></tr><tr><td><b>inductions</b></td><td>0</td></tr><tr><td><b>search_time</b></td><td><pre>0.023s</pre></td></tr><tr><td><b>details</b></td><td><div class="imandra-fold panel panel-default" id="fold-c7566dba-1304-4123-b065-834fbc88e2f0"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><div class="imandra-table" id="table-c7067bd7-b779-4044-9be5-567da9770db5"><table><tr><td><b>smt_stats</b></td><td><div class="imandra-table" id="table-4e8d2b81-0b0d-4e3f-ab7b-a4f901fb99eb"><table><tr><td><b>eliminated vars</b></td><td>1</td></tr><tr><td><b>rlimit count</b></td><td>29</td></tr><tr><td><b>mk bool var</b></td><td>5</td></tr><tr><td><b>num allocs</b></td><td>1523330631</td></tr><tr><td><b>memory</b></td><td>29.960000</td></tr><tr><td><b>max memory</b></td><td>30.260000</td></tr></table></div></td></tr></table></div></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-713834a9-4aa4-42f7-9297-fc9ba5c14ae5';
+  var target = '#fold-c7566dba-1304-4123-b065-834fbc88e2f0';
   fold.hydrate(target);
 });
-</script></div></td></tr></table></div></div><div class="tab-pane"><div class="imandra-fold panel panel-default" id="fold-157b7a82-b0b4-4b2d-859a-a01f20a77854"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.027s] not (:var_0: + 1 = 100)</pre></li><li><div><h4>simplify</h4><div class="imandra-table" id="table-dc006c9c-5fd8-4e9b-9ba0-676ed82069ee"><table><tr><td><b>into</b></td><td><pre>not (:var_0: = 99)</pre></td></tr><tr><td><b>expansions</b></td><td><pre>[]</pre></td></tr><tr><td><b>rewrite_steps</b></td><td><ul></ul></td></tr><tr><td><b>forward_chaining</b></td><td><ul></ul></td></tr></table></div></div></li><li>Sat (Some  let (n : int) = 99
+</script></div></td></tr></table></div></div><div class="tab-pane"><div class="imandra-fold panel panel-default" id="fold-76d6b1a5-da55-4260-b1f5-466de28d5bf5"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.023s] not (:var_0: + 1 = 100)</pre></li><li><div><h4>simplify</h4><div class="imandra-table" id="table-55713336-8e36-49e3-bc00-87ce5ff2f07d"><table><tr><td><b>into</b></td><td><pre>not (:var_0: = 99)</pre></td></tr><tr><td><b>expansions</b></td><td><pre>[]</pre></td></tr><tr><td><b>rewrite_steps</b></td><td><ul></ul></td></tr><tr><td><b>forward_chaining</b></td><td><ul></ul></td></tr></table></div></div></li><li>Sat (Some  let (n : int) = 99
 )</li></ul></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-157b7a82-b0b4-4b2d-859a-a01f20a77854';
+  var target = '#fold-76d6b1a5-da55-4260-b1f5-466de28d5bf5';
   fold.hydrate(target);
 });
-</script></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-8ebc5041-ad81-44fc-b3a0-bb4535fe6a3c"><textarea style="display: none">digraph &quot;proof&quot; {
-p_288 [label=&quot;Start (not (:var_0: + 1 = 100) :time 0.027s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+</script></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-5bfe100d-6339-474f-99e2-2dbc08fa3660"><textarea style="display: none">digraph &quot;proof&quot; {
+p_288 [label=&quot;Start (not (:var_0: + 1 = 100) :time 0.023s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_288 -&gt; p_287 [label=&quot;&quot;];
 p_287 [label=&quot;Simplify (not (:var_0: = 99) :expansions [] :rw [] :fc [])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_287 -&gt; p_286 [label=&quot;&quot;];
@@ -995,22 +1037,22 @@ p_286 [label=&quot;Sat (Some  let (n : int) = 99\l)&quot;,shape=box,style=filled
 }
 </textarea><button class="btn btn-primary">Load graph</button><div class="imandra-graphviz-loading display-none">Loading..</div><div class="imandra-graphviz-target"></div><script>
 require(['nbextensions/nbimandra/graphviz'], function (graphviz) {
-  var target = '#graphviz-8ebc5041-ad81-44fc-b3a0-bb4535fe6a3c';
+  var target = '#graphviz-5bfe100d-6339-474f-99e2-2dbc08fa3660';
   graphviz.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-973ed46d-ba2a-40d4-8f15-7365350c0355';
+  var target = '#alt-cc82e985-3941-4ca6-b26e-5d51fcb70641';
   alternatives.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-255ee9b9-4f9d-4562-9f42-e2a6b24285e7';
+  var target = '#fold-22ed1bbd-4624-4c0e-a0ca-1839577eddd4';
   fold.hydrate(target);
 });
 </script></div></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-526ec383-7325-4728-a9eb-e066301194cc';
+  var target = '#alt-7637c86a-a65b-4e70-9c5e-249237331b60';
   alternatives.hydrate(target);
 });
 </script></div></div></div>
