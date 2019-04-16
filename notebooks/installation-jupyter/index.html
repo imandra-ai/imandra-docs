@@ -528,6 +528,11 @@
                                         
                                     </li>
                                     
+                                    <li class="side__nav-list-item--sub-level-2">
+                                        <a class="side__nav-link" href="/imandra-docs/notebooks/a-comparison-with-tla-plus">A comparison with TLA+</a>
+                                        
+                                    </li>
+                                    
                                 </ul>
                             </li>
                             
@@ -626,9 +631,84 @@ jupyter nbextension enable --py nbimandra</code></pre>
 </div>
 </div>
 </div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html"><h2 id="Docker-image">Docker image<a class="anchor-link" href="#Docker-image">&#182;</a></h2><p>The notebook is also available as a docker image: <code>imandra/imandra-client-notebook</code>.</p>
+<p>If you haven't authenticated yet and don't have an <code>~/.imandra</code> folder on your docker host, first authenticate using the regular <code>imandra/imandra-client</code> image:</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html"><div class="terminal">
+    <div class="terminal__copy-ready">
+      <div class="terminal__copy-ready--top"><span class="terminal__copy-msg">Ready!</span></div>
+      <div class="terminal__copy-ready--bottom"></div>
+    </div>
+    <code>
+    <div class="highlight"><pre><span></span>docker pull imandra/imandra-client:latest <span class="o">&amp;&amp;</span> <span class="se">\</span>
+  docker run -it --rm -v <span class="si">${</span><span class="nv">HOME</span><span class="si">}</span>/.imandra:/root/.imandra -p <span class="m">8000</span>:8000 <span class="se">\</span>
+  imandra/imandra-client:latest
+</pre></div>
+
+    </code>
+    <div id="copy-button-id--1" class="terminal__copy-cover">
+      <img src="/imandra-docs/static/img/copy.svg">
+    </div>
+  </div>
+  <script>document.getElementById('copy-button-id--1').addEventListener('click', handleCopyClick);</script>
+
+  
+  </div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html"><p>If everything succeeds you should be dropped into an <code>imandra-repl</code> session. Exit this with <code>C-d</code>.</p>
+<p>Then to launch the notebook, mount your <code>~/.imandra</code> folder as a volume in the container. You may find it useful to mount the current directory in the container too so you can save notebooks you've edited:</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html"><div class="terminal">
+    <div class="terminal__copy-ready">
+      <div class="terminal__copy-ready--top"><span class="terminal__copy-msg">Ready!</span></div>
+      <div class="terminal__copy-ready--bottom"></div>
+    </div>
+    <code>
+    <div class="highlight"><pre><span></span>docker pull imandra/imandra-client-notebook:latest <span class="o">&amp;&amp;</span> <span class="se">\</span>
+  docker run -it --rm -v <span class="si">${</span><span class="nv">HOME</span><span class="si">}</span>/.imandra:/home/jovyan/.imandra -p <span class="m">8888</span>:8888 <span class="se">\</span>
+  -v <span class="sb">`</span><span class="nb">pwd</span><span class="sb">`</span>:/home/jovyan/workdir <span class="se">\</span>
+  imandra/imandra-client-notebook
+</pre></div>
+
+    </code>
+    <div id="copy-button-id--2" class="terminal__copy-cover">
+      <img src="/imandra-docs/static/img/copy.svg">
+    </div>
+  </div>
+  <script>document.getElementById('copy-button-id--2').addEventListener('click', handleCopyClick);</script>
+
+  
+  </div>
+</div>
+</div>
                     </div>
 
-                    </article>
+                    <div class="sidebar-right">
+                        <div class="sidebar-right__menu">
+                            
+                            <a class="sidebar-right__menu-item sidebar-right__menu-item--h1" href="#Jupyter-notebook-setup">Jupyter notebook setup</a>
+                            
+                            <a class="sidebar-right__menu-item sidebar-right__menu-item--h2" href="#Docker-image">Docker image</a>
+                            
+                        </div>
+                    </div></article>
             </main>
             <footer class="Footer">
                 <a class="Copyrights"href="http://imandra.ai">&#9400; 2018 - 2019 Aesthetic Integration Ltd. All rights reserved.</a>
