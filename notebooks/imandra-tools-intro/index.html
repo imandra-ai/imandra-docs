@@ -750,7 +750,7 @@ Note: this is an introductory walkthrough of the capabilities of `imandra-tools`
 <li>A transition function from message and state to new state (<code>one_step</code>)</li>
 </ul>
 <p>Now that the module is defined, we need to set-up <code>Idf</code> for its decomposition.</p>
-<p>The first thing we need to do is define a module implementing the <code>Idf.SIG_TPL</code> module signature:</p>
+<p>We need to do is define a module implementing the <code>Idf.SIG_TPL</code> module signature:</p>
 <ul>
 <li>an <code>event</code> type mapping to the model message type</li>
 <li>a <code>state</code> type mapping to the model state type</li>
@@ -759,6 +759,11 @@ Note: this is an introductory walkthrough of the capabilities of `imandra-tools`
 <li>an <code>is_valid</code> function that takes an <code>event</code> and a <code>state</code> and checks whether that <code>&lt;event,state&gt;</code> transition is valid or not</li>
 <li>a <code>pp_state</code> function of <code>state</code> to <code>string</code> to serialize a <code>state</code> value (usually, for complex types, the <code>Genpp</code> module provided with imandra is used to automatically generate this function)</li>
 <li>a <code>module_name</code> value mapping to the name of the module being defined (this is necessary for reflection purposes)</li>
+<li>a <code>Template</code> module implementing the <code>Idf.Template.SIG</code> module signature:<ul>
+<li>a <code>t</code> variant type symbolically describing events from our model</li>
+<li>a <code>concrete</code> function from <code>t</code> to a list of strings mapping the symbolic event to concrete <code>event</code> type names</li>
+</ul>
+</li>
 </ul>
 </div>
 </div>
@@ -801,6 +806,17 @@ Note: this is an introductory walkthrough of the capabilities of `imandra-tools`
     <span class="o">[@@</span><span class="n">program</span><span class="o">]</span>
 
   <span class="k">let</span> <span class="n">module_name</span> <span class="o">=</span> <span class="s2">&quot;DecompositionConfig&quot;</span>
+
+  <span class="k">module</span> <span class="nc">Template</span> <span class="o">=</span> <span class="k">struct</span>
+    <span class="k">type</span> <span class="n">t</span> <span class="o">=</span> <span class="nc">Add</span> <span class="o">|</span> <span class="nc">Sub</span> <span class="o">|</span> <span class="nc">Reset</span> <span class="o">|</span> <span class="nc">Any</span>
+
+    <span class="k">let</span> <span class="n">concrete</span> <span class="o">=</span> <span class="k">function</span>
+        <span class="o">|</span> <span class="nc">Add</span> <span class="o">-&gt;</span> <span class="o">[</span><span class="s2">&quot;Model.Add&quot;</span><span class="o">]</span>
+        <span class="o">|</span> <span class="nc">Sub</span> <span class="o">-&gt;</span> <span class="o">[</span><span class="s2">&quot;Model.Sub&quot;</span><span class="o">]</span>
+        <span class="o">|</span> <span class="nc">Reset</span> <span class="o">-&gt;</span> <span class="o">[</span><span class="s2">&quot;Model.Reset&quot;</span><span class="o">]</span>
+        <span class="o">|</span> <span class="nc">Any</span> <span class="o">-&gt;</span> <span class="bp">[]</span>
+  <span class="k">end</span>
+
 <span class="k">end</span>
 </pre></div>
 
@@ -829,66 +845,12 @@ Note: this is an introductory walkthrough of the capabilities of `imandra-tools`
     val is_valid : event -&gt; state -&gt; bool
     val pp_state : state -&gt; string
     val module_name : string
+    module Template :
+      sig
+        type t = Add | Sub | Reset | Any
+        val concrete : t -&gt; string list
+      end
   end
-</pre>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html"><p>The second thing we need to do is to define a <code>Template</code> module implementing the <code>Idf.Template.SIG</code> module signature:</p>
-<ul>
-<li>a <code>t</code> variant type symbolically describing events from our model</li>
-<li>a <code>concrete</code> function from <code>t</code> to a list of strings mapping the symbolic event to concrete <code>event</code> type names</li>
-</ul>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="try-this-container">
-  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Imandra-tools%20Introduction.ipynb%23try-cell-8" target="_blank" rel="nofollow">
-    <div class="try-this">Try this!</div>
-  </a>
-</div>
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[4]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ocaml"><pre><span></span><span class="k">module</span> <span class="nc">Template</span> <span class="o">=</span> <span class="k">struct</span>
-  <span class="k">type</span> <span class="n">t</span> <span class="o">=</span> <span class="nc">Add</span> <span class="o">|</span> <span class="nc">Sub</span> <span class="o">|</span> <span class="nc">Reset</span> <span class="o">|</span> <span class="nc">Any</span>
-
-  <span class="k">let</span> <span class="n">concrete</span> <span class="o">=</span> <span class="k">function</span>
-    <span class="o">|</span> <span class="nc">Add</span> <span class="o">-&gt;</span> <span class="o">[</span><span class="s2">&quot;Model.Add&quot;</span><span class="o">]</span>
-    <span class="o">|</span> <span class="nc">Sub</span> <span class="o">-&gt;</span> <span class="o">[</span><span class="s2">&quot;Model.Sub&quot;</span><span class="o">]</span>
-    <span class="o">|</span> <span class="nc">Reset</span> <span class="o">-&gt;</span> <span class="o">[</span><span class="s2">&quot;Model.Reset&quot;</span><span class="o">]</span>
-    <span class="o">|</span> <span class="nc">Any</span> <span class="o">-&gt;</span> <span class="bp">[]</span>
-<span class="k">end</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-<div class="prompt output_prompt">Out[4]:</div>
-
-
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre>module Template :
-  sig type t = Add | Sub | Reset | Any val concrete : t -&gt; string list end
 </pre>
 </div>
 
@@ -903,7 +865,7 @@ Note: this is an introductory walkthrough of the capabilities of `imandra-tools`
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html"><p>We're now ready to create a decomposition recipe and apply it to an event template:</p>
 <p>First we use <code>Idf.mex_for</code> to create an imandra <code>Mex</code> module (this is just a convenience function wrapping imandra's <code>Extract</code> module)</p>
-<p>Second we can finally hook it all together by passing <code>DecompositionConfig</code>, <code>Mex</code>, and <code>Template</code> as parameters to the <code>Idf.Make</code> functor, and obtain a <code>D</code> module of signature <code>Idf.SIG</code>.</p>
+<p>Second we can finally hook it all together by passing <code>DecompositionConfig</code>, and <code>Mex</code> as parameters to the <code>Idf.Make</code> functor, and obtain a <code>D</code> module of signature <code>Idf.SIG</code>.</p>
 <p>We can use the <code>D</code> module to start decomposing any sequences of events, by using either <code>D.Symbolic.decompose</code> or <code>D.Concrete.decompose</code>, depending on which decomposition strategy we want:</p>
 <ul>
 <li>concrete: this strategy will decompose the first event in the sequence, sample a value off each region and continue decomposition using the sampled value as next initial state when decomposing the next event. Because of its reliance on random sampling, this strategy is not complete, but is quite fast.</li>
@@ -915,18 +877,18 @@ Note: this is an introductory walkthrough of the capabilities of `imandra-tools`
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="try-this-container">
-  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Imandra-tools%20Introduction.ipynb%23try-cell-10" target="_blank" rel="nofollow">
+  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Imandra-tools%20Introduction.ipynb%23try-cell-8" target="_blank" rel="nofollow">
     <div class="try-this">Try this!</div>
   </a>
 </div>
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[5]:</div>
+<div class="prompt input_prompt">In&nbsp;[4]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ocaml"><pre><span></span><span class="o">#</span><span class="n">program</span><span class="o">;;</span>
 
 <span class="nn">Idf</span><span class="p">.</span><span class="n">mex_for</span> <span class="nn">DecompositionConfig</span><span class="p">.</span><span class="n">module_name</span> <span class="bp">()</span><span class="o">;;</span>
-<span class="k">module</span> <span class="nc">D</span> <span class="o">=</span> <span class="nn">Idf</span><span class="p">.</span><span class="nc">Make</span><span class="o">(</span><span class="nc">DecompositionConfig</span><span class="o">)(</span><span class="nc">Mex</span><span class="o">)(</span><span class="nc">Template</span><span class="o">);;</span>
+<span class="k">module</span> <span class="nc">D</span> <span class="o">=</span> <span class="nn">Idf</span><span class="p">.</span><span class="nc">Make</span><span class="o">(</span><span class="nc">DecompositionConfig</span><span class="o">)(</span><span class="nc">Mex</span><span class="o">);;</span>
 
 <span class="k">let</span> <span class="n">paths</span><span class="o">,</span> <span class="o">_</span> <span class="o">=</span> <span class="nn">D</span><span class="p">.</span><span class="nn">Symbolic</span><span class="p">.</span><span class="n">decompose</span> <span class="o">(</span><span class="nn">D</span><span class="p">.</span><span class="nc">Template</span> <span class="nn">Template</span><span class="p">.</span><span class="o">[</span><span class="nc">Any</span><span class="o">;</span><span class="nc">Add</span><span class="o">;</span><span class="nc">Any</span><span class="o">])</span>
 </pre></div>
@@ -941,7 +903,7 @@ Note: this is an introductory walkthrough of the capabilities of `imandra-tools`
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[5]:</div>
+<div class="prompt output_prompt">Out[4]:</div>
 
 
 
@@ -975,7 +937,8 @@ module Mex :
     val get_Model_counter_state : E.expr -&gt; Model.counter_state
     val get_DecompositionConfig_event : E.expr -&gt; DecompositionConfig.event
     val get_DecompositionConfig_state : E.expr -&gt; DecompositionConfig.state
-    val get_Template_t : E.expr -&gt; Template.t
+    val get_DecompositionConfig_Template_t :
+      E.expr -&gt; DecompositionConfig.Template.t
     type e_t = DecompositionConfig.event list
     type extract_type = { e : e_t; }
     val ret_e : extract_type -&gt; e_t
@@ -986,17 +949,34 @@ module Mex :
 - : unit = ()
 module D :
   sig
-    type template = Template.t list
-    type funs = Imandra_prelude.string list * Imandra_prelude.string list
-    type target =
-      Imandra_tools__Idf.Make(DecompositionConfig)(Mex)(Template).target =
-        Template of template
-      | Funs of funs
+    module T :
+      sig
+        type t = DecompositionConfig.Template.t
+        val concrete : t -&gt; Imandra_prelude.string list
+      end
+    type target = T.t list
+    type funs =
+        Imandra_prelude.string list * Imandra_prelude.string list *
+        Imandra_prelude.string
+    module type L_SIG =
+      sig
+        type &#39;a t
+        val lazily : (Imandra_prelude.unit -&gt; &#39;a t) -&gt; &#39;a t
+        val reify : Imandra_prelude.Caml.Int.t -&gt; &#39;a t -&gt; &#39;a list
+        val reify_all : &#39;a t -&gt; &#39;a list
+        val of_list : &#39;a list -&gt; &#39;a t
+        val of_gen : &#39;a Imandra_tools__Idf.gen -&gt; &#39;a t
+        val empty : &#39;a t
+        val is_empty : &#39;a t -&gt; bool
+        val map : f:(&#39;a -&gt; &#39;b) -&gt; &#39;a t -&gt; &#39;b t
+        val flat_map : f:(&#39;a -&gt; &#39;b t) -&gt; &#39;a t -&gt; &#39;b t
+        val return : &#39;a -&gt; &#39;a t
+        val default : default:&#39;a t -&gt; &#39;a t -&gt; &#39;a t
+        val cons : &#39;a -&gt; &#39;a t -&gt; &#39;a t
+      end
     module L :
       sig
-        type &#39;a t =
-            &#39;a
-            Imandra_tools__Idf.Make(DecompositionConfig)(Mex)(Template).L.t
+        type &#39;a t = &#39;a Imandra_tools__Idf.Make(DecompositionConfig)(Mex).L.t
         val lazily : (Imandra_prelude.unit -&gt; &#39;a t) -&gt; &#39;a t
         val reify : Imandra_prelude.Caml.Int.t -&gt; &#39;a t -&gt; &#39;a list
         val reify_all : &#39;a t -&gt; &#39;a list
@@ -1012,22 +992,16 @@ module D :
       end
     module Gen :
       sig
-        val funs_of_template :
-          is_valid:Imandra_prelude.string -&gt; template -&gt; funs
-        val funs_of_steps :
-          is_valid:Imandra_prelude.string -&gt;
-          Imandra_prelude.string list list -&gt; funs
-        val target_of_funs : funs -&gt; target
+        val funs_of_target :
+          ?assuming:Imandra_prelude.string -&gt; target -&gt; funs
       end
     module Mex :
       sig
         type event = DecompositionConfig.event
         val events_of_region :
-          arg:Imandra_prelude.Caml.Int.t -&gt;
           signature:Imandra_prelude.string -&gt;
           Imandra_interactive.Decompose.t -&gt;
-          (Imandra_surface.Top_result.term_model * event)
-          Imandra_tools__Idf.gen
+          event list Imandra_tools__Idf.gen
       end
     module Strategy :
       sig
@@ -1035,24 +1009,24 @@ module D :
           sig
             type state = DecompositionConfig.state
             type event = DecompositionConfig.event
-            type node_t = DecompositionConfig.state
+            type node = DecompositionConfig.state
             val module_name : Imandra_prelude.string
-            val root_node : node_t
-            val node_tpl_for_target : node_t -&gt; Imandra_prelude.string
-            val node_tpl_for_side_cond : node_t -&gt; Imandra_prelude.string
-            val node_hash : node_t -&gt; Imandra_prelude.Caml.Int.t
-            val node_equal : node_t -&gt; node_t -&gt; bool
+            val root_node : node
+            val reresolve_node : node -&gt; node
+            val node_tpl_for_target : node -&gt; Imandra_prelude.string
+            val node_tpl_for_side_cond : node -&gt; Imandra_prelude.string
+            val node_hash : node -&gt; Imandra_prelude.Caml.Int.t
+            val node_equal : node -&gt; node -&gt; bool
             val step_into_region :
-              node:node_t -&gt;
+              node:node -&gt;
               signature:Imandra_prelude.string -&gt;
               Imandra_prelude.Caml.Int.t -&gt;
               Imandra_interactive.Decompose.t -&gt;
-              (Imandra_surface.Top_result.term_model * event * node_t)
-              Imandra_tools__Idf.gen
+              (event list * node) Imandra_tools__Idf.gen
             val strategy : Imandra_tools__Idf.strategy
           end
-        type node_t =
-          Imandra_tools__Idf.Make(DecompositionConfig)(Mex)(Template).Strategy.node_t = {
+        type symbolic_node =
+          Imandra_tools__Idf.Make(DecompositionConfig)(Mex).Strategy.symbolic_node = {
           invariant : Imandra_surface.Term.t;
           constraints : Imandra_surface.Term.t list;
           e : Imandra_surface.Term.t option;
@@ -1061,20 +1035,20 @@ module D :
           sig
             type state = DecompositionConfig.state
             type event = DecompositionConfig.event
-            type node_t = node_t
+            type node = symbolic_node
             val module_name : Imandra_prelude.string
-            val root_node : node_t
-            val node_tpl_for_target : node_t -&gt; Imandra_prelude.string
-            val node_tpl_for_side_cond : node_t -&gt; Imandra_prelude.string
-            val node_hash : node_t -&gt; Imandra_prelude.Caml.Int.t
-            val node_equal : node_t -&gt; node_t -&gt; bool
+            val root_node : node
+            val reresolve_node : node -&gt; node
+            val node_tpl_for_target : node -&gt; Imandra_prelude.string
+            val node_tpl_for_side_cond : node -&gt; Imandra_prelude.string
+            val node_hash : node -&gt; Imandra_prelude.Caml.Int.t
+            val node_equal : node -&gt; node -&gt; bool
             val step_into_region :
-              node:node_t -&gt;
+              node:node -&gt;
               signature:Imandra_prelude.string -&gt;
               Imandra_prelude.Caml.Int.t -&gt;
               Imandra_interactive.Decompose.t -&gt;
-              (Imandra_surface.Top_result.term_model * event * node_t)
-              Imandra_tools__Idf.gen
+              (event list * node) Imandra_tools__Idf.gen
             val strategy : Imandra_tools__Idf.strategy
           end
       end
@@ -1083,31 +1057,29 @@ module D :
         (S : sig
                type state = DecompositionConfig.state
                type event = DecompositionConfig.event
-               type node_t
+               type node
                val module_name : Imandra_prelude.string
-               val root_node : node_t
-               val node_tpl_for_target : node_t -&gt; Imandra_prelude.string
-               val node_tpl_for_side_cond : node_t -&gt; Imandra_prelude.string
-               val node_hash : node_t -&gt; Imandra_prelude.Caml.Int.t
-               val node_equal : node_t -&gt; node_t -&gt; bool
+               val root_node : node
+               val reresolve_node : node -&gt; node
+               val node_tpl_for_target : node -&gt; Imandra_prelude.string
+               val node_tpl_for_side_cond : node -&gt; Imandra_prelude.string
+               val node_hash : node -&gt; Imandra_prelude.Caml.Int.t
+               val node_equal : node -&gt; node -&gt; bool
                val step_into_region :
-                 node:node_t -&gt;
+                 node:node -&gt;
                  signature:Imandra_prelude.string -&gt;
                  Imandra_prelude.Caml.Int.t -&gt;
                  Imandra_interactive.Decompose.t -&gt;
-                 (Imandra_surface.Top_result.term_model * event * node_t)
-                 Imandra_tools__Idf.gen
+                 (event list * node) Imandra_tools__Idf.gen
                val strategy : Imandra_tools__Idf.strategy
              end) -&gt;
         sig
           type decomp_step = {
-            sample : S.event;
+            sample : S.event list;
             region : Imandra_interactive.Decompose.t;
-            signature : Imandra_prelude.string;
-            model : Imandra_surface.Top_result.term_model;
           }
           type indexed_state = {
-            state : S.node_t;
+            state : S.node;
             idx : Imandra_prelude.Caml.Int.t;
           }
           module G :
@@ -1160,118 +1132,164 @@ module D :
               val fold_pred_e : (edge -&gt; &#39;a -&gt; &#39;a) -&gt; t -&gt; vertex -&gt; &#39;a -&gt; &#39;a
               val create :
                 ?size:Imandra_prelude.Caml.Int.t -&gt; Imandra_prelude.unit -&gt; t
-              module type LH =
-                sig
-                  val decomp_step_hash :
-                    decomp_step -&gt; Imandra_prelude.Caml.Int.t
-                  val indexed_state_hash :
-                    indexed_state -&gt; Imandra_prelude.Caml.Int.t
-                  val decomp_step_label :
-                    decomp_step -&gt; Imandra_prelude.string
-                  val indexed_state_label :
-                    indexed_state -&gt; Imandra_prelude.string
-                end
-              module type SIG =
-                sig
-                  val output_graph :
-                    t -&gt; Imandra_prelude.string -&gt; Imandra_prelude.unit
-                  val find_edges :
-                    t -&gt; Imandra_prelude.Caml.Int.t -&gt; decomp_step list
-                  val find_vertices :
-                    t -&gt; Imandra_prelude.Caml.Int.t -&gt; indexed_state list
-                end
               val root : t -&gt; vertex
-              module Make : functor (L : LH) -&gt; SIG
+              val output_graph :
+                decomp_step_label:(decomp_step -&gt; Imandra_prelude.string) -&gt;
+                indexed_state_label:(indexed_state -&gt; Imandra_prelude.string) -&gt;
+                t -&gt; Imandra_prelude.string -&gt; Imandra_prelude.unit
             end
+          module L : L_SIG
           type step = indexed_state * decomp_step * indexed_state
           type path = step list
-          type t =
-              path L.t * G.t * (Imandra_prelude.unit -&gt; Imandra_prelude.unit)
+          type t = path L.t * (Imandra_prelude.unit -&gt; Imandra_prelude.unit)
           val paths : ?v:G.vertex -&gt; G.t -&gt; path L.t
           val region_of_path : path -&gt; Imandra_interactive.Decompose.t list
           val regions : path L.t -&gt; Imandra_interactive.Decompose.t list L.t
+          val samples : path -&gt; S.event list
           val replay_path : path -&gt; (S.state * S.event * S.state) list
-          type &#39;a prod = [ `Prod of &#39;a ]
           type consumable_step = {
             step : step;
             seen : bool;
-            prod : Imandra_prelude.unit -&gt; consumable_step L.t prod;
+            region : Imandra_interactive.Decompose.t;
             close : Imandra_prelude.unit -&gt; Imandra_prelude.unit;
           }
           val decompose_one :
             ?g:G.t -&gt;
-            ?root:S.node_t -&gt;
-            ?idx:Imandra_prelude.Caml.Int.t -&gt;
             ?basis:Imandra_prelude.string list -&gt;
-            ?explicit_asm:bool -&gt;
+            ?assuming:Imandra_prelude.string -&gt;
             ?max_asm_lookahead:Imandra_prelude.Caml.Int.t -&gt;
             ?max_ctx_simp:Imandra_prelude.Caml.Int.t -&gt;
             ?reduce_symmetry:bool -&gt;
             ?ctx_asm_simp:bool -&gt;
             ?aggressive_rec:bool -&gt;
-            ?compound:bool -&gt; target -&gt; consumable_step L.t
-          val node_of_consumable_step : consumable_step -&gt; S.node_t
+            ?compound:bool -&gt;
+            ?eager:bool -&gt;
+            target -&gt;
+            S.node -&gt;
+            Imandra_surface.Decompose_region.t option -&gt;
+            Imandra_prelude.Caml.Int.t -&gt; consumable_step L.t
+          val node_of_consumable_step : consumable_step -&gt; S.node
           val decompose :
             ?g:G.t -&gt;
-            ?root:S.node_t -&gt;
+            ?root:S.node -&gt;
             ?idx:Imandra_prelude.Caml.Int.t -&gt;
             ?cache_convergent_paths:bool -&gt;
             ?include_partials:bool -&gt;
-            ?explicit_asm:bool -&gt;
+            ?assuming:Imandra_prelude.string -&gt;
             ?basis:Imandra_prelude.string list -&gt;
             ?max_asm_lookahead:Imandra_prelude.Caml.Int.t -&gt;
             ?max_ctx_simp:Imandra_prelude.Caml.Int.t -&gt;
             ?reduce_symmetry:bool -&gt;
             ?ctx_asm_simp:bool -&gt;
-            ?aggressive_rec:bool -&gt; ?compound:bool -&gt; target -&gt; t
+            ?aggressive_rec:bool -&gt;
+            ?compound:bool -&gt; ?eager:bool -&gt; target -&gt; t
+          module Scheduled :
+            sig
+              type serializable_step = {
+                step : step;
+                region : Imandra_interactive.Decompose.t;
+              }
+              val consumable_to_serializable_step :
+                consumable_step -&gt; serializable_step
+              val serialize : serializable_step Imandra_util.Serialize.t
+              val serialize_opt :
+                serializable_step option Imandra_util.Serialize.t
+              type config = {
+                basis : Imandra_prelude.string list option;
+                assuming : Imandra_prelude.string option;
+                max_asm_lookahead : Imandra_prelude.Caml.Int.t option;
+                max_ctx_simp : Imandra_prelude.Caml.Int.t option;
+                reduce_symmetry : bool option;
+                ctx_asm_simp : bool option;
+                aggressive_rec : bool option;
+                compound : bool option;
+                eager : bool option;
+                target : target;
+              }
+              val decode_config : Imandra_prelude.string -&gt; config
+              val encode_config : config -&gt; Imandra_prelude.string
+              type scheduler =
+                  in_:serializable_step Imandra_util.Sync_queue.t -&gt;
+                  out:serializable_step option Imandra_util.Sync_queue.t -&gt;
+                  tick:Imandra_prelude.unit Imandra_util.Sync_queue.t -&gt;
+                  close:Imandra_prelude.unit Imandra_util.Sync_queue.t -&gt;
+                  config -&gt;
+                  Imandra_prelude.unit L.t -&gt;
+                  Imandra_prelude.unit -&gt; Imandra_prelude.unit
+              val decompose :
+                ?g:G.t -&gt;
+                ?root:S.node -&gt;
+                ?idx:Imandra_prelude.Caml.Int.t -&gt;
+                ?basis:Imandra_prelude.string list -&gt;
+                ?assuming:Imandra_prelude.string -&gt;
+                ?max_asm_lookahead:Imandra_prelude.Caml.Int.t -&gt;
+                ?max_ctx_simp:Imandra_prelude.Caml.Int.t -&gt;
+                ?reduce_symmetry:bool -&gt;
+                ?ctx_asm_simp:bool -&gt;
+                ?aggressive_rec:bool -&gt;
+                ?compound:bool -&gt;
+                ?eager:bool -&gt; schedule:scheduler -&gt; target -&gt; t
+            end
+          module ReplScheduler :
+            sig
+              module Client :
+                sig
+                  val start :
+                    sock_file:Imandra_prelude.string -&gt;
+                    config:Scheduled.config -&gt; Imandra_prelude.unit -&gt; &#39;a
+                end
+              val scheduler :
+                ?imandra:Imandra_prelude.string -&gt;
+                par:Imandra_prelude.Caml.Int.t -&gt;
+                load:Imandra_prelude.string -&gt;
+                idf:Imandra_prelude.string -&gt; Scheduled.scheduler
+            end
         end
     module WithStrategy :
       functor
         (S : sig
                type state = DecompositionConfig.state
                type event = DecompositionConfig.event
-               type node_t
+               type node
                val module_name : Imandra_prelude.string
-               val root_node : node_t
-               val node_tpl_for_target : node_t -&gt; Imandra_prelude.string
-               val node_tpl_for_side_cond : node_t -&gt; Imandra_prelude.string
-               val node_hash : node_t -&gt; Imandra_prelude.Caml.Int.t
-               val node_equal : node_t -&gt; node_t -&gt; bool
+               val root_node : node
+               val reresolve_node : node -&gt; node
+               val node_tpl_for_target : node -&gt; Imandra_prelude.string
+               val node_tpl_for_side_cond : node -&gt; Imandra_prelude.string
+               val node_hash : node -&gt; Imandra_prelude.Caml.Int.t
+               val node_equal : node -&gt; node -&gt; bool
                val step_into_region :
-                 node:node_t -&gt;
+                 node:node -&gt;
                  signature:Imandra_prelude.string -&gt;
                  Imandra_prelude.Caml.Int.t -&gt;
                  Imandra_interactive.Decompose.t -&gt;
-                 (Imandra_surface.Top_result.term_model * event * node_t)
-                 Imandra_tools__Idf.gen
+                 (event list * node) Imandra_tools__Idf.gen
                val strategy : Imandra_tools__Idf.strategy
              end) -&gt;
         sig
           type decomp_step =
-            Imandra_tools__Idf.Make(DecompositionConfig)(Mex)(Template).WithStrategy(S).decomp_step = {
-            sample : S.event;
+            Imandra_tools__Idf.Make(DecompositionConfig)(Mex).WithStrategy(S).decomp_step = {
+            sample : S.event list;
             region : Imandra_interactive.Decompose.t;
-            signature : Imandra_prelude.string;
-            model : Imandra_surface.Top_result.term_model;
           }
           type indexed_state =
-            Imandra_tools__Idf.Make(DecompositionConfig)(Mex)(Template).WithStrategy(S).indexed_state = {
-            state : S.node_t;
+            Imandra_tools__Idf.Make(DecompositionConfig)(Mex).WithStrategy(S).indexed_state = {
+            state : S.node;
             idx : Imandra_prelude.Caml.Int.t;
           }
           module G :
             sig
               type t =
-                  Imandra_tools__Idf.Make(DecompositionConfig)(Mex)(Template).WithStrategy(S).G.t
+                  Imandra_tools__Idf.Make(DecompositionConfig)(Mex).WithStrategy(S).G.t
               module V :
                 sig
                   type t =
-                      Imandra_tools__Idf.Make(DecompositionConfig)(Mex)(Template).WithStrategy(S).G.V.t
+                      Imandra_tools__Idf.Make(DecompositionConfig)(Mex).WithStrategy(S).G.V.t
                   val compare : t -&gt; t -&gt; int
                   val hash : t -&gt; int
                   val equal : t -&gt; t -&gt; bool
                   type label =
-                      Imandra_tools__Idf.Make(DecompositionConfig)(Mex)(Template).WithStrategy(S).G.V.label
+                      Imandra_tools__Idf.Make(DecompositionConfig)(Mex).WithStrategy(S).G.V.label
                   val create : label -&gt; t
                   val label : t -&gt; label
                 end
@@ -1279,13 +1297,13 @@ module D :
               module E :
                 sig
                   type t =
-                      Imandra_tools__Idf.Make(DecompositionConfig)(Mex)(Template).WithStrategy(S).G.E.t
+                      Imandra_tools__Idf.Make(DecompositionConfig)(Mex).WithStrategy(S).G.E.t
                   val compare : t -&gt; t -&gt; int
                   type vertex = vertex
                   val src : t -&gt; vertex
                   val dst : t -&gt; vertex
                   type label =
-                      Imandra_tools__Idf.Make(DecompositionConfig)(Mex)(Template).WithStrategy(S).G.E.label
+                      Imandra_tools__Idf.Make(DecompositionConfig)(Mex).WithStrategy(S).G.E.label
                   val create : vertex -&gt; label -&gt; vertex -&gt; t
                   val label : t -&gt; label
                 end
@@ -1323,93 +1341,149 @@ module D :
               val fold_pred_e : (edge -&gt; &#39;a -&gt; &#39;a) -&gt; t -&gt; vertex -&gt; &#39;a -&gt; &#39;a
               val create :
                 ?size:Imandra_prelude.Caml.Int.t -&gt; Imandra_prelude.unit -&gt; t
-              module type LH =
-                sig
-                  val decomp_step_hash :
-                    decomp_step -&gt; Imandra_prelude.Caml.Int.t
-                  val indexed_state_hash :
-                    indexed_state -&gt; Imandra_prelude.Caml.Int.t
-                  val decomp_step_label :
-                    decomp_step -&gt; Imandra_prelude.string
-                  val indexed_state_label :
-                    indexed_state -&gt; Imandra_prelude.string
-                end
-              module type SIG =
-                sig
-                  val output_graph :
-                    t -&gt; Imandra_prelude.string -&gt; Imandra_prelude.unit
-                  val find_edges :
-                    t -&gt; Imandra_prelude.Caml.Int.t -&gt; decomp_step list
-                  val find_vertices :
-                    t -&gt; Imandra_prelude.Caml.Int.t -&gt; indexed_state list
-                end
               val root : t -&gt; vertex
-              module Make :
-                functor (L : LH) -&gt;
-                  sig
-                    val output_graph :
-                      t -&gt; Imandra_prelude.string -&gt; Imandra_prelude.unit
-                    val find_edges :
-                      t -&gt; Imandra_prelude.Caml.Int.t -&gt; decomp_step list
-                    val find_vertices :
-                      t -&gt; Imandra_prelude.Caml.Int.t -&gt; indexed_state list
-                  end
+              val output_graph :
+                decomp_step_label:(decomp_step -&gt; Imandra_prelude.string) -&gt;
+                indexed_state_label:(indexed_state -&gt; Imandra_prelude.string) -&gt;
+                t -&gt; Imandra_prelude.string -&gt; Imandra_prelude.unit
+            end
+          module L :
+            sig
+              type &#39;a t =
+                  &#39;a
+                  Imandra_tools__Idf.Make(DecompositionConfig)(Mex).WithStrategy(S).L.t
+              val lazily : (Imandra_prelude.unit -&gt; &#39;a t) -&gt; &#39;a t
+              val reify : Imandra_prelude.Caml.Int.t -&gt; &#39;a t -&gt; &#39;a list
+              val reify_all : &#39;a t -&gt; &#39;a list
+              val of_list : &#39;a list -&gt; &#39;a t
+              val of_gen : &#39;a Imandra_tools__Idf.gen -&gt; &#39;a t
+              val empty : &#39;a t
+              val is_empty : &#39;a t -&gt; bool
+              val map : f:(&#39;a -&gt; &#39;b) -&gt; &#39;a t -&gt; &#39;b t
+              val flat_map : f:(&#39;a -&gt; &#39;b t) -&gt; &#39;a t -&gt; &#39;b t
+              val return : &#39;a -&gt; &#39;a t
+              val default : default:&#39;a t -&gt; &#39;a t -&gt; &#39;a t
+              val cons : &#39;a -&gt; &#39;a t -&gt; &#39;a t
             end
           type step = indexed_state * decomp_step * indexed_state
           type path = step list
-          type t =
-              path L.t * G.t * (Imandra_prelude.unit -&gt; Imandra_prelude.unit)
+          type t = path L.t * (Imandra_prelude.unit -&gt; Imandra_prelude.unit)
           val paths : ?v:G.vertex -&gt; G.t -&gt; path L.t
           val region_of_path : path -&gt; Imandra_interactive.Decompose.t list
           val regions : path L.t -&gt; Imandra_interactive.Decompose.t list L.t
+          val samples : path -&gt; S.event list
           val replay_path : path -&gt; (S.state * S.event * S.state) list
-          type &#39;a prod = [ `Prod of &#39;a ]
           type consumable_step =
-            Imandra_tools__Idf.Make(DecompositionConfig)(Mex)(Template).WithStrategy(S).consumable_step = {
+            Imandra_tools__Idf.Make(DecompositionConfig)(Mex).WithStrategy(S).consumable_step = {
             step : step;
             seen : bool;
-            prod : Imandra_prelude.unit -&gt; consumable_step L.t prod;
+            region : Imandra_interactive.Decompose.t;
             close : Imandra_prelude.unit -&gt; Imandra_prelude.unit;
           }
           val decompose_one :
             ?g:G.t -&gt;
-            ?root:S.node_t -&gt;
-            ?idx:Imandra_prelude.Caml.Int.t -&gt;
             ?basis:Imandra_prelude.string list -&gt;
-            ?explicit_asm:bool -&gt;
+            ?assuming:Imandra_prelude.string -&gt;
             ?max_asm_lookahead:Imandra_prelude.Caml.Int.t -&gt;
             ?max_ctx_simp:Imandra_prelude.Caml.Int.t -&gt;
             ?reduce_symmetry:bool -&gt;
             ?ctx_asm_simp:bool -&gt;
             ?aggressive_rec:bool -&gt;
-            ?compound:bool -&gt; target -&gt; consumable_step L.t
-          val node_of_consumable_step : consumable_step -&gt; S.node_t
+            ?compound:bool -&gt;
+            ?eager:bool -&gt;
+            target -&gt;
+            S.node -&gt;
+            Imandra_surface.Decompose_region.t option -&gt;
+            Imandra_prelude.Caml.Int.t -&gt; consumable_step L.t
+          val node_of_consumable_step : consumable_step -&gt; S.node
           val decompose :
             ?g:G.t -&gt;
-            ?root:S.node_t -&gt;
+            ?root:S.node -&gt;
             ?idx:Imandra_prelude.Caml.Int.t -&gt;
             ?cache_convergent_paths:bool -&gt;
             ?include_partials:bool -&gt;
-            ?explicit_asm:bool -&gt;
+            ?assuming:Imandra_prelude.string -&gt;
             ?basis:Imandra_prelude.string list -&gt;
             ?max_asm_lookahead:Imandra_prelude.Caml.Int.t -&gt;
             ?max_ctx_simp:Imandra_prelude.Caml.Int.t -&gt;
             ?reduce_symmetry:bool -&gt;
             ?ctx_asm_simp:bool -&gt;
-            ?aggressive_rec:bool -&gt; ?compound:bool -&gt; target -&gt; t
+            ?aggressive_rec:bool -&gt;
+            ?compound:bool -&gt; ?eager:bool -&gt; target -&gt; t
+          module Scheduled :
+            sig
+              type serializable_step =
+                Imandra_tools__Idf.Make(DecompositionConfig)(Mex).WithStrategy(S).Scheduled.serializable_step = {
+                step : step;
+                region : Imandra_interactive.Decompose.t;
+              }
+              val consumable_to_serializable_step :
+                consumable_step -&gt; serializable_step
+              val serialize : serializable_step Imandra_util.Serialize.t
+              val serialize_opt :
+                serializable_step option Imandra_util.Serialize.t
+              type config =
+                Imandra_tools__Idf.Make(DecompositionConfig)(Mex).WithStrategy(S).Scheduled.config = {
+                basis : Imandra_prelude.string list option;
+                assuming : Imandra_prelude.string option;
+                max_asm_lookahead : Imandra_prelude.Caml.Int.t option;
+                max_ctx_simp : Imandra_prelude.Caml.Int.t option;
+                reduce_symmetry : bool option;
+                ctx_asm_simp : bool option;
+                aggressive_rec : bool option;
+                compound : bool option;
+                eager : bool option;
+                target : target;
+              }
+              val decode_config : Imandra_prelude.string -&gt; config
+              val encode_config : config -&gt; Imandra_prelude.string
+              type scheduler =
+                  in_:serializable_step Imandra_util.Sync_queue.t -&gt;
+                  out:serializable_step option Imandra_util.Sync_queue.t -&gt;
+                  tick:Imandra_prelude.unit Imandra_util.Sync_queue.t -&gt;
+                  close:Imandra_prelude.unit Imandra_util.Sync_queue.t -&gt;
+                  config -&gt;
+                  Imandra_prelude.unit L.t -&gt;
+                  Imandra_prelude.unit -&gt; Imandra_prelude.unit
+              val decompose :
+                ?g:G.t -&gt;
+                ?root:S.node -&gt;
+                ?idx:Imandra_prelude.Caml.Int.t -&gt;
+                ?basis:Imandra_prelude.string list -&gt;
+                ?assuming:Imandra_prelude.string -&gt;
+                ?max_asm_lookahead:Imandra_prelude.Caml.Int.t -&gt;
+                ?max_ctx_simp:Imandra_prelude.Caml.Int.t -&gt;
+                ?reduce_symmetry:bool -&gt;
+                ?ctx_asm_simp:bool -&gt;
+                ?aggressive_rec:bool -&gt;
+                ?compound:bool -&gt;
+                ?eager:bool -&gt; schedule:scheduler -&gt; target -&gt; t
+            end
+          module ReplScheduler :
+            sig
+              module Client :
+                sig
+                  val start :
+                    sock_file:Imandra_prelude.string -&gt;
+                    config:Scheduled.config -&gt; Imandra_prelude.unit -&gt; &#39;a
+                end
+              val scheduler :
+                ?imandra:Imandra_prelude.string -&gt;
+                par:Imandra_prelude.Caml.Int.t -&gt;
+                load:Imandra_prelude.string -&gt;
+                idf:Imandra_prelude.string -&gt; Scheduled.scheduler
+            end
         end
     module Concrete :
       sig
         type decomp_step =
           WithStrategy(Strategy.Concrete).decomp_step = {
-          sample : Strategy.Concrete.event;
+          sample : Strategy.Concrete.event list;
           region : Imandra_interactive.Decompose.t;
-          signature : Imandra_prelude.string;
-          model : Imandra_surface.Top_result.term_model;
         }
         type indexed_state =
           WithStrategy(Strategy.Concrete).indexed_state = {
-          state : Strategy.Concrete.node_t;
+          state : Strategy.Concrete.node;
           idx : Imandra_prelude.Caml.Int.t;
         }
         module G :
@@ -1470,97 +1544,152 @@ module D :
             val fold_pred_e : (edge -&gt; &#39;a -&gt; &#39;a) -&gt; t -&gt; vertex -&gt; &#39;a -&gt; &#39;a
             val create :
               ?size:Imandra_prelude.Caml.Int.t -&gt; Imandra_prelude.unit -&gt; t
-            module type LH =
-              sig
-                val decomp_step_hash :
-                  decomp_step -&gt; Imandra_prelude.Caml.Int.t
-                val indexed_state_hash :
-                  indexed_state -&gt; Imandra_prelude.Caml.Int.t
-                val decomp_step_label : decomp_step -&gt; Imandra_prelude.string
-                val indexed_state_label :
-                  indexed_state -&gt; Imandra_prelude.string
-              end
-            module type SIG =
-              sig
-                val output_graph :
-                  t -&gt; Imandra_prelude.string -&gt; Imandra_prelude.unit
-                val find_edges :
-                  t -&gt; Imandra_prelude.Caml.Int.t -&gt; decomp_step list
-                val find_vertices :
-                  t -&gt; Imandra_prelude.Caml.Int.t -&gt; indexed_state list
-              end
             val root : t -&gt; vertex
-            module Make :
-              functor (L : LH) -&gt;
-                sig
-                  val output_graph :
-                    t -&gt; Imandra_prelude.string -&gt; Imandra_prelude.unit
-                  val find_edges :
-                    t -&gt; Imandra_prelude.Caml.Int.t -&gt; decomp_step list
-                  val find_vertices :
-                    t -&gt; Imandra_prelude.Caml.Int.t -&gt; indexed_state list
-                end
+            val output_graph :
+              decomp_step_label:(decomp_step -&gt; Imandra_prelude.string) -&gt;
+              indexed_state_label:(indexed_state -&gt; Imandra_prelude.string) -&gt;
+              t -&gt; Imandra_prelude.string -&gt; Imandra_prelude.unit
+          end
+        module L :
+          sig
+            type &#39;a t = &#39;a WithStrategy(Strategy.Concrete).L.t
+            val lazily : (Imandra_prelude.unit -&gt; &#39;a t) -&gt; &#39;a t
+            val reify : Imandra_prelude.Caml.Int.t -&gt; &#39;a t -&gt; &#39;a list
+            val reify_all : &#39;a t -&gt; &#39;a list
+            val of_list : &#39;a list -&gt; &#39;a t
+            val of_gen : &#39;a Imandra_tools__Idf.gen -&gt; &#39;a t
+            val empty : &#39;a t
+            val is_empty : &#39;a t -&gt; bool
+            val map : f:(&#39;a -&gt; &#39;b) -&gt; &#39;a t -&gt; &#39;b t
+            val flat_map : f:(&#39;a -&gt; &#39;b t) -&gt; &#39;a t -&gt; &#39;b t
+            val return : &#39;a -&gt; &#39;a t
+            val default : default:&#39;a t -&gt; &#39;a t -&gt; &#39;a t
+            val cons : &#39;a -&gt; &#39;a t -&gt; &#39;a t
           end
         type step = indexed_state * decomp_step * indexed_state
         type path = step list
-        type t =
-            path L.t * G.t * (Imandra_prelude.unit -&gt; Imandra_prelude.unit)
+        type t = path L.t * (Imandra_prelude.unit -&gt; Imandra_prelude.unit)
         val paths : ?v:G.vertex -&gt; G.t -&gt; path L.t
         val region_of_path : path -&gt; Imandra_interactive.Decompose.t list
         val regions : path L.t -&gt; Imandra_interactive.Decompose.t list L.t
+        val samples : path -&gt; Strategy.Concrete.event list
         val replay_path :
           path -&gt;
           (Strategy.Concrete.state * Strategy.Concrete.event *
            Strategy.Concrete.state)
           list
-        type &#39;a prod = [ `Prod of &#39;a ]
         type consumable_step =
           WithStrategy(Strategy.Concrete).consumable_step = {
           step : step;
           seen : bool;
-          prod : Imandra_prelude.unit -&gt; consumable_step L.t prod;
+          region : Imandra_interactive.Decompose.t;
           close : Imandra_prelude.unit -&gt; Imandra_prelude.unit;
         }
         val decompose_one :
           ?g:G.t -&gt;
-          ?root:Strategy.Concrete.node_t -&gt;
-          ?idx:Imandra_prelude.Caml.Int.t -&gt;
           ?basis:Imandra_prelude.string list -&gt;
-          ?explicit_asm:bool -&gt;
+          ?assuming:Imandra_prelude.string -&gt;
           ?max_asm_lookahead:Imandra_prelude.Caml.Int.t -&gt;
           ?max_ctx_simp:Imandra_prelude.Caml.Int.t -&gt;
           ?reduce_symmetry:bool -&gt;
           ?ctx_asm_simp:bool -&gt;
           ?aggressive_rec:bool -&gt;
-          ?compound:bool -&gt; target -&gt; consumable_step L.t
+          ?compound:bool -&gt;
+          ?eager:bool -&gt;
+          target -&gt;
+          Strategy.Concrete.node -&gt;
+          Imandra_surface.Decompose_region.t option -&gt;
+          Imandra_prelude.Caml.Int.t -&gt; consumable_step L.t
         val node_of_consumable_step :
-          consumable_step -&gt; Strategy.Concrete.node_t
+          consumable_step -&gt; Strategy.Concrete.node
         val decompose :
           ?g:G.t -&gt;
-          ?root:Strategy.Concrete.node_t -&gt;
+          ?root:Strategy.Concrete.node -&gt;
           ?idx:Imandra_prelude.Caml.Int.t -&gt;
           ?cache_convergent_paths:bool -&gt;
           ?include_partials:bool -&gt;
-          ?explicit_asm:bool -&gt;
+          ?assuming:Imandra_prelude.string -&gt;
           ?basis:Imandra_prelude.string list -&gt;
           ?max_asm_lookahead:Imandra_prelude.Caml.Int.t -&gt;
           ?max_ctx_simp:Imandra_prelude.Caml.Int.t -&gt;
           ?reduce_symmetry:bool -&gt;
           ?ctx_asm_simp:bool -&gt;
-          ?aggressive_rec:bool -&gt; ?compound:bool -&gt; target -&gt; t
+          ?aggressive_rec:bool -&gt;
+          ?compound:bool -&gt; ?eager:bool -&gt; target -&gt; t
+        module Scheduled :
+          sig
+            type serializable_step =
+              WithStrategy(Strategy.Concrete).Scheduled.serializable_step = {
+              step : step;
+              region : Imandra_interactive.Decompose.t;
+            }
+            val consumable_to_serializable_step :
+              consumable_step -&gt; serializable_step
+            val serialize : serializable_step Imandra_util.Serialize.t
+            val serialize_opt :
+              serializable_step option Imandra_util.Serialize.t
+            type config =
+              WithStrategy(Strategy.Concrete).Scheduled.config = {
+              basis : Imandra_prelude.string list option;
+              assuming : Imandra_prelude.string option;
+              max_asm_lookahead : Imandra_prelude.Caml.Int.t option;
+              max_ctx_simp : Imandra_prelude.Caml.Int.t option;
+              reduce_symmetry : bool option;
+              ctx_asm_simp : bool option;
+              aggressive_rec : bool option;
+              compound : bool option;
+              eager : bool option;
+              target : target;
+            }
+            val decode_config : Imandra_prelude.string -&gt; config
+            val encode_config : config -&gt; Imandra_prelude.string
+            type scheduler =
+                in_:serializable_step Imandra_util.Sync_queue.t -&gt;
+                out:serializable_step option Imandra_util.Sync_queue.t -&gt;
+                tick:Imandra_prelude.unit Imandra_util.Sync_queue.t -&gt;
+                close:Imandra_prelude.unit Imandra_util.Sync_queue.t -&gt;
+                config -&gt;
+                Imandra_prelude.unit L.t -&gt;
+                Imandra_prelude.unit -&gt; Imandra_prelude.unit
+            val decompose :
+              ?g:G.t -&gt;
+              ?root:Strategy.Concrete.node -&gt;
+              ?idx:Imandra_prelude.Caml.Int.t -&gt;
+              ?basis:Imandra_prelude.string list -&gt;
+              ?assuming:Imandra_prelude.string -&gt;
+              ?max_asm_lookahead:Imandra_prelude.Caml.Int.t -&gt;
+              ?max_ctx_simp:Imandra_prelude.Caml.Int.t -&gt;
+              ?reduce_symmetry:bool -&gt;
+              ?ctx_asm_simp:bool -&gt;
+              ?aggressive_rec:bool -&gt;
+              ?compound:bool -&gt;
+              ?eager:bool -&gt; schedule:scheduler -&gt; target -&gt; t
+          end
+        module ReplScheduler :
+          sig
+            module Client :
+              sig
+                val start :
+                  sock_file:Imandra_prelude.string -&gt;
+                  config:Scheduled.config -&gt; Imandra_prelude.unit -&gt; &#39;a
+              end
+            val scheduler :
+              ?imandra:Imandra_prelude.string -&gt;
+              par:Imandra_prelude.Caml.Int.t -&gt;
+              load:Imandra_prelude.string -&gt;
+              idf:Imandra_prelude.string -&gt; Scheduled.scheduler
+          end
       end
     module Symbolic :
       sig
         type decomp_step =
           WithStrategy(Strategy.Symbolic).decomp_step = {
-          sample : Strategy.Symbolic.event;
+          sample : Strategy.Symbolic.event list;
           region : Imandra_interactive.Decompose.t;
-          signature : Imandra_prelude.string;
-          model : Imandra_surface.Top_result.term_model;
         }
         type indexed_state =
           WithStrategy(Strategy.Symbolic).indexed_state = {
-          state : Strategy.Symbolic.node_t;
+          state : Strategy.Symbolic.node;
           idx : Imandra_prelude.Caml.Int.t;
         }
         module G :
@@ -1621,92 +1750,145 @@ module D :
             val fold_pred_e : (edge -&gt; &#39;a -&gt; &#39;a) -&gt; t -&gt; vertex -&gt; &#39;a -&gt; &#39;a
             val create :
               ?size:Imandra_prelude.Caml.Int.t -&gt; Imandra_prelude.unit -&gt; t
-            module type LH =
-              sig
-                val decomp_step_hash :
-                  decomp_step -&gt; Imandra_prelude.Caml.Int.t
-                val indexed_state_hash :
-                  indexed_state -&gt; Imandra_prelude.Caml.Int.t
-                val decomp_step_label : decomp_step -&gt; Imandra_prelude.string
-                val indexed_state_label :
-                  indexed_state -&gt; Imandra_prelude.string
-              end
-            module type SIG =
-              sig
-                val output_graph :
-                  t -&gt; Imandra_prelude.string -&gt; Imandra_prelude.unit
-                val find_edges :
-                  t -&gt; Imandra_prelude.Caml.Int.t -&gt; decomp_step list
-                val find_vertices :
-                  t -&gt; Imandra_prelude.Caml.Int.t -&gt; indexed_state list
-              end
             val root : t -&gt; vertex
-            module Make :
-              functor (L : LH) -&gt;
-                sig
-                  val output_graph :
-                    t -&gt; Imandra_prelude.string -&gt; Imandra_prelude.unit
-                  val find_edges :
-                    t -&gt; Imandra_prelude.Caml.Int.t -&gt; decomp_step list
-                  val find_vertices :
-                    t -&gt; Imandra_prelude.Caml.Int.t -&gt; indexed_state list
-                end
+            val output_graph :
+              decomp_step_label:(decomp_step -&gt; Imandra_prelude.string) -&gt;
+              indexed_state_label:(indexed_state -&gt; Imandra_prelude.string) -&gt;
+              t -&gt; Imandra_prelude.string -&gt; Imandra_prelude.unit
+          end
+        module L :
+          sig
+            type &#39;a t = &#39;a WithStrategy(Strategy.Symbolic).L.t
+            val lazily : (Imandra_prelude.unit -&gt; &#39;a t) -&gt; &#39;a t
+            val reify : Imandra_prelude.Caml.Int.t -&gt; &#39;a t -&gt; &#39;a list
+            val reify_all : &#39;a t -&gt; &#39;a list
+            val of_list : &#39;a list -&gt; &#39;a t
+            val of_gen : &#39;a Imandra_tools__Idf.gen -&gt; &#39;a t
+            val empty : &#39;a t
+            val is_empty : &#39;a t -&gt; bool
+            val map : f:(&#39;a -&gt; &#39;b) -&gt; &#39;a t -&gt; &#39;b t
+            val flat_map : f:(&#39;a -&gt; &#39;b t) -&gt; &#39;a t -&gt; &#39;b t
+            val return : &#39;a -&gt; &#39;a t
+            val default : default:&#39;a t -&gt; &#39;a t -&gt; &#39;a t
+            val cons : &#39;a -&gt; &#39;a t -&gt; &#39;a t
           end
         type step = indexed_state * decomp_step * indexed_state
         type path = step list
-        type t =
-            path L.t * G.t * (Imandra_prelude.unit -&gt; Imandra_prelude.unit)
+        type t = path L.t * (Imandra_prelude.unit -&gt; Imandra_prelude.unit)
         val paths : ?v:G.vertex -&gt; G.t -&gt; path L.t
         val region_of_path : path -&gt; Imandra_interactive.Decompose.t list
         val regions : path L.t -&gt; Imandra_interactive.Decompose.t list L.t
+        val samples : path -&gt; Strategy.Symbolic.event list
         val replay_path :
           path -&gt;
           (Strategy.Symbolic.state * Strategy.Symbolic.event *
            Strategy.Symbolic.state)
           list
-        type &#39;a prod = [ `Prod of &#39;a ]
         type consumable_step =
           WithStrategy(Strategy.Symbolic).consumable_step = {
           step : step;
           seen : bool;
-          prod : Imandra_prelude.unit -&gt; consumable_step L.t prod;
+          region : Imandra_interactive.Decompose.t;
           close : Imandra_prelude.unit -&gt; Imandra_prelude.unit;
         }
         val decompose_one :
           ?g:G.t -&gt;
-          ?root:Strategy.Symbolic.node_t -&gt;
-          ?idx:Imandra_prelude.Caml.Int.t -&gt;
           ?basis:Imandra_prelude.string list -&gt;
-          ?explicit_asm:bool -&gt;
+          ?assuming:Imandra_prelude.string -&gt;
           ?max_asm_lookahead:Imandra_prelude.Caml.Int.t -&gt;
           ?max_ctx_simp:Imandra_prelude.Caml.Int.t -&gt;
           ?reduce_symmetry:bool -&gt;
           ?ctx_asm_simp:bool -&gt;
           ?aggressive_rec:bool -&gt;
-          ?compound:bool -&gt; target -&gt; consumable_step L.t
+          ?compound:bool -&gt;
+          ?eager:bool -&gt;
+          target -&gt;
+          Strategy.Symbolic.node -&gt;
+          Imandra_surface.Decompose_region.t option -&gt;
+          Imandra_prelude.Caml.Int.t -&gt; consumable_step L.t
         val node_of_consumable_step :
-          consumable_step -&gt; Strategy.Symbolic.node_t
+          consumable_step -&gt; Strategy.Symbolic.node
         val decompose :
           ?g:G.t -&gt;
-          ?root:Strategy.Symbolic.node_t -&gt;
+          ?root:Strategy.Symbolic.node -&gt;
           ?idx:Imandra_prelude.Caml.Int.t -&gt;
           ?cache_convergent_paths:bool -&gt;
           ?include_partials:bool -&gt;
-          ?explicit_asm:bool -&gt;
+          ?assuming:Imandra_prelude.string -&gt;
           ?basis:Imandra_prelude.string list -&gt;
           ?max_asm_lookahead:Imandra_prelude.Caml.Int.t -&gt;
           ?max_ctx_simp:Imandra_prelude.Caml.Int.t -&gt;
           ?reduce_symmetry:bool -&gt;
           ?ctx_asm_simp:bool -&gt;
-          ?aggressive_rec:bool -&gt; ?compound:bool -&gt; target -&gt; t
+          ?aggressive_rec:bool -&gt;
+          ?compound:bool -&gt; ?eager:bool -&gt; target -&gt; t
+        module Scheduled :
+          sig
+            type serializable_step =
+              WithStrategy(Strategy.Symbolic).Scheduled.serializable_step = {
+              step : step;
+              region : Imandra_interactive.Decompose.t;
+            }
+            val consumable_to_serializable_step :
+              consumable_step -&gt; serializable_step
+            val serialize : serializable_step Imandra_util.Serialize.t
+            val serialize_opt :
+              serializable_step option Imandra_util.Serialize.t
+            type config =
+              WithStrategy(Strategy.Symbolic).Scheduled.config = {
+              basis : Imandra_prelude.string list option;
+              assuming : Imandra_prelude.string option;
+              max_asm_lookahead : Imandra_prelude.Caml.Int.t option;
+              max_ctx_simp : Imandra_prelude.Caml.Int.t option;
+              reduce_symmetry : bool option;
+              ctx_asm_simp : bool option;
+              aggressive_rec : bool option;
+              compound : bool option;
+              eager : bool option;
+              target : target;
+            }
+            val decode_config : Imandra_prelude.string -&gt; config
+            val encode_config : config -&gt; Imandra_prelude.string
+            type scheduler =
+                in_:serializable_step Imandra_util.Sync_queue.t -&gt;
+                out:serializable_step option Imandra_util.Sync_queue.t -&gt;
+                tick:Imandra_prelude.unit Imandra_util.Sync_queue.t -&gt;
+                close:Imandra_prelude.unit Imandra_util.Sync_queue.t -&gt;
+                config -&gt;
+                Imandra_prelude.unit L.t -&gt;
+                Imandra_prelude.unit -&gt; Imandra_prelude.unit
+            val decompose :
+              ?g:G.t -&gt;
+              ?root:Strategy.Symbolic.node -&gt;
+              ?idx:Imandra_prelude.Caml.Int.t -&gt;
+              ?basis:Imandra_prelude.string list -&gt;
+              ?assuming:Imandra_prelude.string -&gt;
+              ?max_asm_lookahead:Imandra_prelude.Caml.Int.t -&gt;
+              ?max_ctx_simp:Imandra_prelude.Caml.Int.t -&gt;
+              ?reduce_symmetry:bool -&gt;
+              ?ctx_asm_simp:bool -&gt;
+              ?aggressive_rec:bool -&gt;
+              ?compound:bool -&gt;
+              ?eager:bool -&gt; schedule:scheduler -&gt; target -&gt; t
+          end
+        module ReplScheduler :
+          sig
+            module Client :
+              sig
+                val start :
+                  sock_file:Imandra_prelude.string -&gt;
+                  config:Scheduled.config -&gt; Imandra_prelude.unit -&gt; &#39;a
+              end
+            val scheduler :
+              ?imandra:Imandra_prelude.string -&gt;
+              par:Imandra_prelude.Caml.Int.t -&gt;
+              load:Imandra_prelude.string -&gt;
+              idf:Imandra_prelude.string -&gt; Scheduled.scheduler
+          end
       end
   end
-File &#34;jupyter cell 5&#34;, line 6, characters 15-71:
-Error: This expression has type
-         D.Symbolic.t =
-           D.Symbolic.path D.L.t * D.Symbolic.G.t *
-           (Imandra_prelude.unit -&gt; Imandra_prelude.unit)
-       but an expression was expected of type &#39;a * &#39;b
+File &#34;jupyter cell 4&#34;, line 6, characters 37-47:
+Error: Unbound constructor D.Template
 </pre>
 </div>
 
@@ -1726,12 +1908,12 @@ Error: This expression has type
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="try-this-container">
-  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Imandra-tools%20Introduction.ipynb%23try-cell-12" target="_blank" rel="nofollow">
+  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Imandra-tools%20Introduction.ipynb%23try-cell-10" target="_blank" rel="nofollow">
     <div class="try-this">Try this!</div>
   </a>
 </div>
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[6]:</div>
+<div class="prompt input_prompt">In&nbsp;[5]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ocaml"><pre><span></span><span class="k">let</span> <span class="n">first_path</span> <span class="o">=</span> <span class="nn">D</span><span class="p">.</span><span class="nn">L</span><span class="p">.</span><span class="n">reify</span> <span class="mi">1</span><span class="n">i</span> <span class="n">paths</span> <span class="o">|&gt;</span> <span class="nn">List</span><span class="p">.</span><span class="n">hd</span>
@@ -1747,13 +1929,13 @@ Error: This expression has type
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[6]:</div>
+<div class="prompt output_prompt">Out[5]:</div>
 
 
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>File &#34;jupyter cell 6&#34;, line 1, characters 30-35:
+<pre>File &#34;jupyter cell 5&#34;, line 1, characters 30-35:
 Error: Unbound value paths
 </pre>
 </div>
@@ -1773,12 +1955,12 @@ Error: Unbound value paths
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="try-this-container">
-  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Imandra-tools%20Introduction.ipynb%23try-cell-14" target="_blank" rel="nofollow">
+  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Imandra-tools%20Introduction.ipynb%23try-cell-12" target="_blank" rel="nofollow">
     <div class="try-this">Try this!</div>
   </a>
 </div>
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[7]:</div>
+<div class="prompt input_prompt">In&nbsp;[6]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ocaml"><pre><span></span><span class="nn">D</span><span class="p">.</span><span class="nn">Symbolic</span><span class="p">.</span><span class="n">replay_path</span> <span class="n">first_path</span>
@@ -1794,13 +1976,13 @@ Error: Unbound value paths
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[7]:</div>
+<div class="prompt output_prompt">Out[6]:</div>
 
 
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>File &#34;jupyter cell 7&#34;, line 1, characters 23-33:
+<pre>File &#34;jupyter cell 6&#34;, line 1, characters 23-33:
 Error: Unbound value first_path
 </pre>
 </div>
@@ -1820,12 +2002,12 @@ Error: Unbound value first_path
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="try-this-container">
-  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Imandra-tools%20Introduction.ipynb%23try-cell-16" target="_blank" rel="nofollow">
+  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Imandra-tools%20Introduction.ipynb%23try-cell-14" target="_blank" rel="nofollow">
     <div class="try-this">Try this!</div>
   </a>
 </div>
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[8]:</div>
+<div class="prompt input_prompt">In&nbsp;[7]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ocaml"><pre><span></span><span class="o">#</span><span class="n">install_printer</span> <span class="nn">Decompose</span><span class="p">.</span><span class="n">print</span><span class="o">;;</span>
@@ -1843,13 +2025,13 @@ Error: Unbound value first_path
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[8]:</div>
+<div class="prompt output_prompt">Out[7]:</div>
 
 
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>File &#34;jupyter cell 8&#34;, line 3, characters 51-61:
+<pre>File &#34;jupyter cell 7&#34;, line 3, characters 51-61:
 Error: Unbound value first_path
 </pre>
 </div>
@@ -1873,12 +2055,12 @@ Error: Unbound value first_path
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="try-this-container">
-  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Imandra-tools%20Introduction.ipynb%23try-cell-18" target="_blank" rel="nofollow">
+  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Imandra-tools%20Introduction.ipynb%23try-cell-16" target="_blank" rel="nofollow">
     <div class="try-this">Try this!</div>
   </a>
 </div>
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[9]:</div>
+<div class="prompt input_prompt">In&nbsp;[8]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ocaml"><pre><span></span><span class="o">#</span><span class="n">install_printer</span> <span class="nn">Region_pp</span><span class="p">.</span><span class="n">print</span><span class="o">;;</span>
@@ -1896,13 +2078,13 @@ Error: Unbound value first_path
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[9]:</div>
+<div class="prompt output_prompt">Out[8]:</div>
 
 
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>File &#34;jupyter cell 9&#34;, line 3, characters 0-18:
+<pre>File &#34;jupyter cell 8&#34;, line 3, characters 0-18:
 Error: Unbound value first_path_regions
 </pre>
 </div>
@@ -1923,12 +2105,12 @@ Error: Unbound value first_path_regions
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="try-this-container">
-  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Imandra-tools%20Introduction.ipynb%23try-cell-20" target="_blank" rel="nofollow">
+  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Imandra-tools%20Introduction.ipynb%23try-cell-18" target="_blank" rel="nofollow">
     <div class="try-this">Try this!</div>
   </a>
 </div>
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[10]:</div>
+<div class="prompt input_prompt">In&nbsp;[9]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ocaml"><pre><span></span><span class="o">#</span><span class="n">logic</span><span class="o">;;</span>
@@ -1954,7 +2136,7 @@ Error: Unbound value first_path_regions
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[10]:</div>
+<div class="prompt output_prompt">Out[9]:</div>
 
 
 
@@ -1986,7 +2168,7 @@ val rs : Imandra_interactive.Decompose.t list =
 
 
 <div class="output_html rendered_html output_subarea ">
-<div class="imandra-alternatives" id="alt-4d848d59-4c36-4247-bf97-92dec41674b3"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-ef393a20-215c-4ae6-afde-6be0dd3166c2" class="decompose"><textarea class="display-none">{
+<div class="imandra-alternatives" id="alt-89bc586a-4391-4883-b210-1849ff23e165"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-65f70db3-a921-4b7c-9988-bca21819837e" class="decompose"><textarea class="display-none">{
   &quot;regions&quot;: [
     {
       &quot;constraints&quot;: [ &quot;y = Set.union x y&quot; ],
@@ -2012,13 +2194,13 @@ val rs : Imandra_interactive.Decompose.t list =
 }</textarea><div class="decompose-foamtree"></div><div class="decompose-details"><div class="decompose-details-header">Regions details</div><div class="decompose-details-no-selection">No group selected.</div><div class="decompose-details-selection hidden"><div><span class="decompose-details-label">Direct sub-regions: </span><span class="decompose-details-direct-sub-regions-text">-</span></div><div><span class="decompose-details-label">Contained regions: </span><span class="decompose-details-contained-regions-text">-</span></div><div class="decompose-details-section-header">Constraints</div><div class="decompose-details-constraints"><pre class="decompose-details-constraint">&lt;constraint&gt;</pre></div><div class="decompose-details-invariant"><div class="decompose-details-section-header">Invariant</div><pre class="decompose-details-invariant-text">&lt;invariant&gt;</pre></div></div></div><script>
 (function () {
   require(['nbextensions/nbimandra/regions'], function (regions) {
-    var target = '#decompose-ef393a20-215c-4ae6-afde-6be0dd3166c2';
+    var target = '#decompose-65f70db3-a921-4b7c-9988-bca21819837e';
     regions.hydrate(target);
   });
 })();
-</script></div></div><div class="tab-pane"><div><div class="imandra-table" id="table-f79c4ed6-25f2-4d9b-9c32-5ba7246049c1"><table><thead><tr><th>Constraints</th><th>Invariant</th></tr></thead><tr><td><ul><li><pre>not (y = Set.union x y)</pre></li></ul></td><td><pre>F = Map.add' (Map.const false) z true</pre></td></tr><tr><td><ul><li><pre>y = Set.union x y</pre></li></ul></td><td><pre>F = Map.add' x z true</pre></td></tr></table></div></div></div></div><script>
+</script></div></div><div class="tab-pane"><div><div class="imandra-table" id="table-437984bd-fdab-4431-9fae-b7c9a8439bb3"><table><thead><tr><th>Constraints</th><th>Invariant</th></tr></thead><tr><td><ul><li><pre>not (y = Set.union x y)</pre></li></ul></td><td><pre>F = Map.add' (Map.const false) z true</pre></td></tr><tr><td><ul><li><pre>y = Set.union x y</pre></li></ul></td><td><pre>F = Map.add' x z true</pre></td></tr></table></div></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-4d848d59-4c36-4247-bf97-92dec41674b3';
+  var target = '#alt-89bc586a-4391-4883-b210-1849ff23e165';
   alternatives.hydrate(target);
 });
 </script></div>
@@ -2046,12 +2228,12 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="try-this-container">
-  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Imandra-tools%20Introduction.ipynb%23try-cell-22" target="_blank" rel="nofollow">
+  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Imandra-tools%20Introduction.ipynb%23try-cell-20" target="_blank" rel="nofollow">
     <div class="try-this">Try this!</div>
   </a>
 </div>
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[11]:</div>
+<div class="prompt input_prompt">In&nbsp;[10]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ocaml"><pre><span></span><span class="k">open</span> <span class="nc">Region_pp</span>
@@ -2129,7 +2311,7 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[11]:</div>
+<div class="prompt output_prompt">Out[10]:</div>
 
 
 
@@ -2296,12 +2478,12 @@ val print :
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="try-this-container">
-  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Imandra-tools%20Introduction.ipynb%23try-cell-24" target="_blank" rel="nofollow">
+  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Imandra-tools%20Introduction.ipynb%23try-cell-22" target="_blank" rel="nofollow">
     <div class="try-this">Try this!</div>
   </a>
 </div>
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[12]:</div>
+<div class="prompt input_prompt">In&nbsp;[11]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ocaml"><pre><span></span><span class="o">#</span><span class="n">install_printer</span> <span class="n">print</span><span class="o">;;</span>
@@ -2318,7 +2500,7 @@ val print :
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[12]:</div>
+<div class="prompt output_prompt">Out[11]:</div>
 
 
 
@@ -2360,12 +2542,12 @@ val print :
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="try-this-container">
-  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Imandra-tools%20Introduction.ipynb%23try-cell-26" target="_blank" rel="nofollow">
+  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Imandra-tools%20Introduction.ipynb%23try-cell-24" target="_blank" rel="nofollow">
     <div class="try-this">Try this!</div>
   </a>
 </div>
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[13]:</div>
+<div class="prompt input_prompt">In&nbsp;[12]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ocaml"><pre><span></span><span class="nn">Caml</span><span class="p">.</span><span class="nn">List</span><span class="p">.</span><span class="n">mapi</span> <span class="o">(</span><span class="k">fun</span> <span class="n">i</span> <span class="o">{</span><span class="nn">Decompose</span><span class="p">.</span><span class="n">reg_constraints</span><span class="o">;</span> <span class="o">_}</span> <span class="o">-&gt;</span>
@@ -2388,7 +2570,7 @@ val print :
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[13]:</div>
+<div class="prompt output_prompt">Out[12]:</div>
 
 
 
@@ -2422,12 +2604,12 @@ val region_1 : &#39;a Set.t -&gt; &#39;a Set.t -&gt; bool = &lt;fun&gt;
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="try-this-container">
-  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Imandra-tools%20Introduction.ipynb%23try-cell-28" target="_blank" rel="nofollow">
+  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Imandra-tools%20Introduction.ipynb%23try-cell-26" target="_blank" rel="nofollow">
     <div class="try-this">Try this!</div>
   </a>
 </div>
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[14]:</div>
+<div class="prompt input_prompt">In&nbsp;[13]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ocaml"><pre><span></span><span class="n">region_0</span> <span class="o">(</span><span class="nn">Set</span><span class="p">.</span><span class="n">of_list</span> <span class="o">[</span><span class="mi">1</span><span class="o">])</span> <span class="nn">Set</span><span class="p">.</span><span class="n">empty</span><span class="o">;;</span>
@@ -2447,7 +2629,7 @@ val region_1 : &#39;a Set.t -&gt; &#39;a Set.t -&gt; bool = &lt;fun&gt;
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[14]:</div>
+<div class="prompt output_prompt">Out[13]:</div>
 
 
 
