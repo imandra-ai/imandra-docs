@@ -718,7 +718,6 @@ type state = {
   callIncomingFrom : person option;
   peopleInCall : person list;
 }
-WARNING: your connection is experiencing high latency, response times might be slower than usual
 </pre>
 </div>
 
@@ -1221,7 +1220,7 @@ module CX : sig val state : state val person : int end
 
 
 <div class="output_html rendered_html output_subarea ">
-<div><pre>Counterexample (after 2 steps, 0.016s):
+<div><pre>Counterexample (after 2 steps, 0.086s):
  let (state : state) =
    {status = Idle; callIncomingFrom = None; peopleInCall = []}
  let (person : int) = 2
@@ -1238,7 +1237,7 @@ module CX : sig val state : state val person : int end
 
 
 <div class="output_html rendered_html output_subarea ">
-<div><div style="font-size: 1.2em; padding: 0.5em; border-top: 1px dashed #D84315; border-bottom: 1px dashed #D84315"><i class="fa fa-times-circle-o" style="margin-right: 0.5em; color: #D84315"></i><span>Refuted</span></div><div><div class="imandra-alternatives" id="alt-3b30a7fb-1186-422e-9b07-9b1bb30b2c2c"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>call graph</a></li><li class="" data-toggle="tab"><a>proof</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-graphviz" id="graphviz-b9ec80df-7e48-42b9-9a48-f2cdb9b97eaf"><textarea style="display: none">digraph &quot;call graph&quot; {
+<div><div style="font-size: 1.2em; padding: 0.5em; border-top: 1px dashed #D84315; border-bottom: 1px dashed #D84315"><i class="fa fa-times-circle-o" style="margin-right: 0.5em; color: #D84315"></i><span>Refuted</span></div><div><div class="imandra-alternatives" id="alt-827786eb-8e96-43d1-ac02-6abddc37ac02"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>call graph</a></li><li class="" data-toggle="tab"><a>proof</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-graphviz" id="graphviz-be88346d-5182-4078-9cc2-14191a3bbeb3"><textarea style="display: none">digraph &quot;call graph&quot; {
 goal [label=&quot;not\l(List.length (person :: state.peopleInCall) \&lt;= 0 \|\| state.status = CallActive)&quot;,shape=box,style=filled,color=&quot;cyan&quot;,fontname=&quot;courier&quot;,fontsize=14];
 call_161 [label=&quot;List.length (List.tl (person :: state.peopleInCall))&quot;,shape=box,style=filled,color=&quot;green&quot;,fontname=&quot;courier&quot;,fontsize=14];
 call_161 -&gt; expr_218 [label=&quot;=&quot;];
@@ -1253,33 +1252,33 @@ expr_218 -&gt; call_216 [label=&quot;calls&quot;];
 }
 </textarea><button class="btn btn-primary">Load graph</button><div class="imandra-graphviz-loading display-none">Loading..</div><div class="imandra-graphviz-target"></div><script>
 require(['nbextensions/nbimandra/graphviz'], function (graphviz) {
-  var target = '#graphviz-b9ec80df-7e48-42b9-9a48-f2cdb9b97eaf';
+  var target = '#graphviz-be88346d-5182-4078-9cc2-14191a3bbeb3';
   graphviz.hydrate(target);
 });
-</script></div></div><div class="tab-pane"><div class="imandra-proof-top"><div class="imandra-fold panel panel-default" id="fold-c5acd8d7-66a3-414e-aad4-07c14fc6b472"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>proof attempt</span></div></div><div class="panel-body collapse"><div class="imandra-proof"><div class="imandra-alternatives" id="alt-0dca05db-d5cf-4213-bd60-2c9c93ee24bf"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>summary</a></li><li class="" data-toggle="tab"><a>full</a></li><li class="" data-toggle="tab"><a>graph</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-table" id="table-1557875f-173a-42dc-a8d9-34c40f166f83"><table><tr><td><b>ground_instances</b></td><td>2</td></tr><tr><td><b>definitions</b></td><td>0</td></tr><tr><td><b>inductions</b></td><td>0</td></tr><tr><td><b>search_time</b></td><td><pre>0.016s</pre></td></tr><tr><td><b>details</b></td><td><div class="imandra-fold panel panel-default" id="fold-baa2c8f2-2892-401e-adf3-e26806a2f8e1"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><div class="imandra-table" id="table-a801c870-94ed-4387-a235-88fe735c68dd"><table><tr><td><b>smt_stats</b></td><td><div class="imandra-table" id="table-eb941389-1ce6-4fea-9667-e44fe42eefc7"><table><tr><td><b>num checks</b></td><td>5</td></tr><tr><td><b>arith assert lower</b></td><td>3</td></tr><tr><td><b>arith pivots</b></td><td>1</td></tr><tr><td><b>rlimit count</b></td><td>1064</td></tr><tr><td><b>mk clause</b></td><td>7</td></tr><tr><td><b>datatype occurs check</b></td><td>18</td></tr><tr><td><b>mk bool var</b></td><td>42</td></tr><tr><td><b>arith assert upper</b></td><td>2</td></tr><tr><td><b>datatype splits</b></td><td>9</td></tr><tr><td><b>decisions</b></td><td>11</td></tr><tr><td><b>propagations</b></td><td>4</td></tr><tr><td><b>conflicts</b></td><td>4</td></tr><tr><td><b>arith fixed eqs</b></td><td>1</td></tr><tr><td><b>datatype accessor ax</b></td><td>12</td></tr><tr><td><b>datatype constructor ax</b></td><td>13</td></tr><tr><td><b>num allocs</b></td><td>1414430608</td></tr><tr><td><b>final checks</b></td><td>6</td></tr><tr><td><b>added eqs</b></td><td>37</td></tr><tr><td><b>del clause</b></td><td>3</td></tr><tr><td><b>arith eq adapter</b></td><td>2</td></tr><tr><td><b>memory</b></td><td>18.360000</td></tr><tr><td><b>max memory</b></td><td>26.910000</td></tr></table></div></td></tr></table></div></div><script>
+</script></div></div><div class="tab-pane"><div class="imandra-proof-top"><div class="imandra-fold panel panel-default" id="fold-43d51713-12e2-483e-9ae7-1cfc9ca67e18"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>proof attempt</span></div></div><div class="panel-body collapse"><div class="imandra-proof"><div class="imandra-alternatives" id="alt-ee0326d0-9cb9-4f19-a179-39c8d4f1be66"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>summary</a></li><li class="" data-toggle="tab"><a>full</a></li><li class="" data-toggle="tab"><a>graph</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-table" id="table-534b37a3-b624-45b7-8cba-b60ab3ab27a2"><table><tr><td><b>ground_instances</b></td><td>2</td></tr><tr><td><b>definitions</b></td><td>0</td></tr><tr><td><b>inductions</b></td><td>0</td></tr><tr><td><b>search_time</b></td><td><pre>0.086s</pre></td></tr><tr><td><b>details</b></td><td><div class="imandra-fold panel panel-default" id="fold-3d4b916c-fdca-4286-b78b-f6b32f172b58"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><div class="imandra-table" id="table-36f5618f-35c5-4052-85b9-7219f9ba3a7b"><table><tr><td><b>smt_stats</b></td><td><div class="imandra-table" id="table-64eef823-a9fa-41f0-b220-3e13c6f44ded"><table><tr><td><b>num checks</b></td><td>5</td></tr><tr><td><b>arith assert lower</b></td><td>3</td></tr><tr><td><b>arith pivots</b></td><td>1</td></tr><tr><td><b>rlimit count</b></td><td>1064</td></tr><tr><td><b>mk clause</b></td><td>7</td></tr><tr><td><b>datatype occurs check</b></td><td>18</td></tr><tr><td><b>mk bool var</b></td><td>42</td></tr><tr><td><b>arith assert upper</b></td><td>2</td></tr><tr><td><b>datatype splits</b></td><td>9</td></tr><tr><td><b>decisions</b></td><td>11</td></tr><tr><td><b>propagations</b></td><td>4</td></tr><tr><td><b>conflicts</b></td><td>4</td></tr><tr><td><b>arith fixed eqs</b></td><td>1</td></tr><tr><td><b>datatype accessor ax</b></td><td>12</td></tr><tr><td><b>datatype constructor ax</b></td><td>13</td></tr><tr><td><b>num allocs</b></td><td>1432540772</td></tr><tr><td><b>final checks</b></td><td>6</td></tr><tr><td><b>added eqs</b></td><td>37</td></tr><tr><td><b>del clause</b></td><td>3</td></tr><tr><td><b>arith eq adapter</b></td><td>2</td></tr><tr><td><b>memory</b></td><td>18.460000</td></tr><tr><td><b>max memory</b></td><td>26.910000</td></tr></table></div></td></tr></table></div></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-baa2c8f2-2892-401e-adf3-e26806a2f8e1';
+  var target = '#fold-3d4b916c-fdca-4286-b78b-f6b32f172b58';
   fold.hydrate(target);
 });
-</script></div></td></tr></table></div></div><div class="tab-pane"><div class="imandra-fold panel panel-default" id="fold-2cabe2d3-3293-4156-ac63-4576b94d3b38"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.016s]
+</script></div></td></tr></table></div></div><div class="tab-pane"><div class="imandra-fold panel panel-default" id="fold-e47cb49e-1b4d-42d7-9f3f-913aeab4f16f"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.086s]
   if List.length
      (if AddPerson :var_0: = CallRejected then … else …).peopleInCall &gt; 
      0
   then
     (if AddPerson :var_0: = CallRejected then … else …).status =
     CallActive
-  else true</pre></li><li><div><h4>simplify</h4><div class="imandra-table" id="table-a3f51ccb-c5a4-46dc-9e3e-c0747a071456"><table><tr><td><b>into</b></td><td><pre>List.length (:var_0: :: :var_1:.peopleInCall) &lt;= 0
-|| :var_1:.status = CallActive</pre></td></tr><tr><td><b>expansions</b></td><td><pre>[]</pre></td></tr><tr><td><b>rewrite_steps</b></td><td><ul></ul></td></tr><tr><td><b>forward_chaining</b></td><td><ul></ul></td></tr></table></div></div></li><li><div>unroll<div class="imandra-table" id="table-800727a5-d836-4efd-a2c0-5e1a646bd9bf"><table><tr><td><b>expr</b></td><td><pre>(|List.length_1572| (|::_3| person_1045 (peopleInCall_996 state_1044)))</pre></td></tr><tr><td><b>expansions</b></td><td><ul></ul></td></tr></table></div></div></li><li><div>unroll<div class="imandra-table" id="table-251fd634-a4f2-4ebb-ba3b-e1956824da6d"><table><tr><td><b>expr</b></td><td><pre>(|List.length_1572|
+  else true</pre></li><li><div><h4>simplify</h4><div class="imandra-table" id="table-728728c9-658c-4a2a-8574-7cb6d923f507"><table><tr><td><b>into</b></td><td><pre>List.length (:var_0: :: :var_1:.peopleInCall) &lt;= 0
+|| :var_1:.status = CallActive</pre></td></tr><tr><td><b>expansions</b></td><td><pre>[]</pre></td></tr><tr><td><b>rewrite_steps</b></td><td><ul></ul></td></tr><tr><td><b>forward_chaining</b></td><td><ul></ul></td></tr></table></div></div></li><li><div>unroll<div class="imandra-table" id="table-a92c111e-fbe5-4d33-b874-45a921c89ce3"><table><tr><td><b>expr</b></td><td><pre>(|List.length_1572| (|::_3| person_1045 (peopleInCall_996 state_1044)))</pre></td></tr><tr><td><b>expansions</b></td><td><ul></ul></td></tr></table></div></div></li><li><div>unroll<div class="imandra-table" id="table-cd29cb8b-9247-4e26-81b7-ebf9ee76ca57"><table><tr><td><b>expr</b></td><td><pre>(|List.length_1572|
   (|get.::.1_1569| (|::_3| person_1045 (peopleInCall_996 state_1044))))</pre></td></tr><tr><td><b>expansions</b></td><td><ul></ul></td></tr></table></div></div></li><li>Sat (Some  let (state : state) =
    {status = Idle; callIncomingFrom = None; peopleInCall = []}
  let (person : int) = 2
 )</li></ul></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-2cabe2d3-3293-4156-ac63-4576b94d3b38';
+  var target = '#fold-e47cb49e-1b4d-42d7-9f3f-913aeab4f16f';
   fold.hydrate(target);
 });
-</script></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-12be53e8-760d-414d-8676-131c3639cae5"><textarea style="display: none">digraph &quot;proof&quot; {
-p_281 [label=&quot;Start (if List.length\l          (if AddPerson :var_0: = CallRejected then … else …).peopleInCall\l          \&gt; 0\l       then\l         (if AddPerson :var_0: = CallRejected then … else …).status =\l         CallActive\l       else true :time 0.016s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+</script></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-c5dd5452-e55a-4eb9-9d04-54b6e223f102"><textarea style="display: none">digraph &quot;proof&quot; {
+p_281 [label=&quot;Start (if List.length\l          (if AddPerson :var_0: = CallRejected then … else …).peopleInCall\l          \&gt; 0\l       then\l         (if AddPerson :var_0: = CallRejected then … else …).status =\l         CallActive\l       else true :time 0.086s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_281 -&gt; p_280 [label=&quot;&quot;];
 p_280 [label=&quot;Simplify (List.length (:var_0: :: :var_1:.peopleInCall) \&lt;= 0\l          \|\| :var_1:.status = CallActive :expansions [] :rw [] :fc [])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_280 -&gt; p_279 [label=&quot;&quot;];
@@ -1291,22 +1290,22 @@ p_277 [label=&quot;Sat (Some  let (state : state) =\l   \{status = Idle; callInc
 }
 </textarea><button class="btn btn-primary">Load graph</button><div class="imandra-graphviz-loading display-none">Loading..</div><div class="imandra-graphviz-target"></div><script>
 require(['nbextensions/nbimandra/graphviz'], function (graphviz) {
-  var target = '#graphviz-12be53e8-760d-414d-8676-131c3639cae5';
+  var target = '#graphviz-c5dd5452-e55a-4eb9-9d04-54b6e223f102';
   graphviz.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-0dca05db-d5cf-4213-bd60-2c9c93ee24bf';
+  var target = '#alt-ee0326d0-9cb9-4f19-a179-39c8d4f1be66';
   alternatives.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-c5acd8d7-66a3-414e-aad4-07c14fc6b472';
+  var target = '#fold-43d51713-12e2-483e-9ae7-1cfc9ca67e18';
   fold.hydrate(target);
 });
 </script></div></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-3b30a7fb-1186-422e-9b07-9b1bb30b2c2c';
+  var target = '#alt-827786eb-8e96-43d1-ac02-6abddc37ac02';
   alternatives.hydrate(target);
 });
 </script></div></div></div>
@@ -1474,7 +1473,7 @@ module CX : sig val _x_0 : action_v2 list end
 
 
 <div class="output_html rendered_html output_subarea ">
-<div><pre>Counterexample (after 4 steps, 0.021s):
+<div><pre>Counterexample (after 4 steps, 0.296s):
  let (_x_0 : action_v2 list) = [(AddPerson (4))]
 </pre></div>
 
@@ -1489,40 +1488,40 @@ module CX : sig val _x_0 : action_v2 list end
 
 
 <div class="output_html rendered_html output_subarea ">
-<div><div style="font-size: 1.2em; padding: 0.5em; border-top: 1px dashed #D84315; border-bottom: 1px dashed #D84315"><i class="fa fa-times-circle-o" style="margin-right: 0.5em; color: #D84315"></i><span>Refuted</span></div><div><div class="imandra-alternatives" id="alt-1f8bd576-e2d8-470c-bbe8-3c9af57ecbfe"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>call graph</a></li><li class="" data-toggle="tab"><a>proof</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-graphviz" id="graphviz-6279df4b-5aa5-4fcd-9fb2-a9b9cbc6019b"><textarea style="display: none">digraph &quot;call graph&quot; {
+<div><div style="font-size: 1.2em; padding: 0.5em; border-top: 1px dashed #D84315; border-bottom: 1px dashed #D84315"><i class="fa fa-times-circle-o" style="margin-right: 0.5em; color: #D84315"></i><span>Refuted</span></div><div><div class="imandra-alternatives" id="alt-9135e5c6-6f57-46e5-a51e-54944f329e75"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>call graph</a></li><li class="" data-toggle="tab"><a>proof</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-graphviz" id="graphviz-3d954d00-b646-4e0d-986c-3aeae1e02f2e"><textarea style="display: none">digraph &quot;call graph&quot; {
 goal [label=&quot;not\l(List.length\l (List.fold_left update_v2\l  \{status = …; callIncomingFrom = …; peopleInCall = …\} _x_0).peopleInCall\l \&lt;= 0\l \|\| (List.fold_left update_v2\l     \{status = …; callIncomingFrom = …; peopleInCall = …\} _x_0).status\l    = CallActive)&quot;,shape=box,style=filled,color=&quot;cyan&quot;,fontname=&quot;courier&quot;,fontsize=14];
-call_482 [label=&quot;List.length\l(List.tl\l (List.tl\l  (List.fold_left update_v2\l   \{status = …; callIncomingFrom = …; peopleInCall = …\} _x_0).peopleInCall))&quot;,shape=box,style=filled,color=&quot;yellow&quot;,fontname=&quot;courier&quot;,fontsize=14];
-expr_484 -&gt; call_482 [label=&quot;calls&quot;];
-call_215 [label=&quot;List.fold_left update_v2\l(if Is_a(CallIncomingFrom, List.hd _x_0)\l then\l   \{status = CallIncoming; callIncomingFrom = Some …;\l    peopleInCall = ….peopleInCall\}\l else\l if List.hd _x_0 = CallRejected\l then \{status = …; callIncomingFrom = …; peopleInCall = ….peopleInCall\}\l else if List.hd _x_0 = CallAccepted then … else …)\l(List.tl _x_0)&quot;,shape=box,style=filled,color=&quot;green&quot;,fontname=&quot;courier&quot;,fontsize=14];
-call_215 -&gt; expr_581 [label=&quot;=&quot;];
-expr_581 [label=&quot;if List.tl _x_0 = []\lthen\l  if Is_a(CallIncomingFrom, List.hd _x_0)\l  then\l    \{status = CallIncoming; callIncomingFrom = Some …;\l     peopleInCall = ….peopleInCall\}\l  else\l  if List.hd _x_0 = CallRejected\l  then\l    \{status = …; callIncomingFrom = …; peopleInCall = ….peopleInCall\}\l  else if List.hd _x_0 = CallAccepted then … else …\lelse\l  List.fold_left update_v2\l  (if Is_a(CallIncomingFrom, List.hd (List.tl _x_0))\l   then \{status = CallIncoming; callIncomingFrom = …; peopleInCall = …\}\l   else if List.hd (List.tl _x_0) = CallRejected then … else …)\l  (List.tl (List.tl _x_0))&quot;,shape=box,style=filled,color=&quot;grey&quot;,fontname=&quot;courier&quot;,fontsize=14];
-expr_216 -&gt; call_215 [label=&quot;calls&quot;];
-call_400 [label=&quot;List.length\l(List.tl\l (List.fold_left update_v2\l  \{status = …; callIncomingFrom = …; peopleInCall = …\} _x_0).peopleInCall)&quot;,shape=box,style=filled,color=&quot;green&quot;,fontname=&quot;courier&quot;,fontsize=14];
-call_400 -&gt; expr_484 [label=&quot;=&quot;];
-expr_484 [label=&quot;if List.tl\l   (List.fold_left update_v2\l    \{status = Idle; callIncomingFrom = None; peopleInCall = []\} _x_0).peopleInCall\l   = []\lthen 0\lelse\l  1\l  + List.length\l    (List.tl\l     (List.tl\l      (List.fold_left update_v2\l       \{status = Idle; callIncomingFrom = None; peopleInCall = []\} _x_0).peopleInCall))&quot;,shape=box,style=filled,color=&quot;grey&quot;,fontname=&quot;courier&quot;,fontsize=14];
-expr_402 -&gt; call_400 [label=&quot;calls&quot;];
-call_580 [label=&quot;List.fold_left update_v2\l(if Is_a(CallIncomingFrom, List.hd (List.tl _x_0))\l then\l   \{status = CallIncoming; callIncomingFrom = Some …;\l    peopleInCall = ….peopleInCall\}\l else\l if List.hd (List.tl _x_0) = CallRejected\l then \{status = …; callIncomingFrom = …; peopleInCall = ….peopleInCall\}\l else if List.hd (List.tl _x_0) = CallAccepted then … else …)\l(List.tl (List.tl _x_0))&quot;,shape=box,style=filled,color=&quot;yellow&quot;,fontname=&quot;courier&quot;,fontsize=14];
-expr_581 -&gt; call_580 [label=&quot;calls&quot;];
+call_488 [label=&quot;List.length\l(List.tl\l (List.tl\l  (List.fold_left update_v2\l   \{status = …; callIncomingFrom = …; peopleInCall = …\} _x_0).peopleInCall))&quot;,shape=box,style=filled,color=&quot;yellow&quot;,fontname=&quot;courier&quot;,fontsize=14];
+expr_490 -&gt; call_488 [label=&quot;calls&quot;];
+call_221 [label=&quot;List.fold_left update_v2\l(if Is_a(CallIncomingFrom, List.hd _x_0)\l then\l   \{status = CallIncoming; callIncomingFrom = Some …;\l    peopleInCall = ….peopleInCall\}\l else\l if List.hd _x_0 = CallRejected\l then \{status = …; callIncomingFrom = …; peopleInCall = ….peopleInCall\}\l else if List.hd _x_0 = CallAccepted then … else …)\l(List.tl _x_0)&quot;,shape=box,style=filled,color=&quot;green&quot;,fontname=&quot;courier&quot;,fontsize=14];
+call_221 -&gt; expr_587 [label=&quot;=&quot;];
+expr_587 [label=&quot;if List.tl _x_0 = []\lthen\l  if Is_a(CallIncomingFrom, List.hd _x_0)\l  then\l    \{status = CallIncoming; callIncomingFrom = Some …;\l     peopleInCall = ….peopleInCall\}\l  else\l  if List.hd _x_0 = CallRejected\l  then\l    \{status = …; callIncomingFrom = …; peopleInCall = ….peopleInCall\}\l  else if List.hd _x_0 = CallAccepted then … else …\lelse\l  List.fold_left update_v2\l  (if Is_a(CallIncomingFrom, List.hd (List.tl _x_0))\l   then \{status = CallIncoming; callIncomingFrom = …; peopleInCall = …\}\l   else if List.hd (List.tl _x_0) = CallRejected then … else …)\l  (List.tl (List.tl _x_0))&quot;,shape=box,style=filled,color=&quot;grey&quot;,fontname=&quot;courier&quot;,fontsize=14];
+expr_222 -&gt; call_221 [label=&quot;calls&quot;];
+call_406 [label=&quot;List.length\l(List.tl\l (List.fold_left update_v2\l  \{status = …; callIncomingFrom = …; peopleInCall = …\} _x_0).peopleInCall)&quot;,shape=box,style=filled,color=&quot;green&quot;,fontname=&quot;courier&quot;,fontsize=14];
+call_406 -&gt; expr_490 [label=&quot;=&quot;];
+expr_490 [label=&quot;if List.tl\l   (List.fold_left update_v2\l    \{status = Idle; callIncomingFrom = None; peopleInCall = []\} _x_0).peopleInCall\l   = []\lthen 0\lelse\l  1\l  + List.length\l    (List.tl\l     (List.tl\l      (List.fold_left update_v2\l       \{status = Idle; callIncomingFrom = None; peopleInCall = []\} _x_0).peopleInCall))&quot;,shape=box,style=filled,color=&quot;grey&quot;,fontname=&quot;courier&quot;,fontsize=14];
+expr_408 -&gt; call_406 [label=&quot;calls&quot;];
+call_586 [label=&quot;List.fold_left update_v2\l(if Is_a(CallIncomingFrom, List.hd (List.tl _x_0))\l then\l   \{status = CallIncoming; callIncomingFrom = Some …;\l    peopleInCall = ….peopleInCall\}\l else\l if List.hd (List.tl _x_0) = CallRejected\l then \{status = …; callIncomingFrom = …; peopleInCall = ….peopleInCall\}\l else if List.hd (List.tl _x_0) = CallAccepted then … else …)\l(List.tl (List.tl _x_0))&quot;,shape=box,style=filled,color=&quot;yellow&quot;,fontname=&quot;courier&quot;,fontsize=14];
+expr_587 -&gt; call_586 [label=&quot;calls&quot;];
 call_32 [label=&quot;List.length\l(List.fold_left update_v2\l \{status = …; callIncomingFrom = …; peopleInCall = …\} _x_0).peopleInCall&quot;,shape=box,style=filled,color=&quot;green&quot;,fontname=&quot;courier&quot;,fontsize=14];
-call_32 -&gt; expr_402 [label=&quot;=&quot;];
-expr_402 [label=&quot;if (List.fold_left update_v2\l    \{status = Idle; callIncomingFrom = None; peopleInCall = []\} _x_0).peopleInCall\l   = []\lthen 0\lelse\l  1\l  + List.length\l    (List.tl\l     (List.fold_left update_v2\l      \{status = Idle; callIncomingFrom = None; peopleInCall = []\} _x_0).peopleInCall)&quot;,shape=box,style=filled,color=&quot;grey&quot;,fontname=&quot;courier&quot;,fontsize=14];
+call_32 -&gt; expr_408 [label=&quot;=&quot;];
+expr_408 [label=&quot;if (List.fold_left update_v2\l    \{status = Idle; callIncomingFrom = None; peopleInCall = []\} _x_0).peopleInCall\l   = []\lthen 0\lelse\l  1\l  + List.length\l    (List.tl\l     (List.fold_left update_v2\l      \{status = Idle; callIncomingFrom = None; peopleInCall = []\} _x_0).peopleInCall)&quot;,shape=box,style=filled,color=&quot;grey&quot;,fontname=&quot;courier&quot;,fontsize=14];
 goal -&gt; call_32 [label=&quot;calls&quot;];
 call_30 [label=&quot;List.fold_left update_v2\l\{status = Idle; callIncomingFrom = None; peopleInCall = []\} _x_0&quot;,shape=box,style=filled,color=&quot;green&quot;,fontname=&quot;courier&quot;,fontsize=14];
-call_30 -&gt; expr_216 [label=&quot;=&quot;];
-expr_216 [label=&quot;if _x_0 = [] then \{status = Idle; callIncomingFrom = None; peopleInCall = []\}\lelse\l  List.fold_left update_v2\l  (if Is_a(CallIncomingFrom, List.hd _x_0)\l   then \{status = …; callIncomingFrom = …; peopleInCall = …\}\l   else if List.hd _x_0 = CallRejected then … else …)\l  (List.tl _x_0)&quot;,shape=box,style=filled,color=&quot;grey&quot;,fontname=&quot;courier&quot;,fontsize=14];
+call_30 -&gt; expr_222 [label=&quot;=&quot;];
+expr_222 [label=&quot;if _x_0 = [] then \{status = Idle; callIncomingFrom = None; peopleInCall = []\}\lelse\l  List.fold_left update_v2\l  (if Is_a(CallIncomingFrom, List.hd _x_0)\l   then \{status = …; callIncomingFrom = …; peopleInCall = …\}\l   else if List.hd _x_0 = CallRejected then … else …)\l  (List.tl _x_0)&quot;,shape=box,style=filled,color=&quot;grey&quot;,fontname=&quot;courier&quot;,fontsize=14];
 goal -&gt; call_30 [label=&quot;calls&quot;];
 }
 </textarea><button class="btn btn-primary">Load graph</button><div class="imandra-graphviz-loading display-none">Loading..</div><div class="imandra-graphviz-target"></div><script>
 require(['nbextensions/nbimandra/graphviz'], function (graphviz) {
-  var target = '#graphviz-6279df4b-5aa5-4fcd-9fb2-a9b9cbc6019b';
+  var target = '#graphviz-3d954d00-b646-4e0d-986c-3aeae1e02f2e';
   graphviz.hydrate(target);
 });
-</script></div></div><div class="tab-pane"><div class="imandra-proof-top"><div class="imandra-fold panel panel-default" id="fold-4559733b-83fd-456f-aeb7-c12f9d54e197"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>proof attempt</span></div></div><div class="panel-body collapse"><div class="imandra-proof"><div class="imandra-alternatives" id="alt-00489b95-60f3-4356-afe1-783c65ee416b"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>summary</a></li><li class="" data-toggle="tab"><a>full</a></li><li class="" data-toggle="tab"><a>graph</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-table" id="table-bb56c597-cd81-479b-9d8e-cec189096863"><table><tr><td><b>ground_instances</b></td><td>4</td></tr><tr><td><b>definitions</b></td><td>0</td></tr><tr><td><b>inductions</b></td><td>0</td></tr><tr><td><b>search_time</b></td><td><pre>0.021s</pre></td></tr><tr><td><b>details</b></td><td><div class="imandra-fold panel panel-default" id="fold-213303fd-fede-4204-8759-6eec78d2a0a4"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><div class="imandra-table" id="table-23b36a4a-c99e-48ce-ae10-7cdbbf3fad94"><table><tr><td><b>smt_stats</b></td><td><div class="imandra-table" id="table-08ff979d-7283-4622-9ff5-797b6de89ff5"><table><tr><td><b>num checks</b></td><td>9</td></tr><tr><td><b>arith assert lower</b></td><td>5</td></tr><tr><td><b>arith pivots</b></td><td>1</td></tr><tr><td><b>rlimit count</b></td><td>5487</td></tr><tr><td><b>mk clause</b></td><td>46</td></tr><tr><td><b>datatype occurs check</b></td><td>292</td></tr><tr><td><b>mk bool var</b></td><td>276</td></tr><tr><td><b>arith assert upper</b></td><td>3</td></tr><tr><td><b>datatype splits</b></td><td>55</td></tr><tr><td><b>decisions</b></td><td>208</td></tr><tr><td><b>arith add rows</b></td><td>1</td></tr><tr><td><b>propagations</b></td><td>172</td></tr><tr><td><b>conflicts</b></td><td>26</td></tr><tr><td><b>arith fixed eqs</b></td><td>5</td></tr><tr><td><b>datatype accessor ax</b></td><td>56</td></tr><tr><td><b>arith assert diseq</b></td><td>2</td></tr><tr><td><b>datatype constructor ax</b></td><td>67</td></tr><tr><td><b>num allocs</b></td><td>1489937732</td></tr><tr><td><b>final checks</b></td><td>20</td></tr><tr><td><b>added eqs</b></td><td>377</td></tr><tr><td><b>del clause</b></td><td>6</td></tr><tr><td><b>arith eq adapter</b></td><td>6</td></tr><tr><td><b>memory</b></td><td>18.650000</td></tr><tr><td><b>max memory</b></td><td>26.910000</td></tr></table></div></td></tr></table></div></div><script>
+</script></div></div><div class="tab-pane"><div class="imandra-proof-top"><div class="imandra-fold panel panel-default" id="fold-fb699d03-640f-4a0c-9f92-bb24dd4f7ec5"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>proof attempt</span></div></div><div class="panel-body collapse"><div class="imandra-proof"><div class="imandra-alternatives" id="alt-f71297a2-ac21-4064-9744-7d283cf7aebf"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>summary</a></li><li class="" data-toggle="tab"><a>full</a></li><li class="" data-toggle="tab"><a>graph</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-table" id="table-50b9c488-7ff4-4aa1-b2a8-c1ddb8f90e0d"><table><tr><td><b>ground_instances</b></td><td>4</td></tr><tr><td><b>definitions</b></td><td>0</td></tr><tr><td><b>inductions</b></td><td>0</td></tr><tr><td><b>search_time</b></td><td><pre>0.296s</pre></td></tr><tr><td><b>details</b></td><td><div class="imandra-fold panel panel-default" id="fold-eb0ed258-1ed2-4b44-951f-625403636af0"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><div class="imandra-table" id="table-e8af8915-4285-4105-92b0-de01d68c9ed6"><table><tr><td><b>smt_stats</b></td><td><div class="imandra-table" id="table-58e3913d-75cd-40b3-928e-1a0ad3316a3a"><table><tr><td><b>num checks</b></td><td>9</td></tr><tr><td><b>arith assert lower</b></td><td>5</td></tr><tr><td><b>arith pivots</b></td><td>1</td></tr><tr><td><b>rlimit count</b></td><td>5487</td></tr><tr><td><b>mk clause</b></td><td>46</td></tr><tr><td><b>datatype occurs check</b></td><td>292</td></tr><tr><td><b>mk bool var</b></td><td>276</td></tr><tr><td><b>arith assert upper</b></td><td>3</td></tr><tr><td><b>datatype splits</b></td><td>55</td></tr><tr><td><b>decisions</b></td><td>208</td></tr><tr><td><b>arith add rows</b></td><td>1</td></tr><tr><td><b>propagations</b></td><td>172</td></tr><tr><td><b>conflicts</b></td><td>26</td></tr><tr><td><b>arith fixed eqs</b></td><td>5</td></tr><tr><td><b>datatype accessor ax</b></td><td>56</td></tr><tr><td><b>arith assert diseq</b></td><td>2</td></tr><tr><td><b>datatype constructor ax</b></td><td>67</td></tr><tr><td><b>num allocs</b></td><td>1505567334</td></tr><tr><td><b>final checks</b></td><td>20</td></tr><tr><td><b>added eqs</b></td><td>377</td></tr><tr><td><b>del clause</b></td><td>6</td></tr><tr><td><b>arith eq adapter</b></td><td>6</td></tr><tr><td><b>memory</b></td><td>18.720000</td></tr><tr><td><b>max memory</b></td><td>26.910000</td></tr></table></div></td></tr></table></div></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-213303fd-fede-4204-8759-6eec78d2a0a4';
+  var target = '#fold-eb0ed258-1ed2-4b44-951f-625403636af0';
   fold.hydrate(target);
 });
-</script></div></td></tr></table></div></div><div class="tab-pane"><div class="imandra-fold panel panel-default" id="fold-64e92321-d1b2-455d-9a4e-baa33745c314"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.021s]
+</script></div></td></tr></table></div></div><div class="tab-pane"><div class="imandra-fold panel panel-default" id="fold-ec788949-9a11-4b21-b888-fb599fad0f04"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.296s]
   if List.length
      (List.fold_left update_v2
       {status = …; callIncomingFrom = …; peopleInCall = …} :var_0:).peopleInCall
@@ -1531,27 +1530,27 @@ require(['nbextensions/nbimandra/fold'], function (fold) {
     (List.fold_left update_v2
      {status = …; callIncomingFrom = …; peopleInCall = …} :var_0:).status
     = CallActive
-  else true</pre></li><li><div><h4>simplify</h4><div class="imandra-table" id="table-9961144f-880a-4847-a3ec-1ba1c6ed148c"><table><tr><td><b>into</b></td><td><pre>List.length
+  else true</pre></li><li><div><h4>simplify</h4><div class="imandra-table" id="table-5d8e4f16-251b-42d4-9a38-9433cf594552"><table><tr><td><b>into</b></td><td><pre>List.length
 (List.fold_left update_v2
  {status = …; callIncomingFrom = …; peopleInCall = …} :var_0:).peopleInCall
 &lt;= 0
 || (List.fold_left update_v2
     {status = …; callIncomingFrom = …; peopleInCall = …} :var_0:).status
-   = CallActive</pre></td></tr><tr><td><b>expansions</b></td><td><pre>[]</pre></td></tr><tr><td><b>rewrite_steps</b></td><td><ul></ul></td></tr><tr><td><b>forward_chaining</b></td><td><ul></ul></td></tr></table></div></div></li><li><div>unroll<div class="imandra-table" id="table-d86f55df-f2c2-4b2d-9488-9639096f5442"><table><tr><td><b>expr</b></td><td><pre>(|`List.fold_left update_v2[0]`_1637|
+   = CallActive</pre></td></tr><tr><td><b>expansions</b></td><td><pre>[]</pre></td></tr><tr><td><b>rewrite_steps</b></td><td><ul></ul></td></tr><tr><td><b>forward_chaining</b></td><td><ul></ul></td></tr></table></div></div></li><li><div>unroll<div class="imandra-table" id="table-a1fa892b-9039-437d-8d7c-00333b46c1b6"><table><tr><td><b>expr</b></td><td><pre>(|`List.fold_left update_v2[0]`_1637|
   (|rec_mk.state_1627| Idle_990 None_4 |[]_2|)
-  _x_0_1054)</pre></td></tr><tr><td><b>expansions</b></td><td><ul></ul></td></tr></table></div></div></li><li><div>unroll<div class="imandra-table" id="table-e2ca9fd8-0be0-4863-8d46-a23344ae7d1d"><table><tr><td><b>expr</b></td><td><pre>(|List.length_1642|
+  _x_0_1054)</pre></td></tr><tr><td><b>expansions</b></td><td><ul></ul></td></tr></table></div></div></li><li><div>unroll<div class="imandra-table" id="table-a9237f10-7193-4cf4-9791-d765ffbb798c"><table><tr><td><b>expr</b></td><td><pre>(|List.length_1642|
   (peopleInCall_996 (|`List.fold_left update_v2[0]`_1637|
-                      …</pre></td></tr><tr><td><b>expansions</b></td><td><ul></ul></td></tr></table></div></div></li><li><div>unroll<div class="imandra-table" id="table-f5efdfc5-9265-481a-b5bd-ff6296522cb5"><table><tr><td><b>expr</b></td><td><pre>(let ((a!1 (|get.::.1_1632| (peopleInCall_996 (|`List.fold_left update_v2[0]`_1637|
-                …</pre></td></tr><tr><td><b>expansions</b></td><td><ul></ul></td></tr></table></div></div></li><li><div>unroll<div class="imandra-table" id="table-240e2d0f-b16a-4759-a780-2b3c5a95cb24"><table><tr><td><b>expr</b></td><td><pre>(let ((a!1 (|rec_mk.state_1627|
+                      …</pre></td></tr><tr><td><b>expansions</b></td><td><ul></ul></td></tr></table></div></div></li><li><div>unroll<div class="imandra-table" id="table-0847bcc5-89b5-4f0a-bd54-d8ceae49e273"><table><tr><td><b>expr</b></td><td><pre>(let ((a!1 (|get.::.1_1632| (peopleInCall_996 (|`List.fold_left update_v2[0]`_1637|
+                …</pre></td></tr><tr><td><b>expansions</b></td><td><ul></ul></td></tr></table></div></div></li><li><div>unroll<div class="imandra-table" id="table-cd6b8457-6f0b-4289-a3eb-2e9c8aa205e7"><table><tr><td><b>expr</b></td><td><pre>(let ((a!1 (|rec_mk.state_1627|
              CallIncoming_992
              (Some_5 (|get.CallIncomin…</pre></td></tr><tr><td><b>expansions</b></td><td><ul></ul></td></tr></table></div></div></li><li>Sat (Some  let (_x_0 : action_v2 list) = [(AddPerson (4))]
 )</li></ul></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-64e92321-d1b2-455d-9a4e-baa33745c314';
+  var target = '#fold-ec788949-9a11-4b21-b888-fb599fad0f04';
   fold.hydrate(target);
 });
-</script></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-a9bce99d-6c21-4299-b488-7486eb0e93cf"><textarea style="display: none">digraph &quot;proof&quot; {
-p_288 [label=&quot;Start (if List.length\l          (List.fold_left update_v2\l           \{status = …; callIncomingFrom = …; peopleInCall = …\} :var_0:).peopleInCall\l          \&gt; 0\l       then\l         (List.fold_left update_v2\l          \{status = …; callIncomingFrom = …; peopleInCall = …\} :var_0:).status\l         = CallActive\l       else true :time 0.021s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+</script></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-f576b802-dd98-4a4c-8a2c-cd45654bd164"><textarea style="display: none">digraph &quot;proof&quot; {
+p_288 [label=&quot;Start (if List.length\l          (List.fold_left update_v2\l           \{status = …; callIncomingFrom = …; peopleInCall = …\} :var_0:).peopleInCall\l          \&gt; 0\l       then\l         (List.fold_left update_v2\l          \{status = …; callIncomingFrom = …; peopleInCall = …\} :var_0:).status\l         = CallActive\l       else true :time 0.296s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_288 -&gt; p_287 [label=&quot;&quot;];
 p_287 [label=&quot;Simplify (List.length\l          (List.fold_left update_v2\l           \{status = …; callIncomingFrom = …; peopleInCall = …\} :var_0:).peopleInCall\l          \&lt;= 0\l          \|\| (List.fold_left update_v2\l              \{status = …; callIncomingFrom = …; peopleInCall = …\}\l              :var_0:).status\l             = CallActive\l          :expansions [] :rw [] :fc [])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_287 -&gt; p_286 [label=&quot;&quot;];
@@ -1567,22 +1566,22 @@ p_282 [label=&quot;Sat (Some  let (_x_0 : action_v2 list) = [(AddPerson (4))]\l)
 }
 </textarea><button class="btn btn-primary">Load graph</button><div class="imandra-graphviz-loading display-none">Loading..</div><div class="imandra-graphviz-target"></div><script>
 require(['nbextensions/nbimandra/graphviz'], function (graphviz) {
-  var target = '#graphviz-a9bce99d-6c21-4299-b488-7486eb0e93cf';
+  var target = '#graphviz-f576b802-dd98-4a4c-8a2c-cd45654bd164';
   graphviz.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-00489b95-60f3-4356-afe1-783c65ee416b';
+  var target = '#alt-f71297a2-ac21-4064-9744-7d283cf7aebf';
   alternatives.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-4559733b-83fd-456f-aeb7-c12f9d54e197';
+  var target = '#fold-fb699d03-640f-4a0c-9f92-bb24dd4f7ec5';
   fold.hydrate(target);
 });
 </script></div></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-1f8bd576-e2d8-470c-bbe8-3c9af57ecbfe';
+  var target = '#alt-9135e5c6-6f57-46e5-a51e-54944f329e75';
   alternatives.hydrate(target);
 });
 </script></div></div></div>
@@ -1691,7 +1690,7 @@ module CX : sig val _x_0 : action list end
 
 
 <div class="output_html rendered_html output_subarea ">
-<div><pre>Counterexample (after 7 steps, 0.026s):
+<div><pre>Counterexample (after 7 steps, 0.498s):
  let (_x_0 : action list) =
    [(CallIncomingFrom (4)); CallAccepted; (CallIncomingFrom (5))]
 </pre></div>
@@ -1707,7 +1706,7 @@ module CX : sig val _x_0 : action list end
 
 
 <div class="output_html rendered_html output_subarea ">
-<div><div style="font-size: 1.2em; padding: 0.5em; border-top: 1px dashed #D84315; border-bottom: 1px dashed #D84315"><i class="fa fa-times-circle-o" style="margin-right: 0.5em; color: #D84315"></i><span>Refuted</span></div><div><div class="imandra-alternatives" id="alt-40407d2c-254d-493b-ba6e-7cbff3c214b7"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>call graph</a></li><li class="" data-toggle="tab"><a>proof</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-graphviz" id="graphviz-5187483d-acaa-4383-aba9-92f09747faac"><textarea style="display: none">digraph &quot;call graph&quot; {
+<div><div style="font-size: 1.2em; padding: 0.5em; border-top: 1px dashed #D84315; border-bottom: 1px dashed #D84315"><i class="fa fa-times-circle-o" style="margin-right: 0.5em; color: #D84315"></i><span>Refuted</span></div><div><div class="imandra-alternatives" id="alt-200bb278-4dc8-4463-b86a-77eb4c691a84"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>call graph</a></li><li class="" data-toggle="tab"><a>proof</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-graphviz" id="graphviz-cd217826-837c-4beb-9a22-8aa2c6aed28b"><textarea style="display: none">digraph &quot;call graph&quot; {
 goal [label=&quot;not\l(List.length\l (List.fold_left update\l  \{status = …; callIncomingFrom = …; peopleInCall = …\} _x_0).peopleInCall\l \&lt;= 0\l \|\| (List.fold_left update\l     \{status = …; callIncomingFrom = …; peopleInCall = …\} _x_0).status\l    = CallActive)&quot;,shape=box,style=filled,color=&quot;cyan&quot;,fontname=&quot;courier&quot;,fontsize=14];
 call_368 [label=&quot;List.length\l(List.tl\l (List.fold_left update\l  \{status = …; callIncomingFrom = …; peopleInCall = …\} _x_0).peopleInCall)&quot;,shape=box,style=filled,color=&quot;green&quot;,fontname=&quot;courier&quot;,fontsize=14];
 call_368 -&gt; expr_435 [label=&quot;=&quot;];
@@ -1744,15 +1743,15 @@ expr_204 -&gt; call_203 [label=&quot;calls&quot;];
 }
 </textarea><button class="btn btn-primary">Load graph</button><div class="imandra-graphviz-loading display-none">Loading..</div><div class="imandra-graphviz-target"></div><script>
 require(['nbextensions/nbimandra/graphviz'], function (graphviz) {
-  var target = '#graphviz-5187483d-acaa-4383-aba9-92f09747faac';
+  var target = '#graphviz-cd217826-837c-4beb-9a22-8aa2c6aed28b';
   graphviz.hydrate(target);
 });
-</script></div></div><div class="tab-pane"><div class="imandra-proof-top"><div class="imandra-fold panel panel-default" id="fold-f5591941-c608-4b8f-bd24-57dbf5fd8cea"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>proof attempt</span></div></div><div class="panel-body collapse"><div class="imandra-proof"><div class="imandra-alternatives" id="alt-2fd23fc5-27f2-4dc7-abd6-2220b4a92b64"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>summary</a></li><li class="" data-toggle="tab"><a>full</a></li><li class="" data-toggle="tab"><a>graph</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-table" id="table-07d89927-25d4-489e-be1b-26dc66c061ea"><table><tr><td><b>ground_instances</b></td><td>7</td></tr><tr><td><b>definitions</b></td><td>0</td></tr><tr><td><b>inductions</b></td><td>0</td></tr><tr><td><b>search_time</b></td><td><pre>0.027s</pre></td></tr><tr><td><b>details</b></td><td><div class="imandra-fold panel panel-default" id="fold-e3f18593-fba6-421b-9064-8c0ab7b67f62"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><div class="imandra-table" id="table-d6f01499-99d7-44b1-9a4a-ca254f8669f1"><table><tr><td><b>smt_stats</b></td><td><div class="imandra-table" id="table-0ac707d8-f126-4478-95cf-45cf1055b465"><table><tr><td><b>arith offset eqs</b></td><td>15</td></tr><tr><td><b>num checks</b></td><td>15</td></tr><tr><td><b>arith assert lower</b></td><td>40</td></tr><tr><td><b>arith pivots</b></td><td>26</td></tr><tr><td><b>rlimit count</b></td><td>13632</td></tr><tr><td><b>mk clause</b></td><td>139</td></tr><tr><td><b>datatype occurs check</b></td><td>632</td></tr><tr><td><b>mk bool var</b></td><td>810</td></tr><tr><td><b>arith assert upper</b></td><td>58</td></tr><tr><td><b>datatype splits</b></td><td>159</td></tr><tr><td><b>decisions</b></td><td>429</td></tr><tr><td><b>arith add rows</b></td><td>65</td></tr><tr><td><b>arith bound prop</b></td><td>4</td></tr><tr><td><b>propagations</b></td><td>506</td></tr><tr><td><b>conflicts</b></td><td>61</td></tr><tr><td><b>arith fixed eqs</b></td><td>66</td></tr><tr><td><b>datatype accessor ax</b></td><td>142</td></tr><tr><td><b>minimized lits</b></td><td>4</td></tr><tr><td><b>arith assert diseq</b></td><td>22</td></tr><tr><td><b>datatype constructor ax</b></td><td>181</td></tr><tr><td><b>num allocs</b></td><td>1533563874</td></tr><tr><td><b>final checks</b></td><td>40</td></tr><tr><td><b>added eqs</b></td><td>1629</td></tr><tr><td><b>del clause</b></td><td>70</td></tr><tr><td><b>arith eq adapter</b></td><td>51</td></tr><tr><td><b>memory</b></td><td>22.300000</td></tr><tr><td><b>max memory</b></td><td>26.910000</td></tr></table></div></td></tr></table></div></div><script>
+</script></div></div><div class="tab-pane"><div class="imandra-proof-top"><div class="imandra-fold panel panel-default" id="fold-d6c89000-480d-45b1-bbac-17ef3cbcb34b"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>proof attempt</span></div></div><div class="panel-body collapse"><div class="imandra-proof"><div class="imandra-alternatives" id="alt-1c0786e8-e852-4a60-89ea-d8f7f28d8c80"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>summary</a></li><li class="" data-toggle="tab"><a>full</a></li><li class="" data-toggle="tab"><a>graph</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-table" id="table-e3b19e12-4a3b-4bdb-9702-f47f97a6b245"><table><tr><td><b>ground_instances</b></td><td>7</td></tr><tr><td><b>definitions</b></td><td>0</td></tr><tr><td><b>inductions</b></td><td>0</td></tr><tr><td><b>search_time</b></td><td><pre>0.498s</pre></td></tr><tr><td><b>details</b></td><td><div class="imandra-fold panel panel-default" id="fold-60694901-cff0-4fb6-8fdf-20eb2d8a7814"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><div class="imandra-table" id="table-8e9ecdca-93fc-4c13-aad1-397de034cc54"><table><tr><td><b>smt_stats</b></td><td><div class="imandra-table" id="table-004fb9b2-44cf-4b21-bd4b-270360140b45"><table><tr><td><b>arith offset eqs</b></td><td>15</td></tr><tr><td><b>num checks</b></td><td>15</td></tr><tr><td><b>arith assert lower</b></td><td>40</td></tr><tr><td><b>arith pivots</b></td><td>26</td></tr><tr><td><b>rlimit count</b></td><td>13632</td></tr><tr><td><b>mk clause</b></td><td>139</td></tr><tr><td><b>datatype occurs check</b></td><td>632</td></tr><tr><td><b>mk bool var</b></td><td>810</td></tr><tr><td><b>arith assert upper</b></td><td>58</td></tr><tr><td><b>datatype splits</b></td><td>159</td></tr><tr><td><b>decisions</b></td><td>429</td></tr><tr><td><b>arith add rows</b></td><td>65</td></tr><tr><td><b>arith bound prop</b></td><td>4</td></tr><tr><td><b>propagations</b></td><td>506</td></tr><tr><td><b>conflicts</b></td><td>61</td></tr><tr><td><b>arith fixed eqs</b></td><td>66</td></tr><tr><td><b>datatype accessor ax</b></td><td>142</td></tr><tr><td><b>minimized lits</b></td><td>4</td></tr><tr><td><b>arith assert diseq</b></td><td>22</td></tr><tr><td><b>datatype constructor ax</b></td><td>181</td></tr><tr><td><b>num allocs</b></td><td>1576658805</td></tr><tr><td><b>final checks</b></td><td>40</td></tr><tr><td><b>added eqs</b></td><td>1629</td></tr><tr><td><b>del clause</b></td><td>70</td></tr><tr><td><b>arith eq adapter</b></td><td>51</td></tr><tr><td><b>memory</b></td><td>19.420000</td></tr><tr><td><b>max memory</b></td><td>26.910000</td></tr></table></div></td></tr></table></div></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-e3f18593-fba6-421b-9064-8c0ab7b67f62';
+  var target = '#fold-60694901-cff0-4fb6-8fdf-20eb2d8a7814';
   fold.hydrate(target);
 });
-</script></div></td></tr></table></div></div><div class="tab-pane"><div class="imandra-fold panel panel-default" id="fold-f8eb0f9d-ac7a-4d05-9bea-3712255c8c03"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.027s]
+</script></div></td></tr></table></div></div><div class="tab-pane"><div class="imandra-fold panel panel-default" id="fold-2c367ad5-d688-4f54-9235-5cfadfa390ba"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.498s]
   if List.length
      (List.fold_left update
       {status = …; callIncomingFrom = …; peopleInCall = …} :var_0:).peopleInCall
@@ -1761,31 +1760,31 @@ require(['nbextensions/nbimandra/fold'], function (fold) {
     (List.fold_left update
      {status = …; callIncomingFrom = …; peopleInCall = …} :var_0:).status
     = CallActive
-  else true</pre></li><li><div><h4>simplify</h4><div class="imandra-table" id="table-69632a34-6568-4a18-a62e-5d830f8b667d"><table><tr><td><b>into</b></td><td><pre>List.length
+  else true</pre></li><li><div><h4>simplify</h4><div class="imandra-table" id="table-bcbe3dcf-9284-4b6e-bd7a-7098096a802c"><table><tr><td><b>into</b></td><td><pre>List.length
 (List.fold_left update
  {status = …; callIncomingFrom = …; peopleInCall = …} :var_0:).peopleInCall
 &lt;= 0
 || (List.fold_left update
     {status = …; callIncomingFrom = …; peopleInCall = …} :var_0:).status
-   = CallActive</pre></td></tr><tr><td><b>expansions</b></td><td><pre>[]</pre></td></tr><tr><td><b>rewrite_steps</b></td><td><ul></ul></td></tr><tr><td><b>forward_chaining</b></td><td><ul></ul></td></tr></table></div></div></li><li><div>unroll<div class="imandra-table" id="table-83a1bfb9-d841-44e8-8421-145722b8ab71"><table><tr><td><b>expr</b></td><td><pre>(|`List.fold_left update[0]`_1726|
+   = CallActive</pre></td></tr><tr><td><b>expansions</b></td><td><pre>[]</pre></td></tr><tr><td><b>rewrite_steps</b></td><td><ul></ul></td></tr><tr><td><b>forward_chaining</b></td><td><ul></ul></td></tr></table></div></div></li><li><div>unroll<div class="imandra-table" id="table-44ed7f7e-8b4e-4668-b9af-41ce31450ee9"><table><tr><td><b>expr</b></td><td><pre>(|`List.fold_left update[0]`_1726|
   (|rec_mk.state_1716| Idle_990 None_4 |[]_2|)
-  _x_0_1056)</pre></td></tr><tr><td><b>expansions</b></td><td><ul></ul></td></tr></table></div></div></li><li><div>unroll<div class="imandra-table" id="table-2e65a2ec-e856-4fc0-8b14-c2c2ad4e15fa"><table><tr><td><b>expr</b></td><td><pre>(|List.length_1731|
+  _x_0_1056)</pre></td></tr><tr><td><b>expansions</b></td><td><ul></ul></td></tr></table></div></div></li><li><div>unroll<div class="imandra-table" id="table-8101755f-1ec4-48c2-bc06-f4dfc37b2e55"><table><tr><td><b>expr</b></td><td><pre>(|List.length_1731|
   (peopleInCall_996 (|`List.fold_left update[0]`_1726|
-                      (|r…</pre></td></tr><tr><td><b>expansions</b></td><td><ul></ul></td></tr></table></div></div></li><li><div>unroll<div class="imandra-table" id="table-a2021e46-bbfc-4c4a-bd4d-e9c879274154"><table><tr><td><b>expr</b></td><td><pre>(let ((a!1 (|get.::.1_1721| (peopleInCall_996 (|`List.fold_left update[0]`_1726|
-                   …</pre></td></tr><tr><td><b>expansions</b></td><td><ul></ul></td></tr></table></div></div></li><li><div>unroll<div class="imandra-table" id="table-a978d233-8444-4fbd-b4ce-6687b36dcf13"><table><tr><td><b>expr</b></td><td><pre>(let ((a!1 (|rec_mk.state_1716|
+                      (|r…</pre></td></tr><tr><td><b>expansions</b></td><td><ul></ul></td></tr></table></div></div></li><li><div>unroll<div class="imandra-table" id="table-c99e1790-e7e4-4181-885b-e7d93acdf8d4"><table><tr><td><b>expr</b></td><td><pre>(let ((a!1 (|get.::.1_1721| (peopleInCall_996 (|`List.fold_left update[0]`_1726|
+                   …</pre></td></tr><tr><td><b>expansions</b></td><td><ul></ul></td></tr></table></div></div></li><li><div>unroll<div class="imandra-table" id="table-a6763f06-351b-46f8-b56c-c592c9a24823"><table><tr><td><b>expr</b></td><td><pre>(let ((a!1 (|rec_mk.state_1716|
              CallIncoming_992
-             (Some_5 (|get.CallIncomin…</pre></td></tr><tr><td><b>expansions</b></td><td><ul></ul></td></tr></table></div></div></li><li><div>unroll<div class="imandra-table" id="table-5344624c-b218-4a2e-bad1-d1c5df359c0f"><table><tr><td><b>expr</b></td><td><pre>(let ((a!1 (|get.::.1_1721| (peopleInCall_996 (|`List.fold_left update[0]`_1726|
-                   …</pre></td></tr><tr><td><b>expansions</b></td><td><ul></ul></td></tr></table></div></div></li><li><div>unroll<div class="imandra-table" id="table-6cf58aeb-5ed1-4647-9ac9-f434e513e871"><table><tr><td><b>expr</b></td><td><pre>(let ((a!1 (Some_5 (|get.CallIncomingFrom.0_1712|
-                     (|get.::.0_1714| (|get.::.1_1…</pre></td></tr><tr><td><b>expansions</b></td><td><ul></ul></td></tr></table></div></div></li><li><div>unroll<div class="imandra-table" id="table-7d449745-93e6-482b-b9a8-87b832690388"><table><tr><td><b>expr</b></td><td><pre>(let ((a!1 ((_ is (CallIncomingFrom_985 (Int) action_984))
+             (Some_5 (|get.CallIncomin…</pre></td></tr><tr><td><b>expansions</b></td><td><ul></ul></td></tr></table></div></div></li><li><div>unroll<div class="imandra-table" id="table-800e5a2e-7e87-4e81-8a83-a0457218ae2b"><table><tr><td><b>expr</b></td><td><pre>(let ((a!1 (|get.::.1_1721| (peopleInCall_996 (|`List.fold_left update[0]`_1726|
+                   …</pre></td></tr><tr><td><b>expansions</b></td><td><ul></ul></td></tr></table></div></div></li><li><div>unroll<div class="imandra-table" id="table-0b245eda-8d2e-4480-ba72-a556a8fa0a1e"><table><tr><td><b>expr</b></td><td><pre>(let ((a!1 (Some_5 (|get.CallIncomingFrom.0_1712|
+                     (|get.::.0_1714| (|get.::.1_1…</pre></td></tr><tr><td><b>expansions</b></td><td><ul></ul></td></tr></table></div></div></li><li><div>unroll<div class="imandra-table" id="table-9e7b7bf3-314f-4bbd-a3d6-75750f56dc76"><table><tr><td><b>expr</b></td><td><pre>(let ((a!1 ((_ is (CallIncomingFrom_985 (Int) action_984))
              (|get.::.0_1714| (|get.::.1_…</pre></td></tr><tr><td><b>expansions</b></td><td><ul></ul></td></tr></table></div></div></li><li>Sat (Some  let (_x_0 : action list) =
    [(CallIncomingFrom (4)); CallAccepted; (CallIncomingFrom (5))]
 )</li></ul></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-f8eb0f9d-ac7a-4d05-9bea-3712255c8c03';
+  var target = '#fold-2c367ad5-d688-4f54-9235-5cfadfa390ba';
   fold.hydrate(target);
 });
-</script></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-6e6237c1-fe79-4ca8-9a33-21ea63482f9f"><textarea style="display: none">digraph &quot;proof&quot; {
-p_298 [label=&quot;Start (if List.length\l          (List.fold_left update\l           \{status = …; callIncomingFrom = …; peopleInCall = …\} :var_0:).peopleInCall\l          \&gt; 0\l       then\l         (List.fold_left update\l          \{status = …; callIncomingFrom = …; peopleInCall = …\} :var_0:).status\l         = CallActive\l       else true :time 0.027s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+</script></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-a887125d-9571-4265-82ef-fd34e728ad18"><textarea style="display: none">digraph &quot;proof&quot; {
+p_298 [label=&quot;Start (if List.length\l          (List.fold_left update\l           \{status = …; callIncomingFrom = …; peopleInCall = …\} :var_0:).peopleInCall\l          \&gt; 0\l       then\l         (List.fold_left update\l          \{status = …; callIncomingFrom = …; peopleInCall = …\} :var_0:).status\l         = CallActive\l       else true :time 0.498s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_298 -&gt; p_297 [label=&quot;&quot;];
 p_297 [label=&quot;Simplify (List.length\l          (List.fold_left update\l           \{status = …; callIncomingFrom = …; peopleInCall = …\} :var_0:).peopleInCall\l          \&lt;= 0\l          \|\| (List.fold_left update\l              \{status = …; callIncomingFrom = …; peopleInCall = …\}\l              :var_0:).status\l             = CallActive\l          :expansions [] :rw [] :fc [])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_297 -&gt; p_296 [label=&quot;&quot;];
@@ -1807,22 +1806,22 @@ p_289 [label=&quot;Sat (Some  let (_x_0 : action list) =\l   [(CallIncomingFrom 
 }
 </textarea><button class="btn btn-primary">Load graph</button><div class="imandra-graphviz-loading display-none">Loading..</div><div class="imandra-graphviz-target"></div><script>
 require(['nbextensions/nbimandra/graphviz'], function (graphviz) {
-  var target = '#graphviz-6e6237c1-fe79-4ca8-9a33-21ea63482f9f';
+  var target = '#graphviz-a887125d-9571-4265-82ef-fd34e728ad18';
   graphviz.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-2fd23fc5-27f2-4dc7-abd6-2220b4a92b64';
+  var target = '#alt-1c0786e8-e852-4a60-89ea-d8f7f28d8c80';
   alternatives.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-f5591941-c608-4b8f-bd24-57dbf5fd8cea';
+  var target = '#fold-d6c89000-480d-45b1-bbac-17ef3cbcb34b';
   fold.hydrate(target);
 });
 </script></div></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-40407d2c-254d-493b-ba6e-7cbff3c214b7';
+  var target = '#alt-200bb278-4dc8-4463-b86a-77eb4c691a84';
   alternatives.hydrate(target);
 });
 </script></div></div></div>
@@ -1995,7 +1994,7 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
 
 
 <div class="output_html rendered_html output_subarea ">
-<div><div style="font-size: 1.2em; padding: 0.5em; border-top: 1px solid green; border-bottom: 1px solid green"><i class="fa fa-check-circle" style="margin-right: 0.5em; color: green"></i><span>Proved up to 50 steps</span></div><div><div class="imandra-graphviz" id="graphviz-d5ed005f-1578-4ee1-87c4-5c659895c929"><textarea style="display: none">digraph &quot;call graph&quot; {
+<div><div style="font-size: 1.2em; padding: 0.5em; border-top: 1px solid green; border-bottom: 1px solid green"><i class="fa fa-check-circle" style="margin-right: 0.5em; color: green"></i><span>Proved up to 50 steps</span></div><div><div class="imandra-graphviz" id="graphviz-35e0480b-688d-466a-b144-53d622245009"><textarea style="display: none">digraph &quot;call graph&quot; {
 goal [label=&quot;not\l(List.length\l (List.fold_left good_update\l  \{status = …; callIncomingFrom = …; peopleInCall = …\} _x_0).peopleInCall\l \&lt;= 0\l \|\| (List.fold_left good_update\l     \{status = …; callIncomingFrom = …; peopleInCall = …\} _x_0).status\l    = CallActive)&quot;,shape=box,style=filled,color=&quot;cyan&quot;,fontname=&quot;courier&quot;,fontsize=14];
 call_139137 [label=&quot;List.fold_left good_update\l(if Is_a(CallIncomingFrom,\l    List.hd\l    (List.tl\l     (List.tl\l      (List.tl\l       (List.tl\l        (List.tl\l         (List.tl\l          (List.tl\l           (List.tl\l            (List.tl\l             (List.tl\l              (List.tl\l               (List.tl\l                (List.tl\l                 (List.tl\l                  (List.tl (List.tl (List.tl (List.tl (List.tl _x_0))))))))))))))))))))\l    &amp;&amp; (if Is_a(CallIncomingFrom,\l           List.hd\l           (List.tl\l            (List.tl\l             (List.tl\l              (List.tl\l               (List.tl\l                (List.tl\l                 (List.tl\l                  (List.tl\l                   (List.tl\l                    (List.tl\l                     (List.tl\l                      (List.tl\l                       (List.tl\l                        (List.tl (List.tl (List.tl (List.tl (List.tl _x_0)))))))))))))))))))\l           &amp;&amp; (if Is_a(CallIncomingFrom, …) &amp;&amp; ….status = Idle then …\l               else …).status\l              = Idle\l        then \{status = …; callIncomingFrom = …; peopleInCall = …\}\l        else\l        if List.hd\l           (List.tl\l            (List.tl\l             (List.tl\l              (List.tl\l               (List.tl\l                (List.tl\l                 (List.tl\l                  (List.tl\l                   (List.tl\l                    (List.tl\l                     (List.tl\l                      (List.tl\l                       (List.tl\l                        (List.tl (List.tl (List.tl (List.tl (List.tl _x_0))))))))))))))))))\l           = CallRejected\l           &amp;&amp; (if Is_a(CallIncomingFrom, …) &amp;&amp; ….status = Idle then …\l               else …).status\l              = …\l        then … else …).status\l       = Idle\l then\l   \{status = …; callIncomingFrom = Some …;\l    peopleInCall = ….peopleInCall\}\l else\l if List.hd\l    (List.tl\l     (List.tl\l      (List.tl\l       (List.tl\l        (List.tl\l         (List.tl\l          (List.tl\l           (List.tl\l            (List.tl\l             (List.tl\l              (List.tl\l               (List.tl\l                (List.tl\l                 (List.tl\l                  (List.tl (List.tl (List.tl (List.tl (List.tl _x_0)))))))))))))))))))\l    = CallRejected\l    &amp;&amp; (if Is_a(CallIncomingFrom,\l           List.hd\l           (List.tl\l            (List.tl\l             (List.tl\l              (List.tl\l               (List.tl\l                (List.tl\l                 (List.tl\l                  (List.tl\l                   (List.tl\l                    (List.tl\l                     (List.tl\l                      (List.tl\l                       (List.tl\l                        (List.tl (List.tl (List.tl (List.tl (List.tl _x_0)))))))))))))))))))\l           &amp;&amp; (if Is_a(CallIncomingFrom, …) &amp;&amp; ….status = Idle then …\l               else …).status\l              = Idle\l        then \{status = …; callIncomingFrom = …; peopleInCall = …\}\l        else\l        if List.hd\l           (List.tl\l            (List.tl\l             (List.tl\l              (List.tl\l               (List.tl\l                (List.tl\l                 (List.tl\l                  (List.tl\l                   (List.tl\l                    (List.tl\l                     (List.tl\l                      (List.tl\l                       (List.tl\l                        (List.tl (List.tl (List.tl (List.tl (List.tl _x_0))))))))))))))))))\l           = CallRejected\l           &amp;&amp; (if Is_a(CallIncomingFrom, …) &amp;&amp; ….status = Idle then …\l               else …).status\l              = …\l        then … else …).status\l       = …\l then\l   \{status = Idle; callIncomingFrom = …; peopleInCall = ….peopleInCall\}\l else\l if List.hd\l    (List.tl\l     (List.tl\l      (List.tl\l       (List.tl\l        (List.tl\l         (List.tl\l          (List.tl\l           (List.tl\l            (List.tl\l             (List.tl\l              (List.tl\l               (List.tl\l                (List.tl\l                 (List.tl\l                  (List.tl (List.tl (List.tl (List.tl (List.tl _x_0)))))))))))))))))))\l    = CallAccepted\l    &amp;&amp; (if Is_a(CallIncomingFrom,\l           List.hd\l           (List.tl\l            (List.tl\l             (List.tl\l              (List.tl\l               (List.tl\l                (List.tl\l                 (List.tl\l                  (List.tl\l                   (List.tl\l                    (List.tl\l                     (List.tl\l                      (List.tl\l                       (List.tl\l                        (List.tl (List.tl (List.tl (List.tl (List.tl _x_0)))))))))))))))))))\l           &amp;&amp; (if Is_a(CallIncomingFrom, …) &amp;&amp; ….status = Idle then …\l               else …).status\l              = Idle\l        then \{status = …; callIncomingFrom = …; peopleInCall = …\}\l        else\l        if List.hd\l           (List.tl\l            (List.tl\l             (List.tl\l              (List.tl\l               (List.tl\l                (List.tl\l                 (List.tl\l                  (List.tl\l                   (List.tl\l                    (List.tl\l                     (List.tl\l                      (List.tl\l                       (List.tl\l                        (List.tl (List.tl (List.tl (List.tl (List.tl _x_0))))))))))))))))))\l           = CallRejected\l           &amp;&amp; (if Is_a(CallIncomingFrom, …) &amp;&amp; ….status = Idle then …\l               else …).status\l              = …\l        then … else …).status\l       = …\l then … else …)\l(List.tl\l (List.tl\l  (List.tl\l   (List.tl\l    (List.tl\l     (List.tl\l      (List.tl\l       (List.tl\l        (List.tl\l         (List.tl\l          (List.tl\l           (List.tl\l            (List.tl\l             (List.tl\l              (List.tl (List.tl (List.tl (List.tl (List.tl (List.tl _x_0))))))))))))))))))))&quot;,shape=box,style=filled,color=&quot;green&quot;,fontname=&quot;courier&quot;,fontsize=14];
 call_139137 -&gt; expr_150188 [label=&quot;=&quot;];
@@ -2204,7 +2203,7 @@ expr_360945 -&gt; call_360944 [label=&quot;calls&quot;];
 }
 </textarea><button class="btn btn-primary">Load graph</button><div class="imandra-graphviz-loading display-none">Loading..</div><div class="imandra-graphviz-target"></div><script>
 require(['nbextensions/nbimandra/graphviz'], function (graphviz) {
-  var target = '#graphviz-d5ed005f-1578-4ee1-87c4-5c659895c929';
+  var target = '#graphviz-35e0480b-688d-466a-b144-53d622245009';
   graphviz.hydrate(target);
 });
 </script></div></div></div>
@@ -3324,7 +3323,7 @@ But simplification reduces this to true, using the definitions of
 
 
 <div class="output_html rendered_html output_subarea ">
-<div><div style="font-size: 1.2em; padding: 0.5em; border-top: 1px solid green; border-bottom: 1px solid green"><i class="fa fa-check-circle" style="margin-right: 0.5em; color: green"></i><span>Proved</span></div><div><div class="imandra-proof-top"><div class="imandra-fold panel panel-default" id="fold-7e22726c-16b7-40e7-b188-3c73f44e270b"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>proof</span></div></div><div class="panel-body collapse"><div class="imandra-proof"><div class="imandra-alternatives" id="alt-4114a422-65dd-4c3b-ad4d-4707c874a3cd"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>summary</a></li><li class="" data-toggle="tab"><a>full</a></li><li class="" data-toggle="tab"><a>graph</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-table" id="table-f98771b5-261e-4cfc-ba7f-40101634ac61"><table><tr><td><b>ground_instances</b></td><td>0</td></tr><tr><td><b>definitions</b></td><td>14</td></tr><tr><td><b>inductions</b></td><td>1</td></tr><tr><td><b>search_time</b></td><td><pre>1.442s</pre></td></tr></table></div></div><div class="tab-pane"><div class="imandra-fold panel panel-default" id="fold-a7c5484a-3753-4762-a675-01da8a2bab9a"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><ul><li><pre>start[1.442s, &quot;Goal&quot;]
+<div><div style="font-size: 1.2em; padding: 0.5em; border-top: 1px solid green; border-bottom: 1px solid green"><i class="fa fa-check-circle" style="margin-right: 0.5em; color: green"></i><span>Proved</span></div><div><div class="imandra-proof-top"><div class="imandra-fold panel panel-default" id="fold-c1bf8c92-5dd3-4b80-af6f-548cab36ca4a"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>proof</span></div></div><div class="panel-body collapse"><div class="imandra-proof"><div class="imandra-alternatives" id="alt-dba7c328-1f44-42a4-aba0-09b132bf7fda"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>summary</a></li><li class="" data-toggle="tab"><a>full</a></li><li class="" data-toggle="tab"><a>graph</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-table" id="table-7be90e7f-df29-4748-86ea-ca4b14e94fba"><table><tr><td><b>ground_instances</b></td><td>0</td></tr><tr><td><b>definitions</b></td><td>14</td></tr><tr><td><b>inductions</b></td><td>1</td></tr><tr><td><b>search_time</b></td><td><pre>4.881s</pre></td></tr></table></div></div><div class="tab-pane"><div class="imandra-fold panel panel-default" id="fold-72d44891-74a8-4b4c-b079-982379054d84"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><ul><li><pre>start[4.881s, &quot;Goal&quot;]
   if List.length
      (List.fold_right ((fun update_fn a b -&gt; update_fn b a) good_update)
       {status = …; callIncomingFrom = …; peopleInCall = …} :var_0:).peopleInCall
@@ -3333,13 +3332,13 @@ But simplification reduces this to true, using the definitions of
     (List.fold_right ((fun update_fn a b -&gt; update_fn b a) good_update)
      {status = …; callIncomingFrom = …; peopleInCall = …} :var_0:).status
     = CallActive
-  else true</pre></li><li><div><h4>subproof</h4><div class="imandra-fold panel panel-default" id="fold-854c57a5-fef2-46f8-9ada-c8b7c2a8b02e"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>List.length
+  else true</pre></li><li><div><h4>subproof</h4><div class="imandra-fold panel panel-default" id="fold-1ae9413a-8d60-4494-b5b7-c467a54d0433"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>List.length
 (List.fold_right ((fun update_fn a b -&gt; update_fn b a) good_update)
  {status = …; callIncomingFrom = …; peopleInCall = …} _x_0).peopleInCall
 &lt;= 0
 || (List.fold_right ((fun update_fn a b -&gt; update_fn b a) good_update)
     {status = …; callIncomingFrom = …; peopleInCall = …} _x_0).status
-   = CallActive</span></div></div><div class="panel-body collapse"><ul><li><pre>start[1.442s, &quot;1&quot;]
+   = CallActive</span></div></div><div class="panel-body collapse"><ul><li><pre>start[4.879s, &quot;1&quot;]
   List.length
   (List.fold_right ((fun update_fn a b -&gt; update_fn b a) good_update)
    {status = …; callIncomingFrom = …; peopleInCall = …} _x_0).peopleInCall
@@ -3420,7 +3419,7 @@ But simplification reduces this to true, using the definitions of
                    ((fun update_fn a b -&gt; update_fn b a) good_update)
                    {status = …; callIncomingFrom = …; peopleInCall = …}
                    _x_0).status
-                  = CallActive])</pre><ul><li><div><h5>subproof</h5><div class="imandra-fold panel panel-default" id="fold-35396031-21b6-4251-8196-ef157bdba16d"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>((_x_0 = []
+                  = CallActive])</pre><ul><li><div><h5>subproof</h5><div class="imandra-fold panel panel-default" id="fold-65e702e1-177c-4c7b-bf03-b897e5ce9f8d"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>((_x_0 = []
   || not
      (List.length
       (List.fold_right ((fun update_fn a b -&gt; update_fn b a) good_update)
@@ -3437,7 +3436,7 @@ But simplification reduces this to true, using the definitions of
     &lt;= 0)
 || (List.fold_right ((fun update_fn a b -&gt; update_fn b a) good_update)
     {status = …; callIncomingFrom = …; peopleInCall = …} _x_0).status
-   = CallActive</span></div></div><div class="panel-body collapse"><ul><li><pre>start[1.247s, &quot;1.1&quot;]
+   = CallActive</span></div></div><div class="panel-body collapse"><ul><li><pre>start[4.222s, &quot;1.1&quot;]
   ((_x_0 = []
     || not
        (List.length
@@ -3456,21 +3455,21 @@ But simplification reduces this to true, using the definitions of
       &lt;= 0)
   || (List.fold_right ((fun update_fn a b -&gt; update_fn b a) good_update)
       {status = …; callIncomingFrom = …; peopleInCall = …} _x_0).status
-     = CallActive</pre></li><li><div><h6>simplify</h6><div class="imandra-table" id="table-2eb9b646-0e65-4ca2-b5b7-4bf1bbe1a6bc"><table><tr><td><b>into</b></td><td><pre>true</pre></td></tr><tr><td><b>expansions</b></td><td><pre>[List.fold_right, List.fold_right, List.fold_right, List.fold_right,
+     = CallActive</pre></li><li><div><h6>simplify</h6><div class="imandra-table" id="table-b45aada1-d076-497e-a1b1-526ebc4bc7ee"><table><tr><td><b>into</b></td><td><pre>true</pre></td></tr><tr><td><b>expansions</b></td><td><pre>[List.fold_right, List.fold_right, List.fold_right, List.fold_right,
  List.fold_right, List.fold_right, List.fold_right, List.length,
  List.fold_right, List.fold_right, List.fold_right]</pre></td></tr><tr><td><b>rewrite_steps</b></td><td><ul></ul></td></tr><tr><td><b>forward_chaining</b></td><td><ul><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li></ul></td></tr></table></div></div></li></ul></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-35396031-21b6-4251-8196-ef157bdba16d';
+  var target = '#fold-65e702e1-177c-4c7b-bf03-b897e5ce9f8d';
   fold.hydrate(target);
 });
-</script></div></div></li><li><div><h5>subproof</h5><div class="imandra-fold panel panel-default" id="fold-15f5b00b-bdee-4080-9a6f-a1e3ff35b3e9"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>(not (_x_0 = [])
+</script></div></div></li><li><div><h5>subproof</h5><div class="imandra-fold panel panel-default" id="fold-e8650c82-49f8-4849-a973-c37a7eefc07b"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>(not (_x_0 = [])
  || List.length
     (List.fold_right ((fun update_fn a b -&gt; update_fn b a) good_update)
      {status = …; callIncomingFrom = …; peopleInCall = …} _x_0).peopleInCall
     &lt;= 0)
 || (List.fold_right ((fun update_fn a b -&gt; update_fn b a) good_update)
     {status = …; callIncomingFrom = …; peopleInCall = …} _x_0).status
-   = CallActive</span></div></div><div class="panel-body collapse"><ul><li><pre>start[1.247s, &quot;1.2&quot;]
+   = CallActive</span></div></div><div class="panel-body collapse"><ul><li><pre>start[4.222s, &quot;1.2&quot;]
   (not (_x_0 = [])
    || List.length
       (List.fold_right ((fun update_fn a b -&gt; update_fn b a) good_update)
@@ -3478,27 +3477,27 @@ require(['nbextensions/nbimandra/fold'], function (fold) {
       &lt;= 0)
   || (List.fold_right ((fun update_fn a b -&gt; update_fn b a) good_update)
       {status = …; callIncomingFrom = …; peopleInCall = …} _x_0).status
-     = CallActive</pre></li><li><div><h6>simplify</h6><div class="imandra-table" id="table-c1954374-dba9-4ef3-b872-97f55d975f94"><table><tr><td><b>into</b></td><td><pre>true</pre></td></tr><tr><td><b>expansions</b></td><td><pre>[List.length, List.fold_right, List.fold_right]</pre></td></tr><tr><td><b>rewrite_steps</b></td><td><ul></ul></td></tr><tr><td><b>forward_chaining</b></td><td><ul><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li></ul></td></tr></table></div></div></li></ul></div><script>
+     = CallActive</pre></li><li><div><h6>simplify</h6><div class="imandra-table" id="table-90ebd248-3d95-4666-b967-53a0eecde8e6"><table><tr><td><b>into</b></td><td><pre>true</pre></td></tr><tr><td><b>expansions</b></td><td><pre>[List.length, List.fold_right, List.fold_right]</pre></td></tr><tr><td><b>rewrite_steps</b></td><td><ul></ul></td></tr><tr><td><b>forward_chaining</b></td><td><ul><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li></ul></td></tr></table></div></div></li></ul></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-15f5b00b-bdee-4080-9a6f-a1e3ff35b3e9';
+  var target = '#fold-e8650c82-49f8-4849-a973-c37a7eefc07b';
   fold.hydrate(target);
 });
 </script></div></div></li></ul></div></li></ul></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-854c57a5-fef2-46f8-9ada-c8b7c2a8b02e';
+  var target = '#fold-1ae9413a-8d60-4494-b5b7-c467a54d0433';
   fold.hydrate(target);
 });
 </script></div></div></li></ul></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-a7c5484a-3753-4762-a675-01da8a2bab9a';
+  var target = '#fold-72d44891-74a8-4b4c-b079-982379054d84';
   fold.hydrate(target);
 });
-</script></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-9c2b32cb-464b-4597-b5af-1b9eb962a1e9"><textarea style="display: none">digraph &quot;proof&quot; {
-p_430 [label=&quot;Start (if List.length\l          (List.fold_right ((fun update_fn a b -\&gt; update_fn b a) good_update)\l           \{status = …; callIncomingFrom = …; peopleInCall = …\} :var_0:).peopleInCall\l          \&gt; 0\l       then\l         (List.fold_right ((fun update_fn a b -\&gt; update_fn b a) good_update)\l          \{status = …; callIncomingFrom = …; peopleInCall = …\} :var_0:).status\l         = CallActive\l       else true :name \&quot;Goal\&quot; :time 1.442s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+</script></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-9f823d19-084c-4d63-ac2a-9093282c99c8"><textarea style="display: none">digraph &quot;proof&quot; {
+p_430 [label=&quot;Start (if List.length\l          (List.fold_right ((fun update_fn a b -\&gt; update_fn b a) good_update)\l           \{status = …; callIncomingFrom = …; peopleInCall = …\} :var_0:).peopleInCall\l          \&gt; 0\l       then\l         (List.fold_right ((fun update_fn a b -\&gt; update_fn b a) good_update)\l          \{status = …; callIncomingFrom = …; peopleInCall = …\} :var_0:).status\l         = CallActive\l       else true :name \&quot;Goal\&quot; :time 4.881s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_430 -&gt; p_428 [label=&quot;&quot;];
 subgraph cluster_429 {
   color=blue;
-p_428 [label=&quot;Start (List.length\l       (List.fold_right ((fun update_fn a b -\&gt; update_fn b a) good_update)\l        \{status = …; callIncomingFrom = …; peopleInCall = …\} _x_0).peopleInCall\l       \&lt;= 0\l       \|\| (List.fold_right ((fun update_fn a b -\&gt; update_fn b a) good_update)\l           \{status = …; callIncomingFrom = …; peopleInCall = …\} _x_0).status\l          = CallActive\l       :name \&quot;1\&quot; :time 1.442s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+p_428 [label=&quot;Start (List.length\l       (List.fold_right ((fun update_fn a b -\&gt; update_fn b a) good_update)\l        \{status = …; callIncomingFrom = …; peopleInCall = …\} _x_0).peopleInCall\l       \&lt;= 0\l       \|\| (List.fold_right ((fun update_fn a b -\&gt; update_fn b a) good_update)\l           \{status = …; callIncomingFrom = …; peopleInCall = …\} _x_0).status\l          = CallActive\l       :name \&quot;1\&quot; :time 4.879s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_428 -&gt; p_427 [label=&quot;&quot;];
 p_427 [label=&quot;Induct ((functional ),\l        :scheme (_x_0 = [] ==\&gt; φ _x_0)\l                &amp;&amp; (not (_x_0 = []) &amp;&amp; φ (List.tl _x_0) ==\&gt; φ _x_0))&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_427 -&gt; p_426 [label=&quot;&quot;];
@@ -3506,14 +3505,14 @@ p_426 [label=&quot;Split (((not (_x_0 = [])\l         \|\| List.length\l        
 p_426 -&gt; p_421 [label=&quot;&quot;];
 subgraph cluster_422 {
   color=blue;
-p_421 [label=&quot;Start (((_x_0 = []\l         \|\| not\l            (List.length\l             (List.fold_right\l              ((fun update_fn a b -\&gt; update_fn b a) good_update)\l              \{status = …; callIncomingFrom = …; peopleInCall = …\}\l              (List.tl _x_0)).peopleInCall\l             \&lt;= 0\l             \|\| (List.fold_right\l                 ((fun update_fn a b -\&gt; update_fn b a) good_update)\l                 \{status = …; callIncomingFrom = …; peopleInCall = …\}\l                 (List.tl _x_0)).status\l                = CallActive))\l        \|\| List.length\l           (List.fold_right\l            ((fun update_fn a b -\&gt; update_fn b a) good_update)\l            \{status = …; callIncomingFrom = …; peopleInCall = …\} _x_0).peopleInCall\l           \&lt;= 0)\l       \|\| (List.fold_right ((fun update_fn a b -\&gt; update_fn b a) good_update)\l           \{status = …; callIncomingFrom = …; peopleInCall = …\} _x_0).status\l          = CallActive\l       :name \&quot;1.1\&quot; :time 1.247s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+p_421 [label=&quot;Start (((_x_0 = []\l         \|\| not\l            (List.length\l             (List.fold_right\l              ((fun update_fn a b -\&gt; update_fn b a) good_update)\l              \{status = …; callIncomingFrom = …; peopleInCall = …\}\l              (List.tl _x_0)).peopleInCall\l             \&lt;= 0\l             \|\| (List.fold_right\l                 ((fun update_fn a b -\&gt; update_fn b a) good_update)\l                 \{status = …; callIncomingFrom = …; peopleInCall = …\}\l                 (List.tl _x_0)).status\l                = CallActive))\l        \|\| List.length\l           (List.fold_right\l            ((fun update_fn a b -\&gt; update_fn b a) good_update)\l            \{status = …; callIncomingFrom = …; peopleInCall = …\} _x_0).peopleInCall\l           \&lt;= 0)\l       \|\| (List.fold_right ((fun update_fn a b -\&gt; update_fn b a) good_update)\l           \{status = …; callIncomingFrom = …; peopleInCall = …\} _x_0).status\l          = CallActive\l       :name \&quot;1.1\&quot; :time 4.222s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_421 -&gt; p_420 [label=&quot;&quot;];
 p_420 [label=&quot;Simplify (true\l          :expansions [List.fold_right;\l                       List.fold_right;\l                       List.fold_right;\l                       List.fold_right;\l                       List.fold_right;\l                       List.fold_right;\l                       List.fold_right;\l                       List.length;\l                       List.fold_right;\l                       List.fold_right;\l                       List.fold_right]\l          :rw []\l          :fc [List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 }
 p_426 -&gt; p_424 [label=&quot;&quot;];
 subgraph cluster_425 {
   color=blue;
-p_424 [label=&quot;Start ((not (_x_0 = [])\l        \|\| List.length\l           (List.fold_right\l            ((fun update_fn a b -\&gt; update_fn b a) good_update)\l            \{status = …; callIncomingFrom = …; peopleInCall = …\} _x_0).peopleInCall\l           \&lt;= 0)\l       \|\| (List.fold_right ((fun update_fn a b -\&gt; update_fn b a) good_update)\l           \{status = …; callIncomingFrom = …; peopleInCall = …\} _x_0).status\l          = CallActive\l       :name \&quot;1.2\&quot; :time 1.247s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+p_424 [label=&quot;Start ((not (_x_0 = [])\l        \|\| List.length\l           (List.fold_right\l            ((fun update_fn a b -\&gt; update_fn b a) good_update)\l            \{status = …; callIncomingFrom = …; peopleInCall = …\} _x_0).peopleInCall\l           \&lt;= 0)\l       \|\| (List.fold_right ((fun update_fn a b -\&gt; update_fn b a) good_update)\l           \{status = …; callIncomingFrom = …; peopleInCall = …\} _x_0).status\l          = CallActive\l       :name \&quot;1.2\&quot; :time 4.222s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_424 -&gt; p_423 [label=&quot;&quot;];
 p_423 [label=&quot;Simplify (true :expansions [List.length; List.fold_right; List.fold_right]\l          :rw [] :fc [List.len_nonnegative; List.len_nonnegative])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 }
@@ -3521,17 +3520,17 @@ p_423 [label=&quot;Simplify (true :expansions [List.length; List.fold_right; Lis
 }
 </textarea><button class="btn btn-primary">Load graph</button><div class="imandra-graphviz-loading display-none">Loading..</div><div class="imandra-graphviz-target"></div><script>
 require(['nbextensions/nbimandra/graphviz'], function (graphviz) {
-  var target = '#graphviz-9c2b32cb-464b-4597-b5af-1b9eb962a1e9';
+  var target = '#graphviz-9f823d19-084c-4d63-ac2a-9093282c99c8';
   graphviz.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-4114a422-65dd-4c3b-ad4d-4707c874a3cd';
+  var target = '#alt-dba7c328-1f44-42a4-aba0-09b132bf7fda';
   alternatives.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-7e22726c-16b7-40e7-b188-3c73f44e270b';
+  var target = '#fold-c1bf8c92-5dd3-4b80-af6f-548cab36ca4a';
   fold.hydrate(target);
 });
 </script></div></div></div></div>
