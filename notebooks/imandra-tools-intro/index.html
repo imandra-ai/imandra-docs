@@ -756,20 +756,23 @@ Note: this is an introductory walkthrough of the capabilities of `imandra-tools`
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html"><p>The above model is not very interesting but it exemplifies all that's needed for a model to be suitable for usage with <code>Idf</code>:</p>
 <ul>
-<li>A variant type describing all the possible messages a model can react to (<code>message</code>)</li>
-<li>A record type describing the current state of the model (<code>counter_state</code>)</li>
+<li>An algebraic type describing all the possible messages a model can react to (<code>message</code>)</li>
+<li>A type describing the current state of the model (<code>counter_state</code>)</li>
 <li>A transition function from message and state to new state (<code>one_step</code>)</li>
 </ul>
 <p>Now that the module is defined, we need to set-up <code>Idf</code> for its decomposition.</p>
-<p>We need to do is define a module implementing the <code>Idf_intf.SM_TPL</code> module signature:</p>
+<p>We need to do is define a module implementing the <code>Idf_intf.DFSM_SIG</code> module signature:</p>
 <ul>
+<li>a <code>State_machine</code> module implementing the <code>Idf_intf.SM_SIG</code> module signature:<ul>
 <li>an <code>event</code> type mapping to the model message type</li>
 <li>a <code>state</code> type mapping to the model state type</li>
 <li>an <code>init_state</code> value of type <code>state</code></li>
 <li>a <code>step</code> transition function mapping to the model transition function</li>
 <li>an <code>is_valid</code> function that takes an <code>event</code> and a <code>state</code> and checks whether that <code>&lt;event,state&gt;</code> transition is valid or not</li>
+</ul>
+</li>
 <li>a <code>module_name</code> value mapping to the name of the module being defined (this is necessary for reflection purposes)</li>
-<li>a <code>Template</code> module implementing the <code>Idf.Template.SIG</code> module signature:<ul>
+<li>a <code>Template</code> module implementing the <code>Idf_intf.TPL_SIG</code> module signature:<ul>
 <li>a <code>t</code> variant type symbolically describing events from our model</li>
 <li>a <code>concrete</code> function from <code>t</code> to a list of strings mapping the symbolic event to concrete <code>event</code> type names</li>
 </ul>
@@ -792,22 +795,25 @@ Note: this is an introductory walkthrough of the capabilities of `imandra-tools`
 
 <span class="k">module</span> <span class="nc">Decomp</span> <span class="o">=</span> <span class="k">struct</span>
 
-  <span class="k">open</span> <span class="nc">Model</span>
+  <span class="k">module</span> <span class="nc">State_machine</span> <span class="o">=</span> <span class="k">struct</span>
+    <span class="k">open</span> <span class="nc">Model</span>
 
-  <span class="k">type</span> <span class="n">event</span> <span class="o">=</span> <span class="n">message</span>
-  <span class="k">type</span> <span class="n">state</span> <span class="o">=</span> <span class="n">counter_state</span>
+    <span class="k">type</span> <span class="n">event</span> <span class="o">=</span> <span class="n">message</span>
+    <span class="k">type</span> <span class="n">state</span> <span class="o">=</span> <span class="n">counter_state</span>
 
-  <span class="k">let</span> <span class="n">init_state</span> <span class="o">:</span> <span class="n">state</span> <span class="o">=</span>
-    <span class="o">{</span> <span class="n">counter</span> <span class="o">=</span> <span class="mi">0</span> <span class="o">;</span> <span class="n">default</span> <span class="o">=</span> <span class="mi">23</span> <span class="o">}</span>
+    <span class="k">let</span> <span class="n">init_state</span> <span class="o">:</span> <span class="n">state</span> <span class="o">=</span>
+      <span class="o">{</span> <span class="n">counter</span> <span class="o">=</span> <span class="mi">0</span> <span class="o">;</span> <span class="n">default</span> <span class="o">=</span> <span class="mi">23</span> <span class="o">}</span>
 
-  <span class="k">let</span> <span class="n">step</span> <span class="o">(</span><span class="n">event</span> <span class="o">:</span> <span class="n">event</span><span class="o">)</span> <span class="o">(</span><span class="n">state</span> <span class="o">:</span> <span class="n">state</span><span class="o">)</span> <span class="o">:</span> <span class="n">state</span> <span class="o">=</span>
-     <span class="n">one_step</span> <span class="n">event</span> <span class="n">state</span>
+    <span class="k">let</span> <span class="n">step</span> <span class="o">(</span><span class="n">event</span> <span class="o">:</span> <span class="n">event</span><span class="o">)</span> <span class="o">(</span><span class="n">state</span> <span class="o">:</span> <span class="n">state</span><span class="o">)</span> <span class="o">:</span> <span class="n">state</span> <span class="o">=</span>
+       <span class="n">one_step</span> <span class="n">event</span> <span class="n">state</span>
 
-  <span class="k">let</span> <span class="n">is_valid</span> <span class="o">(</span><span class="n">event</span> <span class="o">:</span> <span class="n">event</span><span class="o">)</span> <span class="o">(</span><span class="n">state</span> <span class="o">:</span> <span class="n">state</span><span class="o">)</span> <span class="o">:</span> <span class="kt">bool</span> <span class="o">=</span>
-    <span class="k">match</span> <span class="n">event</span> <span class="k">with</span>
-    <span class="o">|</span> <span class="nc">Reset</span> <span class="o">-&gt;</span> <span class="bp">true</span>
-    <span class="o">|</span> <span class="nc">Add</span> <span class="n">n</span> <span class="o">-&gt;</span> <span class="n">n</span> <span class="o">&gt;</span> <span class="mi">0</span>
-    <span class="o">|</span> <span class="nc">Sub</span> <span class="n">n</span> <span class="o">-&gt;</span> <span class="n">n</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="n">n</span> <span class="o">&lt;=</span> <span class="n">state</span><span class="o">.</span><span class="n">counter</span>
+    <span class="k">let</span> <span class="n">is_valid</span> <span class="o">(</span><span class="n">event</span> <span class="o">:</span> <span class="n">event</span><span class="o">)</span> <span class="o">(</span><span class="n">state</span> <span class="o">:</span> <span class="n">state</span><span class="o">)</span> <span class="o">:</span> <span class="kt">bool</span> <span class="o">=</span>
+      <span class="k">match</span> <span class="n">event</span> <span class="k">with</span>
+      <span class="o">|</span> <span class="nc">Reset</span> <span class="o">-&gt;</span> <span class="bp">true</span>
+      <span class="o">|</span> <span class="nc">Add</span> <span class="n">n</span> <span class="o">-&gt;</span> <span class="n">n</span> <span class="o">&gt;</span> <span class="mi">0</span>
+      <span class="o">|</span> <span class="nc">Sub</span> <span class="n">n</span> <span class="o">-&gt;</span> <span class="n">n</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="n">n</span> <span class="o">&lt;=</span> <span class="n">state</span><span class="o">.</span><span class="n">counter</span>
+
+  <span class="k">end</span>
 
   <span class="k">let</span> <span class="n">module_name</span> <span class="o">=</span> <span class="s2">&quot;Decomp&quot;</span>
 
@@ -842,11 +848,14 @@ Note: this is an introductory walkthrough of the capabilities of `imandra-tools`
 <div class="output_text output_subarea output_execute_result">
 <pre>module Decomp :
   sig
-    type event = Model.message
-    type state = Model.counter_state
-    val init_state : state
-    val step : event -&gt; state -&gt; state
-    val is_valid : event -&gt; state -&gt; bool
+    module State_machine :
+      sig
+        type event = Model.message
+        type state = Model.counter_state
+        val init_state : state
+        val step : event -&gt; state -&gt; state
+        val is_valid : event -&gt; state -&gt; bool
+      end
     val module_name : string
     module Template :
       sig
@@ -910,7 +919,8 @@ Note: this is an introductory walkthrough of the capabilities of `imandra-tools`
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>val g___1 : Decomp.event list -&gt; Decomp.state = &lt;fun&gt;
+<pre>val g___1 : Decomp.State_machine.event list -&gt; Decomp.State_machine.state =
+  &lt;fun&gt;
 module Mex :
   sig
     module E = Imandra_interactive.Extract
@@ -936,10 +946,10 @@ module Mex :
     val get_Float_t : E.expr -&gt; Float.t
     val get_Model_message : E.expr -&gt; Model.message
     val get_Model_counter_state : E.expr -&gt; Model.counter_state
-    val get_Decomp_event : E.expr -&gt; Decomp.event
-    val get_Decomp_state : E.expr -&gt; Decomp.state
+    val get_Decomp_State_machine_event : E.expr -&gt; Decomp.State_machine.event
+    val get_Decomp_State_machine_state : E.expr -&gt; Decomp.State_machine.state
     val get_Decomp_Template_t : E.expr -&gt; Decomp.Template.t
-    type e_t = Decomp.event list
+    type e_t = Decomp.State_machine.event list
     type extract_type = { e : e_t; }
     val ret_e : extract_type -&gt; e_t
     val of_model :
@@ -951,21 +961,24 @@ module D :
   sig
     module Symbolic :
       sig
-        module SM :
+        module DFSM :
           sig
             module Template :
               sig
                 type t = Decomp.Template.t
                 val concrete : t -&gt; string list
               end
-            type state = Decomp.state
-            type event = Decomp.event
-            val init_state : state
-            val step : event -&gt; state -&gt; state
-            val is_valid : event -&gt; state -&gt; bool
+            module State_machine :
+              sig
+                type state = Decomp.State_machine.state
+                type event = Decomp.State_machine.event
+                val init_state : state
+                val step : event -&gt; state -&gt; state
+                val is_valid : event -&gt; state -&gt; bool
+              end
             val module_name : string
           end
-        type target = SM.Template.t list
+        type target = DFSM.Template.t list
         type step = Imandra_tools__Idf.Make(Decomp).Symbolic.step
         type node = Imandra_tools__Idf.Make(Decomp).Symbolic.node
         type edge = node * step * node
@@ -1060,9 +1073,13 @@ module D :
         val reify : int -&gt; paths -&gt; path list
         val reify_all : paths -&gt; path list
         val regions : path -&gt; Imandra_interactive.Decompose.t list
-        val samples : path -&gt; SM.event list
+        val samples : path -&gt; DFSM.State_machine.event list
         val ids : path -&gt; (Uuidm.t * Uuidm.t * Uuidm.t) list
-        val replay : path -&gt; (SM.state * SM.event * SM.state) list
+        val replay :
+          path -&gt;
+          (DFSM.State_machine.state * DFSM.State_machine.event *
+           DFSM.State_machine.state)
+          list
         val decompose : ?lazily:bool -&gt; decompose
         val decompose_par :
           ?active_regions:bool -&gt; schedule:scheduler -&gt; decompose
@@ -1074,21 +1091,24 @@ module D :
       end
     module Sampling :
       sig
-        module SM :
+        module DFSM :
           sig
             module Template :
               sig
                 type t = Decomp.Template.t
                 val concrete : t -&gt; string list
               end
-            type state = Decomp.state
-            type event = Decomp.event
-            val init_state : state
-            val step : event -&gt; state -&gt; state
-            val is_valid : event -&gt; state -&gt; bool
+            module State_machine :
+              sig
+                type state = Decomp.State_machine.state
+                type event = Decomp.State_machine.event
+                val init_state : state
+                val step : event -&gt; state -&gt; state
+                val is_valid : event -&gt; state -&gt; bool
+              end
             val module_name : string
           end
-        type target = SM.Template.t list
+        type target = DFSM.Template.t list
         type step = Imandra_tools__Idf.Make(Decomp).Sampling.step
         type node = Imandra_tools__Idf.Make(Decomp).Sampling.node
         type edge = node * step * node
@@ -1183,9 +1203,13 @@ module D :
         val reify : int -&gt; paths -&gt; path list
         val reify_all : paths -&gt; path list
         val regions : path -&gt; Imandra_interactive.Decompose.t list
-        val samples : path -&gt; SM.event list
+        val samples : path -&gt; DFSM.State_machine.event list
         val ids : path -&gt; (Uuidm.t * Uuidm.t * Uuidm.t) list
-        val replay : path -&gt; (SM.state * SM.event * SM.state) list
+        val replay :
+          path -&gt;
+          (DFSM.State_machine.state * DFSM.State_machine.event *
+           DFSM.State_machine.state)
+          list
         val decompose : ?lazily:bool -&gt; decompose
         val decompose_par :
           ?active_regions:bool -&gt; schedule:scheduler -&gt; decompose
@@ -1197,20 +1221,28 @@ module D :
       end
   end
 module IDF = D.Symbolic
-val g___2 : Decomp.event -&gt; Decomp.state -&gt; bool = &lt;fun&gt;
-val g___3 : Decomp.event -&gt; Decomp.state -&gt; bool = &lt;fun&gt;
-val side_cond_g___4_2 : Decomp.event list -&gt; Decomp.state -&gt; int -&gt; bool =
+val g___2 : Decomp.State_machine.event -&gt; Decomp.State_machine.state -&gt; bool =
   &lt;fun&gt;
-val side_cond_g___4_1 : Decomp.event list -&gt; Decomp.state -&gt; int -&gt; bool =
+val g___3 : Decomp.State_machine.event -&gt; Decomp.State_machine.state -&gt; bool =
   &lt;fun&gt;
-val side_cond_g___4_0 : Decomp.event list -&gt; Decomp.state -&gt; int -&gt; bool =
-  &lt;fun&gt;
-val target_g___4_2 : Decomp.event list -&gt; Decomp.state -&gt; Decomp.state =
-  &lt;fun&gt;
-val target_g___4_1 : Model.message list -&gt; Decomp.state -&gt; Decomp.state =
-  &lt;fun&gt;
-val target_g___4_0 : Decomp.event list -&gt; Decomp.state -&gt; Decomp.state =
-  &lt;fun&gt;
+val side_cond_g___4_2 :
+  Decomp.State_machine.event list -&gt;
+  Decomp.State_machine.state -&gt; int -&gt; bool = &lt;fun&gt;
+val side_cond_g___4_1 :
+  Decomp.State_machine.event list -&gt;
+  Decomp.State_machine.state -&gt; int -&gt; bool = &lt;fun&gt;
+val side_cond_g___4_0 :
+  Decomp.State_machine.event list -&gt;
+  Decomp.State_machine.state -&gt; int -&gt; bool = &lt;fun&gt;
+val target_g___4_2 :
+  Decomp.State_machine.event list -&gt;
+  Decomp.State_machine.state -&gt; Decomp.State_machine.state = &lt;fun&gt;
+val target_g___4_1 :
+  Model.message list -&gt;
+  Decomp.State_machine.state -&gt; Decomp.State_machine.state = &lt;fun&gt;
+val target_g___4_0 :
+  Decomp.State_machine.event list -&gt;
+  Decomp.State_machine.state -&gt; Decomp.State_machine.state = &lt;fun&gt;
 val paths : IDF.paths = &lt;abstr&gt;
 </pre>
 </div>
@@ -1258,18 +1290,20 @@ val paths : IDF.paths = &lt;abstr&gt;
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>val g___5 : Decomp.event list -&gt; bool = &lt;fun&gt;
-val g___6 : Decomp.event list -&gt; Decomp.state = &lt;fun&gt;
-val sc_g___9 : Decomp.event list -&gt; bool = &lt;fun&gt;
-val sc_g___27 : Decomp.event list -&gt; bool = &lt;fun&gt;
-val g___72 : Decomp.event list -&gt; bool = &lt;fun&gt;
-val g___73 : Model.message list -&gt; Decomp.state = &lt;fun&gt;
-val sc_g___85 : Decomp.event list -&gt; bool = &lt;fun&gt;
-val sc_g___241 : Decomp.event list -&gt; bool = &lt;fun&gt;
-val g___912 : Decomp.event list -&gt; bool = &lt;fun&gt;
-val g___913 : Decomp.event list -&gt; Decomp.state = &lt;fun&gt;
-val sc_g___920 : Decomp.event list -&gt; bool = &lt;fun&gt;
-val sc_g___1255 : Decomp.event list -&gt; bool = &lt;fun&gt;
+<pre>val g___5 : Decomp.State_machine.event list -&gt; bool = &lt;fun&gt;
+val g___6 : Decomp.State_machine.event list -&gt; Decomp.State_machine.state =
+  &lt;fun&gt;
+val sc_g___9 : Decomp.State_machine.event list -&gt; bool = &lt;fun&gt;
+val sc_g___27 : Decomp.State_machine.event list -&gt; bool = &lt;fun&gt;
+val g___72 : Decomp.State_machine.event list -&gt; bool = &lt;fun&gt;
+val g___73 : Model.message list -&gt; Decomp.State_machine.state = &lt;fun&gt;
+val sc_g___85 : Decomp.State_machine.event list -&gt; bool = &lt;fun&gt;
+val sc_g___241 : Decomp.State_machine.event list -&gt; bool = &lt;fun&gt;
+val g___912 : Decomp.State_machine.event list -&gt; bool = &lt;fun&gt;
+val g___913 : Decomp.State_machine.event list -&gt; Decomp.State_machine.state =
+  &lt;fun&gt;
+val sc_g___920 : Decomp.State_machine.event list -&gt; bool = &lt;fun&gt;
+val sc_g___1255 : Decomp.State_machine.event list -&gt; bool = &lt;fun&gt;
 val first_path : IDF.path =
   [(&lt;abstr&gt;, &lt;abstr&gt;, &lt;abstr&gt;); (&lt;abstr&gt;, &lt;abstr&gt;, &lt;abstr&gt;);
    (&lt;abstr&gt;, &lt;abstr&gt;, &lt;abstr&gt;)]
@@ -1357,13 +1391,16 @@ val first_path : IDF.path =
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>- : (IDF.SM.state * IDF.SM.event * IDF.SM.state) list =
-[({Model.counter = 0; default = 23}, Model.Add 1336,
-  {Model.counter = 1336; default = 23});
- ({Model.counter = 1336; default = 23}, Model.Add 1,
-  {Model.counter = 1337; default = 23});
- ({Model.counter = 1337; default = 23}, Model.Reset,
-  {Model.counter = 23; default = 23})]
+<pre>- : (IDF.DFSM.State_machine.state * IDF.DFSM.State_machine.event *
+     IDF.DFSM.State_machine.state)
+    list
+=
+[({Model.counter = 0; default = 23}, Model.Add 1,
+  {Model.counter = 1; default = 23});
+ ({Model.counter = 1; default = 23}, Model.Add 1,
+  {Model.counter = 2; default = 23});
+ ({Model.counter = 2; default = 23}, Model.Reset,
+  {Model.counter = 0; default = 23})]
 </pre>
 </div>
 
@@ -1530,20 +1567,18 @@ val first_path : IDF.path =
 <pre>- : Imandra_interactive.Decompose.t list =
 [---[region]---
  Constraints:
-   [ (List.tl (List.tl (List.tl e))) = []
-   ; (List.hd (List.tl e)) is Model.Add
+   [ (List.hd (List.tl e)) is Model.Add
    ; (List.hd e) is Model.Add
-   ; (List.hd e) is Model.Add
+   ; (List.tl (List.tl (List.tl e))) = []
    ; 0 &lt; (List.hd e).Model.Add_0 &lt;= 9000 ]
  Invariant:
    Model.{ counter = (List.hd e).Model.Add_0 ; default = 23 }
   -------------;
  ---[region]---
  Constraints:
-   [ (List.tl (List.tl (List.tl e))) = []
-   ; (List.hd (List.tl e)) is Model.Add
+   [ (List.hd (List.tl e)) is Model.Add
    ; (List.hd e) is Model.Add
-   ; (List.hd e) is Model.Add
+   ; (List.tl (List.tl (List.tl e))) = []
    ; (List.hd e).Model.Add_0 = 1337
    ; (List.hd (List.tl e)).Model.Add_0 &gt; 0 ]
  Invariant:
@@ -1552,12 +1587,11 @@ val first_path : IDF.path =
  ---[region]---
  Constraints:
    [ (List.hd e) is Model.Add
-   ; (List.hd e).Model.Add_0 = 1337
-   ; (List.hd e) is Model.Add
-   ; (List.tl (List.tl (List.tl e))) = []
    ; (List.hd (List.tl e)) is Model.Add
-   ; (List.hd (List.tl e)).Model.Add_0 &gt; 0
-   ; (List.hd (List.tl (List.tl e))) is Model.Reset ]
+   ; (List.hd (List.tl (List.tl e))) is Model.Reset
+   ; (List.hd e).Model.Add_0 = 1337
+   ; (List.tl (List.tl (List.tl e))) = []
+   ; (List.hd (List.tl e)).Model.Add_0 &gt; 0 ]
  Invariant:
    {Model.counter = 0; Model.default = 23}
   -------------]
@@ -1643,7 +1677,7 @@ val rs : Imandra_interactive.Decompose.t list =
 
 
 <div class="output_html rendered_html output_subarea ">
-<div class="imandra-alternatives" id="alt-6ee0e9b2-0377-4c1b-9fa6-f625b5777566"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-8a90e94b-7cb3-4db1-9590-081ad935bb7d" class="decompose"><textarea class="display-none">{
+<div class="imandra-alternatives" id="alt-dd623889-99ca-4667-9dbc-fc368b68cd54"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-f3f228da-17cf-4c74-adc1-9054345afe6e" class="decompose"><textarea class="display-none">{
   &quot;regions&quot;: [
     {
       &quot;constraints&quot;: [ &quot;y = Set.union x y&quot; ],
@@ -1669,13 +1703,13 @@ val rs : Imandra_interactive.Decompose.t list =
 }</textarea><div class="decompose-foamtree"></div><div class="decompose-details"><div class="decompose-details-header">Regions details</div><div class="decompose-details-no-selection">No group selected.</div><div class="decompose-details-selection hidden"><div><span class="decompose-details-label">Direct sub-regions: </span><span class="decompose-details-direct-sub-regions-text">-</span></div><div><span class="decompose-details-label">Contained regions: </span><span class="decompose-details-contained-regions-text">-</span></div><div class="decompose-details-section-header">Constraints</div><div class="decompose-details-constraints"><pre class="decompose-details-constraint">&lt;constraint&gt;</pre></div><div class="decompose-details-invariant"><div class="decompose-details-section-header">Invariant</div><pre class="decompose-details-invariant-text">&lt;invariant&gt;</pre></div></div></div><script>
 (function () {
   require(['nbextensions/nbimandra/regions'], function (regions) {
-    var target = '#decompose-8a90e94b-7cb3-4db1-9590-081ad935bb7d';
+    var target = '#decompose-f3f228da-17cf-4c74-adc1-9054345afe6e';
     regions.hydrate(target);
   });
 })();
-</script></div></div><div class="tab-pane"><div><div class="imandra-table" id="table-b8cef288-0dbf-45bd-a9ca-595754654a97"><table><thead><tr><th>Constraints</th><th>Invariant</th></tr></thead><tr><td><ul><li><pre>not (y = Set.union x y)</pre></li></ul></td><td><pre>Map.add' (Map.const false) z true</pre></td></tr><tr><td><ul><li><pre>y = Set.union x y</pre></li></ul></td><td><pre>Map.add' x z true</pre></td></tr></table></div></div></div></div><script>
+</script></div></div><div class="tab-pane"><div><div class="imandra-table" id="table-adb6db28-4571-4efd-b1f0-4ed50fd2f47f"><table><thead><tr><th>Constraints</th><th>Invariant</th></tr></thead><tr><td><ul><li><pre>not (y = Set.union x y)</pre></li></ul></td><td><pre>Map.add' (Map.const false) z true</pre></td></tr><tr><td><ul><li><pre>y = Set.union x y</pre></li></ul></td><td><pre>Map.add' x z true</pre></td></tr></table></div></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-6ee0e9b2-0377-4c1b-9fa6-f625b5777566';
+  var target = '#alt-dd623889-99ca-4667-9dbc-fc368b68cd54';
   alternatives.hydrate(target);
 });
 </script></div>
@@ -1805,8 +1839,8 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
   end
 module PPrinter :
   sig
-    type x_t = Custom.t
-    type node = x_t Imandra_tools.Region_pp_intf.node_
+    type custom = Custom.t
+    type node = custom Imandra_tools.Region_pp_intf.node_
     module XF :
       sig
         val map : (node -&gt; node) -&gt; node -&gt; node
@@ -1863,13 +1897,13 @@ module PPrinter :
       Imandra_surface.Top_result.decompose_region -&gt; string
   end
 val refine_ :
-  PPrinter.x_t Imandra_tools.Region_pp_intf.node_ -&gt;
-  PPrinter.x_t Imandra_tools.Region_pp_intf.node_ = &lt;fun&gt;
+  PPrinter.custom Imandra_tools.Region_pp_intf.node_ -&gt;
+  PPrinter.custom Imandra_tools.Region_pp_intf.node_ = &lt;fun&gt;
 val gather_keys :
-  PPrinter.x_t Imandra_tools.Region_pp_intf.node_ -&gt;
-  PPrinter.x_t Imandra_tools.Region_pp_intf.node_ list = &lt;fun&gt;
-val is_proper_set : PPrinter.x_t Imandra_tools.Region_pp_intf.node_ -&gt; bool =
-  &lt;fun&gt;
+  PPrinter.custom Imandra_tools.Region_pp_intf.node_ -&gt;
+  PPrinter.custom Imandra_tools.Region_pp_intf.node_ list = &lt;fun&gt;
+val is_proper_set :
+  PPrinter.custom Imandra_tools.Region_pp_intf.node_ -&gt; bool = &lt;fun&gt;
 val refine : PPrinter.node -&gt; PPrinter.node CCList.t = &lt;fun&gt;
 val print :
   Format.formatter -&gt; Imandra_surface.Top_result.decompose_region -&gt; unit =
