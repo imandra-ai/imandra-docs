@@ -1575,7 +1575,7 @@ val first_path : IDF.path =
    ; (List.hd e).Model.Add_0 = 1337
    ; (List.hd (List.tl e)).Model.Add_0 &gt; 0 ]
  Invariant:
-   {Model.counter = 23; Model.default = 23}
+   Model.{ counter = 23 ; default = 23 }
   -------------;
  ---[region]---
  Constraints:
@@ -1586,7 +1586,7 @@ val first_path : IDF.path =
    ; (List.hd e).Model.Add_0 = 1337
    ; (List.hd (List.tl e)).Model.Add_0 &gt; 0 ]
  Invariant:
-   {Model.counter = 0; Model.default = 23}
+   Model.{ counter = 0 ; default = 23 }
   -------------]
 </pre>
 </div>
@@ -1670,7 +1670,7 @@ val rs : Imandra_interactive.Decompose.t list =
 
 
 <div class="output_html rendered_html output_subarea ">
-<div class="imandra-alternatives" id="alt-406d8a5f-7a2e-446c-87d7-d4d8a4b87caf"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-9721f378-a318-4299-a1ce-c797b1cecf36" class="decompose"><textarea class="display-none">{
+<div class="imandra-alternatives" id="alt-12a0a7aa-4134-45ab-888d-ed4454c60e56"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-77caf407-cc5b-4012-9b29-d8a63fee7ca6" class="decompose"><textarea class="display-none">{
   &quot;regions&quot;: [
     {
       &quot;constraints&quot;: [ &quot;y = Set.union x y&quot; ],
@@ -1696,13 +1696,13 @@ val rs : Imandra_interactive.Decompose.t list =
 }</textarea><div class="decompose-foamtree"></div><div class="decompose-details"><div class="decompose-details-header">Regions details</div><div class="decompose-details-no-selection">No group selected.</div><div class="decompose-details-selection hidden"><div><span class="decompose-details-label">Direct sub-regions: </span><span class="decompose-details-direct-sub-regions-text">-</span></div><div><span class="decompose-details-label">Contained regions: </span><span class="decompose-details-contained-regions-text">-</span></div><div class="decompose-details-section-header">Constraints</div><div class="decompose-details-constraints"><pre class="decompose-details-constraint">&lt;constraint&gt;</pre></div><div class="decompose-details-invariant"><div class="decompose-details-section-header">Invariant</div><pre class="decompose-details-invariant-text">&lt;invariant&gt;</pre></div></div></div><script>
 (function () {
   require(['nbextensions/nbimandra/regions'], function (regions) {
-    var target = '#decompose-9721f378-a318-4299-a1ce-c797b1cecf36';
+    var target = '#decompose-77caf407-cc5b-4012-9b29-d8a63fee7ca6';
     regions.hydrate(target);
   });
 })();
-</script></div></div><div class="tab-pane"><div><div class="imandra-table" id="table-3f16c986-2b4e-42df-a8af-e697893937c6"><table><thead><tr><th>Constraints</th><th>Invariant</th></tr></thead><tr><td><ul><li><pre>not (y = Set.union x y)</pre></li></ul></td><td><pre>Map.add' (Map.const false) z true</pre></td></tr><tr><td><ul><li><pre>y = Set.union x y</pre></li></ul></td><td><pre>Map.add' x z true</pre></td></tr></table></div></div></div></div><script>
+</script></div></div><div class="tab-pane"><div><div class="imandra-table" id="table-65ef1b53-91b5-4070-a88e-1eaba46f0753"><table><thead><tr><th>Constraints</th><th>Invariant</th></tr></thead><tr><td><ul><li><pre>not (y = Set.union x y)</pre></li></ul></td><td><pre>Map.add' (Map.const false) z true</pre></td></tr><tr><td><ul><li><pre>y = Set.union x y</pre></li></ul></td><td><pre>Map.add' x z true</pre></td></tr></table></div></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-406d8a5f-7a2e-446c-87d7-d4d8a4b87caf';
+  var target = '#alt-12a0a7aa-4134-45ab-888d-ed4454c60e56';
   alternatives.hydrate(target);
 });
 </script></div>
@@ -1873,11 +1873,11 @@ module PPrinter :
     type refiner = node -&gt; node list
     type pprinter =
         ?unify:Unifier.unifier -&gt;
-        ?refine:refiner -&gt; Imandra_surface.Term.t list -&gt; node list
+        ?refine:refiner -&gt;
+        ?inv:bool -&gt; Imandra_surface.Term.t list -&gt; node list
     val pp : pprinter
     val print :
-      ?pp:(?unify:Unifier.unifier -&gt;
-           ?refine:refiner -&gt; Imandra_surface.Term.t list -&gt; node list) -&gt;
+      ?pp:pprinter -&gt;
       ?unify:Unifier.unifier -&gt;
       ?refine:refiner -&gt;
       ?skip_invariant:bool -&gt;
