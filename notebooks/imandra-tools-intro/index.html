@@ -493,6 +493,11 @@
                                     </li>
                                     
                                     <li class="side__nav-list-item--sub-level-2">
+                                        <a class="side__nav-link" href="/imandra-docs/notebooks/six-swiss-exchange-pricing">Region Decomposition - Exchange Pricing</a>
+                                        
+                                    </li>
+                                    
+                                    <li class="side__nav-list-item--sub-level-2">
                                         <a class="side__nav-link" href="/imandra-docs/notebooks/webservice-auth-logic">Analysing Web-app Authentication Logic</a>
                                         
                                     </li>
@@ -1090,7 +1095,8 @@ module D :
         val scheduler :
           ?imandra:string -&gt;
           ?oneshot:bool -&gt;
-          par:int -&gt; load:string -&gt; idf:string -&gt; unit -&gt; scheduler
+          par:int -&gt;
+          ?max_fail:int -&gt; load:string -&gt; idf:string -&gt; unit -&gt; scheduler
         module Worker : sig val start : sock_file:string -&gt; unit -&gt; unit end
       end
     module Sampling :
@@ -1219,7 +1225,8 @@ module D :
         val scheduler :
           ?imandra:string -&gt;
           ?oneshot:bool -&gt;
-          par:int -&gt; load:string -&gt; idf:string -&gt; unit -&gt; scheduler
+          par:int -&gt;
+          ?max_fail:int -&gt; load:string -&gt; idf:string -&gt; unit -&gt; scheduler
         module Worker : sig val start : sock_file:string -&gt; unit -&gt; unit end
       end
   end
@@ -1670,12 +1677,12 @@ val rs : Imandra_interactive.Decompose.t list =
 
 
 <div class="output_html rendered_html output_subarea ">
-<div class="imandra-alternatives" id="alt-12a0a7aa-4134-45ab-888d-ed4454c60e56"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-77caf407-cc5b-4012-9b29-d8a63fee7ca6" class="decompose"><textarea class="display-none">{
+<div class="imandra-alternatives" id="alt-610c7736-fc4d-408d-8cd6-00fcdee94ef3"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-0f1e8ba6-332d-4f30-80e1-576075bea92f" class="decompose"><textarea class="display-none">{
   &quot;regions&quot;: [
     {
-      &quot;constraints&quot;: [ &quot;y = Set.union x y&quot; ],
+      &quot;constraints&quot;: [ &quot;y = (Set.union x y)&quot; ],
       &quot;region&quot;: {
-        &quot;constraints&quot;: [ &quot;y = Set.union x y&quot; ],
+        &quot;constraints&quot;: [ &quot;y = (Set.union x y)&quot; ],
         &quot;invariant&quot;: &quot;Map.add' x z true&quot;
       },
       &quot;groups&quot;: [],
@@ -1683,9 +1690,9 @@ val rs : Imandra_interactive.Decompose.t list =
       &quot;weight&quot;: 1
     },
     {
-      &quot;constraints&quot;: [ &quot;not (y = Set.union x y)&quot; ],
+      &quot;constraints&quot;: [ &quot;y &lt;&gt; (Set.union x y)&quot; ],
       &quot;region&quot;: {
-        &quot;constraints&quot;: [ &quot;not (y = Set.union x y)&quot; ],
+        &quot;constraints&quot;: [ &quot;y &lt;&gt; (Set.union x y)&quot; ],
         &quot;invariant&quot;: &quot;Map.add' (Map.const false) z true&quot;
       },
       &quot;groups&quot;: [],
@@ -1696,13 +1703,13 @@ val rs : Imandra_interactive.Decompose.t list =
 }</textarea><div class="decompose-foamtree"></div><div class="decompose-details"><div class="decompose-details-header">Regions details</div><div class="decompose-details-no-selection">No group selected.</div><div class="decompose-details-selection hidden"><div><span class="decompose-details-label">Direct sub-regions: </span><span class="decompose-details-direct-sub-regions-text">-</span></div><div><span class="decompose-details-label">Contained regions: </span><span class="decompose-details-contained-regions-text">-</span></div><div class="decompose-details-section-header">Constraints</div><div class="decompose-details-constraints"><pre class="decompose-details-constraint">&lt;constraint&gt;</pre></div><div class="decompose-details-invariant"><div class="decompose-details-section-header">Invariant</div><pre class="decompose-details-invariant-text">&lt;invariant&gt;</pre></div></div></div><script>
 (function () {
   require(['nbextensions/nbimandra/regions'], function (regions) {
-    var target = '#decompose-77caf407-cc5b-4012-9b29-d8a63fee7ca6';
+    var target = '#decompose-0f1e8ba6-332d-4f30-80e1-576075bea92f';
     regions.hydrate(target);
   });
 })();
-</script></div></div><div class="tab-pane"><div><div class="imandra-table" id="table-65ef1b53-91b5-4070-a88e-1eaba46f0753"><table><thead><tr><th>Constraints</th><th>Invariant</th></tr></thead><tr><td><ul><li><pre>not (y = Set.union x y)</pre></li></ul></td><td><pre>Map.add' (Map.const false) z true</pre></td></tr><tr><td><ul><li><pre>y = Set.union x y</pre></li></ul></td><td><pre>Map.add' x z true</pre></td></tr></table></div></div></div></div><script>
+</script></div></div><div class="tab-pane"><div><div class="imandra-table" id="table-2a1fafba-e586-4953-997d-7345cf1f6c2a"><table><thead><tr><th>Constraints</th><th>Invariant</th></tr></thead><tr><td><ul><li><pre>not (y = Set.union x y)</pre></li></ul></td><td><pre>Map.add' (Map.const false) z true</pre></td></tr><tr><td><ul><li><pre>y = Set.union x y</pre></li></ul></td><td><pre>Map.add' x z true</pre></td></tr></table></div></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-12a0a7aa-4134-45ab-888d-ed4454c60e56';
+  var target = '#alt-610c7736-fc4d-408d-8cd6-00fcdee94ef3';
   alternatives.hydrate(target);
 });
 </script></div>
