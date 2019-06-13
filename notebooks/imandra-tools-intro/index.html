@@ -1469,6 +1469,7 @@ val first_path : IDF.path =
      not (List.hd e = Model.Reset);
      Destruct(Model.Add, 0, List.hd e) &lt;= 9000]
    Invariant:
+    F =
     {Model.counter = Destruct(Model.Add, 0, List.hd e); Model.default = 23}
    -------------;
    ---[region]---
@@ -1489,7 +1490,7 @@ val first_path : IDF.path =
      not (Destruct(Model.Add, 0, List.hd (List.tl e)) &lt;= 0);
      Destruct(Model.Add, 0, List.hd e) = 1337]
    Invariant:
-    {Model.counter = 23; Model.default = 23}
+    F = {Model.counter = 23; Model.default = 23}
    -------------;
    ---[region]---
    Constraints:
@@ -1510,7 +1511,7 @@ val first_path : IDF.path =
      Destruct(Model.Add, 0, List.hd e) = 1337;
      List.hd (List.tl (List.tl e)) = Model.Reset]
    Invariant:
-    {Model.counter = 0; Model.default = 23}
+    F = {Model.counter = 0; Model.default = 23}
    -------------]
 </pre>
 </div>
@@ -1570,19 +1571,20 @@ val first_path : IDF.path =
    [ (List.hd (List.tl e)) is Model.Add
    ; (List.hd e) is Model.Add
    ; (List.tl (List.tl (List.tl e))) = []
-   ; 0 &lt; (List.hd e).Model.Add_0 &lt;= 9000 ]
+   ; 0 &lt; Destruct(Model.Add, 0, (List.hd e)) &lt;= 9000 ]
  Invariant:
-   Model.{ counter = (List.hd e).Model.Add_0 ; default = 23 }
+   F =
+   Model.{ counter = Destruct(Model.Add, 0, (List.hd e)) ; default = 23 }
   -------------;
  ---[region]---
  Constraints:
    [ (List.hd e) is Model.Add
    ; (List.hd (List.tl e)) is Model.Add
    ; (List.tl (List.tl (List.tl e))) = []
-   ; (List.hd e).Model.Add_0 = 1337
-   ; (List.hd (List.tl e)).Model.Add_0 &gt; 0 ]
+   ; Destruct(Model.Add, 0, (List.hd e)) = 1337
+   ; Destruct(Model.Add, 0, (List.hd (List.tl e))) &gt; 0 ]
  Invariant:
-   Model.{ counter = 23 ; default = 23 }
+   F = Model.{ counter = 23 ; default = 23 }
   -------------;
  ---[region]---
  Constraints:
@@ -1590,10 +1592,10 @@ val first_path : IDF.path =
    ; (List.hd (List.tl e)) is Model.Add
    ; (List.hd (List.tl (List.tl e))) is Model.Reset
    ; (List.tl (List.tl (List.tl e))) = []
-   ; (List.hd e).Model.Add_0 = 1337
-   ; (List.hd (List.tl e)).Model.Add_0 &gt; 0 ]
+   ; Destruct(Model.Add, 0, (List.hd e)) = 1337
+   ; Destruct(Model.Add, 0, (List.hd (List.tl e))) &gt; 0 ]
  Invariant:
-   Model.{ counter = 0 ; default = 23 }
+   F = Model.{ counter = 0 ; default = 23 }
   -------------]
 </pre>
 </div>
@@ -1657,13 +1659,13 @@ val rs : Imandra_interactive.Decompose.t list =
    Constraints:
      [ y = (Set.union x y) ]
    Invariant:
-     Map.add&#39; x z true
+     F = Map.add&#39; x z true
     -------------;
    ---[region]---
    Constraints:
      [ y &lt;&gt; (Set.union x y) ]
    Invariant:
-     Map.add&#39; (Map.const false) z true
+     F = Map.add&#39; (Map.const false) z true
     -------------]
 </pre>
 </div>
@@ -1677,7 +1679,7 @@ val rs : Imandra_interactive.Decompose.t list =
 
 
 <div class="output_html rendered_html output_subarea ">
-<div class="imandra-alternatives" id="alt-36fcadf4-e2d3-4c3f-bb27-acc1f7e36c77"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-615d30f4-8cbe-4420-bc9f-7583bf67e162" class="decompose"><textarea class="display-none">{
+<div class="imandra-alternatives" id="alt-7b027d61-9f1e-433a-9260-9a1cb2130e07"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-fb1d4f4c-d741-487d-9411-db2bdec95459" class="decompose"><textarea class="display-none">{
   &quot;regions&quot;: [
     {
       &quot;constraints&quot;: [ &quot;y = (Set.union x y)&quot; ],
@@ -1703,13 +1705,13 @@ val rs : Imandra_interactive.Decompose.t list =
 }</textarea><div class="decompose-foamtree"></div><div class="decompose-details"><div class="decompose-details-header">Regions details</div><div class="decompose-details-no-selection">No group selected.</div><div class="decompose-details-selection hidden"><div><span class="decompose-details-label">Direct sub-regions: </span><span class="decompose-details-direct-sub-regions-text">-</span></div><div><span class="decompose-details-label">Contained regions: </span><span class="decompose-details-contained-regions-text">-</span></div><div class="decompose-details-section-header">Constraints</div><div class="decompose-details-constraints"><pre class="decompose-details-constraint">&lt;constraint&gt;</pre></div><div class="decompose-details-invariant"><div class="decompose-details-section-header">Invariant</div><pre class="decompose-details-invariant-text">&lt;invariant&gt;</pre></div></div></div><script>
 (function () {
   require(['nbextensions/nbimandra/regions'], function (regions) {
-    var target = '#decompose-615d30f4-8cbe-4420-bc9f-7583bf67e162';
+    var target = '#decompose-fb1d4f4c-d741-487d-9411-db2bdec95459';
     regions.hydrate(target);
   });
 })();
-</script></div></div><div class="tab-pane"><div><div class="imandra-table" id="table-47adb36b-75b3-492a-b7dc-6738fd1c0611"><table><thead><tr><th>Constraints</th><th>Invariant</th></tr></thead><tr><td><ul><li><pre>not (y = Set.union x y)</pre></li></ul></td><td><pre>Map.add' (Map.const false) z true</pre></td></tr><tr><td><ul><li><pre>y = Set.union x y</pre></li></ul></td><td><pre>Map.add' x z true</pre></td></tr></table></div></div></div></div><script>
+</script></div></div><div class="tab-pane"><div><div class="imandra-table" id="table-e07f4c72-6053-4e96-9c63-e3e9bb7f5888"><table><thead><tr><th>Constraints</th><th>Invariant</th></tr></thead><tr><td><ul><li><pre>not (y = Set.union x y)</pre></li></ul></td><td><pre>Map.add' (Map.const false) z true</pre></td></tr><tr><td><ul><li><pre>y = Set.union x y</pre></li></ul></td><td><pre>Map.add' x z true</pre></td></tr></table></div></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-36fcadf4-e2d3-4c3f-bb27-acc1f7e36c77';
+  var target = '#alt-7b027d61-9f1e-433a-9260-9a1cb2130e07';
   alternatives.hydrate(target);
 });
 </script></div>
@@ -1965,13 +1967,13 @@ val print :
  Constraints:
    [ (Set.subset x y) = true ]
  Invariant:
-   Set.add x z
+   F = Set.add x z
   -------------;
  ---[region]---
  Constraints:
    [ (Set.subset x y) = false ]
  Invariant:
-   { z }
+   F = { z }
   -------------]
 </pre>
 </div>

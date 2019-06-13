@@ -1633,24 +1633,26 @@ val first_path : IDF.path =
 <pre>val regions : Imandra_interactive.Decompose.t list =
   [---[region]---
    Constraints:
-     [ (List.hd (List.tl e)).SM.Add_0 is SM.Int
+     [ Destruct(SM.Add, 0, (List.hd (List.tl e))) is SM.Int
      ; (List.hd (List.tl e)) is SM.Add
      ; (List.hd e) is SM.Add
-     ; (List.hd e).SM.Add_0 is SM.Zero
+     ; Destruct(SM.Add, 0, (List.hd e)) is SM.Zero
      ; (List.tl (List.tl e)) = [] ]
    Invariant:
-     0
+     F = 0
     -------------;
    ---[region]---
    Constraints:
-     [ (List.hd e).SM.Add_0 is SM.Zero
+     [ Destruct(SM.Add, 0, (List.hd e)) is SM.Zero
      ; (List.hd e) is SM.Add
      ; (List.hd (List.tl e)) is SM.Add
-     ; (List.hd (List.tl e)).SM.Add_0 is SM.Int
+     ; Destruct(SM.Add, 0, (List.hd (List.tl e))) is SM.Int
      ; (List.tl (List.tl e)) = []
-     ; 50 &lt; (List.hd (List.tl e)).SM.Add_0.SM.Int_0 &lt;= 9000 ]
+     ; 50 &lt;
+       Destruct(SM.Int, 0, Destruct(SM.Add, 0, (List.hd (List.tl e)))) &lt;=
+       9000 ]
    Invariant:
-     (List.hd (List.tl e)).SM.Add_0.SM.Int_0
+     F = Destruct(SM.Int, 0, Destruct(SM.Add, 0, (List.hd (List.tl e))))
     -------------]
 </pre>
 </div>
@@ -1703,12 +1705,12 @@ val first_path : IDF.path =
 
 <div class="output_text output_subarea output_execute_result">
 <pre>val ids : (Uuidm.t * Uuidm.t * Uuidm.t) list =
-  [(88748071-a1c2-401c-85fa-bb9abbc32180,
-    1b3348f5-3439-494c-b8e1-f41d80d2421e,
-    dd847768-c85f-479d-b60b-79263547b1f3);
-   (dd847768-c85f-479d-b60b-79263547b1f3,
-    0fe7fc4e-233d-4fa4-b238-beafe003f00a,
-    5ecce449-68bc-4c0a-9808-49a7cf3e9ada)]
+  [(d7aa4a07-8ff7-4b92-8b27-b51b94571a84,
+    c506ad34-e6e4-4173-98ba-19deb0cb0d40,
+    c067474b-61de-4bdb-a14f-94c088ab8090);
+   (c067474b-61de-4bdb-a14f-94c088ab8090,
+    0a4739b3-4f38-4d62-9444-0ee61c473ba3,
+    c94cd28b-0775-4957-b740-0e7c5fa6b559)]
 </pre>
 </div>
 
