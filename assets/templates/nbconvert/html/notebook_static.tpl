@@ -1,0 +1,251 @@
+{%- extends 'html/notebook_basic.tpl' -%}
+{% from 'mathjax.tpl' import mathjax %}
+
+{%- block header -%}
+<!DOCTYPE html>
+<html>
+    <head>
+        {%- block html_head -%}
+        <meta charset="utf-8" />
+        <meta content="width=device-width, initial-scale=1.0" name="viewport">
+        <title>Imandra Documentation - {{ title }}</title>
+        <meta property="og:url" content="https://docs.imandra.ai/{{ repo_dir }}/notebooks/{{ slug }}/">
+        <meta property="og:type" content="website">
+        <meta property="og:title" content="Imandra Documentation - {{ title }}">
+        <meta property="og:description" content="{{ description }}">
+        <meta property="og:image" content="https://storage.googleapis.com/imandra-assets/images/og_image_default_i78.jpg">
+
+
+        {% if repo_dir == "imandra-docs-dev" %}
+        <meta name="robots" content="noindex,follow">
+        <link rel="canonical" href="https://docs.imandra.ai/imandra-docs/">
+        {% else %}
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-116937440-6"></script>
+        <script>
+         window.dataLayer = window.dataLayer || [];
+         function gtag(){dataLayer.push(arguments);}
+         gtag('js', new Date());
+
+         gtag('config', 'UA-116937440-1');
+        </script>
+        <script type="text/javascript"> var sc_project=11767520; var sc_invisible=1; var sc_security="fa7e88d1"; </script>
+        <script type="text/javascript" src="https://www.statcounter.com/counter/counter.js" async></script>
+        <noscript><div class="statcounter">
+            <a title="Web Analytics" href="http://statcounter.com/" target="_blank">
+                <img class="statcounter" src="//c.statcounter.com/11767520/0/fa7e88d1/1/" alt="Web Analytics"></a>
+        </div></noscript>
+        {% endif %}
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Merriweather+Sans:300,300i,400,400i%7CMerriweather:300,300i,400,400i%7CRoboto+Slab:300,300i,400,400i">
+
+        <link rel="stylesheet" href="/{{ repo_dir }}/{{ manifest['static/style/style.min.css'] }}" type="text/css">
+        <link rel="stylesheet" href="/{{ repo_dir }}/{{ manifest['static/nbextensions/nbimandra/styles.css'] }}" type="text/css">
+        <link rel="stylesheet" href="/{{ repo_dir }}/{{ manifest['static/docs-styles.css'] }}" type="text/css">
+        {% if repo_dir == "imandra-docs-dev" %}
+        <link rel="stylesheet" href="/{{ repo_dir }}/{{ manifest['static/jekyll-styles-dev.css'] }}" type="text/css">
+        {% else %}
+        <link rel="stylesheet" href="/{{ repo_dir }}/{{ manifest['static/jekyll-styles.css'] }}" type="text/css">
+        {% endif %}
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+        <script src="/{{ repo_dir }}/{{ manifest['static/nbimandra-rjs-bundle.js'] }}"></script>
+
+        <style type="text/css">
+         .highlight .hll { background-color: #ffffcc }
+         .highlight  { background: #f8f8f8; }
+         .highlight .c { color: #408080; font-style: italic } /* Comment */
+         .highlight .err { border: 1px solid #FF0000 } /* Error */
+         .highlight .k { color: #008000; font-weight: bold } /* Keyword */
+         .highlight .o { color: #666666 } /* Operator */
+         .highlight .ch { color: #408080; font-style: italic } /* Comment.Hashbang */
+         .highlight .cm { color: #408080; font-style: italic } /* Comment.Multiline */
+         .highlight .cp { color: #BC7A00 } /* Comment.Preproc */
+         .highlight .cpf { color: #408080; font-style: italic } /* Comment.PreprocFile */
+         .highlight .c1 { color: #408080; font-style: italic } /* Comment.Single */
+         .highlight .cs { color: #408080; font-style: italic } /* Comment.Special */
+         .highlight .gd { color: #A00000 } /* Generic.Deleted */
+         .highlight .ge { font-style: italic } /* Generic.Emph */
+         .highlight .gr { color: #FF0000 } /* Generic.Error */
+         .highlight .gh { color: #000080; font-weight: bold } /* Generic.Heading */
+         .highlight .gi { color: #00A000 } /* Generic.Inserted */
+         .highlight .go { color: #888888 } /* Generic.Output */
+         .highlight .gp { color: #000080; font-weight: bold } /* Generic.Prompt */
+         .highlight .gs { font-weight: bold } /* Generic.Strong */
+         .highlight .gu { color: #800080; font-weight: bold } /* Generic.Subheading */
+         .highlight .gt { color: #0044DD } /* Generic.Traceback */
+         .highlight .kc { color: #008000; font-weight: bold } /* Keyword.Constant */
+         .highlight .kd { color: #008000; font-weight: bold } /* Keyword.Declaration */
+         .highlight .kn { color: #008000; font-weight: bold } /* Keyword.Namespace */
+         .highlight .kp { color: #008000 } /* Keyword.Pseudo */
+         .highlight .kr { color: #008000; font-weight: bold } /* Keyword.Reserved */
+         .highlight .kt { color: #B00040 } /* Keyword.Type */
+         .highlight .m { color: #666666 } /* Literal.Number */
+         .highlight .s { color: #BA2121 } /* Literal.String */
+         .highlight .na { color: #7D9029 } /* Name.Attribute */
+         .highlight .nb { color: #008000 } /* Name.Builtin */
+         .highlight .nc { color: #0000FF; font-weight: bold } /* Name.Class */
+         .highlight .no { color: #880000 } /* Name.Constant */
+         .highlight .nd { color: #AA22FF } /* Name.Decorator */
+         .highlight .ni { color: #999999; font-weight: bold } /* Name.Entity */
+         .highlight .ne { color: #D2413A; font-weight: bold } /* Name.Exception */
+         .highlight .nf { color: #0000FF } /* Name.Function */
+         .highlight .nl { color: #A0A000 } /* Name.Label */
+         .highlight .nn { color: #0000FF; font-weight: bold } /* Name.Namespace */
+         .highlight .nt { color: #008000; font-weight: bold } /* Name.Tag */
+         .highlight .nv { color: #19177C } /* Name.Variable */
+         .highlight .ow { color: #AA22FF; font-weight: bold } /* Operator.Word */
+         .highlight .w { color: #bbbbbb } /* Text.Whitespace */
+         .highlight .mb { color: #666666 } /* Literal.Number.Bin */
+         .highlight .mf { color: #666666 } /* Literal.Number.Float */
+         .highlight .mh { color: #666666 } /* Literal.Number.Hex */
+         .highlight .mi { color: #666666 } /* Literal.Number.Integer */
+         .highlight .mo { color: #666666 } /* Literal.Number.Oct */
+         .highlight .sa { color: #BA2121 } /* Literal.String.Affix */
+         .highlight .sb { color: #BA2121 } /* Literal.String.Backtick */
+         .highlight .sc { color: #BA2121 } /* Literal.String.Char */
+         .highlight .dl { color: #BA2121 } /* Literal.String.Delimiter */
+         .highlight .sd { color: #BA2121; font-style: italic } /* Literal.String.Doc */
+         .highlight .s2 { color: #BA2121 } /* Literal.String.Double */
+         .highlight .se { color: #BB6622; font-weight: bold } /* Literal.String.Escape */
+         .highlight .sh { color: #BA2121 } /* Literal.String.Heredoc */
+         .highlight .si { color: #BB6688; font-weight: bold } /* Literal.String.Interpol */
+         .highlight .sx { color: #008000 } /* Literal.String.Other */
+         .highlight .sr { color: #BB6688 } /* Literal.String.Regex */
+         .highlight .s1 { color: #BA2121 } /* Literal.String.Single */
+         .highlight .ss { color: #19177C } /* Literal.String.Symbol */
+         .highlight .bp { color: #008000 } /* Name.Builtin.Pseudo */
+         .highlight .fm { color: #0000FF } /* Name.Function.Magic */
+         .highlight .vc { color: #19177C } /* Name.Variable.Class */
+         .highlight .vg { color: #19177C } /* Name.Variable.Global */
+         .highlight .vi { color: #19177C } /* Name.Variable.Instance */
+         .highlight .vm { color: #19177C } /* Name.Variable.Magic */
+         .highlight .il { color: #666666 } /* Literal.Number.Integer.Long */
+        </style>
+
+        <!-- Loading mathjax macro -->
+        {{ mathjax() }}
+        {%- endblock html_head -%}
+
+  <script>
+  function handleCopyClick() {
+      var el = this;
+      var terminal = el.closest('.terminal');
+      var highlight = terminal.getElementsByClassName('highlight')[0];
+      copyToClipboardMsg(highlight);
+
+      terminal.classList.add('terminal--hide');
+      setTimeout(function () {
+          terminal.classList.remove('terminal--hide');
+      }, 2000);
+
+
+      function copyToClipboardMsg(elem) {
+          var succeed = copyToClipboard(elem);
+          var msg;
+          if (!succeed) {
+              msg = 'Error!';
+          } else {
+              msg = 'Copied!';
+          }
+
+          var msgElem = terminal.querySelector('.terminal__copy-msg');
+          msgElem.innerHTML = msg;
+          setTimeout(function () {
+              msgElem.innerHTML = 'You rock!';
+          }, 1000);
+      }
+
+      function copyToClipboard(elem) {
+          // create hidden text element, if it doesn't already exist
+          var targetId = '_hiddenCopyText_';
+          var isInput = elem.tagName === 'INPUT' || elem.tagName === 'TEXTAREA';
+          var origSelectionStart, origSelectionEnd;
+          if (isInput) {
+              // can just use the original source element for the selection and copy
+              target = elem;
+              origSelectionStart = elem.selectionStart;
+              origSelectionEnd = elem.selectionEnd;
+          } else {
+              // must use a temporary form element for the selection and copy
+              target = terminal.querySelector('#' + targetId);
+              if (!target) {
+                  var target = document.createElement('textarea');
+                  // target.style.display = 'flex';
+                  // target.style.position = 'absolute';
+                  // target.style.left = '-1000%';
+                  target.id = targetId;
+                 elem.appendChild(target);
+              }
+              target.textContent = elem.textContent.trim();
+          }
+
+          // select the content
+          var currentFocus = document.activeElement;
+          target.focus();
+          target.setSelectionRange(0, target.value.length);
+
+          // copy the selection
+          var succeed;
+          try {
+              succeed = document.execCommand('copy');
+          } catch (e) {
+              succeed = false;
+          }
+          // restore original focus
+          if (currentFocus && typeof currentFocus.focus === 'function') {
+              currentFocus.focus();
+          }
+
+          if (isInput) {
+              // restore prior selection
+              elem.setSelectionRange(origSelectionStart, origSelectionEnd);
+          } else {
+              // clear temporary content
+              elem.removeChild(target);
+          }
+          return succeed;
+      }
+  }
+</script>
+    </head>
+    <body>
+    {%- endblock header -%}
+
+
+    {% block body %}
+        <div class="background">
+        </div>
+        <div class="page-container">
+            <main class="main-content-column">
+                {% include "_includes/header.tpl" %}
+                <article class="article__container article__container--notebooks">
+                    <div class="main-content main-content--jupyter">
+                        {{ super() }}
+                    </div>
+
+                    {% if nav_items and nav_items|length > 1 -%}
+                    <div class="sidebar-right">
+                        <div class="sidebar-right__menu">
+                            {% for item in nav_items %}
+                            <a class="sidebar-right__menu-item sidebar-right__menu-item--{{ item['tag'] }}" href="#{{ item['id'] }}">{{ item['text'] }}</a>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {%- endif -%}
+
+                </article>
+            </main>
+            <footer class="footer">
+                <a class="copyrights"href="http://imandra.ai">&#9400; 2018 - {{ current_year }} Imandra Inc. All rights reserved.</a>
+            </footer>
+        </div>
+    {%- endblock body %}
+
+    {% block footer %}
+    {{ super() }}
+    </body>
+</html>
+{% endblock footer %}
