@@ -31,7 +31,7 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Merriweather+Sans:300,300i,400,400i%7CMerriweather:300,300i,400,400i%7CRoboto+Slab:300,300i,400,400i">
 
-        <link rel="stylesheet" href="/imandra-docs/static/style/style.min.5724c4e7.css" type="text/css">
+        <link rel="stylesheet" href="/imandra-docs/static/style/style.min.2726b43b.css" type="text/css">
         <link rel="stylesheet" href="/imandra-docs/static/nbextensions/nbimandra/styles.b466ce6f.css" type="text/css">
         <link rel="stylesheet" href="/imandra-docs/static/docs-styles.86fc0481.css" type="text/css">
         
@@ -116,7 +116,7 @@
 
         <!-- Loading mathjax macro -->
         <!-- Load mathjax -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS_HTML"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS_HTML"></script>
     <!-- MathJax configuration -->
     <script type="text/x-mathjax-config">
     MathJax.Hub.Config({
@@ -572,6 +572,11 @@
                                         
                                     </li>
                                     
+                                    <li class="side__nav-list-item--sub-level-2">
+                                        <a class="side__nav-link" href="/imandra-docs/notebooks/solver-synthesis">Synthesising a Game Solver in Imandra</a>
+                                        
+                                    </li>
+                                    
                                 </ul>
                             </li>
                             
@@ -730,191 +735,191 @@
 <div class="prompt input_prompt">In&nbsp;[1]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-rust"><pre><span></span><span class="k">type</span> <span class="nc">person</span><span class="w"> </span><span class="o">=</span><span class="w"></span>
-<span class="w">  </span><span class="o">|</span><span class="w"> </span><span class="n">Mallory</span><span class="w"></span>
-<span class="w">  </span><span class="o">|</span><span class="w"> </span><span class="n">Bob</span><span class="w"></span>
-<span class="w">  </span><span class="o">|</span><span class="w"> </span><span class="n">Alice</span><span class="p">;</span><span class="w"></span>
+<div class=" highlight hl-reasonml"><pre><span></span>type person =
+  | Mallory
+  | Bob
+  | Alice;
 
-<span class="k">type</span> <span class="nc">public_key</span><span class="w"> </span><span class="o">=</span><span class="w"></span>
-<span class="w">  </span><span class="o">|</span><span class="w"> </span><span class="n">Public</span><span class="p">(</span><span class="n">person</span><span class="p">);</span><span class="w"></span>
-<span class="k">type</span> <span class="nc">private_key</span><span class="w"> </span><span class="o">=</span><span class="w"></span>
-<span class="w">  </span><span class="o">|</span><span class="w"> </span><span class="n">Private</span><span class="p">(</span><span class="n">person</span><span class="p">);</span><span class="w"></span>
+type public_key =
+  | Public(person);
+type private_key =
+  | Private(person);
 
-<span class="cm">/* identifier person (purporting from) + payload */</span><span class="w"></span>
-<span class="k">type</span> <span class="nc">full_unencrypted_payload</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">person</span><span class="p">,</span><span class="w"> </span><span class="n">public_key</span><span class="p">);</span><span class="w"></span>
-<span class="k">type</span> <span class="nc">full_encrypted_payload</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">person</span><span class="p">,</span><span class="w"> </span><span class="n">int</span><span class="p">);</span><span class="w"></span>
+/* identifier person (purporting from) + payload */
+type full_unencrypted_payload = (person, public_key);
+type full_encrypted_payload = (person, int);
 
-<span class="k">type</span> <span class="nc">data</span><span class="w"> </span><span class="o">=</span><span class="w"></span>
-<span class="w">  </span><span class="o">|</span><span class="w"> </span><span class="n">UnEncrypted</span><span class="p">(</span><span class="n">full_unencrypted_payload</span><span class="p">)</span><span class="w"></span>
-<span class="w">  </span><span class="cm">/* where it&#39;s believed to be being sent and the actual public key used */</span><span class="w"></span>
-<span class="w">  </span><span class="o">|</span><span class="w"> </span><span class="n">Encrypted</span><span class="p">((</span><span class="n">person</span><span class="p">,</span><span class="w"> </span><span class="n">public_key</span><span class="p">),</span><span class="w"> </span><span class="n">full_encrypted_payload</span><span class="p">);</span><span class="w"></span>
+type data =
+  | UnEncrypted(full_unencrypted_payload)
+  /* where it&#39;s believed to be being sent and the actual public key used */
+  | Encrypted((person, public_key), full_encrypted_payload);
 
-<span class="cm">/* actual people */</span><span class="w"></span>
-<span class="k">type</span> <span class="nc">channel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">  </span><span class="n">from</span>: <span class="nc">person</span><span class="p">,</span><span class="w"></span>
-<span class="w">  </span><span class="n">to_</span>: <span class="nc">person</span><span class="p">,</span><span class="w"></span>
-<span class="p">};</span><span class="w"></span>
+/* actual people */
+type channel = {
+  from: person,
+  to_: person,
+};
 
-<span class="kd">let</span><span class="w"> </span><span class="n">swap</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">c</span>: <span class="nc">channel</span><span class="p">)</span>: <span class="nc">channel</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="p">{</span><span class="n">from</span>: <span class="nc">c</span><span class="p">.</span><span class="n">to_</span><span class="p">,</span><span class="w"> </span><span class="n">to_</span>: <span class="nc">c</span><span class="p">.</span><span class="n">from</span><span class="p">};</span><span class="w"></span>
+let swap = (c: channel): channel =&gt; {from: c.to_, to_: c.from};
 
-<span class="k">type</span> <span class="nc">known</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">  </span><span class="n">asker</span>: <span class="nc">person</span><span class="p">,</span><span class="w"></span>
-<span class="w">  </span><span class="n">ident</span>: <span class="nc">person</span><span class="p">,</span><span class="w"></span>
-<span class="w">  </span><span class="n">actual</span>: <span class="nc">person</span><span class="p">,</span><span class="w"></span>
-<span class="p">};</span><span class="w"></span>
+type known = {
+  asker: person,
+  ident: person,
+  actual: person,
+};
 
-<span class="k">type</span> <span class="nc">msg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">  </span><span class="n">channel</span><span class="p">,</span><span class="w"></span>
-<span class="w">  </span><span class="n">data</span><span class="p">,</span><span class="w"></span>
-<span class="p">};</span><span class="w"></span>
+type msg = {
+  channel,
+  data,
+};
 
-<span class="k">type</span> <span class="nc">action</span><span class="w"> </span><span class="o">=</span><span class="w"></span>
-<span class="w">  </span><span class="o">|</span><span class="w"> </span><span class="n">Listen</span><span class="p">(</span><span class="n">person</span><span class="p">,</span><span class="w"> </span><span class="n">channel</span><span class="p">)</span><span class="w"></span>
-<span class="w">  </span><span class="o">|</span><span class="w"> </span><span class="n">KeyRequest</span><span class="p">(</span><span class="n">person</span><span class="p">,</span><span class="w"> </span><span class="n">person</span><span class="p">)</span><span class="w"></span>
-<span class="w">  </span><span class="o">|</span><span class="w"> </span><span class="nb">Send</span><span class="p">(</span><span class="n">msg</span><span class="p">);</span><span class="w"></span>
+type action =
+  | Listen(person, channel)
+  | KeyRequest(person, person)
+  | Send(msg);
 
-<span class="k">type</span> <span class="nc">state</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">  </span><span class="cm">/* fst arg believes 2nd arg to be that person */</span><span class="w"></span>
-<span class="w">  </span><span class="n">believed_identities</span>: <span class="nc">list</span><span class="p">((</span><span class="n">person</span><span class="p">,</span><span class="w"> </span><span class="n">person</span><span class="p">)),</span><span class="w"></span>
-<span class="w">  </span><span class="cm">/* can learn a key */</span><span class="w"></span>
-<span class="w">  </span><span class="n">can_learn_keys</span>: <span class="nc">list</span><span class="p">((</span><span class="n">person</span><span class="p">,</span><span class="w"> </span><span class="n">person</span><span class="p">)),</span><span class="w"></span>
-<span class="w">  </span><span class="cm">/* person knows a given key */</span><span class="w"></span>
-<span class="w">  </span><span class="n">known_keys</span>: <span class="nc">list</span><span class="p">(</span><span class="n">known</span><span class="p">),</span><span class="w"></span>
-<span class="w">  </span><span class="cm">/* a &#39;listener&#39; / spy on a channel */</span><span class="w"></span>
-<span class="w">  </span><span class="n">listeners</span>: <span class="nc">list</span><span class="p">((</span><span class="n">person</span><span class="p">,</span><span class="w"> </span><span class="n">channel</span><span class="p">)),</span><span class="w"></span>
-<span class="w">  </span><span class="cm">/* msg was decrypted and read by person */</span><span class="w"></span>
-<span class="w">  </span><span class="n">decrypted</span>: <span class="nc">list</span><span class="p">((</span><span class="n">person</span><span class="p">,</span><span class="w"> </span><span class="n">full_encrypted_payload</span><span class="p">)),</span><span class="w"></span>
-<span class="w">  </span><span class="cm">/* actual encrypted channel messages sent */</span><span class="w"></span>
-<span class="w">  </span><span class="n">msgs</span>: <span class="nc">list</span><span class="p">((</span><span class="n">channel</span><span class="p">,</span><span class="w"> </span><span class="n">full_encrypted_payload</span><span class="p">)),</span><span class="w"></span>
-<span class="p">};</span><span class="w"></span>
+type state = {
+  /* fst arg believes 2nd arg to be that person */
+  believed_identities: list((person, person)),
+  /* can learn a key */
+  can_learn_keys: list((person, person)),
+  /* person knows a given key */
+  known_keys: list(known),
+  /* a &#39;listener&#39; / spy on a channel */
+  listeners: list((person, channel)),
+  /* msg was decrypted and read by person */
+  decrypted: list((person, full_encrypted_payload)),
+  /* actual encrypted channel messages sent */
+  msgs: list((channel, full_encrypted_payload)),
+};
 
-<span class="kd">let</span><span class="w"> </span><span class="n">believed_identity</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">s</span>: <span class="nc">state</span><span class="p">,</span><span class="w"> </span><span class="n">a</span>: <span class="nc">person</span><span class="p">,</span><span class="w"> </span><span class="n">b</span>: <span class="nc">person</span><span class="p">)</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"></span>
-<span class="w">  </span><span class="n">List</span><span class="p">.</span><span class="n">mem</span><span class="p">((</span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">),</span><span class="w"> </span><span class="n">s</span><span class="p">.</span><span class="n">believed_identities</span><span class="p">);</span><span class="w"></span>
+let believed_identity = (s: state, a: person, b: person) =&gt;
+  List.mem((a, b), s.believed_identities);
 
-<span class="cm">/* Has person A requested person B&#39;s key? */</span><span class="w"></span>
+/* Has person A requested person B&#39;s key? */
 
-<span class="kd">let</span><span class="w"> </span><span class="n">can_learn_key</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">s</span>: <span class="nc">state</span><span class="p">,</span><span class="w"> </span><span class="n">a</span>: <span class="nc">person</span><span class="p">,</span><span class="w"> </span><span class="n">b</span>: <span class="nc">person</span><span class="p">)</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"></span>
-<span class="w">  </span><span class="n">List</span><span class="p">.</span><span class="n">mem</span><span class="p">((</span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">),</span><span class="w"> </span><span class="n">s</span><span class="p">.</span><span class="n">can_learn_keys</span><span class="p">);</span><span class="w"></span>
+let can_learn_key = (s: state, a: person, b: person) =&gt;
+  List.mem((a, b), s.can_learn_keys);
 
-<span class="cm">/* Does person A know person B&#39;s key? */</span><span class="w"></span>
+/* Does person A know person B&#39;s key? */
 
-<span class="kd">let</span><span class="w"> </span><span class="n">knows_key</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">s</span>: <span class="nc">state</span><span class="p">,</span><span class="w"> </span><span class="n">asker</span>: <span class="nc">person</span><span class="p">,</span><span class="w"> </span><span class="n">ident</span>: <span class="nc">person</span><span class="p">,</span><span class="w"> </span><span class="n">actual</span>: <span class="nc">person</span><span class="p">)</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"></span>
-<span class="w">  </span><span class="n">asker</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">actual</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">List</span><span class="p">.</span><span class="n">mem</span><span class="p">({</span><span class="n">asker</span><span class="p">,</span><span class="w"> </span><span class="n">ident</span><span class="p">,</span><span class="w"> </span><span class="n">actual</span><span class="p">},</span><span class="w"> </span><span class="n">s</span><span class="p">.</span><span class="n">known_keys</span><span class="p">);</span><span class="w"></span>
+let knows_key = (s: state, asker: person, ident: person, actual: person) =&gt;
+  asker == actual || List.mem({asker, ident, actual}, s.known_keys);
 
-<span class="cm">/* Is person A listening to channel C? Partially reflexive and symmetric! */</span><span class="w"></span>
+/* Is person A listening to channel C? Partially reflexive and symmetric! */
 
-<span class="kd">let</span><span class="w"> </span><span class="n">listening</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">s</span>: <span class="nc">state</span><span class="p">,</span><span class="w"> </span><span class="n">a</span>: <span class="nc">person</span><span class="p">,</span><span class="w"> </span><span class="n">c</span>: <span class="nc">channel</span><span class="p">)</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"></span>
-<span class="w">  </span><span class="n">c</span><span class="p">.</span><span class="n">to_</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">a</span><span class="w"></span>
-<span class="w">  </span><span class="o">||</span><span class="w"> </span><span class="n">List</span><span class="p">.</span><span class="n">exists</span><span class="p">(</span><span class="w"></span>
-<span class="w">       </span><span class="p">((</span><span class="n">p</span><span class="p">,</span><span class="w"> </span><span class="n">c2</span><span class="p">))</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">p</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="p">(</span><span class="n">c</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">c2</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">c</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">swap</span><span class="p">(</span><span class="n">c2</span><span class="p">)),</span><span class="w"></span>
-<span class="w">       </span><span class="n">s</span><span class="p">.</span><span class="n">listeners</span><span class="p">,</span><span class="w"></span>
-<span class="w">     </span><span class="p">);</span><span class="w"></span>
+let listening = (s: state, a: person, c: channel) =&gt;
+  c.to_ == a
+  || List.exists(
+       ((p, c2)) =&gt; a == p &amp;&amp; (c == c2 || c == swap(c2)),
+       s.listeners,
+     );
 
-<span class="cm">/* For all appropriate listeners on a given channel, do something */</span><span class="w"></span>
+/* For all appropriate listeners on a given channel, do something */
 
-<span class="kd">let</span><span class="w"> </span><span class="n">map_listeners</span><span class="w"> </span><span class="o">=</span><span class="w"></span>
-<span class="w">    </span><span class="p">(</span><span class="n">s</span>: <span class="nc">state</span><span class="p">,</span><span class="w"> </span><span class="n">c</span>: <span class="nc">channel</span><span class="p">,</span><span class="w"> </span><span class="n">guard</span>: <span class="nc">person</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="kt">bool</span><span class="p">,</span><span class="w"> </span><span class="n">f</span>: <span class="nc">person</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="na">&#39;b</span><span class="p">)</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">  </span><span class="kd">let</span><span class="w"> </span><span class="n">doit</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">((</span><span class="n">l_p</span><span class="p">,</span><span class="w"> </span><span class="n">l_c</span><span class="p">))</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"></span>
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">listening</span><span class="p">(</span><span class="n">s</span><span class="p">,</span><span class="w"> </span><span class="n">l_p</span><span class="p">,</span><span class="w"> </span><span class="n">c</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">guard</span><span class="p">(</span><span class="n">l_p</span><span class="p">))</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">      </span><span class="nb">Some</span><span class="p">(</span><span class="n">f</span><span class="p">(</span><span class="n">l_p</span><span class="p">));</span><span class="w"></span>
-<span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">      </span><span class="nb">None</span><span class="p">;</span><span class="w"></span>
-<span class="w">    </span><span class="p">};</span><span class="w"></span>
-<span class="w">  </span><span class="n">List</span><span class="p">.</span><span class="n">filter_map</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">doit</span><span class="p">(</span><span class="n">x</span><span class="p">),</span><span class="w"> </span><span class="n">s</span><span class="p">.</span><span class="n">listeners</span><span class="p">);</span><span class="w"></span>
-<span class="p">};</span><span class="w"></span>
+let map_listeners =
+    (s: state, c: channel, guard: person =&gt; bool, f: person =&gt; &#39;b) =&gt; {
+  let doit = ((l_p, l_c)) =&gt;
+    if (listening(s, l_p, c) &amp;&amp; guard(l_p)) {
+      Some(f(l_p));
+    } else {
+      None;
+    };
+  List.filter_map(x =&gt; doit(x), s.listeners);
+};
 
-<span class="kd">let</span><span class="w"> </span><span class="n">step</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">s</span>: <span class="nc">state</span><span class="p">,</span><span class="w"> </span><span class="n">a</span>: <span class="nc">action</span><span class="p">)</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"></span>
-<span class="w">  </span><span class="n">switch</span><span class="w"> </span><span class="p">(</span><span class="n">a</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">  </span><span class="cm">/* We can only listen in on messages between distinct people */</span><span class="w"></span>
-<span class="w">  </span><span class="o">|</span><span class="w"> </span><span class="n">Listen</span><span class="p">(</span><span class="n">p</span><span class="p">,</span><span class="w"> </span><span class="n">c</span><span class="p">)</span><span class="w"> </span><span class="n">when</span><span class="w"> </span><span class="n">c</span><span class="p">.</span><span class="n">from</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">c</span><span class="p">.</span><span class="n">to_</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">c</span><span class="p">.</span><span class="n">from</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">p</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">c</span><span class="p">.</span><span class="n">to_</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">p</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">      </span><span class="p">...</span><span class="n">s</span><span class="p">,</span><span class="w"></span>
-<span class="w">      </span><span class="n">listeners</span>: <span class="p">[(</span><span class="n">p</span><span class="p">,</span><span class="w"> </span><span class="n">c</span><span class="p">),</span><span class="w"> </span><span class="p">...</span><span class="n">s</span><span class="p">.</span><span class="n">listeners</span><span class="p">],</span><span class="w"></span>
-<span class="w">    </span><span class="p">}</span><span class="w"></span>
-<span class="w">  </span><span class="o">|</span><span class="w"> </span><span class="n">KeyRequest</span><span class="p">(</span><span class="n">asker</span><span class="p">,</span><span class="w"> </span><span class="n">key_owner</span><span class="p">)</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"></span>
-<span class="w">    </span><span class="cm">/* filter out self requests */</span><span class="w"></span>
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">asker</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">key_owner</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">      </span><span class="n">s</span><span class="p">;</span><span class="w"></span>
-<span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">      </span><span class="kd">let</span><span class="w"> </span><span class="n">ks</span><span class="w"> </span><span class="o">=</span><span class="w"></span>
-<span class="w">        </span><span class="n">map_listeners</span><span class="p">(</span><span class="w"></span>
-<span class="w">          </span><span class="n">s</span><span class="p">,</span><span class="w"></span>
-<span class="w">          </span><span class="p">{</span><span class="n">from</span>: <span class="nc">asker</span><span class="p">,</span><span class="w"> </span><span class="n">to_</span>: <span class="nc">key_owner</span><span class="p">},</span><span class="w"></span>
-<span class="w">          </span><span class="n">l</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w"></span>
-<span class="w">          </span><span class="n">l</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="p">(</span><span class="n">l</span><span class="p">,</span><span class="w"> </span><span class="n">key_owner</span><span class="p">),</span><span class="w"></span>
-<span class="w">        </span><span class="p">);</span><span class="w"></span>
-<span class="w">      </span><span class="cm">/* once asker asks key_owner for his key, he believes this person&#39;s identity */</span><span class="w"></span>
-<span class="w">      </span><span class="p">{</span><span class="w"></span>
-<span class="w">        </span><span class="p">...</span><span class="n">s</span><span class="p">,</span><span class="w"></span>
-<span class="w">        </span><span class="n">can_learn_keys</span>: <span class="p">[(</span><span class="n">asker</span><span class="p">,</span><span class="w"> </span><span class="n">key_owner</span><span class="p">),</span><span class="w"> </span><span class="p">...</span><span class="n">ks</span><span class="p">]</span><span class="w"> </span><span class="o">@</span><span class="w"> </span><span class="n">s</span><span class="p">.</span><span class="n">can_learn_keys</span><span class="p">,</span><span class="w"></span>
-<span class="w">        </span><span class="n">believed_identities</span>: <span class="p">[(</span><span class="n">key_owner</span><span class="p">,</span><span class="w"> </span><span class="n">asker</span><span class="p">),</span><span class="w"> </span><span class="p">...</span><span class="n">s</span><span class="p">.</span><span class="n">believed_identities</span><span class="p">],</span><span class="w"></span>
-<span class="w">      </span><span class="p">};</span><span class="w"></span>
-<span class="w">    </span><span class="p">}</span><span class="w"></span>
-<span class="w">  </span><span class="o">|</span><span class="w"> </span><span class="nb">Send</span><span class="p">({</span><span class="n">channel</span><span class="p">,</span><span class="w"> </span><span class="n">data</span>: <span class="nc">UnEncrypted</span><span class="p">((</span><span class="n">person</span><span class="p">,</span><span class="w"> </span><span class="n">Public</span><span class="p">(</span><span class="n">key_owner</span><span class="p">)))})</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"></span>
-<span class="w">    </span><span class="cm">/* filter out self sends */</span><span class="w"></span>
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">channel</span><span class="p">.</span><span class="n">from</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">channel</span><span class="p">.</span><span class="n">to_</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">person</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">channel</span><span class="p">.</span><span class="n">to_</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">      </span><span class="n">s</span><span class="p">;</span><span class="w"></span>
-<span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"></span>
-<span class="w">      </span><span class="cm">/* if the asker already believes he knows a key belonging to person then don&#39;t accept the key */</span><span class="w"></span>
-<span class="w">      </span><span class="p">(</span><span class="n">List</span><span class="p">.</span><span class="n">exists</span><span class="p">(</span><span class="w"></span>
-<span class="w">         </span><span class="p">({</span><span class="n">asker</span><span class="p">,</span><span class="w"> </span><span class="n">ident</span><span class="p">,</span><span class="w"> </span><span class="n">actual</span><span class="p">})</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">asker</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">channel</span><span class="p">.</span><span class="n">to_</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">ident</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">person</span><span class="p">,</span><span class="w"></span>
-<span class="w">         </span><span class="n">s</span><span class="p">.</span><span class="n">known_keys</span><span class="p">,</span><span class="w"></span>
-<span class="w">       </span><span class="p">))</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">      </span><span class="n">s</span><span class="p">;</span><span class="w"></span>
-<span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"></span>
-<span class="w">      </span><span class="cm">/* the recipent must be able to learn the key and the sender must know the key of key_owner believing it to be of person */</span><span class="w"></span>
-<span class="w">      </span><span class="p">(</span><span class="n">can_learn_key</span><span class="p">(</span><span class="n">s</span><span class="p">,</span><span class="w"> </span><span class="n">channel</span><span class="p">.</span><span class="n">to_</span><span class="p">,</span><span class="w"> </span><span class="n">person</span><span class="p">)</span><span class="w"></span>
-<span class="w">       </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">knows_key</span><span class="p">(</span><span class="n">s</span><span class="p">,</span><span class="w"> </span><span class="n">channel</span><span class="p">.</span><span class="n">from</span><span class="p">,</span><span class="w"> </span><span class="n">person</span><span class="p">,</span><span class="w"> </span><span class="n">key_owner</span><span class="p">))</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">      </span><span class="cm">/* The sink of the channel now knows the sent key */</span><span class="w"></span>
-<span class="w">      </span><span class="kd">let</span><span class="w"> </span><span class="n">r</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="n">asker</span>: <span class="nc">channel</span><span class="p">.</span><span class="n">to_</span><span class="p">,</span><span class="w"> </span><span class="n">ident</span>: <span class="nc">person</span><span class="p">,</span><span class="w"> </span><span class="n">actual</span>: <span class="nc">key_owner</span><span class="p">};</span><span class="w"></span>
-<span class="w">      </span><span class="cm">/* All listeners on the channel now know p&#39;s key */</span><span class="w"></span>
-<span class="w">      </span><span class="kd">let</span><span class="w"> </span><span class="n">ks</span><span class="w"> </span><span class="o">=</span><span class="w"></span>
-<span class="w">        </span><span class="n">map_listeners</span><span class="p">(</span><span class="w"></span>
-<span class="w">          </span><span class="n">s</span><span class="p">,</span><span class="w"></span>
-<span class="w">          </span><span class="n">channel</span><span class="p">,</span><span class="w"></span>
-<span class="w">          </span><span class="n">l</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">can_learn_key</span><span class="p">(</span><span class="n">s</span><span class="p">,</span><span class="w"> </span><span class="n">l</span><span class="p">,</span><span class="w"> </span><span class="n">person</span><span class="p">),</span><span class="w"></span>
-<span class="w">          </span><span class="n">l</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="p">{</span><span class="n">asker</span>: <span class="nc">l</span><span class="p">,</span><span class="w"> </span><span class="n">ident</span>: <span class="nc">person</span><span class="p">,</span><span class="w"> </span><span class="n">actual</span>: <span class="nc">key_owner</span><span class="p">},</span><span class="w"></span>
-<span class="w">        </span><span class="p">);</span><span class="w"></span>
-<span class="w">      </span><span class="p">{...</span><span class="n">s</span><span class="p">,</span><span class="w"> </span><span class="n">known_keys</span>: <span class="p">[</span><span class="n">r</span><span class="p">,</span><span class="w"> </span><span class="p">...</span><span class="n">ks</span><span class="p">]</span><span class="w"> </span><span class="o">@</span><span class="w"> </span><span class="n">s</span><span class="p">.</span><span class="n">known_keys</span><span class="p">};</span><span class="w"></span>
-<span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">      </span><span class="n">s</span><span class="p">;</span><span class="w"></span>
-<span class="w">    </span><span class="p">}</span><span class="w"></span>
-<span class="w">  </span><span class="o">|</span><span class="w"> </span><span class="nb">Send</span><span class="p">({</span><span class="w"></span>
-<span class="w">      </span><span class="n">channel</span><span class="p">,</span><span class="w"></span>
-<span class="w">      </span><span class="n">data</span>: <span class="nc">Encrypted</span><span class="p">((</span><span class="n">recipient_ident</span><span class="p">,</span><span class="w"> </span><span class="n">Public</span><span class="p">(</span><span class="n">t</span><span class="p">)),</span><span class="w"> </span><span class="p">(</span><span class="n">p</span><span class="p">,</span><span class="w"> </span><span class="n">msg</span><span class="p">)),</span><span class="w"></span>
-<span class="w">    </span><span class="p">})</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"></span>
-<span class="w">    </span><span class="cm">/* filter out self sends */</span><span class="w"></span>
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">channel</span><span class="p">.</span><span class="n">from</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">channel</span><span class="p">.</span><span class="n">to_</span><span class="w"></span>
-<span class="w">        </span><span class="o">||</span><span class="w"> </span><span class="n">recipient_ident</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">channel</span><span class="p">.</span><span class="n">from</span><span class="w"></span>
-<span class="w">        </span><span class="o">||</span><span class="w"> </span><span class="n">p</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">channel</span><span class="p">.</span><span class="n">to_</span><span class="w"></span>
-<span class="w">        </span><span class="o">||</span><span class="w"> </span><span class="n">recipient_ident</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">p</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">      </span><span class="n">s</span><span class="p">;</span><span class="w"></span>
-<span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"></span>
-<span class="w">      </span><span class="cm">/* if channel.from asked for the key and the identity is different don&#39;t accept the message */</span><span class="w"></span>
-<span class="w">      </span><span class="p">(</span><span class="n">believed_identity</span><span class="p">(</span><span class="n">s</span><span class="p">,</span><span class="w"> </span><span class="n">channel</span><span class="p">.</span><span class="n">to_</span><span class="p">,</span><span class="w"> </span><span class="n">channel</span><span class="p">.</span><span class="n">from</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">p</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">channel</span><span class="p">.</span><span class="n">from</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">      </span><span class="n">s</span><span class="p">;</span><span class="w"></span>
-<span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"></span>
-<span class="w">      </span><span class="cm">/* if public key is known by sender and the key matches the channel.to_ */</span><span class="w"></span>
-<span class="w">      </span><span class="p">(</span><span class="n">knows_key</span><span class="p">(</span><span class="n">s</span><span class="p">,</span><span class="w"> </span><span class="n">channel</span><span class="p">.</span><span class="n">from</span><span class="p">,</span><span class="w"> </span><span class="n">recipient_ident</span><span class="p">,</span><span class="w"> </span><span class="n">channel</span><span class="p">.</span><span class="n">to_</span><span class="p">)</span><span class="w"></span>
-<span class="w">       </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">t</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">channel</span><span class="p">.</span><span class="n">to_</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">      </span><span class="p">{</span><span class="w"></span>
-<span class="w">        </span><span class="p">...</span><span class="n">s</span><span class="p">,</span><span class="w"></span>
-<span class="w">        </span><span class="n">decrypted</span>: <span class="p">[(</span><span class="n">channel</span><span class="p">.</span><span class="n">to_</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="n">p</span><span class="p">,</span><span class="w"> </span><span class="n">msg</span><span class="p">)),</span><span class="w"> </span><span class="p">...</span><span class="n">s</span><span class="p">.</span><span class="n">decrypted</span><span class="p">],</span><span class="w"></span>
-<span class="w">        </span><span class="n">msgs</span>: <span class="p">[(</span><span class="n">channel</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="n">p</span><span class="p">,</span><span class="w"> </span><span class="n">msg</span><span class="p">)),</span><span class="w"> </span><span class="p">...</span><span class="n">s</span><span class="p">.</span><span class="n">msgs</span><span class="p">],</span><span class="w"></span>
-<span class="w">      </span><span class="p">};</span><span class="w"></span>
-<span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">      </span><span class="n">s</span><span class="p">;</span><span class="w"></span>
-<span class="w">    </span><span class="p">}</span><span class="w"></span>
-<span class="w">  </span><span class="o">|</span><span class="w"> </span><span class="n">_</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">s</span><span class="w"></span>
-<span class="w">  </span><span class="p">};</span><span class="w"></span>
+let step = (s: state, a: action) =&gt;
+  switch (a) {
+  /* We can only listen in on messages between distinct people */
+  | Listen(p, c) when c.from != c.to_ &amp;&amp; c.from != p &amp;&amp; c.to_ != p =&gt; {
+      ...s,
+      listeners: [(p, c), ...s.listeners],
+    }
+  | KeyRequest(asker, key_owner) =&gt;
+    /* filter out self requests */
+    if (asker == key_owner) {
+      s;
+    } else {
+      let ks =
+        map_listeners(
+          s,
+          {from: asker, to_: key_owner},
+          l =&gt; true,
+          l =&gt; (l, key_owner),
+        );
+      /* once asker asks key_owner for his key, he believes this person&#39;s identity */
+      {
+        ...s,
+        can_learn_keys: [(asker, key_owner), ...ks] @ s.can_learn_keys,
+        believed_identities: [(key_owner, asker), ...s.believed_identities],
+      };
+    }
+  | Send({channel, data: UnEncrypted((person, Public(key_owner)))}) =&gt;
+    /* filter out self sends */
+    if (channel.from == channel.to_ || person == channel.to_) {
+      s;
+    } else if
+      /* if the asker already believes he knows a key belonging to person then don&#39;t accept the key */
+      (List.exists(
+         ({asker, ident, actual}) =&gt; asker == channel.to_ &amp;&amp; ident == person,
+         s.known_keys,
+       )) {
+      s;
+    } else if
+      /* the recipent must be able to learn the key and the sender must know the key of key_owner believing it to be of person */
+      (can_learn_key(s, channel.to_, person)
+       &amp;&amp; knows_key(s, channel.from, person, key_owner)) {
+      /* The sink of the channel now knows the sent key */
+      let r = {asker: channel.to_, ident: person, actual: key_owner};
+      /* All listeners on the channel now know p&#39;s key */
+      let ks =
+        map_listeners(
+          s,
+          channel,
+          l =&gt; can_learn_key(s, l, person),
+          l =&gt; {asker: l, ident: person, actual: key_owner},
+        );
+      {...s, known_keys: [r, ...ks] @ s.known_keys};
+    } else {
+      s;
+    }
+  | Send({
+      channel,
+      data: Encrypted((recipient_ident, Public(t)), (p, msg)),
+    }) =&gt;
+    /* filter out self sends */
+    if (channel.from == channel.to_
+        || recipient_ident == channel.from
+        || p == channel.to_
+        || recipient_ident == p) {
+      s;
+    } else if
+      /* if channel.from asked for the key and the identity is different don&#39;t accept the message */
+      (believed_identity(s, channel.to_, channel.from) &amp;&amp; p != channel.from) {
+      s;
+    } else if
+      /* if public key is known by sender and the key matches the channel.to_ */
+      (knows_key(s, channel.from, recipient_ident, channel.to_)
+       &amp;&amp; t == channel.to_) {
+      {
+        ...s,
+        decrypted: [(channel.to_, (p, msg)), ...s.decrypted],
+        msgs: [(channel, (p, msg)), ...s.msgs],
+      };
+    } else {
+      s;
+    }
+  | _ =&gt; s
+  };
 
-<span class="kd">let</span><span class="w"> </span><span class="n">init</span>: <span class="nc">state</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">  </span><span class="n">believed_identities</span>: <span class="p">[],</span><span class="w"></span>
-<span class="w">  </span><span class="n">can_learn_keys</span>: <span class="p">[],</span><span class="w"></span>
-<span class="w">  </span><span class="n">known_keys</span>: <span class="p">[],</span><span class="w"></span>
-<span class="w">  </span><span class="n">listeners</span>: <span class="p">[],</span><span class="w"></span>
-<span class="w">  </span><span class="n">decrypted</span>: <span class="p">[],</span><span class="w"></span>
-<span class="w">  </span><span class="n">msgs</span>: <span class="p">[],</span><span class="w"></span>
-<span class="p">};</span><span class="w"></span>
+let init: state = {
+  believed_identities: [],
+  can_learn_keys: [],
+  known_keys: [],
+  listeners: [],
+  decrypted: [],
+  msgs: [],
+};
 </pre></div>
 
 </div>
@@ -993,12 +998,12 @@ val init : state =
 <div class="prompt input_prompt">In&nbsp;[2]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-rust"><pre><span></span><span class="kd">let</span><span class="w"> </span><span class="n">person_to_string</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">p</span><span class="p">)</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span>
-<span class="w">  </span><span class="n">switch</span><span class="w"> </span><span class="p">(</span><span class="n">p</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">    </span><span class="o">|</span><span class="w"> </span><span class="n">Alice</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="s">&quot;Alice&quot;</span><span class="w"></span>
-<span class="w">    </span><span class="o">|</span><span class="w"> </span><span class="n">Mallory</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="s">&quot;Mallory&quot;</span><span class="w"></span>
-<span class="w">    </span><span class="o">|</span><span class="w"> </span><span class="n">Bob</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="s">&quot;Bob&quot;</span><span class="w"></span>
-<span class="w">  </span><span class="p">};</span><span class="w"></span>
+<div class=" highlight hl-reasonml"><pre><span></span>let person_to_string = (p) =&gt; 
+  switch (p) {
+    | Alice =&gt; &quot;Alice&quot;
+    | Mallory =&gt; &quot;Mallory&quot;
+    | Bob =&gt; &quot;Bob&quot;
+  };
 </pre></div>
 
 </div>
@@ -1044,41 +1049,41 @@ val init : state =
 <div class="prompt input_prompt">In&nbsp;[3]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-rust"><pre><span></span><span class="kd">let</span><span class="w"> </span><span class="n">graph_step</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">s</span>: <span class="nc">action</span><span class="p">)</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"></span>
-<span class="w">  </span><span class="n">switch</span><span class="w"> </span><span class="p">(</span><span class="n">s</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">  </span><span class="o">|</span><span class="w"> </span><span class="n">Listen</span><span class="p">(</span><span class="n">p</span><span class="p">,</span><span class="w"> </span><span class="n">c</span><span class="p">)</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"></span>
-<span class="w">    </span><span class="n">person_to_string</span><span class="p">(</span><span class="n">p</span><span class="p">)</span><span class="w"></span>
-<span class="w">    </span><span class="o">++</span><span class="w"> </span><span class="s">&quot;-&gt;&quot;</span><span class="w"></span>
-<span class="w">    </span><span class="o">++</span><span class="w"> </span><span class="n">person_to_string</span><span class="p">(</span><span class="n">c</span><span class="p">.</span><span class="n">from</span><span class="p">)</span><span class="w"></span>
-<span class="w">    </span><span class="o">++</span><span class="w"> </span><span class="s">&quot;[style=dotted];</span><span class="se">\n</span><span class="s">&quot;</span><span class="w"></span>
-<span class="w">    </span><span class="o">++</span><span class="w"> </span><span class="n">person_to_string</span><span class="p">(</span><span class="n">p</span><span class="p">)</span><span class="w"></span>
-<span class="w">    </span><span class="o">++</span><span class="w"> </span><span class="s">&quot;-&gt;&quot;</span><span class="w"></span>
-<span class="w">    </span><span class="o">++</span><span class="w"> </span><span class="n">person_to_string</span><span class="p">(</span><span class="n">c</span><span class="p">.</span><span class="n">to_</span><span class="p">)</span><span class="w"></span>
-<span class="w">    </span><span class="o">++</span><span class="w"> </span><span class="s">&quot;[style=dotted];</span><span class="se">\n</span><span class="s">&quot;</span><span class="w"></span>
-<span class="w">  </span><span class="o">|</span><span class="w"> </span><span class="n">KeyRequest</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">k</span><span class="p">)</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"></span>
-<span class="w">    </span><span class="s">&quot;edge [color=yellow];</span><span class="se">\n</span><span class="s">&quot;</span><span class="w"></span>
-<span class="w">    </span><span class="o">++</span><span class="w"> </span><span class="n">person_to_string</span><span class="p">(</span><span class="n">a</span><span class="p">)</span><span class="w"></span>
-<span class="w">    </span><span class="o">++</span><span class="w"> </span><span class="s">&quot;-&gt;&quot;</span><span class="w"></span>
-<span class="w">    </span><span class="o">++</span><span class="w"> </span><span class="n">person_to_string</span><span class="p">(</span><span class="n">k</span><span class="p">)</span><span class="w"></span>
-<span class="w">    </span><span class="o">++</span><span class="w"> </span><span class="s">&quot;;</span><span class="se">\n</span><span class="s">&quot;</span><span class="w"></span>
-<span class="w">  </span><span class="o">|</span><span class="w"> </span><span class="nb">Send</span><span class="p">({</span><span class="n">channel</span><span class="p">,</span><span class="w"> </span><span class="n">data</span>: <span class="nc">UnEncrypted</span><span class="p">((</span><span class="n">person</span><span class="p">,</span><span class="w"> </span><span class="n">Public</span><span class="p">(</span><span class="n">key_owner</span><span class="p">)))})</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"></span>
-<span class="w">    </span><span class="n">person_to_string</span><span class="p">(</span><span class="n">channel</span><span class="p">.</span><span class="n">from</span><span class="p">)</span><span class="w"></span>
-<span class="w">    </span><span class="o">++</span><span class="w"> </span><span class="s">&quot;-&gt;&quot;</span><span class="w"></span>
-<span class="w">    </span><span class="o">++</span><span class="w"> </span><span class="n">person_to_string</span><span class="p">(</span><span class="n">channel</span><span class="p">.</span><span class="n">to_</span><span class="p">)</span><span class="w"></span>
-<span class="w">    </span><span class="o">++</span><span class="w"> </span><span class="s">&quot;[label=</span><span class="se">\&quot;</span><span class="s">&quot;</span><span class="w"></span>
-<span class="w">    </span><span class="o">++</span><span class="w"> </span><span class="n">person_to_string</span><span class="p">(</span><span class="n">key_owner</span><span class="p">)</span><span class="w"></span>
-<span class="w">    </span><span class="o">++</span><span class="w"> </span><span class="s">&quot;</span><span class="se">\&quot;</span><span class="s">,color=blue];</span><span class="se">\n</span><span class="s">&quot;</span><span class="w"></span>
-<span class="w">  </span><span class="o">|</span><span class="w"> </span><span class="nb">Send</span><span class="p">({</span><span class="w"></span>
-<span class="w">      </span><span class="n">channel</span><span class="p">,</span><span class="w"></span>
-<span class="w">      </span><span class="n">data</span>: <span class="nc">Encrypted</span><span class="p">((</span><span class="n">recipient_ident</span><span class="p">,</span><span class="w"> </span><span class="n">Public</span><span class="p">(</span><span class="n">t</span><span class="p">)),</span><span class="w"> </span><span class="p">(</span><span class="n">p</span><span class="p">,</span><span class="w"> </span><span class="n">msg</span><span class="p">)),</span><span class="w"></span>
-<span class="w">    </span><span class="p">})</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"></span>
-<span class="w">    </span><span class="n">person_to_string</span><span class="p">(</span><span class="n">channel</span><span class="p">.</span><span class="n">from</span><span class="p">)</span><span class="w"></span>
-<span class="w">    </span><span class="o">++</span><span class="w"> </span><span class="s">&quot;-&gt;&quot;</span><span class="w"></span>
-<span class="w">    </span><span class="o">++</span><span class="w"> </span><span class="n">person_to_string</span><span class="p">(</span><span class="n">channel</span><span class="p">.</span><span class="n">to_</span><span class="p">)</span><span class="w"></span>
-<span class="w">    </span><span class="o">++</span><span class="w"> </span><span class="s">&quot;[label=</span><span class="se">\&quot;</span><span class="s">&quot;</span><span class="w"></span>
-<span class="w">    </span><span class="o">++</span><span class="w"> </span><span class="n">person_to_string</span><span class="p">(</span><span class="n">t</span><span class="p">)</span><span class="w"></span>
-<span class="w">    </span><span class="o">++</span><span class="w"> </span><span class="s">&quot;</span><span class="se">\&quot;</span><span class="s">,color=black];</span><span class="se">\n</span><span class="s">&quot;</span><span class="w"></span>
-<span class="w">  </span><span class="p">};</span><span class="w"></span>
+<div class=" highlight hl-reasonml"><pre><span></span>let graph_step = (s: action) =&gt;
+  switch (s) {
+  | Listen(p, c) =&gt;
+    person_to_string(p)
+    ++ &quot;-&gt;&quot;
+    ++ person_to_string(c.from)
+    ++ &quot;[style=dotted];\n&quot;
+    ++ person_to_string(p)
+    ++ &quot;-&gt;&quot;
+    ++ person_to_string(c.to_)
+    ++ &quot;[style=dotted];\n&quot;
+  | KeyRequest(a, k) =&gt;
+    &quot;edge [color=yellow];\n&quot;
+    ++ person_to_string(a)
+    ++ &quot;-&gt;&quot;
+    ++ person_to_string(k)
+    ++ &quot;;\n&quot;
+  | Send({channel, data: UnEncrypted((person, Public(key_owner)))}) =&gt;
+    person_to_string(channel.from)
+    ++ &quot;-&gt;&quot;
+    ++ person_to_string(channel.to_)
+    ++ &quot;[label=\&quot;&quot;
+    ++ person_to_string(key_owner)
+    ++ &quot;\&quot;,color=blue];\n&quot;
+  | Send({
+      channel,
+      data: Encrypted((recipient_ident, Public(t)), (p, msg)),
+    }) =&gt;
+    person_to_string(channel.from)
+    ++ &quot;-&gt;&quot;
+    ++ person_to_string(channel.to_)
+    ++ &quot;[label=\&quot;&quot;
+    ++ person_to_string(t)
+    ++ &quot;\&quot;,color=black];\n&quot;
+  };
 </pre></div>
 
 </div>
@@ -1117,13 +1122,13 @@ val init : state =
 <div class="prompt input_prompt">In&nbsp;[4]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-rust"><pre><span></span><span class="kd">let</span><span class="w"> </span><span class="n">rec</span><span class="w"> </span><span class="n">graph_inner</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">xs</span>:<span class="nc">list</span><span class="p">(</span><span class="n">action</span><span class="p">))</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span>
-<span class="w">  </span><span class="n">switch</span><span class="w"> </span><span class="p">(</span><span class="n">xs</span><span class="p">)</span><span class="w"></span>
-<span class="w">  </span><span class="p">{</span><span class="w"></span>
-<span class="w">    </span><span class="o">|</span><span class="w"> </span><span class="p">[]</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="s">&quot;&quot;</span><span class="w"></span>
-<span class="w">    </span><span class="o">|</span><span class="w"> </span><span class="p">[</span><span class="n">h</span><span class="p">,</span><span class="w"> </span><span class="p">...</span><span class="n">t</span><span class="p">]</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span>
-<span class="w">      </span><span class="n">graph_step</span><span class="p">(</span><span class="n">h</span><span class="p">)</span><span class="o">++</span><span class="n">graph_inner</span><span class="p">(</span><span class="n">t</span><span class="p">)</span><span class="w"></span>
-<span class="w">  </span><span class="p">};</span><span class="w"></span>
+<div class=" highlight hl-reasonml"><pre><span></span>let rec graph_inner = (xs:list(action)) =&gt; 
+  switch (xs)
+  {
+    | [] =&gt; &quot;&quot;
+    | [h, ...t] =&gt; 
+      graph_step(h)++graph_inner(t)
+  };
 </pre></div>
 
 </div>
@@ -1155,44 +1160,44 @@ val init : state =
 
 
 <div class="output_html rendered_html output_subarea ">
-<div><div class="imandra-fold panel panel-default" id="fold-5d9d59a9-167c-4ce2-91ae-fc9abf519669"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>termination proof</span></div></div><div class="panel-body collapse"><div><h3>Termination proof</h3><p></p><div class="imandra-fold panel panel-default" id="fold-c5d2a5c0-c41c-4303-beab-166f15675a05"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>call `graph_inner (List.tl xs)` from `graph_inner xs`</span></div></div><div class="panel-body collapse"><div class="imandra-table" id="table-e199c153-f907-4a94-9c09-900db48a0e53"><table><tr><td><b>original</b></td><td>graph_inner xs</td></tr><tr><td><b>sub</b></td><td>graph_inner (List.tl xs)</td></tr><tr><td><b>original ordinal</b></td><td>Ordinal.Int (Ordinal.count xs)</td></tr><tr><td><b>sub ordinal</b></td><td>Ordinal.Int (Ordinal.count (List.tl xs))</td></tr><tr><td><b>path</b></td><td>[not (xs = [])]</td></tr><tr><td><b>proof</b></td><td><div class="imandra-fold panel panel-default" id="fold-52d4a44d-34aa-464c-87db-6f162d9c8562"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>detailed proof</span></div></div><div class="panel-body collapse"><div class="imandra-proof"><div class="imandra-alternatives" id="alt-4f613d94-ffa0-4ffe-bc98-e03fb3bb3e3a"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>summary</a></li><li class="" data-toggle="tab"><a>full</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-table" id="table-bb3a84e2-edc9-4eda-9d9d-54e334ab91c5"><table><tr><td><b>ground_instances</b></td><td>3</td></tr><tr><td><b>definitions</b></td><td>0</td></tr><tr><td><b>inductions</b></td><td>0</td></tr><tr><td><b>search_time</b></td><td><pre>0.070s</pre></td></tr><tr><td><b>details</b></td><td><div class="imandra-fold panel panel-default" id="fold-eb11fd51-1f96-4ee5-aef5-5825cc9ed52c"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><div class="imandra-table" id="table-36db872c-b11b-4211-8d02-013aaba68b8e"><table><tr><td><b>smt_stats</b></td><td><div class="imandra-table" id="table-301f057e-4c37-471a-99ae-f4c46861a6f5"><table><tr><td><b>num checks</b></td><td>8</td></tr><tr><td><b>arith assert lower</b></td><td>12</td></tr><tr><td><b>arith pivots</b></td><td>10</td></tr><tr><td><b>rlimit count</b></td><td>7505</td></tr><tr><td><b>mk clause</b></td><td>43</td></tr><tr><td><b>datatype occurs check</b></td><td>38</td></tr><tr><td><b>mk bool var</b></td><td>666</td></tr><tr><td><b>arith assert upper</b></td><td>9</td></tr><tr><td><b>datatype splits</b></td><td>182</td></tr><tr><td><b>decisions</b></td><td>66</td></tr><tr><td><b>arith add rows</b></td><td>18</td></tr><tr><td><b>propagations</b></td><td>23</td></tr><tr><td><b>conflicts</b></td><td>9</td></tr><tr><td><b>arith fixed eqs</b></td><td>5</td></tr><tr><td><b>datatype accessor ax</b></td><td>95</td></tr><tr><td><b>arith conflicts</b></td><td>2</td></tr><tr><td><b>datatype constructor ax</b></td><td>240</td></tr><tr><td><b>num allocs</b></td><td>978941390</td></tr><tr><td><b>final checks</b></td><td>10</td></tr><tr><td><b>added eqs</b></td><td>871</td></tr><tr><td><b>del clause</b></td><td>4</td></tr><tr><td><b>arith eq adapter</b></td><td>7</td></tr><tr><td><b>memory</b></td><td>25.020000</td></tr><tr><td><b>max memory</b></td><td>25.020000</td></tr></table></div></td></tr></table></div></div><script>
+<div><div class="imandra-fold panel panel-default" id="fold-77df78b3-9acb-4dca-9c26-e5b59bee5478"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>termination proof</span></div></div><div class="panel-body collapse"><div><h3>Termination proof</h3><p></p><div class="imandra-fold panel panel-default" id="fold-5348f878-0ed6-4cc4-8dfb-394d181312cc"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>call `graph_inner (List.tl xs)` from `graph_inner xs`</span></div></div><div class="panel-body collapse"><div class="imandra-table" id="table-93ff24f0-b71c-443d-8851-04d39b2d44b2"><table><tr><td><b>original</b></td><td>graph_inner xs</td></tr><tr><td><b>sub</b></td><td>graph_inner (List.tl xs)</td></tr><tr><td><b>original ordinal</b></td><td>Ordinal.Int (Ordinal.count xs)</td></tr><tr><td><b>sub ordinal</b></td><td>Ordinal.Int (Ordinal.count (List.tl xs))</td></tr><tr><td><b>path</b></td><td>[not (xs = [])]</td></tr><tr><td><b>proof</b></td><td><div class="imandra-fold panel panel-default" id="fold-f3fad6fc-970a-48c7-8a00-6675711adf3a"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>detailed proof</span></div></div><div class="panel-body collapse"><div class="imandra-proof"><div class="imandra-alternatives" id="alt-f9d7cfb8-e09e-4a6f-bbcc-9785373fd5cc"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>summary</a></li><li class="" data-toggle="tab"><a>full</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-table" id="table-42d2c8ad-d05d-4e37-bf1f-2cbc000d9e04"><table><tr><td><b>ground_instances</b></td><td>3</td></tr><tr><td><b>definitions</b></td><td>0</td></tr><tr><td><b>inductions</b></td><td>0</td></tr><tr><td><b>search_time</b></td><td><pre>0.022s</pre></td></tr><tr><td><b>details</b></td><td><div class="imandra-fold panel panel-default" id="fold-2939d569-69ec-49b6-b6a5-4e9ad34b2a64"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><div class="imandra-table" id="table-dfe366a6-bdc9-45f7-9d6b-569a6307b48f"><table><tr><td><b>smt_stats</b></td><td><div class="imandra-table" id="table-fcdae0a4-69e1-4e30-8dff-e2c1ea2ad581"><table><tr><td><b>num checks</b></td><td>8</td></tr><tr><td><b>arith assert lower</b></td><td>12</td></tr><tr><td><b>arith pivots</b></td><td>10</td></tr><tr><td><b>rlimit count</b></td><td>7505</td></tr><tr><td><b>mk clause</b></td><td>43</td></tr><tr><td><b>datatype occurs check</b></td><td>38</td></tr><tr><td><b>mk bool var</b></td><td>666</td></tr><tr><td><b>arith assert upper</b></td><td>9</td></tr><tr><td><b>datatype splits</b></td><td>182</td></tr><tr><td><b>decisions</b></td><td>66</td></tr><tr><td><b>arith add rows</b></td><td>18</td></tr><tr><td><b>propagations</b></td><td>23</td></tr><tr><td><b>conflicts</b></td><td>9</td></tr><tr><td><b>arith fixed eqs</b></td><td>5</td></tr><tr><td><b>datatype accessor ax</b></td><td>95</td></tr><tr><td><b>arith conflicts</b></td><td>2</td></tr><tr><td><b>datatype constructor ax</b></td><td>240</td></tr><tr><td><b>num allocs</b></td><td>960826376</td></tr><tr><td><b>final checks</b></td><td>10</td></tr><tr><td><b>added eqs</b></td><td>871</td></tr><tr><td><b>del clause</b></td><td>4</td></tr><tr><td><b>arith eq adapter</b></td><td>7</td></tr><tr><td><b>memory</b></td><td>30.810000</td></tr><tr><td><b>max memory</b></td><td>30.810000</td></tr></table></div></td></tr></table></div></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-eb11fd51-1f96-4ee5-aef5-5825cc9ed52c';
+  var target = '#fold-2939d569-69ec-49b6-b6a5-4e9ad34b2a64';
   fold.hydrate(target);
 });
-</script></div></td></tr></table></div></div><div class="tab-pane"><div class="imandra-fold panel panel-default" id="fold-0dc55d45-2e20-4504-ae87-ee7cf08470e6"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.070s]
+</script></div></td></tr></table></div></div><div class="tab-pane"><div class="imandra-fold panel panel-default" id="fold-f81f127b-509e-4d70-ab2a-137b77126803"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.022s]
   not (xs = []) &amp;&amp; Ordinal.count xs &gt;= 0 &amp;&amp; Ordinal.count (List.tl xs) &gt;= 0
   ==&gt; List.tl xs = []
-      || Ordinal.&lt;&lt; (Ordinal.Int (Ordinal.count (List.tl xs)))
-         (Ordinal.Int (Ordinal.count xs))</pre></li><li><div><h5>simplify</h5><div class="imandra-table" id="table-7ee3eae7-5477-44ac-8f09-356ec958a7ab"><table><tr><td><b>into</b></td><td><pre>(not
+      || Ordinal.( &lt;&lt; ) (Ordinal.Int (Ordinal.count (List.tl xs)))
+         (Ordinal.Int (Ordinal.count xs))</pre></li><li><div><h5>simplify</h5><div class="imandra-table" id="table-99eb330f-3c99-42de-901d-feeab9b6e1e7"><table><tr><td><b>into</b></td><td><pre>(not
  ((not (xs = []) &amp;&amp; Ordinal.count xs &gt;= 0) &amp;&amp; Ordinal.count (List.tl xs) &gt;= 0)
  || List.tl xs = [])
-|| Ordinal.&lt;&lt; (Ordinal.Int (Ordinal.count (List.tl xs)))
-   (Ordinal.Int (Ordinal.count xs))</pre></td></tr><tr><td><b>expansions</b></td><td><pre>[]</pre></td></tr><tr><td><b>rewrite_steps</b></td><td><ul></ul></td></tr><tr><td><b>forward_chaining</b></td><td><ul></ul></td></tr></table></div></div></li><li><div>unroll<div class="imandra-table" id="table-28b6b145-f365-4631-b88c-681d883e2dec"><table><tr><td><b>expr</b></td><td><pre>(|Ordinal.&lt;&lt;_116| (|Ordinal.Int_107|
-                    (|count_`action list`_2118| (|get.::.1_2108…</pre></td></tr><tr><td><b>expansions</b></td><td><ul></ul></td></tr></table></div></div></li><li><div>unroll<div class="imandra-table" id="table-ecae5a72-40bb-45d5-bba5-0d34e08f82fc"><table><tr><td><b>expr</b></td><td><pre>(|count_`action list`_2118| (|get.::.1_2108| xs_2109))</pre></td></tr><tr><td><b>expansions</b></td><td><ul></ul></td></tr></table></div></div></li><li><div>unroll<div class="imandra-table" id="table-ea9207ed-f103-4316-9460-18a0c152d614"><table><tr><td><b>expr</b></td><td><pre>(|count_`action list`_2118| xs_2109)</pre></td></tr><tr><td><b>expansions</b></td><td><ul></ul></td></tr></table></div></div></li><li><div><h5>unsat</h5><pre>(let ((a!1 ((_ is (UnEncrypted_1003 (|`(person * public_key)`_2094|) data_1002))
+|| Ordinal.( &lt;&lt; ) (Ordinal.Int (Ordinal.count (List.tl xs)))
+   (Ordinal.Int (Ordinal.count xs))</pre></td></tr><tr><td><b>expansions</b></td><td><pre>[]</pre></td></tr><tr><td><b>rewrite_steps</b></td><td><ul></ul></td></tr><tr><td><b>forward_chaining</b></td><td><ul></ul></td></tr></table></div></div></li><li><div>unroll<div class="imandra-table" id="table-5d8c4b73-f866-4112-88f2-adee631f996a"><table><tr><td><b>expr</b></td><td><pre>(|Ordinal.&lt;&lt;_116| (|Ordinal.Int_107|
+                    (|count_`action list`_2118| (|get.::.1_2108…</pre></td></tr><tr><td><b>expansions</b></td><td><ul></ul></td></tr></table></div></div></li><li><div>unroll<div class="imandra-table" id="table-3cb28297-87e5-44f4-87b2-b86e8a5191db"><table><tr><td><b>expr</b></td><td><pre>(|count_`action list`_2118| (|get.::.1_2108| xs_2109))</pre></td></tr><tr><td><b>expansions</b></td><td><ul></ul></td></tr></table></div></div></li><li><div>unroll<div class="imandra-table" id="table-4861a08c-7e32-466a-92e4-aeb20745ebdb"><table><tr><td><b>expr</b></td><td><pre>(|count_`action list`_2118| xs_2109)</pre></td></tr><tr><td><b>expansions</b></td><td><ul></ul></td></tr></table></div></div></li><li><div><h5>unsat</h5><pre>(let ((a!1 ((_ is (UnEncrypted_1003 (|`(person * public_key)`_2094|) data_1002))
              (data_…</pre></div></li></ul></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-0dc55d45-2e20-4504-ae87-ee7cf08470e6';
+  var target = '#fold-f81f127b-509e-4d70-ab2a-137b77126803';
   fold.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-4f613d94-ffa0-4ffe-bc98-e03fb3bb3e3a';
+  var target = '#alt-f9d7cfb8-e09e-4a6f-bbcc-9785373fd5cc';
   alternatives.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-52d4a44d-34aa-464c-87db-6f162d9c8562';
+  var target = '#fold-f3fad6fc-970a-48c7-8a00-6675711adf3a';
   fold.hydrate(target);
 });
 </script></div></td></tr></table></div></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-c5d2a5c0-c41c-4303-beab-166f15675a05';
+  var target = '#fold-5348f878-0ed6-4cc4-8dfb-394d181312cc';
   fold.hydrate(target);
 });
 </script></div><p></p></div></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-5d9d59a9-167c-4ce2-91ae-fc9abf519669';
+  var target = '#fold-77df78b3-9acb-4dca-9c26-e5b59bee5478';
   fold.hydrate(target);
 });
 </script></div></div>
@@ -1222,9 +1227,9 @@ require(['nbextensions/nbimandra/fold'], function (fold) {
 <div class="prompt input_prompt">In&nbsp;[5]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-rust"><pre><span></span><span class="p">[</span><span class="o">@</span><span class="n">program</span><span class="p">]</span><span class="w"> </span><span class="kd">let</span><span class="w"> </span><span class="n">graph</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">xs</span>:<span class="nc">list</span><span class="p">(</span><span class="n">action</span><span class="p">))</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"></span>
-<span class="w">  </span><span class="n">Document</span><span class="p">.</span><span class="n">graphviz</span><span class="p">(</span><span class="s">&quot;digraph G {</span><span class="se">\n</span><span class="s">Alice [color=blue];</span><span class="se">\n</span><span class="s">Mallory [color=red];</span><span class="se">\n</span><span class="s">Bob [color=green];</span><span class="se">\n</span><span class="s">&quot;</span><span class="o">++</span><span class="n">graph_inner</span><span class="p">(</span><span class="n">xs</span><span class="p">)</span><span class="o">++</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">}</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span><span class="w"></span>
-<span class="p">[</span><span class="o">@</span><span class="n">install_doc</span><span class="w"> </span><span class="n">graph</span><span class="p">];</span><span class="w"></span>
+<div class=" highlight hl-reasonml"><pre><span></span>[@program] let graph = (xs:list(action)) =&gt;
+  Document.graphviz(&quot;digraph G {\nAlice [color=blue];\nMallory [color=red];\nBob [color=green];\n&quot;++graph_inner(xs)++&quot;\n}\n&quot;);
+[@install_doc graph];
 </pre></div>
 
 </div>
@@ -1270,14 +1275,14 @@ require(['nbextensions/nbimandra/fold'], function (fold) {
 <div class="prompt input_prompt">In&nbsp;[6]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-rust"><pre><span></span><span class="cm">/* Can xq decrypt a message saying it&#39;s from xw, but actually it&#39;s been sent by another party? */</span><span class="w"></span>
-<span class="p">[</span><span class="o">@</span><span class="n">blast</span><span class="p">]</span><span class="w"></span>
-<span class="n">verify</span><span class="p">((</span><span class="n">x1</span><span class="p">,</span><span class="w"> </span><span class="n">x2</span><span class="p">,</span><span class="w"> </span><span class="n">m</span><span class="p">,</span><span class="w"> </span><span class="n">xs</span><span class="p">)</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">  </span><span class="kd">let</span><span class="w"> </span><span class="n">s</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">List</span><span class="p">.</span><span class="n">fold_left</span><span class="p">(</span><span class="n">step</span><span class="p">,</span><span class="w"> </span><span class="n">init</span><span class="p">,</span><span class="w"> </span><span class="n">xs</span><span class="p">);</span><span class="w"></span>
-<span class="w">  </span><span class="n">List</span><span class="p">.</span><span class="n">mem</span><span class="p">((</span><span class="n">x1</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="n">x2</span><span class="p">,</span><span class="w"> </span><span class="n">m</span><span class="p">)),</span><span class="w"> </span><span class="n">s</span><span class="p">.</span><span class="n">decrypted</span><span class="p">)</span><span class="w"></span>
-<span class="w">  </span><span class="o">==&gt;</span><span class="w"> </span><span class="n">List</span><span class="p">.</span><span class="n">mem</span><span class="p">(({</span><span class="n">from</span>: <span class="nc">x2</span><span class="p">,</span><span class="w"> </span><span class="n">to_</span>: <span class="nc">x1</span><span class="p">},</span><span class="w"> </span><span class="p">(</span><span class="n">x2</span><span class="p">,</span><span class="w"> </span><span class="n">m</span><span class="p">)),</span><span class="w"> </span><span class="n">s</span><span class="p">.</span><span class="n">msgs</span><span class="p">);</span><span class="w"></span>
-<span class="p">});</span><span class="w"></span>
-<span class="n">CX</span><span class="p">.</span><span class="n">xs</span><span class="p">;</span><span class="w"></span>
+<div class=" highlight hl-reasonml"><pre><span></span>/* Can xq decrypt a message saying it&#39;s from xw, but actually it&#39;s been sent by another party? */
+[@blast]
+verify((x1, x2, m, xs) =&gt; {
+  let s = List.fold_left(step, init, xs);
+  List.mem((x1, (x2, m)), s.decrypted)
+  ==&gt; List.mem(({from: x2, to_: x1}, (x2, m)), s.msgs);
+});
+CX.xs;
 </pre></div>
 
 </div>
@@ -1312,7 +1317,7 @@ module CX :
 
 
 <div class="output_html rendered_html output_subarea ">
-<div><pre>Counterexample (after 66 steps, 0.395s):
+<div><pre>Counterexample (after 66 steps, 0.377s):
   let x1 = Mallory
   let x2 = Alice
   let m = 0
@@ -1351,7 +1356,7 @@ module CX :
 
 
 <div class="output_html rendered_html output_subarea ">
-<div><div class="imandra-graphviz" id="graphviz-2592c878-20fc-46a6-8239-09dfd81048c9"><textarea style="display: none">digraph G {
+<div><div class="imandra-graphviz" id="graphviz-8b774651-0d38-4b41-9d1d-a626c7644629"><textarea style="display: none">digraph G {
 Alice [color=blue];
 Mallory [color=red];
 Bob [color=green];
@@ -1365,7 +1370,7 @@ Bob-&gt;Mallory[label=&quot;Mallory&quot;,color=black];
 }
 </textarea><button class="btn btn-primary">Load graph</button><div class="imandra-graphviz-loading display-none">Loading..</div><div class="imandra-graphviz-target"></div><script>
 require(['nbextensions/nbimandra/graphviz'], function (graphviz) {
-  var target = '#graphviz-2592c878-20fc-46a6-8239-09dfd81048c9';
+  var target = '#graphviz-8b774651-0d38-4b41-9d1d-a626c7644629';
   graphviz.hydrate(target);
 });
 </script></div></div>
@@ -1395,17 +1400,17 @@ require(['nbextensions/nbimandra/graphviz'], function (graphviz) {
 <div class="prompt input_prompt">In&nbsp;[7]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-rust"><pre><span></span><span class="cm">/* if a message has been sent by x2 and x1 decodes that message then they must be the same message */</span><span class="w"></span>
-<span class="p">[</span><span class="o">@</span><span class="n">blast</span><span class="p">]</span><span class="w"></span>
-<span class="n">verify</span><span class="p">((</span><span class="n">x1</span><span class="p">,</span><span class="w"> </span><span class="n">x2</span><span class="p">,</span><span class="w"> </span><span class="n">x3</span><span class="p">,</span><span class="w"> </span><span class="n">m</span><span class="p">,</span><span class="w"> </span><span class="n">xs</span><span class="p">)</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">  </span><span class="kd">let</span><span class="w"> </span><span class="n">s</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">List</span><span class="p">.</span><span class="n">fold_left</span><span class="p">(</span><span class="n">step</span><span class="p">,</span><span class="w"> </span><span class="n">init</span><span class="p">,</span><span class="w"> </span><span class="n">xs</span><span class="p">);</span><span class="w"></span>
-<span class="w">  </span><span class="p">(</span><span class="w"></span>
-<span class="w">    </span><span class="n">List</span><span class="p">.</span><span class="n">mem</span><span class="p">(({</span><span class="n">from</span>: <span class="nc">x2</span><span class="p">,</span><span class="w"> </span><span class="n">to_</span>: <span class="nc">x3</span><span class="p">},</span><span class="w"> </span><span class="p">(</span><span class="n">x2</span><span class="p">,</span><span class="w"> </span><span class="n">m</span><span class="p">)),</span><span class="w"> </span><span class="n">s</span><span class="p">.</span><span class="n">msgs</span><span class="p">)</span><span class="w"></span>
-<span class="w">    </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">List</span><span class="p">.</span><span class="n">mem</span><span class="p">((</span><span class="n">x1</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="n">x2</span><span class="p">,</span><span class="w"> </span><span class="n">m</span><span class="p">)),</span><span class="w"> </span><span class="n">s</span><span class="p">.</span><span class="n">decrypted</span><span class="p">)</span><span class="w"></span>
-<span class="w">  </span><span class="p">)</span><span class="w"></span>
-<span class="w">  </span><span class="o">==&gt;</span><span class="w"> </span><span class="n">x1</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">x3</span><span class="p">;</span><span class="w"></span>
-<span class="p">});</span><span class="w"></span>
-<span class="n">CX</span><span class="p">.</span><span class="n">xs</span><span class="p">;</span><span class="w"></span>
+<div class=" highlight hl-reasonml"><pre><span></span>/* if a message has been sent by x2 and x1 decodes that message then they must be the same message */
+[@blast]
+verify((x1, x2, x3, m, xs) =&gt; {
+  let s = List.fold_left(step, init, xs);
+  (
+    List.mem(({from: x2, to_: x3}, (x2, m)), s.msgs)
+    &amp;&amp; List.mem((x1, (x2, m)), s.decrypted)
+  )
+  ==&gt; x1 == x3;
+});
+CX.xs;
 </pre></div>
 
 </div>
@@ -1446,7 +1451,7 @@ module CX :
 
 
 <div class="output_html rendered_html output_subarea ">
-<div><pre>Counterexample (after 93 steps, 0.570s):
+<div><pre>Counterexample (after 93 steps, 0.281s):
   let x1 = Alice
   let x2 = Bob
   let x3 = Mallory
@@ -1491,7 +1496,7 @@ module CX :
 
 
 <div class="output_html rendered_html output_subarea ">
-<div><div class="imandra-graphviz" id="graphviz-7ac0766b-5f9d-4a60-acab-770d8c4c7924"><textarea style="display: none">digraph G {
+<div><div class="imandra-graphviz" id="graphviz-638ebdf4-f4d0-4c7a-8e77-7bd73f295feb"><textarea style="display: none">digraph G {
 Alice [color=blue];
 Mallory [color=red];
 Bob [color=green];
@@ -1507,7 +1512,7 @@ Bob-&gt;Mallory[label=&quot;Mallory&quot;,color=black];
 }
 </textarea><button class="btn btn-primary">Load graph</button><div class="imandra-graphviz-loading display-none">Loading..</div><div class="imandra-graphviz-target"></div><script>
 require(['nbextensions/nbimandra/graphviz'], function (graphviz) {
-  var target = '#graphviz-7ac0766b-5f9d-4a60-acab-770d8c4c7924';
+  var target = '#graphviz-638ebdf4-f4d0-4c7a-8e77-7bd73f295feb';
   graphviz.hydrate(target);
 });
 </script></div></div>
