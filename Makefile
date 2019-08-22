@@ -43,12 +43,12 @@ upload-notebook-assets:
 	gsutil iam ch allUsers:objectViewer gs://$(NOTEBOOKS_GCS_BUCKET) || true
 	gsutil -m cp -r notebook-assets/* gs://$(NOTEBOOKS_GCS_BUCKET)
 
-deploy-docs: guard-REPO
-	git clone git@github.com:AestheticIntegration/$(REPO) _docs-repo/$(REPO) || true
-	cd _docs-repo/$(REPO) && git fetch && git checkout gh-pages && git reset --hard origin/gh-pages
-	cd _docs-repo/$(REPO) && git rm -r index.html jekyll-resources notebooks static
-	cp -r _build/sites/$(REPO)/* _docs-repo/$(REPO)/.
-	cd _docs-repo/$(REPO) && git add -A && git commit -am "Docs update from $(COMMIT_SHA)" && git push origin gh-pages
+deploy-docs:
+	git clone git@github.com:AestheticIntegration/$(SITE_PATH) _docs-repo/$(SITE_PATH) || true
+	cd _docs-repo/$(SITE_PATH) && git fetch && git checkout gh-pages && git reset --hard origin/gh-pages
+	cd _docs-repo/$(SITE_PATH) && git rm -r index.html jekyll-resources notebooks static
+	cp -r _build/sites/$(SITE_PATH)/* _docs-repo/$(SITE_PATH)/.
+	cd _docs-repo/$(SITE_PATH) && git add -A && git commit -am "Docs update from $(COMMIT_SHA)" && git push origin gh-pages
 
 deploy-notebooks:
 	(cd _build/notebooks && find . -name '*.ipynb') | \
