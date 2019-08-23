@@ -1,0 +1,17 @@
+substitutions:
+  TAG_NAME: trigger
+steps:
+  - name: gcr.io/cloud-builders/gcloud
+    id: 'submit-build'
+    waitFor: ['-']
+    entrypoint: '/bin/bash'
+    args:
+      - '-c'
+      - |
+        mkdir -p tmp
+        gsutil cp 'gs://imandra-dev-cloudbuilds/imandra-docs/cloudbuild.yaml' ./tmp/cloudbuild.yaml
+        gcloud builds submit \
+          'gs://imandra-dev-cloudbuilds/imandra-docs/imandra-docs-cloudbuild.tar.gz' \
+          --config tmp/cloudbuild.yaml \
+          --async \
+          --substitutions="BRANCH_NAME=$BRANCH_NAME,COMMIT_SHA=$COMMIT_SHA,REPO_NAME=imandra-docs,TAG_NAME=build,_IMANDRA_DOCS_BUILDER=eu.gcr.io/imandra-dev/imandra-docs-builder:e63458f1e9aadd0509694fb7078feb96e417d60e"
