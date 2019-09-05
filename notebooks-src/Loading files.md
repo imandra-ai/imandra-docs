@@ -80,7 +80,7 @@ so no module is created, and it's not idempotent.
 
 ## require_mod_use
 
-Syntax: `#require_use "some-lib";;` or `[@@@require_use "some-lib"]` or as an argument to imandra: `-require-use somelib`
+Syntax: `#require_mod_use "some-lib";;` or `[@@@require_mod_use "some-lib"]` or as an argument to imandra: `-require-mod-use somelib`
 
 Similar to `#require "some-lib";;` except it loads the file `some-lib.iml` with `#mod_use` instead of `#import`,
 so it's not idempotent.
