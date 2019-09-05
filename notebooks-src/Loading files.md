@@ -10,6 +10,8 @@ key-phrases:
   - load path
   - import
   - require
+  - require_use
+  - require_mod_use
   - libraries
 ---
 
@@ -67,4 +69,18 @@ Syntax: `#require "some-lib";;` or `[@@@require "some-lib"]` or as an argument t
 
 The behavior of `require` is to search for `some-lib` in the list of installed libraries (using topfind) and load it in the current environment.
 
-If `some-lib` comes packaged with a `some-lib.iml` file, it will be automatically loaded by Imandra after the library has been required.
+If `some-lib` comes packaged with a `some-lib.iml` file, it will be automatically loaded by Imandra using `#import` after the library has been required.
+
+## require_use
+
+Syntax: `#require_use "some-lib";;` or `[@@@require_use "some-lib"]` or as an argument to imandra: `-require-use somelib`
+
+Similar to `#require "some-lib";;` except it loads the file `some-lib.iml` with `#use` instead of `#import`,
+so no module is created, and it's not idempotent.
+
+## require_mod_use
+
+Syntax: `#require_use "some-lib";;` or `[@@@require_use "some-lib"]` or as an argument to imandra: `-require-use somelib`
+
+Similar to `#require "some-lib";;` except it loads the file `some-lib.iml` with `#mod_use` instead of `#import`,
+so it's not idempotent.
