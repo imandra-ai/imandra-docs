@@ -33,6 +33,8 @@ docker-build-docs: _build/login_token
     -v `pwd`/_build/login_token:/home/jovyan/.imandra/login_token \
     -e SITE_PATH=$(SITE_PATH) \
     -e LAUNCH_URL=$(LAUNCH_URL) \
+    -e PARALLELISM="3" \
+    -e IMANDRA_ENV="dev" \
     $(IMANDRA_DOCS_BUILDER)
 
 serve-docs:
