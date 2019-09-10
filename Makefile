@@ -30,7 +30,7 @@ docker-build-docs: _build/login_token
 	docker run --rm \
     -v `pwd`:/mnt/src \
     -v `pwd`/_build:/mnt/dst \
-    -v `pwd`/_build/login_token:/home/jovyan/.imandra/login_token \
+    -v `pwd`/_build/login_token:/home/jovyan/.imandra-dev/login_token \
     -e SITE_PATH=$(SITE_PATH) \
     -e LAUNCH_URL=$(LAUNCH_URL) \
     -e PARALLELISM="3" \
