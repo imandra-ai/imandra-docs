@@ -87,7 +87,8 @@ We need to do is define a module implementing the `Idf_intf.DFSM_SIG` module sig
 - a `module_name` value mapping to the name of the module being defined (this is necessary for reflection purposes)
 - a `Template` module implementing the `Idf_intf.TPL_SIG` module signature:
   - a `t` variant type symbolically describing events from our model
-  - a `concrete` function from `t` to a list of strings mapping the symbolic event to concrete `event` type names
+  - a `c` variant type mapping to the concrete `event` type
+  - a `concrete` function mapping `t` events to `c` events
 
 ```{.imandra .input}
 open Imandra_tools
@@ -118,12 +119,14 @@ module Decomp = struct
 
   module Template = struct
     type t = Add | Sub | Reset | Any
+    type c = State_machine.event
 
-    let concrete = function
-        | Add -> ["Model.Add"]
-        | Sub -> ["Model.Sub"]
-        | Reset -> ["Model.Reset"]
-        | Any -> []
+    let concrete c t = match c, t with
+        | Add, Model.Add _ -> true
+        | Sub, Model.Sub _ -> true
+        | Reset, Model.Reset -> true
+        | Any, _ -> true
+        | _ -> false
   end
 
 end
