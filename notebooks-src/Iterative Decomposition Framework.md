@@ -87,14 +87,16 @@ Note that there's not necessarily a 1:1 correspondence between the variant const
 module TPL = struct
   (* type of a symbolic state machine event *)
   type t = Add | AddInt | Sub | Reset | Any
+  type c = SM.event
 
-  (* mapping function from a symbolic state machine event to a concrete event name *)
-  let concrete = function
-    | Any -> []
-    | Add -> ["SM.Add"]
-    | AddInt -> ["SM.Add"; "SM.Int"]
-    | Sub -> ["SM.Sub"]
-    | Reset -> ["SM.Reset"]
+  (* mapping function from a symbolic state machine event to a concrete event *)
+  let concrete t c = match t,c with
+    | Any, _ -> true
+    | Add, SM.Add _ -> true
+    | AddInt, SM.Add(SM.Int _) -> true
+    | Sub, SM.Sub _ -> true
+    | Reset, SM.Reset -> true
+    | _ -> false
 end
 ```
 
