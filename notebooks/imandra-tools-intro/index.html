@@ -765,9 +765,11 @@
   sig
     module Idf = Imandra_tools__Idf
     module Idf_intf = Imandra_tools__Idf_intf
+    module Region_idx = Imandra_tools__Region_idx
     module Region_json = Imandra_tools__Region_json
     module Region_pp = Imandra_tools__Region_pp
     module Region_pp_intf = Imandra_tools__Region_pp_intf
+    module Region_probs = Imandra_tools__Region_probs
     module Region_term_synth = Imandra_tools__Region_term_synth
   end
 </pre>
@@ -884,7 +886,8 @@ Note: this is an introductory walkthrough of the capabilities of `imandra-tools`
 <li>a <code>module_name</code> value mapping to the name of the module being defined (this is necessary for reflection purposes)</li>
 <li>a <code>Template</code> module implementing the <code>Idf_intf.TPL_SIG</code> module signature:<ul>
 <li>a <code>t</code> variant type symbolically describing events from our model</li>
-<li>a <code>concrete</code> function from <code>t</code> to a list of strings mapping the symbolic event to concrete <code>event</code> type names</li>
+<li>a <code>c</code> variant type mapping to the concrete <code>event</code> type</li>
+<li>a <code>concrete</code> function mapping <code>t</code> events to <code>c</code> events</li>
 </ul>
 </li>
 </ul>
@@ -929,12 +932,14 @@ Note: this is an introductory walkthrough of the capabilities of `imandra-tools`
 
   <span class="k">module</span> <span class="nc">Template</span> <span class="o">=</span> <span class="k">struct</span>
     <span class="k">type</span> <span class="n">t</span> <span class="o">=</span> <span class="nc">Add</span> <span class="o">|</span> <span class="nc">Sub</span> <span class="o">|</span> <span class="nc">Reset</span> <span class="o">|</span> <span class="nc">Any</span>
+    <span class="k">type</span> <span class="n">c</span> <span class="o">=</span> <span class="nn">State_machine</span><span class="p">.</span><span class="n">event</span>
 
-    <span class="k">let</span> <span class="n">concrete</span> <span class="o">=</span> <span class="k">function</span>
-        <span class="o">|</span> <span class="nc">Add</span> <span class="o">-&gt;</span> <span class="o">[</span><span class="s2">&quot;Model.Add&quot;</span><span class="o">]</span>
-        <span class="o">|</span> <span class="nc">Sub</span> <span class="o">-&gt;</span> <span class="o">[</span><span class="s2">&quot;Model.Sub&quot;</span><span class="o">]</span>
-        <span class="o">|</span> <span class="nc">Reset</span> <span class="o">-&gt;</span> <span class="o">[</span><span class="s2">&quot;Model.Reset&quot;</span><span class="o">]</span>
-        <span class="o">|</span> <span class="nc">Any</span> <span class="o">-&gt;</span> <span class="bp">[]</span>
+    <span class="k">let</span> <span class="n">concrete</span> <span class="n">c</span> <span class="n">t</span> <span class="o">=</span> <span class="k">match</span> <span class="n">c</span><span class="o">,</span> <span class="n">t</span> <span class="k">with</span>
+        <span class="o">|</span> <span class="nc">Add</span><span class="o">,</span> <span class="nn">Model</span><span class="p">.</span><span class="nc">Add</span> <span class="o">_</span> <span class="o">-&gt;</span> <span class="bp">true</span>
+        <span class="o">|</span> <span class="nc">Sub</span><span class="o">,</span> <span class="nn">Model</span><span class="p">.</span><span class="nc">Sub</span> <span class="o">_</span> <span class="o">-&gt;</span> <span class="bp">true</span>
+        <span class="o">|</span> <span class="nc">Reset</span><span class="o">,</span> <span class="nn">Model</span><span class="p">.</span><span class="nc">Reset</span> <span class="o">-&gt;</span> <span class="bp">true</span>
+        <span class="o">|</span> <span class="nc">Any</span><span class="o">,</span> <span class="o">_</span> <span class="o">-&gt;</span> <span class="bp">true</span>
+        <span class="o">|</span> <span class="o">_</span> <span class="o">-&gt;</span> <span class="bp">false</span>
   <span class="k">end</span>
 
 <span class="k">end</span>
@@ -970,7 +975,8 @@ Note: this is an introductory walkthrough of the capabilities of `imandra-tools`
     module Template :
       sig
         type t = Add | Sub | Reset | Any
-        val concrete : t -&gt; string list
+        type c = State_machine.event
+        val concrete : t -&gt; Model.message -&gt; bool
       end
   end
 </pre>
@@ -1059,6 +1065,7 @@ module Mex :
     val get_Decomp_State_machine_event : E.expr -&gt; Decomp.State_machine.event
     val get_Decomp_State_machine_state : E.expr -&gt; Decomp.State_machine.state
     val get_Decomp_Template_t : E.expr -&gt; Decomp.Template.t
+    val get_Decomp_Template_c : E.expr -&gt; Decomp.Template.c
     type e_t = Decomp.State_machine.event list
     type extract_type = { e : e_t; }
     val ret_e : extract_type -&gt; e_t
@@ -1073,11 +1080,6 @@ module D :
       sig
         module DSM :
           sig
-            module Template :
-              sig
-                type t = Decomp.Template.t
-                val concrete : t -&gt; string list
-              end
             module State_machine :
               sig
                 type state = Decomp.State_machine.state
@@ -1085,6 +1087,12 @@ module D :
                 val init_state : state
                 val step : event -&gt; state -&gt; state
                 val is_valid : event -&gt; state -&gt; bool
+              end
+            module Template :
+              sig
+                type t = Decomp.Template.t
+                type c = State_machine.event
+                val concrete : t -&gt; c -&gt; bool
               end
             val module_name : string
           end
@@ -1204,11 +1212,6 @@ module D :
       sig
         module DSM :
           sig
-            module Template :
-              sig
-                type t = Decomp.Template.t
-                val concrete : t -&gt; string list
-              end
             module State_machine :
               sig
                 type state = Decomp.State_machine.state
@@ -1216,6 +1219,12 @@ module D :
                 val init_state : state
                 val step : event -&gt; state -&gt; state
                 val is_valid : event -&gt; state -&gt; bool
+              end
+            module Template :
+              sig
+                type t = Decomp.Template.t
+                type c = State_machine.event
+                val concrete : t -&gt; c -&gt; bool
               end
             val module_name : string
           end
@@ -1333,6 +1342,7 @@ module D :
       end
   end
 module IDF = D.Symbolic
+- : unit = ()
 val g___2 : Decomp.State_machine.event -&gt; Decomp.State_machine.state -&gt; bool =
   &lt;fun&gt;
 val side_cond_g___3_2 :
@@ -1348,7 +1358,7 @@ val target_g___3_2 :
   Decomp.State_machine.event list -&gt;
   Decomp.State_machine.state -&gt; Decomp.State_machine.state = &lt;fun&gt;
 val target_g___3_1 :
-  Model.message list -&gt;
+  Decomp.State_machine.event list -&gt;
   Decomp.State_machine.state -&gt; Decomp.State_machine.state = &lt;fun&gt;
 val target_g___3_0 :
   Decomp.State_machine.event list -&gt;
@@ -1405,19 +1415,16 @@ val g___5 : Decomp.State_machine.event list -&gt; Decomp.State_machine.state =
   &lt;fun&gt;
 val sc_g___6 : Decomp.State_machine.event list -&gt; bool = &lt;fun&gt;
 val sc_g___24 : Decomp.State_machine.event list -&gt; bool = &lt;fun&gt;
-- : unit = ()
-- : unit = ()
 val g___69 : Decomp.State_machine.event list -&gt; bool = &lt;fun&gt;
-val g___70 : Model.message list -&gt; Decomp.State_machine.state = &lt;fun&gt;
-val sc_g___93 : Model.message list -&gt; bool = &lt;fun&gt;
-val sc_g___213 : Decomp.State_machine.event list -&gt; bool = &lt;fun&gt;
-- : unit = ()
-val g___902 : Decomp.State_machine.event list -&gt; bool = &lt;fun&gt;
-val g___903 : Decomp.State_machine.event list -&gt; Decomp.State_machine.state =
+val g___70 : Decomp.State_machine.event list -&gt; Decomp.State_machine.state =
   &lt;fun&gt;
-val sc_g___1248 : Decomp.State_machine.event list -&gt; bool = &lt;fun&gt;
-val sc_g___1583 : Decomp.State_machine.event list -&gt; bool = &lt;fun&gt;
-- : unit = ()
+val sc_g___93 : Decomp.State_machine.event list -&gt; bool = &lt;fun&gt;
+val sc_g___129 : Decomp.State_machine.event list -&gt; bool = &lt;fun&gt;
+val g___200 : Decomp.State_machine.event list -&gt; bool = &lt;fun&gt;
+val g___201 : Decomp.State_machine.event list -&gt; Decomp.State_machine.state =
+  &lt;fun&gt;
+val sc_g___237 : Decomp.State_machine.event list -&gt; bool = &lt;fun&gt;
+val sc_g___276 : Decomp.State_machine.event list -&gt; bool = &lt;fun&gt;
 val first_path : IDF.path =
   [(&lt;abstr&gt;, &lt;abstr&gt;, &lt;abstr&gt;); (&lt;abstr&gt;, &lt;abstr&gt;, &lt;abstr&gt;);
    (&lt;abstr&gt;, &lt;abstr&gt;, &lt;abstr&gt;)]
@@ -1567,9 +1574,9 @@ val first_path : IDF.path =
    Constraints:
     [e &lt;&gt; [];
      (List.tl e) &lt;&gt; [];
-     Is_a(Model.Add, List.hd (List.tl e));
      (List.tl (List.tl e)) &lt;&gt; [];
      List.tl (List.tl (List.tl e)) = [];
+     Is_a(Model.Add, List.hd (List.tl e));
      Is_a(Model.Add, List.hd e);
      not (Destruct(Model.Add, 0, List.hd e) &lt;= 0);
      not (List.hd e = Model.Reset);
@@ -1580,42 +1587,34 @@ val first_path : IDF.path =
    -------------;
    ---[region]---
    Constraints:
-    [e &lt;&gt; [];
-     (List.tl e) &lt;&gt; [];
-     (List.tl (List.tl e)) &lt;&gt; [];
-     List.tl (List.tl (List.tl e)) = [];
-     not (List.hd e = Model.Reset);
+    [not (Destruct(Model.Add, 0, List.hd (List.tl e)) &lt;= 0);
+     Destruct(Model.Add, 0, List.hd e) = 1337;
      e &lt;&gt; [];
-     Is_a(Model.Add, List.hd e);
      (List.tl e) &lt;&gt; [];
      (List.tl (List.tl e)) &lt;&gt; [];
-     Is_a(Model.Add, List.hd (List.tl e));
      List.tl (List.tl (List.tl e)) = [];
+     Is_a(Model.Add, List.hd (List.tl e));
+     Is_a(Model.Add, List.hd e);
      not (Destruct(Model.Add, 0, List.hd e) &lt;= 0);
-     Destruct(Model.Add, 0, List.hd e) &lt;= 9000;
-     not (Destruct(Model.Add, 0, List.hd (List.tl e)) &lt;= 0);
-     Destruct(Model.Add, 0, List.hd e) = 1337]
+     not (List.hd e = Model.Reset);
+     Destruct(Model.Add, 0, List.hd e) &lt;= 9000]
    Invariant:
     F = {Model.counter = 23; Model.default = 23}
    -------------;
    ---[region]---
    Constraints:
-    [not (List.hd e = Model.Reset);
-     e &lt;&gt; [];
-     (List.tl e) &lt;&gt; [];
-     (List.tl (List.tl e)) &lt;&gt; [];
-     List.tl (List.tl (List.tl e)) = [];
-     not (Destruct(Model.Add, 0, List.hd e) &lt;= 0);
-     Destruct(Model.Add, 0, List.hd e) &lt;= 9000;
-     e &lt;&gt; [];
-     Is_a(Model.Add, List.hd e);
-     (List.tl e) &lt;&gt; [];
-     (List.tl (List.tl e)) &lt;&gt; [];
-     Is_a(Model.Add, List.hd (List.tl e));
-     List.tl (List.tl (List.tl e)) = [];
+    [List.hd (List.tl (List.tl e)) = Model.Reset;
      not (Destruct(Model.Add, 0, List.hd (List.tl e)) &lt;= 0);
      Destruct(Model.Add, 0, List.hd e) = 1337;
-     List.hd (List.tl (List.tl e)) = Model.Reset]
+     e &lt;&gt; [];
+     (List.tl e) &lt;&gt; [];
+     (List.tl (List.tl e)) &lt;&gt; [];
+     List.tl (List.tl (List.tl e)) = [];
+     Is_a(Model.Add, List.hd (List.tl e));
+     Is_a(Model.Add, List.hd e);
+     not (Destruct(Model.Add, 0, List.hd e) &lt;= 0);
+     not (List.hd e = Model.Reset);
+     Destruct(Model.Add, 0, List.hd e) &lt;= 9000]
    Invariant:
     F = {Model.counter = 0; Model.default = 23}
    -------------]
@@ -1684,22 +1683,22 @@ val first_path : IDF.path =
   -------------;
  ---[region]---
  Constraints:
-   [ (List.hd e) is Model.Add
-   ; (List.hd (List.tl e)) is Model.Add
-   ; (List.tl (List.tl (List.tl e))) = []
+   [ (List.hd (List.tl e)) is Model.Add
+   ; (List.hd e) is Model.Add
+   ; Destruct(Model.Add, 0, (List.hd (List.tl e))) &gt; 0
    ; Destruct(Model.Add, 0, (List.hd e)) = 1337
-   ; Destruct(Model.Add, 0, (List.hd (List.tl e))) &gt; 0 ]
+   ; (List.tl (List.tl (List.tl e))) = [] ]
  Invariant:
    F = Model.{ counter = 23 ; default = 23 }
   -------------;
  ---[region]---
  Constraints:
-   [ (List.hd e) is Model.Add
+   [ (List.hd (List.tl (List.tl e))) is Model.Reset
    ; (List.hd (List.tl e)) is Model.Add
-   ; (List.hd (List.tl (List.tl e))) is Model.Reset
-   ; (List.tl (List.tl (List.tl e))) = []
+   ; (List.hd e) is Model.Add
+   ; Destruct(Model.Add, 0, (List.hd (List.tl e))) &gt; 0
    ; Destruct(Model.Add, 0, (List.hd e)) = 1337
-   ; Destruct(Model.Add, 0, (List.hd (List.tl e))) &gt; 0 ]
+   ; (List.tl (List.tl (List.tl e))) = [] ]
  Invariant:
    F = Model.{ counter = 0 ; default = 23 }
   -------------]
@@ -1785,7 +1784,7 @@ val rs : Imandra_interactive.Decompose.t list =
 
 
 <div class="output_html rendered_html output_subarea ">
-<div class="imandra-alternatives" id="alt-ca5a1263-c047-4e93-86d1-1bbed24802ca"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-35dc6bdd-34cd-4eef-8376-a16f7ce492fd" class="decompose"><textarea class="display-none">{
+<div class="imandra-alternatives" id="alt-ee7f9c81-050e-4ab9-83ae-a3789cfc038a"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-9f125c68-22e6-4653-b274-b5f178b6640f" class="decompose"><textarea class="display-none">{
   &quot;regions&quot;: [
     {
       &quot;constraints&quot;: [ &quot;y = (Set.union x y)&quot; ],
@@ -1811,13 +1810,13 @@ val rs : Imandra_interactive.Decompose.t list =
 }</textarea><div class="decompose-foamtree"></div><div class="decompose-details"><div class="decompose-details-header">Regions details</div><div class="decompose-details-no-selection"><p>No group selected.</p><ul><li>Concrete regions are numbered</li><li>Unnumbered regions are groups whose children share a particular constraint</li><li>Click on a region to view its details</li><li>Double click on a region to zoom in on it</li><li>Shift+double click to zoom out</li><li>Hit escape to reset back to the top</li></ul></div><div class="decompose-details-selection hidden"><div><span class="decompose-details-label">Direct sub-regions: </span><span class="decompose-details-direct-sub-regions-text">-</span></div><div><span class="decompose-details-label">Contained regions: </span><span class="decompose-details-contained-regions-text">-</span></div><div class="decompose-details-section-header">Constraints</div><div class="decompose-details-constraints"><pre class="decompose-details-constraint">&lt;constraint&gt;</pre></div><div class="decompose-details-invariant"><div class="decompose-details-section-header">Invariant</div><pre class="decompose-details-invariant-text">&lt;invariant&gt;</pre></div></div></div><script>
 (function () {
   require(['nbextensions/nbimandra/regions'], function (regions) {
-    var target = '#decompose-35dc6bdd-34cd-4eef-8376-a16f7ce492fd';
+    var target = '#decompose-9f125c68-22e6-4653-b274-b5f178b6640f';
     regions.hydrate(target);
   });
 })();
-</script></div></div><div class="tab-pane"><div><div class="imandra-table" id="table-67d0b21d-3c07-460d-bb12-332fe8391a02"><table><thead><tr><th>Constraints</th><th>Invariant</th></tr></thead><tr><td><ul><li><pre>not (y = Set.union x y)</pre></li></ul></td><td><pre>Map.add' (Map.const false) z true</pre></td></tr><tr><td><ul><li><pre>y = Set.union x y</pre></li></ul></td><td><pre>Map.add' x z true</pre></td></tr></table></div></div></div></div><script>
+</script></div></div><div class="tab-pane"><div><div class="imandra-table" id="table-e639b75b-e776-43ec-a396-9ef1eba6e261"><table><thead><tr><th>Constraints</th><th>Invariant</th></tr></thead><tr><td><ul><li><pre>not (y = Set.union x y)</pre></li></ul></td><td><pre>Map.add' (Map.const false) z true</pre></td></tr><tr><td><ul><li><pre>y = Set.union x y</pre></li></ul></td><td><pre>Map.add' x z true</pre></td></tr></table></div></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-ca5a1263-c047-4e93-86d1-1bbed24802ca';
+  var target = '#alt-ee7f9c81-050e-4ab9-83ae-a3789cfc038a';
   alternatives.hydrate(target);
 });
 </script></div>
@@ -1965,9 +1964,13 @@ module PPrinter :
     module Printer :
       sig
         val print :
+          ?p:(node CCFormat.printer -&gt;
+              CCFormat.formatter -&gt; node -&gt; unit option) -&gt;
           ?focus:Imandra_tools.Region_pp_intf.var_name -&gt;
           unit -&gt; node CCFormat.printer
         val to_string :
+          ?p:(node CCFormat.printer -&gt;
+              CCFormat.formatter -&gt; node -&gt; unit option) -&gt;
           ?focus:Imandra_tools.Region_pp_intf.var_name -&gt; node -&gt; string
       end
     module Comparator :
@@ -1995,6 +1998,8 @@ module PPrinter :
       ?pp:pprinter -&gt;
       ?unify:Unifier.unifier -&gt;
       ?refine:refiner -&gt;
+      ?print:(node CCFormat.printer -&gt;
+              CCFormat.formatter -&gt; node -&gt; unit option) -&gt;
       ?skip_invariant:bool -&gt;
       ?focus:Imandra_tools.Region_pp_intf.var_name -&gt;
       unit -&gt;
