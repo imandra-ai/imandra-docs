@@ -354,7 +354,11 @@ After providing a first class module specificing the types of the arguments to t
 let idx, indexer = Region_idx.indexer_for (module struct type args = int Set.t * int Set.t * int end) rs;;
 ```
 
-Let's say we want to know which region the arguments `Set.empty, (Set.of_list [1]), 0` belong to:
+The first value returned is an alist of index -> region, while the second value is the indexer function, taking as inputs the arguments of the regions (as a tuple) and returning the index of the matching region, or raising `Not_found` if the values don't match any regions (This can happen if the values provided don't satisfy the side condition, or if the list of regions passed to `indexer_for` was partial).
+
+Let's say we want to know which region the arguments `Set.empty, (Set.of_list [1]), 0` belong to, we just need to find its index and find the matching region:
+
 ```{.imandra .input}
-CCList.assq (indexer (Set.empty, (Set.of_list [1]), 0)) idx;;
+let i = indexer (Set.empty, (Set.of_list [1]), 0) in
+  CCList.assq i idx;;
 ```
