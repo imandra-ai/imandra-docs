@@ -789,6 +789,7 @@
 <li><a href="#Iterative-Decomposition-Framework-%28Idf%29">Idf</a></li>
 <li><a href="#Region-Pretty-Printer-%28Region_pp%29">Region_pp</a></li>
 <li><a href="#Region-Term-Synthesizer-%28Region_term_synth%29">Region_term_synth</a></li>
+<li><a href="#Region-Indexer-%28Region_idx%29">Region_idx</a></li>
 </ul>
 <div style="margin-top: 1em; background-color: #ffcc66; padding: 1em">
 Note: this is an introductory walkthrough of the capabilities of `imandra-tools`, much more than what's described in this notebook is possible with it, but we'll defer a more in-depth explanation of each module in future notebooks.
@@ -1784,7 +1785,7 @@ val rs : Imandra_interactive.Decompose.t list =
 
 
 <div class="output_html rendered_html output_subarea ">
-<div class="imandra-alternatives" id="alt-a3fc8ae8-325a-4359-a247-e9959b1b1007"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-0cda68d6-df0a-480c-882c-b22b0af86816" class="decompose"><textarea class="display-none">{
+<div class="imandra-alternatives" id="alt-f4171f74-c336-473d-b4ee-cf10e01a336b"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-09338044-5671-496b-94a6-9de72ba96a7f" class="decompose"><textarea class="display-none">{
   &quot;regions&quot;: [
     {
       &quot;constraints&quot;: [ &quot;y = (Set.union x y)&quot; ],
@@ -1810,13 +1811,13 @@ val rs : Imandra_interactive.Decompose.t list =
 }</textarea><div class="decompose-foamtree"></div><div class="decompose-details"><div class="decompose-details-header">Regions details</div><div class="decompose-details-no-selection"><p>No group selected.</p><ul><li>Concrete regions are numbered</li><li>Unnumbered regions are groups whose children share a particular constraint</li><li>Click on a region to view its details</li><li>Double click on a region to zoom in on it</li><li>Shift+double click to zoom out</li><li>Hit escape to reset back to the top</li></ul></div><div class="decompose-details-selection hidden"><div><span class="decompose-details-label">Direct sub-regions: </span><span class="decompose-details-direct-sub-regions-text">-</span></div><div><span class="decompose-details-label">Contained regions: </span><span class="decompose-details-contained-regions-text">-</span></div><div class="decompose-details-section-header">Constraints</div><div class="decompose-details-constraints"><pre class="decompose-details-constraint">&lt;constraint&gt;</pre></div><div class="decompose-details-invariant"><div class="decompose-details-section-header">Invariant</div><pre class="decompose-details-invariant-text">&lt;invariant&gt;</pre></div></div></div><script>
 (function () {
   require(['nbextensions/nbimandra/regions'], function (regions) {
-    var target = '#decompose-0cda68d6-df0a-480c-882c-b22b0af86816';
+    var target = '#decompose-09338044-5671-496b-94a6-9de72ba96a7f';
     regions.hydrate(target);
   });
 })();
-</script></div></div><div class="tab-pane"><div><div class="imandra-table" id="table-5b0c0c7f-474c-4030-a33a-0725606a8542"><table><thead><tr><th>Constraints</th><th>Invariant</th></tr></thead><tr><td><ul><li><pre>not (y = Set.union x y)</pre></li></ul></td><td><pre>Map.add' (Map.const false) z true</pre></td></tr><tr><td><ul><li><pre>y = Set.union x y</pre></li></ul></td><td><pre>Map.add' x z true</pre></td></tr></table></div></div></div></div><script>
+</script></div></div><div class="tab-pane"><div><div class="imandra-table" id="table-f29825c0-7e43-4184-b06e-f7820739be3b"><table><thead><tr><th>Constraints</th><th>Invariant</th></tr></thead><tr><td><ul><li><pre>not (y = Set.union x y)</pre></li></ul></td><td><pre>Map.add' (Map.const false) z true</pre></td></tr><tr><td><ul><li><pre>y = Set.union x y</pre></li></ul></td><td><pre>Map.add' x z true</pre></td></tr></table></div></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-a3fc8ae8-325a-4359-a247-e9959b1b1007';
+  var target = '#alt-f4171f74-c336-473d-b4ee-cf10e01a336b';
   alternatives.hydrate(target);
 });
 </script></div>
@@ -2179,11 +2180,11 @@ val region_1 : &#39;a Set.t -&gt; &#39;a Set.t -&gt; &#39;b -&gt; bool = &lt;fun
 <div class="prompt input_prompt">In&nbsp;[13]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ocaml"><pre><span></span><span class="n">region_0</span> <span class="o">(</span><span class="nn">Set</span><span class="p">.</span><span class="n">of_list</span> <span class="o">[</span><span class="mi">1</span><span class="o">])</span> <span class="nn">Set</span><span class="p">.</span><span class="n">empty</span> <span class="nn">Set</span><span class="p">.</span><span class="n">empty</span><span class="o">;;</span>
-<span class="n">region_0</span> <span class="nn">Set</span><span class="p">.</span><span class="n">empty</span> <span class="o">(</span><span class="nn">Set</span><span class="p">.</span><span class="n">of_list</span> <span class="o">[</span><span class="mi">1</span><span class="o">])</span> <span class="nn">Set</span><span class="p">.</span><span class="n">empty</span><span class="o">;;</span>
+<div class=" highlight hl-ocaml"><pre><span></span><span class="n">region_0</span> <span class="o">(</span><span class="nn">Set</span><span class="p">.</span><span class="n">of_list</span> <span class="o">[</span><span class="mi">1</span><span class="o">])</span> <span class="nn">Set</span><span class="p">.</span><span class="n">empty</span> <span class="mi">0</span><span class="o">;;</span>
+<span class="n">region_0</span> <span class="nn">Set</span><span class="p">.</span><span class="n">empty</span> <span class="o">(</span><span class="nn">Set</span><span class="p">.</span><span class="n">of_list</span> <span class="o">[</span><span class="mi">1</span><span class="o">])</span> <span class="mi">0</span><span class="o">;;</span>
 
-<span class="n">region_1</span> <span class="nn">Set</span><span class="p">.</span><span class="n">empty</span> <span class="o">(</span><span class="nn">Set</span><span class="p">.</span><span class="n">of_list</span> <span class="o">[</span><span class="mi">1</span><span class="o">])</span> <span class="nn">Set</span><span class="p">.</span><span class="n">empty</span><span class="o">;;</span>
-<span class="n">region_1</span> <span class="o">(</span><span class="nn">Set</span><span class="p">.</span><span class="n">of_list</span> <span class="o">[</span><span class="mi">1</span><span class="o">])</span> <span class="nn">Set</span><span class="p">.</span><span class="n">empty</span> <span class="nn">Set</span><span class="p">.</span><span class="n">empty</span><span class="o">;;</span>
+<span class="n">region_1</span> <span class="nn">Set</span><span class="p">.</span><span class="n">empty</span> <span class="o">(</span><span class="nn">Set</span><span class="p">.</span><span class="n">of_list</span> <span class="o">[</span><span class="mi">1</span><span class="o">])</span> <span class="mi">0</span><span class="o">;;</span>
+<span class="n">region_1</span> <span class="o">(</span><span class="nn">Set</span><span class="p">.</span><span class="n">of_list</span> <span class="o">[</span><span class="mi">1</span><span class="o">])</span> <span class="nn">Set</span><span class="p">.</span><span class="n">empty</span> <span class="mi">0</span><span class="o">;;</span>
 </pre></div>
 
 </div>
@@ -2219,9 +2220,124 @@ val region_1 : &#39;a Set.t -&gt; &#39;a Set.t -&gt; &#39;b -&gt; bool = &lt;fun
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html"><p>Great! <code>region_0</code> is now a boolean function that checks whether or not certain values of <code>x</code> and <code>y</code> belong to the region of behaviour 0. <code>region_1</code> does the same for the region of behaviour 1.</p>
-<p>This ability to generate <em>total</em> functions from <em>partial regions of behaviour</em> is immensely powerful and at the core of <code>Idf</code> and other powerful analysis tools we build.</p>
+<p>This ability to generate <em>total</em> functions from <em>partial regions of behaviour</em> is fundamental to creating modules like <code>Idf</code> and <code>Region_idx</code>.</p>
+<h1 id="Region-Indexer-(Region_idx)">Region Indexer (Region_idx)<a class="anchor-link" href="#Region-Indexer-(Region_idx)">&#182;</a></h1><p>It may be sometimes useful to know which region a particular input belongs to; while this can be done by using <code>Region_term_synth</code> and synthesizing recogniser functions for each region and testing them against the value until we find a match, this could get very computationally expensive in the presence of a large number of regions and constraints.</p>
+<p><code>Region_idx</code> provides a solution for this: it allows to create "indexing" functions that efficiently match input values against a single entry in a list of regions.
+After providing a first class module specificing the types of the arguments to the function the regions belong to (as a tuple), <code>Region_idx.indexer_for</code> returns an index alist and an indexer function.</p>
 </div>
 </div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="try-this-container">
+  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Imandra-tools%20Introduction.ipynb%23try-cell-28" target="_blank" rel="nofollow">
+    <div class="try-this">Try this!</div>
+  </a>
+</div>
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[14]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ocaml"><pre><span></span><span class="k">let</span> <span class="n">idx</span><span class="o">,</span> <span class="n">indexer</span> <span class="o">=</span>
+  <span class="k">let</span> <span class="n">args</span> <span class="o">=</span> <span class="o">(</span><span class="k">module</span> <span class="k">struct</span> <span class="k">type</span> <span class="n">args</span> <span class="o">=</span> <span class="kt">int</span> <span class="nn">Set</span><span class="p">.</span><span class="n">t</span> <span class="o">*</span> <span class="kt">int</span> <span class="nn">Set</span><span class="p">.</span><span class="n">t</span> <span class="o">*</span> <span class="kt">int</span> <span class="k">end</span> <span class="o">:</span> <span class="nn">Region_idx</span><span class="p">.</span><span class="nc">Args</span> <span class="k">with</span> <span class="k">type</span> <span class="n">args</span> <span class="o">=</span> <span class="o">_)</span> <span class="k">in</span>
+  <span class="nn">Region_idx</span><span class="p">.</span><span class="n">indexer_for</span> <span class="n">args</span> <span class="n">rs</span><span class="o">;;</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[14]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>val g___277 : &#39;a Set.t -&gt; &#39;a Set.t -&gt; &#39;b -&gt; int = &lt;fun&gt;
+- : unit = ()
+val idx : (int * Imandra_surface.Decompose_region.t) list =
+  [(0i,
+    ---[region]---
+    Constraints:
+      [ (Set.subset x y) = true ]
+    Invariant:
+      F = Set.add x z
+     -------------);
+   (1i,
+    ---[region]---
+    Constraints:
+      [ (Set.subset x y) = false ]
+    Invariant:
+      F = { z }
+     -------------)]
+val indexer : int Set.t * int Set.t * int -&gt; int = &lt;fun&gt;
+</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html"><p>The first value returned is an alist of index -&gt; region, while the second value is the indexer function, taking as inputs the arguments of the regions (as a tuple) and returning the index of the matching region, or raising <code>Not_found</code> if the values don't match any regions (This can happen if the values provided don't satisfy the side condition, or if the list of regions passed to <code>indexer_for</code> was partial).</p>
+<p>Let's say we want to know which region the arguments <code>Set.empty, (Set.of_list [1]), 0</code> belong to, we just need to find its index and find the matching region:</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="try-this-container">
+  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Imandra-tools%20Introduction.ipynb%23try-cell-30" target="_blank" rel="nofollow">
+    <div class="try-this">Try this!</div>
+  </a>
+</div>
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[15]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ocaml"><pre><span></span><span class="k">let</span> <span class="n">i</span> <span class="o">=</span> <span class="n">indexer</span> <span class="o">(</span><span class="nn">Set</span><span class="p">.</span><span class="n">empty</span><span class="o">,</span> <span class="o">(</span><span class="nn">Set</span><span class="p">.</span><span class="n">of_list</span> <span class="o">[</span><span class="mi">1</span><span class="o">]),</span> <span class="mi">0</span><span class="o">)</span> <span class="k">in</span>
+  <span class="nn">CCList</span><span class="p">.</span><span class="n">assq</span> <span class="n">i</span> <span class="n">idx</span><span class="o">;;</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[15]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>- : Imandra_surface.Decompose_region.t =
+---[region]---
+Constraints:
+  [ (Set.subset x y) = true ]
+Invariant:
+  F = Set.add x z
+ -------------
+</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
 </div>
                     </div>
 
@@ -2235,6 +2351,8 @@ val region_1 : &#39;a Set.t -&gt; &#39;a Set.t -&gt; &#39;b -&gt; bool = &lt;fun
                             <a class="sidebar-right__menu-item sidebar-right__menu-item--h1" href="#Region-Pretty-Printer-(Region_pp)">Region Pretty Printer (Region_pp)</a>
                             
                             <a class="sidebar-right__menu-item sidebar-right__menu-item--h1" href="#Region-Term-Synthesizer-(Region_term_synth)">Region Term Synthesizer (Region_term_synth)</a>
+                            
+                            <a class="sidebar-right__menu-item sidebar-right__menu-item--h1" href="#Region-Indexer-(Region_idx)">Region Indexer (Region_idx)</a>
                             
                         </div>
                     </div></article>
