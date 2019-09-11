@@ -30,6 +30,7 @@ Great! Let's start exploring `imandra-tools`.
 - [Idf](#Iterative-Decomposition-Framework-%28Idf%29)
 - [Region_pp](#Region-Pretty-Printer-%28Region_pp%29)
 - [Region_term_synth](#Region-Term-Synthesizer-%28Region_term_synth%29)
+- [Region_idx](#Region-Indexer-%28Region_idx%29)
 
 
 <div style="margin-top: 1em; background-color: #ffcc66; padding: 1em">
@@ -331,13 +332,35 @@ The above should be quite straightforward:
 We can start playing with those functions immediately:
 
 ```{.imandra .input}
-region_0 (Set.of_list [1]) Set.empty Set.empty;;
-region_0 Set.empty (Set.of_list [1]) Set.empty;;
+region_0 (Set.of_list [1]) Set.empty 0;;
+region_0 Set.empty (Set.of_list [1]) 0;;
 
-region_1 Set.empty (Set.of_list [1]) Set.empty;;
-region_1 (Set.of_list [1]) Set.empty Set.empty;;
+region_1 Set.empty (Set.of_list [1]) 0;;
+region_1 (Set.of_list [1]) Set.empty 0;;
 ```
 
 Great! `region_0` is now a boolean function that checks whether or not certain values of `x` and `y` belong to the region of behaviour 0. `region_1` does the same for the region of behaviour 1.
 
-This ability to generate _total_ functions from _partial regions of behaviour_ is immensely powerful and at the core of `Idf` and other powerful analysis tools we build.
+This ability to generate _total_ functions from _partial regions of behaviour_ is fundamental to creating modules like `Idf` and `Region_idx`.
+
+# Region Indexer (Region_idx)
+
+It may be sometimes useful to know which region a particular input belongs to; while this can be done by using `Region_term_synth` and synthesizing recogniser functions for each region and testing them against the value until we find a match, this could get very computationally expensive in the presence of a large number of regions and constraints.
+
+`Region_idx` provides a solution for this: it allows to create "indexing" functions that efficiently match input values against a single entry in a list of regions.
+After providing a first class module specificing the types of the arguments to the function the regions belong to (as a tuple), `Region_idx.indexer_for` returns an index alist and an indexer function.
+
+```{.imandra .input}
+let idx, indexer =
+  let args = (module struct type args = int Set.t * int Set.t * int end : Region_idx.Args with type args = _) in
+  Region_idx.indexer_for args rs;;
+```
+
+The first value returned is an alist of index -> region, while the second value is the indexer function, taking as inputs the arguments of the regions (as a tuple) and returning the index of the matching region, or raising `Not_found` if the values don't match any regions (This can happen if the values provided don't satisfy the side condition, or if the list of regions passed to `indexer_for` was partial).
+
+Let's say we want to know which region the arguments `Set.empty, (Set.of_list [1]), 0` belong to, we just need to find its index and find the matching region:
+
+```{.imandra .input}
+let i = indexer (Set.empty, (Set.of_list [1]), 0) in
+  CCList.assq i idx;;
+```
