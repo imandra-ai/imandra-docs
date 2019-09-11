@@ -8,6 +8,23 @@ key-phrases:
   - counterexample
   - recursion
   - induction
+assert:
+  contains:
+    - "output_html"
+    - "fa-check-circle"
+    - "<span>Proved</span>"
+    - "fa-times-circle-o"
+    - "<span>Refuted</span>"
+    - "Z.t = 105"
+    - "Counterexample (after 0 steps"
+    - "let (x : int) = 69"
+    - "module CX : sig val x : int end"
+    - "<span>termination proof</span>"
+    - "<b>ground_instances</b>"
+    - "Must try induction."
+  excludes:
+    - "error"
+    - "exception"
 ---
 
 # Welcome to Imandra!
