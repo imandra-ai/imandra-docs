@@ -894,14 +894,16 @@ An additional constraint which is not enforciable by the OCaml type system but i
 <div class=" highlight hl-ocaml"><pre><span></span><span class="k">module</span> <span class="nc">TPL</span> <span class="o">=</span> <span class="k">struct</span>
   <span class="c">(* type of a symbolic state machine event *)</span>
   <span class="k">type</span> <span class="n">t</span> <span class="o">=</span> <span class="nc">Add</span> <span class="o">|</span> <span class="nc">AddInt</span> <span class="o">|</span> <span class="nc">Sub</span> <span class="o">|</span> <span class="nc">Reset</span> <span class="o">|</span> <span class="nc">Any</span>
+  <span class="k">type</span> <span class="n">c</span> <span class="o">=</span> <span class="nn">SM</span><span class="p">.</span><span class="n">event</span>
 
-  <span class="c">(* mapping function from a symbolic state machine event to a concrete event name *)</span>
-  <span class="k">let</span> <span class="n">concrete</span> <span class="o">=</span> <span class="k">function</span>
-    <span class="o">|</span> <span class="nc">Any</span> <span class="o">-&gt;</span> <span class="bp">[]</span>
-    <span class="o">|</span> <span class="nc">Add</span> <span class="o">-&gt;</span> <span class="o">[</span><span class="s2">&quot;SM.Add&quot;</span><span class="o">]</span>
-    <span class="o">|</span> <span class="nc">AddInt</span> <span class="o">-&gt;</span> <span class="o">[</span><span class="s2">&quot;SM.Add&quot;</span><span class="o">;</span> <span class="s2">&quot;SM.Int&quot;</span><span class="o">]</span>
-    <span class="o">|</span> <span class="nc">Sub</span> <span class="o">-&gt;</span> <span class="o">[</span><span class="s2">&quot;SM.Sub&quot;</span><span class="o">]</span>
-    <span class="o">|</span> <span class="nc">Reset</span> <span class="o">-&gt;</span> <span class="o">[</span><span class="s2">&quot;SM.Reset&quot;</span><span class="o">]</span>
+  <span class="c">(* mapping function from a symbolic state machine event to a concrete event *)</span>
+  <span class="k">let</span> <span class="n">concrete</span> <span class="n">t</span> <span class="n">c</span> <span class="o">=</span> <span class="k">match</span> <span class="n">t</span><span class="o">,</span><span class="n">c</span> <span class="k">with</span>
+    <span class="o">|</span> <span class="nc">Any</span><span class="o">,</span> <span class="o">_</span> <span class="o">-&gt;</span> <span class="bp">true</span>
+    <span class="o">|</span> <span class="nc">Add</span><span class="o">,</span> <span class="nn">SM</span><span class="p">.</span><span class="nc">Add</span> <span class="o">_</span> <span class="o">-&gt;</span> <span class="bp">true</span>
+    <span class="o">|</span> <span class="nc">AddInt</span><span class="o">,</span> <span class="nn">SM</span><span class="p">.</span><span class="nc">Add</span><span class="o">(</span><span class="nn">SM</span><span class="p">.</span><span class="nc">Int</span> <span class="o">_)</span> <span class="o">-&gt;</span> <span class="bp">true</span>
+    <span class="o">|</span> <span class="nc">Sub</span><span class="o">,</span> <span class="nn">SM</span><span class="p">.</span><span class="nc">Sub</span> <span class="o">_</span> <span class="o">-&gt;</span> <span class="bp">true</span>
+    <span class="o">|</span> <span class="nc">Reset</span><span class="o">,</span> <span class="nn">SM</span><span class="p">.</span><span class="nc">Reset</span> <span class="o">-&gt;</span> <span class="bp">true</span>
+    <span class="o">|</span> <span class="o">_</span> <span class="o">-&gt;</span> <span class="bp">false</span>
 <span class="k">end</span>
 </pre></div>
 
@@ -924,7 +926,8 @@ An additional constraint which is not enforciable by the OCaml type system but i
 <pre>module TPL :
   sig
     type t = Add | AddInt | Sub | Reset | Any
-    val concrete : t -&gt; string list
+    type c = SM.event
+    val concrete : t -&gt; SM.event -&gt; bool
   end
 </pre>
 </div>
@@ -1063,6 +1066,7 @@ module Mex :
     val get_SM_event : E.expr -&gt; SM.event
     val get_SM_state : E.expr -&gt; SM.state
     val get_TPL_t : E.expr -&gt; TPL.t
+    val get_TPL_c : E.expr -&gt; TPL.c
     type e_t = SM.event list
     type extract_type = { e : e_t; }
     val ret_e : extract_type -&gt; e_t
@@ -1077,11 +1081,6 @@ module D :
       sig
         module DSM :
           sig
-            module Template :
-              sig
-                type t = Decomp.Template.t
-                val concrete : t -&gt; string list
-              end
             module State_machine :
               sig
                 type state = Decomp.State_machine.state
@@ -1089,6 +1088,12 @@ module D :
                 val init_state : state
                 val step : event -&gt; state -&gt; state
                 val is_valid : event -&gt; state -&gt; bool
+              end
+            module Template :
+              sig
+                type t = Decomp.Template.t
+                type c = State_machine.event
+                val concrete : t -&gt; c -&gt; bool
               end
             val module_name : string
           end
@@ -1208,11 +1213,6 @@ module D :
       sig
         module DSM :
           sig
-            module Template :
-              sig
-                type t = Decomp.Template.t
-                val concrete : t -&gt; string list
-              end
             module State_machine :
               sig
                 type state = Decomp.State_machine.state
@@ -1220,6 +1220,12 @@ module D :
                 val init_state : state
                 val step : event -&gt; state -&gt; state
                 val is_valid : event -&gt; state -&gt; bool
+              end
+            module Template :
+              sig
+                type t = Decomp.Template.t
+                type c = State_machine.event
+                val concrete : t -&gt; c -&gt; bool
               end
             val module_name : string
           end
@@ -1467,11 +1473,13 @@ type nonrec decompose =
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>val g___2 : Decomp.State_machine.event -&gt; int -&gt; bool = &lt;fun&gt;
-val side_cond_g___3_1 : SM.event list -&gt; int -&gt; int -&gt; bool = &lt;fun&gt;
+<pre>- : unit = ()
+val g___2 : Decomp.State_machine.event -&gt; int -&gt; bool = &lt;fun&gt;
+val side_cond_g___3_1 : Decomp.State_machine.event list -&gt; int -&gt; int -&gt; bool =
+  &lt;fun&gt;
 val side_cond_g___3_0 : Decomp.State_machine.event list -&gt; int -&gt; int -&gt; bool =
   &lt;fun&gt;
-val target_g___3_1 : SM.event list -&gt; int -&gt; int = &lt;fun&gt;
+val target_g___3_1 : Decomp.State_machine.event list -&gt; int -&gt; int = &lt;fun&gt;
 val target_g___3_0 : Decomp.State_machine.event list -&gt; int -&gt; int = &lt;fun&gt;
 val paths : IDF.paths = &lt;abstr&gt;
 val close : unit -&gt; unit = &lt;fun&gt;
@@ -1544,13 +1552,10 @@ val close : unit -&gt; unit = &lt;fun&gt;
 val g___5 : Decomp.State_machine.event list -&gt; int = &lt;fun&gt;
 val sc_g___6 : Decomp.State_machine.event list -&gt; bool = &lt;fun&gt;
 val sc_g___34 : Decomp.State_machine.event list -&gt; bool = &lt;fun&gt;
-- : unit = ()
-- : unit = ()
-val g___89 : SM.event list -&gt; bool = &lt;fun&gt;
-val g___90 : SM.event list -&gt; int = &lt;fun&gt;
-val sc_g___118 : SM.event list -&gt; bool = &lt;fun&gt;
+val g___89 : Decomp.State_machine.event list -&gt; bool = &lt;fun&gt;
+val g___90 : Decomp.State_machine.event list -&gt; int = &lt;fun&gt;
+val sc_g___118 : Decomp.State_machine.event list -&gt; bool = &lt;fun&gt;
 val sc_g___154 : Decomp.State_machine.event list -&gt; bool = &lt;fun&gt;
-- : unit = ()
 val first_path : IDF.path =
   [(&lt;abstr&gt;, &lt;abstr&gt;, &lt;abstr&gt;); (&lt;abstr&gt;, &lt;abstr&gt;, &lt;abstr&gt;)]
 - : unit = ()
@@ -1748,14 +1753,14 @@ val first_path : IDF.path =
     -------------;
    ---[region]---
    Constraints:
-     [ Destruct(SM.Add, 0, (List.hd e)) is SM.Zero
-     ; (List.hd e) is SM.Add
-     ; (List.hd (List.tl e)) is SM.Add
+     [ (List.hd (List.tl e)) is SM.Add
      ; Destruct(SM.Add, 0, (List.hd (List.tl e))) is SM.Int
-     ; (List.tl (List.tl e)) = []
+     ; (List.hd e) is SM.Add
+     ; Destruct(SM.Add, 0, (List.hd e)) is SM.Zero
      ; 50 &lt;
        Destruct(SM.Int, 0, Destruct(SM.Add, 0, (List.hd (List.tl e)))) &lt;=
-       9000 ]
+       9000
+     ; (List.tl (List.tl e)) = [] ]
    Invariant:
      F = Destruct(SM.Int, 0, Destruct(SM.Add, 0, (List.hd (List.tl e))))
     -------------]
@@ -1810,12 +1815,12 @@ val first_path : IDF.path =
 
 <div class="output_text output_subarea output_execute_result">
 <pre>val ids : (Uuidm.t * Uuidm.t * Uuidm.t) list =
-  [(c8257d40-e2a3-47fa-aa0d-9ca01a45ffe2,
-    fc48dd33-2c1a-4cff-bb73-befc67cc7a1f,
-    edf5692c-ddd5-47ef-858d-cf5b012c1c6c);
-   (edf5692c-ddd5-47ef-858d-cf5b012c1c6c,
-    88c86ea4-16d0-4824-9fd9-eb996c72ae09,
-    241e407a-defa-41a4-bb98-01d6ae19f727)]
+  [(330c2d60-3728-42a5-934a-5a9167769a1f,
+    db8a1050-8776-4116-8430-b22ae898c709,
+    ee492973-f320-44bb-a3ac-3ee7153ad90c);
+   (ee492973-f320-44bb-a3ac-3ee7153ad90c,
+    76733ecd-254b-48d3-ad36-be268ceb4b6a,
+    0fc0978d-768d-4f5b-b1b7-0364df60c544)]
 </pre>
 </div>
 

@@ -750,7 +750,13 @@
 <p>Like <code>use</code> and <code>mod_use</code>, <code>import</code> uses Imandra's <em>load path</em> to search for files, when importing an IML library, the current directory will be temporary set to that of the library itself.</p>
 <h2 id="require">require<a class="anchor-link" href="#require">&#182;</a></h2><p>Syntax: <code>#require "some-lib";;</code> or <code>[@@@require "some-lib"]</code> or as an argument to imandra: <code>-require somelib</code></p>
 <p>The behavior of <code>require</code> is to search for <code>some-lib</code> in the list of installed libraries (using topfind) and load it in the current environment.</p>
-<p>If <code>some-lib</code> comes packaged with a <code>some-lib.iml</code> file, it will be automatically loaded by Imandra after the library has been required.</p>
+<p>If <code>some-lib</code> comes packaged with a <code>some-lib.iml</code> file, it will be automatically loaded by Imandra using <code>#import</code> after the library has been required.</p>
+<h2 id="require_use">require_use<a class="anchor-link" href="#require_use">&#182;</a></h2><p>Syntax: <code>#require_use "some-lib";;</code> or <code>[@@@require_use "some-lib"]</code> or as an argument to imandra: <code>-require-use somelib</code></p>
+<p>Similar to <code>#require "some-lib";;</code> except it loads the file <code>some-lib.iml</code> with <code>#use</code> instead of <code>#import</code>,
+so no module is created, and it's not idempotent.</p>
+<h2 id="require_mod_use">require_mod_use<a class="anchor-link" href="#require_mod_use">&#182;</a></h2><p>Syntax: <code>#require_mod_use "some-lib";;</code> or <code>[@@@require_mod_use "some-lib"]</code> or as an argument to imandra: <code>-require-mod-use somelib</code></p>
+<p>Similar to <code>#require "some-lib";;</code> except it loads the file <code>some-lib.iml</code> with <code>#mod_use</code> instead of <code>#import</code>,
+so it's not idempotent.</p>
 </div>
 </div>
 </div>
@@ -770,6 +776,10 @@
                             <a class="sidebar-right__menu-item sidebar-right__menu-item--h2" href="#import">import</a>
                             
                             <a class="sidebar-right__menu-item sidebar-right__menu-item--h2" href="#require">require</a>
+                            
+                            <a class="sidebar-right__menu-item sidebar-right__menu-item--h2" href="#require_use">require_use</a>
+                            
+                            <a class="sidebar-right__menu-item sidebar-right__menu-item--h2" href="#require_mod_use">require_mod_use</a>
                             
                         </div>
                     </div></article>
