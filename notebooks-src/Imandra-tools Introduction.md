@@ -351,7 +351,9 @@ It may be sometimes useful to know which region a particular input belongs to; w
 After providing a first class module specificing the types of the arguments to the function the regions belong to (as a tuple), `Region_idx.indexer_for` returns an index alist and an indexer function.
 
 ```{.imandra .input}
-let idx, indexer = Region_idx.indexer_for (module struct type args = int Set.t * int Set.t * int end) rs;;
+let idx, indexer =
+  let args = (module struct type args = int Set.t * int Set.t * int end : Region_idx.Args with type args = _) in
+  Region_idx.indexer_for args rs;;
 ```
 
 The first value returned is an alist of index -> region, while the second value is the indexer function, taking as inputs the arguments of the regions (as a tuple) and returning the index of the matching region, or raising `Not_found` if the values don't match any regions (This can happen if the values provided don't satisfy the side condition, or if the list of regions passed to `indexer_for` was partial).
