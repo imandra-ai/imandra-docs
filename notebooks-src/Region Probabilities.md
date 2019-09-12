@@ -14,7 +14,7 @@ In this notebook we provide an introduction to the latest Imandra Tools module, 
 We'll begin by opening the module and installing a pretty printer that will display a decimal version of the real numbers that we'll often be using in this notebook:
 
 ```{.imandra .input}
-open Region_probs;;
+open Imandra_tools.Region_probs;;
 let pp_approx fmt r = CCFormat.fprintf fmt "%s" (Real.to_string_approx r) [@@program];;
 #install_printer pp_approx;;
 ```
@@ -42,7 +42,7 @@ The `Region_probs` module contains 13 of the most common discrete and continuous
 Each distribution has named parameters and can take an optional argument `~constraints` which truncates the distribution to within the bounds specified by the constraint list. For example, we can define a Gaussian random variable `x` with mean `5` and standard deviation `1.3`, that is restricted to the regions `[2.5, 5]` and `[5.8, 10.3]` as:
 
 ```{.imandra .input}
-let x = gaussian ~mu:5. ~sigma:1.3 ~constraints:(Some [(2.5,5.); (5.8,10.3)]) [@@program]
+let x = gaussian ~mu:5. ~sigma:1.3 ~constraints:[(2.5,5.); (5.8,10.3)] [@@program]
 ```
 
 We then sample from the distribution to get a particular value by calling `x` with the unit argument `()`:
@@ -64,7 +64,7 @@ type apple = { kind: kind;
                mass: Q.t;
                days_old: Z.t;
                is_ripe: bool }
-               
+
 let apple_dist () =
   let k = categorical ~classes:[Braeburn; Granny_Smith; Red_Delicious] ~probs:[0.25; 0.6; 0.15] () in
   let mean_mass = function
@@ -78,7 +78,7 @@ let apple_dist () =
   let p = ripe_chance d_o in
   let i_r = bernoulli ~p () in
   {kind = k; mass = m; days_old = d_o; is_ripe = i_r} [@@program];;
-  
+
 apple_dist ();;
 apple_dist ();;
 apple_dist ();;
@@ -98,7 +98,7 @@ let price apple =
   | Red_Delicious -> 0.3
   in let p = (per_gram apple.kind) *. apple.mass in
   if apple.days_old >= 5 then p /. 2. else p;;
-  
+
 let regions = Decompose.top "price" [@@program];;
 ```
 
@@ -148,7 +148,7 @@ let to_apple apple_string =
   let d_o = Z.of_string (CCList.nth apple_string 2i) in
   let i_r = if CCList.nth apple_string 3i = "1" then true else false in
   {kind = k; mass = m; days_old = d_o; is_ripe = i_r} [@@program];;
-  
+
 let from_apple apple =
   let k = match apple.kind with
   | Braeburn -> "bb"
@@ -163,14 +163,14 @@ let from_apple apple =
 With these two functions (and out `apple` type) we can define a model based on some data `apple.csv` and then use it just as we did with our previous model. Note that we `load` and `save` data from/into `CSV` files with data models, but as byte files with sampling models. Note that this final line is non-executable in this notebook, as we don't actually ahve access to the local `CSV` file
 
 ```{.imandra .input}
-module Apple_D = Distribution.From_Data (struct 
-                                         type domain = apple 
-                                         let from_domain = from_apple 
-                                         let to_domain = to_apple 
+module Apple_D = Distribution.From_Data (struct
+                                         type domain = apple
+                                         let from_domain = from_apple
+                                         let to_domain = to_apple
                                          end) [@@program];;
 ```
 
-```                                         
+```
 let apple_probs_D = Apple_D.get_probs regions ~d:"apple.csv" () [@@program];;
 ```
 

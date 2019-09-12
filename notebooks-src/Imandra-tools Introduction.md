@@ -373,13 +373,14 @@ What if we want to not just identify the distinct regions of a program's behavio
 First we'll open the `Region_probs` module, then define some custom types and a function that we'll be decomposing:
 
 ```{.imandra .input}
+#logic;;
 open Region_probs;;
 
 type colour = Red | Green | Blue;;
 type obj = {colour : colour; broken : bool};;
 type dom = (obj * Q.t * Z.t);;
 
-let f (obj, temp, num) =
+let f' (obj, temp, num) =
   let a =
     if obj.colour = Red then
       if obj.broken then num else 7
@@ -403,8 +404,11 @@ let distribution () =
   let b = bernoulli ~p:0.4 () in
   let mu = if b then 20. else 10. in
   let temp = gaussian ~mu ~sigma:5. () in
-  let constraints = if c = Green then Some [(7, 10)] else None in
-  let num = poisson ~lambda:6.5 ~constraints () in
+  let num =
+    if c = Green then
+      poisson ~lambda:6.5 ~constraints:[(7, 10)] ()
+    else
+      poisson ~lambda:6.5 () in
   ({colour = c; broken = b}, temp, num) [@@program];;
 
 distribution ();;
@@ -413,7 +417,7 @@ distribution ();;
 Now we have all these components we can find the regions of `f`, create a model from our `distribution` function, then estimate and display region probabilities:
 
 ```{.imandra .input}
-let regions = Decompose.top "f" [@@program];;
+let regions = Decompose.top "f'" [@@program];;
 
 module Example = Distribution.From_Sampler (struct type domain = dom let dist = distribution end) [@@program];;
 
