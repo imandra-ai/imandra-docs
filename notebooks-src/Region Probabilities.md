@@ -19,7 +19,7 @@ let pp_approx fmt r = CCFormat.fprintf fmt "%s" (Real.to_string_approx r) [@@pro
 #install_printer pp_approx;;
 ```
 
-Note that the `.mli` file detailing the module's interface, as well as the source code and some `.iml` example files can be found in the [Imandra Tools Github repository](https://github.com/AestheticIntegration/imandra-tools).
+Note that the module's interface and type signatures can be found [in the docs pages](https://docs.imandra.ai/imandra-docs/odoc/imandra-tools/Imandra_tools/Region_probs/index.html).
 
 ### Basic Distributions
 
@@ -138,20 +138,15 @@ print_probs apple_probs_S ~verbose:true
 Using a dataset to estimate probabilities is very similar to the procedure above, although as a `CSV` stores strings as opposed to types we need to include a couple of functions mapping each row (a list of strings) to our data type:
 
 ```{.imandra .input}
-let from_opt x = 
-  match x with
-    | Some y -> y
-    | None -> failwith "Option is None" [@@program];;
-
 let to_apple apple_string =
-  let k = match from_opt (List.nth 0 apple_string) with
+  let k = match CCList.nth apple_string 0i with
   | "bb" -> Braeburn
   | "gs" -> Granny_Smith
   | "rd" -> Red_Delicious
   | _ -> failwith "Apple type is not bb, gs, or rd" in
-  let m = Q.of_string (from_opt (List.nth 1 apple_string)) in
-  let d_o = Z.of_string (from_opt (List.nth 2 apple_string)) in
-  let i_r = if from_opt (List.nth 3 apple_string) = "1" then true else false in
+  let m = Q.of_string (CCList.nth apple_string 1i) in
+  let d_o = Z.of_string (CCList.nth apple_string 2i) in
+  let i_r = if CCList.nth apple_string 3i = "1" then true else false in
   {kind = k; mass = m; days_old = d_o; is_ripe = i_r} [@@program];;
   
 let from_apple apple =
