@@ -1,15 +1,15 @@
 ---
 title: "Supervised Learning"
-description: "Analysing Machine Learning Models With Imandra"
+description: "Analysing Machine Learning Models with Imandra"
 kernel: imandra
 slug: supervised-learning
 ---
 
 # Analysing Machine Learning Models With Imandra
 
-In this notebook we show how Imandra can be used to analyse and reason about models that have been learnt from data, an important and exciting topic bridging the gap between formal methods and machine learning (ML). Brief notes and some links are included, but for a fuller explanation (with code snippets included for reference) see our [corresponding Medium post](). You can also find all of our code for both learning and analysing our models on [GitHub]().
+In this notebook we show how Imandra can be used to analyse and reason about models that have been learnt from data, an important and exciting topic bridging the gap between formal methods and machine learning (ML). Brief notes and some links are included, but for a fuller explanation (with code snippets included for reference) see our [corresponding Medium post](). You can also find all of our code for both learning and analysing our models on [GitHub](https://github.com/AestheticIntegration/imandra-stats-experiments/tree/master/supervised_learning).
 
-To illustrate this approach we'll be looking at (relatively simple) examples from two of the most common tasks within supervised learning (and ML more generally): classification and regression. In particular, we'll show how two of the most common kinds of model used to perform these tasks, random forests and neural networks, can be analysed using Imandra. For each task we'll use a real-world benchmark dataset from the [UCI Machine Learning Repository](https://archive.ics.uci.edu/ml/index.php)  and create our models using Python with some standard ML libraries.
+To illustrate this approach we'll be looking at (relatively simple) examples from two of the most common tasks within supervised learning (and ML more generally): classification and regression. In particular, we'll show how two of the most common kinds of model used to perform these tasks, random forests and neural networks, can be analysed using Imandra. For each task we'll use a real-world benchmark dataset from the [UCI Machine Learning Repository](https://archive.ics.uci.edu/ml/index.php) and create our models using Python with some standard ML libraries.
 
 We'll mostly be working with reals in this notebook so we'll start by installing a pretty printer so that we're not overrun with digits.
 

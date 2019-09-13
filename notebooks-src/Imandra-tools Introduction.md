@@ -31,6 +31,7 @@ Great! Let's start exploring `imandra-tools`.
 - [Region_pp](#Region-Pretty-Printer-%28Region_pp%29)
 - [Region_term_synth](#Region-Term-Synthesizer-%28Region_term_synth%29)
 - [Region_idx](#Region-Indexer-%28Region_idx%29)
+- [Region_probs](#Region-Probabilities-%28Region_probs%29)
 
 
 <div style="margin-top: 1em; background-color: #ffcc66; padding: 1em">
@@ -301,7 +302,7 @@ Great! Exactly what we wanted to be printed.
 
 `Region_pp` provides more extension hooks and utilities than just the `PP` functor and `~refine`, but we'll go over that in more detail in a dedicated notebook.
 
-Let's explore the last `imandra-tools` module
+Let's explore the next `imandra-tools` module
 
 # Region Term Synthesizer (Region_term_synth)
 
@@ -364,3 +365,65 @@ Let's say we want to know which region the arguments `Set.empty, (Set.of_list [1
 let i = indexer (Set.empty, (Set.of_list [1]), 0) in
   CCList.assq i idx;;
 ```
+
+# Region Probabilities (Region_probs)
+
+What if we want to not just identify the distinct regions of a program's behaviour, but how likely those behaviours are to occur? The `Region_probs` module allows us to do just that. In particular, users can easily create custom hierarchical statistical models defining joint distributions over inputs to their programs or functions, then sample from these models to get a probability distribution over regions, or query them with Boolean conditions. Alternatively, a dataset in the form of a `CSV` file can be imported and used as a set of samples when the underlying distribution is unknown. This introduction contains a short example, but for a more detailed tutorial of how to use the module, please see the dedicated [Region Probabilities notebook](Region%20Probabilities.md). 
+
+First we'll open the `Region_probs` module, then define some custom types and a function that we'll be decomposing:
+
+```{.imandra .input}
+#logic;;
+open Region_probs;;
+
+type colour = Red | Green | Blue;;
+type obj = {colour : colour; broken : bool};;
+type dom = (obj * Q.t * Z.t);;
+
+let f' (obj, temp, num) =
+  let a =
+    if obj.colour = Red then
+      if obj.broken then num else 7
+    else
+      num * 2 in
+  let b =
+    if temp >. 18.5 && obj.colour = Blue then
+      temp +. 4.3
+    else if obj.colour = Green then
+      temp -. 7.8
+    else
+      14.1 in
+  (a, b);;
+```
+
+Now we can define a joint distribution over inputs to `f` using some built-in probability distributions and a sequential sampling procedure. We can call this function with the unit argument `()` to generate samples:
+
+```{.imandra .input}
+let distribution () =
+  let c = categorical ~classes:[Red; Green; Blue] ~probs:[0.5; 0.2; 0.3] () in
+  let b = bernoulli ~p:0.4 () in
+  let mu = if b then 20. else 10. in
+  let temp = gaussian ~mu ~sigma:5. () in
+  let num =
+    if c = Green then
+      poisson ~lambda:6.5 ~constraints:[(7, 10)] ()
+    else
+      poisson ~lambda:6.5 () in
+  ({colour = c; broken = b}, temp, num) [@@program];;
+
+distribution ();;
+```
+
+Now we have all these components we can find the regions of `f`, create a model from our `distribution` function, then estimate and display region probabilities:
+
+```{.imandra .input}
+let regions = Decompose.top "f'" [@@program];;
+
+module Example = Distribution.From_Sampler (struct type domain = dom let dist = distribution end) [@@program];;
+
+let probs = Example.get_probs regions () [@@program];;
+
+print_probs probs;;
+```
+
+To see more of what can be done with the `Region_probs` module, including forming models based on existing datasets and querying models using Boolean conditions, along with additional options, please see the [Region Probabilities notebook](Region%20Probabilities.md).
