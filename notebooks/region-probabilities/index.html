@@ -2,11 +2,11 @@
 <html>
     <head><meta charset="utf-8" />
         <meta content="width=device-width, initial-scale=1.0" name="viewport">
-        <title>Imandra Documentation - Key Pair Security in Imandra</title>
-        <meta property="og:url" content="https://docs.imandra.ai/imandra-docs/notebooks/key-pair-security/">
+        <title>Imandra Documentation - Region Probabilities</title>
+        <meta property="og:url" content="https://docs.imandra.ai/imandra-docs/notebooks/region-probabilities/">
         <meta property="og:type" content="website">
-        <meta property="og:title" content="Imandra Documentation - Key Pair Security in Imandra">
-        <meta property="og:description" content="In this ReasonML notebook, we use imandra to very quickly discover the 'man in the middle' attack for protocols with private/public key exchance protocols.">
+        <meta property="og:title" content="Imandra Documentation - Region Probabilities">
+        <meta property="og:description" content="Estimating Region Probabilities from Statistical Models and Datasets">
         <meta property="og:image" content="https://storage.googleapis.com/imandra-assets/images/og_image_default_i78.jpg">
 
 
@@ -466,7 +466,7 @@
                                     </li>
                                     
                                     <li class="side__nav-list-item--sub-level-2">
-                                        <a class="side__nav-link" href="/imandra-docs/notebooks/region-probabilities">Region Probabilities</a>
+                                        <a class="side__nav-link side__nav-link--active" href="/imandra-docs/notebooks/region-probabilities">Region Probabilities</a>
                                         
                                     </li>
                                     
@@ -568,7 +568,7 @@
                                     </li>
                                     
                                     <li class="side__nav-list-item--sub-level-2">
-                                        <a class="side__nav-link side__nav-link--active" href="/imandra-docs/notebooks/key-pair-security">Key Pair Security in Imandra</a>
+                                        <a class="side__nav-link" href="/imandra-docs/notebooks/key-pair-security">Key Pair Security in Imandra</a>
                                         
                                     </li>
                                     
@@ -731,13 +731,14 @@
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html"><p>In this notebook we introduce a simple implementation of a key pair exchange protocol in ReasonML. Messages can either be key requests, unencrypted responses to key requests with a public key or encrypted messages with a private key. In addition to this we introduce the concept of a "listener" - an agent who can intercept other messagers.</p>
+<div class="text_cell_render border-box-sizing rendered_html"><h1 id="Region-Probabilities">Region Probabilities<a class="anchor-link" href="#Region-Probabilities">&#182;</a></h1><p>In this notebook we provide an introduction to the latest Imandra Tools module, <code>Region_probs</code>, which includes a small probabilistic programmining library that allows users reason about Imandra Modelling Language (IML) models probabilistically. In particular, users can easily create custom hierarchical statistical models defining joint distributions over inputs to their programs or functions, then sample from these models to get a probability distribution over regions, or query them with Boolean conditions. Alternatively, a dataset in the form of a <code>CSV</code> file can be imported and used as a set of samples. In a later notebook we'll illustrate how these tools can be used to analyse and verify the fairness of decision-making algorithms, but here we'll keep things simple and just demonstrate the basic functionalities of the module.</p>
+<h3 id="Setup">Setup<a class="anchor-link" href="#Setup">&#182;</a></h3><p>We'll begin by opening the module and installing a pretty printer that will display a decimal version of the real numbers that we'll often be using in this notebook:</p>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="try-this-container">
-  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/KeyPairSecurity.ipynb%23try-cell-2" target="_blank" rel="nofollow">
+  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Region%20Probabilities.ipynb%23try-cell-2" target="_blank" rel="nofollow">
     <div class="try-this">Try this!</div>
   </a>
 </div>
@@ -745,191 +746,9 @@
 <div class="prompt input_prompt">In&nbsp;[1]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-reasonml"><pre><span></span>type person =
-  | Mallory
-  | Bob
-  | Alice;
-
-type public_key =
-  | Public(person);
-type private_key =
-  | Private(person);
-
-/* identifier person (purporting from) + payload */
-type full_unencrypted_payload = (person, public_key);
-type full_encrypted_payload = (person, int);
-
-type data =
-  | UnEncrypted(full_unencrypted_payload)
-  /* where it&#39;s believed to be being sent and the actual public key used */
-  | Encrypted((person, public_key), full_encrypted_payload);
-
-/* actual people */
-type channel = {
-  from: person,
-  to_: person,
-};
-
-let swap = (c: channel): channel =&gt; {from: c.to_, to_: c.from};
-
-type known = {
-  asker: person,
-  ident: person,
-  actual: person,
-};
-
-type msg = {
-  channel,
-  data,
-};
-
-type action =
-  | Listen(person, channel)
-  | KeyRequest(person, person)
-  | Send(msg);
-
-type state = {
-  /* fst arg believes 2nd arg to be that person */
-  believed_identities: list((person, person)),
-  /* can learn a key */
-  can_learn_keys: list((person, person)),
-  /* person knows a given key */
-  known_keys: list(known),
-  /* a &#39;listener&#39; / spy on a channel */
-  listeners: list((person, channel)),
-  /* msg was decrypted and read by person */
-  decrypted: list((person, full_encrypted_payload)),
-  /* actual encrypted channel messages sent */
-  msgs: list((channel, full_encrypted_payload)),
-};
-
-let believed_identity = (s: state, a: person, b: person) =&gt;
-  List.mem((a, b), s.believed_identities);
-
-/* Has person A requested person B&#39;s key? */
-
-let can_learn_key = (s: state, a: person, b: person) =&gt;
-  List.mem((a, b), s.can_learn_keys);
-
-/* Does person A know person B&#39;s key? */
-
-let knows_key = (s: state, asker: person, ident: person, actual: person) =&gt;
-  asker == actual || List.mem({asker, ident, actual}, s.known_keys);
-
-/* Is person A listening to channel C? Partially reflexive and symmetric! */
-
-let listening = (s: state, a: person, c: channel) =&gt;
-  c.to_ == a
-  || List.exists(
-       ((p, c2)) =&gt; a == p &amp;&amp; (c == c2 || c == swap(c2)),
-       s.listeners,
-     );
-
-/* For all appropriate listeners on a given channel, do something */
-
-let map_listeners =
-    (s: state, c: channel, guard: person =&gt; bool, f: person =&gt; &#39;b) =&gt; {
-  let doit = ((l_p, l_c)) =&gt;
-    if (listening(s, l_p, c) &amp;&amp; guard(l_p)) {
-      Some(f(l_p));
-    } else {
-      None;
-    };
-  List.filter_map(x =&gt; doit(x), s.listeners);
-};
-
-let step = (s: state, a: action) =&gt;
-  switch (a) {
-  /* We can only listen in on messages between distinct people */
-  | Listen(p, c) when c.from != c.to_ &amp;&amp; c.from != p &amp;&amp; c.to_ != p =&gt; {
-      ...s,
-      listeners: [(p, c), ...s.listeners],
-    }
-  | KeyRequest(asker, key_owner) =&gt;
-    /* filter out self requests */
-    if (asker == key_owner) {
-      s;
-    } else {
-      let ks =
-        map_listeners(
-          s,
-          {from: asker, to_: key_owner},
-          l =&gt; true,
-          l =&gt; (l, key_owner),
-        );
-      /* once asker asks key_owner for his key, he believes this person&#39;s identity */
-      {
-        ...s,
-        can_learn_keys: [(asker, key_owner), ...ks] @ s.can_learn_keys,
-        believed_identities: [(key_owner, asker), ...s.believed_identities],
-      };
-    }
-  | Send({channel, data: UnEncrypted((person, Public(key_owner)))}) =&gt;
-    /* filter out self sends */
-    if (channel.from == channel.to_ || person == channel.to_) {
-      s;
-    } else if
-      /* if the asker already believes he knows a key belonging to person then don&#39;t accept the key */
-      (List.exists(
-         ({asker, ident, actual}) =&gt; asker == channel.to_ &amp;&amp; ident == person,
-         s.known_keys,
-       )) {
-      s;
-    } else if
-      /* the recipent must be able to learn the key and the sender must know the key of key_owner believing it to be of person */
-      (can_learn_key(s, channel.to_, person)
-       &amp;&amp; knows_key(s, channel.from, person, key_owner)) {
-      /* The sink of the channel now knows the sent key */
-      let r = {asker: channel.to_, ident: person, actual: key_owner};
-      /* All listeners on the channel now know p&#39;s key */
-      let ks =
-        map_listeners(
-          s,
-          channel,
-          l =&gt; can_learn_key(s, l, person),
-          l =&gt; {asker: l, ident: person, actual: key_owner},
-        );
-      {...s, known_keys: [r, ...ks] @ s.known_keys};
-    } else {
-      s;
-    }
-  | Send({
-      channel,
-      data: Encrypted((recipient_ident, Public(t)), (p, msg)),
-    }) =&gt;
-    /* filter out self sends */
-    if (channel.from == channel.to_
-        || recipient_ident == channel.from
-        || p == channel.to_
-        || recipient_ident == p) {
-      s;
-    } else if
-      /* if channel.from asked for the key and the identity is different don&#39;t accept the message */
-      (believed_identity(s, channel.to_, channel.from) &amp;&amp; p != channel.from) {
-      s;
-    } else if
-      /* if public key is known by sender and the key matches the channel.to_ */
-      (knows_key(s, channel.from, recipient_ident, channel.to_)
-       &amp;&amp; t == channel.to_) {
-      {
-        ...s,
-        decrypted: [(channel.to_, (p, msg)), ...s.decrypted],
-        msgs: [(channel, (p, msg)), ...s.msgs],
-      };
-    } else {
-      s;
-    }
-  | _ =&gt; s
-  };
-
-let init: state = {
-  believed_identities: [],
-  can_learn_keys: [],
-  known_keys: [],
-  listeners: [],
-  decrypted: [],
-  msgs: [],
-};
+<div class=" highlight hl-ocaml"><pre><span></span><span class="k">open</span> <span class="nn">Imandra_tools</span><span class="p">.</span><span class="nc">Region_probs</span><span class="o">;;</span>
+<span class="k">let</span> <span class="n">pp_approx</span> <span class="n">fmt</span> <span class="n">r</span> <span class="o">=</span> <span class="nn">CCFormat</span><span class="p">.</span><span class="n">fprintf</span> <span class="n">fmt</span> <span class="s2">&quot;%s&quot;</span> <span class="o">(</span><span class="nn">Real</span><span class="p">.</span><span class="n">to_string_approx</span> <span class="n">r</span><span class="o">)</span> <span class="o">[@@</span><span class="n">program</span><span class="o">];;</span>
+<span class="o">#</span><span class="n">install_printer</span> <span class="n">pp_approx</span><span class="o">;;</span>
 </pre></div>
 
 </div>
@@ -948,40 +767,7 @@ let init: state = {
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>type person = Mallory | Bob | Alice
-type public_key = Public of person
-type private_key = Private of person
-type full_unencrypted_payload = person * public_key
-type full_encrypted_payload = person * int
-type data =
-    UnEncrypted of full_unencrypted_payload
-  | Encrypted of (person * public_key) * full_encrypted_payload
-type channel = { from : person; to_ : person; }
-val swap : channel -&gt; channel = &lt;fun&gt;
-type known = { asker : person; ident : person; actual : person; }
-type msg = { channel : channel; data : data; }
-type action =
-    Listen of person * channel
-  | KeyRequest of person * person
-  | Send of msg
-type state = {
-  believed_identities : (person * person) list;
-  can_learn_keys : (person * person) list;
-  known_keys : known list;
-  listeners : (person * channel) list;
-  decrypted : (person * full_encrypted_payload) list;
-  msgs : (channel * full_encrypted_payload) list;
-}
-val believed_identity : state -&gt; person -&gt; person -&gt; bool = &lt;fun&gt;
-val can_learn_key : state -&gt; person -&gt; person -&gt; bool = &lt;fun&gt;
-val knows_key : state -&gt; person -&gt; person -&gt; person -&gt; bool = &lt;fun&gt;
-val listening : state -&gt; person -&gt; channel -&gt; bool = &lt;fun&gt;
-val map_listeners :
-  state -&gt; channel -&gt; (person -&gt; bool) -&gt; (person -&gt; &#39;b) -&gt; &#39;b list = &lt;fun&gt;
-val step : state -&gt; action -&gt; state = &lt;fun&gt;
-val init : state =
-  {believed_identities = []; can_learn_keys = []; known_keys = [];
-   listeners = []; decrypted = []; msgs = []}
+<pre>val pp_approx : CCFormat.t -&gt; Q.t -&gt; unit = &lt;fun&gt;
 </pre>
 </div>
 
@@ -994,13 +780,30 @@ val init : state =
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html"><p>We can introduce some printing functions so that any traces produced can be visually interpreted.</p>
+<div class="text_cell_render border-box-sizing rendered_html"><p>Note that the module's interface and type signatures can be found <a href="https://docs.imandra.ai/imandra-docs/odoc/imandra-tools/Imandra_tools/Region_probs/index.html">in the docs pages</a>.</p>
+<h3 id="Basic-Distributions">Basic Distributions<a class="anchor-link" href="#Basic-Distributions">&#182;</a></h3><p>The <code>Region_probs</code> module contains 13 of the most common discrete and continuous univariate probability distributions which can be parameterised and then used directly. In particular, we support the following distributions:</p>
+<ul>
+<li>Bernoulli</li>
+<li>Beta</li>
+<li>Binomial</li>
+<li>Categorical</li>
+<li>Cauchy</li>
+<li>Exponential</li>
+<li>Gamma</li>
+<li>Guassian</li>
+<li>Laplace</li>
+<li>Logistic</li>
+<li>LogNormal</li>
+<li>Poisson</li>
+<li>Uniform</li>
+</ul>
+<p>Each distribution has named parameters and can take an optional argument <code>~constraints</code> which truncates the distribution to within the bounds specified by the constraint list. For example, we can define a Gaussian random variable <code>x</code> with mean <code>5</code> and standard deviation <code>1.3</code>, that is restricted to the regions <code>[2.5, 5]</code> and <code>[5.8, 10.3]</code> as:</p>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="try-this-container">
-  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/KeyPairSecurity.ipynb%23try-cell-4" target="_blank" rel="nofollow">
+  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Region%20Probabilities.ipynb%23try-cell-4" target="_blank" rel="nofollow">
     <div class="try-this">Try this!</div>
   </a>
 </div>
@@ -1008,12 +811,7 @@ val init : state =
 <div class="prompt input_prompt">In&nbsp;[2]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-reasonml"><pre><span></span>let person_to_string = (p) =&gt; 
-  switch (p) {
-    | Alice =&gt; &quot;Alice&quot;
-    | Mallory =&gt; &quot;Mallory&quot;
-    | Bob =&gt; &quot;Bob&quot;
-  };
+<div class=" highlight hl-ocaml"><pre><span></span><span class="k">let</span> <span class="n">x</span> <span class="o">=</span> <span class="n">gaussian</span> <span class="o">~</span><span class="n">mu</span><span class="o">:</span><span class="mi">5</span><span class="o">.</span> <span class="o">~</span><span class="n">sigma</span><span class="o">:</span><span class="mi">1</span><span class="o">.</span><span class="mi">3</span> <span class="o">~</span><span class="n">constraints</span><span class="o">:[(</span><span class="mi">2</span><span class="o">.</span><span class="mi">5</span><span class="o">,</span><span class="mi">5</span><span class="o">.);</span> <span class="o">(</span><span class="mi">5</span><span class="o">.</span><span class="mi">8</span><span class="o">,</span><span class="mi">10</span><span class="o">.</span><span class="mi">3</span><span class="o">)]</span> <span class="o">[@@</span><span class="n">program</span><span class="o">]</span>
 </pre></div>
 
 </div>
@@ -1032,7 +830,7 @@ val init : state =
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>val person_to_string : person -&gt; string = &lt;fun&gt;
+<pre>val x : unit -&gt; Q.t = &lt;fun&gt;
 </pre>
 </div>
 
@@ -1045,13 +843,13 @@ val init : state =
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html"><p>This step allows us to depict message transitions between agents.</p>
+<div class="text_cell_render border-box-sizing rendered_html"><p>We then sample from the distribution to get a particular value by calling <code>x</code> with the unit argument <code>()</code>:</p>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="try-this-container">
-  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/KeyPairSecurity.ipynb%23try-cell-6" target="_blank" rel="nofollow">
+  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Region%20Probabilities.ipynb%23try-cell-6" target="_blank" rel="nofollow">
     <div class="try-this">Try this!</div>
   </a>
 </div>
@@ -1059,41 +857,9 @@ val init : state =
 <div class="prompt input_prompt">In&nbsp;[3]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-reasonml"><pre><span></span>let graph_step = (s: action) =&gt;
-  switch (s) {
-  | Listen(p, c) =&gt;
-    person_to_string(p)
-    ++ &quot;-&gt;&quot;
-    ++ person_to_string(c.from)
-    ++ &quot;[style=dotted];\n&quot;
-    ++ person_to_string(p)
-    ++ &quot;-&gt;&quot;
-    ++ person_to_string(c.to_)
-    ++ &quot;[style=dotted];\n&quot;
-  | KeyRequest(a, k) =&gt;
-    &quot;edge [color=yellow];\n&quot;
-    ++ person_to_string(a)
-    ++ &quot;-&gt;&quot;
-    ++ person_to_string(k)
-    ++ &quot;;\n&quot;
-  | Send({channel, data: UnEncrypted((person, Public(key_owner)))}) =&gt;
-    person_to_string(channel.from)
-    ++ &quot;-&gt;&quot;
-    ++ person_to_string(channel.to_)
-    ++ &quot;[label=\&quot;&quot;
-    ++ person_to_string(key_owner)
-    ++ &quot;\&quot;,color=blue];\n&quot;
-  | Send({
-      channel,
-      data: Encrypted((recipient_ident, Public(t)), (p, msg)),
-    }) =&gt;
-    person_to_string(channel.from)
-    ++ &quot;-&gt;&quot;
-    ++ person_to_string(channel.to_)
-    ++ &quot;[label=\&quot;&quot;
-    ++ person_to_string(t)
-    ++ &quot;\&quot;,color=black];\n&quot;
-  };
+<div class=" highlight hl-ocaml"><pre><span></span><span class="n">x</span> <span class="bp">()</span><span class="o">;;</span>
+<span class="n">x</span> <span class="bp">()</span><span class="o">;;</span>
+<span class="n">x</span> <span class="bp">()</span><span class="o">;;</span>
 </pre></div>
 
 </div>
@@ -1112,7 +878,9 @@ val init : state =
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>val graph_step : action -&gt; String.t = &lt;fun&gt;
+<pre>- : Q.t = 4.19759047912
+- : Q.t = 6.70332026077
+- : Q.t = 4.08217241141
 </pre>
 </div>
 
@@ -1122,9 +890,16 @@ val init : state =
 </div>
 
 </div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html"><h3 id="Building-Statistical-Models">Building Statistical Models<a class="anchor-link" href="#Building-Statistical-Models">&#182;</a></h3><p>Using the basic univariate distributions above as building blocks we can create more complex custom joint distributions over inputs by generating samples sequentially. For example, let's define a distribution over some apples in a shop. Let's consider three kinds of apple, <code>Braeburn</code>, <code>Granny_Smith</code>, and <code>Red_Delicious</code> which are stocked in varying proportions. We can also suppose that their weights might be normally distributed according to their kind. Let's assume that each apple stays in the shop for a week at a time and that there is a <code>0.4</code> chance that any particular apple gets bought on a particular day. Then the number of days an apple has been in the shop can be modelled by a Binomial distribution. Finally, let's say that the apples tend to turn ripe quickly after <code>3</code> days, if they're not already ripe. Thus, a joint distribution over apples can be given as follows:</p>
+</div>
+</div>
+</div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="try-this-container">
-  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/KeyPairSecurity.ipynb%23try-cell-7" target="_blank" rel="nofollow">
+  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Region%20Probabilities.ipynb%23try-cell-8" target="_blank" rel="nofollow">
     <div class="try-this">Try this!</div>
   </a>
 </div>
@@ -1132,13 +907,30 @@ val init : state =
 <div class="prompt input_prompt">In&nbsp;[4]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-reasonml"><pre><span></span>let rec graph_inner = (xs:list(action)) =&gt; 
-  switch (xs)
-  {
-    | [] =&gt; &quot;&quot;
-    | [h, ...t] =&gt; 
-      graph_step(h)++graph_inner(t)
-  };
+<div class=" highlight hl-ocaml"><pre><span></span><span class="k">type</span> <span class="n">kind</span> <span class="o">=</span> <span class="nc">Braeburn</span> <span class="o">|</span> <span class="nc">Granny_Smith</span> <span class="o">|</span> <span class="nc">Red_Delicious</span>
+
+<span class="k">type</span> <span class="n">apple</span> <span class="o">=</span> <span class="o">{</span> <span class="n">kind</span><span class="o">:</span> <span class="n">kind</span><span class="o">;</span>
+               <span class="n">mass</span><span class="o">:</span> <span class="nn">Q</span><span class="p">.</span><span class="n">t</span><span class="o">;</span>
+               <span class="n">days_old</span><span class="o">:</span> <span class="nn">Z</span><span class="p">.</span><span class="n">t</span><span class="o">;</span>
+               <span class="n">is_ripe</span><span class="o">:</span> <span class="kt">bool</span> <span class="o">}</span>
+
+<span class="k">let</span> <span class="n">apple_dist</span> <span class="bp">()</span> <span class="o">=</span>
+  <span class="k">let</span> <span class="n">k</span> <span class="o">=</span> <span class="n">categorical</span> <span class="o">~</span><span class="n">classes</span><span class="o">:[</span><span class="nc">Braeburn</span><span class="o">;</span> <span class="nc">Granny_Smith</span><span class="o">;</span> <span class="nc">Red_Delicious</span><span class="o">]</span> <span class="o">~</span><span class="n">probs</span><span class="o">:[</span><span class="mi">0</span><span class="o">.</span><span class="mi">25</span><span class="o">;</span> <span class="mi">0</span><span class="o">.</span><span class="mi">6</span><span class="o">;</span> <span class="mi">0</span><span class="o">.</span><span class="mi">15</span><span class="o">]</span> <span class="bp">()</span> <span class="k">in</span>
+  <span class="k">let</span> <span class="n">mean_mass</span> <span class="o">=</span> <span class="k">function</span>
+  <span class="o">|</span> <span class="nc">Braeburn</span> <span class="o">-&gt;</span> <span class="mi">85</span><span class="o">.</span>
+  <span class="o">|</span> <span class="nc">Granny_Smith</span> <span class="o">-&gt;</span> <span class="mi">80</span><span class="o">.</span>
+  <span class="o">|</span> <span class="nc">Red_Delicious</span> <span class="o">-&gt;</span> <span class="mi">100</span><span class="o">.</span> <span class="k">in</span>
+  <span class="k">let</span> <span class="n">mu</span> <span class="o">=</span> <span class="n">mean_mass</span> <span class="n">k</span> <span class="k">in</span>
+  <span class="k">let</span> <span class="n">m</span> <span class="o">=</span> <span class="n">gaussian</span> <span class="o">~</span><span class="n">mu</span> <span class="o">~</span><span class="n">sigma</span><span class="o">:</span><span class="mi">5</span><span class="o">.</span> <span class="bp">()</span> <span class="k">in</span>
+  <span class="k">let</span> <span class="n">d_o</span> <span class="o">=</span> <span class="n">binomial</span> <span class="o">~</span><span class="n">n</span><span class="o">:</span><span class="mi">7</span> <span class="o">~</span><span class="n">p</span><span class="o">:</span><span class="mi">0</span><span class="o">.</span><span class="mi">4</span> <span class="bp">()</span> <span class="k">in</span>
+  <span class="k">let</span> <span class="n">ripe_chance</span> <span class="n">days</span> <span class="o">=</span> <span class="k">if</span> <span class="n">days</span> <span class="o">&gt;=</span> <span class="mi">3</span> <span class="k">then</span> <span class="mi">0</span><span class="o">.</span><span class="mi">9</span> <span class="k">else</span> <span class="mi">0</span><span class="o">.</span><span class="mi">4</span> <span class="k">in</span>
+  <span class="k">let</span> <span class="n">p</span> <span class="o">=</span> <span class="n">ripe_chance</span> <span class="n">d_o</span> <span class="k">in</span>
+  <span class="k">let</span> <span class="n">i_r</span> <span class="o">=</span> <span class="n">bernoulli</span> <span class="o">~</span><span class="n">p</span> <span class="bp">()</span> <span class="k">in</span>
+  <span class="o">{</span><span class="n">kind</span> <span class="o">=</span> <span class="n">k</span><span class="o">;</span> <span class="n">mass</span> <span class="o">=</span> <span class="n">m</span><span class="o">;</span> <span class="n">days_old</span> <span class="o">=</span> <span class="n">d_o</span><span class="o">;</span> <span class="n">is_ripe</span> <span class="o">=</span> <span class="n">i_r</span><span class="o">}</span> <span class="o">[@@</span><span class="n">program</span><span class="o">];;</span>
+
+<span class="n">apple_dist</span> <span class="bp">()</span><span class="o">;;</span>
+<span class="n">apple_dist</span> <span class="bp">()</span><span class="o">;;</span>
+<span class="n">apple_dist</span> <span class="bp">()</span><span class="o">;;</span>
 </pre></div>
 
 </div>
@@ -1157,61 +949,16 @@ val init : state =
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>val graph_inner : action list -&gt; String.t = &lt;fun&gt;
+<pre>type kind = Braeburn | Granny_Smith | Red_Delicious
+type apple = { kind : kind; mass : Q.t; days_old : Z.t; is_ripe : bool; }
+val apple_dist : unit -&gt; apple = &lt;fun&gt;
+- : apple =
+{kind = Granny_Smith; mass = 81.7329170367; days_old = 3; is_ripe = true}
+- : apple =
+{kind = Granny_Smith; mass = 84.8514027178; days_old = 2; is_ripe = true}
+- : apple =
+{kind = Granny_Smith; mass = 81.0976719168; days_old = 2; is_ripe = false}
 </pre>
-</div>
-
-</div>
-
-<div class="output_area">
-
-<div class="prompt"></div>
-
-
-
-<div class="output_html rendered_html output_subarea ">
-<div><div class="imandra-fold panel panel-default" id="fold-43d1f719-85e1-498f-bb07-63c325ecb00b"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>termination proof</span></div></div><div class="panel-body collapse"><div><h3>Termination proof</h3><p></p><div class="imandra-fold panel panel-default" id="fold-5861310a-c028-46b7-95c7-fbfa97899e03"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>call `graph_inner (List.tl xs)` from `graph_inner xs`</span></div></div><div class="panel-body collapse"><div class="imandra-table" id="table-73b7048a-29fa-4708-8893-22307c72c38d"><table><tr><td><b>original</b></td><td>graph_inner xs</td></tr><tr><td><b>sub</b></td><td>graph_inner (List.tl xs)</td></tr><tr><td><b>original ordinal</b></td><td>Ordinal.Int (Ordinal.count xs)</td></tr><tr><td><b>sub ordinal</b></td><td>Ordinal.Int (Ordinal.count (List.tl xs))</td></tr><tr><td><b>path</b></td><td>[not (xs = [])]</td></tr><tr><td><b>proof</b></td><td><div class="imandra-fold panel panel-default" id="fold-720d337c-b491-4b55-b5d9-c1b8df0fa739"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>detailed proof</span></div></div><div class="panel-body collapse"><div class="imandra-proof"><div class="imandra-alternatives" id="alt-d21203e9-8fb8-4c44-a252-2a80ca262e54"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>summary</a></li><li class="" data-toggle="tab"><a>full</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-table" id="table-e8cf8f87-8a2e-4c95-8932-9d985090fda9"><table><tr><td><b>ground_instances</b></td><td>3</td></tr><tr><td><b>definitions</b></td><td>0</td></tr><tr><td><b>inductions</b></td><td>0</td></tr><tr><td><b>search_time</b></td><td><pre>0.022s</pre></td></tr><tr><td><b>details</b></td><td><div class="imandra-fold panel panel-default" id="fold-924df1bf-702b-4008-9581-f9cd2055e75d"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><div class="imandra-table" id="table-ae860325-c158-4fdb-8ae3-3aeb63a773b1"><table><tr><td><b>smt_stats</b></td><td><div class="imandra-table" id="table-7a230364-236a-47f9-97f4-06c55696b12b"><table><tr><td><b>num checks</b></td><td>8</td></tr><tr><td><b>arith assert lower</b></td><td>12</td></tr><tr><td><b>arith pivots</b></td><td>10</td></tr><tr><td><b>rlimit count</b></td><td>7505</td></tr><tr><td><b>mk clause</b></td><td>43</td></tr><tr><td><b>datatype occurs check</b></td><td>38</td></tr><tr><td><b>mk bool var</b></td><td>666</td></tr><tr><td><b>arith assert upper</b></td><td>9</td></tr><tr><td><b>datatype splits</b></td><td>182</td></tr><tr><td><b>decisions</b></td><td>66</td></tr><tr><td><b>arith add rows</b></td><td>18</td></tr><tr><td><b>propagations</b></td><td>23</td></tr><tr><td><b>conflicts</b></td><td>9</td></tr><tr><td><b>arith fixed eqs</b></td><td>5</td></tr><tr><td><b>datatype accessor ax</b></td><td>95</td></tr><tr><td><b>arith conflicts</b></td><td>2</td></tr><tr><td><b>datatype constructor ax</b></td><td>240</td></tr><tr><td><b>num allocs</b></td><td>2284393</td></tr><tr><td><b>final checks</b></td><td>10</td></tr><tr><td><b>added eqs</b></td><td>871</td></tr><tr><td><b>del clause</b></td><td>4</td></tr><tr><td><b>arith eq adapter</b></td><td>7</td></tr><tr><td><b>memory</b></td><td>9.640000</td></tr><tr><td><b>max memory</b></td><td>9.640000</td></tr></table></div></td></tr></table></div></div><script>
-require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-924df1bf-702b-4008-9581-f9cd2055e75d';
-  fold.hydrate(target);
-});
-</script></div></td></tr></table></div></div><div class="tab-pane"><div class="imandra-fold panel panel-default" id="fold-217568b9-b960-4271-859c-621c546cd947"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.022s]
-  not (xs = []) &amp;&amp; Ordinal.count xs &gt;= 0 &amp;&amp; Ordinal.count (List.tl xs) &gt;= 0
-  ==&gt; List.tl xs = []
-      || Ordinal.( &lt;&lt; ) (Ordinal.Int (Ordinal.count (List.tl xs)))
-         (Ordinal.Int (Ordinal.count xs))</pre></li><li><div><h5>simplify</h5><div class="imandra-table" id="table-e132b517-7238-4e98-a773-63c2d3e922ad"><table><tr><td><b>into</b></td><td><pre>(not
- ((not (xs = []) &amp;&amp; Ordinal.count xs &gt;= 0) &amp;&amp; Ordinal.count (List.tl xs) &gt;= 0)
- || List.tl xs = [])
-|| Ordinal.( &lt;&lt; ) (Ordinal.Int (Ordinal.count (List.tl xs)))
-   (Ordinal.Int (Ordinal.count xs))</pre></td></tr><tr><td><b>expansions</b></td><td><pre>[]</pre></td></tr><tr><td><b>rewrite_steps</b></td><td><ul></ul></td></tr><tr><td><b>forward_chaining</b></td><td><ul></ul></td></tr></table></div></div></li><li><div>unroll<div class="imandra-table" id="table-7371afd9-4226-48cf-9235-d84f0735e499"><table><tr><td><b>expr</b></td><td><pre>(|Ordinal.&lt;&lt;_102| (|Ordinal.Int_93| (|count_`action list`_1718|
-                                    …</pre></td></tr><tr><td><b>expansions</b></td><td><ul></ul></td></tr></table></div></div></li><li><div>unroll<div class="imandra-table" id="table-b959632e-ef08-4993-8d56-25a08dcf6a32"><table><tr><td><b>expr</b></td><td><pre>(|count_`action list`_1718| (|get.::.1_1708| xs_1709))</pre></td></tr><tr><td><b>expansions</b></td><td><ul></ul></td></tr></table></div></div></li><li><div>unroll<div class="imandra-table" id="table-f1fc99b3-0be5-44b7-bac8-bbac09278e6f"><table><tr><td><b>expr</b></td><td><pre>(|count_`action list`_1718| xs_1709)</pre></td></tr><tr><td><b>expansions</b></td><td><ul></ul></td></tr></table></div></div></li><li><div><h5>unsat</h5><pre>(let ((a!1 ((_ is (UnEncrypted_25 (|`(person * public_key)`_1694|) data_24))
-             (data_38 (…</pre></div></li></ul></div><script>
-require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-217568b9-b960-4271-859c-621c546cd947';
-  fold.hydrate(target);
-});
-</script></div></div></div><script>
-require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-d21203e9-8fb8-4c44-a252-2a80ca262e54';
-  alternatives.hydrate(target);
-});
-</script></div></div></div><script>
-require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-720d337c-b491-4b55-b5d9-c1b8df0fa739';
-  fold.hydrate(target);
-});
-</script></div></td></tr></table></div></div><script>
-require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-5861310a-c028-46b7-95c7-fbfa97899e03';
-  fold.hydrate(target);
-});
-</script></div><p></p></div></div><script>
-require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-43d1f719-85e1-498f-bb07-63c325ecb00b';
-  fold.hydrate(target);
-});
-</script></div></div>
-
 </div>
 
 </div>
@@ -1223,13 +970,14 @@ require(['nbextensions/nbimandra/fold'], function (fold) {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html"><p>In the final printer function, we depict encrypted messages with black transition lines, key requests with yellow lines, and unencrypted messages with blue transition lines. Listeners to other parties are depicted with dashed lines.</p>
+<div class="text_cell_render border-box-sizing rendered_html"><p>In general, distributions may be defined over abitrary groups of types, as long as they are outputted as tuples, in the end. For example, we could have a distribution over a list of <code>fruit</code>s in a bowl and a distribution over the colour of the bowl, but the final output would be a tuple <code>(fruits, bowl_colour)</code> of type <code>fruit list * colour</code>.</p>
+<h3 id="Estimating-Region-Probabilities">Estimating Region Probabilities<a class="anchor-link" href="#Estimating-Region-Probabilities">&#182;</a></h3><p>There are two ways we can estimate region probabilities: the first is to sample from a model using a custom distribution (such as the one above), and the second is to use an existing dataset of samples whose distribution we might not be able easily write down. Given one of these we create a <code>Distribution</code> module which can then be used to get region probabilities, estimate Boolean queries, and save/load sample data. To estimate some region probabilities, we'll first need some regions! We'll right a simple function calculating the price, in pennies, of the apple then decompose it:</p>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="try-this-container">
-  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/KeyPairSecurity.ipynb%23try-cell-9" target="_blank" rel="nofollow">
+  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Region%20Probabilities.ipynb%23try-cell-10" target="_blank" rel="nofollow">
     <div class="try-this">Try this!</div>
   </a>
 </div>
@@ -1237,9 +985,15 @@ require(['nbextensions/nbimandra/fold'], function (fold) {
 <div class="prompt input_prompt">In&nbsp;[5]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-reasonml"><pre><span></span>[@program] let graph = (xs:list(action)) =&gt;
-  Document.graphviz(&quot;digraph G {\nAlice [color=blue];\nMallory [color=red];\nBob [color=green];\n&quot;++graph_inner(xs)++&quot;\n}\n&quot;);
-[@install_doc graph];
+<div class=" highlight hl-ocaml"><pre><span></span><span class="k">let</span> <span class="n">price</span> <span class="n">apple</span> <span class="o">=</span>
+  <span class="k">let</span> <span class="n">per_gram</span> <span class="o">=</span> <span class="k">function</span>
+  <span class="o">|</span> <span class="nc">Braeburn</span> <span class="o">-&gt;</span> <span class="mi">0</span><span class="o">.</span><span class="mi">4</span>
+  <span class="o">|</span> <span class="nc">Granny_Smith</span> <span class="o">-&gt;</span> <span class="mi">0</span><span class="o">.</span><span class="mi">35</span>
+  <span class="o">|</span> <span class="nc">Red_Delicious</span> <span class="o">-&gt;</span> <span class="mi">0</span><span class="o">.</span><span class="mi">3</span>
+  <span class="k">in</span> <span class="k">let</span> <span class="n">p</span> <span class="o">=</span> <span class="o">(</span><span class="n">per_gram</span> <span class="n">apple</span><span class="o">.</span><span class="n">kind</span><span class="o">)</span> <span class="o">*.</span> <span class="n">apple</span><span class="o">.</span><span class="n">mass</span> <span class="k">in</span>
+  <span class="k">if</span> <span class="n">apple</span><span class="o">.</span><span class="n">days_old</span> <span class="o">&gt;=</span> <span class="mi">5</span> <span class="k">then</span> <span class="n">p</span> <span class="o">/.</span> <span class="mi">2</span><span class="o">.</span> <span class="k">else</span> <span class="n">p</span><span class="o">;;</span>
+
+<span class="k">let</span> <span class="n">regions</span> <span class="o">=</span> <span class="nn">Decompose</span><span class="p">.</span><span class="n">top</span> <span class="s2">&quot;price&quot;</span> <span class="o">[@@</span><span class="n">program</span><span class="o">];;</span>
 </pre></div>
 
 </div>
@@ -1258,8 +1012,132 @@ require(['nbextensions/nbimandra/fold'], function (fold) {
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>val graph : action list -&gt; Imandra_surface.Document.t = &lt;fun&gt;
+<pre>val price : apple -&gt; real = &lt;fun&gt;
+val regions : Imandra_interactive.Decompose.t list =
+  [&lt;region&gt;; &lt;region&gt;; &lt;region&gt;; &lt;region&gt;; &lt;region&gt;; &lt;region&gt;]
 </pre>
+</div>
+
+</div>
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+
+<div class="output_html rendered_html output_subarea ">
+<div class="imandra-alternatives" id="alt-2326a7f5-6b1b-465a-9435-13849443609c"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-582531f0-0494-4151-9e7e-471189bd800c" class="decompose"><textarea class="display-none">{
+  &quot;regions&quot;: [
+    {
+      &quot;constraints&quot;: [ &quot;apple.days_old &gt;= 5&quot; ],
+      &quot;region&quot;: null,
+      &quot;groups&quot;: [
+        {
+          &quot;constraints&quot;: [
+            &quot;apple.days_old &gt;= 5&quot;, &quot;apple.kind is Red_Delicious&quot;
+          ],
+          &quot;region&quot;: {
+            &quot;constraints&quot;: [
+              &quot;apple.days_old &gt;= 5&quot;, &quot;apple.kind is Red_Delicious&quot;
+            ],
+            &quot;invariant&quot;: &quot;F = apple.mass * 3/20&quot;
+          },
+          &quot;groups&quot;: [],
+          &quot;label&quot;: &quot;2.3&quot;,
+          &quot;weight&quot;: 1
+        },
+        {
+          &quot;constraints&quot;: [
+            &quot;apple.days_old &gt;= 5&quot;, &quot;apple.kind is Granny_Smith&quot;
+          ],
+          &quot;region&quot;: {
+            &quot;constraints&quot;: [
+              &quot;apple.days_old &gt;= 5&quot;, &quot;apple.kind is Granny_Smith&quot;
+            ],
+            &quot;invariant&quot;: &quot;F = apple.mass * 7/40&quot;
+          },
+          &quot;groups&quot;: [],
+          &quot;label&quot;: &quot;2.2&quot;,
+          &quot;weight&quot;: 1
+        },
+        {
+          &quot;constraints&quot;: [ &quot;apple.days_old &gt;= 5&quot;, &quot;apple.kind is Braeburn&quot; ],
+          &quot;region&quot;: {
+            &quot;constraints&quot;: [
+              &quot;apple.days_old &gt;= 5&quot;, &quot;apple.kind is Braeburn&quot;
+            ],
+            &quot;invariant&quot;: &quot;F = apple.mass * 1/5&quot;
+          },
+          &quot;groups&quot;: [],
+          &quot;label&quot;: &quot;2.1&quot;,
+          &quot;weight&quot;: 1
+        }
+      ],
+      &quot;label&quot;: &quot;&quot;,
+      &quot;weight&quot;: 3
+    },
+    {
+      &quot;constraints&quot;: [ &quot;apple.days_old &lt; 5&quot; ],
+      &quot;region&quot;: null,
+      &quot;groups&quot;: [
+        {
+          &quot;constraints&quot;: [
+            &quot;apple.days_old &lt; 5&quot;, &quot;apple.kind is Red_Delicious&quot;
+          ],
+          &quot;region&quot;: {
+            &quot;constraints&quot;: [
+              &quot;apple.days_old &lt; 5&quot;, &quot;apple.kind is Red_Delicious&quot;
+            ],
+            &quot;invariant&quot;: &quot;F = apple.mass * 3/10&quot;
+          },
+          &quot;groups&quot;: [],
+          &quot;label&quot;: &quot;1.3&quot;,
+          &quot;weight&quot;: 1
+        },
+        {
+          &quot;constraints&quot;: [
+            &quot;apple.days_old &lt; 5&quot;, &quot;apple.kind is Granny_Smith&quot;
+          ],
+          &quot;region&quot;: {
+            &quot;constraints&quot;: [
+              &quot;apple.days_old &lt; 5&quot;, &quot;apple.kind is Granny_Smith&quot;
+            ],
+            &quot;invariant&quot;: &quot;F = apple.mass * 7/20&quot;
+          },
+          &quot;groups&quot;: [],
+          &quot;label&quot;: &quot;1.2&quot;,
+          &quot;weight&quot;: 1
+        },
+        {
+          &quot;constraints&quot;: [ &quot;apple.days_old &lt; 5&quot;, &quot;apple.kind is Braeburn&quot; ],
+          &quot;region&quot;: {
+            &quot;constraints&quot;: [ &quot;apple.days_old &lt; 5&quot;, &quot;apple.kind is Braeburn&quot; ],
+            &quot;invariant&quot;: &quot;F = apple.mass * 2/5&quot;
+          },
+          &quot;groups&quot;: [],
+          &quot;label&quot;: &quot;1.1&quot;,
+          &quot;weight&quot;: 1
+        }
+      ],
+      &quot;label&quot;: &quot;&quot;,
+      &quot;weight&quot;: 3
+    }
+  ]
+}</textarea><div class="decompose-foamtree"></div><div class="decompose-details"><div class="decompose-details-header">Regions details</div><div class="decompose-details-no-selection"><p>No group selected.</p><ul><li>Concrete regions are numbered</li><li>Unnumbered regions are groups whose children share a particular constraint</li><li>Click on a region to view its details</li><li>Double click on a region to zoom in on it</li><li>Shift+double click to zoom out</li><li>Hit escape to reset back to the top</li></ul></div><div class="decompose-details-selection hidden"><div><span class="decompose-details-label">Direct sub-regions: </span><span class="decompose-details-direct-sub-regions-text">-</span></div><div><span class="decompose-details-label">Contained regions: </span><span class="decompose-details-contained-regions-text">-</span></div><div class="decompose-details-section-header">Constraints</div><div class="decompose-details-constraints"><pre class="decompose-details-constraint">&lt;constraint&gt;</pre></div><div class="decompose-details-invariant"><div class="decompose-details-section-header">Invariant</div><pre class="decompose-details-invariant-text">&lt;invariant&gt;</pre></div></div></div><script>
+(function () {
+  require(['nbextensions/nbimandra/regions'], function (regions) {
+    var target = '#decompose-582531f0-0494-4151-9e7e-471189bd800c';
+    regions.hydrate(target);
+  });
+})();
+</script></div></div><div class="tab-pane"><div><div class="imandra-table" id="table-f4ab6ea3-d98f-4d84-9bf4-07ebfa8d512c"><table><thead><tr><th>Constraints</th><th>Invariant</th></tr></thead><tr><td><ul><li><pre>not (apple.days_old &gt;= 5)</pre></li><li><pre>not (apple.kind = Braeburn)</pre></li><li><pre>not (apple.kind = Granny_Smith)</pre></li></ul></td><td><pre>3/10 *. apple.mass</pre></td></tr><tr><td><ul><li><pre>not (apple.days_old &gt;= 5)</pre></li><li><pre>not (apple.kind = Braeburn)</pre></li><li><pre>apple.kind = Granny_Smith</pre></li></ul></td><td><pre>7/20 *. apple.mass</pre></td></tr><tr><td><ul><li><pre>not (apple.days_old &gt;= 5)</pre></li><li><pre>apple.kind = Braeburn</pre></li></ul></td><td><pre>2/5 *. apple.mass</pre></td></tr><tr><td><ul><li><pre>apple.days_old &gt;= 5</pre></li><li><pre>not (apple.kind = Braeburn)</pre></li><li><pre>not (apple.kind = Granny_Smith)</pre></li></ul></td><td><pre>3/20 *. apple.mass</pre></td></tr><tr><td><ul><li><pre>apple.days_old &gt;= 5</pre></li><li><pre>not (apple.kind = Braeburn)</pre></li><li><pre>apple.kind = Granny_Smith</pre></li></ul></td><td><pre>7/40 *. apple.mass</pre></td></tr><tr><td><ul><li><pre>apple.days_old &gt;= 5</pre></li><li><pre>apple.kind = Braeburn</pre></li></ul></td><td><pre>1/5 *. apple.mass</pre></td></tr></table></div></div></div></div><script>
+require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
+  var target = '#alt-2326a7f5-6b1b-465a-9435-13849443609c';
+  alternatives.hydrate(target);
+});
+</script></div>
+
 </div>
 
 </div>
@@ -1271,13 +1149,14 @@ require(['nbextensions/nbimandra/fold'], function (fold) {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html"><p>We can now ask imandra to prove correctness properties about the protocol. For example, is it possible for a message to be decrypted by someone who is not the intended recipient. Click on the <code>Load graph</code> button to visually interpret the counterexample found by imandra.</p>
+<div class="text_cell_render border-box-sizing rendered_html"><p>Now we're in a position to calculate the probability mass of each region given our distribution above, or a separate dataset.</p>
+<h4 id="Sampling-Over-Regions">Sampling Over Regions<a class="anchor-link" href="#Sampling-Over-Regions">&#182;</a></h4><p>Let's first use our <code>apple_dist</code> distribution from above to create a <code>Distribution</code> module:</p>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="try-this-container">
-  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/KeyPairSecurity.ipynb%23try-cell-11" target="_blank" rel="nofollow">
+  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Region%20Probabilities.ipynb%23try-cell-12" target="_blank" rel="nofollow">
     <div class="try-this">Try this!</div>
   </a>
 </div>
@@ -1285,14 +1164,7 @@ require(['nbextensions/nbimandra/fold'], function (fold) {
 <div class="prompt input_prompt">In&nbsp;[6]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-reasonml"><pre><span></span>/* Can xq decrypt a message saying it&#39;s from xw, but actually it&#39;s been sent by another party? */
-[@blast]
-verify((x1, x2, m, xs) =&gt; {
-  let s = List.fold_left(step, init, xs);
-  List.mem((x1, (x2, m)), s.decrypted)
-  ==&gt; List.mem(({from: x2, to_: x1}, (x2, m)), s.msgs);
-});
-CX.xs;
+<div class=" highlight hl-ocaml"><pre><span></span><span class="k">module</span> <span class="nc">Apple_S</span> <span class="o">=</span> <span class="nn">Distribution</span><span class="p">.</span><span class="nc">From_Sampler</span> <span class="o">(</span><span class="k">struct</span> <span class="k">type</span> <span class="n">domain</span> <span class="o">=</span> <span class="n">apple</span> <span class="k">let</span> <span class="n">dist</span> <span class="o">=</span> <span class="n">apple_dist</span> <span class="k">end</span><span class="o">)</span> <span class="o">[@@</span><span class="n">program</span><span class="o">]</span>
 </pre></div>
 
 </div>
@@ -1311,80 +1183,25 @@ CX.xs;
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>- : person -&gt; person -&gt; int -&gt; action list -&gt; bool = &lt;fun&gt;
-module CX :
-  sig val x1 : person val x2 : person val m : Z.t val xs : action list end
-- : action list = &lt;document&gt;
+<pre>module Apple_S :
+  sig
+    type domain = apple
+    val get_probs :
+      Imandra_surface.Decompose_region.t list -&gt;
+      ?assuming:string -&gt;
+      ?n:Z.t -&gt;
+      ?d:string -&gt;
+      ?step_function:(domain -&gt; domain) -&gt;
+      ?num_steps:Z.t -&gt;
+      unit -&gt; (int, float * Imandra_surface.Decompose_region.t) Hashtbl.t
+    val query :
+      (domain -&gt; bool) -&gt;
+      ?n:Z.t -&gt;
+      ?d:string -&gt; ?max_std_err:Q.t -&gt; ?precision:Z.t -&gt; unit -&gt; unit
+    val save : string -&gt; ?n:Z.t -&gt; ?d:domain list -&gt; unit -&gt; unit
+    val load : string -&gt; domain list
+  end
 </pre>
-</div>
-
-</div>
-
-<div class="output_area">
-
-<div class="prompt"></div>
-
-
-
-<div class="output_html rendered_html output_subarea ">
-<div><pre>Counterexample (after 64 steps, 0.103s):
-  let x1 = Alice
-  let x2 = Mallory
-  let m = 0
-  let xs =
-    [Listen (Bob, {from = Alice; to_ = Mallory});
-     KeyRequest (Mallory, Alice);
-     Send
-     {channel = {from = Alice; to_ = Bob};
-      data = UnEncrypted (Alice, Public Alice)};
-     Send
-     {channel = {from = Bob; to_ = Alice};
-      data = Encrypted ((Alice, Public Alice), (Mallory, 0))}]
-</pre></div>
-
-</div>
-
-</div>
-
-<div class="output_area">
-
-<div class="prompt"></div>
-
-
-
-<div class="output_html rendered_html output_subarea ">
-<div><div style="font-size: 1.2em; padding: 0.5em; border-top: 1px dashed #D84315; border-bottom: 1px dashed #D84315"><i class="fa fa-times-circle-o" style="margin-right: 0.5em; color: #D84315"></i><span>Refuted</span></div><div><div></div></div></div>
-
-</div>
-
-</div>
-
-<div class="output_area">
-
-<div class="prompt"></div>
-
-
-
-<div class="output_html rendered_html output_subarea ">
-<div><div class="imandra-graphviz" id="graphviz-c3a7baab-2a84-4a8e-911c-6f8d31166d98"><textarea style="display: none">digraph G {
-Alice [color=blue];
-Mallory [color=red];
-Bob [color=green];
-Bob-&gt;Alice[style=dotted];
-Bob-&gt;Mallory[style=dotted];
-edge [color=yellow];
-Mallory-&gt;Alice;
-Alice-&gt;Bob[label=&quot;Alice&quot;,color=blue];
-Bob-&gt;Alice[label=&quot;Alice&quot;,color=black];
-
-}
-</textarea><button class="btn btn-primary">Load graph</button><div class="imandra-graphviz-loading display-none">Loading..</div><div class="imandra-graphviz-target"></div><script>
-require(['nbextensions/nbimandra/graphviz'], function (graphviz) {
-  var target = '#graphviz-c3a7baab-2a84-4a8e-911c-6f8d31166d98';
-  graphviz.hydrate(target);
-});
-</script></div></div>
-
 </div>
 
 </div>
@@ -1396,13 +1213,19 @@ require(['nbextensions/nbimandra/graphviz'], function (graphviz) {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html"><p>We see that imandra, and in particular the <code>[@blast]</code> capability finds a counterexample very quickly. We can further ask whether if a particpant decodes a message then it must have been sent by the original sender of the message.</p>
+<div class="text_cell_render border-box-sizing rendered_html"><p>Now we can find the probabilities using the <code>get_probs</code> function, which takes the <code>regions</code> and the following optional arguments:</p>
+<ul>
+<li><code>n</code>: The number of samples to be generated for calculating probabilities (only applies when using <code>From_Sampler</code>, default value is <code>10000</code>)</li>
+<li><code>d</code>: The file name of the dataset of samples to be imported (only applies when using <code>From_Data</code>)</li>
+<li><code>step_function</code>: If the distribution is over the initial value of some type <code>x</code> and we have a function <code>val f: x -&gt; x</code> that we are decomposing that acts a step in some transition system for <code>x</code>, then we can apply this step function to <code>x</code> multiple times before calculating region probabilities</li>
+<li><code>num_steps</code>: The number of times to apply the step function, if given</li>
+</ul>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="try-this-container">
-  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/KeyPairSecurity.ipynb%23try-cell-13" target="_blank" rel="nofollow">
+  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Region%20Probabilities.ipynb%23try-cell-14" target="_blank" rel="nofollow">
     <div class="try-this">Try this!</div>
   </a>
 </div>
@@ -1410,17 +1233,7 @@ require(['nbextensions/nbimandra/graphviz'], function (graphviz) {
 <div class="prompt input_prompt">In&nbsp;[7]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-reasonml"><pre><span></span>/* if a message has been sent by x2 and x1 decodes that message then they must be the same message */
-[@blast]
-verify((x1, x2, x3, m, xs) =&gt; {
-  let s = List.fold_left(step, init, xs);
-  (
-    List.mem(({from: x2, to_: x3}, (x2, m)), s.msgs)
-    &amp;&amp; List.mem((x1, (x2, m)), s.decrypted)
-  )
-  ==&gt; x1 == x3;
-});
-CX.xs;
+<div class=" highlight hl-ocaml"><pre><span></span><span class="k">let</span> <span class="n">apple_probs_S</span> <span class="o">=</span> <span class="nn">Apple_S</span><span class="p">.</span><span class="n">get_probs</span> <span class="n">regions</span> <span class="bp">()</span> <span class="o">[@@</span><span class="n">program</span><span class="o">]</span>
 </pre></div>
 
 </div>
@@ -1439,94 +1252,11 @@ CX.xs;
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>- : person -&gt; person -&gt; person -&gt; int -&gt; action list -&gt; bool = &lt;fun&gt;
-module CX :
-  sig
-    val x1 : person
-    val x2 : person
-    val x3 : person
-    val m : Z.t
-    val xs : action list
-  end
-- : action list = &lt;document&gt;
+<pre>val g___1 : apple -&gt; int = &lt;fun&gt;
+- : unit = ()
+val apple_probs_S :
+  (int, float * Imandra_surface.Decompose_region.t) Hashtbl.t = &lt;abstr&gt;
 </pre>
-</div>
-
-</div>
-
-<div class="output_area">
-
-<div class="prompt"></div>
-
-
-
-<div class="output_html rendered_html output_subarea ">
-<div><pre>Counterexample (after 93 steps, 0.343s):
-  let x1 = Alice
-  let x2 = Bob
-  let x3 = Mallory
-  let m = 0
-  let xs =
-    [KeyRequest (Bob, Alice); KeyRequest (Bob, Mallory);
-     Send
-     {channel = {from = Mallory; to_ = Bob};
-      data = UnEncrypted (Alice, Public Mallory)};
-     Send
-     {channel = {from = Bob; to_ = Mallory};
-      data = Encrypted ((Alice, Public Mallory), (Bob, 0))};
-     Send
-     {channel = {from = Alice; to_ = Bob};
-      data = UnEncrypted (Mallory, Public Alice)};
-     Send
-     {channel = {from = Bob; to_ = Alice};
-      data = Encrypted ((Mallory, Public Alice), (Bob, 0))}]
-</pre></div>
-
-</div>
-
-</div>
-
-<div class="output_area">
-
-<div class="prompt"></div>
-
-
-
-<div class="output_html rendered_html output_subarea ">
-<div><div style="font-size: 1.2em; padding: 0.5em; border-top: 1px dashed #D84315; border-bottom: 1px dashed #D84315"><i class="fa fa-times-circle-o" style="margin-right: 0.5em; color: #D84315"></i><span>Refuted</span></div><div><div></div></div></div>
-
-</div>
-
-</div>
-
-<div class="output_area">
-
-<div class="prompt"></div>
-
-
-
-<div class="output_html rendered_html output_subarea ">
-<div><div class="imandra-graphviz" id="graphviz-575642d6-53a2-4f49-8a91-2c6a735f216a"><textarea style="display: none">digraph G {
-Alice [color=blue];
-Mallory [color=red];
-Bob [color=green];
-edge [color=yellow];
-Bob-&gt;Alice;
-edge [color=yellow];
-Bob-&gt;Mallory;
-Mallory-&gt;Bob[label=&quot;Mallory&quot;,color=blue];
-Bob-&gt;Mallory[label=&quot;Mallory&quot;,color=black];
-Alice-&gt;Bob[label=&quot;Alice&quot;,color=blue];
-Bob-&gt;Alice[label=&quot;Alice&quot;,color=black];
-
-}
-</textarea><button class="btn btn-primary">Load graph</button><div class="imandra-graphviz-loading display-none">Loading..</div><div class="imandra-graphviz-target"></div><script>
-require(['nbextensions/nbimandra/graphviz'], function (graphviz) {
-  var target = '#graphviz-575642d6-53a2-4f49-8a91-2c6a735f216a';
-  graphviz.hydrate(target);
-});
-</script></div></div>
-
 </div>
 
 </div>
@@ -1538,13 +1268,448 @@ require(['nbextensions/nbimandra/graphviz'], function (graphviz) {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html"><p>Here imandra very quickly finds a counter-example which corresponds to the well-known "man in the middle attack" - where Mallory listens to the conversation between Alice and Bob and can intercept and forward messages, potentially tampering with the content. Again - click on the <code>Load graph</code> button to visually interpret the counterexample found by imandra.</p>
+<div class="text_cell_render border-box-sizing rendered_html"><p>Probabilities can be printed using the <code>print_probs</code> function, which takes the hashtable of region probabilities outputted by <code>get_probs</code> and the following optional arguments:</p>
+<ul>
+<li><code>precision</code>: The number of decimal places that probabalities are displayed to (default is <code>4</code>)</li>
+<li><code>full_support</code>: Whether or not to list regions that have probability <code>0</code> or not (default is <code>false</code>)</li>
+<li><code>verbose</code>: Whether or not to print out a description of the region, including constraints and the invariant, alongside the probabilities (default is <code>false</code>)</li>
+</ul>
 </div>
 </div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="try-this-container">
+  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Region%20Probabilities.ipynb%23try-cell-16" target="_blank" rel="nofollow">
+    <div class="try-this">Try this!</div>
+  </a>
+</div>
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[8]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ocaml"><pre><span></span><span class="n">print_probs</span> <span class="n">apple_probs_S</span> <span class="o">~</span><span class="n">verbose</span><span class="o">:</span><span class="bp">true</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[8]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>Region Probabilities---[region]---
+Index: 2
+Probability: 0.0160
+Constraints:
+  [ apple.kind is Red_Delicious
+  ; apple.days_old &gt;= 5 ]
+Invariant:
+  F = apple.mass * 3/20
+ -------------
+---[region]---
+Index: 3
+Probability: 0.2191
+Constraints:
+  [ apple.kind is Braeburn
+  ; apple.days_old &lt; 5 ]
+Invariant:
+  F = apple.mass * 2/5
+ -------------
+---[region]---
+Index: 5
+Probability: 0.1344
+Constraints:
+  [ apple.kind is Red_Delicious
+  ; apple.days_old &lt; 5 ]
+Invariant:
+  F = apple.mass * 3/10
+ -------------
+---[region]---
+Index: 4
+Probability: 0.5483
+Constraints:
+  [ apple.kind is Granny_Smith
+  ; apple.days_old &lt; 5 ]
+Invariant:
+  F = apple.mass * 7/20
+ -------------
+---[region]---
+Index: 0
+Probability: 0.0224
+Constraints:
+  [ apple.kind is Braeburn
+  ; apple.days_old &gt;= 5 ]
+Invariant:
+  F = apple.mass * 1/5
+ -------------
+---[region]---
+Index: 1
+Probability: 0.0598
+Constraints:
+  [ apple.kind is Granny_Smith
+  ; apple.days_old &gt;= 5 ]
+Invariant:
+  F = apple.mass * 7/40
+ -------------
+
+- : unit = ()
+</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html"><h4 id="Datasets-Over-Regions">Datasets Over Regions<a class="anchor-link" href="#Datasets-Over-Regions">&#182;</a></h4><p>Using a dataset to estimate probabilities is very similar to the procedure above, although as a <code>CSV</code> stores strings as opposed to types we need to include a couple of functions mapping each row (a list of strings) to our data type:</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="try-this-container">
+  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Region%20Probabilities.ipynb%23try-cell-18" target="_blank" rel="nofollow">
+    <div class="try-this">Try this!</div>
+  </a>
+</div>
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[9]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ocaml"><pre><span></span><span class="k">let</span> <span class="n">to_apple</span> <span class="n">apple_string</span> <span class="o">=</span>
+  <span class="k">let</span> <span class="n">k</span> <span class="o">=</span> <span class="k">match</span> <span class="nn">CCList</span><span class="p">.</span><span class="n">nth</span> <span class="n">apple_string</span> <span class="mi">0</span><span class="n">i</span> <span class="k">with</span>
+  <span class="o">|</span> <span class="s2">&quot;bb&quot;</span> <span class="o">-&gt;</span> <span class="nc">Braeburn</span>
+  <span class="o">|</span> <span class="s2">&quot;gs&quot;</span> <span class="o">-&gt;</span> <span class="nc">Granny_Smith</span>
+  <span class="o">|</span> <span class="s2">&quot;rd&quot;</span> <span class="o">-&gt;</span> <span class="nc">Red_Delicious</span>
+  <span class="o">|</span> <span class="o">_</span> <span class="o">-&gt;</span> <span class="n">failwith</span> <span class="s2">&quot;Apple type is not bb, gs, or rd&quot;</span> <span class="k">in</span>
+  <span class="k">let</span> <span class="n">m</span> <span class="o">=</span> <span class="nn">Q</span><span class="p">.</span><span class="n">of_string</span> <span class="o">(</span><span class="nn">CCList</span><span class="p">.</span><span class="n">nth</span> <span class="n">apple_string</span> <span class="mi">1</span><span class="n">i</span><span class="o">)</span> <span class="k">in</span>
+  <span class="k">let</span> <span class="n">d_o</span> <span class="o">=</span> <span class="nn">Z</span><span class="p">.</span><span class="n">of_string</span> <span class="o">(</span><span class="nn">CCList</span><span class="p">.</span><span class="n">nth</span> <span class="n">apple_string</span> <span class="mi">2</span><span class="n">i</span><span class="o">)</span> <span class="k">in</span>
+  <span class="k">let</span> <span class="n">i_r</span> <span class="o">=</span> <span class="k">if</span> <span class="nn">CCList</span><span class="p">.</span><span class="n">nth</span> <span class="n">apple_string</span> <span class="mi">3</span><span class="n">i</span> <span class="o">=</span> <span class="s2">&quot;1&quot;</span> <span class="k">then</span> <span class="bp">true</span> <span class="k">else</span> <span class="bp">false</span> <span class="k">in</span>
+  <span class="o">{</span><span class="n">kind</span> <span class="o">=</span> <span class="n">k</span><span class="o">;</span> <span class="n">mass</span> <span class="o">=</span> <span class="n">m</span><span class="o">;</span> <span class="n">days_old</span> <span class="o">=</span> <span class="n">d_o</span><span class="o">;</span> <span class="n">is_ripe</span> <span class="o">=</span> <span class="n">i_r</span><span class="o">}</span> <span class="o">[@@</span><span class="n">program</span><span class="o">];;</span>
+
+<span class="k">let</span> <span class="n">from_apple</span> <span class="n">apple</span> <span class="o">=</span>
+  <span class="k">let</span> <span class="n">k</span> <span class="o">=</span> <span class="k">match</span> <span class="n">apple</span><span class="o">.</span><span class="n">kind</span> <span class="k">with</span>
+  <span class="o">|</span> <span class="nc">Braeburn</span> <span class="o">-&gt;</span> <span class="s2">&quot;bb&quot;</span>
+  <span class="o">|</span> <span class="nc">Granny_Smith</span> <span class="o">-&gt;</span> <span class="s2">&quot;gs&quot;</span>
+  <span class="o">|</span> <span class="nc">Red_Delicious</span> <span class="o">-&gt;</span> <span class="s2">&quot;rd&quot;</span> <span class="k">in</span>
+  <span class="k">let</span> <span class="n">m</span> <span class="o">=</span> <span class="nn">Q</span><span class="p">.</span><span class="n">to_string</span> <span class="n">apple</span><span class="o">.</span><span class="n">mass</span> <span class="k">in</span>
+  <span class="k">let</span> <span class="n">d_o</span> <span class="o">=</span> <span class="nn">Z</span><span class="p">.</span><span class="n">to_string</span> <span class="n">apple</span><span class="o">.</span><span class="n">days_old</span> <span class="k">in</span>
+  <span class="k">let</span> <span class="n">i_r</span> <span class="o">=</span> <span class="k">if</span> <span class="n">apple</span><span class="o">.</span><span class="n">is_ripe</span> <span class="k">then</span> <span class="s2">&quot;1&quot;</span> <span class="k">else</span> <span class="s2">&quot;0&quot;</span> <span class="k">in</span>
+  <span class="o">[</span><span class="n">k</span><span class="o">;</span> <span class="n">m</span><span class="o">;</span> <span class="n">d_o</span><span class="o">;</span> <span class="n">i_r</span><span class="o">]</span> <span class="o">[@@</span><span class="n">program</span><span class="o">];;</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[9]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>val to_apple : string list -&gt; apple = &lt;fun&gt;
+val from_apple : apple -&gt; string list = &lt;fun&gt;
+</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html"><p>With these two functions (and out <code>apple</code> type) we can define a model based on some data <code>apple.csv</code> and then use it just as we did with our previous model. Note that we <code>load</code> and <code>save</code> data from/into <code>CSV</code> files with data models, but as byte files with sampling models. Note that this final line is non-executable in this notebook, as we don't actually ahve access to the local <code>CSV</code> file</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="try-this-container">
+  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Region%20Probabilities.ipynb%23try-cell-20" target="_blank" rel="nofollow">
+    <div class="try-this">Try this!</div>
+  </a>
+</div>
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[10]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ocaml"><pre><span></span><span class="k">module</span> <span class="nc">Apple_D</span> <span class="o">=</span> <span class="nn">Distribution</span><span class="p">.</span><span class="nc">From_Data</span> <span class="o">(</span><span class="k">struct</span>
+                                         <span class="k">type</span> <span class="n">domain</span> <span class="o">=</span> <span class="n">apple</span>
+                                         <span class="k">let</span> <span class="n">from_domain</span> <span class="o">=</span> <span class="n">from_apple</span>
+                                         <span class="k">let</span> <span class="n">to_domain</span> <span class="o">=</span> <span class="n">to_apple</span>
+                                         <span class="k">end</span><span class="o">)</span> <span class="o">[@@</span><span class="n">program</span><span class="o">];;</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[10]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>module Apple_D :
+  sig
+    type domain = apple
+    val get_probs :
+      Imandra_surface.Decompose_region.t list -&gt;
+      ?assuming:string -&gt;
+      ?n:Z.t -&gt;
+      ?d:string -&gt;
+      ?step_function:(domain -&gt; domain) -&gt;
+      ?num_steps:Z.t -&gt;
+      unit -&gt; (int, float * Imandra_surface.Decompose_region.t) Hashtbl.t
+    val query :
+      (domain -&gt; bool) -&gt;
+      ?n:Z.t -&gt;
+      ?d:string -&gt; ?max_std_err:Q.t -&gt; ?precision:Z.t -&gt; unit -&gt; unit
+    val save : string -&gt; ?n:Z.t -&gt; ?d:domain list -&gt; unit -&gt; unit
+    val load : string -&gt; domain list
+  end
+</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<pre><code>let apple_probs_D = Apple_D.get_probs regions ~d:"apple.csv" () [@@program];;</code></pre>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html"><h3 id="Estimating-Query-Probabilities">Estimating Query Probabilities<a class="anchor-link" href="#Estimating-Query-Probabilities">&#182;</a></h3><p>The last feature we'll introduce in this notebook is the <code>query</code> function which, given a statistical model, estimates how likely it is for a particular Boolean query to hold over an instance from that distribution. <code>query</code> takes in a Boolean function over the domain (representing some condition) and the following optional arguments:</p>
+<ul>
+<li><code>n</code>: The number of samples to be generated for calculating probabilities (only applies when using <code>From_Sampler</code>, default value is <code>10000</code>)</li>
+<li><code>d</code>: The file name of the dataset of samples to be imported (only applies when using <code>From_Data</code>)</li>
+<li><code>max_std_err</code>: If estimating the probability by generating samples we can improve our estimate to within this optional bound on the standard error by taking more samples</li>
+<li><code>precision</code>: The number of decimal places that probabalities are displayed to (default is <code>4</code>)</li>
+</ul>
+<p>Let's begin by writing a simple query, then calculate its probability:</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="try-this-container">
+  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Region%20Probabilities.ipynb%23try-cell-23" target="_blank" rel="nofollow">
+    <div class="try-this">Try this!</div>
+  </a>
+</div>
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[11]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ocaml"><pre><span></span><span class="k">let</span> <span class="n">rip_off</span> <span class="o">(</span><span class="n">a</span> <span class="o">:</span> <span class="n">apple</span><span class="o">)</span> <span class="o">=</span> <span class="o">(</span><span class="n">price</span> <span class="n">a</span><span class="o">)</span> <span class="o">&gt;=.</span> <span class="mi">30</span><span class="o">.</span> <span class="o">&amp;&amp;</span> <span class="n">not</span> <span class="n">a</span><span class="o">.</span><span class="n">is_ripe</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[11]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>val rip_off : apple -&gt; bool = &lt;fun&gt;
+</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html"><h4 id="Sampling-Queries">Sampling Queries<a class="anchor-link" href="#Sampling-Queries">&#182;</a></h4></div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="try-this-container">
+  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Region%20Probabilities.ipynb%23try-cell-25" target="_blank" rel="nofollow">
+    <div class="try-this">Try this!</div>
+  </a>
+</div>
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[12]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ocaml"><pre><span></span><span class="nn">Apple_S</span><span class="p">.</span><span class="n">query</span> <span class="n">rip_off</span> <span class="o">~</span><span class="n">n</span><span class="o">:</span><span class="mi">30000</span> <span class="bp">()</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[12]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>Probability: 0.1179 ± 0.0019
+- : unit = ()
+</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html"><h4 id="Dataset-Queries">Dataset Queries<a class="anchor-link" href="#Dataset-Queries">&#182;</a></h4><p>Note once again that as we don't have access to <code>apple.csv</code> from this notebook, the following code is non-executable here:</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<pre><code>Apple_D.query rip_off ~d:"apple.csv" ()</code></pre>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html"><h3 id="Optional:-Changing-the-Pseudo-Random-Number-Generator">Optional: Changing the Pseudo-Random Number Generator<a class="anchor-link" href="#Optional:-Changing-the-Pseudo-Random-Number-Generator">&#182;</a></h3><p>Sampling in the <code>Region_probs</code> module relies on access to a Pseudo-Random Number Generator (PRNG) that can produce uniform samples from the range <code>[0,1)</code>. Presently we support three PRNGs which can be changed according to the user's preferences, although in practice this should make little difference. The different PRNGs are:</p>
+<ul>
+<li><code>RS</code>: OCaml's standard PRNG using module Random.State</li>
+<li><code>NC</code>: Cyrptographic Fortuna PRNG using module Nocrypto.Rng</li>
+<li><code>GSL</code>: GNU Scientific Library's Mersenne Twister PRNG using module Gsl.Rng</li>
+</ul>
+<p><code>NC</code> is the default option (as it produces higher quality, 'more random' output than the other two). The PRNG can be checked and changed using the <code>get_prng</code> and <code>set_prng</code> functions as follows:</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="try-this-container">
+  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Region%20Probabilities.ipynb%23try-cell-29" target="_blank" rel="nofollow">
+    <div class="try-this">Try this!</div>
+  </a>
+</div>
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[13]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ocaml"><pre><span></span><span class="n">get_prng</span> <span class="bp">()</span><span class="o">;;</span>
+<span class="n">set_prng</span> <span class="nc">GSL</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[13]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>NC: Cyrptographic Fortuna PRNG using module Nocrypto.Rng
+- : unit = ()
+- : unit = ()
+</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
 </div>
                     </div>
 
-                    </article>
+                    <div class="sidebar-right">
+                        <div class="sidebar-right__menu">
+                            
+                            <a class="sidebar-right__menu-item sidebar-right__menu-item--h1" href="#Region-Probabilities">Region Probabilities</a>
+                            
+                            <a class="sidebar-right__menu-item sidebar-right__menu-item--h3" href="#Setup">Setup</a>
+                            
+                            <a class="sidebar-right__menu-item sidebar-right__menu-item--h3" href="#Basic-Distributions">Basic Distributions</a>
+                            
+                            <a class="sidebar-right__menu-item sidebar-right__menu-item--h3" href="#Building-Statistical-Models">Building Statistical Models</a>
+                            
+                            <a class="sidebar-right__menu-item sidebar-right__menu-item--h3" href="#Estimating-Region-Probabilities">Estimating Region Probabilities</a>
+                            
+                            <a class="sidebar-right__menu-item sidebar-right__menu-item--h4" href="#Sampling-Over-Regions">Sampling Over Regions</a>
+                            
+                            <a class="sidebar-right__menu-item sidebar-right__menu-item--h4" href="#Datasets-Over-Regions">Datasets Over Regions</a>
+                            
+                            <a class="sidebar-right__menu-item sidebar-right__menu-item--h3" href="#Estimating-Query-Probabilities">Estimating Query Probabilities</a>
+                            
+                            <a class="sidebar-right__menu-item sidebar-right__menu-item--h4" href="#Sampling-Queries">Sampling Queries</a>
+                            
+                            <a class="sidebar-right__menu-item sidebar-right__menu-item--h4" href="#Dataset-Queries">Dataset Queries</a>
+                            
+                            <a class="sidebar-right__menu-item sidebar-right__menu-item--h3" href="#Optional:-Changing-the-Pseudo-Random-Number-Generator">Optional: Changing the Pseudo-Random Number Generator</a>
+                            
+                        </div>
+                    </div></article>
             </main>
             <footer class="footer">
                 <a class="copyrights"href="http://imandra.ai">&#9400; 2018 - 2019 Imandra Inc. All rights reserved.</a>

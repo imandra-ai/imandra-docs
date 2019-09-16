@@ -465,6 +465,11 @@
                                         
                                     </li>
                                     
+                                    <li class="side__nav-list-item--sub-level-2">
+                                        <a class="side__nav-link" href="/imandra-docs/notebooks/region-probabilities">Region Probabilities</a>
+                                        
+                                    </li>
+                                    
                                 </ul>
                             </li>
                             
@@ -790,6 +795,7 @@
 <li><a href="#Region-Pretty-Printer-%28Region_pp%29">Region_pp</a></li>
 <li><a href="#Region-Term-Synthesizer-%28Region_term_synth%29">Region_term_synth</a></li>
 <li><a href="#Region-Indexer-%28Region_idx%29">Region_idx</a></li>
+<li><a href="#Region-Probabilities-%28Region_probs%29">Region_probs</a></li>
 </ul>
 <div style="margin-top: 1em; background-color: #ffcc66; padding: 1em">
 Note: this is an introductory walkthrough of the capabilities of `imandra-tools`, much more than what's described in this notebook is possible with it, but we'll defer a more in-depth explanation of each module in future notebooks.
@@ -1785,7 +1791,7 @@ val rs : Imandra_interactive.Decompose.t list =
 
 
 <div class="output_html rendered_html output_subarea ">
-<div class="imandra-alternatives" id="alt-f4171f74-c336-473d-b4ee-cf10e01a336b"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-09338044-5671-496b-94a6-9de72ba96a7f" class="decompose"><textarea class="display-none">{
+<div class="imandra-alternatives" id="alt-15f854f2-7313-4ac8-81d1-38dcfb9a8c63"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-d52199a8-6ba0-4e30-8776-de778079d4f9" class="decompose"><textarea class="display-none">{
   &quot;regions&quot;: [
     {
       &quot;constraints&quot;: [ &quot;y = (Set.union x y)&quot; ],
@@ -1811,13 +1817,13 @@ val rs : Imandra_interactive.Decompose.t list =
 }</textarea><div class="decompose-foamtree"></div><div class="decompose-details"><div class="decompose-details-header">Regions details</div><div class="decompose-details-no-selection"><p>No group selected.</p><ul><li>Concrete regions are numbered</li><li>Unnumbered regions are groups whose children share a particular constraint</li><li>Click on a region to view its details</li><li>Double click on a region to zoom in on it</li><li>Shift+double click to zoom out</li><li>Hit escape to reset back to the top</li></ul></div><div class="decompose-details-selection hidden"><div><span class="decompose-details-label">Direct sub-regions: </span><span class="decompose-details-direct-sub-regions-text">-</span></div><div><span class="decompose-details-label">Contained regions: </span><span class="decompose-details-contained-regions-text">-</span></div><div class="decompose-details-section-header">Constraints</div><div class="decompose-details-constraints"><pre class="decompose-details-constraint">&lt;constraint&gt;</pre></div><div class="decompose-details-invariant"><div class="decompose-details-section-header">Invariant</div><pre class="decompose-details-invariant-text">&lt;invariant&gt;</pre></div></div></div><script>
 (function () {
   require(['nbextensions/nbimandra/regions'], function (regions) {
-    var target = '#decompose-09338044-5671-496b-94a6-9de72ba96a7f';
+    var target = '#decompose-d52199a8-6ba0-4e30-8776-de778079d4f9';
     regions.hydrate(target);
   });
 })();
-</script></div></div><div class="tab-pane"><div><div class="imandra-table" id="table-f29825c0-7e43-4184-b06e-f7820739be3b"><table><thead><tr><th>Constraints</th><th>Invariant</th></tr></thead><tr><td><ul><li><pre>not (y = Set.union x y)</pre></li></ul></td><td><pre>Map.add' (Map.const false) z true</pre></td></tr><tr><td><ul><li><pre>y = Set.union x y</pre></li></ul></td><td><pre>Map.add' x z true</pre></td></tr></table></div></div></div></div><script>
+</script></div></div><div class="tab-pane"><div><div class="imandra-table" id="table-08092ccb-1dcc-4762-a0c8-451eac3a10fc"><table><thead><tr><th>Constraints</th><th>Invariant</th></tr></thead><tr><td><ul><li><pre>not (y = Set.union x y)</pre></li></ul></td><td><pre>Map.add' (Map.const false) z true</pre></td></tr><tr><td><ul><li><pre>y = Set.union x y</pre></li></ul></td><td><pre>Map.add' x z true</pre></td></tr></table></div></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-f4171f74-c336-473d-b4ee-cf10e01a336b';
+  var target = '#alt-15f854f2-7313-4ac8-81d1-38dcfb9a8c63';
   alternatives.hydrate(target);
 });
 </script></div>
@@ -2101,7 +2107,7 @@ val print :
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html"><p>Great! Exactly what we wanted to be printed.</p>
 <p><code>Region_pp</code> provides more extension hooks and utilities than just the <code>PP</code> functor and <code>~refine</code>, but we'll go over that in more detail in a dedicated notebook.</p>
-<p>Let's explore the last <code>imandra-tools</code> module</p>
+<p>Let's explore the next <code>imandra-tools</code> module</p>
 <h1 id="Region-Term-Synthesizer-(Region_term_synth)">Region Term Synthesizer (Region_term_synth)<a class="anchor-link" href="#Region-Term-Synthesizer-(Region_term_synth)">&#182;</a></h1><p><code>Imandra</code>'s ability to both reify failed proofs into counter-examples and sample values from regions provides a lot of power. <code>Region_term_synth</code> extends this power, allowing <code>Imandra</code> to synthesize any region's <code>Term</code> expression as code.</p>
 <p>This, combined with <code>Imandra</code>'s decomposition facilities, allow us to generate powerful and complete regression test suites, analyse existing test suites to detect region coverage, and much more.</p>
 <p>Let's see a quick example of how this works in practice:</p>
@@ -2339,6 +2345,444 @@ Invariant:
 </div>
 
 </div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html"><h1 id="Region-Probabilities-(Region_probs)">Region Probabilities (Region_probs)<a class="anchor-link" href="#Region-Probabilities-(Region_probs)">&#182;</a></h1><p>What if we want to not just identify the distinct regions of a program's behaviour, but how likely those behaviours are to occur? The <code>Region_probs</code> module allows us to do just that. In particular, users can easily create custom hierarchical statistical models defining joint distributions over inputs to their programs or functions, then sample from these models to get a probability distribution over regions, or query them with Boolean conditions. Alternatively, a dataset in the form of a <code>CSV</code> file can be imported and used as a set of samples when the underlying distribution is unknown. This introduction contains a short example, but for a more detailed tutorial of how to use the module, please see the dedicated <a href="/imandra-docs/notebooks/region-probabilities/">Region Probabilities notebook</a>.</p>
+<p>First we'll open the <code>Region_probs</code> module, then define some custom types and a function that we'll be decomposing:</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="try-this-container">
+  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Imandra-tools%20Introduction.ipynb%23try-cell-32" target="_blank" rel="nofollow">
+    <div class="try-this">Try this!</div>
+  </a>
+</div>
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[16]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ocaml"><pre><span></span><span class="o">#</span><span class="n">logic</span><span class="o">;;</span>
+<span class="k">open</span> <span class="nc">Region_probs</span><span class="o">;;</span>
+
+<span class="k">type</span> <span class="n">colour</span> <span class="o">=</span> <span class="nc">Red</span> <span class="o">|</span> <span class="nc">Green</span> <span class="o">|</span> <span class="nc">Blue</span><span class="o">;;</span>
+<span class="k">type</span> <span class="n">obj</span> <span class="o">=</span> <span class="o">{</span><span class="n">colour</span> <span class="o">:</span> <span class="n">colour</span><span class="o">;</span> <span class="n">broken</span> <span class="o">:</span> <span class="kt">bool</span><span class="o">};;</span>
+<span class="k">type</span> <span class="n">dom</span> <span class="o">=</span> <span class="o">(</span><span class="n">obj</span> <span class="o">*</span> <span class="nn">Q</span><span class="p">.</span><span class="n">t</span> <span class="o">*</span> <span class="nn">Z</span><span class="p">.</span><span class="n">t</span><span class="o">);;</span>
+
+<span class="k">let</span> <span class="n">f&#39;</span> <span class="o">(</span><span class="n">obj</span><span class="o">,</span> <span class="n">temp</span><span class="o">,</span> <span class="n">num</span><span class="o">)</span> <span class="o">=</span>
+  <span class="k">let</span> <span class="n">a</span> <span class="o">=</span>
+    <span class="k">if</span> <span class="n">obj</span><span class="o">.</span><span class="n">colour</span> <span class="o">=</span> <span class="nc">Red</span> <span class="k">then</span>
+      <span class="k">if</span> <span class="n">obj</span><span class="o">.</span><span class="n">broken</span> <span class="k">then</span> <span class="n">num</span> <span class="k">else</span> <span class="mi">7</span>
+    <span class="k">else</span>
+      <span class="n">num</span> <span class="o">*</span> <span class="mi">2</span> <span class="k">in</span>
+  <span class="k">let</span> <span class="n">b</span> <span class="o">=</span>
+    <span class="k">if</span> <span class="n">temp</span> <span class="o">&gt;.</span> <span class="mi">18</span><span class="o">.</span><span class="mi">5</span> <span class="o">&amp;&amp;</span> <span class="n">obj</span><span class="o">.</span><span class="n">colour</span> <span class="o">=</span> <span class="nc">Blue</span> <span class="k">then</span>
+      <span class="n">temp</span> <span class="o">+.</span> <span class="mi">4</span><span class="o">.</span><span class="mi">3</span>
+    <span class="k">else</span> <span class="k">if</span> <span class="n">obj</span><span class="o">.</span><span class="n">colour</span> <span class="o">=</span> <span class="nc">Green</span> <span class="k">then</span>
+      <span class="n">temp</span> <span class="o">-.</span> <span class="mi">7</span><span class="o">.</span><span class="mi">8</span>
+    <span class="k">else</span>
+      <span class="mi">14</span><span class="o">.</span><span class="mi">1</span> <span class="k">in</span>
+  <span class="o">(</span><span class="n">a</span><span class="o">,</span> <span class="n">b</span><span class="o">);;</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[16]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>type colour = Red | Green | Blue
+type obj = { colour : colour; broken : bool; }
+type dom = obj * Q.t * Z.t
+val f&#39; : obj * real * Z.t -&gt; Z.t * real = &lt;fun&gt;
+</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html"><p>Now we can define a joint distribution over inputs to <code>f</code> using some built-in probability distributions and a sequential sampling procedure. We can call this function with the unit argument <code>()</code> to generate samples:</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="try-this-container">
+  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Imandra-tools%20Introduction.ipynb%23try-cell-34" target="_blank" rel="nofollow">
+    <div class="try-this">Try this!</div>
+  </a>
+</div>
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[17]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ocaml"><pre><span></span><span class="k">let</span> <span class="n">distribution</span> <span class="bp">()</span> <span class="o">=</span>
+  <span class="k">let</span> <span class="n">c</span> <span class="o">=</span> <span class="n">categorical</span> <span class="o">~</span><span class="n">classes</span><span class="o">:[</span><span class="nc">Red</span><span class="o">;</span> <span class="nc">Green</span><span class="o">;</span> <span class="nc">Blue</span><span class="o">]</span> <span class="o">~</span><span class="n">probs</span><span class="o">:[</span><span class="mi">0</span><span class="o">.</span><span class="mi">5</span><span class="o">;</span> <span class="mi">0</span><span class="o">.</span><span class="mi">2</span><span class="o">;</span> <span class="mi">0</span><span class="o">.</span><span class="mi">3</span><span class="o">]</span> <span class="bp">()</span> <span class="k">in</span>
+  <span class="k">let</span> <span class="n">b</span> <span class="o">=</span> <span class="n">bernoulli</span> <span class="o">~</span><span class="n">p</span><span class="o">:</span><span class="mi">0</span><span class="o">.</span><span class="mi">4</span> <span class="bp">()</span> <span class="k">in</span>
+  <span class="k">let</span> <span class="n">mu</span> <span class="o">=</span> <span class="k">if</span> <span class="n">b</span> <span class="k">then</span> <span class="mi">20</span><span class="o">.</span> <span class="k">else</span> <span class="mi">10</span><span class="o">.</span> <span class="k">in</span>
+  <span class="k">let</span> <span class="n">temp</span> <span class="o">=</span> <span class="n">gaussian</span> <span class="o">~</span><span class="n">mu</span> <span class="o">~</span><span class="n">sigma</span><span class="o">:</span><span class="mi">5</span><span class="o">.</span> <span class="bp">()</span> <span class="k">in</span>
+  <span class="k">let</span> <span class="n">num</span> <span class="o">=</span>
+    <span class="k">if</span> <span class="n">c</span> <span class="o">=</span> <span class="nc">Green</span> <span class="k">then</span>
+      <span class="n">poisson</span> <span class="o">~</span><span class="n">lambda</span><span class="o">:</span><span class="mi">6</span><span class="o">.</span><span class="mi">5</span> <span class="o">~</span><span class="n">constraints</span><span class="o">:[(</span><span class="mi">7</span><span class="o">,</span> <span class="mi">10</span><span class="o">)]</span> <span class="bp">()</span>
+    <span class="k">else</span>
+      <span class="n">poisson</span> <span class="o">~</span><span class="n">lambda</span><span class="o">:</span><span class="mi">6</span><span class="o">.</span><span class="mi">5</span> <span class="bp">()</span> <span class="k">in</span>
+  <span class="o">({</span><span class="n">colour</span> <span class="o">=</span> <span class="n">c</span><span class="o">;</span> <span class="n">broken</span> <span class="o">=</span> <span class="n">b</span><span class="o">},</span> <span class="n">temp</span><span class="o">,</span> <span class="n">num</span><span class="o">)</span> <span class="o">[@@</span><span class="n">program</span><span class="o">];;</span>
+
+<span class="n">distribution</span> <span class="bp">()</span><span class="o">;;</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[17]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>val distribution : unit -&gt; obj * Q.t * Z.t = &lt;fun&gt;
+- : obj * Q.t * Z.t =
+({colour = Green; broken = false}, 4247389058177329/562949953421312, 9)
+</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html"><p>Now we have all these components we can find the regions of <code>f</code>, create a model from our <code>distribution</code> function, then estimate and display region probabilities:</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="try-this-container">
+  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Imandra-tools%20Introduction.ipynb%23try-cell-36" target="_blank" rel="nofollow">
+    <div class="try-this">Try this!</div>
+  </a>
+</div>
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[18]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ocaml"><pre><span></span><span class="k">let</span> <span class="n">regions</span> <span class="o">=</span> <span class="nn">Decompose</span><span class="p">.</span><span class="n">top</span> <span class="s2">&quot;f&#39;&quot;</span> <span class="o">[@@</span><span class="n">program</span><span class="o">];;</span>
+
+<span class="k">module</span> <span class="nc">Example</span> <span class="o">=</span> <span class="nn">Distribution</span><span class="p">.</span><span class="nc">From_Sampler</span> <span class="o">(</span><span class="k">struct</span> <span class="k">type</span> <span class="n">domain</span> <span class="o">=</span> <span class="n">dom</span> <span class="k">let</span> <span class="n">dist</span> <span class="o">=</span> <span class="n">distribution</span> <span class="k">end</span><span class="o">)</span> <span class="o">[@@</span><span class="n">program</span><span class="o">];;</span>
+
+<span class="k">let</span> <span class="n">probs</span> <span class="o">=</span> <span class="nn">Example</span><span class="p">.</span><span class="n">get_probs</span> <span class="n">regions</span> <span class="bp">()</span> <span class="o">[@@</span><span class="n">program</span><span class="o">];;</span>
+
+<span class="n">print_probs</span> <span class="n">probs</span><span class="o">;;</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[18]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>val regions : Imandra_interactive.Decompose.t list =
+  [---[region]---
+   Constraints:
+     [ _x[0].colour is Red
+     ; _x[0].broken
+     ; _x[1] &gt; 37/2 ]
+   Invariant:
+     F = (_x[2], 141/10)
+    -------------;
+   ---[region]---
+   Constraints:
+     [ _x[0].colour is Red
+     ; _x[0].broken
+     ; _x[1] &lt;= 37/2 ]
+   Invariant:
+     F = (_x[2], 141/10)
+    -------------;
+   ---[region]---
+   Constraints:
+     [ _x[0].colour is Red
+     ; not _x[0].broken
+     ; _x[1] &gt; 37/2 ]
+   Invariant:
+     F = (7, 141/10)
+    -------------;
+   ---[region]---
+   Constraints:
+     [ _x[0].colour is Red
+     ; not _x[0].broken
+     ; _x[1] &lt;= 37/2 ]
+   Invariant:
+     F = (7, 141/10)
+    -------------;
+   ---[region]---
+   Constraints:
+     [ _x[0].colour is Blue
+     ; _x[1] &gt; 37/2 ]
+   Invariant:
+     F = ((_x[2] * 2), (_x[1] + 43/10))
+    -------------;
+   ---[region]---
+   Constraints:
+     [ _x[0].colour is Green
+     ; _x[1] &gt; 37/2 ]
+   Invariant:
+     F = ((_x[2] * 2), (_x[1] - 39/5))
+    -------------;
+   ---[region]---
+   Constraints:
+     [ _x[0].colour is Green
+     ; _x[1] &lt;= 37/2 ]
+   Invariant:
+     F = ((_x[2] * 2), (_x[1] - 39/5))
+    -------------;
+   ---[region]---
+   Constraints:
+     [ _x[0].colour is Blue
+     ; _x[1] &lt;= 37/2 ]
+   Invariant:
+     F = ((_x[2] * 2), 141/10)
+    -------------]
+module Example :
+  sig
+    type domain = dom
+    val get_probs :
+      Imandra_surface.Decompose_region.t list -&gt;
+      ?assuming:string -&gt;
+      ?n:Z.t -&gt;
+      ?d:string -&gt;
+      ?step_function:(domain -&gt; domain) -&gt;
+      ?num_steps:Z.t -&gt;
+      unit -&gt; (int, float * Imandra_surface.Decompose_region.t) Hashtbl.t
+    val query :
+      (domain -&gt; bool) -&gt;
+      ?n:Z.t -&gt;
+      ?d:string -&gt; ?max_std_err:Q.t -&gt; ?precision:Z.t -&gt; unit -&gt; unit
+    val save : string -&gt; ?n:Z.t -&gt; ?d:domain list -&gt; unit -&gt; unit
+    val load : string -&gt; domain list
+  end
+val g___292 : obj * real * &#39;a -&gt; int = &lt;fun&gt;
+- : unit = ()
+val probs : (int, float * Imandra_surface.Decompose_region.t) Hashtbl.t =
+  &lt;abstr&gt;
+Region   Probability
+6        0.1407
+2        0.0132
+7        0.2155
+3        0.2798
+5        0.0578
+4        0.0876
+0        0.1253
+1        0.0801
+
+- : unit = ()
+</pre>
+</div>
+
+</div>
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+
+<div class="output_html rendered_html output_subarea ">
+<div class="imandra-alternatives" id="alt-b676c48d-d03f-4341-9ac7-798a085d58a0"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-6fadb732-f1ac-4691-89d3-99614322c156" class="decompose"><textarea class="display-none">{
+  &quot;regions&quot;: [
+    {
+      &quot;constraints&quot;: [ &quot;_x[1] &gt; 37/2&quot; ],
+      &quot;region&quot;: null,
+      &quot;groups&quot;: [
+        {
+          &quot;constraints&quot;: [ &quot;_x[1] &gt; 37/2&quot;, &quot;_x[0].colour is Green&quot; ],
+          &quot;region&quot;: {
+            &quot;constraints&quot;: [ &quot;_x[0].colour is Green&quot;, &quot;_x[1] &gt; 37/2&quot; ],
+            &quot;invariant&quot;: &quot;F = ((_x[2] * 2), (_x[1] - 39/5))&quot;
+          },
+          &quot;groups&quot;: [],
+          &quot;label&quot;: &quot;3.2&quot;,
+          &quot;weight&quot;: 1
+        },
+        {
+          &quot;constraints&quot;: [ &quot;_x[1] &gt; 37/2&quot;, &quot;_x[0].colour is Blue&quot; ],
+          &quot;region&quot;: {
+            &quot;constraints&quot;: [ &quot;_x[0].colour is Blue&quot;, &quot;_x[1] &gt; 37/2&quot; ],
+            &quot;invariant&quot;: &quot;F = ((_x[2] * 2), (_x[1] + 43/10))&quot;
+          },
+          &quot;groups&quot;: [],
+          &quot;label&quot;: &quot;3.1&quot;,
+          &quot;weight&quot;: 1
+        }
+      ],
+      &quot;label&quot;: &quot;&quot;,
+      &quot;weight&quot;: 2
+    },
+    {
+      &quot;constraints&quot;: [ &quot;_x[1] &lt;= 37/2&quot; ],
+      &quot;region&quot;: null,
+      &quot;groups&quot;: [
+        {
+          &quot;constraints&quot;: [ &quot;_x[1] &lt;= 37/2&quot;, &quot;_x[0].colour is Green&quot; ],
+          &quot;region&quot;: {
+            &quot;constraints&quot;: [ &quot;_x[0].colour is Green&quot;, &quot;_x[1] &lt;= 37/2&quot; ],
+            &quot;invariant&quot;: &quot;F = ((_x[2] * 2), (_x[1] - 39/5))&quot;
+          },
+          &quot;groups&quot;: [],
+          &quot;label&quot;: &quot;2.2&quot;,
+          &quot;weight&quot;: 1
+        },
+        {
+          &quot;constraints&quot;: [ &quot;_x[1] &lt;= 37/2&quot;, &quot;_x[0].colour is Blue&quot; ],
+          &quot;region&quot;: {
+            &quot;constraints&quot;: [ &quot;_x[0].colour is Blue&quot;, &quot;_x[1] &lt;= 37/2&quot; ],
+            &quot;invariant&quot;: &quot;F = ((_x[2] * 2), 141/10)&quot;
+          },
+          &quot;groups&quot;: [],
+          &quot;label&quot;: &quot;2.1&quot;,
+          &quot;weight&quot;: 1
+        }
+      ],
+      &quot;label&quot;: &quot;&quot;,
+      &quot;weight&quot;: 2
+    },
+    {
+      &quot;constraints&quot;: [ &quot;_x[0].colour is Red&quot; ],
+      &quot;region&quot;: null,
+      &quot;groups&quot;: [
+        {
+          &quot;constraints&quot;: [
+            &quot;_x[0].colour is Red&quot;, &quot;_x[1] &gt; 37/2&quot;, &quot;not _x[0].broken&quot;
+          ],
+          &quot;region&quot;: {
+            &quot;constraints&quot;: [
+              &quot;_x[0].colour is Red&quot;, &quot;not _x[0].broken&quot;, &quot;_x[1] &gt; 37/2&quot;
+            ],
+            &quot;invariant&quot;: &quot;F = (7, 141/10)&quot;
+          },
+          &quot;groups&quot;: [],
+          &quot;label&quot;: &quot;1.3.1&quot;,
+          &quot;weight&quot;: 1
+        },
+        {
+          &quot;constraints&quot;: [
+            &quot;_x[0].colour is Red&quot;, &quot;_x[1] &lt;= 37/2&quot;, &quot;not _x[0].broken&quot;
+          ],
+          &quot;region&quot;: {
+            &quot;constraints&quot;: [
+              &quot;_x[0].colour is Red&quot;, &quot;not _x[0].broken&quot;, &quot;_x[1] &lt;= 37/2&quot;
+            ],
+            &quot;invariant&quot;: &quot;F = (7, 141/10)&quot;
+          },
+          &quot;groups&quot;: [],
+          &quot;label&quot;: &quot;1.2.1&quot;,
+          &quot;weight&quot;: 1
+        },
+        {
+          &quot;constraints&quot;: [ &quot;_x[0].colour is Red&quot;, &quot;_x[0].broken&quot; ],
+          &quot;region&quot;: null,
+          &quot;groups&quot;: [
+            {
+              &quot;constraints&quot;: [
+                &quot;_x[0].colour is Red&quot;, &quot;_x[0].broken&quot;, &quot;_x[1] &gt; 37/2&quot;
+              ],
+              &quot;region&quot;: {
+                &quot;constraints&quot;: [
+                  &quot;_x[0].colour is Red&quot;, &quot;_x[0].broken&quot;, &quot;_x[1] &gt; 37/2&quot;
+                ],
+                &quot;invariant&quot;: &quot;F = (_x[2], 141/10)&quot;
+              },
+              &quot;groups&quot;: [],
+              &quot;label&quot;: &quot;1.1.2&quot;,
+              &quot;weight&quot;: 1
+            },
+            {
+              &quot;constraints&quot;: [
+                &quot;_x[0].colour is Red&quot;, &quot;_x[0].broken&quot;, &quot;_x[1] &lt;= 37/2&quot;
+              ],
+              &quot;region&quot;: {
+                &quot;constraints&quot;: [
+                  &quot;_x[0].colour is Red&quot;, &quot;_x[0].broken&quot;, &quot;_x[1] &lt;= 37/2&quot;
+                ],
+                &quot;invariant&quot;: &quot;F = (_x[2], 141/10)&quot;
+              },
+              &quot;groups&quot;: [],
+              &quot;label&quot;: &quot;1.1.1&quot;,
+              &quot;weight&quot;: 1
+            }
+          ],
+          &quot;label&quot;: &quot;&quot;,
+          &quot;weight&quot;: 2
+        }
+      ],
+      &quot;label&quot;: &quot;&quot;,
+      &quot;weight&quot;: 4
+    }
+  ]
+}</textarea><div class="decompose-foamtree"></div><div class="decompose-details"><div class="decompose-details-header">Regions details</div><div class="decompose-details-no-selection"><p>No group selected.</p><ul><li>Concrete regions are numbered</li><li>Unnumbered regions are groups whose children share a particular constraint</li><li>Click on a region to view its details</li><li>Double click on a region to zoom in on it</li><li>Shift+double click to zoom out</li><li>Hit escape to reset back to the top</li></ul></div><div class="decompose-details-selection hidden"><div><span class="decompose-details-label">Direct sub-regions: </span><span class="decompose-details-direct-sub-regions-text">-</span></div><div><span class="decompose-details-label">Contained regions: </span><span class="decompose-details-contained-regions-text">-</span></div><div class="decompose-details-section-header">Constraints</div><div class="decompose-details-constraints"><pre class="decompose-details-constraint">&lt;constraint&gt;</pre></div><div class="decompose-details-invariant"><div class="decompose-details-section-header">Invariant</div><pre class="decompose-details-invariant-text">&lt;invariant&gt;</pre></div></div></div><script>
+(function () {
+  require(['nbextensions/nbimandra/regions'], function (regions) {
+    var target = '#decompose-6fadb732-f1ac-4691-89d3-99614322c156';
+    regions.hydrate(target);
+  });
+})();
+</script></div></div><div class="tab-pane"><div><div class="imandra-table" id="table-895b65cd-68c0-4e8e-bd7a-1936aedc3c87"><table><thead><tr><th>Constraints</th><th>Invariant</th></tr></thead><tr><td><ul><li><pre>not (_x.0.colour = Red)</pre></li><li><pre>_x.1 &lt;=. 37/2</pre></li><li><pre>not (_x.0.colour = Green)</pre></li></ul></td><td><pre>(2 * _x.2, 141/10)</pre></td></tr><tr><td><ul><li><pre>not (_x.0.colour = Red)</pre></li><li><pre>_x.1 &lt;=. 37/2</pre></li><li><pre>_x.0.colour = Green</pre></li></ul></td><td><pre>(2 * _x.2, -39/5 +. _x.1)</pre></td></tr><tr><td><ul><li><pre>not (_x.0.colour = Red)</pre></li><li><pre>not (_x.1 &lt;=. 37/2)</pre></li><li><pre>not (_x.0.colour = Blue)</pre></li><li><pre>_x.0.colour = Green</pre></li></ul></td><td><pre>(2 * _x.2, -39/5 +. _x.1)</pre></td></tr><tr><td><ul><li><pre>not (_x.0.colour = Red)</pre></li><li><pre>not (_x.1 &lt;=. 37/2)</pre></li><li><pre>_x.0.colour = Blue</pre></li></ul></td><td><pre>(2 * _x.2, 43/10 +. _x.1)</pre></td></tr><tr><td><ul><li><pre>_x.0.colour = Red</pre></li><li><pre>not _x.0.broken</pre></li><li><pre>_x.1 &lt;=. 37/2</pre></li><li><pre>not (_x.0.colour = Green)</pre></li></ul></td><td><pre>(7, 141/10)</pre></td></tr><tr><td><ul><li><pre>_x.0.colour = Red</pre></li><li><pre>not _x.0.broken</pre></li><li><pre>not (_x.1 &lt;=. 37/2)</pre></li><li><pre>not (_x.0.colour = Blue)</pre></li><li><pre>not (_x.0.colour = Green)</pre></li></ul></td><td><pre>(7, 141/10)</pre></td></tr><tr><td><ul><li><pre>_x.0.colour = Red</pre></li><li><pre>_x.0.broken</pre></li><li><pre>_x.1 &lt;=. 37/2</pre></li><li><pre>not (_x.0.colour = Green)</pre></li></ul></td><td><pre>(_x.2, 141/10)</pre></td></tr><tr><td><ul><li><pre>_x.0.colour = Red</pre></li><li><pre>_x.0.broken</pre></li><li><pre>not (_x.1 &lt;=. 37/2)</pre></li><li><pre>not (_x.0.colour = Blue)</pre></li><li><pre>not (_x.0.colour = Green)</pre></li></ul></td><td><pre>(_x.2, 141/10)</pre></td></tr></table></div></div></div></div><script>
+require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
+  var target = '#alt-b676c48d-d03f-4341-9ac7-798a085d58a0';
+  alternatives.hydrate(target);
+});
+</script></div>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html"><p>To see more of what can be done with the <code>Region_probs</code> module, including forming models based on existing datasets and querying models using Boolean conditions, along with additional options, please see the <a href="/imandra-docs/notebooks/region-probabilities/">Region Probabilities notebook</a>.</p>
+</div>
+</div>
+</div>
                     </div>
 
                     <div class="sidebar-right">
@@ -2353,6 +2797,8 @@ Invariant:
                             <a class="sidebar-right__menu-item sidebar-right__menu-item--h1" href="#Region-Term-Synthesizer-(Region_term_synth)">Region Term Synthesizer (Region_term_synth)</a>
                             
                             <a class="sidebar-right__menu-item sidebar-right__menu-item--h1" href="#Region-Indexer-(Region_idx)">Region Indexer (Region_idx)</a>
+                            
+                            <a class="sidebar-right__menu-item sidebar-right__menu-item--h1" href="#Region-Probabilities-(Region_probs)">Region Probabilities (Region_probs)</a>
                             
                         </div>
                     </div></article>
