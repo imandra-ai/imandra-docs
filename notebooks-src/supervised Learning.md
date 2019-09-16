@@ -34,7 +34,7 @@ In a classification task we want to learn to predict the label of a datapoint ba
       f) Compactness
       g) Concavity
       h) Concave points
-      i) Symmetry 
+      i) Symmetry
       j) Fractal dimension
 ```
 
@@ -149,7 +149,7 @@ let f_5 = (input.concavity_worst      - 0.27219)  / 0.20862 in
 let f_6 = (input.concave_points_worst - 0.11461)  / 0.06573 in
 (f_0, f_1, f_2, f_3, f_4, f_5, f_6)
 
-let process_rf_output c = 
+let process_rf_output c =
 let (a, b) = c in
 if a >. b then "benign" else "malignant"
 
@@ -192,8 +192,8 @@ let is_valid_rf input =
   0.0 <=. input.radius_se && input.radius_se <=. 3.5 &&
   0.0 <=. input.compactness_worst && input.compactness_worst <=. 1.2 &&
   0.0 <=. input.concavity_worst && input.concavity_worst <=. 1.5 &&
-  0.0 <=. input.concave_points_worst && input.concave_points_worst <=. 0.35 
-    
+  0.0 <=. input.concave_points_worst && input.concave_points_worst <=. 0.35
+
 instance (fun x -> rf_model x = "benign" && is_valid_rf x)
 ```
 
@@ -206,7 +206,7 @@ This looks much better. Now let's move on to reasoning about our model in more i
 ```{.imandra .input}
 verify (fun x -> is_valid_rf x
         && x.concavity_mean >=. 0.4
-        && x.concavity_worst >=. 1.0 
+        && x.concavity_worst >=. 1.0
         && x.concave_points_worst >=. 0.25
         ==> rf_model x = "malignant")
 ```
@@ -224,7 +224,7 @@ Decompose.top "tree_0"
 We can also use side conditions on the region decomposition of our model by using the `~assuming:` flag. One application here is in simulating partial observability. Perhaps we know most of the measurements for a particular set of cells and we'd like to see how the classification of the input depends on the remaining features. Let's imagine that we only have the concavity measurements for a particular patient's cell sample and we'd like to see how the output of our model depends on the values of the other features.
 
 ```{.imandra .input}
-let partial_observation x = 
+let partial_observation x =
   is_valid_rf x &&
   x.concavity_mean = 0.04295 &&
   x.concavity_worst = 0.26000 &&
@@ -273,7 +273,7 @@ let layer_1 (x_0, x_1, x_2, x_3, x_4, x_5) = let open Real in
   let y_0 = linear @@ (0.28248)*x_0 + (-0.25208)*x_1 + (-0.50075)*x_2 + (-0.07092)*x_3 + (-0.43189)*x_4 + (0.60065)*x_5 + 0.47136 in
   (y_0)
 
-let nn (x_0, x_1, x_2, x_3, x_4, x_5) = let open Real in 
+let nn (x_0, x_1, x_2, x_3, x_4, x_5) = let open Real in
   (x_0, x_1, x_2, x_3, x_4, x_5) |> layer_0 |> layer_1
 ```
 
@@ -283,7 +283,7 @@ Given the description of the dataset above we can again create some custom input
 type month = Jan | Feb | Mar | Apr | May | Jun| Jul | Aug | Sep | Oct | Nov | Dec
 
 type day = Mon | Tue | Wed | Thu | Fri | Sat | Sun
- 
+
 type nn_input = {
   month : month;
   day : day;
@@ -299,25 +299,25 @@ As before, because we pre-processed our data, we'll add in a function applying t
 ```{.imandra .input}
 let month_2_num = let open Real in function
   | Jan -> 0.134
-  | Feb -> 0.500 
-  | Mar -> 1.000 
-  | Apr -> 1.500 
-  | May -> 1.866 
-  | Jun -> 2.000 
-  | Jul -> 1.866 
-  | Aug -> 1.500 
-  | Sep -> 1.000 
-  | Oct -> 0.500 
-  | Nov -> 0.133 
+  | Feb -> 0.500
+  | Mar -> 1.000
+  | Apr -> 1.500
+  | May -> 1.866
+  | Jun -> 2.000
+  | Jul -> 1.866
+  | Aug -> 1.500
+  | Sep -> 1.000
+  | Oct -> 0.500
+  | Nov -> 0.133
   | Dec -> 0.000
 
 let day_2_num = let open Real in function
-  | Mon -> 0.377 
-  | Tue -> 1.223 
-  | Wed -> 1.901 
-  | Thu -> 1.901 
-  | Fri -> 1.223 
-  | Sat -> 0.377 
+  | Mon -> 0.377
+  | Tue -> 1.223
+  | Wed -> 1.901
+  | Thu -> 1.901
+  | Fri -> 1.223
+  | Sat -> 0.377
   | Sun -> 0.000
 
 let process_nn_input input = let open Real in
@@ -333,10 +333,10 @@ let process_nn_input input = let open Real in
 
 let process_nn_output y_0 = let open Real in
   let y = 4.44323 * y_0 in
-  if y <= 1.0 then (y - 0.00000) * 1.71828 else 
-  if y <= 2.0 then (y - 0.63212) * 4.67077 else 
-  if y <= 3.0 then (y - 1.49679) * 12.69648 else 
-  if y <= 4.0 then (y - 2.44700) * 34.51261 else 
+  if y <= 1.0 then (y - 0.00000) * 1.71828 else
+  if y <= 2.0 then (y - 0.63212) * 4.67077 else
+  if y <= 3.0 then (y - 1.49679) * 12.69648 else
+  if y <= 4.0 then (y - 2.44700) * 34.51261 else
   (y - 3.42868) * 93.81501
 
 let nn_model input = input |> process_nn_input |> nn |> process_nn_output
@@ -353,7 +353,7 @@ let x = {
   rh = 31.0;
   rain = 0.0
 }
-  
+
 let y = nn_model x
 ```
 
@@ -375,7 +375,7 @@ let is_valid_nn input =
   0.0 <=. input.temp && input.temp <=. 40.0 &&
   0.0 <=. input.rh && input.rh <=. 100.0 &&
   0.0 <=. input.rain && input.rain <=. 15.0
-    
+
 instance (fun x -> nn_model x >. 20.0 && x.temp = 20.0 && x.month = May && is_valid_nn x)
 ```
 
@@ -394,15 +394,15 @@ verify (fun x -> is_valid_nn x ==> nn_model x >=. 0.0)
 Finally, we'll try something slightly more ambitious and test a hypothesis. All other things remaining equal, we would expect that the higher the temperature, the larger the area of forest that would be burned. Due to the imperfections in our model (because of limited data, stochasticity in training, the complicated patterns present in natural physical phenomena, and so on) this assertion is in fact easily falsifiable by Imandra.
 
 ```{.imandra .input}
-verify (fun a b -> 
-        is_valid_nn a && 
-        is_valid_nn b && 
-        a.month = b.month && 
-        a.day = b.day && 
-        a.dmc = b.dmc && 
-        a.rh = b.rh && 
-        a.rain = b.rain && 
-        a.temp >=. b.temp ==> 
+verify (fun a b ->
+        is_valid_nn a &&
+        is_valid_nn b &&
+        a.month = b.month &&
+        a.day = b.day &&
+        a.dmc = b.dmc &&
+        a.rh = b.rh &&
+        a.rain = b.rain &&
+        a.temp >=. b.temp ==>
         nn_model a >=. nn_model b)
 ```
 
@@ -421,7 +421,7 @@ Although the network doesn't satisfy our original verification statement we can 
 ```{.imandra .input}
 let winter month = month = Oct || month = Nov || month = Dec || month = Jan || month = Feb
 
-verify (fun a b -> 
+verify (fun a b ->
         is_valid_nn a &&
         is_valid_nn b &&
         a.month = b.month &&
