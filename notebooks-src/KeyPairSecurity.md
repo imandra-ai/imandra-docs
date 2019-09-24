@@ -11,6 +11,8 @@ key-phrases:
   - verify
 ---
 
+# Key Pair Security in Imandra
+
 In this notebook we introduce a simple implementation of a key pair exchange protocol in ReasonML. Messages can either be key requests, unencrypted responses to key requests with a public key or encrypted messages with a private key. In addition to this we introduce the concept of a "listener" - an agent who can intercept other messagers.
 
 ```{.imandra .input}
@@ -204,7 +206,7 @@ let init: state = {
 We can introduce some printing functions so that any traces produced can be visually interpreted.
 
 ```{.imandra .input}
-let person_to_string = (p) => 
+let person_to_string = (p) =>
   switch (p) {
     | Alice => "Alice"
     | Mallory => "Mallory"
@@ -255,11 +257,11 @@ let graph_step = (s: action) =>
 ```
 
 ```{.imandra .input}
-let rec graph_inner = (xs:list(action)) => 
+let rec graph_inner = (xs:list(action)) =>
   switch (xs)
   {
     | [] => ""
-    | [h, ...t] => 
+    | [h, ...t] =>
       graph_step(h)++graph_inner(t)
   };
 ```
