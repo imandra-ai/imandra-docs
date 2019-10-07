@@ -13,6 +13,10 @@ Next, we’ll set up a local installation of the Imandra client - we recommend y
 
 If you’re new to the OCaml ecosystem, the simplest way to go from zero to a working Imandra installation is to use the [Imandra installer](Installation%20-%20Simple.md).
 
+# Opam (macOS and Linux only)
+
+If you have the [opam](https://opam.ocaml.org/) package manager available, you can install Imandra using our public [opam repo](Installation%20-%20Manual.md)
+
 # Docker Image
 
 If you don't want to bother with setting up a native environment, you can use our [docker image](Installation%20-%20Docker.md)
