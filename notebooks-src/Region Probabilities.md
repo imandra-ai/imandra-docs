@@ -7,7 +7,7 @@ slug: region-probabilities
 
 # Region Probabilities
 
-In this notebook we provide an introduction to the latest Imandra Tools module, `Region_probs`, which includes a small probabilistic programmining library that allows users reason about Imandra Modelling Language (IML) models probabilistically. In particular, users can easily create custom hierarchical statistical models defining joint distributions over inputs to their programs or functions, then sample from these models to get a probability distribution over regions, or query them with Boolean conditions. Alternatively, a dataset in the form of a `CSV` file can be imported and used as a set of samples. In a later notebook we'll illustrate how these tools can be used to analyse and verify the fairness of decision-making algorithms, but here we'll keep things simple and just demonstrate the basic functionalities of the module.
+In this notebook we provide an introduction to the latest Imandra Tools module, `Region_probs`, which includes a small probabilistic programming library that allows users reason about Imandra Modelling Language (IML) models probabilistically. In particular, users can easily create custom hierarchical statistical models defining joint distributions over inputs to their programs or functions, then sample from these models to get a probability distribution over regions, or query them with Boolean conditions. Alternatively, a dataset in the form of a `CSV` file can be imported and used as a set of samples. In a later notebook we'll illustrate how these tools can be used to analyse and verify the fairness of decision-making algorithms, but here we'll keep things simple and just demonstrate the basic functionalities of the module.
 
 ### Setup
 
