@@ -2,7 +2,7 @@
 title: "Plugins"
 description: "Use code-generation plugins"
 kernel: imandra
-slug: installation
+slug: plugins
 ---
 
 # Plugins
