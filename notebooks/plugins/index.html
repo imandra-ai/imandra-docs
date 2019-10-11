@@ -2,11 +2,11 @@
 <html>
     <head><meta charset="utf-8" />
         <meta content="width=device-width, initial-scale=1.0" name="viewport">
-        <title>Imandra Documentation - Installation - Manual Installation with opam</title>
-        <meta property="og:url" content="https://docs.imandra.ai/imandra-docs/notebooks/installation-manual-opam/">
+        <title>Imandra Documentation - Plugins</title>
+        <meta property="og:url" content="https://docs.imandra.ai/imandra-docs/notebooks/plugins/">
         <meta property="og:type" content="website">
-        <meta property="og:title" content="Imandra Documentation - Installation - Manual Installation with opam">
-        <meta property="og:description" content="Getting set up with a local installation of Imandra">
+        <meta property="og:title" content="Imandra Documentation - Plugins">
+        <meta property="og:description" content="Use code-generation plugins">
         <meta property="og:image" content="https://storage.googleapis.com/imandra-assets/images/og_image_default_i78.jpg">
 
 
@@ -306,7 +306,7 @@
                                     </li>
                                     
                                     <li class="side__nav-list-item--sub-level-2">
-                                        <a class="side__nav-link side__nav-link--active" href="/imandra-docs/notebooks/installation-manual-opam">Manual (opam)</a>
+                                        <a class="side__nav-link" href="/imandra-docs/notebooks/installation-manual-opam">Manual (opam)</a>
                                         
                                     </li>
                                     
@@ -498,7 +498,7 @@
                             
                             <li class="side__nav-list-item--sub-level-1">
                                 
-                                <a class="side__nav-link" href="/imandra-docs/notebooks/plugins">Using code generation and plugins</a>
+                                <a class="side__nav-link side__nav-link--active" href="/imandra-docs/notebooks/plugins">Using code generation and plugins</a>
                                 
                                 <ul class="side__nav-list--sub-level-2">
                                     
@@ -745,75 +745,325 @@
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html"><h1 id="Manual-Installation-with-opam">Manual Installation with opam<a class="anchor-link" href="#Manual-Installation-with-opam">&#182;</a></h1><p>If you’re already familiar with the OCaml ecosystem and opam, you can use Imandra as a normal opam package, provided your switch is setup using ocaml 4.06.</p>
-<p>The simplest way to install imandra in a custom switch is to install the <code>imandra-dist</code> metapackage, which includes the full Imandra distribution:</p>
+<div class="text_cell_render border-box-sizing rendered_html"><h1 id="Plugins">Plugins<a class="anchor-link" href="#Plugins">&#182;</a></h1><p>Some programming tasks are tedious and distracting, such as writing pretty-printers or (de)serializers for one's types. Imandra provides a <em>plugin</em> mechanism to make your life easier using automatic code generation</p>
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+<div class="cell border-box-sizing code_cell rendered">
+<div class="try-this-container">
+  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Plugins.ipynb%23try-cell-2" target="_blank" rel="nofollow">
+    <div class="try-this">Try this!</div>
+  </a>
 </div>
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[1]:</div>
 <div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html"><div class="terminal">
-    <div class="terminal__copy-ready">
-      <div class="terminal__copy-ready--top"><span class="terminal__copy-msg">Ready!</span></div>
-      <div class="terminal__copy-ready--bottom"></div>
-    </div>
-    <code>
-    <div class="highlight"><pre><span></span>opam switch create . ocaml-base-compiler.4.06.1
-opam repo add imandra https://github.com/AestheticIntegration/opam-repository.git
-opam install imandra-dist
-opam <span class="nb">exec</span> -- imandra_client -server <span class="s1">&#39;imandra_network_client&#39;</span>
+    <div class="input_area">
+<div class=" highlight hl-ocaml"><pre><span></span><span class="o">[@@@</span><span class="n">ocaml</span><span class="o">.</span><span class="n">warning</span> <span class="s2">&quot;-3&quot;</span><span class="o">];;</span>
+<span class="nn">Imandra</span><span class="p">.</span><span class="n">add_plugin_pp</span> <span class="bp">()</span><span class="o">;;</span>
+<span class="nn">Imandra</span><span class="p">.</span><span class="n">add_plugin_yojson</span> <span class="bp">()</span><span class="o">;;</span>
 </pre></div>
 
-    </code>
-    <div id="copy-button-id--1" class="terminal__copy-cover">
-      <img src="/imandra-docs/static/img/copy.svg">
-    </div>
-  </div>
-  <script>document.getElementById('copy-button-id--1').addEventListener('click', handleCopyClick);</script>
-
-  
-  </div>
 </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[1]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>- : unit = ()
+- : unit = ()
+</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="try-this-container">
+  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Plugins.ipynb%23try-cell-3" target="_blank" rel="nofollow">
+    <div class="try-this">Try this!</div>
+  </a>
+</div>
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[2]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ocaml"><pre><span></span><span class="k">type</span> <span class="n">t</span> <span class="o">=</span> <span class="o">{</span>
+    <span class="n">x</span><span class="o">:</span> <span class="kt">int</span><span class="o">;</span>
+    <span class="n">y</span><span class="o">:</span> <span class="kt">string</span><span class="o">;</span>
+<span class="o">}</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[2]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>type t = { x : int; y : string; }
+val to_yojson_t : t -&gt; YJ.json = &lt;fun&gt;
+val of_yojson_t : YJ.json -&gt; (t, string) result = &lt;fun&gt;
+val pp_t : t Fmt.printer = &lt;fun&gt;
+</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html"><h1 id="Public-packages">Public packages<a class="anchor-link" href="#Public-packages">&#182;</a></h1><p>For more advanced installations, we include a list of the available packages in our <a href="https://github.com/AestheticIntegration/opam-repository">opam repository</a>:</p>
-<ul>
-<li><code>imandra-auth-lib</code>: Library for authenticating to the Imandra Cloud</li>
-<li><code>imandra-base</code>: Imandra base library, providing access to the Imandra protocol and syntax/surface types</li>
-<li><code>imandra-base-bin</code>: Provides the <code>imandra-extract</code> and <code>imandra-codegen</code> binaries</li>
-<li><code>imandra-client</code>: Imandra client library, providing entrypoints for the creation of custom Imandra clients</li>
-<li><code>imandra-client-bin</code>: Provides the <code>imandra_client</code> binary</li>
-<li><code>imandra-client-http-server</code>: Provides the <code>imandra_client_http_server</code> binary</li>
-<li><code>imandra-cmd</code>: Provides the <code>imandra_cmd</code> binary (the Imandra launcher)</li>
-<li><code>imandra-deps</code>: Metapackage used to synchronise dependency versions for all the <code>imandra-dist</code> packages</li>
-<li><code>imandra-dist</code>: Metapackage used to install all the Imandra packages in one go</li>
-<li><code>imandra-merlin</code>: Merlin extensions for imandra</li>
-<li><code>imandra-network</code>: Provides the <code>imandra_network_client</code> binary, to be used as a server for <code>imandra_client</code></li>
-<li><code>imandra-prelude</code>: Imandra prelude as an OCaml Library</li>
-<li><code>imandra-reason-parser</code>: Provides a ReasonML parser to Imandra</li>
-<li><code>imandra-stdlib</code>: Imandra standard library of lemmas</li>
-<li><code>imandra-tools</code>: Library providing extra tooling on top of Imandra's decomposition facilities</li>
-<li><code>imandra-voronoi</code>: Library for visualizing Imandra Regions as a Voronoi diagram</li>
-<li><code>imandra-vscode-server</code>: Provides the <code>imandra-vscode-server</code> binary, providing the backend for the VSCode based <a href="https://marketplace.visualstudio.com/items?itemName=aestheticintegration.iml-vscode">Imandra IDE</a></li>
-<li><code>jupyter-imandra</code>: Jupyter notebook frontend for Imandra</li>
-</ul>
+<div class="text_cell_render border-box-sizing rendered_html"><p>Note that when we define <code>t</code>, some functions were automatically defined along. Let's try them.</p>
 </div>
 </div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="try-this-container">
+  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Plugins.ipynb%23try-cell-5" target="_blank" rel="nofollow">
+    <div class="try-this">Try this!</div>
+  </a>
+</div>
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[3]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ocaml"><pre><span></span><span class="k">let</span> <span class="n">some_t</span> <span class="o">=</span> <span class="o">{</span><span class="n">x</span><span class="o">=</span><span class="mi">42</span><span class="o">;</span> <span class="n">y</span><span class="o">=</span><span class="s2">&quot;howdy&quot;</span><span class="o">};;</span>
+
+<span class="n">to_yojson_t</span> <span class="n">some_t</span><span class="o">;;</span>
+
+<span class="nn">Format</span><span class="p">.</span><span class="n">printf</span> <span class="s2">&quot;some_t = %a@.&quot;</span> <span class="n">pp_t</span> <span class="n">some_t</span><span class="o">;;</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[3]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>val some_t : t = {x = 42; y = &#34;howdy&#34;}
+- : YJ.json = `Assoc [(&#34;x&#34;, `Intlit &#34;42&#34;); (&#34;y&#34;, `String &#34;howdy&#34;)]
+some_t = {x=42; y=&#34;howdy&#34;}
+- : unit = ()
+</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html"><p>These functions are program-mode only, though. Plugins can define logic-mode functions, but for most use cases it's not necessary, and program-mode code generation is easier.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="try-this-container">
+  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Plugins.ipynb%23try-cell-7" target="_blank" rel="nofollow">
+    <div class="try-this">Try this!</div>
+  </a>
+</div>
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[4]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ocaml"><pre><span></span><span class="o">#</span><span class="n">h</span><span class="o">;;</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[4]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre></pre>
+</div>
+
+</div>
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+
+<div class="output_html rendered_html output_subarea ">
+<div><div class="imandra-alternatives" id="alt-0e1d5de1-f9c1-43ae-a94a-c5a3693991fa"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>list</a></li><li class="" data-toggle="tab"><a>graph</a></li></ul><div class="tab-content"><div class="tab-pane active"><div><h3>All events in session</h3><p></p><ul><li><div>0. Type: t</div></li><li><div>1. Fun: some_t</div></li></ul><p></p></div></div><div class="tab-pane"><div class="imandra-fold panel panel-default" id="fold-37b82237-af59-4fdb-be74-eacf300a9d45"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>dependency graph</span></div></div><div class="panel-body collapse"><div class="imandra-graphviz" id="graphviz-7fcc7e47-7a49-4850-919f-ebdd15e59564"><textarea style="display: none">digraph history {
+  n_0 [label=&quot;Type: t&quot;,shape=&quot;box&quot;];
+  n_1 [label=&quot;Fun: some_t&quot;,shape=&quot;box&quot;];
+  n_1 -&gt; n_0 [style=&quot;&quot;]
+  }
+</textarea><button class="btn btn-primary">Load graph</button><div class="imandra-graphviz-loading display-none">Loading..</div><div class="imandra-graphviz-target"></div><script>
+require(['nbextensions/nbimandra/graphviz'], function (graphviz) {
+  var target = '#graphviz-7fcc7e47-7a49-4850-919f-ebdd15e59564';
+  graphviz.hydrate(target);
+});
+</script></div></div><script>
+require(['nbextensions/nbimandra/fold'], function (fold) {
+  var target = '#fold-37b82237-af59-4fdb-be74-eacf300a9d45';
+  fold.hydrate(target);
+});
+</script></div></div></div><script>
+require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
+  var target = '#alt-0e1d5de1-f9c1-43ae-a94a-c5a3693991fa';
+  alternatives.hydrate(target);
+});
+</script></div></div>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html"><p>We can also load plugins in the middle of a development, and it will automatically apply to pre-existing definitions.</p>
+<p>It is cleaner to load plugins first, but nevertheless, this is a possibility.</p>
+<p>For example, we can ask Imandra to produce random generators for all types, automatically:</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="try-this-container">
+  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Plugins.ipynb%23try-cell-9" target="_blank" rel="nofollow">
+    <div class="try-this">Try this!</div>
+  </a>
+</div>
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[5]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ocaml"><pre><span></span><span class="nn">Imandra</span><span class="p">.</span><span class="n">add_plugin_rand</span> <span class="bp">()</span><span class="o">;;</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[5]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>- : unit = ()
+</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="try-this-container">
+  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Plugins.ipynb%23try-cell-10" target="_blank" rel="nofollow">
+    <div class="try-this">Try this!</div>
+  </a>
+</div>
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[6]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ocaml"><pre><span></span><span class="n">rand_t</span><span class="o">;;</span>
+
+<span class="k">let</span> <span class="n">rand_st</span> <span class="o">=</span> <span class="nn">Random</span><span class="p">.</span><span class="nn">State</span><span class="p">.</span><span class="n">make</span> <span class="o">[|</span> <span class="mi">4</span><span class="n">i</span> <span class="o">|]</span> <span class="o">[@@</span><span class="n">program</span><span class="o">];;</span>
+
+<span class="c">(* generate a list of at most 5 instances of [t] *)</span>
+<span class="k">let</span> <span class="n">l</span> <span class="o">=</span> <span class="n">gen_rand_l</span> <span class="o">~</span><span class="n">st</span><span class="o">:</span><span class="n">rand_st</span> <span class="o">~</span><span class="n">n</span><span class="o">:</span><span class="mi">5</span><span class="n">i</span> <span class="n">rand_t</span> <span class="o">[@@</span><span class="n">program</span><span class="o">];;</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[6]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>- : Gen_rand_Random.t -&gt; t = &lt;fun&gt;
+val rand_st : Random.State.t = &lt;abstr&gt;
+val l : t CCList.t = [{x = -16; y = &#34;&#34;}; {x = -38; y = &#34;[JhDMejnbX&#34;}]
+</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
 </div>
                     </div>
 
-                    <div class="sidebar-right">
-                        <div class="sidebar-right__menu">
-                            
-                            <a class="sidebar-right__menu-item sidebar-right__menu-item--h1" href="#Manual-Installation-with-opam">Manual Installation with opam</a>
-                            
-                            <a class="sidebar-right__menu-item sidebar-right__menu-item--h1" href="#Public-packages">Public packages</a>
-                            
-                        </div>
-                    </div></article>
+                    </article>
             </main>
             <footer class="footer">
                 <a class="copyrights"href="http://imandra.ai">&#9400; 2018 - 2019 Imandra Inc. All rights reserved.</a>
