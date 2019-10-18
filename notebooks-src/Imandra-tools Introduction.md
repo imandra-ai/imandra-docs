@@ -319,7 +319,7 @@ Caml.List.mapi (fun i region ->
   let body = Region_term_synth.synthesize ~default:Term.Syn.False term in
   let args = Decompose_region.args region |> List.map Var.name |> String.concat " " in
   let func = Printf.sprintf "let %s %s = %s" gs args body in
-  Reflect.eval func;
+  Imandra_interactive.Reflect.eval func;
   gs)
   rs
 ```
