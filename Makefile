@@ -61,3 +61,4 @@ deploy-notebooks:
 
 clean:
 	rm -rf "_build" "_docs-repo"
+	cd assets && make clean
