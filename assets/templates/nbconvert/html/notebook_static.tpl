@@ -230,7 +230,11 @@
                     <div class="sidebar-right">
                         <div class="sidebar-right__menu">
                             {% for item in nav_items %}
+                            {% if loop.index == 1 %}
+                            <div class="sidebar-right__menu-heading">On this page:</div>
+                            {% else %}
                             <a class="sidebar-right__menu-item sidebar-right__menu-item--{{ item['tag'] }}" href="#{{ item['id'] }}">{{ item['text'] }}</a>
+                            {% endif %}
                             {% endfor %}
                         </div>
                     </div>
