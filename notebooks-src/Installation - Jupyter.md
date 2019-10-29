@@ -5,7 +5,7 @@ kernel: imandra
 slug: installation-jupyter
 ---
 
-# Jupyter
+# Jupyter Notebook
 
 You'll first need to run the [recommended, simple installation of Imandra](Installation%20-%20Simple.md).
 

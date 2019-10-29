@@ -14,7 +14,9 @@ We offer several ways to install Imandra:
 
 - [Opam (macOS and Linux only)](Installation%20-%20Manual.md): If you have the [opam](https://opam.ocaml.org/) package manager available, you can install Imandra using our public opam repo.
 
-- [Docker Image](Installation%20-%20Docker.md): If you don't want to bother with setting up a native environment, you can use our [docker image]()
+- [Docker Image](Installation%20-%20Docker.md): If you don't want to bother with setting up a native environment, you can use our docker image.
+
+- [Jupyter Notebook](Installation%20-%20Jupyter.md): If you'd rather use Imandra via a Jupyter Notebook rather than our REPL, check out the Jupyter Notebook setup.
 
 - Add-ons:
 
