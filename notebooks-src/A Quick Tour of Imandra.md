@@ -41,8 +41,6 @@ Imandra has many advanced features, including first-class computable counterexam
 
 Before starting to use Imandra, it may be helpful to read this short [Introduction](Introduction.md).
 
-# A Quick Tour of Imandra
-
 This section will give you a quick, 5 minute overview of what Imandra can do. If
 you want to play around with the code in any of the examples hit the 'Try this!'
 buttons throughout, and you'll get a Jupyter notebook session where you can

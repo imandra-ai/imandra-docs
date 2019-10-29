@@ -225,17 +225,6 @@
                     <div class="main-content main-content--jupyter">
                         {{ super() }}
                     </div>
-
-                    {% if nav_items and nav_items|length > 1 -%}
-                    <div class="sidebar-right">
-                        <div class="sidebar-right__menu">
-                            {% for item in nav_items %}
-                            <a class="sidebar-right__menu-item sidebar-right__menu-item--{{ item['tag'] }}" href="#{{ item['id'] }}">{{ item['text'] }}</a>
-                            {% endfor %}
-                        </div>
-                    </div>
-                    {%- endif -%}
-
                 </article>
             </main>
             <footer class="footer">
@@ -246,6 +235,52 @@
 
     {% block footer %}
     {{ super() }}
+    <script>
+    (function () {
+            var lastId;
+            var sideMenu = $("#side-nav-menu");
+            var topMenu = $("#top-menu");
+            var topMenuHeight = topMenu.outerHeight() + 15;
+
+            // All list items
+            var menuItems = sideMenu.find('a.side__nav-link--within-page');
+
+            // Anchors corresponding to menu items
+            var scrollItems = menuItems.map(function () {
+              var item = $(this).attr("href");
+              var thisItem = item.substring(item.lastIndexOf("#") + 1, item.length);
+              var linkedItem = $('#' + CSS.escape(thisItem));
+              if (linkedItem.length) { return linkedItem; }
+            });
+
+            // Bind to scroll
+            $(window).scroll(function () {
+                // Get container scroll position
+                var fromTop = $(this).scrollTop() + topMenuHeight;;
+                // Get id of current scroll item
+                var cur = scrollItems.map(function () {
+                    if ($(this).offset().top < fromTop)
+                        return this;
+                });
+                cur = cur[cur.length - 1];
+                // Get the id of the current element
+                var id = cur && cur.length ? cur[0].id : "";
+                if (id && lastId !== id) {
+                    lastId = id;
+                    // Set/remove active class
+                    menuItems.each(function (idx, item) {
+                      var $item = $(item);
+                      $item.removeClass("side__nav-link--within-page--active");
+
+                      if (item.href.endsWith('#' + lastId)) {
+                        $item.addClass("side__nav-link--within-page--active");
+                      };
+                    });
+                }
+            });
+        })()
+    </script>
+
     </body>
 </html>
 {% endblock footer %}
