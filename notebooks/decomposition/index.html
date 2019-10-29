@@ -2,11 +2,11 @@
 <html>
     <head><meta charset="utf-8" />
         <meta content="width=device-width, initial-scale=1.0" name="viewport">
-        <title>Imandra Documentation - Multifile development</title>
-        <meta property="og:url" content="https://docs.imandra.ai/imandra-docs/notebooks/loading-files/">
+        <title>Imandra Documentation - Decomposition</title>
+        <meta property="og:url" content="https://docs.imandra.ai/imandra-docs/notebooks/decomposition/">
         <meta property="og:type" content="website">
-        <meta property="og:title" content="Imandra Documentation - Multifile development">
-        <meta property="og:description" content="An overview of how to load files/include modules or libraries in Imandra">
+        <meta property="og:title" content="Imandra Documentation - Decomposition">
+        <meta property="og:description" content="A description of Imandra's various decomposition methods">
         <meta property="og:image" content="https://storage.googleapis.com/imandra-assets/images/og_image_default_i78.jpg">
 
 
@@ -415,9 +415,9 @@
                             
                             <li class="side__nav-list-item--sub-level-1 ">
                                 
-                                <a class="side__nav-link" href="/imandra-docs/notebooks/decomposition">Region Decomposition</a>
+                                <a class="side__nav-link side__nav-link--active" href="/imandra-docs/notebooks/decomposition">Region Decomposition</a>
                                 
-                                <ul class="side__nav-list--sub-level-2 ">
+                                <ul class="side__nav-list--sub-level-2  side__nav-list--sub-level-2--active">
                                     
                                     <li class="side__nav-list-item--sub-level-2 side__nav-list--sub-level-2--empty">
                                         
@@ -453,49 +453,19 @@
                                     
                                 </ul>
                                 
+                                <div class="side__within-page-nav--sub-level-1">
+                                
+                                </div>
+                                
                             </li>
                             
                             <li class="side__nav-list-item--sub-level-1 side__nav-list--sub-level-1--empty">
                                 
-                                <a class="side__nav-link side__nav-link--active" href="/imandra-docs/notebooks/loading-files">Multifile development</a>
+                                <a class="side__nav-link" href="/imandra-docs/notebooks/loading-files">Multifile development</a>
                                 
-                                <ul class="side__nav-list--sub-level-2  side__nav-list--sub-level-2--active">
+                                <ul class="side__nav-list--sub-level-2 ">
                                     
                                 </ul>
-                                
-                                <div class="side__within-page-nav--sub-level-1">
-                                
-  
-  
-  
-  <a class="side__nav-link--within-page side__nav-link--within-page--h2" href="#use">use</a>
-  
-  
-  
-  <a class="side__nav-link--within-page side__nav-link--within-page--h2" href="#mod_use">mod_use</a>
-  
-  
-  
-  <a class="side__nav-link--within-page side__nav-link--within-page--h2" href="#use_gist">use_gist</a>
-  
-  
-  
-  <a class="side__nav-link--within-page side__nav-link--within-page--h2" href="#import">import</a>
-  
-  
-  
-  <a class="side__nav-link--within-page side__nav-link--within-page--h2" href="#require">require</a>
-  
-  
-  
-  <a class="side__nav-link--within-page side__nav-link--within-page--h2" href="#require_use">require_use</a>
-  
-  
-  
-  <a class="side__nav-link--within-page side__nav-link--within-page--h2" href="#require_mod_use">require_mod_use</a>
-  
-  
-                                </div>
                                 
                             </li>
                             
@@ -841,37 +811,12 @@
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html"><h1 id="Loading-files-and-libraries">Loading files and libraries<a class="anchor-link" href="#Loading-files-and-libraries">&#182;</a></h1><p>Imandra comes with several different directives for loading files or including external modules.</p>
-<p>It can be a bit daunting initially to undertstand which directive to use in the appropriate context, let's look at each in detail:</p>
-<h2 id="use">use<a class="anchor-link" href="#use">&#182;</a></h2><p>Syntax: <code>#use "filename.iml";;</code> or <code>[@@@use "filename.iml"]</code></p>
-<p>The behavior of <code>use</code> is that of reading the content of <code>"filename.iml"</code> and evaluating it into the current environment, as if each definition had been directly entered into the toplevel.</p>
-<p>The <code>use</code> directive is meant to used in interactive sessions rather than in library/production code, and is not recursive.</p>
-<p>There exist a functional equivalent of the directive, called <code>System.use</code> that can be used to (recursively) load files at runtime, this is often useful to implement the common pattern of having a <code>top.iml</code> file responsible for loading the entire model one is working on, or more generally for programmatic loading of imandra files.</p>
-<p>If <code>filename.iml</code> is a relative path, it is resolved to an absolute path by searching for it in Imandra's <em>load path</em>.</p>
-<p>The current directory is always implicitly part of the load path, and additional directories can be added dynamically via the <code>directory</code> directive, or at startup using the <code>-dir</code> argument.</p>
-<h2 id="mod_use">mod_use<a class="anchor-link" href="#mod_use">&#182;</a></h2><p>Syntax: <code>#mod_use "filename.iml";;</code> or <code>[@@@mod_use "filename.iml"]</code></p>
-<p><code>mod_use</code> behaves exactly like <code>use</code>, with the only exception that the contents of the file will be evaluated in the toplevel as if they were wrapped in a module called <code>Filename</code></p>
-<p>The functional equivalent of the directive is <code>System.mod_use</code></p>
-<h2 id="use_gist">use_gist<a class="anchor-link" href="#use_gist">&#182;</a></h2><p>Syntax: <code>#use_gist "my-user/gist-hash";;</code> or <code>[@@@use_gist "my-user/gist-hash"]</code></p>
-<p><code>use_gist</code> behaves exactly like <code>use</code>, except instead of loading a local path it will download the gist content and load that in the current environment.</p>
-<h2 id="import">import<a class="anchor-link" href="#import">&#182;</a></h2><p>Syntax: <code>#import "filename.iml";;</code> or <code>[@@@import "filename.iml"]</code></p>
-<p>The behavior of <code>import</code> is similar to that of <code>mod_use</code>, with a number of significant differences:</p>
-<ul>
-<li>toplevel directives are disabled in the file being imported</li>
-<li><code>import</code> is idempotent, as it caches on first import</li>
-<li>Imandra resolves the import at compile time, so the imported module is available when typechecking the remainder of the file</li>
+<div class="text_cell_render border-box-sizing rendered_html"><h1 id="Verification">Verification<a class="anchor-link" href="#Verification">&#182;</a></h1><ul>
+<li><a href="/imandra-docs/notebooks/decomposition-flags/">Decomposition Flags</a></li>
+<li><a href="/imandra-docs/notebooks/imandra-tools-intro/">Imandra Tools Introduction</a></li>
+<li><a href="/imandra-docs/notebooks/idf/">Iterative Decomposition Framework</a></li>
+<li><a href="/imandra-docs/notebooks/region-probabilities/">Region Probabilities</a></li>
 </ul>
-<p>As such, <code>import</code> can be considered a version of <code>mod_use</code> to be used in IML libraries as opposed to during interactive development.</p>
-<p>Like <code>use</code> and <code>mod_use</code>, <code>import</code> uses Imandra's <em>load path</em> to search for files, when importing an IML library, the current directory will be temporary set to that of the library itself.</p>
-<h2 id="require">require<a class="anchor-link" href="#require">&#182;</a></h2><p>Syntax: <code>#require "some-lib";;</code> or <code>[@@@require "some-lib"]</code> or as an argument to imandra: <code>-require somelib</code></p>
-<p>The behavior of <code>require</code> is to search for <code>some-lib</code> in the list of installed libraries (using topfind) and load it in the current environment.</p>
-<p>If <code>some-lib</code> comes packaged with a <code>some-lib.iml</code> file, it will be automatically loaded by Imandra using <code>#import</code> after the library has been required.</p>
-<h2 id="require_use">require_use<a class="anchor-link" href="#require_use">&#182;</a></h2><p>Syntax: <code>#require_use "some-lib";;</code> or <code>[@@@require_use "some-lib"]</code> or as an argument to imandra: <code>-require-use somelib</code></p>
-<p>Similar to <code>#require "some-lib";;</code> except it loads the file <code>some-lib.iml</code> with <code>#use</code> instead of <code>#import</code>,
-so no module is created, and it's not idempotent.</p>
-<h2 id="require_mod_use">require_mod_use<a class="anchor-link" href="#require_mod_use">&#182;</a></h2><p>Syntax: <code>#require_mod_use "some-lib";;</code> or <code>[@@@require_mod_use "some-lib"]</code> or as an argument to imandra: <code>-require-mod-use somelib</code></p>
-<p>Similar to <code>#require "some-lib";;</code> except it loads the file <code>some-lib.iml</code> with <code>#mod_use</code> instead of <code>#import</code>,
-so it's not idempotent.</p>
 </div>
 </div>
 </div>
