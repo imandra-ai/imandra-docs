@@ -248,8 +248,8 @@
             // Anchors corresponding to menu items
             var scrollItems = menuItems.map(function () {
               var item = $(this).attr("href");
-              var thisItem = item.substring(item.lastIndexOf("/") + 1, item.length)
-              var linkedItem = $(thisItem)
+              var thisItem = item.substring(item.lastIndexOf("#") + 1, item.length);
+              var linkedItem = $('#' + CSS.escape(thisItem));
               if (linkedItem.length) { return linkedItem; }
             });
 
@@ -270,10 +270,10 @@
                     // Set/remove active class
                     menuItems.each(function (idx, item) {
                       var $item = $(item);
-                      $item.removeClass("side__nav-link--active");
+                      $item.removeClass("side__nav-link--within-page--active");
 
                       if (item.href.endsWith('#' + lastId)) {
-                        $item.addClass("side__nav-link--active");
+                        $item.addClass("side__nav-link--within-page--active");
                       };
                     });
                 }

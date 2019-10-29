@@ -7,20 +7,15 @@ slug: installation
 
 # Installation
 
-Next, we’ll set up a local installation of the Imandra client - we recommend you follow through the rest of the documentation with the client running and type out the examples yourself, in order to help things stick as you learn them.
+We offer several ways to install Imandra:
 
-# Installer (macOS and Linux only)
 
-If you’re new to the OCaml ecosystem, the simplest way to go from zero to a working Imandra installation is to use the [Imandra installer](Installation%20-%20Simple.md).
+- [Installer (macOS and Linux only)](Installation%20-%20Simple.md): If you’re new to the OCaml ecosystem, the simplest way to go from zero to a working Imandra installation is to use the Imandra installer.
 
-# Opam (macOS and Linux only)
+- [Opam (macOS and Linux only)](Installation%20-%20Manual.md): If you have the [opam](https://opam.ocaml.org/) package manager available, you can install Imandra using our public opam repo.
 
-If you have the [opam](https://opam.ocaml.org/) package manager available, you can install Imandra using our public [opam repo](Installation%20-%20Manual.md)
+- [Docker Image](Installation%20-%20Docker.md): If you don't want to bother with setting up a native environment, you can use our [docker image]()
 
-# Docker Image
+- Add-ons:
 
-If you don't want to bother with setting up a native environment, you can use our [docker image](Installation%20-%20Docker.md)
-
-# VSCode
-
-Once you've got a working Imandra installation, you may find it helpful to [install our VSCode extension](Installation%20-%20VSCode.md) to aid development.
+  - [VSCode extension](Installation%20-%20VSCode.md): Once you've got a working Imandra installation, you may find it helpful to install our VSCode extension to aid development.
