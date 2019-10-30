@@ -28,9 +28,15 @@ Note that when we define `t`, some functions were automatically defined along. L
 ```{.imandra .input}
 let some_t = {x=42; y="howdy"};;
 
-to_yojson_t some_t;;
+let some_json = to_yojson_t some_t [@@program];;
 
 Format.printf "some_t = %a@." pp_t some_t;;
+```
+
+We can also deserialize the json object we just got, and recover `Ok x` where `x` is the same object as `some_t`:
+
+```{.imandra .input}
+of_yojson_t some_json;;
 ```
 
 These functions are program-mode only, though. Plugins can define logic-mode functions, but for most use cases it's not necessary, and program-mode code generation is easier.
@@ -51,7 +57,10 @@ Imandra.add_plugin_rand ();;
 
 ```{.imandra .input}
 rand_t;;
+```
 
+```{.imandra .input}
+(* a random state with fixed seed, so that this notebook is deterministic *)
 let rand_st = Random.State.make [| 4i |] [@@program];;
 
 (* generate a list of at most 5 instances of [t] *)
