@@ -921,7 +921,7 @@ val pp_t : t Fmt.printer = &lt;fun&gt;
     <div class="input_area">
 <div class=" highlight hl-ocaml"><pre><span></span><span class="k">let</span> <span class="n">some_t</span> <span class="o">=</span> <span class="o">{</span><span class="n">x</span><span class="o">=</span><span class="mi">42</span><span class="o">;</span> <span class="n">y</span><span class="o">=</span><span class="s2">&quot;howdy&quot;</span><span class="o">};;</span>
 
-<span class="n">to_yojson_t</span> <span class="n">some_t</span><span class="o">;;</span>
+<span class="k">let</span> <span class="n">some_json</span> <span class="o">=</span> <span class="n">to_yojson_t</span> <span class="n">some_t</span> <span class="o">[@@</span><span class="n">program</span><span class="o">];;</span>
 
 <span class="nn">Format</span><span class="p">.</span><span class="n">printf</span> <span class="s2">&quot;some_t = %a@.&quot;</span> <span class="n">pp_t</span> <span class="n">some_t</span><span class="o">;;</span>
 </pre></div>
@@ -943,7 +943,8 @@ val pp_t : t Fmt.printer = &lt;fun&gt;
 
 <div class="output_text output_subarea output_execute_result">
 <pre>val some_t : t = {x = 42; y = &#34;howdy&#34;}
-- : YJ.json = `Assoc [(&#34;x&#34;, `Intlit &#34;42&#34;); (&#34;y&#34;, `String &#34;howdy&#34;)]
+val some_json : YJ.json =
+  `Assoc [(&#34;x&#34;, `Intlit &#34;42&#34;); (&#34;y&#34;, `String &#34;howdy&#34;)]
 some_t = {x=42; y=&#34;howdy&#34;}
 - : unit = ()
 </pre>
@@ -958,7 +959,7 @@ some_t = {x=42; y=&#34;howdy&#34;}
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html"><p>These functions are program-mode only, though. Plugins can define logic-mode functions, but for most use cases it's not necessary, and program-mode code generation is easier.</p>
+<div class="text_cell_render border-box-sizing rendered_html"><p>We can also deserialize the json object we just got, and recover <code>Ok x</code> where <code>x</code> is the same object as <code>some_t</code>:</p>
 </div>
 </div>
 </div>
@@ -972,7 +973,7 @@ some_t = {x=42; y=&#34;howdy&#34;}
 <div class="prompt input_prompt">In&nbsp;[4]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ocaml"><pre><span></span><span class="o">#</span><span class="n">h</span><span class="o">;;</span>
+<div class=" highlight hl-ocaml"><pre><span></span><span class="n">of_yojson_t</span> <span class="n">some_json</span><span class="o">;;</span>
 </pre></div>
 
 </div>
@@ -991,6 +992,52 @@ some_t = {x=42; y=&#34;howdy&#34;}
 
 
 <div class="output_text output_subarea output_execute_result">
+<pre>- : (t, string) result = Ok {x = 42; y = &#34;howdy&#34;}
+</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html"><p>These functions are program-mode only, though. Plugins can define logic-mode functions, but for most use cases it's not necessary, and program-mode code generation is easier.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="try-this-container">
+  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Plugins.ipynb%23try-cell-9" target="_blank" rel="nofollow">
+    <div class="try-this">Try this!</div>
+  </a>
+</div>
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[5]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ocaml"><pre><span></span><span class="o">#</span><span class="n">h</span><span class="o">;;</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[5]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
 <pre></pre>
 </div>
 
@@ -1003,24 +1050,24 @@ some_t = {x=42; y=&#34;howdy&#34;}
 
 
 <div class="output_html rendered_html output_subarea ">
-<div><div class="imandra-alternatives" id="alt-ebeccefc-affe-44b6-ade7-7498756dbadb"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>list</a></li><li class="" data-toggle="tab"><a>graph</a></li></ul><div class="tab-content"><div class="tab-pane active"><div><h3>All events in session</h3><p></p><ul><li><div>0. Type: t</div></li><li><div>1. Fun: some_t</div></li></ul><p></p></div></div><div class="tab-pane"><div class="imandra-fold panel panel-default" id="fold-317ed11c-8aa6-4623-9c67-1f5dbc0f6458"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>dependency graph</span></div></div><div class="panel-body collapse"><div class="imandra-graphviz" id="graphviz-94867ca0-cfa2-4414-8476-ccb52e457243"><textarea style="display: none">digraph history {
+<div><div class="imandra-alternatives" id="alt-f220d638-1eab-4a69-bd73-aca82bd7b43c"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>list</a></li><li class="" data-toggle="tab"><a>graph</a></li></ul><div class="tab-content"><div class="tab-pane active"><div><h3>All events in session</h3><p></p><ul><li><div>0. Type: t</div></li><li><div>1. Fun: some_t</div></li></ul><p></p></div></div><div class="tab-pane"><div class="imandra-fold panel panel-default" id="fold-e95aa855-3863-4ca9-8b1e-3f124b668bac"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>dependency graph</span></div></div><div class="panel-body collapse"><div class="imandra-graphviz" id="graphviz-f819623e-2ee5-4950-a457-968b21c8d146"><textarea style="display: none">digraph history {
   n_0 [label=&quot;Type: t&quot;,shape=&quot;box&quot;];
   n_1 [label=&quot;Fun: some_t&quot;,shape=&quot;box&quot;];
   n_1 -&gt; n_0 [style=&quot;&quot;]
   }
 </textarea><button class="btn btn-primary">Load graph</button><div class="imandra-graphviz-loading display-none">Loading..</div><div class="imandra-graphviz-target"></div><script>
 require(['nbextensions/nbimandra/graphviz'], function (graphviz) {
-  var target = '#graphviz-94867ca0-cfa2-4414-8476-ccb52e457243';
+  var target = '#graphviz-f819623e-2ee5-4950-a457-968b21c8d146';
   graphviz.hydrate(target);
 });
 </script></div></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-317ed11c-8aa6-4623-9c67-1f5dbc0f6458';
+  var target = '#fold-e95aa855-3863-4ca9-8b1e-3f124b668bac';
   fold.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-ebeccefc-affe-44b6-ade7-7498756dbadb';
+  var target = '#alt-f220d638-1eab-4a69-bd73-aca82bd7b43c';
   alternatives.hydrate(target);
 });
 </script></div></div>
@@ -1044,46 +1091,7 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="try-this-container">
-  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Plugins.ipynb%23try-cell-9" target="_blank" rel="nofollow">
-    <div class="try-this">Try this!</div>
-  </a>
-</div>
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[5]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ocaml"><pre><span></span><span class="nn">Imandra</span><span class="p">.</span><span class="n">add_plugin_rand</span> <span class="bp">()</span><span class="o">;;</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-<div class="prompt output_prompt">Out[5]:</div>
-
-
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre>- : unit = ()
-</pre>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="try-this-container">
-  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Plugins.ipynb%23try-cell-10" target="_blank" rel="nofollow">
+  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Plugins.ipynb%23try-cell-11" target="_blank" rel="nofollow">
     <div class="try-this">Try this!</div>
   </a>
 </div>
@@ -1091,12 +1099,7 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
 <div class="prompt input_prompt">In&nbsp;[6]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ocaml"><pre><span></span><span class="n">rand_t</span><span class="o">;;</span>
-
-<span class="k">let</span> <span class="n">rand_st</span> <span class="o">=</span> <span class="nn">Random</span><span class="p">.</span><span class="nn">State</span><span class="p">.</span><span class="n">make</span> <span class="o">[|</span> <span class="mi">4</span><span class="n">i</span> <span class="o">|]</span> <span class="o">[@@</span><span class="n">program</span><span class="o">];;</span>
-
-<span class="c">(* generate a list of at most 5 instances of [t] *)</span>
-<span class="k">let</span> <span class="n">l</span> <span class="o">=</span> <span class="n">gen_rand_l</span> <span class="o">~</span><span class="n">st</span><span class="o">:</span><span class="n">rand_st</span> <span class="o">~</span><span class="n">n</span><span class="o">:</span><span class="mi">5</span><span class="n">i</span> <span class="n">rand_t</span> <span class="o">[@@</span><span class="n">program</span><span class="o">];;</span>
+<div class=" highlight hl-ocaml"><pre><span></span><span class="nn">Imandra</span><span class="p">.</span><span class="n">add_plugin_rand</span> <span class="bp">()</span><span class="o">;;</span>
 </pre></div>
 
 </div>
@@ -1115,8 +1118,89 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
 
 
 <div class="output_text output_subarea output_execute_result">
+<pre>- : unit = ()
+</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="try-this-container">
+  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Plugins.ipynb%23try-cell-12" target="_blank" rel="nofollow">
+    <div class="try-this">Try this!</div>
+  </a>
+</div>
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[7]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ocaml"><pre><span></span><span class="n">rand_t</span><span class="o">;;</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[7]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
 <pre>- : Gen_rand_Random.t -&gt; t = &lt;fun&gt;
-val rand_st : Random.State.t = &lt;abstr&gt;
+</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="try-this-container">
+  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Plugins.ipynb%23try-cell-13" target="_blank" rel="nofollow">
+    <div class="try-this">Try this!</div>
+  </a>
+</div>
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[8]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ocaml"><pre><span></span><span class="c">(* a random state with fixed seed, so that this notebook is deterministic *)</span>
+<span class="k">let</span> <span class="n">rand_st</span> <span class="o">=</span> <span class="nn">Random</span><span class="p">.</span><span class="nn">State</span><span class="p">.</span><span class="n">make</span> <span class="o">[|</span> <span class="mi">4</span><span class="n">i</span> <span class="o">|]</span> <span class="o">[@@</span><span class="n">program</span><span class="o">];;</span>
+
+<span class="c">(* generate a list of at most 5 instances of [t] *)</span>
+<span class="k">let</span> <span class="n">l</span> <span class="o">=</span> <span class="n">gen_rand_l</span> <span class="o">~</span><span class="n">st</span><span class="o">:</span><span class="n">rand_st</span> <span class="o">~</span><span class="n">n</span><span class="o">:</span><span class="mi">5</span><span class="n">i</span> <span class="n">rand_t</span> <span class="o">[@@</span><span class="n">program</span><span class="o">];;</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[8]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>val rand_st : Random.State.t = &lt;abstr&gt;
 val l : t CCList.t = [{x = -16; y = &#34;&#34;}; {x = -38; y = &#34;[JhDMejnbX&#34;}]
 </pre>
 </div>
