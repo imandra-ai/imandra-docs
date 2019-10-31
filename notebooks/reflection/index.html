@@ -2,11 +2,11 @@
 <html>
     <head><meta charset="utf-8" />
         <meta content="width=device-width, initial-scale=1.0" name="viewport">
-        <title>Imandra Documentation - Installation - Jupyter Notebook</title>
-        <meta property="og:url" content="https://docs.imandra.ai/imandra-docs/notebooks/installation-jupyter/">
+        <title>Imandra Documentation - Reflection</title>
+        <meta property="og:url" content="https://docs.imandra.ai/imandra-docs/notebooks/reflection/">
         <meta property="og:type" content="website">
-        <meta property="og:title" content="Imandra Documentation - Installation - Jupyter Notebook">
-        <meta property="og:description" content="Using Imandra via a local Jupyter notebook">
+        <meta property="og:title" content="Imandra Documentation - Reflection">
+        <meta property="og:description" content="Reflection">
         <meta property="og:image" content="https://storage.googleapis.com/imandra-assets/images/og_image_default_i78.jpg">
 
 
@@ -281,7 +281,7 @@
                                 
                                 <a class="side__nav-link" href="/imandra-docs/notebooks/installation">Installation</a>
                                 
-                                <ul class="side__nav-list--sub-level-2  side__nav-list--sub-level-2--active">
+                                <ul class="side__nav-list--sub-level-2 ">
                                     
                                     <li class="side__nav-list-item--sub-level-2 side__nav-list--sub-level-2--empty">
                                         
@@ -309,19 +309,9 @@
                                     
                                     <li class="side__nav-list-item--sub-level-2 side__nav-list--sub-level-2--empty">
                                         
-                                        <a class="side__nav-link side__nav-link--active" href="/imandra-docs/notebooks/installation-jupyter">Jupyter Notebook</a>
+                                        <a class="side__nav-link" href="/imandra-docs/notebooks/installation-jupyter">Jupyter Notebook</a>
                                         
                                         
-                                        
-                                        <div class="side__within-page-nav--sub-level-2">
-                                        
-  
-  
-  
-  <a class="side__nav-link--within-page side__nav-link--within-page--h2" href="#Docker-image">Docker image</a>
-  
-  
-                                        </div>
                                         
                                     </li>
                                     
@@ -497,11 +487,29 @@
                             
                             <li class="side__nav-list-item--sub-level-1 side__nav-list--sub-level-1--empty">
                                 
-                                <a class="side__nav-link" href="/imandra-docs/notebooks/reflection">Reflection of terms</a>
+                                <a class="side__nav-link side__nav-link--active" href="/imandra-docs/notebooks/reflection">Reflection of terms</a>
                                 
-                                <ul class="side__nav-list--sub-level-2 ">
+                                <ul class="side__nav-list--sub-level-2  side__nav-list--sub-level-2--active">
                                     
                                 </ul>
+                                
+                                <div class="side__within-page-nav--sub-level-1">
+                                
+  
+  
+  
+  <a class="side__nav-link--within-page side__nav-link--within-page--h2" href="#Building-new-terms-manually">Building new terms manually</a>
+  
+  
+  
+  <a class="side__nav-link--within-page side__nav-link--within-page--h2" href="#Unquote">Unquote</a>
+  
+  
+  
+  <a class="side__nav-link--within-page side__nav-link--within-page--h2" href="#Quotations-in-patterns">Quotations in patterns</a>
+  
+  
+                                </div>
                                 
                             </li>
                             
@@ -827,111 +835,876 @@
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html"><h1 id="Jupyter-Notebook">Jupyter Notebook<a class="anchor-link" href="#Jupyter-Notebook">&#182;</a></h1><p>You'll first need to run the <a href="/imandra-docs/notebooks/installation-simple/">recommended, simple installation of Imandra</a>.</p>
-<p>After running the simple installer, you should see <code>imandra-jupyter-kernel</code> on your path. You'll now need to install the kernel as part of your local Jupyter setup in order to invoke this.</p>
-<p>To install the Imandra and Imandra-reason kernels, run the following commands:</p>
-<p>(Note: if you have a more intricate Jupyter environment setup or if you use <code>conda</code>, you'll need to adjust the commands accordingly to install things into the correct location).</p>
+<div class="text_cell_render border-box-sizing rendered_html"><h1 id="Reflection">Reflection<a class="anchor-link" href="#Reflection">&#182;</a></h1><p>Imandra is able to <em>reflect</em> its normal expressions into a special datatype from the prelude, called <code>Reflect.Term.t</code>. A <code>Reflect.Term.t</code> is a logic-mode (recursive) type that can be reasoned about, the same way lists, trees, records or any other logic-mode types can be.</p>
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+<div class="cell border-box-sizing code_cell rendered">
+<div class="try-this-container">
+  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Reflection.ipynb%23try-cell-2" target="_blank" rel="nofollow">
+    <div class="try-this">Try this!</div>
+  </a>
 </div>
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[1]:</div>
 <div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html"><div class="terminal">
-    <div class="terminal__copy-ready">
-      <div class="terminal__copy-ready--top"><span class="terminal__copy-msg">Ready!</span></div>
-      <div class="terminal__copy-ready--bottom"></div>
-    </div>
-    <code>
-    <div class="highlight"><pre><span></span><span class="c1"># install imandra and imandra kernels</span>
-jupyter kernelspec install /usr/local/var/imandra/_opam/share/jupyter/kernelspec/imandra
-jupyter kernelspec install /usr/local/var/imandra/_opam/share/jupyter/kernelspec/imandra-reason
+    <div class="input_area">
+<div class=" highlight hl-ocaml"><pre><span></span><span class="k">let</span> <span class="n">arith_term</span> <span class="o">=</span> <span class="o">[%</span><span class="n">quote</span> <span class="mi">1</span> <span class="o">+</span> <span class="mi">1</span><span class="o">];;</span>
 
-<span class="c1">#install nbimandra notebook extensions as a python package (assumes this is in the same package target as jupyter itself)</span>
-pip install /usr/local/var/imandra/_opam/share/jupyter/nbextensions/nbimandra
+<span class="c">(* note: [%q x] is short for [%quote x] *)</span>
 
-<span class="c1">#install nbimandra as an extension from the installed python package</span>
-jupyter nbextension install --py nbimandra
-jupyter nbextension <span class="nb">enable</span> --py nbimandra
+<span class="k">let</span> <span class="n">arith_term2</span> <span class="o">=</span> <span class="o">[%</span><span class="n">q</span> <span class="mi">2</span><span class="o">];;</span>
 </pre></div>
 
-    </code>
-    <div id="copy-button-id--1" class="terminal__copy-cover">
-      <img src="/imandra-docs/static/img/copy.svg">
-    </div>
-  </div>
-  <script>document.getElementById('copy-button-id--1').addEventListener('click', handleCopyClick);</script>
+</div>
+</div>
+</div>
 
-  
-  </div>
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[1]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>val arith_term : Reflect.Term.t = (+ 1 1)
+val arith_term2 : Reflect.Term.t = 2
+</pre>
 </div>
+
+</div>
+
+</div>
+</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html"><h2 id="Docker-image">Docker image<a class="anchor-link" href="#Docker-image">&#182;</a></h2><p>The notebook is also available as a docker image: <code>imandra/imandra-client-notebook</code>.</p>
-<p>If you haven't authenticated yet and don't have an <code>~/.imandra</code> folder on your docker host, first authenticate using the regular <code>imandra/imandra-client</code> image:</p>
+<div class="text_cell_render border-box-sizing rendered_html"><p>These two terms are distinct, because they are distinct ASTs.</p>
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+<div class="cell border-box-sizing code_cell rendered">
+<div class="try-this-container">
+  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Reflection.ipynb%23try-cell-4" target="_blank" rel="nofollow">
+    <div class="try-this">Try this!</div>
+  </a>
 </div>
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[2]:</div>
 <div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html"><div class="terminal">
-    <div class="terminal__copy-ready">
-      <div class="terminal__copy-ready--top"><span class="terminal__copy-msg">Ready!</span></div>
-      <div class="terminal__copy-ready--bottom"></div>
-    </div>
-    <code>
-    <div class="highlight"><pre><span></span>docker pull imandra/imandra-client:latest <span class="o">&amp;&amp;</span> <span class="se">\</span>
-  docker run -it --rm -v <span class="si">${</span><span class="nv">HOME</span><span class="si">}</span>/.imandra:/root/.imandra -p <span class="m">8000</span>:8000 <span class="se">\</span>
-  imandra/imandra-client:latest
+    <div class="input_area">
+<div class=" highlight hl-ocaml"><pre><span></span><span class="n">verify</span> <span class="o">(</span><span class="n">arith_term</span> <span class="o">&lt;&gt;</span> <span class="n">arith_term2</span><span class="o">);;</span>
 </pre></div>
 
-    </code>
-    <div id="copy-button-id--2" class="terminal__copy-cover">
-      <img src="/imandra-docs/static/img/copy.svg">
-    </div>
-  </div>
-  <script>document.getElementById('copy-button-id--2').addEventListener('click', handleCopyClick);</script>
+</div>
+</div>
+</div>
 
-  
-  </div>
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[2]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>- : bool = true
+</pre>
 </div>
+
+</div>
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+
+<div class="output_html rendered_html output_subarea ">
+<div><div style="font-size: 1.2em; padding: 0.5em; border-top: 1px solid green; border-bottom: 1px solid green"><i class="fa fa-check-circle" style="margin-right: 0.5em; color: green"></i><span>Proved</span></div><div><div class="imandra-alternatives" id="alt-8c8ac3aa-35be-44a8-9f85-8ac31cf0fe1a"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>proof</a></li><li class="" data-toggle="tab"><a>call graph</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-proof-top"><div class="imandra-fold panel panel-default" id="fold-2073b6fc-b8d0-4720-bf4b-1aa6db75761e"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>proof</span></div></div><div class="panel-body collapse"><div class="imandra-proof"><div class="imandra-alternatives" id="alt-cb987f78-668a-4254-8578-6cc0044a6916"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>summary</a></li><li class="" data-toggle="tab"><a>full</a></li><li class="" data-toggle="tab"><a>graph</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-table" id="table-51d75309-de5f-408e-9b32-edda30b8ece3"><table><tr><td><b>ground_instances</b></td><td>0</td></tr><tr><td><b>definitions</b></td><td>0</td></tr><tr><td><b>inductions</b></td><td>0</td></tr><tr><td><b>search_time</b></td><td><pre>0.020s</pre></td></tr><tr><td><b>details</b></td><td><div class="imandra-fold panel panel-default" id="fold-13ab5fc5-cd8c-4d57-85ea-664b1ed2705e"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><div class="imandra-table" id="table-3a178f0e-0fef-4cbc-96cc-f1e4224b939e"><table><tr><td><b>smt_stats</b></td><td><div class="imandra-table" id="table-61aa47d1-553f-4c4d-ae7e-af7b02beb9f8"><table><tr><td><b>rlimit count</b></td><td>24</td></tr><tr><td><b>mk bool var</b></td><td>5</td></tr><tr><td><b>num allocs</b></td><td>2250821</td></tr><tr><td><b>memory</b></td><td>5.900000</td></tr><tr><td><b>max memory</b></td><td>6.210000</td></tr></table></div></td></tr></table></div></div><script>
+require(['nbextensions/nbimandra/fold'], function (fold) {
+  var target = '#fold-13ab5fc5-cd8c-4d57-85ea-664b1ed2705e';
+  fold.hydrate(target);
+});
+</script></div></td></tr></table></div></div><div class="tab-pane"><div class="imandra-fold panel panel-default" id="fold-12e1fecd-ccd9-46ac-9720-4d47bc81ffe9"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.020s]
+  not
+  (Reflect.Term.Apply
+   (Reflect.Term.Ident
+    {Reflect.Uid.name = &quot;+&quot;; Reflect.Uid.payload = &quot;\\x84\\x95\\xa6\\xbe&quot;},
+    [Reflect.Term.Const (Reflect.Term.Const_z 1);
+     Reflect.Term.Const (Reflect.Term.Const_z 1)])
+   = Reflect.Term.Const (Reflect.Term.Const_z 2))</pre></li><li><div><h4>simplify</h4><div class="imandra-table" id="table-3bc46cd3-1979-48d6-85c6-724df96042dc"><table><tr><td><b>into</b></td><td><pre>true</pre></td></tr><tr><td><b>expansions</b></td><td><pre>[]</pre></td></tr><tr><td><b>rewrite_steps</b></td><td><ul></ul></td></tr><tr><td><b>forward_chaining</b></td><td><ul></ul></td></tr></table></div></div></li><li><div><h4>unsat</h4><pre>(mp (asserted (not true)) (rewrite (= (not true) false)) false)</pre></div></li></ul></div><script>
+require(['nbextensions/nbimandra/fold'], function (fold) {
+  var target = '#fold-12e1fecd-ccd9-46ac-9720-4d47bc81ffe9';
+  fold.hydrate(target);
+});
+</script></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-f5ad8f3a-8813-40ae-94fe-c256bb259d55"><textarea style="display: none">digraph &quot;proof&quot; {
+p_2 [label=&quot;Start (not\l       (Reflect.Term.Apply\l        (Reflect.Term.Ident\l         \{Reflect.Uid.name = \&quot;+\&quot;;\l          Reflect.Uid.payload = \&quot;\\\\x84\\\\x95\\\\xa6\\\\xbe\&quot;\},\l         [Reflect.Term.Const (Reflect.Term.Const_z 1);\l          Reflect.Term.Const (Reflect.Term.Const_z 1)])\l        = Reflect.Term.Const (Reflect.Term.Const_z 2))\l       :time 0.020s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+p_2 -&gt; p_1 [label=&quot;&quot;];
+p_1 [label=&quot;Simplify (true :expansions [] :rw [] :fc [])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+p_1 -&gt; p_0 [label=&quot;&quot;];
+p_0 -&gt; p_z3_44 [label=&quot;&quot;,fontname=&quot;courier&quot;,fontsize=14];
+p_z3_44 [label=&quot;(mp (asserted (not true)) (rewrite (= (not true) false)) false)&quot;,shape=box,fontname=&quot;courier&quot;,fontsize=14];p_0 [label=&quot;unsat&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+}
+</textarea><button class="btn btn-primary">Load graph</button><div class="imandra-graphviz-loading display-none">Loading..</div><div class="imandra-graphviz-target"></div><script>
+require(['nbextensions/nbimandra/graphviz'], function (graphviz) {
+  var target = '#graphviz-f5ad8f3a-8813-40ae-94fe-c256bb259d55';
+  graphviz.hydrate(target);
+});
+</script></div></div></div><script>
+require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
+  var target = '#alt-cb987f78-668a-4254-8578-6cc0044a6916';
+  alternatives.hydrate(target);
+});
+</script></div></div></div><script>
+require(['nbextensions/nbimandra/fold'], function (fold) {
+  var target = '#fold-2073b6fc-b8d0-4720-bf4b-1aa6db75761e';
+  fold.hydrate(target);
+});
+</script></div></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-fca34f16-4ff5-4071-846a-5f657f34d84f"><textarea style="display: none">digraph &quot;call graph&quot; {
+goal [label=&quot;not true&quot;,shape=box,style=filled,color=&quot;cyan&quot;,fontname=&quot;courier&quot;,fontsize=14];
+}
+</textarea><button class="btn btn-primary">Load graph</button><div class="imandra-graphviz-loading display-none">Loading..</div><div class="imandra-graphviz-target"></div><script>
+require(['nbextensions/nbimandra/graphviz'], function (graphviz) {
+  var target = '#graphviz-fca34f16-4ff5-4071-846a-5f657f34d84f';
+  graphviz.hydrate(target);
+});
+</script></div></div></div><script>
+require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
+  var target = '#alt-8c8ac3aa-35be-44a8-9f85-8ac31cf0fe1a';
+  alternatives.hydrate(target);
+});
+</script></div></div></div>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html"><p>If everything succeeds you should be dropped into an <code>imandra-repl</code> session. Exit this with <code>C-d</code>.</p>
-<p>Then to launch the notebook, mount your <code>~/.imandra</code> folder as a volume in the container. You may find it useful to mount the current directory in the container too so you can save notebooks you've edited:</p>
+<div class="text_cell_render border-box-sizing rendered_html"><p>The data type <code>Reflect.Term.t</code> closely mirrors Imandra's internal AST. It looks like this:</p>
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+<div class="cell border-box-sizing code_cell rendered">
+<div class="try-this-container">
+  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Reflection.ipynb%23try-cell-6" target="_blank" rel="nofollow">
+    <div class="try-this">Try this!</div>
+  </a>
 </div>
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[3]:</div>
 <div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html"><div class="terminal">
-    <div class="terminal__copy-ready">
-      <div class="terminal__copy-ready--top"><span class="terminal__copy-msg">Ready!</span></div>
-      <div class="terminal__copy-ready--bottom"></div>
-    </div>
-    <code>
-    <div class="highlight"><pre><span></span>docker pull imandra/imandra-client-notebook:latest <span class="o">&amp;&amp;</span> <span class="se">\</span>
-  docker run -it --rm -v <span class="si">${</span><span class="nv">HOME</span><span class="si">}</span>/.imandra:/home/jovyan/.imandra -p <span class="m">8888</span>:8888 <span class="se">\</span>
-  -v <span class="sb">`</span><span class="nb">pwd</span><span class="sb">`</span>:/home/jovyan/workdir <span class="se">\</span>
-  imandra/imandra-client-notebook
+    <div class="input_area">
+<div class=" highlight hl-ocaml"><pre><span></span><span class="o">#</span><span class="n">show</span> <span class="nn">Reflect</span><span class="p">.</span><span class="nn">Term</span><span class="p">.</span><span class="n">t</span>
 </pre></div>
 
-    </code>
-    <div id="copy-button-id--3" class="terminal__copy-cover">
-      <img src="/imandra-docs/static/img/copy.svg">
-    </div>
-  </div>
-  <script>document.getElementById('copy-button-id--3').addEventListener('click', handleCopyClick);</script>
-
-  
-  </div>
 </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[3]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>type nonrec t =
+    Bool of bool
+  | Const of Reflect.Term.const
+  | If of Reflect.Term.t * Reflect.Term.t * Reflect.Term.t
+  | Apply of Reflect.Term.t * Reflect.Term.t list
+  | Ident of Reflect.Uid.t
+  | Tuple of Reflect.Term.t list
+  | Let of { rec_ : bool;
+      bindings : Reflect.Term.t Reflect.Term.binding list;
+      body : Reflect.Term.t;
+    }
+  | Tuple_field of int * Reflect.Term.t
+  | Construct of Reflect.Uid.t * Reflect.Term.t list
+  | Destruct of Reflect.Uid.t * int * Reflect.Term.t
+  | Is_a of Reflect.Uid.t * Reflect.Term.t
+  | Field of Reflect.Uid.t * Reflect.Term.t
+  | Record of (Reflect.Uid.t * Reflect.Term.t) list * Reflect.Term.t option
+  | Fun of Reflect.Var.t * Reflect.Term.t
+</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="try-this-container">
+  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Reflection.ipynb%23try-cell-7" target="_blank" rel="nofollow">
+    <div class="try-this">Try this!</div>
+  </a>
+</div>
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[4]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ocaml"><pre><span></span><span class="c">(* let&#39;s have some helpers, it&#39;s a bit subtle to get the Uid of &quot;+&quot; *)</span>
+<span class="k">let</span> <span class="n">ast_plus</span> <span class="o">=</span> <span class="o">[%</span><span class="n">quote</span> <span class="o">(+)];;</span>
+<span class="k">let</span> <span class="n">ast_one</span> <span class="o">=</span> <span class="nn">Reflect</span><span class="p">.</span><span class="nn">Term</span><span class="p">.</span><span class="o">(</span><span class="nc">Const</span> <span class="o">(</span><span class="nc">Const_z</span> <span class="mi">1</span><span class="o">));;</span>
+
+<span class="n">verify</span> <span class="o">(</span><span class="n">arith_term</span> <span class="o">=</span> <span class="nn">Reflect</span><span class="p">.</span><span class="nn">Term</span><span class="p">.</span><span class="o">(</span><span class="nc">Apply</span> <span class="o">(</span><span class="n">ast_plus</span><span class="o">,</span> <span class="o">[</span><span class="n">ast_one</span><span class="o">;</span> <span class="n">ast_one</span><span class="o">])))</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[4]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>val ast_plus : Reflect.Term.t = +
+val ast_one : Reflect.Term.t = 1
+- : bool = true
+</pre>
+</div>
+
+</div>
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+
+<div class="output_html rendered_html output_subarea ">
+<div><div style="font-size: 1.2em; padding: 0.5em; border-top: 1px solid green; border-bottom: 1px solid green"><i class="fa fa-check-circle" style="margin-right: 0.5em; color: green"></i><span>Proved</span></div><div><div class="imandra-alternatives" id="alt-69dc79a0-2870-49b6-b2e1-c4dedb0b7463"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>proof</a></li><li class="" data-toggle="tab"><a>call graph</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-proof-top"><div class="imandra-fold panel panel-default" id="fold-45ba6ac7-cae9-4678-886f-91be52cea81c"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>proof</span></div></div><div class="panel-body collapse"><div class="imandra-proof"><div class="imandra-alternatives" id="alt-a059ad69-4c00-48ab-ac08-92112f304ba9"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>summary</a></li><li class="" data-toggle="tab"><a>full</a></li><li class="" data-toggle="tab"><a>graph</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-table" id="table-2705db05-da8a-487b-b03d-3966ade5f115"><table><tr><td><b>ground_instances</b></td><td>0</td></tr><tr><td><b>definitions</b></td><td>0</td></tr><tr><td><b>inductions</b></td><td>0</td></tr><tr><td><b>search_time</b></td><td><pre>0.019s</pre></td></tr><tr><td><b>details</b></td><td><div class="imandra-fold panel panel-default" id="fold-b59b2931-716e-4111-b075-4f0546870c69"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><div class="imandra-table" id="table-95a77852-985a-4b34-a120-5a7817f3a6ae"><table><tr><td><b>smt_stats</b></td><td><div class="imandra-table" id="table-675f226e-8c56-4dc5-8223-23c6913d7973"><table><tr><td><b>rlimit count</b></td><td>54</td></tr><tr><td><b>mk bool var</b></td><td>5</td></tr><tr><td><b>num allocs</b></td><td>8613283</td></tr><tr><td><b>memory</b></td><td>6.470000</td></tr><tr><td><b>max memory</b></td><td>6.770000</td></tr></table></div></td></tr></table></div></div><script>
+require(['nbextensions/nbimandra/fold'], function (fold) {
+  var target = '#fold-b59b2931-716e-4111-b075-4f0546870c69';
+  fold.hydrate(target);
+});
+</script></div></td></tr></table></div></div><div class="tab-pane"><div class="imandra-fold panel panel-default" id="fold-031ced31-85b5-4cc5-9a79-a0b349461fa5"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.019s]
+  Reflect.Term.Apply
+  (Reflect.Term.Ident
+   {Reflect.Uid.name = &quot;+&quot;; Reflect.Uid.payload = &quot;\\x84\\x95\\xa6\\xbe&quot;},
+   [Reflect.Term.Const (Reflect.Term.Const_z 1);
+    Reflect.Term.Const (Reflect.Term.Const_z 1)])
+  =
+  Reflect.Term.Apply
+  (Reflect.Term.Ident
+   {Reflect.Uid.name = &quot;+&quot;; Reflect.Uid.payload = &quot;\\x84\\x95\\xa6\\xbe&quot;},
+   [Reflect.Term.Const (Reflect.Term.Const_z 1);
+    Reflect.Term.Const (Reflect.Term.Const_z 1)])</pre></li><li><div><h4>simplify</h4><div class="imandra-table" id="table-4c959417-2bda-499d-9e2b-2cec80e6762b"><table><tr><td><b>into</b></td><td><pre>true</pre></td></tr><tr><td><b>expansions</b></td><td><pre>[]</pre></td></tr><tr><td><b>rewrite_steps</b></td><td><ul></ul></td></tr><tr><td><b>forward_chaining</b></td><td><ul></ul></td></tr></table></div></div></li><li><div><h4>unsat</h4><pre>(mp (asserted (not true)) (rewrite (= (not true) false)) false)</pre></div></li></ul></div><script>
+require(['nbextensions/nbimandra/fold'], function (fold) {
+  var target = '#fold-031ced31-85b5-4cc5-9a79-a0b349461fa5';
+  fold.hydrate(target);
+});
+</script></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-4fa58b00-b989-4ced-ae01-2b763455bf80"><textarea style="display: none">digraph &quot;proof&quot; {
+p_5 [label=&quot;Start (Reflect.Term.Apply\l       (Reflect.Term.Ident\l        \{Reflect.Uid.name = \&quot;+\&quot;; Reflect.Uid.payload = \&quot;\\\\x84\\\\x95\\\\xa6\\\\xbe\&quot;\},\l        [Reflect.Term.Const (Reflect.Term.Const_z 1);\l         Reflect.Term.Const (Reflect.Term.Const_z 1)])\l       =\l       Reflect.Term.Apply\l       (Reflect.Term.Ident\l        \{Reflect.Uid.name = \&quot;+\&quot;; Reflect.Uid.payload = \&quot;\\\\x84\\\\x95\\\\xa6\\\\xbe\&quot;\},\l        [Reflect.Term.Const (Reflect.Term.Const_z 1);\l         Reflect.Term.Const (Reflect.Term.Const_z 1)])\l       :time 0.019s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+p_5 -&gt; p_4 [label=&quot;&quot;];
+p_4 [label=&quot;Simplify (true :expansions [] :rw [] :fc [])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+p_4 -&gt; p_3 [label=&quot;&quot;];
+p_3 -&gt; p_z3_73 [label=&quot;&quot;,fontname=&quot;courier&quot;,fontsize=14];
+p_z3_73 [label=&quot;(mp (asserted (not true)) (rewrite (= (not true) false)) false)&quot;,shape=box,fontname=&quot;courier&quot;,fontsize=14];p_3 [label=&quot;unsat&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+}
+</textarea><button class="btn btn-primary">Load graph</button><div class="imandra-graphviz-loading display-none">Loading..</div><div class="imandra-graphviz-target"></div><script>
+require(['nbextensions/nbimandra/graphviz'], function (graphviz) {
+  var target = '#graphviz-4fa58b00-b989-4ced-ae01-2b763455bf80';
+  graphviz.hydrate(target);
+});
+</script></div></div></div><script>
+require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
+  var target = '#alt-a059ad69-4c00-48ab-ac08-92112f304ba9';
+  alternatives.hydrate(target);
+});
+</script></div></div></div><script>
+require(['nbextensions/nbimandra/fold'], function (fold) {
+  var target = '#fold-45ba6ac7-cae9-4678-886f-91be52cea81c';
+  fold.hydrate(target);
+});
+</script></div></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-6ccb6c82-63cf-4d8f-82aa-28c5d20a8502"><textarea style="display: none">digraph &quot;call graph&quot; {
+goal [label=&quot;not true&quot;,shape=box,style=filled,color=&quot;cyan&quot;,fontname=&quot;courier&quot;,fontsize=14];
+}
+</textarea><button class="btn btn-primary">Load graph</button><div class="imandra-graphviz-loading display-none">Loading..</div><div class="imandra-graphviz-target"></div><script>
+require(['nbextensions/nbimandra/graphviz'], function (graphviz) {
+  var target = '#graphviz-6ccb6c82-63cf-4d8f-82aa-28c5d20a8502';
+  graphviz.hydrate(target);
+});
+</script></div></div></div><script>
+require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
+  var target = '#alt-69dc79a0-2870-49b6-b2e1-c4dedb0b7463';
+  alternatives.hydrate(target);
+});
+</script></div></div></div>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html"><h2 id="Building-new-terms-manually">Building new terms manually<a class="anchor-link" href="#Building-new-terms-manually">&#182;</a></h2><p>As demonstrated above, it is possible to build new terms with <code>Reflect.Term.Apply</code> and other constructors. However, applying functions is made difficult by the existence of <code>Reflect.Uid.t</code>s (a reflection of Imandra's internal unique IDs) that are impossible to guess.</p>
+<p>To remediate that, <code>[%uid f]</code> can be used to obtain the <code>Reflect.Uid.t</code> for a function <code>f</code> in scope:</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="try-this-container">
+  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Reflection.ipynb%23try-cell-9" target="_blank" rel="nofollow">
+    <div class="try-this">Try this!</div>
+  </a>
+</div>
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[5]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ocaml"><pre><span></span><span class="k">let</span> <span class="n">uid_plus</span> <span class="o">=</span> <span class="o">[%</span><span class="n">uid</span> <span class="o">(+)];;</span>
+
+<span class="k">let</span> <span class="n">arith_term_manual</span> <span class="o">=</span> <span class="nn">Reflect</span><span class="p">.</span><span class="nn">Term</span><span class="p">.</span><span class="o">(</span><span class="nc">Apply</span> <span class="o">(</span><span class="nc">Ident</span> <span class="n">uid_plus</span><span class="o">,</span> <span class="o">[[%</span><span class="n">q</span> <span class="mi">1</span><span class="o">];</span> <span class="o">[%</span><span class="n">q</span> <span class="mi">1</span><span class="o">]]));;</span>
+
+<span class="n">verify</span> <span class="o">(</span><span class="n">arith_term</span> <span class="o">=</span> <span class="n">arith_term_manual</span><span class="o">);;</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[5]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>val uid_plus : Reflect.Uid.t = +
+val arith_term_manual : Reflect.Term.t = (+ 1 1)
+- : bool = true
+</pre>
+</div>
+
+</div>
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+
+<div class="output_html rendered_html output_subarea ">
+<div><div style="font-size: 1.2em; padding: 0.5em; border-top: 1px solid green; border-bottom: 1px solid green"><i class="fa fa-check-circle" style="margin-right: 0.5em; color: green"></i><span>Proved</span></div><div><div class="imandra-alternatives" id="alt-5141fee1-1b3b-4ea3-8679-9d7eb2c7c0fd"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>proof</a></li><li class="" data-toggle="tab"><a>call graph</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-proof-top"><div class="imandra-fold panel panel-default" id="fold-bff8994a-fb69-4d69-8f12-03a7752de9f7"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>proof</span></div></div><div class="panel-body collapse"><div class="imandra-proof"><div class="imandra-alternatives" id="alt-af1a69b4-355d-41eb-9c43-1ab95af97ee9"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>summary</a></li><li class="" data-toggle="tab"><a>full</a></li><li class="" data-toggle="tab"><a>graph</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-table" id="table-37ba0b41-d78c-422c-af87-bcc17c146cbb"><table><tr><td><b>ground_instances</b></td><td>0</td></tr><tr><td><b>definitions</b></td><td>0</td></tr><tr><td><b>inductions</b></td><td>0</td></tr><tr><td><b>search_time</b></td><td><pre>0.022s</pre></td></tr><tr><td><b>details</b></td><td><div class="imandra-fold panel panel-default" id="fold-c10bd6ee-f962-4077-be08-2e97d47e5bf2"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><div class="imandra-table" id="table-4e7353e3-8be6-437d-ae9c-30523f65b222"><table><tr><td><b>smt_stats</b></td><td><div class="imandra-table" id="table-bb435562-d7bf-427c-a33a-74cc0bdd193d"><table><tr><td><b>rlimit count</b></td><td>54</td></tr><tr><td><b>mk bool var</b></td><td>5</td></tr><tr><td><b>num allocs</b></td><td>16725159</td></tr><tr><td><b>memory</b></td><td>9.770000</td></tr><tr><td><b>max memory</b></td><td>10.080000</td></tr></table></div></td></tr></table></div></div><script>
+require(['nbextensions/nbimandra/fold'], function (fold) {
+  var target = '#fold-c10bd6ee-f962-4077-be08-2e97d47e5bf2';
+  fold.hydrate(target);
+});
+</script></div></td></tr></table></div></div><div class="tab-pane"><div class="imandra-fold panel panel-default" id="fold-fab8bf5b-058a-4867-aa56-76d36e7fc291"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.022s]
+  Reflect.Term.Apply
+  (Reflect.Term.Ident
+   {Reflect.Uid.name = &quot;+&quot;; Reflect.Uid.payload = &quot;\\x84\\x95\\xa6\\xbe&quot;},
+   [Reflect.Term.Const (Reflect.Term.Const_z 1);
+    Reflect.Term.Const (Reflect.Term.Const_z 1)])
+  =
+  Reflect.Term.Apply
+  (Reflect.Term.Ident
+   {Reflect.Uid.name = &quot;+&quot;; Reflect.Uid.payload = &quot;\\x84\\x95\\xa6\\xbe&quot;},
+   [Reflect.Term.Const (Reflect.Term.Const_z 1);
+    Reflect.Term.Const (Reflect.Term.Const_z 1)])</pre></li><li><div><h4>simplify</h4><div class="imandra-table" id="table-b1c19434-ff9c-4087-979b-931a84b6b85f"><table><tr><td><b>into</b></td><td><pre>true</pre></td></tr><tr><td><b>expansions</b></td><td><pre>[]</pre></td></tr><tr><td><b>rewrite_steps</b></td><td><ul></ul></td></tr><tr><td><b>forward_chaining</b></td><td><ul></ul></td></tr></table></div></div></li><li><div><h4>unsat</h4><pre>(mp (asserted (not true)) (rewrite (= (not true) false)) false)</pre></div></li></ul></div><script>
+require(['nbextensions/nbimandra/fold'], function (fold) {
+  var target = '#fold-fab8bf5b-058a-4867-aa56-76d36e7fc291';
+  fold.hydrate(target);
+});
+</script></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-d982cb65-3db8-40c1-8fd6-0f479c967b7c"><textarea style="display: none">digraph &quot;proof&quot; {
+p_8 [label=&quot;Start (Reflect.Term.Apply\l       (Reflect.Term.Ident\l        \{Reflect.Uid.name = \&quot;+\&quot;; Reflect.Uid.payload = \&quot;\\\\x84\\\\x95\\\\xa6\\\\xbe\&quot;\},\l        [Reflect.Term.Const (Reflect.Term.Const_z 1);\l         Reflect.Term.Const (Reflect.Term.Const_z 1)])\l       =\l       Reflect.Term.Apply\l       (Reflect.Term.Ident\l        \{Reflect.Uid.name = \&quot;+\&quot;; Reflect.Uid.payload = \&quot;\\\\x84\\\\x95\\\\xa6\\\\xbe\&quot;\},\l        [Reflect.Term.Const (Reflect.Term.Const_z 1);\l         Reflect.Term.Const (Reflect.Term.Const_z 1)])\l       :time 0.022s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+p_8 -&gt; p_7 [label=&quot;&quot;];
+p_7 [label=&quot;Simplify (true :expansions [] :rw [] :fc [])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+p_7 -&gt; p_6 [label=&quot;&quot;];
+p_6 -&gt; p_z3_78 [label=&quot;&quot;,fontname=&quot;courier&quot;,fontsize=14];
+p_z3_78 [label=&quot;(mp (asserted (not true)) (rewrite (= (not true) false)) false)&quot;,shape=box,fontname=&quot;courier&quot;,fontsize=14];p_6 [label=&quot;unsat&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+}
+</textarea><button class="btn btn-primary">Load graph</button><div class="imandra-graphviz-loading display-none">Loading..</div><div class="imandra-graphviz-target"></div><script>
+require(['nbextensions/nbimandra/graphviz'], function (graphviz) {
+  var target = '#graphviz-d982cb65-3db8-40c1-8fd6-0f479c967b7c';
+  graphviz.hydrate(target);
+});
+</script></div></div></div><script>
+require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
+  var target = '#alt-af1a69b4-355d-41eb-9c43-1ab95af97ee9';
+  alternatives.hydrate(target);
+});
+</script></div></div></div><script>
+require(['nbextensions/nbimandra/fold'], function (fold) {
+  var target = '#fold-bff8994a-fb69-4d69-8f12-03a7752de9f7';
+  fold.hydrate(target);
+});
+</script></div></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-b2ebc6b1-184b-4bd5-912c-ef95f43e0c28"><textarea style="display: none">digraph &quot;call graph&quot; {
+goal [label=&quot;not true&quot;,shape=box,style=filled,color=&quot;cyan&quot;,fontname=&quot;courier&quot;,fontsize=14];
+}
+</textarea><button class="btn btn-primary">Load graph</button><div class="imandra-graphviz-loading display-none">Loading..</div><div class="imandra-graphviz-target"></div><script>
+require(['nbextensions/nbimandra/graphviz'], function (graphviz) {
+  var target = '#graphviz-b2ebc6b1-184b-4bd5-912c-ef95f43e0c28';
+  graphviz.hydrate(target);
+});
+</script></div></div></div><script>
+require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
+  var target = '#alt-5141fee1-1b3b-4ea3-8679-9d7eb2c7c0fd';
+  alternatives.hydrate(target);
+});
+</script></div></div></div>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html"><h2 id="Unquote">Unquote<a class="anchor-link" href="#Unquote">&#182;</a></h2><p>Now, it is possible to <em>unquote</em> values or other subterms inside a quoted expression. This way, quoted expressions can be parametrized. Here is a function that produces the AST <code>x + y + 0</code>:</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="try-this-container">
+  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Reflection.ipynb%23try-cell-11" target="_blank" rel="nofollow">
+    <div class="try-this">Try this!</div>
+  </a>
+</div>
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[6]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ocaml"><pre><span></span><span class="k">let</span> <span class="n">mk_plus_0</span> <span class="n">x</span> <span class="n">y</span> <span class="o">:</span> <span class="nn">Reflect</span><span class="p">.</span><span class="nn">Term</span><span class="p">.</span><span class="n">t</span> <span class="o">=</span>
+    <span class="o">[%</span><span class="n">quote</span> <span class="o">[%</span><span class="n">u</span> <span class="n">x</span><span class="o">]</span> <span class="o">+</span> <span class="o">[%</span><span class="n">u</span> <span class="n">y</span><span class="o">]</span> <span class="o">+</span> <span class="mi">0</span><span class="o">];;</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[6]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>val mk_plus_0 : Int.t -&gt; Int.t -&gt; Reflect.Term.t = &lt;fun&gt;
+</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html"><p>The expression <code>[%u x]</code> (short for <code>[%unquote x]</code>) <em>pulls</em> <code>x</code> from the outside scope and injects it, as an integer, into the reflected term (of type <code>Reflect.Term.t</code>).</p>
+<p>It is important to remark that this function takes <em>integers</em>, not ASTs. It is type-safe, you cannot produce
+a ill-typed expression this way!</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="try-this-container">
+  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Reflection.ipynb%23try-cell-13" target="_blank" rel="nofollow">
+    <div class="try-this">Try this!</div>
+  </a>
+</div>
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[7]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ocaml"><pre><span></span><span class="n">mk_plus_0</span> <span class="mi">10</span> <span class="mi">50</span><span class="o">;;</span>
+
+<span class="c">(* this doesn&#39;t typecheck:</span>
+<span class="c">mk_plus_0 true &quot;hello&quot;;;</span>
+<span class="c">*)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[7]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>- : Reflect.Term.t = (+ (+ 10 50) 0)
+</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html"><p>The actual AST produced by <code>[%quote …]</code> is significantly more verbose (click on "definition" below). Again note that <code>x</code> and <code>y</code> have type <code>Int.t</code>.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="try-this-container">
+  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Reflection.ipynb%23try-cell-15" target="_blank" rel="nofollow">
+    <div class="try-this">Try this!</div>
+  </a>
+</div>
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[8]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ocaml"><pre><span></span><span class="o">#</span><span class="n">h</span> <span class="n">mk_plus_0</span><span class="o">;;</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[8]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre></pre>
+</div>
+
+</div>
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+
+<div class="output_html rendered_html output_subarea ">
+<div><div><h3>Fun: mk_plus_0</h3><div class="imandra-table" id="table-58a3bd42-a82b-4d37-b4e2-874525361241"><table><tr><td><b>iml</b></td><td><div class="imandra-fold panel panel-default" id="fold-628c6961-05cb-4aee-9131-6717250eb396"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>definition</span></div></div><div class="panel-body collapse"><pre>fun (x : Int.t) -&gt;
+ fun (y : Int.t) -&gt;
+  let (_unquoted_var_1 : Int.t) = y and (_unquoted_var_0 : Int.t) = x in
+  Reflect.Term.Apply
+  (Reflect.Term.Ident
+   {Reflect.Uid.name = &quot;+&quot;;
+    Reflect.Uid.payload =
+    &quot;\132\149\166\190\000\000\000N\000\000\000\004\000\000\000\028\000\000\000\019\192|'prelude@\144\t@bc310c4058cc3439a59f581eb4dd696b5e2e6eea796f68fa425d54e787b1834b&quot;},
+   [Reflect.Term.Apply
+    (Reflect.Term.Ident
+     {Reflect.Uid.name = &quot;+&quot;;
+      Reflect.Uid.payload =
+      &quot;\132\149\166\190\000\000\000N\000\000\000\004\000\000\000\028\000\000\000\019\192|'prelude@\144\t@bc310c4058cc3439a59f581eb4dd696b5e2e6eea796f68fa425d54e787b1834b&quot;},
+     [Reflect.Term.Const (Reflect.Term.Const_z _unquoted_var_0);
+      Reflect.Term.Const (Reflect.Term.Const_z _unquoted_var_1)]);
+    Reflect.Term.Const (Reflect.Term.Const_z 0)])</pre></div><script>
+require(['nbextensions/nbimandra/fold'], function (fold) {
+  var target = '#fold-628c6961-05cb-4aee-9131-6717250eb396';
+  fold.hydrate(target);
+});
+</script></div></td></tr><tr><td><b>def</b></td><td><div class="imandra-table" id="table-f338ffe5-bc2c-49a2-9d0d-64c55e777aac"><table><tr><td><b>name</b></td><td>mk_plus_0</td></tr><tr><td><b>type</b></td><td>Int.t -&gt; Int.t -&gt; Reflect.Term.t</td></tr><tr><td><b>recursive</b></td><td>false</td></tr><tr><td><b>call signature</b></td><td>mk_plus_0 (x : Int.t) (y : Int.t)</td></tr><tr><td><b>validated</b></td><td>in 0.000s</td></tr><tr><td><b>location</b></td><td>jupyter cell 6:1,0--69</td></tr><tr><td><b>hashes</b></td><td><div class="imandra-table" id="table-e166387a-174b-42e1-87e4-3b49fa58ff69"><table><tr><td><b>mk_plus_0</b></td><td>0b829f927d32306fc2c5e2382724f8bc7fc6f72e00baef5541c0c25962b64a7e</td></tr></table></div></td></tr></table></div></td></tr></table></div></div></div>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html"><p>Instead of <code>[%unquote x]</code>, which injects a well-typed value inside the AST, we can use <code>[%uu x]</code> or <code>[%unquote_splice x]</code> to inject an already reflected term. This doesn't guarantee type-safety anymore, so one should be careful not to create ill-typed ASTs.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="try-this-container">
+  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Reflection.ipynb%23try-cell-17" target="_blank" rel="nofollow">
+    <div class="try-this">Try this!</div>
+  </a>
+</div>
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[9]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ocaml"><pre><span></span><span class="c">(* ternary conjunction of arbitrary terms *)</span>
+<span class="k">let</span> <span class="n">mk_and3</span> <span class="n">x</span> <span class="n">y</span> <span class="n">z</span> <span class="o">:</span> <span class="nn">Reflect</span><span class="p">.</span><span class="nn">Term</span><span class="p">.</span><span class="n">t</span> <span class="o">=</span>
+    <span class="o">[%</span><span class="n">quote</span> <span class="o">[%</span><span class="n">uu</span> <span class="n">x</span><span class="o">]</span> <span class="o">&amp;&amp;</span> <span class="o">[%</span><span class="n">uu</span> <span class="n">y</span><span class="o">]</span> <span class="o">&amp;&amp;</span> <span class="o">[%</span><span class="n">uu</span> <span class="n">z</span><span class="o">]];;</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[9]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>val mk_and3 :
+  Reflect.Term.t -&gt; Reflect.Term.t -&gt; Reflect.Term.t -&gt; Reflect.Term.t =
+  &lt;fun&gt;
+</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="try-this-container">
+  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Reflection.ipynb%23try-cell-18" target="_blank" rel="nofollow">
+    <div class="try-this">Try this!</div>
+  </a>
+</div>
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[10]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ocaml"><pre><span></span><span class="n">mk_and3</span> <span class="o">[%</span><span class="n">q</span> <span class="bp">true</span><span class="o">]</span> <span class="o">[%</span><span class="n">q</span> <span class="bp">false</span><span class="o">]</span> <span class="o">[%</span><span class="n">q</span> <span class="bp">true</span><span class="o">];;</span>
+
+<span class="c">(* ill-typed!! Do not do that! *)</span>
+<span class="n">mk_and3</span> <span class="o">[%</span><span class="n">q</span> <span class="mi">1</span><span class="o">]</span> <span class="o">[%</span><span class="n">q</span> <span class="nc">None</span><span class="o">]</span> <span class="o">[%</span><span class="n">q</span> <span class="o">(</span><span class="s2">&quot;hello&quot;</span><span class="o">,</span> <span class="s2">&quot;world&quot;</span><span class="o">)];;</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[10]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>- : Reflect.Term.t = (&amp;&amp; true (&amp;&amp; false true))
+- : Reflect.Term.t = (&amp;&amp; 1 (&amp;&amp; None (&#34;hello&#34;, &#34;world&#34;)))
+</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html"><h2 id="Quotations-in-patterns">Quotations in patterns<a class="anchor-link" href="#Quotations-in-patterns">&#182;</a></h2><p>It is possible to use <code>[%q …]</code> in pattern position, as well as <code>[%q? p]</code> where <code>p</code> is a valid Imandra pattern. This is useful to build functions that operate on <code>Reflect.Term.t</code>:</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="try-this-container">
+  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Reflection.ipynb%23try-cell-20" target="_blank" rel="nofollow">
+    <div class="try-this">Try this!</div>
+  </a>
+</div>
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[11]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ocaml"><pre><span></span><span class="c">(* build the negation of the reflected term &quot;t&quot;, but with some simplifications *)</span>
+<span class="k">let</span> <span class="n">mk_not</span> <span class="o">=</span> <span class="k">function</span>
+  <span class="o">|</span> <span class="o">[%</span><span class="n">q</span> <span class="o">(</span><span class="n">not</span> <span class="o">[%</span><span class="n">uu</span> <span class="n">t</span><span class="o">])]</span> <span class="o">-&gt;</span> <span class="n">t</span>
+  <span class="o">|</span> <span class="o">[%</span><span class="n">q</span> <span class="bp">true</span><span class="o">]</span> <span class="o">-&gt;</span> <span class="o">[%</span><span class="n">q</span> <span class="bp">false</span><span class="o">]</span>
+  <span class="o">|</span> <span class="o">[%</span><span class="n">q</span> <span class="bp">false</span><span class="o">]</span> <span class="o">-&gt;</span> <span class="o">[%</span><span class="n">q</span> <span class="bp">true</span><span class="o">]</span>
+  <span class="o">|</span> <span class="n">t</span> <span class="o">-&gt;</span> <span class="o">[%</span><span class="n">q</span> <span class="o">[%</span><span class="n">uu</span> <span class="n">t</span><span class="o">]]</span>
+  <span class="o">;;</span>
+
+<span class="o">#</span><span class="n">h</span> <span class="n">mk_not</span><span class="o">;;</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[11]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>val mk_not : Reflect.Term.t -&gt; Reflect.Term.t = &lt;fun&gt;
+</pre>
+</div>
+
+</div>
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+
+<div class="output_html rendered_html output_subarea ">
+<div><div><h3>Fun: mk_not</h3><div class="imandra-table" id="table-de38a7b5-b58c-4d44-9c81-af96d691a3ab"><table><tr><td><b>iml</b></td><td><div class="imandra-fold panel panel-default" id="fold-0fdacbff-8ae1-41fa-af34-dfe4621613aa"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>definition</span></div></div><div class="panel-body collapse"><pre>fun (_x : Reflect.Term.t) -&gt;
+ if Is_a(Reflect.Term.Apply, _x)
+    &amp;&amp; Is_a(Reflect.Term.Ident, Destruct(Reflect.Term.Apply, 0, _x))
+       &amp;&amp; (Destruct(Reflect.Term.Ident, 0,
+                    Destruct(Reflect.Term.Apply, 0, _x))).Reflect.Uid.name
+          = &quot;not&quot;
+          &amp;&amp; (Destruct(Reflect.Term.Ident, 0,
+                       Destruct(Reflect.Term.Apply, 0, _x))).Reflect.Uid.payload
+             =
+             &quot;\132\149\166\190\000\000\000N\000\000\000\004\000\000\000\028\000\000\000\019\192q'prelude@\144\t@83f6cfed887c57674af881eb149fdc44473a073eee1c9dc6beb6aa4748c8c40b&quot;
+             &amp;&amp; (Destruct(Reflect.Term.Apply, 1, _x)) &lt;&gt; []
+                &amp;&amp; List.tl (Destruct(Reflect.Term.Apply, 1, _x)) = []
+ then
+   let (t : Reflect.Term.t) = List.hd (Destruct(Reflect.Term.Apply, 1, _x))
+   in t
+ else
+ if Is_a(Reflect.Term.Bool, _x) &amp;&amp; Destruct(Reflect.Term.Bool, 0, _x) = true
+ then Reflect.Term.Bool false
+ else
+ if Is_a(Reflect.Term.Bool, _x) &amp;&amp; Destruct(Reflect.Term.Bool, 0, _x) = false
+ then Reflect.Term.Bool true
+ else
+   let (t : Reflect.Term.t) = _x in
+   let (_uu__var_5 : Reflect.Term.t) = t in _uu__var_5</pre></div><script>
+require(['nbextensions/nbimandra/fold'], function (fold) {
+  var target = '#fold-0fdacbff-8ae1-41fa-af34-dfe4621613aa';
+  fold.hydrate(target);
+});
+</script></div></td></tr><tr><td><b>def</b></td><td><div class="imandra-table" id="table-d5298a33-98c5-4e8e-9a41-a65878ad5719"><table><tr><td><b>name</b></td><td>mk_not</td></tr><tr><td><b>type</b></td><td>Reflect.Term.t -&gt; Reflect.Term.t</td></tr><tr><td><b>recursive</b></td><td>false</td></tr><tr><td><b>call signature</b></td><td>mk_not (_x : Reflect.Term.t)</td></tr><tr><td><b>validated</b></td><td>in 0.001s</td></tr><tr><td><b>location</b></td><td>jupyter cell 11:2,0--127</td></tr><tr><td><b>hashes</b></td><td><div class="imandra-table" id="table-7c74cf6a-e8c9-4372-9afa-edde6ec1c8ad"><table><tr><td><b>mk_not</b></td><td>a615c557338154b8f1651c5377141aeefb030e3d1646c94f0e3a3e9ef1756060</td></tr></table></div></td></tr></table></div></td></tr></table></div></div></div>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="try-this-container">
+  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Reflection.ipynb%23try-cell-21" target="_blank" rel="nofollow">
+    <div class="try-this">Try this!</div>
+  </a>
+</div>
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[12]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ocaml"><pre><span></span><span class="n">mk_not</span> <span class="o">[%</span><span class="n">q</span> <span class="bp">true</span><span class="o">];;</span>
+<span class="n">mk_not</span> <span class="o">[%</span><span class="n">q</span> <span class="bp">false</span><span class="o">];;</span>
+<span class="n">mk_not</span> <span class="o">[%</span><span class="n">q</span> <span class="n">not</span> <span class="bp">true</span><span class="o">];;</span>
+<span class="n">mk_not</span> <span class="o">[%</span><span class="n">q</span> <span class="n">not</span> <span class="o">(</span><span class="n">not</span> <span class="o">(</span><span class="n">not</span> <span class="bp">false</span><span class="o">))];;</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[12]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>- : Reflect.Term.t = false
+- : Reflect.Term.t = true
+- : Reflect.Term.t = true
+- : Reflect.Term.t = (not (not false))
+</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
 </div>
                     </div>
                 </article>
