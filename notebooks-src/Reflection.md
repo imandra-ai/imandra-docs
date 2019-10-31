@@ -24,7 +24,7 @@ These two terms are distinct, because they are distinct ASTs.
 verify (arith_term <> arith_term2);;
 ```
 
-The data type `Reflect.Term.t` mirrors closely Imandra's internal AST. It looks like that:
+The data type `Reflect.Term.t` mirrors closely Imandra's internal AST. It looks like this:
 
 
 ```{.imandra .input}
