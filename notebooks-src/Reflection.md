@@ -6,7 +6,7 @@ slug: reflection
 ---
 # Reflection
 
-Imandra is able to _reflect_ its normal expressions into a special datatype from the prelude, called `Reflect.Term.t`. A `Reflect.Term.t` is a logic-mode (recursive) type that can be reasoned about, the same way as lists or trees or records or any other logic-mode types can.
+Imandra is able to _reflect_ its normal expressions into a special datatype from the prelude, called `Reflect.Term.t`. A `Reflect.Term.t` is a logic-mode (recursive) type that can be reasoned about, the same way lists, trees, records or any other logic-mode types can be.
 
 
 ```{.imandra .input}
