@@ -33,7 +33,7 @@ Decompose.top "f"
 
 Imandra decomposed the function "f" into 2 regions: the first region tells us that whenever the input argument `x` is less than or equal to 0, then the value returned by the function will be `-1`, the second region tells us that whenever `x` is positive, the output will be 1.
 
-When using Region Decomposition from a REPL instead of from the jupyter notebook, we recommend installing the vornoi printer (producing the above diagram) via `#install_printer Imandra_voronoi.Voronoi.print;;`
+When using Region Decomposition from a REPL instead of from the jupyter notebook, we recommend installing the vornoi printer (producing the above diagram) via the `Imandra_voronoi.Voronoi.print` printer
 
 In the rest of this article we'll go over various important flags and arguments accepted by Imandra's `Decompose.top` entrypoint into its Principal Region Decomposition machinery. As much as possible, we'll use concrete examples to clarify their behaviour.
 
