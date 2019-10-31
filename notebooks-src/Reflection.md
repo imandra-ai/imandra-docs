@@ -24,7 +24,7 @@ These two terms are distinct, because they are distinct ASTs.
 verify (arith_term <> arith_term2);;
 ```
 
-The data type `Reflect.Term.t` mirrors closely Imandra's internal AST. It looks like this:
+The data type `Reflect.Term.t` closely mirrors Imandra's internal AST. It looks like this:
 
 
 ```{.imandra .input}
@@ -43,7 +43,7 @@ verify (arith_term = Reflect.Term.(Apply (ast_plus, [ast_one; ast_one])))
 
 ## Building new terms manually
 
-As demonstrated above, it is possible to build new terms with `Reflect.Term.Apply` and other constructors. However, applying function is made difficult by the existence of `Reflect.Uid.t` (a reflection of Imandra's internal unique IDs) that are impossible to guess.
+As demonstrated above, it is possible to build new terms with `Reflect.Term.Apply` and other constructors. However, applying functions is made difficult by the existence of `Reflect.Uid.t`s (a reflection of Imandra's internal unique IDs) that are impossible to guess.
 
 To remediate that, `[%uid f]` can be used to obtain the `Reflect.Uid.t` for a function `f` in scope:
 
@@ -82,7 +82,7 @@ mk_plus_0 true "hello";;
 *)
 ```
 
-The actual AST produced by `[%quote …]` is significantly more verbose (click on "definition" below). Again note that `x` and `y` have type `Int.t`. 
+The actual AST produced by `[%quote …]` is significantly more verbose (click on "definition" below). Again note that `x` and `y` have type `Int.t`.
 
 
 ```{.imandra .input}
@@ -120,7 +120,7 @@ let mk_not = function
   | [%q false] -> [%q true]
   | t -> [%q [%uu t]]
   ;;
-  
+
 #h mk_not;;
 ```
 
@@ -132,4 +132,3 @@ mk_not [%q not true];;
 mk_not [%q not (not (not false))];;
 
 ```
-
