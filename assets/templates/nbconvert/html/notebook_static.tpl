@@ -37,6 +37,8 @@
         </div></noscript>
         {% endif %}
 
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.js"></script>
+
         <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Merriweather+Sans:300,300i,400,400i%7CMerriweather:300,300i,400,400i%7CRoboto+Slab:300,300i,400,400i">
 
@@ -48,6 +50,7 @@
         {% else %}
         <link rel="stylesheet" href="/{{ repo_dir }}/{{ manifest['static/jekyll-styles.css'] }}" type="text/css">
         {% endif %}
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.css" />
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
@@ -279,6 +282,13 @@
                 }
             });
         })()
+    </script>
+    <script type="text/javascript"> docsearch({
+      apiKey: 'ff3a61a82b58783e62ebfbf51e50b0bc',
+      indexName: 'imandra',
+      inputSelector: '#search',
+      debug: false // Set debug to true if you want to inspect the dropdown
+    });
     </script>
 
     </body>
