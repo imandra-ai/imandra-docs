@@ -20,7 +20,8 @@ opam install imandra-dist
 opam exec -- imandra_client -server 'imandra_network_client'
 ```
 
-# Public packages
+
+# Public Packages
 
 For more advanced installations, we include a list of the available packages in our [opam repository](https://github.com/AestheticIntegration/opam-repository):
 
@@ -42,3 +43,25 @@ For more advanced installations, we include a list of the available packages in 
 - `imandra-voronoi`: Library for visualizing Imandra Regions as a Voronoi diagram
 - `imandra-vscode-server`: Provides the `imandra-vscode-server` binary, providing the backend for the VSCode based [Imandra IDE](https://marketplace.visualstudio.com/items?itemName=aestheticintegration.iml-vscode)
 - `jupyter-imandra`: Jupyter notebook frontend for Imandra
+
+# Installation of VSCode with Manual Installation
+
+In order for the [Imandra IDE Extension](https://marketplace.visualstudio.com/items?itemName=aestheticintegration.iml-vscode) to work with the manual opam installation of imandra, it is necessary to modify some of the settings in VSCode by hand.
+
+Pressing CMD+`,` takes you to the setting section of VSCode. It is necessary to alter the following settings:
+
+- Search for the setting `imandra_merlin` and enter here the result of type `which imandra-merlin` in a terminal where you installed imandra. So for example if you had installed imandra in `~/imandra` you would add for this setting:
+
+```
+~/imandra/imandra-merlin
+```
+
+
+- Search for the setting `imandra-vscode-server` and enter here the result of typing `which imandra-vscode-server` then `-server` then `which imandra_network_client` - so for example if you had installed imandra in `~/imandra` you would add for this setting:
+
+```
+~/imandra/imandra-vscode-server -server ~/imandra/imandra_network_client
+```
+
+
+![Example settings screen](https://storage.googleapis.com/imandra-assets/images/docs/ImandraVSCodeManualOpam.png)

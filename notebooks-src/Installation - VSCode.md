@@ -17,5 +17,8 @@ The extension will open automatically when a file with extension `.iml` or `.ire
     <th><img src="https://storage.googleapis.com/imandra-assets/images/docs/ImandraVSCodeIDE1.png"></th>
     <th><img src = "https://storage.googleapis.com/imandra-assets/images/docs/ImandraVSCodeIDE2.png"></th>
 </tr>
+<tr>
+    <td><img src="https://storage.googleapis.com/imandra-assets/images/docs/ImandraVSCodeIDE3.png"></td>
+    <td><img src="https://storage.googleapis.com/imandra-assets/images/docs/ImandraVSCodeIDE4.png"></td>
+</tr>
 </table>
-
