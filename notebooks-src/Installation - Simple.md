@@ -41,3 +41,5 @@ The following tooling utilities will also be installed alongside the main binari
 - `ocamlmerlin`
 - `ocamlmerlin-imandra`
 - `ocamlmerlin-imandra-reason`
+
+Additionally, the `imandra-vscode-server` binary will be installed to provide full asynchronous proof-checking in the VSCode based [Imandra IDE](https://marketplace.visualstudio.com/items?itemName=aestheticintegration.iml-vscode). Please see the [Installation Page](Installation%20-%20VSCode.md) for details.

@@ -41,6 +41,6 @@ For more advanced installations, we include a list of the available packages in 
 - `imandra-stdlib`: Imandra standard library of lemmas
 - `imandra-tools`: Library providing extra tooling on top of Imandra's decomposition facilities
 - `imandra-voronoi`: Library for visualizing Imandra Regions as a Voronoi diagram
-- `imandra-vscode-server`: Provides the `imandra-vscode-server` binary, providing the backend for the VSCode based [Imandra IDE](https://marketplace.visualstudio.com/items?itemName=aestheticintegration.iml-vscode)
+- `imandra-vscode-server`: Provides the `imandra-vscode-server` binary, providing the backend for the VSCode based [Imandra IDE](https://marketplace.visualstudio.com/items?itemName=aestheticintegration.iml-vscode). Please see the [Installation Page](Installation%20-%20VSCode.md) for details.
 - `jupyter-imandra`: Jupyter notebook frontend for Imandra
 
