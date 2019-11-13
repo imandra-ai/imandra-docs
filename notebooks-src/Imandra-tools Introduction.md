@@ -231,11 +231,11 @@ module Custom = struct
   let map f = function
     | Set els -> Set (List.map f els)
 
-  let compare one two =
+  let compare compare one two =
     match one, two with
     | Set s_one, Set s_two ->
        if List.length s_one = List.length s_two &&
-            CCList.for_all (fun el -> List.mem el s_two) s_one then
+            CCList.for_all (fun el -> (List.exists (fun x -> compare el x = Equivalent) s_two)) s_one then
          Equivalent
        else
          UnComparable

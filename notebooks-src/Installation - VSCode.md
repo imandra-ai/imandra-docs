@@ -31,20 +31,20 @@ If you have used the [Simple installation instructions](Installation%20-%20Simpl
 
 If you have used the [Manual installation instructions](Installation%20-%20Manual.md) for Imandra then it is necessary to modify some of the settings in VSCode by hand.
 
-Pressing CMD+`,` takes you to the setting section of VSCode. It is necessary to alter the following settings:
+Pressing CMD+`,` takes you to the settings section of VSCode. It is necessary to alter the following settings:
 
-- Search for the setting `imandra_merlin` and enter here the result of type `which imandra-merlin` in a terminal where you installed imandra. So for example if you had installed imandra in `~/imandra` you would add for this setting:
+- Search for the setting `imandra_merlin` and enter here the result of typing `which imandra-merlin` in a terminal where you installed Imandra. So for example if you had installed Imandra in `~/imandra` you would add for this setting:
 
-```
+```sh.copy
 ~/imandra/imandra-merlin
 ```
 
 
-- Search for the setting `imandra-vscode-server` and enter here the result of typing `which imandra-vscode-server` then `-server` then `which imandra_network_client` - so for example if you had installed imandra in `~/imandra` you would add for this setting:
+- Search for the setting `imandra-vscode-server` and enter here the result of typing `which imandra-vscode-server` then `-server` then `which imandra_network_client` in a terminal where you installed Imandra. So for example if you had installed Imandra in `~/imandra` you would add for this setting:
 
-```
+```sh.copy
 ~/imandra/imandra-vscode-server -server ~/imandra/imandra_network_client
 ```
-
+As is shown in the following screen shot.
 
 ![Example settings screen](https://storage.googleapis.com/imandra-assets/images/docs/ImandraVSCodeManualOpam.png)

@@ -172,7 +172,7 @@ module Custom = struct
     | TimeToBlink
     | TimeToChangeLight
 
-  let compare _ _ = UnComparable
+  let compare _ _ _ = UnComparable
 
   let map _ = id
 

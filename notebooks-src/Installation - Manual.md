@@ -34,7 +34,7 @@ For more advanced installations, we include a list of the available packages in 
 - `imandra-cmd`: Provides the `imandra_cmd` binary (the Imandra launcher)
 - `imandra-deps`: Metapackage used to synchronise dependency versions for all the `imandra-dist` packages
 - `imandra-dist`: Metapackage used to install all the Imandra packages in one go
-- `imandra-merlin`: Merlin extensions for imandra
+- `imandra-merlin`: Merlin extensions for imandra, provides the `imandra-merlin` binary for editor integration
 - `imandra-network`: Provides the `imandra_network_client` binary, to be used as a server for `imandra_client`
 - `imandra-prelude`: Imandra prelude as an OCaml Library
 - `imandra-reason-parser`: Provides a ReasonML parser to Imandra
