@@ -231,7 +231,7 @@ module Custom = struct
   let map f = function
     | Set els -> Set (List.map f els)
 
-  let compare one two =
+  let compare _ one two =
     match one, two with
     | Set s_one, Set s_two ->
        if List.length s_one = List.length s_two &&
