@@ -318,7 +318,7 @@ The results displayed are terse - the default printer returns all of the low-lev
 
 To make processing this data easy, we have created Imandra-tools - a library with transformers for easy manipulation and printing of this data.
 
-Let's try to render the results in something closer to English. For example, a reference to the first buy order within the logic would be described as `List.hd ob.buys`, or in the correct underlying type notation as `Funcall ("List.hd", [ FieldOf (_, "buys", Var "ob")])`. We would much rather see 'First buy order' rather than `List.hd ...`.
+Let's try to render the results in something closer to English. For example, a reference to the first buy order within the logic would be described as `List.hd ob.buys`, or in the correct underlying type notation as `Funcall (Var "List.hd", [ FieldOf (_, "buys", Var "ob")])`. We would much rather see 'First buy order' rather than `List.hd ...`.
 
 The following code will use Imandra-tools to condense the region constraints and make them more "readable":
 
@@ -335,10 +335,10 @@ module Refiner = struct
 
  (* This function will be used to traverse the regions' data (constraints and invariants) and convert them to humanly readable text *)
  let walk (x : node) : node = match x with
-  | Funcall ("List.hd", [FieldOf (_, "buys", _)]) -> Var "First buy order"
-  | Funcall ("List.hd", [FieldOf (_, "sells", _)]) -> Var "First sell order"
-  | Funcall ("List.hd", [Funcall ("List.tl", [FieldOf (_, "buys", _)])]) -> Var "Second buy order"
-  | Funcall ("List.hd", [Funcall ("List.tl", [FieldOf (_, "sells", _)])]) -> Var "Second sell order"
+  | Funcall (Var "List.hd", [FieldOf (_, "buys", _)]) -> Var "First buy order"
+  | Funcall (Var "List.hd", [FieldOf (_, "sells", _)]) -> Var "First sell order"
+  | Funcall (Var "List.hd", [Funcall (Var "List.tl", [FieldOf (_, "buys", _)])]) -> Var "Second buy order"
+  | Funcall (Var "List.hd", [Funcall (Var "List.tl", [FieldOf (_, "sells", _)])]) -> Var "Second sell order"
   | Is (t, ty, FieldOf (_, "order_type", x)) -> Is (t, ty, x)
   | FieldOf (Assoc, (("order_id" | "order_qty" | "order_price" | "order_time") as field), x)
     -> FieldOf(Human, field, x)
