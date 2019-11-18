@@ -250,31 +250,31 @@ open Custom
 open PPrinter
 
 let rec refine_ = function
-  | Funcall ("Map.add'", _) as ks when is_proper_set ks ->
+  | Funcall (Var "Map.add'", _) as ks when is_proper_set ks ->
      Custom (Set (gather_keys ks))
 
-  | Funcall ("Map.add'", [m; k; Boolean true]) ->
-     Funcall ("Set.add", [m; k])
+  | Funcall (Var "Map.add'", [m; k; Boolean true]) ->
+     Funcall (Var "Set.add", [m; k])
 
     (* verify (fun x y -> Set.union x y = y ==> Set.subset x y)  *)
 
-  | Eq (Funcall ("Set.union", [x;y]), z) when Comparator.(is_eq (compare y z)) ->
-     Eq (Funcall ("Set.subset", [x;y]), Boolean true)
+  | Eq (Funcall (Var "Set.union", [x;y]), z) when Comparator.(is_eq (compare y z)) ->
+     Eq (Funcall (Var "Set.subset", [x;y]), Boolean true)
 
-  | Neq (Funcall ("Set.union", [x;y]), z) when Comparator.(is_eq (compare y z)) ->
-     Eq (Funcall ("Set.subset", [x;y]), Boolean false)
+  | Neq (Funcall (Var "Set.union", [x;y]), z) when Comparator.(is_eq (compare y z)) ->
+     Eq (Funcall (Var "Set.subset", [x;y]), Boolean false)
 
-  | Eq (z, Funcall ("Set.union", [x;y])) when Comparator.(is_eq (compare y z)) ->
-     Eq (Funcall ("Set.subset", [x;y]), Boolean true)
+  | Eq (z, Funcall (Var "Set.union", [x;y])) when Comparator.(is_eq (compare y z)) ->
+     Eq (Funcall (Var "Set.subset", [x;y]), Boolean true)
 
-  | Neq (z, Funcall ("Set.union", [x;y])) when Comparator.(is_eq (compare y z)) ->
-     Eq (Funcall ("Set.subset", [x;y]), Boolean false)
+  | Neq (z, Funcall (Var "Set.union", [x;y])) when Comparator.(is_eq (compare y z)) ->
+     Eq (Funcall (Var "Set.subset", [x;y]), Boolean false)
 
   | x -> x
 
 and gather_keys = function
-  | Funcall ("Map.add'", [m; k; Boolean true]) -> k::gather_keys m
-  | Funcall ("Map.const", [Boolean false]) -> []
+  | Funcall (Var "Map.add'", [m; k; Boolean true]) -> k::gather_keys m
+  | Funcall (Var "Map.const", [Boolean false]) -> []
   | x -> failwith (Printf.sprintf "Unexpected set value: %s" (PPrinter.Printer.to_string x))
 
 and is_proper_set x =

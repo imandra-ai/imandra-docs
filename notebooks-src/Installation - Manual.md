@@ -14,6 +14,8 @@ The simplest way to install imandra in a custom switch is to install the `imandr
 ```sh.copy
 opam switch create . ocaml-base-compiler.4.06.1
 opam repo add imandra https://github.com/AestheticIntegration/opam-repository.git
+opam repo add ocaml-default  https://github.com/AestheticIntegration/ocaml-opam-repository.git
+opam repo set-repos imandra ocaml-default
 opam update
 opam depext imandra-dist
 opam install imandra-dist
