@@ -1167,6 +1167,7 @@ module Mex :
       (Imandra_interactive.Extract.expr -&gt; &#39;a_0) -&gt;
       Imandra_interactive.Extract.expr -&gt; &#39;a_0 List.t
     val get_Int_t : Imandra_interactive.Extract.expr -&gt; Int.t
+    val get_Bool_t : Imandra_interactive.Extract.expr -&gt; Bool.t
     val get_Option_t :
       (Imandra_interactive.Extract.expr -&gt; &#39;a_0) -&gt;
       Imandra_interactive.Extract.expr -&gt; &#39;a_0 Option.t
@@ -1231,6 +1232,11 @@ module D :
           end
         val pp_state : DSM.State_machine.state -&gt; string
         type target = DSM.Template.t list
+        type validated_region =
+          Imandra_tools__Idf.Make(Decomp).Symbolic.validated_region = {
+          region : Imandra_interactive.Decompose.t;
+          validated : bool;
+        }
         type step = Imandra_tools__Idf.Make(Decomp).Symbolic.step
         type node = Imandra_tools__Idf.Make(Decomp).Symbolic.node
         type edge = node * step * node
@@ -1324,7 +1330,7 @@ module D :
         val paths : ?from:node -&gt; G.t -&gt; path list
         val reify : int -&gt; paths -&gt; path list
         val reify_all : paths -&gt; path list
-        val regions : path -&gt; Imandra_interactive.Decompose.t list
+        val regions : path -&gt; validated_region list
         val samples : path -&gt; DSM.State_machine.event list
         val ids : path -&gt; (Uuidm.t * Uuidm.t * Uuidm.t) list
         val replay :
@@ -1364,6 +1370,11 @@ module D :
           end
         val pp_state : DSM.State_machine.state -&gt; string
         type target = DSM.Template.t list
+        type validated_region =
+          Imandra_tools__Idf.Make(Decomp).Sampling.validated_region = {
+          region : Imandra_interactive.Decompose.t;
+          validated : bool;
+        }
         type step = Imandra_tools__Idf.Make(Decomp).Sampling.step
         type node = Imandra_tools__Idf.Make(Decomp).Sampling.node
         type edge = node * step * node
@@ -1457,7 +1468,7 @@ module D :
         val paths : ?from:node -&gt; G.t -&gt; path list
         val reify : int -&gt; paths -&gt; path list
         val reify_all : paths -&gt; path list
-        val regions : path -&gt; Imandra_interactive.Decompose.t list
+        val regions : path -&gt; validated_region list
         val samples : path -&gt; DSM.State_machine.event list
         val ids : path -&gt; (Uuidm.t * Uuidm.t * Uuidm.t) list
         val replay :
@@ -1849,30 +1860,34 @@ val first_path : IDF.path =
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>val regions : Imandra_interactive.Decompose.t list =
-  [---[region]---
-   Constraints:
-     [ (List.hd (List.tl e)) is SM.Add
-     ; Destruct(SM.Add, 0, (List.hd (List.tl e))) is SM.Int
-     ; (List.hd e) is SM.Add
-     ; Destruct(SM.Add, 0, (List.hd e)) is SM.Zero
-     ; (List.tl (List.tl e)) = [] ]
-   Invariant:
-     F = 0
-    -------------;
-   ---[region]---
-   Constraints:
-     [ (List.hd (List.tl e)) is SM.Add
-     ; Destruct(SM.Add, 0, (List.hd (List.tl e))) is SM.Int
-     ; (List.hd e) is SM.Add
-     ; Destruct(SM.Add, 0, (List.hd e)) is SM.Zero
-     ; 50 &lt;
-       Destruct(SM.Int, 0, Destruct(SM.Add, 0, (List.hd (List.tl e)))) &lt;=
-       9000
-     ; (List.tl (List.tl e)) = [] ]
-   Invariant:
-     F = Destruct(SM.Int, 0, Destruct(SM.Add, 0, (List.hd (List.tl e))))
-    -------------]
+<pre>val regions : IDF.validated_region list =
+  [{IDF.region =
+     ---[region]---
+     Constraints:
+       [ (List.hd (List.tl e)) is SM.Add
+       ; Destruct(SM.Add, 0, (List.hd (List.tl e))) is SM.Int
+       ; (List.hd e) is SM.Add
+       ; Destruct(SM.Add, 0, (List.hd e)) is SM.Zero
+       ; (List.tl (List.tl e)) = [] ]
+     Invariant:
+       F = 0
+      -------------;
+    validated = true};
+   {IDF.region =
+     ---[region]---
+     Constraints:
+       [ (List.hd (List.tl e)) is SM.Add
+       ; Destruct(SM.Add, 0, (List.hd (List.tl e))) is SM.Int
+       ; (List.hd e) is SM.Add
+       ; Destruct(SM.Add, 0, (List.hd e)) is SM.Zero
+       ; 50 &lt;
+         Destruct(SM.Int, 0, Destruct(SM.Add, 0, (List.hd (List.tl e)))) &lt;=
+         9000
+       ; (List.tl (List.tl e)) = [] ]
+     Invariant:
+       F = Destruct(SM.Int, 0, Destruct(SM.Add, 0, (List.hd (List.tl e))))
+      -------------;
+    validated = true}]
 </pre>
 </div>
 
@@ -1924,12 +1939,12 @@ val first_path : IDF.path =
 
 <div class="output_text output_subarea output_execute_result">
 <pre>val ids : (Uuidm.t * Uuidm.t * Uuidm.t) list =
-  [(82e4ef37-c09d-4772-b4de-9d5295bb9181,
-    d418d599-5daf-41f5-bea3-1e6978e4d9f9,
-    ae0f963b-f912-42ba-85ef-30706ddc4826);
-   (ae0f963b-f912-42ba-85ef-30706ddc4826,
-    fe4a23f8-03b0-4e73-88e2-73ffbc00ee57,
-    7c96d45f-4fc8-47bc-a590-1ddae9d3ef02)]
+  [(8cb43010-cbe2-4c3a-896f-c1f259f7c2cf,
+    33a3ff6b-9d62-41b1-89eb-dfb66eb4cd60,
+    661ddcdf-39f2-4bc0-91f3-55b537ca3207);
+   (661ddcdf-39f2-4bc0-91f3-55b537ca3207,
+    4fbb1650-70ce-43ef-92b3-ac77127f333b,
+    53558d33-8709-4ee2-a53d-c4966ccfddd3)]
 </pre>
 </div>
 
