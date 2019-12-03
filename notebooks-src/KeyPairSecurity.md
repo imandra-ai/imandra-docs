@@ -1,6 +1,6 @@
 ---
 title: "Key Pair Security in Imandra"
-description: "In this ReasonML notebook, we use imandra to very quickly discover the 'man in the middle' attack for protocols with private/public key exchance protocols."
+description: "In this ReasonML notebook, we use imandra to very quickly discover the 'man in the middle' attack for protocols with private/public key exchange protocols."
 kernel: imandra-reason
 slug: key-pair-security
 key-phrases:
