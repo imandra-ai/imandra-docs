@@ -1232,11 +1232,6 @@ module D :
           end
         val pp_state : DSM.State_machine.state -&gt; string
         type target = DSM.Template.t list
-        type validated_region =
-          Imandra_tools__Idf.Make(Decomp).Symbolic.validated_region = {
-          region : Imandra_interactive.Decompose.t;
-          validated : bool;
-        }
         type step = Imandra_tools__Idf.Make(Decomp).Symbolic.step
         type node = Imandra_tools__Idf.Make(Decomp).Symbolic.node
         type edge = node * step * node
@@ -1330,7 +1325,7 @@ module D :
         val paths : ?from:node -&gt; G.t -&gt; path list
         val reify : int -&gt; paths -&gt; path list
         val reify_all : paths -&gt; path list
-        val regions : path -&gt; validated_region list
+        val regions : path -&gt; Imandra_tools.Idf_intf.validated_region list
         val samples : path -&gt; DSM.State_machine.event list
         val ids : path -&gt; (Uuidm.t * Uuidm.t * Uuidm.t) list
         val replay :
@@ -1370,11 +1365,6 @@ module D :
           end
         val pp_state : DSM.State_machine.state -&gt; string
         type target = DSM.Template.t list
-        type validated_region =
-          Imandra_tools__Idf.Make(Decomp).Sampling.validated_region = {
-          region : Imandra_interactive.Decompose.t;
-          validated : bool;
-        }
         type step = Imandra_tools__Idf.Make(Decomp).Sampling.step
         type node = Imandra_tools__Idf.Make(Decomp).Sampling.node
         type edge = node * step * node
@@ -1468,7 +1458,7 @@ module D :
         val paths : ?from:node -&gt; G.t -&gt; path list
         val reify : int -&gt; paths -&gt; path list
         val reify_all : paths -&gt; path list
-        val regions : path -&gt; validated_region list
+        val regions : path -&gt; Imandra_tools.Idf_intf.validated_region list
         val samples : path -&gt; DSM.State_machine.event list
         val ids : path -&gt; (Uuidm.t * Uuidm.t * Uuidm.t) list
         val replay :
@@ -1860,8 +1850,8 @@ val first_path : IDF.path =
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>val regions : IDF.validated_region list =
-  [{IDF.region =
+<pre>val regions : Imandra_tools.Idf_intf.validated_region list =
+  [{Imandra_tools.Idf_intf.region =
      ---[region]---
      Constraints:
        [ (List.hd (List.tl e)) is SM.Add
@@ -1873,7 +1863,7 @@ val first_path : IDF.path =
        F = 0
       -------------;
     validated = true};
-   {IDF.region =
+   {Imandra_tools.Idf_intf.region =
      ---[region]---
      Constraints:
        [ (List.hd (List.tl e)) is SM.Add
@@ -1939,12 +1929,12 @@ val first_path : IDF.path =
 
 <div class="output_text output_subarea output_execute_result">
 <pre>val ids : (Uuidm.t * Uuidm.t * Uuidm.t) list =
-  [(615629ad-6cfe-48d8-970d-a83429594c11,
-    a2724511-e533-43a6-a91a-b2fcaac16dd1,
-    febae30d-3c56-46ef-a20d-abf83affcc65);
-   (febae30d-3c56-46ef-a20d-abf83affcc65,
-    8ab3d36e-6551-4f2d-9fdd-034315e810dd,
-    25fe01c2-e061-4784-9188-78a87427665f)]
+  [(3ae2e455-ca9f-47ac-8fb7-a7dbf1f3cc67,
+    af8a41bb-1b60-4468-be6a-9e6037d6475a,
+    c0864934-82b4-4d39-8b7a-87c19bccb8a4);
+   (c0864934-82b4-4d39-8b7a-87c19bccb8a4,
+    0eb333a4-6050-4e63-95af-7fb2110b7bfe,
+    7d907319-d09d-4580-a97f-9c68f242f36e)]
 </pre>
 </div>
 
