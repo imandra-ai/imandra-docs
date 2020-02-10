@@ -6,7 +6,7 @@ DEPS += static/jekyll-styles-dev.css
 all: $(DEPS)
 
 %.css: %.less
-	npx --package less lessc $< > $@
+	npx --package less tslib lessc $< > $@
 
 %.css: %.sass
 	npx sass -I jekyll-resources/_sass $< > $@
