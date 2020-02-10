@@ -177,11 +177,10 @@ SM.
 
 Calls to `decompose` (and `decompose_par`) return a tuple of two values: the first value is a `paths` generator, while the second is a `unit -> unit` function to be invoked once all the regions one needs have been computed, in order to release all the resources.
 
-In order to consume concrete paths from the `paths` generator we must `reify` them (we'll just reify a single path for this example, and release the resources immediately after):
+In order to consume concrete paths from the `paths` generator we must `reify` them (we'll just reify a single path for this example):
 
 ```{.imandra .input}
 let first_path = IDF.reify 1i paths |> List.hd;;
-close ();;
 ```
 
 Since we're decomposing lazily (i.e. we haven't invoked `IDF.decompose ~lazily:false`), the process of reifying a path for the first time will actually be responsible for starting the decomposition process until a first path is available.
