@@ -237,8 +237,10 @@ let is_valid_grid = (grid, last_player) => {
     last_player == Some(X) && x - o == 1;
   } else if (x < o) {
     last_player == Some(O) && o - x == 1;
+  } else if (x + o == 0) {
+    last_player == None;
   } else {
-    true;
+    true
   };
 };
 
@@ -255,23 +257,9 @@ instance((game) => is_valid_grid(game.grid, game.last_player));
 CX.game;
 ```
 
-This is a bit better - the grid looks more reasonable now. Interestingly, we notice that the valid grid Imandra gave us is also 'winning'. We can see this by computing with the CX:
+This is a bit better - the grid looks more like a real game of Tic Tac Toe now.
 
-```{.imandra .input}
-is_winning(CX.game, O);
-```
-
-This begs the question - have we inadvertantly specified that every valid game is a winning game? Let's ask Imandra for an instance where this isn't the case to make sure:
-
-```{.imandra .input}
-instance((game, player) => is_valid_grid(game.grid, game.last_player) && !is_winning(game, player));
-```
-
-```{.imandra .input}
-CX.game
-```
-
-Fantastic. Let's also see what happens if we ask for an instance that we know shouldn't be possible - if a player is more than 1 move ahead:
+Let's also see what happens if we ask for an instance that we know shouldn't be possible - if a player is more than 1 move ahead:
 
 ```{.imandra .input}
 instance((game) => {
@@ -295,7 +283,7 @@ verify((game) => {
 
 ## Valid games
 
-Let's continue adding some more definitions - we havent really covered winning criteria as part of `is_valid_grid`, so let's include a few:
+Let's continue adding some more definitions - we haven't really covered winning criteria as part of `is_valid_grid`, so let's include a few:
 
 ```{.imandra .input}
 let is_tie = ({grid: {a, b, c, d, e, f, g, h, i}, _}) =>
