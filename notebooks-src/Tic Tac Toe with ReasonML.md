@@ -26,7 +26,7 @@ Let's start by adding some definitions for the player, state of a square on the 
 type player =
   | X
   | O;
-  
+
 /* the state of a particular square - None = (no move yet), Some(X/O) = either X or O has moved there */
 type square_state = option(player);
 
@@ -230,18 +230,12 @@ let move_counts = ({a, b, c, d, e, f, g, h, i}) =>
   );
 
 /* whether a grid is 'valid' - the difference between move totals should never be more than 1 */
-/* with these rules, either player can go first so we check that one player is never too far ahead */
 let is_valid_grid = (grid, last_player) => {
   let (x, o) = move_counts(grid);
-  if (x > o) {
-    last_player == Some(X) && x - o == 1;
-  } else if (x < o) {
-    last_player == Some(O) && o - x == 1;
-  } else if (x + o == 0) {
-    last_player == None;
-  } else {
-    true
-  };
+
+  (x + o == 0 && last_player == None) ||
+  (x - o == 1 && last_player == Some(X)) ||
+  (x == o && last_player == Some(O));
 };
 
 
@@ -259,7 +253,7 @@ CX.game;
 
 This is a bit better - the grid looks more like a real game of Tic Tac Toe now.
 
-Let's also see what happens if we ask for an instance that we know shouldn't be possible - if a player is more than 1 move ahead:
+Let's also see what happens if we ask for an instance that we know shouldn't be possible - if player X is more than 1 move ahead:
 
 ```{.imandra .input}
 instance((game) => {
@@ -272,7 +266,7 @@ As this is invalid according to the description we've provided, Imandra can't fi
 
 ## Verifying
 
-We can invert this question, and turn it into a verification statement and ask Imandra to check it for us like a test.
+We can invert this question, and turn it into a verification statement and ask Imandra to check it for us - similar to a test, but mathematically checked for all possible games (as `game` is the free argument to the verification function).
 
 ```{.imandra .input}
 verify((game) => {
@@ -300,10 +294,10 @@ let is_valid_game = game => {
 
 ```
 
-... and let's ask for a valid game where X is winning:
+... and let's ask for a valid game where O is winning:
 
 ```{.imandra .input}
-instance((game) => is_valid_game(game) && is_winning(game, X));
+instance((game) => is_valid_game(game) && is_winning(game, O));
 ```
 
 ```{.imandra .input}
@@ -397,13 +391,15 @@ verify((game, player, move) =>
 
 ```
 
-```{.imandra .input}
-CX.game;
-```
-
 Uh oh! What's gone wrong?
 
-In this case, the problem is clear - player `O` is moving in square `B`, but there's already a move there. If you try out [the initial version of the game](https://docs.imandra.ai/reasonml-tic-tac-toe/index-initial.html) based on the code so far, you'll see the bug if you try and make a move in a square that's already filled.
+In this case, the problem is clear - the player is trying to play a move in a square that's already occupied:
+
+```{.imandra .input}
+value(CX.game, CX.move)
+```
+
+ If you try out [the initial version of the game](https://docs.imandra.ai/reasonml-tic-tac-toe/index-initial.html) based on the code so far, you'll see the bug if you try and make a move in a square that's already filled.
 
 Imandra has spotted the issue for us from a straightforward statement about the logic of the game!
 
