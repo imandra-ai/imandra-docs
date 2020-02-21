@@ -99,7 +99,14 @@ let price apple =
   in let p = (per_gram apple.kind) *. apple.mass in
   if apple.days_old >= 5 then p /. 2. else p;;
 
-let regions = Decompose.top "price" [@@program];;
+let regions = Modular_decomp.top "price" [@@program];;
+
+Modular_decomp.prune d [@@program];;
+
+let regions =
+  Modular_decomposition.to_region_list d
+  |> CCList.map (fun (i, _) -> Modular_decomp.get_region d i) [@@program];;
+
 ```
 
 Now we're in a position to calculate the probability mass of each region given our distribution above, or a separate dataset.
@@ -208,10 +215,9 @@ Apple_D.query rip_off ~d:"apple.csv" ()
 Sampling in the `Region_probs` module relies on access to a Pseudo-Random Number Generator (PRNG) that can produce uniform samples from the range `[0,1)`. Presently we support three PRNGs which can be changed according to the user's preferences, although in practice this should make little difference. The different PRNGs are:
 
 * `RS`: OCaml's standard PRNG using module Random.State
-* `NC`: Cryptographic Fortuna PRNG using module Nocrypto.Rng
 * `GSL`: GNU Scientific Library's Mersenne Twister PRNG using module Gsl.Rng
 
-`NC` is the default option (as it produces higher quality, 'more random' output than the other two). The PRNG can be checked and changed using the `get_prng` and `set_prng` functions as follows:
+`RS` is the default option. The PRNG can be checked and changed using the `get_prng` and `set_prng` functions as follows:
 
 ```{.imandra .input}
 get_prng ();;
