@@ -134,44 +134,36 @@ module Decomp = struct
 end
 ```
 
-We're now ready to create a decomposition recipe and apply it to an event template, simply instantiating `Idf` with `Decomp` in a module `D`.
+We're now ready to create a decomposition recipe and apply it to an event template, simply instantiating `Idf` with `Decomp` in a module `IDF`.
 
-We can use the `D` module to start decomposing any sequences of events, by using either `D.Symbolic` or `D.Sampling`, depending on which decomposition strategy we want:
-
-- sampling: this strategy will decompose the first event in the sequence, sample a value off each region and continue decomposition using the sampled value as next initial state when decomposing the next event. Because of its reliance on random sampling, this strategy is not complete, but is quite fast.
-- symbolic: this strategy will synthesize the constraints and invariants of each region as ocaml code and inject them into the decomposition of the next event, no sampling is done and thus this strategy is complete, but can also be much slower than concrete.
-
-Let's use `D.Symbolic.decompose` for this notebook, over a template of `[any; add; any]` events:
+We can use the `IDF` module to start decomposing any sequences of events, let's do that over a template of `[any; add; any]` events:
 
 ```{.imandra .input}
 #program;;
 
-module D = Idf.Make(Decomp);;
-module IDF = D.Symbolic;;
+module IDF = Idf.Make(Decomp);;
 
-let paths, _ = IDF.decompose (Decomp.Template.[Any;Add;Any]);;
+let g = IDF.G.create ();;
+IDF.decompose ~g (Decomp.Template.[Any;Add;Any]) ();;
 ```
 
-Something odd has happened: we've asked `Idf` to decompose our template, but nothing happened!
-
-This is because `Idf` is a _lazy_ framework, we need to tell it how many paths we want to produce:
+Since `IDF` generates a decomposition graph, we need to first create an empty graph via `IDF.G.create`, we can then list all the paths of the decomposition graph from the initial state to the final state:
 
 ```{.imandra .input}
-let first_path = IDF.reify 1i paths |> List.hd
+let paths = IDF.paths g
+let first_path = List.hd paths
 ```
 
 This output is not very useful, but we can ask `Idf` to play out a sample execution of that path:
 
 ```{.imandra .input}
-IDF.replay first_path
+IDF.replay (first_path |> CCList.last_opt |> CCOpt.get_exn)
 ```
 
-Or we can ask `Idf` to let us inspect the regions for that path (each region in the list will correspond to the constraints and invariant of the model at each event in the template):
+Or we can ask `Idf` to let us inspect the regions for that path (each region in the list will correspond to the constraints and invariant of the model up to each event in the template):
 
 ```{.imandra .input}
-#install_printer Decompose.print;;
-
-let first_path_regions = IDF.regions first_path
+let first_path_regions = List.map IDF.region first_path
 ```
 
 For a full description of the `Idf` API and capabilities, check out the [Iterative Decomposition Framework](Iterative%20Decomposition%20Framework.md) page.
@@ -182,7 +174,7 @@ This is a good moment to introduce a second `imandra-tools` module:
 
 # Region Pretty Printer (Region_pp)
 
-The purpose of the `Region_pp` module is twofold: it provides a _default_ drop-in pretty printer for regions, much more powerful than `Decompose.print` _and_ it also provides an extensible framework for creating powerful printers with semantic and ontologic understanding of the model being decomposed.
+The purpose of the `Region_pp` module is twofold: it provides a _default_ drop-in pretty printer for regions, much more powerful than the default region printer _and_ it also provides an extensible framework for creating powerful printers with semantic and ontologic understanding of the model being decomposed.
 
 Behind the scenes, the printer has phases for constraint unification, merging, normalisation and pruning, symbolic evaluation, and much more - all of it is user-extensible and customizable.
 
@@ -315,9 +307,9 @@ Let's see a quick example of how this works in practice:
 ```{.imandra .input}
 Caml.List.mapi (fun i region ->
   let gs = "region_" ^ (string_of_int i) in (* Imandra_util.Util.gensym () *)
-  let term = Term.and_l @@ Decompose_region.constraints region in
+  let term = Term.and_l @@ Modular_region.constraints region in
   let body = Region_term_synth.synthesize ~default:Term.Syn.False term in
-  let args = Decompose_region.args region |> List.map Var.name |> String.concat " " in
+  let args = Modular_region.args region |> List.map Var.name |> String.concat " " in
   let func = Printf.sprintf "let %s %s = %s" gs args body in
   System.eval func;
   gs)
@@ -368,7 +360,7 @@ let i = indexer (Set.empty, (Set.of_list [1]), 0) in
 
 # Region Probabilities (Region_probs)
 
-What if we want to not just identify the distinct regions of a program's behaviour, but how likely those behaviours are to occur? The `Region_probs` module allows us to do just that. In particular, users can easily create custom hierarchical statistical models defining joint distributions over inputs to their programs or functions, then sample from these models to get a probability distribution over regions, or query them with Boolean conditions. Alternatively, a dataset in the form of a `CSV` file can be imported and used as a set of samples when the underlying distribution is unknown. This introduction contains a short example, but for a more detailed tutorial of how to use the module, please see the dedicated [Region Probabilities notebook](Region%20Probabilities.md). 
+What if we want to not just identify the distinct regions of a program's behaviour, but how likely those behaviours are to occur? The `Region_probs` module allows us to do just that. In particular, users can easily create custom hierarchical statistical models defining joint distributions over inputs to their programs or functions, then sample from these models to get a probability distribution over regions, or query them with Boolean conditions. Alternatively, a dataset in the form of a `CSV` file can be imported and used as a set of samples when the underlying distribution is unknown. This introduction contains a short example, but for a more detailed tutorial of how to use the module, please see the dedicated [Region Probabilities notebook](Region%20Probabilities.md).
 
 First we'll open the `Region_probs` module, then define some custom types and a function that we'll be decomposing:
 
@@ -417,7 +409,12 @@ distribution ();;
 Now we have all these components we can find the regions of `f`, create a model from our `distribution` function, then estimate and display region probabilities:
 
 ```{.imandra .input}
-let regions = Decompose.top "f'" [@@program];;
+let d = Modular_decomp.top "f'" [@@program];;
+Modular_decomp.prune d [@@program];;
+
+let regions =
+  Modular_decomposition.to_region_list d
+  |> CCList.map (fun (i, _) -> Modular_decomp.get_region d i) [@@program];;
 
 module Example = Distribution.From_Sampler (struct type domain = dom let dist = distribution end) [@@program];;
 
