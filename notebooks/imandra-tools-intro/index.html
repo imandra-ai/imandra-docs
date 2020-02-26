@@ -1334,6 +1334,8 @@ module IDF :
     val paths : ?from:node -&gt; G.t -&gt; path list
     val region : node -&gt; Imandra_surface.Modular_region.t
     val sample : node -&gt; DSM.State_machine.event list
+    val sample_region :
+      Imandra_surface.Modular_region.t -&gt; DSM.State_machine.event list
     val target_steps : node -&gt; (DSM.Template.t * bool) list
     type replay_sample =
       Imandra_tools__Idf.Make(Decomp).replay_sample = {
@@ -2341,12 +2343,12 @@ val first_path : IDF.path = [&lt;abstr&gt;; &lt;abstr&gt;; &lt;abstr&gt;; &lt;ab
 
 <div class="output_text output_subarea output_execute_result">
 <pre>- : IDF.replay_sample list =
-[{IDF.state_before = {Model.counter = 0; default = 23};
-  event = Model.Add 1235; state_after = {Model.counter = 1235; default = 23}};
- {IDF.state_before = {Model.counter = 1235; default = 23};
-  event = Model.Add 39; state_after = {Model.counter = 1274; default = 23}};
- {IDF.state_before = {Model.counter = 1274; default = 23};
-  event = Model.Sub 1; state_after = {Model.counter = 1273; default = 23}}]
+[{IDF.state_before = {Model.counter = 0; default = 23}; event = Model.Add 39;
+  state_after = {Model.counter = 39; default = 23}};
+ {IDF.state_before = {Model.counter = 39; default = 23}; event = Model.Add 1;
+  state_after = {Model.counter = 40; default = 23}};
+ {IDF.state_before = {Model.counter = 40; default = 23};
+  event = Model.Sub 40; state_after = {Model.counter = 0; default = 23}}]
 </pre>
 </div>
 
@@ -2681,7 +2683,7 @@ val rs : Imandra_interactive.Decompose.t list = [&lt;region&gt;; &lt;region&gt;]
 
 
 <div class="output_html rendered_html output_subarea ">
-<div class="imandra-alternatives" id="alt-169f3004-f219-497c-bc7e-79b206751319"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-ea4d96a8-8bfd-4105-9781-801938f68038" class="decompose"><textarea class="display-none">{
+<div class="imandra-alternatives" id="alt-1a115b21-edac-472d-97fe-9fe8666c0178"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-0ac6508b-d0a0-42c0-a259-22fc67adc582" class="decompose"><textarea class="display-none">{
   &quot;regions&quot;: [
     {
       &quot;constraints&quot;: [ &quot;y = (Set.union x y)&quot; ],
@@ -2707,13 +2709,13 @@ val rs : Imandra_interactive.Decompose.t list = [&lt;region&gt;; &lt;region&gt;]
 }</textarea><div class="decompose-foamtree"></div><div class="decompose-details"><div class="decompose-details-header">Regions details</div><div class="decompose-details-no-selection"><p>No group selected.</p><ul><li>Concrete regions are numbered</li><li>Unnumbered regions are groups whose children share a particular constraint</li><li>Click on a region to view its details</li><li>Double click on a region to zoom in on it</li><li>Shift+double click to zoom out</li><li>Hit escape to reset back to the top</li></ul></div><div class="decompose-details-selection hidden"><div><span class="decompose-details-label">Direct sub-regions: </span><span class="decompose-details-direct-sub-regions-text">-</span></div><div><span class="decompose-details-label">Contained regions: </span><span class="decompose-details-contained-regions-text">-</span></div><div class="decompose-details-section-header">Constraints</div><div class="decompose-details-constraints"><pre class="decompose-details-constraint">&lt;constraint&gt;</pre></div><div class="decompose-details-invariant"><div class="decompose-details-section-header">Invariant</div><pre class="decompose-details-invariant-text">&lt;invariant&gt;</pre></div></div></div><script>
 (function () {
   require(['nbextensions/nbimandra/regions'], function (regions) {
-    var target = '#decompose-ea4d96a8-8bfd-4105-9781-801938f68038';
+    var target = '#decompose-0ac6508b-d0a0-42c0-a259-22fc67adc582';
     regions.hydrate(target);
   });
 })();
-</script></div></div><div class="tab-pane"><div><div class="imandra-table" id="table-d39ab446-aa55-4f70-b862-d5a418b02b9e"><table><thead><tr><th>Constraints</th><th>Invariant</th></tr></thead><tr><td><ul><li><pre>not (y = Set.union x y)</pre></li></ul></td><td><pre>Map.add' (Map.const false) z true</pre></td></tr><tr><td><ul><li><pre>y = Set.union x y</pre></li></ul></td><td><pre>Map.add' x z true</pre></td></tr></table></div></div></div></div><script>
+</script></div></div><div class="tab-pane"><div><div class="imandra-table" id="table-a6575656-7f51-457c-9a1d-c88188744c32"><table><thead><tr><th>Constraints</th><th>Invariant</th></tr></thead><tr><td><ul><li><pre>not (y = Set.union x y)</pre></li></ul></td><td><pre>Map.add' (Map.const false) z true</pre></td></tr><tr><td><ul><li><pre>y = Set.union x y</pre></li></ul></td><td><pre>Map.add' x z true</pre></td></tr></table></div></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-169f3004-f219-497c-bc7e-79b206751319';
+  var target = '#alt-1a115b21-edac-472d-97fe-9fe8666c0178';
   alternatives.hydrate(target);
 });
 </script></div>
