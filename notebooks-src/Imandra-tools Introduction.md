@@ -201,7 +201,10 @@ let f (x : int Set.t) y z =
 
 #program;;
 
-let rs = Decompose.top "f";;
+let d = Modular_decomp.top "f";;
+
+let rs = Modular_decomposition.to_region_list d |> CCList.map (fun (i, _) -> Modular_decomp.get_region d i);;
+
 ```
 
 It seems like `Region_pp` could do a better job here:
