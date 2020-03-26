@@ -1311,7 +1311,7 @@ module IDF :
     val sample : node -&gt; DSM.State_machine.event list
     val sample_region :
       Imandra_surface.Modular_region.t -&gt; DSM.State_machine.event list
-    val target_steps : node -&gt; (DSM.Template.t * bool) list
+    val target_steps : node -&gt; (DSM.Template.t * bool option) list
     type replay_sample =
       Imandra_tools__Idf.Make(Decomp).replay_sample = {
       state_before : DSM.State_machine.state;
@@ -1323,7 +1323,10 @@ module IDF :
     val decompose :
       g:G.t -&gt;
       ?basis:string list -&gt;
-      ?expanding:string list -&gt; ?invalid:int list -&gt; target -&gt; unit -&gt; unit
+      ?expanding:string list -&gt;
+      ?valid_pol:bool option list -&gt;
+      ?assuming:string -&gt;
+      ?region_expander:string option * string list -&gt; target -&gt; unit -&gt; unit
   end
 </pre>
 </div>
@@ -1372,9 +1375,11 @@ module IDF :
 
 <div class="output_text output_subarea output_execute_result">
 <pre>val g : IDF.G.t = &lt;abstr&gt;
-val guard_g___2_0 : Decomp.State_machine.event -&gt; int -&gt; bool = &lt;fun&gt;
+val guard_g___2_0 :
+  Decomp.State_machine.event -&gt; Decomp.State_machine.state -&gt; bool = &lt;fun&gt;
 val target_g___2_0 : Decomp.State_machine.event -&gt; int -&gt; int = &lt;fun&gt;
-val guard_g___2_1 : Decomp.State_machine.event -&gt; int -&gt; bool = &lt;fun&gt;
+val guard_g___2_1 :
+  Decomp.State_machine.event -&gt; Decomp.State_machine.state -&gt; bool = &lt;fun&gt;
 val target_g___2_1 : Decomp.State_machine.event -&gt; int -&gt; int = &lt;fun&gt;
 - : unit = ()
 val guard_g___2 : Decomp.State_machine.event list -&gt; bool = &lt;fun&gt;
@@ -1889,23 +1894,22 @@ val full_node : IDF.node = &lt;abstr&gt;
      ; Destruct(SM.Add, 0, (List.hd (List.tl e))) is SM.Int
      ; (List.hd (List.tl e)) is SM.Add
      ; 50 &lt; Destruct(SM.Int, 0, Destruct(SM.Add, 0, (List.hd e))) &lt;= 9000
-     ; Destruct(SM.Int, 0, Destruct(SM.Add, 0, (List.hd e))) &lt;&gt; 0
      ; (List.tl (List.tl e)) = [] ]
    Invariant:
      F = Destruct(SM.Int, 0, Destruct(SM.Add, 0, (List.hd e)))
     -------------;
    ---[region]---
    Constraints:
-     [ (List.hd (List.tl e)) is SM.Add
-     ; Destruct(SM.Add, 0, (List.hd (List.tl e))) is SM.Int
+     [ Destruct(SM.Add, 0, (List.hd (List.tl e))) is SM.Int
+     ; (List.hd (List.tl e)) is SM.Add
      ; Destruct(SM.Add, 0, (List.hd e)) is SM.Int
      ; (List.hd e) is SM.Add
-     ; 50 &lt; Destruct(SM.Int, 0, Destruct(SM.Add, 0, (List.hd e))) &lt;= 9000
-     ; Destruct(SM.Int, 0, Destruct(SM.Add, 0, (List.hd (List.tl e)))) &gt; 0
      ; (Destruct(SM.Int, 0, Destruct(SM.Add, 0, (List.hd (List.tl e)))) +
           Destruct(SM.Int, 0, Destruct(SM.Add, 0, (List.hd e))))
          &lt;= 9000
+     ; Destruct(SM.Int, 0, Destruct(SM.Add, 0, (List.hd (List.tl e)))) &gt; 0
      ; Destruct(SM.Int, 0, Destruct(SM.Add, 0, (List.hd e))) &lt;&gt; 1337
+     ; Destruct(SM.Int, 0, Destruct(SM.Add, 0, (List.hd e))) &gt; 50
      ; (List.tl (List.tl e)) = [] ]
    Invariant:
      F =

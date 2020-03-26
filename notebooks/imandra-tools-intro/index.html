@@ -1336,7 +1336,7 @@ module IDF :
     val sample : node -&gt; DSM.State_machine.event list
     val sample_region :
       Imandra_surface.Modular_region.t -&gt; DSM.State_machine.event list
-    val target_steps : node -&gt; (DSM.Template.t * bool) list
+    val target_steps : node -&gt; (DSM.Template.t * bool option) list
     type replay_sample =
       Imandra_tools__Idf.Make(Decomp).replay_sample = {
       state_before : DSM.State_machine.state;
@@ -1348,7 +1348,10 @@ module IDF :
     val decompose :
       g:G.t -&gt;
       ?basis:string list -&gt;
-      ?expanding:string list -&gt; ?invalid:int list -&gt; target -&gt; unit -&gt; unit
+      ?expanding:string list -&gt;
+      ?valid_pol:bool option list -&gt;
+      ?assuming:string -&gt;
+      ?region_expander:string option * string list -&gt; target -&gt; unit -&gt; unit
   end
 val g : IDF.G.t = &lt;abstr&gt;
 val guard_g___2_0 :
@@ -2071,12 +2074,12 @@ val first_path : IDF.path = [&lt;abstr&gt;; &lt;abstr&gt;; &lt;abstr&gt;; &lt;ab
 
 <div class="output_text output_subarea output_execute_result">
 <pre>- : IDF.replay_sample list =
-[{IDF.state_before = {Model.counter = 0; default = 23}; event = Model.Add 1;
-  state_after = {Model.counter = 1; default = 23}};
- {IDF.state_before = {Model.counter = 1; default = 23}; event = Model.Add 39;
-  state_after = {Model.counter = 40; default = 23}};
- {IDF.state_before = {Model.counter = 40; default = 23};
-  event = Model.Sub 40; state_after = {Model.counter = 0; default = 23}}]
+[{IDF.state_before = {Model.counter = 0; default = 23};
+  event = Model.Add 1235; state_after = {Model.counter = 1235; default = 23}};
+ {IDF.state_before = {Model.counter = 1235; default = 23};
+  event = Model.Add 39; state_after = {Model.counter = 1274; default = 23}};
+ {IDF.state_before = {Model.counter = 1274; default = 23};
+  event = Model.Sub 1; state_after = {Model.counter = 1273; default = 23}}]
 </pre>
 </div>
 
@@ -2126,24 +2129,18 @@ val first_path : IDF.path = [&lt;abstr&gt;; &lt;abstr&gt;; &lt;abstr&gt;; &lt;ab
   [{Imandra_surface.Modular_region.mreg_session = 1i; mreg_id = 0i;
     mreg_constraints =
      [e &lt;&gt; []; (List.tl e) &lt;&gt; []; (List.tl (List.tl e)) &lt;&gt; [];
-      List.tl (List.tl (List.tl e)) = []; true; true;
-      Is_a(Model.Add, List.hd (List.tl e)); true; true; true; true;
-      List.tl (List.tl (List.tl e)) = []; (List.tl (List.tl e)) &lt;&gt; [];
-      (List.tl e) &lt;&gt; []; e &lt;&gt; []];
+      List.tl (List.tl (List.tl e)) = [];
+      Is_a(Model.Add, List.hd (List.tl e))];
     mreg_invariant = {Model.counter = 0; Model.default = 23};
     mreg_args = [(e : Decomp.State_machine.event list)];
     mreg_status = Imandra_surface.Modular_region.Unknown};
    {Imandra_surface.Modular_region.mreg_session = 1i; mreg_id = 3i;
     mreg_constraints =
-     [Destruct(Model.Add, 0, List.hd e) &gt; 0;
-      not ((0 + Destruct(Model.Add, 0, List.hd e)) &gt; 9000);
-      Is_a(Model.Add, List.hd e); not (List.hd e = Model.Reset); true; true;
+     [not (Destruct(Model.Add, 0, List.hd e) &lt;= 0);
+      Destruct(Model.Add, 0, List.hd e) &lt;= 9000; Is_a(Model.Add, List.hd e);
       e &lt;&gt; []; (List.tl e) &lt;&gt; []; (List.tl (List.tl e)) &lt;&gt; [];
       List.tl (List.tl (List.tl e)) = [];
-      Destruct(Model.Add, 0, List.hd e) &gt; 0;
-      Is_a(Model.Add, List.hd (List.tl e)); true; true; true;
-      List.tl (List.tl (List.tl e)) = []; (List.tl (List.tl e)) &lt;&gt; [];
-      (List.tl e) &lt;&gt; []; e &lt;&gt; []];
+      Is_a(Model.Add, List.hd (List.tl e))];
     mreg_invariant =
      {Model.counter = 0 + Destruct(Model.Add, 0, List.hd e);
       Model.default = 23};
@@ -2151,24 +2148,14 @@ val first_path : IDF.path = [&lt;abstr&gt;; &lt;abstr&gt;; &lt;abstr&gt;; &lt;ab
     mreg_status = Imandra_surface.Modular_region.Unknown};
    {Imandra_surface.Modular_region.mreg_session = 1i; mreg_id = 10i;
     mreg_constraints =
-     [Destruct(Model.Add, 0, List.hd (List.tl e)) &gt; 0;
-      not
-      (((0 + Destruct(Model.Add, 0, List.hd e))
-        + Destruct(Model.Add, 0, List.hd (List.tl e)))
-       &gt; 9000);
-      Is_a(Model.Add, List.hd (List.tl e));
-      not (List.hd (List.tl e) = Model.Reset);
-      not (0 + Destruct(Model.Add, 0, List.hd e) = 1337); true;
-      Destruct(Model.Add, 0, List.hd e) &gt; 0;
-      not ((0 + Destruct(Model.Add, 0, List.hd e)) &gt; 9000);
-      Is_a(Model.Add, List.hd e); not (List.hd e = Model.Reset);
-      Destruct(Model.Add, 0, List.hd (List.tl e)) &gt; 0; e &lt;&gt; [];
-      (List.tl e) &lt;&gt; []; (List.tl (List.tl e)) &lt;&gt; [];
-      List.tl (List.tl (List.tl e)) = [];
-      Destruct(Model.Add, 0, List.hd e) &gt; 0;
-      Is_a(Model.Add, List.hd (List.tl e)); true; true; true;
-      List.tl (List.tl (List.tl e)) = []; (List.tl (List.tl e)) &lt;&gt; [];
-      (List.tl e) &lt;&gt; []; e &lt;&gt; []];
+     [not (Destruct(Model.Add, 0, List.hd (List.tl e)) &lt;= 0);
+      (Destruct(Model.Add, 0, List.hd e)
+       + Destruct(Model.Add, 0, List.hd (List.tl e)))
+      &lt;= 9000; Is_a(Model.Add, List.hd (List.tl e));
+      not (Destruct(Model.Add, 0, List.hd e) = 1337);
+      not (Destruct(Model.Add, 0, List.hd e) &lt;= 0);
+      Is_a(Model.Add, List.hd e); e &lt;&gt; []; (List.tl e) &lt;&gt; [];
+      (List.tl (List.tl e)) &lt;&gt; []; List.tl (List.tl (List.tl e)) = []];
     mreg_invariant =
      {Model.counter =
       (0 + Destruct(Model.Add, 0, List.hd e))
@@ -2178,39 +2165,22 @@ val first_path : IDF.path = [&lt;abstr&gt;; &lt;abstr&gt;; &lt;abstr&gt;; &lt;ab
    {Imandra_surface.Modular_region.mreg_session = 1i; mreg_id = 44i;
     mreg_constraints =
      [Destruct(Model.Sub, 0, List.hd (List.tl (List.tl e))) &lt;=
-      ((0 + Destruct(Model.Add, 0, List.hd e))
+      (Destruct(Model.Add, 0, List.hd e)
        + Destruct(Model.Add, 0, List.hd (List.tl e)));
-      Destruct(Model.Sub, 0, List.hd (List.tl (List.tl e))) &gt; 0;
-      not
-      (Destruct(Model.Sub, 0, List.hd (List.tl (List.tl e))) &gt;
-       ((0 + Destruct(Model.Add, 0, List.hd e))
-        + Destruct(Model.Add, 0, List.hd (List.tl e))));
+      not (Destruct(Model.Sub, 0, List.hd (List.tl (List.tl e))) &lt;= 0);
       not Is_a(Model.Add, List.hd (List.tl (List.tl e)));
       not (List.hd (List.tl (List.tl e)) = Model.Reset);
       not
-      ((0 + Destruct(Model.Add, 0, List.hd e))
+      (Destruct(Model.Add, 0, List.hd e)
        + Destruct(Model.Add, 0, List.hd (List.tl e)) = 1337);
-      Destruct(Model.Add, 0, List.hd (List.tl e)) &gt; 0;
-      not
-      (((0 + Destruct(Model.Add, 0, List.hd e))
-        + Destruct(Model.Add, 0, List.hd (List.tl e)))
-       &gt; 9000);
-      Is_a(Model.Add, List.hd (List.tl e));
-      not (List.hd (List.tl e) = Model.Reset);
-      not (0 + Destruct(Model.Add, 0, List.hd e) = 1337);
-      Destruct(Model.Sub, 0, List.hd (List.tl (List.tl e))) &lt;=
-      ((0 + Destruct(Model.Add, 0, List.hd e))
-       + Destruct(Model.Add, 0, List.hd (List.tl e)));
-      Destruct(Model.Add, 0, List.hd e) &gt; 0;
-      not ((0 + Destruct(Model.Add, 0, List.hd e)) &gt; 9000);
-      Is_a(Model.Add, List.hd e); not (List.hd e = Model.Reset);
-      Destruct(Model.Add, 0, List.hd (List.tl e)) &gt; 0; e &lt;&gt; [];
-      (List.tl e) &lt;&gt; []; (List.tl (List.tl e)) &lt;&gt; [];
-      List.tl (List.tl (List.tl e)) = [];
-      Destruct(Model.Add, 0, List.hd e) &gt; 0;
-      Is_a(Model.Add, List.hd (List.tl e)); true; true; true;
-      List.tl (List.tl (List.tl e)) = []; (List.tl (List.tl e)) &lt;&gt; [];
-      (List.tl e) &lt;&gt; []; e &lt;&gt; []];
+      not (Destruct(Model.Add, 0, List.hd (List.tl e)) &lt;= 0);
+      (Destruct(Model.Add, 0, List.hd e)
+       + Destruct(Model.Add, 0, List.hd (List.tl e)))
+      &lt;= 9000; Is_a(Model.Add, List.hd (List.tl e));
+      not (Destruct(Model.Add, 0, List.hd e) = 1337);
+      not (Destruct(Model.Add, 0, List.hd e) &lt;= 0);
+      Is_a(Model.Add, List.hd e); e &lt;&gt; []; (List.tl e) &lt;&gt; [];
+      (List.tl (List.tl e)) &lt;&gt; []; List.tl (List.tl (List.tl e)) = []];
     mreg_invariant =
      {Model.counter =
       ((0 + Destruct(Model.Add, 0, List.hd e))
@@ -2301,7 +2271,7 @@ val first_path : IDF.path = [&lt;abstr&gt;; &lt;abstr&gt;; &lt;abstr&gt;; &lt;ab
         Destruct(Model.Add, 0, (List.hd (List.tl e))))
        &lt;= 9000
    ; Destruct(Model.Add, 0, (List.hd e)) &lt;&gt; 1337
-   ; 0 &lt; Destruct(Model.Add, 0, (List.hd e)) &lt;= 9000
+   ; Destruct(Model.Add, 0, (List.hd e)) &gt; 0
    ; (List.tl (List.tl (List.tl e))) = [] ]
  Invariant:
    F =
@@ -2329,7 +2299,7 @@ val first_path : IDF.path = [&lt;abstr&gt;; &lt;abstr&gt;; &lt;abstr&gt;; &lt;ab
         Destruct(Model.Add, 0, (List.hd (List.tl e))))
        &lt;= 9000
    ; Destruct(Model.Add, 0, (List.hd e)) &lt;&gt; 1337
-   ; 0 &lt; Destruct(Model.Add, 0, (List.hd e)) &lt;= 9000
+   ; Destruct(Model.Add, 0, (List.hd e)) &gt; 0
    ; (List.tl (List.tl (List.tl e))) = [] ]
  Invariant:
    F =
