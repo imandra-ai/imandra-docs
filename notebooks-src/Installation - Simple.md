@@ -5,7 +5,9 @@ kernel: imandra
 slug: installation-simple
 ---
 
-# Simple Installer (macOS and Linux only)
+# Simple Installer
+
+N.B. the following installer is supported natively on MacOS and Linux, on Windows you'll need to use [WSL](https://docs.microsoft.com/en-us/windows/wsl/install-win10)
 
 The simple installer will set up a new OCaml environment (using the `opam` installer), and then install Imandra. Execute the install script from a terminal:
 
