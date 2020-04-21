@@ -297,15 +297,15 @@ This is what *Region Decomposition* is designed to do.
 
 ![Region Decomposition](https://storage.googleapis.com/imandra-notebook-assets/exchange_pricing_decomp.png)
 
-To *decompose* the state-space of `match_price`, we'll use `Decompose.top` command. Notice that while our types and the actual code was entered in Imandra's `logic` mode, we'll now switch to `program` mode. The results of decomposition will be reflected into `program` mode so we may use the full power of OCaml language to utilise the results.
+To *decompose* the state-space of `match_price`, we'll use `Modular_decomp.top` command. Notice that while our types and the actual code was entered in Imandra's `logic` mode, we'll now switch to `program` mode. The results of decomposition will be reflected into `program` mode so we may use the full power of OCaml language to utilise the results.
 
 
 ```{.imandra .input}
 #program;;
 
-#install_printer Decompose.print_opaque;;
-
-let regions = Decompose.top "match_price";;
+let d = Modular_decomp.top "match_price";;
+Modular_decomp.prune d;;
+d;;
 ```
 
 
@@ -354,15 +354,15 @@ let pp_cs ?inv cs =
  |> PPrinter.pp ~refine:Refiner.refine ?inv
  |> List.map (CCFormat.to_string (PPrinter.Printer.print ()))
 
-let regions_doc (regions : Decompose.t list) =
- Jupyter_imandra.Decompose_render.regions_doc ~pp_cs regions;;
+let regions_doc (d : Modular_decomposition.t) =
+ Jupyter_imandra.Decompose_render.regions_doc ~pp_cs d;;
 
 #install_doc regions_doc;;
 ```
 
 
 ```{.imandra .input}
-regions
+d
 ```
 
 
@@ -388,7 +388,7 @@ let side_condition (ob : order_book) (ref_price : real)  =
 (* Decomposition is a `program-mode` feature allowing us to use any OCaml/ReasonML code to manipulate the results. *)
 #program;;
 
-Decompose.top ~assuming:"side_condition" "match_price";;
+Modular_decomp.top ~assuming:"side_condition" "match_price";;
 ```
 
 
@@ -408,7 +408,7 @@ let side_condition2 (ob : order_book) (ref_price : real) =
 ;;
 
 #program;;
-Decompose.top ~assuming:"side_condition2" "match_price"
+Modular_decomp.top ~assuming:"side_condition2" "match_price"
 ```
 
 ## Generating instances

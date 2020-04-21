@@ -171,7 +171,7 @@ We can also ask Imandra to _decompose_ our function to get a symbolic representa
 For each region it is proved that if the inputs of the function satisfy the _constraints_, then the output of the function satisfies the _invariant_. Furthermore, Imandra proves _coverage_: every possible concrete behaviour of the function is represented by a region in the decomposition:
 
 ```{.imandra .input}
-Decompose.top "f"
+Modular_decomp.top "f"
 ```
 
 Click on the different full regions (those sub-diagrams of the Voronoi diagram starting with `R`) and inspect their constraints and invariant. Note that the invariant may depend on the input value (`x`), e.g., in regions corresponding to branches of the function `f` where it returns `x` plus some constant.

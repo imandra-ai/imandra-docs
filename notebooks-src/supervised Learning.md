@@ -214,11 +214,11 @@ verify (fun x -> is_valid_rf x
 The nested `if ... then ... else` statements in how the trees are defined mean that they are a prime candidate for Imandra's region decomposition functionality. As well as the total model we can of course also decompose the individual trees making up the ensemble.
 
 ```{.imandra .input}
-Decompose.top ~assuming:"is_valid_rf" "rf_model"
+Modular_decomp.top ~assuming:"is_valid_rf" "rf_model"
 ```
 
 ```{.imandra .input}
-Decompose.top "tree_0"
+Modular_decomp.top "tree_0"
 ```
 
 We can also use side conditions on the region decomposition of our model by using the `~assuming:` flag. One application here is in simulating partial observability. Perhaps we know most of the measurements for a particular set of cells and we'd like to see how the classification of the input depends on the remaining features. Let's imagine that we only have the concavity measurements for a particular patient's cell sample and we'd like to see how the output of our model depends on the values of the other features.
@@ -230,7 +230,9 @@ let partial_observation x =
   x.concavity_worst = 0.26000 &&
   x.concave_points_worst = 0.11460;;
 
-Decompose.top ~ctx_asm_simp:true ~assuming:"partial_observation" "rf_model"
+let d = Modular_decomp.top ~assuming:"partial_observation" "rf_model";;
+Modular_decomp.prune d;;
+d
 ```
 
 ## Regression
