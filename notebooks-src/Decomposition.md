@@ -28,7 +28,7 @@ let f x =
     -1
 ;;
 
-let d = Modular_decomp.top "f"
+let d = Modular_decomp.top "f" [@@program]
 ```
 
 Imandra decomposed the function "f" into 2 regions: the first region tells us that whenever the input argument `x` is less than or equal to 0, then the value returned by the function will be `-1`, the second region tells us that whenever `x` is positive, the output will be 1.

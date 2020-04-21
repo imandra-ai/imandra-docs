@@ -426,7 +426,9 @@ Extract.eval ~signature:(Event.DB.fun_id_of_str "match_price") ();;
 
 ```{.imandra .input}
 (* Let's now extract test cases from each region *)
-List.map (fun region -> Decompose.get_model region |> Mex.of_model) regions;;
+
+Modular_decomposition.to_region_list d
+|> CCList.map (fun (i, _) -> Modular_decomp.get_region d i |> Modular_decomp.get_model |> Mex.of_model)
 ```
 
 If you have any questions, please don't hestitate to reach out to us via [email](mailto:contact@imandra.ai) or on our [Discord server](https://discord.gg/rf78N7h).
