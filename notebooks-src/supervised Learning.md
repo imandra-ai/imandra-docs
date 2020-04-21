@@ -41,7 +41,7 @@ In a classification task we want to learn to predict the label of a datapoint ba
 As is standard practice we pre-process the data before learning. First we standardise each variable to have zero mean and unit variance, then remove all but one from sets of highly correlated variables, along with those that have low mutual information with respect to the target variable. The data is split into training (80%) and test (20%) sets and we use Scikit-Learn to learn a random forest of 3 decision trees of maximum depth 3. As this is a relatively straightforward problem even this simple model achieves a fairly high accuracy. Using a short Python script each tree is then converted to Imandra Modelling Language (IML) and can be reasoned about using Imandra.
 
 ```{.imandra .input}
-let tree_0 f_0 f_1 f_2 f_3 f_4 f_5 f_6 = let open Real in
+let tree_0 (f_0 : real) (f_1 : real) (f_2 : real) (f_3 : real) (f_4 : real) (f_5 : real) (f_6 : real) = let open Real in
   if f_2 <=. (-0.10815) then
     if f_0 <=. (0.26348) then
       if f_6 <=. (-0.06176) then
@@ -65,7 +65,7 @@ let tree_0 f_0 f_1 f_2 f_3 f_4 f_5 f_6 = let open Real in
       else
         (7.0, 5.0);;
 
-let tree_1 f_0 f_1 f_2 f_3 f_4 f_5 f_6 = let open Real in
+let tree_1 (f_0 : real) (f_1 : real) (f_2 : real) (f_3 : real) (f_4 : real) (f_5 : real) (f_6 : real) = let open Real in
   if f_5 <=. (-0.05799) then
     if f_0 <=. (0.68524) then
       if f_1 <=. (-0.83180) then
@@ -89,7 +89,7 @@ let tree_1 f_0 f_1 f_2 f_3 f_4 f_5 f_6 = let open Real in
       else
         (5.0, 120.0);;
 
-let tree_2 f_0 f_1 f_2 f_3 f_4 f_5 f_6 = let open Real in
+let tree_2 (f_0 : real) (f_1 : real) (f_2 : real) (f_3 : real) (f_4 : real) (f_5 : real) (f_6 : real) = let open Real in
   if f_2 <=. (0.10459) then
     if f_5 <=. (-0.38015) then
       if f_5 <=. (-0.60659) then
@@ -230,7 +230,7 @@ let partial_observation x =
   x.concavity_worst = 0.26000 &&
   x.concave_points_worst = 0.11460;;
 
-let d = Modular_decomp.top ~assuming:"partial_observation" "rf_model";;
+let d = Modular_decomp.top ~assuming:"partial_observation" "rf_model" [@@program];;
 Modular_decomp.prune d;;
 d
 ```
