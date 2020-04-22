@@ -423,14 +423,6 @@
                                     
                                     <li class="side__nav-list-item--sub-level-2 side__nav-list--sub-level-2--empty">
                                         
-                                        <a class="side__nav-link" href="/imandra-docs/notebooks/decomposition-flags">Decomposition Flags</a>
-                                        
-                                        
-                                        
-                                    </li>
-                                    
-                                    <li class="side__nav-list-item--sub-level-2 side__nav-list--sub-level-2--empty">
-                                        
                                         <a class="side__nav-link" href="/imandra-docs/notebooks/imandra-tools-intro">Imandra Tools Introduction</a>
                                         
                                         
@@ -837,7 +829,7 @@
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html"><h1 id="Iterative-Decomposition-Framework">Iterative Decomposition Framework<a class="anchor-link" href="#Iterative-Decomposition-Framework">&#182;</a></h1><p>Imandra has the ability to enumerate the state space of a function via its <a href="/imandra-docs/notebooks/decomposition-flags/">decomposition</a> feature.</p>
+<div class="text_cell_render border-box-sizing rendered_html"><h1 id="Iterative-Decomposition-Framework">Iterative Decomposition Framework<a class="anchor-link" href="#Iterative-Decomposition-Framework">&#182;</a></h1><p>Imandra has the ability to enumerate the state space of a function via its <a href="Imandra%20Decomposition%20Flags.ipynb">decomposition</a> feature.</p>
 <p><code>IDF</code> is a framework that builds on top of that and adds the ability to enumerate the state space of a <a href="https://en.wikipedia.org/wiki/Finite-state_machine">(possibly infinite) state machine</a> after a bounded number of abstract transitions.</p>
 <p>Let's define one such state machine and see how <code>IDF</code> can help us navigating its state space: we must define a module conforming to <a href="https://docs.imandra.ai/imandra-docs/odoc/imandra-tools/Imandra_tools/Idf_intf/module-type-SM_SIG/index.html">Idf_intf.SM_SIG</a>.
 An additional constraint which is not enforciable by the OCaml type system but is enforced at runtime by <code>IDF</code> is that the type of <code>event</code> must be an algebraic variant type (or an alias to one).</p>
@@ -1323,10 +1315,12 @@ module IDF :
     val decompose :
       g:G.t -&gt;
       ?basis:string list -&gt;
+      ?include_partial_paths:bool -&gt;
       ?expanding:string list -&gt;
       ?valid_pol:bool option list -&gt;
       ?assuming:string -&gt;
-      ?region_expander:string option * string list -&gt; target -&gt; unit -&gt; unit
+      ?region_expander:(string option * string list * string option) list -&gt;
+      target -&gt; unit -&gt; unit
   end
 </pre>
 </div>
@@ -1375,15 +1369,11 @@ module IDF :
 
 <div class="output_text output_subarea output_execute_result">
 <pre>val g : IDF.G.t = &lt;abstr&gt;
-val guard_g___2_0 :
-  Decomp.State_machine.event -&gt; Decomp.State_machine.state -&gt; bool = &lt;fun&gt;
-val target_g___2_0 : Decomp.State_machine.event -&gt; int -&gt; int = &lt;fun&gt;
-val guard_g___2_1 :
-  Decomp.State_machine.event -&gt; Decomp.State_machine.state -&gt; bool = &lt;fun&gt;
-val target_g___2_1 : Decomp.State_machine.event -&gt; int -&gt; int = &lt;fun&gt;
 - : unit = ()
-val guard_g___2 : Decomp.State_machine.event list -&gt; bool = &lt;fun&gt;
-val target_g___2 : Decomp.State_machine.event list -&gt; int = &lt;fun&gt;
+val guard_g___2_0 : Decomp.State_machine.event list -&gt; bool = &lt;fun&gt;
+val target_g___2_0 : Decomp.State_machine.event list -&gt; int = &lt;fun&gt;
+val guard_g___2_1 : Decomp.State_machine.event list -&gt; bool = &lt;fun&gt;
+val target_g___2_1 : Decomp.State_machine.event list -&gt; int = &lt;fun&gt;
 - : unit = ()
 </pre>
 </div>
@@ -1397,267 +1387,19 @@ val target_g___2 : Decomp.State_machine.event list -&gt; int = &lt;fun&gt;
 
 
 <div class="output_html rendered_html output_subarea ">
-<div><pre></pre></div>
-
-</div>
-
-</div>
-
-<div class="output_area">
-
-<div class="prompt"></div>
-
-
-
-<div class="output_html rendered_html output_subarea ">
-<div><pre></pre></div>
-
-</div>
-
-</div>
-
-<div class="output_area">
-
-<div class="prompt"></div>
-
-
-
-<div class="output_html rendered_html output_subarea ">
-<div><pre></pre></div>
-
-</div>
-
-</div>
-
-<div class="output_area">
-
-<div class="prompt"></div>
-
-
-
-<div class="output_html rendered_html output_subarea ">
-<div><pre></pre></div>
-
-</div>
-
-</div>
-
-<div class="output_area">
-
-<div class="prompt"></div>
-
-
-
-<div class="output_html rendered_html output_subarea ">
-<div><pre></pre></div>
-
-</div>
-
-</div>
-
-<div class="output_area">
-
-<div class="prompt"></div>
-
-
-
-<div class="output_html rendered_html output_subarea ">
-<div><pre></pre></div>
-
-</div>
-
-</div>
-
-<div class="output_area">
-
-<div class="prompt"></div>
-
-
-
-<div class="output_html rendered_html output_subarea ">
-<div><pre></pre></div>
-
-</div>
-
-</div>
-
-<div class="output_area">
-
-<div class="prompt"></div>
-
-
-
-<div class="output_html rendered_html output_subarea ">
-<div><pre></pre></div>
-
-</div>
-
-</div>
-
-<div class="output_area">
-
-<div class="prompt"></div>
-
-
-
-<div class="output_html rendered_html output_subarea ">
-<div><pre></pre></div>
-
-</div>
-
-</div>
-
-<div class="output_area">
-
-<div class="prompt"></div>
-
-
-
-<div class="output_html rendered_html output_subarea ">
-<div><pre></pre></div>
-
-</div>
-
-</div>
-
-<div class="output_area">
-
-<div class="prompt"></div>
-
-
-
-<div class="output_html rendered_html output_subarea ">
-<div><pre></pre></div>
-
-</div>
-
-</div>
-
-<div class="output_area">
-
-<div class="prompt"></div>
-
-
-
-<div class="output_html rendered_html output_subarea ">
-<div><pre></pre></div>
-
-</div>
-
-</div>
-
-<div class="output_area">
-
-<div class="prompt"></div>
-
-
-
-<div class="output_html rendered_html output_subarea ">
-<div><pre></pre></div>
-
-</div>
-
-</div>
-
-<div class="output_area">
-
-<div class="prompt"></div>
-
-
-
-<div class="output_html rendered_html output_subarea ">
-<div><pre></pre></div>
-
-</div>
-
-</div>
-
-<div class="output_area">
-
-<div class="prompt"></div>
-
-
-
-<div class="output_html rendered_html output_subarea ">
-<div><pre></pre></div>
-
-</div>
-
-</div>
-
-<div class="output_area">
-
-<div class="prompt"></div>
-
-
-
-<div class="output_html rendered_html output_subarea ">
-<div><pre></pre></div>
-
-</div>
-
-</div>
-
-<div class="output_area">
-
-<div class="prompt"></div>
-
-
-
-<div class="output_html rendered_html output_subarea ">
-<div><pre></pre></div>
-
-</div>
-
-</div>
-
-<div class="output_area">
-
-<div class="prompt"></div>
-
-
-
-<div class="output_html rendered_html output_subarea ">
-<div><pre></pre></div>
-
-</div>
-
-</div>
-
-<div class="output_area">
-
-<div class="prompt"></div>
-
-
-
-<div class="output_html rendered_html output_subarea ">
-<div><pre></pre></div>
-
-</div>
-
-</div>
-
-<div class="output_area">
-
-<div class="prompt"></div>
-
-
-
-<div class="output_html rendered_html output_subarea ">
-<div><pre></pre></div>
-
-</div>
-
-</div>
-
-<div class="output_area">
-
-<div class="prompt"></div>
-
-
-
-<div class="output_html rendered_html output_subarea ">
-<div><pre></pre></div>
+<div class="imandra-alternatives" id="alt-cf5a7346-4ac8-41f1-8070-6abab29c7c50"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-94a0e628-3eaa-46b4-b358-ed45fcc83eef" class="decompose"><textarea class="display-none">{ &quot;regions&quot;: [] }</textarea><div class="decompose-foamtree"></div><div class="decompose-details"><div class="decompose-details-header">Regions details</div><div class="decompose-details-no-selection"><p>No group selected.</p><ul><li>Concrete regions are numbered</li><li>Unnumbered regions are groups whose children share a particular constraint</li><li>Click on a region to view its details</li><li>Double click on a region to zoom in on it</li><li>Shift+double click to zoom out</li><li>Hit escape to reset back to the top</li></ul></div><div class="decompose-details-selection hidden"><div><span class="decompose-details-label">Direct sub-regions: </span><span class="decompose-details-direct-sub-regions-text">-</span></div><div><span class="decompose-details-label">Contained regions: </span><span class="decompose-details-contained-regions-text">-</span></div><div class="decompose-details-section-header">Constraints</div><div class="decompose-details-constraints"><pre class="decompose-details-constraint">&lt;constraint&gt;</pre></div><div class="decompose-details-invariant"><div class="decompose-details-section-header">Invariant</div><pre class="decompose-details-invariant-text">&lt;invariant&gt;</pre></div></div></div><script>
+(function () {
+  require(['nbextensions/nbimandra/regions'], function (regions) {
+    var target = '#decompose-94a0e628-3eaa-46b4-b358-ed45fcc83eef';
+    regions.hydrate(target);
+  });
+})();
+</script></div></div><div class="tab-pane"><div><div>decomp of (g___1 e<div class="imandra-table" id="table-5f44eb49-4739-485b-a44f-098a73a73dc2"><table><thead><tr><th>Reg_id</th><th>Constraints</th><th>Invariant</th></tr></thead><tr><td>21</td><td>&lt;lazy&gt;</td><td>&lt;lazy&gt;</td></tr><tr><td>20</td><td>&lt;lazy&gt;</td><td>&lt;lazy&gt;</td></tr><tr><td>19</td><td>&lt;lazy&gt;</td><td>&lt;lazy&gt;</td></tr><tr><td>18</td><td>&lt;lazy&gt;</td><td>&lt;lazy&gt;</td></tr><tr><td>17</td><td>&lt;lazy&gt;</td><td>&lt;lazy&gt;</td></tr><tr><td>16</td><td>&lt;lazy&gt;</td><td>&lt;lazy&gt;</td></tr><tr><td>15</td><td>&lt;lazy&gt;</td><td>&lt;lazy&gt;</td></tr><tr><td>14</td><td>&lt;lazy&gt;</td><td>&lt;lazy&gt;</td></tr><tr><td>13</td><td>&lt;lazy&gt;</td><td>&lt;lazy&gt;</td></tr><tr><td>12</td><td>&lt;lazy&gt;</td><td>&lt;lazy&gt;</td></tr><tr><td>11</td><td>&lt;lazy&gt;</td><td>&lt;lazy&gt;</td></tr><tr><td>10</td><td>&lt;lazy&gt;</td><td>&lt;lazy&gt;</td></tr><tr><td>9</td><td>&lt;lazy&gt;</td><td>&lt;lazy&gt;</td></tr><tr><td>8</td><td>&lt;lazy&gt;</td><td>&lt;lazy&gt;</td></tr><tr><td>7</td><td>&lt;lazy&gt;</td><td>&lt;lazy&gt;</td></tr><tr><td>6</td><td>&lt;lazy&gt;</td><td>&lt;lazy&gt;</td></tr><tr><td>5</td><td>&lt;lazy&gt;</td><td>&lt;lazy&gt;</td></tr><tr><td>4</td><td>&lt;lazy&gt;</td><td>&lt;lazy&gt;</td></tr><tr><td>3</td><td>&lt;lazy&gt;</td><td>&lt;lazy&gt;</td></tr><tr><td>2</td><td>&lt;lazy&gt;</td><td>&lt;lazy&gt;</td></tr><tr><td>1</td><td>&lt;lazy&gt;</td><td>&lt;lazy&gt;</td></tr><tr><td>0</td><td>&lt;lazy&gt;</td><td>&lt;lazy&gt;</td></tr></table></div></div></div></div></div><script>
+require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
+  var target = '#alt-cf5a7346-4ac8-41f1-8070-6abab29c7c50';
+  alternatives.hydrate(target);
+});
+</script></div>
 
 </div>
 
@@ -1773,8 +1515,8 @@ val full_node : IDF.node = &lt;abstr&gt;
 
 <div class="output_text output_subarea output_execute_result">
 <pre>val samples : IDF.DSM.State_machine.event list =
-  [Decomp.State_machine.Add (Decomp.State_machine.Int 51);
-   Decomp.State_machine.Add (Decomp.State_machine.Int 1)]
+  [Decomp.State_machine.Reset;
+   Decomp.State_machine.Add (Decomp.State_machine.Int 9001)]
 </pre>
 </div>
 
@@ -1823,12 +1565,11 @@ val full_node : IDF.node = &lt;abstr&gt;
 
 <div class="output_text output_subarea output_execute_result">
 <pre>val replayed_node : IDF.replay_sample list =
-  [{IDF.state_before = 0;
-    event = Decomp.State_machine.Add (Decomp.State_machine.Int 51);
-    state_after = 51};
-   {IDF.state_before = 51;
-    event = Decomp.State_machine.Add (Decomp.State_machine.Int 1);
-    state_after = 52}]
+  [{IDF.state_before = 0; event = Decomp.State_machine.Reset;
+    state_after = 0};
+   {IDF.state_before = 0;
+    event = Decomp.State_machine.Add (Decomp.State_machine.Int 9001);
+    state_after = 0}]
 </pre>
 </div>
 
@@ -1881,40 +1622,26 @@ val full_node : IDF.node = &lt;abstr&gt;
 <pre>val regions : Imandra_surface.Modular_region.t list =
   [---[region]---
    Constraints:
-     [ Destruct(SM.Add, 0, (List.hd (List.tl e))) is SM.Int
-     ; (List.hd (List.tl e)) is SM.Add
-     ; (List.tl (List.tl e)) = [] ]
+     [  ]
    Invariant:
      F = 0
     -------------;
    ---[region]---
    Constraints:
-     [ Destruct(SM.Add, 0, (List.hd e)) is SM.Int
-     ; (List.hd e) is SM.Add
-     ; Destruct(SM.Add, 0, (List.hd (List.tl e))) is SM.Int
-     ; (List.hd (List.tl e)) is SM.Add
-     ; 50 &lt; Destruct(SM.Int, 0, Destruct(SM.Add, 0, (List.hd e))) &lt;= 9000
-     ; (List.tl (List.tl e)) = [] ]
+     [ (List.hd e) is SM.Reset
+     ; (List.tl e) = [] ]
    Invariant:
-     F = Destruct(SM.Int, 0, Destruct(SM.Add, 0, (List.hd e)))
+     F = 0
     -------------;
    ---[region]---
    Constraints:
-     [ Destruct(SM.Add, 0, (List.hd (List.tl e))) is SM.Int
+     [ (List.hd e) is SM.Reset
      ; (List.hd (List.tl e)) is SM.Add
-     ; Destruct(SM.Add, 0, (List.hd e)) is SM.Int
-     ; (List.hd e) is SM.Add
-     ; (Destruct(SM.Int, 0, Destruct(SM.Add, 0, (List.hd (List.tl e)))) +
-          Destruct(SM.Int, 0, Destruct(SM.Add, 0, (List.hd e))))
-         &lt;= 9000
-     ; Destruct(SM.Int, 0, Destruct(SM.Add, 0, (List.hd (List.tl e)))) &gt; 0
-     ; Destruct(SM.Int, 0, Destruct(SM.Add, 0, (List.hd e))) &lt;&gt; 1337
-     ; Destruct(SM.Int, 0, Destruct(SM.Add, 0, (List.hd e))) &gt; 50
+     ; Destruct(SM.Add, 0, (List.hd (List.tl e))) is SM.Int
+     ; Destruct(SM.Int, 0, Destruct(SM.Add, 0, (List.hd (List.tl e)))) &gt; 9000
      ; (List.tl (List.tl e)) = [] ]
    Invariant:
-     F =
-     Destruct(SM.Int, 0, Destruct(SM.Add, 0, (List.hd e))) +
-       Destruct(SM.Int, 0, Destruct(SM.Add, 0, (List.hd (List.tl e))))
+     F = 0
     -------------]
 </pre>
 </div>

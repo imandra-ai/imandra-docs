@@ -423,14 +423,6 @@
                                     
                                     <li class="side__nav-list-item--sub-level-2 side__nav-list--sub-level-2--empty">
                                         
-                                        <a class="side__nav-link" href="/imandra-docs/notebooks/decomposition-flags">Decomposition Flags</a>
-                                        
-                                        
-                                        
-                                    </li>
-                                    
-                                    <li class="side__nav-list-item--sub-level-2 side__nav-list--sub-level-2--empty">
-                                        
                                         <a class="side__nav-link" href="/imandra-docs/notebooks/imandra-tools-intro">Imandra Tools Introduction</a>
                                         
                                         
@@ -457,6 +449,12 @@
                                 
                                 <div class="side__within-page-nav--sub-level-1">
                                 
+  
+  
+  
+  <a class="side__nav-link--within-page side__nav-link--within-page--h1" href="#Advanced-Usage">Advanced Usage</a>
+  
+  
                                 </div>
                                 
                             </li>
@@ -837,8 +835,109 @@
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html"><h1 id="Verification">Verification<a class="anchor-link" href="#Verification">&#182;</a></h1><ul>
-<li><a href="/imandra-docs/notebooks/decomposition-flags/">Decomposition Flags</a></li>
+<div class="text_cell_render border-box-sizing rendered_html"><h1 id="Region-Decomposition">Region Decomposition<a class="anchor-link" href="#Region-Decomposition">&#182;</a></h1><p>The term Region Decomposition refers to a (<a href="https://en.wikipedia.org/wiki/Cylindrical_algebraic_decomposition">geometrically inspired</a>) "slicing" of an algorithm’s state-space into distinct regions where the behavior of the algorithm is invariant, i.e., where it behaves "the same."</p>
+<p>Each "slice" or region of the state-space describes a family of inputs and the output of the algorithm upon them, both of which may be symbolic and represent (potentially infinitely) many concrete instances.</p>
+<p>The entrypoint to decomposition is the <code>Modular_decomp.top</code> function, here's a quick basic example of how it can be used:</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="try-this-container">
+  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Decomposition.ipynb%23try-cell-2" target="_blank" rel="nofollow">
+    <div class="try-this">Try this!</div>
+  </a>
+</div>
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[1]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ocaml"><pre><span></span><span class="k">let</span> <span class="n">f</span> <span class="n">x</span> <span class="o">=</span>
+  <span class="k">if</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">then</span>
+    <span class="mi">1</span>
+  <span class="k">else</span>
+    <span class="o">-</span><span class="mi">1</span>
+<span class="o">;;</span>
+
+<span class="k">let</span> <span class="n">d</span> <span class="o">=</span> <span class="nn">Modular_decomp</span><span class="p">.</span><span class="n">top</span> <span class="s2">&quot;f&quot;</span> <span class="o">[@@</span><span class="n">program</span><span class="o">]</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[1]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>val f : int -&gt; Z.t = &lt;fun&gt;
+val d : Imandra_interactive.Modular_decomp.MD.t =
+  {Imandra_interactive.Modular_decomp.MD.md_session = &lt;abstr&gt;;
+   md_f = &lt;abstr&gt;; md_args = [(x : int)]; md_regions = &lt;abstr&gt;}
+</pre>
+</div>
+
+</div>
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+
+<div class="output_html rendered_html output_subarea ">
+<div class="imandra-alternatives" id="alt-19deee1f-f777-4891-91b1-ac60b7606b7b"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-ee071d8c-ddd9-4c2a-ae79-7a1452e0ad3c" class="decompose"><textarea class="display-none">{
+  &quot;regions&quot;: [
+    {
+      &quot;constraints&quot;: [ &quot;x &gt; 0&quot; ],
+      &quot;region&quot;: { &quot;constraints&quot;: [ &quot;x &gt; 0&quot; ], &quot;invariant&quot;: &quot;F = 1&quot; },
+      &quot;groups&quot;: [],
+      &quot;label&quot;: &quot;2&quot;,
+      &quot;weight&quot;: 1
+    },
+    {
+      &quot;constraints&quot;: [ &quot;x &lt;= 0&quot; ],
+      &quot;region&quot;: { &quot;constraints&quot;: [ &quot;x &lt;= 0&quot; ], &quot;invariant&quot;: &quot;F = -1&quot; },
+      &quot;groups&quot;: [],
+      &quot;label&quot;: &quot;1&quot;,
+      &quot;weight&quot;: 1
+    }
+  ]
+}</textarea><div class="decompose-foamtree"></div><div class="decompose-details"><div class="decompose-details-header">Regions details</div><div class="decompose-details-no-selection"><p>No group selected.</p><ul><li>Concrete regions are numbered</li><li>Unnumbered regions are groups whose children share a particular constraint</li><li>Click on a region to view its details</li><li>Double click on a region to zoom in on it</li><li>Shift+double click to zoom out</li><li>Hit escape to reset back to the top</li></ul></div><div class="decompose-details-selection hidden"><div><span class="decompose-details-label">Direct sub-regions: </span><span class="decompose-details-direct-sub-regions-text">-</span></div><div><span class="decompose-details-label">Contained regions: </span><span class="decompose-details-contained-regions-text">-</span></div><div class="decompose-details-section-header">Constraints</div><div class="decompose-details-constraints"><pre class="decompose-details-constraint">&lt;constraint&gt;</pre></div><div class="decompose-details-invariant"><div class="decompose-details-section-header">Invariant</div><pre class="decompose-details-invariant-text">&lt;invariant&gt;</pre></div></div></div><script>
+(function () {
+  require(['nbextensions/nbimandra/regions'], function (regions) {
+    var target = '#decompose-ee071d8c-ddd9-4c2a-ae79-7a1452e0ad3c';
+    regions.hydrate(target);
+  });
+})();
+</script></div></div><div class="tab-pane"><div><div>decomp of (f x<div class="imandra-table" id="table-2667643b-fb69-460b-a137-6622e2fe57d0"><table><thead><tr><th>Reg_id</th><th>Constraints</th><th>Invariant</th></tr></thead><tr><td>1</td><td><ul><li><pre>not (x &gt; 0)</pre></li></ul></td><td><pre>-1</pre></td></tr><tr><td>0</td><td><ul><li><pre>x &gt; 0</pre></li></ul></td><td><pre>1</pre></td></tr></table></div></div></div></div></div><script>
+require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
+  var target = '#alt-19deee1f-f777-4891-91b1-ac60b7606b7b';
+  alternatives.hydrate(target);
+});
+</script></div>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html"><p>Imandra decomposed the function "f" into 2 regions: the first region tells us that whenever the input argument <code>x</code> is less than or equal to 0, then the value returned by the function will be <code>-1</code>, the second region tells us that whenever <code>x</code> is positive, the output will be 1.</p>
+<p>When using Region Decomposition from a REPL instead of from the jupyter notebook, we recommend installing the vornoi printer (producing the above diagram) via the <code>Imandra_voronoi.Voronoi.print</code> printer</p>
+<h1 id="Advanced-Usage">Advanced Usage<a class="anchor-link" href="#Advanced-Usage">&#182;</a></h1><ul>
 <li><a href="/imandra-docs/notebooks/imandra-tools-intro/">Imandra Tools Introduction</a></li>
 <li><a href="/imandra-docs/notebooks/idf/">Iterative Decomposition Framework</a></li>
 <li><a href="/imandra-docs/notebooks/region-probabilities/">Region Probabilities</a></li>
