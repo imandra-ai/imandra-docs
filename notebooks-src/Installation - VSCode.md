@@ -26,6 +26,7 @@ The extension will open automatically when a file with extension `.iml` or `.ire
 # With Simple Installation
 
 If you have used the [Simple installation instructions](Installation%20-%20Simple.md) for Imandra then the VSCode extension should work automatically.
+If you're on Windows and have installed Imandra under WSL, you need to enable the extension to [work under WSL](https://code.visualstudio.com/docs/remote/wsl#_managing-extensions)
 
 # With Manual Installation
 
