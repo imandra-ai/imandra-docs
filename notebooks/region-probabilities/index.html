@@ -1133,7 +1133,7 @@ val apple_dist : unit -&gt; apple = &lt;fun&gt;
   <span class="k">in</span> <span class="k">let</span> <span class="n">p</span> <span class="o">=</span> <span class="o">(</span><span class="n">per_gram</span> <span class="n">apple</span><span class="o">.</span><span class="n">kind</span><span class="o">)</span> <span class="o">*.</span> <span class="n">apple</span><span class="o">.</span><span class="n">mass</span> <span class="k">in</span>
   <span class="k">if</span> <span class="n">apple</span><span class="o">.</span><span class="n">days_old</span> <span class="o">&gt;=</span> <span class="mi">5</span> <span class="k">then</span> <span class="n">p</span> <span class="o">/.</span> <span class="mi">2</span><span class="o">.</span> <span class="k">else</span> <span class="n">p</span><span class="o">;;</span>
 
-<span class="k">let</span> <span class="n">regions</span> <span class="o">=</span> <span class="nn">Modular_decomp</span><span class="p">.</span><span class="n">top</span> <span class="s2">&quot;price&quot;</span> <span class="o">[@@</span><span class="n">program</span><span class="o">];;</span>
+<span class="k">let</span> <span class="n">d</span> <span class="o">=</span> <span class="nn">Modular_decomp</span><span class="p">.</span><span class="n">top</span> <span class="s2">&quot;price&quot;</span> <span class="o">[@@</span><span class="n">program</span><span class="o">];;</span>
 
 <span class="nn">Modular_decomp</span><span class="p">.</span><span class="n">prune</span> <span class="n">d</span> <span class="o">[@@</span><span class="n">program</span><span class="o">];;</span>
 
@@ -1159,13 +1159,45 @@ val apple_dist : unit -&gt; apple = &lt;fun&gt;
 
 <div class="output_text output_subarea output_execute_result">
 <pre>val price : apple -&gt; real = &lt;fun&gt;
-val regions : Imandra_interactive.Modular_decomp.MD.t =
+val d : Imandra_interactive.Modular_decomp.MD.t =
   {Imandra_interactive.Modular_decomp.MD.md_session = &lt;abstr&gt;;
    md_f = &lt;abstr&gt;; md_args = [(apple : apple)]; md_regions = &lt;abstr&gt;}
-File &#34;jupyter cell 5&#34;, line 11, characters 21-22:
-Error: Unbound value d
-File &#34;jupyter cell 5&#34;, line 14, characters 39-40:
-Error: Unbound value d
+- : unit = ()
+val regions : Imandra_interactive.Modular_decomp.MR.t CCList.t =
+  [{Imandra_interactive.Modular_decomp.MR.mreg_session = 1i; mreg_id = 5i;
+    mreg_constraints =
+     [not (apple.kind = Granny_Smith); not (apple.kind = Braeburn);
+      not (apple.days_old &gt;= 5)];
+    mreg_invariant = 3/10 *. apple.mass; mreg_args = [(apple : apple)];
+    mreg_status = Imandra_interactive.Modular_decomp.MR.Unknown};
+   {Imandra_interactive.Modular_decomp.MR.mreg_session = 1i; mreg_id = 4i;
+    mreg_constraints =
+     [apple.kind = Granny_Smith; not (apple.kind = Braeburn);
+      not (apple.days_old &gt;= 5)];
+    mreg_invariant = 7/20 *. apple.mass; mreg_args = [(apple : apple)];
+    mreg_status = Imandra_interactive.Modular_decomp.MR.Unknown};
+   {Imandra_interactive.Modular_decomp.MR.mreg_session = 1i; mreg_id = 3i;
+    mreg_constraints = [apple.kind = Braeburn; not (apple.days_old &gt;= 5)];
+    mreg_invariant = 2/5 *. apple.mass; mreg_args = [(apple : apple)];
+    mreg_status = Imandra_interactive.Modular_decomp.MR.Unknown};
+   {Imandra_interactive.Modular_decomp.MR.mreg_session = 1i; mreg_id = 2i;
+    mreg_constraints =
+     [not (apple.kind = Granny_Smith); not (apple.kind = Braeburn);
+      apple.days_old &gt;= 5];
+    mreg_invariant = (3/10 *. apple.mass) /. 2;
+    mreg_args = [(apple : apple)];
+    mreg_status = Imandra_interactive.Modular_decomp.MR.Unknown};
+   {Imandra_interactive.Modular_decomp.MR.mreg_session = 1i; mreg_id = 1i;
+    mreg_constraints =
+     [apple.kind = Granny_Smith; not (apple.kind = Braeburn);
+      apple.days_old &gt;= 5];
+    mreg_invariant = (7/20 *. apple.mass) /. 2;
+    mreg_args = [(apple : apple)];
+    mreg_status = Imandra_interactive.Modular_decomp.MR.Unknown};
+   {Imandra_interactive.Modular_decomp.MR.mreg_session = 1i; mreg_id = 0i;
+    mreg_constraints = [apple.kind = Braeburn; apple.days_old &gt;= 5];
+    mreg_invariant = (2/5 *. apple.mass) /. 2; mreg_args = [(apple : apple)];
+    mreg_status = Imandra_interactive.Modular_decomp.MR.Unknown}]
 </pre>
 </div>
 
@@ -1178,7 +1210,7 @@ Error: Unbound value d
 
 
 <div class="output_html rendered_html output_subarea ">
-<div class="imandra-alternatives" id="alt-cb90017d-0e98-48c6-8150-a1e2a1a19f3c"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-a2ea9c6f-25fc-42e2-89d7-ac981e6427d4" class="decompose"><textarea class="display-none">{
+<div class="imandra-alternatives" id="alt-0f06a057-a656-495b-aa1d-ccd18cab9875"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi (6 of 6)</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-1c8429a0-57c2-4c14-a3fe-eacc2528eed8" class="decompose"><textarea class="display-none">{
   &quot;regions&quot;: [
     {
       &quot;constraints&quot;: [ &quot;apple.days_old &gt;= 5&quot; ],
@@ -1278,16 +1310,94 @@ Error: Unbound value d
 }</textarea><div class="decompose-foamtree"></div><div class="decompose-details"><div class="decompose-details-header">Regions details</div><div class="decompose-details-no-selection"><p>No group selected.</p><ul><li>Concrete regions are numbered</li><li>Unnumbered regions are groups whose children share a particular constraint</li><li>Click on a region to view its details</li><li>Double click on a region to zoom in on it</li><li>Shift+double click to zoom out</li><li>Hit escape to reset back to the top</li></ul></div><div class="decompose-details-selection hidden"><div><span class="decompose-details-label">Direct sub-regions: </span><span class="decompose-details-direct-sub-regions-text">-</span></div><div><span class="decompose-details-label">Contained regions: </span><span class="decompose-details-contained-regions-text">-</span></div><div class="decompose-details-section-header">Constraints</div><div class="decompose-details-constraints"><pre class="decompose-details-constraint">&lt;constraint&gt;</pre></div><div class="decompose-details-invariant"><div class="decompose-details-section-header">Invariant</div><pre class="decompose-details-invariant-text">&lt;invariant&gt;</pre></div></div></div><script>
 (function () {
   require(['nbextensions/nbimandra/regions'], function (regions) {
-    var target = '#decompose-a2ea9c6f-25fc-42e2-89d7-ac981e6427d4';
+    var target = '#decompose-1c8429a0-57c2-4c14-a3fe-eacc2528eed8';
     regions.hydrate(target);
   });
 })();
-</script></div></div><div class="tab-pane"><div><div>decomp of (price apple<div class="imandra-table" id="table-7bcd75e6-3bfd-40c3-a525-dbdd6536e245"><table><thead><tr><th>Reg_id</th><th>Constraints</th><th>Invariant</th></tr></thead><tr><td>5</td><td><ul><li><pre>not (apple.kind = Granny_Smith)</pre></li><li><pre>not (apple.kind = Braeburn)</pre></li><li><pre>not (apple.days_old &gt;= 5)</pre></li></ul></td><td><pre>3/10 *. apple.mass</pre></td></tr><tr><td>4</td><td><ul><li><pre>apple.kind = Granny_Smith</pre></li><li><pre>not (apple.kind = Braeburn)</pre></li><li><pre>not (apple.days_old &gt;= 5)</pre></li></ul></td><td><pre>7/20 *. apple.mass</pre></td></tr><tr><td>3</td><td><ul><li><pre>apple.kind = Braeburn</pre></li><li><pre>not (apple.days_old &gt;= 5)</pre></li></ul></td><td><pre>2/5 *. apple.mass</pre></td></tr><tr><td>2</td><td><ul><li><pre>not (apple.kind = Granny_Smith)</pre></li><li><pre>not (apple.kind = Braeburn)</pre></li><li><pre>apple.days_old &gt;= 5</pre></li></ul></td><td><pre>(3/10 *. apple.mass) /. 2</pre></td></tr><tr><td>1</td><td><ul><li><pre>apple.kind = Granny_Smith</pre></li><li><pre>not (apple.kind = Braeburn)</pre></li><li><pre>apple.days_old &gt;= 5</pre></li></ul></td><td><pre>(7/20 *. apple.mass) /. 2</pre></td></tr><tr><td>0</td><td><ul><li><pre>apple.kind = Braeburn</pre></li><li><pre>apple.days_old &gt;= 5</pre></li></ul></td><td><pre>(2/5 *. apple.mass) /. 2</pre></td></tr></table></div></div></div></div></div><script>
+</script></div></div><div class="tab-pane"><div><div>decomp of (price apple<div class="imandra-table" id="table-55f8ea9c-6bfd-4c7c-b308-d9376ac1bfdc"><table><thead><tr><th>Reg_id</th><th>Constraints</th><th>Invariant</th></tr></thead><tr><td>5</td><td><ul><li><pre>not (apple.kind = Granny_Smith)</pre></li><li><pre>not (apple.kind = Braeburn)</pre></li><li><pre>not (apple.days_old &gt;= 5)</pre></li></ul></td><td><pre>3/10 *. apple.mass</pre></td></tr><tr><td>4</td><td><ul><li><pre>apple.kind = Granny_Smith</pre></li><li><pre>not (apple.kind = Braeburn)</pre></li><li><pre>not (apple.days_old &gt;= 5)</pre></li></ul></td><td><pre>7/20 *. apple.mass</pre></td></tr><tr><td>3</td><td><ul><li><pre>apple.kind = Braeburn</pre></li><li><pre>not (apple.days_old &gt;= 5)</pre></li></ul></td><td><pre>2/5 *. apple.mass</pre></td></tr><tr><td>2</td><td><ul><li><pre>not (apple.kind = Granny_Smith)</pre></li><li><pre>not (apple.kind = Braeburn)</pre></li><li><pre>apple.days_old &gt;= 5</pre></li></ul></td><td><pre>(3/10 *. apple.mass) /. 2</pre></td></tr><tr><td>1</td><td><ul><li><pre>apple.kind = Granny_Smith</pre></li><li><pre>not (apple.kind = Braeburn)</pre></li><li><pre>apple.days_old &gt;= 5</pre></li></ul></td><td><pre>(7/20 *. apple.mass) /. 2</pre></td></tr><tr><td>0</td><td><ul><li><pre>apple.kind = Braeburn</pre></li><li><pre>apple.days_old &gt;= 5</pre></li></ul></td><td><pre>(2/5 *. apple.mass) /. 2</pre></td></tr></table></div></div></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-cb90017d-0e98-48c6-8150-a1e2a1a19f3c';
+  var target = '#alt-0f06a057-a656-495b-aa1d-ccd18cab9875';
   alternatives.hydrate(target);
 });
 </script></div>
+
+</div>
+
+</div>
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+
+<div class="output_html rendered_html output_subarea ">
+<div><pre></pre></div>
+
+</div>
+
+</div>
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+
+<div class="output_html rendered_html output_subarea ">
+<div><pre></pre></div>
+
+</div>
+
+</div>
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+
+<div class="output_html rendered_html output_subarea ">
+<div><pre></pre></div>
+
+</div>
+
+</div>
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+
+<div class="output_html rendered_html output_subarea ">
+<div><pre></pre></div>
+
+</div>
+
+</div>
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+
+<div class="output_html rendered_html output_subarea ">
+<div><pre></pre></div>
+
+</div>
+
+</div>
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+
+<div class="output_html rendered_html output_subarea ">
+<div><pre></pre></div>
 
 </div>
 
@@ -1403,12 +1513,10 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>File &#34;jupyter cell 7&#34;, line 1, characters 38-45:
-Error: This expression has type
-         Imandra_interactive.Modular_decomp.MD.t =
-           Imandra_surface__Modular_decomposition.t
-       but an expression was expected of type
-         Imandra_surface.Modular_region.t list
+<pre>val g___1 : apple -&gt; int = &lt;fun&gt;
+- : unit = ()
+val apple_probs_S : (int, float * Imandra_surface.Modular_region.t) Hashtbl.t =
+  &lt;abstr&gt;
 </pre>
 </div>
 
@@ -1459,8 +1567,62 @@ Error: This expression has type
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>File &#34;jupyter cell 8&#34;, line 1, characters 12-25:
-Error: Unbound value apple_probs_S
+<pre>Region Probabilities---[region]---
+Index: 2
+Probability: 0.2234
+Constraints:
+  [ apple.kind is Braeburn
+  ; apple.days_old &lt; 5 ]
+Invariant:
+  F = apple.mass * 2/5
+ -------------
+---[region]---
+Index: 3
+Probability: 0.0134
+Constraints:
+  [ apple.kind is Red_Delicious
+  ; apple.days_old &gt;= 5 ]
+Invariant:
+  F = (apple.mass * 3/10) / 2
+ -------------
+---[region]---
+Index: 5
+Probability: 0.0244
+Constraints:
+  [ apple.kind is Braeburn
+  ; apple.days_old &gt;= 5 ]
+Invariant:
+  F = (apple.mass * 2/5) / 2
+ -------------
+---[region]---
+Index: 4
+Probability: 0.0592
+Constraints:
+  [ apple.kind is Granny_Smith
+  ; apple.days_old &gt;= 5 ]
+Invariant:
+  F = (apple.mass * 7/20) / 2
+ -------------
+---[region]---
+Index: 0
+Probability: 0.1360
+Constraints:
+  [ apple.kind is Red_Delicious
+  ; apple.days_old &lt; 5 ]
+Invariant:
+  F = apple.mass * 3/10
+ -------------
+---[region]---
+Index: 1
+Probability: 0.5436
+Constraints:
+  [ apple.kind is Granny_Smith
+  ; apple.days_old &lt; 5 ]
+Invariant:
+  F = apple.mass * 7/20
+ -------------
+
+- : unit = ()
 </pre>
 </div>
 
@@ -1699,7 +1861,7 @@ val from_apple : apple -&gt; string list = &lt;fun&gt;
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>Probability: 0.1202 ± 0.0019
+<pre>Probability: 0.1196 ± 0.0019
 - : unit = ()
 </pre>
 </div>
