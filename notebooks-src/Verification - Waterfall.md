@@ -48,7 +48,7 @@ to be proved if all the clauses in the pool evaporate.
 ## Simplification
 
 As the first step in the waterfall process, the
-full [simplifier](Verification%20-%20Simplification) is applied to a clause,
+full [simplifier](Verification%20-%20Simplification.md) is applied to a clause,
 making use of all enabled rewrite and forward-chaining rules, decision
 procedures for algebraic datatypes and arithmetic, and performing case-splits.
 
@@ -61,7 +61,7 @@ only other step that can do this is the [unrolling check](#Unrolling-check), but
 this is less common).
 
 For this reason, making good use
-of [rewrite rules](../verification-simplification#Rewrite-Rules) in order to
+of [rewrite rules](Verification%20-%20Simplification.md#Rewrite-Rules) in order to
 control simplification is perhaps the most powerful tool Imandra gives us. Thus
 it's important to spend as much time as possible teaching Imandra a good set of
 rules to apply.
