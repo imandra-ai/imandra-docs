@@ -80,11 +80,11 @@ certain ways during subsequent proof attempts. The development of an appropriate
 collection of rules can be used to "teach" Imandra how to reason in a new
 domain.
 
-- `[@@rw]` or `[@@rewrite]`: install theorem as a [rewrite rule](../verification-simplification#Rewrite-Rules)
-- `[@@permutative]`: restrict rewrite rule as [permutative](../verification-simplification#Permutative-Restriction)
-- `[@@fc]` or `[@@forward-chaining]`: install theorem as a [forward chaining rule](../verification-simplification#Forward-chaining-Rules)
-- `[@@elim]` or `[@@elimination]`: install theorem as an [elimination rule](../verification-waterfall#Elimination-Rules)
-- `[@@gen]` or `[@@generalization]`: install theorem as a [generalization rule](../verification-waterfall#Generalization-Rules)
+- `[@@rw]` or `[@@rewrite]`: install theorem as a [rewrite rule](Verification%20-%20Simplification.md#Rewrite-Rules)
+- `[@@permutative]`: restrict rewrite rule as [permutative](Verification%20-%20Simplification.md#Permutative-Restriction)
+- `[@@fc]` or `[@@forward-chaining]`: install theorem as a [forward chaining rule](Verification%20-%20Simplification.md#Forward-chaining-Rules)
+- `[@@elim]` or `[@@elimination]`: install theorem as an [elimination rule](Verification%20-%20Waterfall.md#Elimination-Rules)
+- `[@@gen]` or `[@@generalization]`: install theorem as a [generalization rule](Verification%20-%20Waterfall.md#Generalization-Rules)
 
 ## Examples
 

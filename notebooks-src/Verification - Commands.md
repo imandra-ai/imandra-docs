@@ -18,7 +18,7 @@ Imandra has a number of powerful verification commands:
   by Imandra in the `CX` module. When verifying a formula that doesn't depend on
   function parameters, `verify (<expr>)` is a shorthand for `verify (fun () -> <expr>)`.
   If `<upto>` is provided as one of `~upto:<n>` or `~upto_bound:<n>`, verification
-  will be bound by [unrolling limits](../verification-unrolling#Unrolling-limits).
+  will be bound by [unrolling limits](Verification%20-%20Unrolling.md#Unrolling-limits).
 
 - `instance <upto> <func>`: takes a function representing a goal and attempts to
   synthesize an instance (i.e., a concrete value) that satisfies it. It is
@@ -26,7 +26,7 @@ Imandra has a number of powerful verification commands:
   this particular property?". Found instances are installed by Imandra in the
   `CX` module.
   If `<upto>` is provided as one of `~upto:<n>` or `~upto_bound:<n>`, instance search
-  will be bound by [unrolling limits](../verification-unrolling#Unrolling-limits).
+  will be bound by [unrolling limits](Verification%20-%20Unrolling.md#Unrolling-limits).
 
 - `theorem <name> <vars> = <body>`: takes a name, variables and a function of
   the variables representing a goal to be proved. If Imandra proves the goal,
