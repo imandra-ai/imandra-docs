@@ -122,6 +122,9 @@ The resuling program gives back the answer
 ```
 We can apply this using a simple print function
 ```{.imandra .input}
+let init_map : (class_id*day,int) Map.t =
+  Map.const 0;;
+  
 let print_res r = 
   snd @@ List.fold_left (fun (cnt,acc) el -> 
     cnt+1,acc^("Family F"^(Z.to_string cnt)^" -- "^(string_of_day el)^"\n"))
