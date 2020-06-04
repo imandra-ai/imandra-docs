@@ -125,9 +125,9 @@ We can apply this using a simple print function
 let print_res r = 
   snd @@ List.fold_left (fun (cnt,acc) el -> 
     cnt+1,acc^("Family F"^(Z.to_string cnt)^" -- "^(string_of_day el)^"\n"))
-  (0,"")  (List.rev r);;
+  (0,"")  (List.rev r) [@@program];;
 
-print_endline @@ print_res @@ snd @@ calc_alloc init_map families [];;
+print_endline @@ print_res @@ snd @@ calc_alloc init_map families [] [@@program];;
 ```
 Which gives the output
 ```
