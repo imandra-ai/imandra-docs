@@ -1,14 +1,3 @@
----
-title: "Scheduling smaller class sizes during Covid"
-description: "This notebook demonstrates how to encode and solve a constraint problem of making sure all children from the same family go to school on the same day, when days at school are restricted due to Covid."
-kernel: imandra
-slug: school-scheduler
-key-phrases:
-  - OCaml
-  - proof
-  - instance
----
-
 # Stating the problem
 
 During the Covid pandemic of 2019/2020 it became apparent that due to social distancing, children going to school in the Scotland and elsewhere would only be able to attend for a restricted number of days per week. One of the primary concerns for families was that siblings should attend on the same day. This problem is a classic scheduling problem which can become very tricky due to a combinatorial explosion. This notebook demonstrates how it is possible to encode such a problem and use imandra to write a solver to find a solution.
@@ -31,7 +20,8 @@ denotes a family of three students, Julie, Jenna and Siobhan Reyes, in classes `
 
 We can now encode a simple solver to determine how to find a solution. This simply gives back a list of days corresponding to a day allocation per family.
 
-```{.imandra .input}
+
+```ocaml
 type day = M | T | W | Th | Fr
 ;;
 
@@ -66,7 +56,24 @@ let rec update_map classes map day =
     update_map t new_map day
 ;;
 
-let sort_by_days classes class_map = 
+
+let rec valid_alloc_by_list (alloc:(day*family_id) list) class_map families cnt families_class_list  = 
+  match families with
+  | x :: xs ->
+    begin
+      match List.find (fun (_d,f)-> f = x) alloc with 
+      | None -> false 
+      | Some (d,_) -> 
+        (* Check class size is within bounds *)
+        let classes = Map.get x families_class_list in
+        if List.exists (fun x -> Map.get (x,d) class_map = class_day_alloc x) classes then false else
+          let updated_map = update_map classes class_map d in
+          valid_alloc_by_list alloc updated_map xs (cnt+1) families_class_list 
+    end
+  | _ -> true [@@measure (Ordinal.of_int (List.length families))]
+;;
+
+let solver_sort classes class_map = 
   let rec fold_cut num_in classes day = 
     match classes with 
     | [] -> true, num_in
@@ -80,40 +87,33 @@ let sort_by_days classes class_map =
       if (fst res) then (day,snd res)::acc else acc
     ) [] [M;T;W;Th;Fr] in 
   List.sort ~leq:(fun (_,y) (_,z) -> y<=z) nums_days |>
-  List.map fst [@@program]
+  List.map fst
+[@@program]
 ;;
 
 let rec calc_alloc class_map families alloc families_class_map = 
+  let rec try_all_days days_list t classes class_map orig_class_map alloc orig_alloc fam = 
+    match days_list with 
+    | [] -> false,orig_alloc
+    | h::t_days -> 
+      let updated_map = 
+        List.fold_left (fun acc_map el -> 
+            let ans = Map.get (el,h) acc_map in
+            Map.add (el,h) (ans+1) acc_map) class_map classes in
+      let res = (calc_alloc  updated_map t ((h,fam)::alloc) families_class_map)  in 
+      if (fst res) then res else 
+        try_all_days t_days t classes orig_class_map orig_class_map alloc orig_alloc fam in
   match families with 
   | [] -> true,alloc 
   | h::t -> 
     begin
-      let classes = Map.get (fst h) families_class_map  in 
-      let days_list = sort_by_days classes class_map in 
-      try_all_days days_list t classes class_map class_map alloc alloc families_class_map
+      let classes = Map.get h families_class_map  in 
+      let days_list = solver_sort (Map.get h families_class_map) class_map in 
+      try_all_days days_list t classes class_map class_map alloc alloc h
     end 
-and try_all_days days_list t classes class_map orig_class_map alloc orig_alloc families_class_map= 
-  let rec fold_cut class_map classes day = 
-    match classes with 
-    | [] -> true,class_map
-    | h::t -> 
-      let ans = Map.get (h,day) class_map in
-      if ans >= class_day_alloc h then 
-        false,orig_class_map 
-      else fold_cut (Map.add (h,day) (ans+1) class_map) t day 
-  in
-  match days_list with 
-  | [] -> false,orig_alloc
-  | h::t_days -> let res,updated_map = 
-                   fold_cut class_map classes h in 
-    if res then 
-      begin 
-        let res = (calc_alloc updated_map t (h::alloc) families_class_map)  in 
-        if (fst res) then res else 
-          try_all_days t_days t classes orig_class_map orig_class_map alloc alloc families_class_map
-      end 
-    else try_all_days t_days t classes orig_class_map orig_class_map alloc alloc families_class_map
 [@@program];;
+
+
 
 let print_res r families_student_list student_names = 
   snd @@ List.fold_left (fun (cnt,acc) el -> 
@@ -124,11 +124,13 @@ let print_res r families_student_list student_names =
             "Student "^nm^" goes on "^(string_of_day el)^"\n"^inner_acc) "" stds
       ))
     (0,"")  (List.rev r) [@@program];;
+
 ```
 
 Now we can read in this csv file and ask the solver to find an allocation for each student, maintaining the requirement that all students from each family must go to school on the same day.
 
-```{.imandra .input}
+
+```ocaml
 let parse_csv ~filename  = 
   let comma_separator = Str.regexp "," in
   let space_separator = Str.regexp " " in
@@ -179,7 +181,7 @@ let parse_csv ~filename  =
 let solve_from_csv ~filename  = 
   let families_class_map, families, student_names, families_student_list = parse_csv ~filename in 
   let families_sorted = List.sort ~leq:(fun (_,a) (_,b) -> List.length a >= List.length b) families in
-  let res = calc_alloc init_map families_sorted [] families_class_map in
+  let res = calc_alloc init_map (List.map fst families_sorted) [] families_class_map in
   if (fst res) then 
     print_res (List.map fst (snd res)) families_student_list student_names,families,families_class_map,snd res
   else 
@@ -189,13 +191,14 @@ let solve_from_csv ~filename  =
 let verify_alloc ~filename = 
   let print_value,families,fmap,ans = solve_from_csv ~filename in 
   if valid_alloc_by_list ans init_map (List.map fst families) 0 fmap 
-    then print_endline (print_value^"\nSolution Verified") 
-    else print_endline "Incorrect solution" [@@program]
+  then print_endline (print_value^"\nSolution Verified") 
+  else print_endline "Incorrect solution" [@@program]
 ;;
 ```
 
 Now we can use imandra to solve using the data file above
 
-```{.imandra .input}
+
+```ocaml
 solve_from_csv ~filename:"data.csv";;
 ```
