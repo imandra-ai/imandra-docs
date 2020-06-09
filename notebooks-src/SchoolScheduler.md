@@ -175,17 +175,19 @@ let parse_csv ~filename  =
 
 let solve_from_csv ~filename  = 
   let families_class_map, families, student_names, families_student_list = parse_csv ~filename in 
-  let res = calc_alloc init_map families [] families_class_map in
+  let families_sorted = List.sort ~leq:(fun (_,a) (_,b) -> List.length a >= List.length b) families in
+  let res = calc_alloc init_map families_sorted [] families_class_map in
   if (fst res) then 
-    ( 
-      print_endline (print_res (snd res) families_student_list student_names);
-      snd res
-    )
+    print_res (List.map fst (snd res)) families_student_list student_names,families,families_class_map,snd res
   else 
-    (
-      print_endline "No solution found";
-      snd res
-    )[@@program]
+    "No solution found",families,families_class_map,snd res
+[@@program];;
+
+let verify_alloc ~filename = 
+  let print_value,families,fmap,ans = solve_from_csv ~filename in 
+  if valid_alloc_by_list ans init_map (List.map fst families) 0 fmap 
+    then print_endline (print_value^"\nSolution Verified") 
+    else print_endline "Incorrect solution" [@@program]
 ;;
 ```
 
