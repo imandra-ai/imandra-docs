@@ -21,7 +21,7 @@ denotes a family of three students, Julie, Jenna and Siobhan Reyes, in classes `
 We can now encode a simple solver to determine how to find a solution. This simply gives back a list of days corresponding to a day allocation per family.
 
 
-```ocaml
+```{.imandra .input}
 type day = M | T | W | Th | Fr
 ;;
 
@@ -130,7 +130,7 @@ let print_res r families_student_list student_names =
 Now we can read in this csv file and ask the solver to find an allocation for each student, maintaining the requirement that all students from each family must go to school on the same day.
 
 
-```ocaml
+```{.imandra .input}
 let parse_csv ~filename  = 
   let comma_separator = Str.regexp "," in
   let space_separator = Str.regexp " " in
@@ -199,6 +199,6 @@ let verify_alloc ~filename =
 Now we can use imandra to solve using the data file above
 
 
-```ocaml
+```{.imandra .input}
 solve_from_csv ~filename:"data.csv";;
 ```
