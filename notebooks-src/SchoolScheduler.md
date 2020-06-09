@@ -135,7 +135,8 @@ let parse_csv ~filename  =
   let student_names = ref [] in 
   let families = ref [] in 
   let families_class_list = ref [] in
-  let families_student_names = ref [] in  
+  let families_student_names = ref [] in 
+  let class_map = ref (Map.const []) in 
   let ic = open_in filename in
   let cnt = ref 0 in
   let fam_cnt = ref 0 in
@@ -154,6 +155,8 @@ let parse_csv ~filename  =
                 these_students := (S !cnt)::!these_students;
                 these_classes := (C cn)::!these_classes;           
                 student_names := (S !cnt,(fn^" "^sn))::!student_names;
+                let clstds = Map.get (C cn) !class_map in
+                class_map := Map.add (C cn) ((S !cnt)::clstds) !class_map;
                 cnt := !cnt+1
               end
             | _ -> ()) st_names;
@@ -193,6 +196,6 @@ let verify_alloc ~filename =
 
 Now we can use imandra to solve using the data file above
 
-```
+```{.imandra .input}
 solve_from_csv ~filename:"data.csv";;
 ```
