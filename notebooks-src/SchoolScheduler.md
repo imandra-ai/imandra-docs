@@ -199,6 +199,6 @@ let verify_alloc ~filename =
 Now we can use imandra to solve using the data file above
 
 
-```{.imandra .input}
+```
 solve_from_csv ~filename:"data.csv";;
 ```
