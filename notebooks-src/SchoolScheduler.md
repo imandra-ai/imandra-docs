@@ -401,7 +401,7 @@ let rec update_map classes map day =
 ;;
 
 
-let rec valid_alloc_by_list (alloc:(day*family_id) list) class_map families cnt families_class_list  = 
+let rec valid_alloc_by_list (alloc:(day*family_id) list) class_map families families_class_list  = 
   match families with
   | x :: xs ->
     begin
@@ -412,7 +412,7 @@ let rec valid_alloc_by_list (alloc:(day*family_id) list) class_map families cnt 
         let classes = Map.get x families_class_list in
         if List.exists (fun x -> Map.get (x,d) class_map = class_day_alloc x) classes then false else
           let updated_map = update_map classes class_map d in
-          valid_alloc_by_list alloc updated_map xs (cnt+1) families_class_list 
+          valid_alloc_by_list alloc updated_map xs families_class_list 
     end
   | _ -> true [@@measure (Ordinal.of_int (List.length families))]
 ;;
@@ -477,8 +477,6 @@ Now we can read in this csv file and ask the solver to find an allocation for ea
 ```{.imandra .input}
 
 let parse_csv ~lines  = 
-  let comma_separator = Str.regexp "," in
-  let space_separator = Str.regexp " " in
   let student_names = ref [] in 
   let families = ref [] in 
   let families_class_list = ref [] in
@@ -486,12 +484,12 @@ let parse_csv ~lines  =
   let class_map = ref (Map.const []) in 
   let cnt = ref 0 in
   let fam_cnt = ref 0 in
-        Stream.iter (fun line -> 
-        let st_names = (Str.split comma_separator line) in 
+        Caml.List.iter (fun line -> 
+        let st_names = Caml.String.split_on_char ',' line in 
         let these_students = ref [] in
         let these_classes = ref [] in
         Caml.List.iter (fun n -> 
-            let st_name_class_name = Str.split space_separator n in 
+            let st_name_class_name = Caml.String.split_on_char ' ' n in 
             match st_name_class_name with 
             | [fn;sn;cn] -> 
               begin
@@ -511,12 +509,8 @@ let parse_csv ~lines  =
    [@@program]
 ;;
 
-let line_stream_of_string string =
-    Stream.of_list (Str.split (Str.regexp "\n") string)
-    [@@program];;
-
-let solve_from_csv () = 
-  let lines = line_stream_of_string csv_data in 
+let solve_from_csv s = 
+  let lines = Caml.String.split_on_char '\n' s in 
   let families_class_map, families, student_names, families_student_list = parse_csv ~lines in 
   let families_sorted = List.sort ~leq:(fun (_,a) (_,b) -> List.length a >= List.length b) families in
   let res = calc_alloc init_map (List.map fst families_sorted) [] families_class_map in
@@ -526,14 +520,14 @@ let solve_from_csv () =
     "No solution found",families,families_class_map,snd res
 [@@program];;
 
-let verify_alloc () = 
-  let print_value,families,fmap,ans = solve_from_csv () in 
-  if valid_alloc_by_list ans init_map (List.map fst families) 0 fmap 
+let verify_alloc s = 
+  let print_value,families,fmap,ans = solve_from_csv s in 
+  if valid_alloc_by_list ans init_map (List.map fst families)fmap 
   then print_endline (print_value^"\nSolution Verified") 
   else print_endline "Incorrect solution" [@@program]
 ;;
 ```
 Now we can use imandra to solve the problem using
 ```{.imandra .input}
-verify_alloc ()
+verify_alloc csv_data;;
 ```
