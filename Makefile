@@ -53,7 +53,7 @@ deploy-docs:
 	cd _docs-repo/$(SITE_PATH) && git add -A && git commit -am "Docs update from $(COMMIT_SHA)" && git push origin gh-pages
 
 deploy-notebooks:
-	(cd _build/notebooks && find . -name '*.ipynb') | \
+	(cd _build/notebooks && find . -name '*.ipynb' -o -name "*.csv") | \
 	  tar -czv -f "_build/notebooks-$(COMMIT_SHA).tar.gz" -C _build/notebooks --files-from -
 	gsutil cp "_build/notebooks-$(COMMIT_SHA).tar.gz" "gs://$(NOTEBOOKS_GCS_BUCKET)/notebooks/notebooks-$(COMMIT_SHA).tar.gz"
 	gsutil cp "_build/notebooks-$(COMMIT_SHA).tar.gz" "gs://$(NOTEBOOKS_GCS_BUCKET)/notebooks/notebooks-$(BRANCH_NAME).tar.gz"
