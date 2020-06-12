@@ -15,10 +15,10 @@ During the Covid pandemic of 2019/2020 it became apparent that due to social dis
 
 # Representation of classes, families and students
 
-For the purposes of this demonstration, we assume (without loss of generality) that there are seven years of a primary school, each with 3 classes of 30 students. We randomly populate the school with students and families in such a way as to mimic realistic data. The school is full and is comprised of families of 1,2,3 and 4 students. We encode each student as a unique identifier `S0` to `S629` and each family as an identifier `F0` to `F308`. Each student is mapped to each of 21 classes - `P1A` through to `P7C`.
+For the purposes of this demonstration, we assume (without loss of generality) that there are seven years of a primary school, each with 3 classes of between 30 and 40 students. We randomly populate the school with students and families in such a way as to mimic realistic data. The school is full and is comprised of families of 1,2,3 and 4 students. Each student is mapped to each of 21 classes - `P1A` through to `P7C`.
 
 # Initial data
-The initial data for this school is represented by various function on the students and families to denote the distribution of families and students to classes. We also introduce days `M,T,W,Th,F` to represent days. In this instance we solve for the problem of students going one day a week - this is also generalisable according to the specifics of the problem. At the time of writing this was realistic according to the social distancing guidelines in schools meaning a class which ordinarily would accommodate 30 children would now accommodate 6 or 7.
+The initial data for this school is represented by various function on the students and families to denote the distribution of families and students to classes. We also introduce days `M,T,W,Th,F` to represent days. In this instance we solve for the problem of students going one day a week - this is also generalisable according to the specifics of the problem. At the time of writing this was realistic according to the social distancing guidelines in schools meaning a class which ordinarily would accommodate 30 children would now accommodate between 6 and 9 depending on the class.
 
 This csv format data held in [this csv file](https://gist.github.com/ewenmaclean/3040c39c424d7d2f1e43c82f9fff2f06) is stored in the variable `students_csv` and copies the format in which schools already encapsulate their data:
 
@@ -32,9 +32,11 @@ and contains text of randomly generated sample school data which describes on ea
 Katie GONZALES P3C,Christopher GONZALES P4B
 ```
 
-denotes a family of two students, Katie and Christopher Gonzales, in classes `P3C` and `P4B`. We want to ensure that Katie and Christopher both go to school on the same day, and make sure this is the case for all families at the school. In this example there are 21 classes and 630 students, which 30 in each class ordinarily, but now this is restricted to 7.
+denotes a family of two students, Katie and Christopher Gonzales, in classes `P3C` and `P4B`. We want to ensure that Katie and Christopher both go to school on the same day, and make sure this is the case for all families at the school. 
 
-Along with these we provide new class allocation size data with the names of classes and the number of students allowed to be in each showed by [this csv file](https://gist.github.com/ewenmaclean/4cf1c29402e63426f32c312a14ca86df)
+In this example there are 21 classes and 720 students, which 30 in each class ordinarily, but now this is restricted to between 6 and 9 depending on the class.
+
+This class allocation size data with the names of classes and the number of students allowed to be in each showed by [this csv file](https://gist.github.com/ewenmaclean/4cf1c29402e63426f32c312a14ca86df)
 ```{.imandra .input}
 #use_gist "ewenmaclean/4cf1c29402e63426f32c312a14ca86df";;
 ```
