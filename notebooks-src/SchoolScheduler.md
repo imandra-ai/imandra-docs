@@ -23,7 +23,7 @@ The initial data for this school is represented by various function on the stude
 This csv format data held in [this csv file](https://gist.github.com/ewenmaclean/3040c39c424d7d2f1e43c82f9fff2f06) is stored in the variable `students_csv` and copies the format in which schools already encapsulate their data:
 
 ```{.imandra .input}
-#use_gist "ewenmaclean/3040c39c424d7d2f1e43c82f9fff2f06";;
+#use_gist "ewenmaclean/43bad29da72962019180bbc21f9f7574";;
 ```
 
 and contains text of randomly generated sample school data which describes on each line families of students, and at the end of each comma separated student entry, a designated class is given. For example
@@ -32,13 +32,17 @@ and contains text of randomly generated sample school data which describes on ea
 Katie GONZALES P3C,Christopher GONZALES P4B
 ```
 
-
 denotes a family of two students, Katie and Christopher Gonzales, in classes `P3C` and `P4B`. We want to ensure that Katie and Christopher both go to school on the same day, and make sure this is the case for all families at the school. In this example there are 21 classes and 630 students, which 30 in each class ordinarily, but now this is restricted to 7.
+
+Along with these we provide new class allocation size data with the names of classes and the number of students allowed to be in each showed by [this csv file](https://gist.github.com/ewenmaclean/4cf1c29402e63426f32c312a14ca86df)
+```{.imandra .input}
+#use_gist "ewenmaclean/4cf1c29402e63426f32c312a14ca86df";;
+```
 
 We can now exploit the `Imandra Scheduler` to find a solution to the problem. This simply gives back a list of days corresponding to a day allocation per family.
 
 ```{.imandra .input}
-Imandra_scheduler.Solve.top ~lines:students_csv
+Imandra_scheduler.Solve.top ~lines:student_csv_data ~classes:class_csv_data
 ```
 
 What is shown here is an example of dealing with the problem of students going on one day with a given restricted class size of 6 per day for a class with ordinarily 30 students. This is fully configurable and can be adapted with variable classes and allocations and number of days according to the restrictions that exist, and will be as efficient at finding a solution.
