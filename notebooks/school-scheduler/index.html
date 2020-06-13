@@ -826,8 +826,8 @@
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html"><h1 id="Stating-the-problem">Stating the problem<a class="anchor-link" href="#Stating-the-problem">&#182;</a></h1><p>During the Covid pandemic of 2019/2020 it became apparent that due to social distancing, children going to school in the Scotland and elsewhere would only be able to attend for a restricted number of days per week. One of the primary concerns for families was that siblings should attend on the same day. This problem is a classic scheduling problem which can become very tricky due to a combinatorial explosion. This notebook demonstrates how it is possible to encode such a problem and use imandra to write a solver to find a solution.</p>
-<h1 id="Representation-of-classes,-families-and-students">Representation of classes, families and students<a class="anchor-link" href="#Representation-of-classes,-families-and-students">&#182;</a></h1><p>For the purposes of this demonstration, we assume (without loss of generality) that there are seven years of a primary school, each with 3 classes of 30 students. We randomly populate the school with students and families in such a way as to mimic realistic data. The school is full and is comprised of families of 1,2,3 and 4 students. We encode each student as a unique identifier <code>S0</code> to <code>S629</code> and each family as an identifier <code>F0</code> to <code>F308</code>. Each student is mapped to each of 21 classes - <code>P1A</code> through to <code>P7C</code>.</p>
-<h1 id="Initial-data">Initial data<a class="anchor-link" href="#Initial-data">&#182;</a></h1><p>The initial data for this school is represented by various function on the students and families to denote the distribution of families and students to classes. We also introduce days <code>M,T,W,Th,F</code> to represent days. In this instance we solve for the problem of students going one day a week - this is also generalisable according to the specifics of the problem. At the time of writing this was realistic according to the social distancing guidelines in schools meaning a class which ordinarily would accommodate 30 children would now accommodate 6 or 7.</p>
+<h1 id="Representation-of-classes,-families-and-students">Representation of classes, families and students<a class="anchor-link" href="#Representation-of-classes,-families-and-students">&#182;</a></h1><p>For the purposes of this demonstration, we assume (without loss of generality) that there are seven years of a primary school, each with 3 classes of between 30 and 40 students. We randomly populate the school with students and families in such a way as to mimic realistic data. The school is full and is comprised of families of 1,2,3 and 4 students. Each student is mapped to each of 21 classes - <code>P1A</code> through to <code>P7C</code>.</p>
+<h1 id="Initial-data">Initial data<a class="anchor-link" href="#Initial-data">&#182;</a></h1><p>The initial data for this school is represented by various function on the students and families to denote the distribution of families and students to classes. We also introduce days <code>M,T,W,Th,F</code> to represent days. In this instance we solve for the problem of students going one day a week - this is also generalisable according to the specifics of the problem. At the time of writing this was realistic according to the social distancing guidelines in schools meaning a class which ordinarily would accommodate 30 children would now accommodate between 6 and 9 depending on the class.</p>
 <p>This csv format data held in <a href="https://gist.github.com/ewenmaclean/3040c39c424d7d2f1e43c82f9fff2f06">this csv file</a> is stored in the variable <code>students_csv</code> and copies the format in which schools already encapsulate their data:</p>
 </div>
 </div>
@@ -842,7 +842,7 @@
 <div class="prompt input_prompt">In&nbsp;[1]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ocaml"><pre><span></span><span class="o">#</span><span class="n">use_gist</span> <span class="s2">&quot;ewenmaclean/3040c39c424d7d2f1e43c82f9fff2f06&quot;</span><span class="o">;;</span>
+<div class=" highlight hl-ocaml"><pre><span></span><span class="o">#</span><span class="n">use_gist</span> <span class="s2">&quot;ewenmaclean/43bad29da72962019180bbc21f9f7574&quot;</span><span class="o">;;</span>
 </pre></div>
 
 </div>
@@ -861,8 +861,8 @@
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>val students_csv : string =
-  &#34;\nLeanne PATEL P1C\nKatie GONZALES P3C,Christopher GONZALES P4B\nPeter WALLACE P3C\nGordon BUTLER P4B\nCraig KELLY P5B,Stuart KELLY P4B,Leanne KELLY P4B\nDeborah MORGAN P7C,Martin MORGAN P7C\nGary COOPER P4A\nGary SIMMONS P2A\nBarry COLLINS P2A\nRichard CHENG P3C,Martin CHENG P1A\nPaul REYNOLDS P2A\nRobert HOWARD P1A,Michael HOWARD P6C,Kenneth HOWARD P3C\nPaul SULLIVAN P2B\nWilliam HUGHES P1C,Jason HUGHES P6C,Caroline HUGHES P7C,Leanne HUGHES P5A\nJoanne ROSS P6C\nCatherine BROOKS P6B,Siobhan BROOKS P5B\nRichard EVANS P1B,Kenneth EVANS P1A,Alan EVANS P4A\nAlison EDWARDS P6B,Kevin EDWARDS P1A\nSusan GRAHAM P6A,Alexander GRAHAM P1C\nRachael BAILEY P7C\nGeorge ROSS P7A\nStephen GRAY P2C,Gary GRAY P1A\nClare JORDAN P2C\nAlan MORGAN P6A\nHannah BAILEY P5C\nDeborah RICHARDSON P1B\nBrian PETERSON P5B,Kathryn PETERSON P2B,Jenna PETERSON P1B,Martin PETERSON P5C\nGary COX P7B,Katie COX P2A\nStephen GONZALES P7B,Scott GONZALES P5B,Suzanne GONZALES P7A,Caroline GONZALES P4C\nJade STEWART P2A,Andrew STEWART P5C\nHannah BAILEY P&#34;... (* string length 11253; truncated *)
+<pre>val student_csv_data : string =
+  &#34;Rachael GRAHAM,P6A,William GRAHAM,P6A\n  James BAILEY,P7A,Rachael BAILEY,P7A\n  Alan FLORES,P6C\n  Robert GRAHAM,P7A\n  Thomas PETERSON,P6C\n  Kenneth PERRY,P6C,Jade PERRY,P5C,Alan PERRY,P4B\n  Suzanne RAMOS,P5C\n  Kerry EDWARDS,P5C\n  Hannah MYERS,P5C,James MYERS,P5C\n  Neil BROOKS,P7C,Steven BROOKS,P6A,Jade BROOKS,P5C\n  James MURPHY,P6A,William MURPHY,P4C\n  Jenna RAMOS,P7C,Colin RAMOS,P7C,Kenneth RAMOS,P7B\n  Lynsey HENDERSON,P6B,Graham HENDERSON,P7A,Scott HENDERSON,P4B\n  Pamela BAILEY,P7B\n  Eilidh COOPER,P4B\n  Alison WARD,P6C\n  Alexander LONG,P7A,Martin LONG,P7C,Caroline LONG,P6A\n  Graeme BUTLER,P2B\n  Natasha REED,P7C\n  Derek RIVERA,P6B,Alan RIVERA,P6B\n  Kayleigh WEST,P6C\n  Thomas CHENG,P6A\n  Iain ETOO,P7C,George ETOO,P3B\n  Iain MORRIS,P1B,Jenna MORRIS,P5A\n  Gary COLE,P4A\n  Kenneth KHAN,P1B\n  Iain FISHER,P2C,Leanne FISHER,P2B,Kathryn FISHER,P3C\n  Scott LONG,P3C,Thomas LONG,P7A\n  Ian WEST,P7A\n  Hannah STEWART,P3A\n  Hayley CARTER,P3C,Susan CARTER,P4C,Caroline CARTER,P5B\n  Christopher BENNETT,P&#34;... (* string length 13744; truncated *)
 </pre>
 </div>
 
@@ -890,8 +890,9 @@
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html"><p>denotes a family of two students, Katie and Christopher Gonzales, in classes <code>P3C</code> and <code>P4B</code>. We want to ensure that Katie and Christopher both go to school on the same day, and make sure this is the case for all families at the school. In this example there are 21 classes and 630 students, which 30 in each class ordinarily, but now this is restricted to 7.</p>
-<p>We can now exploit the <code>Imandra Scheduler</code> to find a solution to the problem. This simply gives back a list of days corresponding to a day allocation per family.</p>
+<div class="text_cell_render border-box-sizing rendered_html"><p>denotes a family of two students, Katie and Christopher Gonzales, in classes <code>P3C</code> and <code>P4B</code>. We want to ensure that Katie and Christopher both go to school on the same day, and make sure this is the case for all families at the school.</p>
+<p>In this example there are 21 classes and 720 students, which 30 in each class ordinarily, but now this is restricted to between 6 and 9 depending on the class.</p>
+<p>This class allocation size data with the names of classes and the number of students allowed to be in each showed by <a href="https://gist.github.com/ewenmaclean/4cf1c29402e63426f32c312a14ca86df">this csv file</a></p>
 </div>
 </div>
 </div>
@@ -905,7 +906,7 @@
 <div class="prompt input_prompt">In&nbsp;[2]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ocaml"><pre><span></span><span class="nn">Imandra_scheduler</span><span class="p">.</span><span class="nn">Solve</span><span class="p">.</span><span class="n">top</span> <span class="o">~</span><span class="n">lines</span><span class="o">:</span><span class="n">students_csv</span>
+<div class=" highlight hl-ocaml"><pre><span></span><span class="o">#</span><span class="n">use_gist</span> <span class="s2">&quot;ewenmaclean/4cf1c29402e63426f32c312a14ca86df&quot;</span><span class="o">;;</span>
 </pre></div>
 
 </div>
@@ -924,9 +925,778 @@
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>File &#34;jupyter cell 2&#34;, line 1, characters 35-47:
-Error: This expression has type string but an expression was expected of type
-         string list
+<pre>val class_csv_data : string =
+  &#34;P1A,6\nP1B,9\nP1C,6\nP2A,6\nP2B,6\nP2C,6\nP3A,6\nP3B,6\nP3C,6\nP4A,6\nP4B,6\nP4C,6\nP5A,7\nP5B,7\nP5C,7\nP6A,8\nP6B,8\nP6C,8\nP7A,8\nP7B,8\nP7C,8&#34;
+</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html"><p>We can now exploit the <code>Imandra Scheduler</code> to find a solution to the problem. This simply gives back a list of days corresponding to a day allocation per family.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="try-this-container">
+  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/SchoolScheduler.ipynb%23try-cell-8" target="_blank" rel="nofollow">
+    <div class="try-this">Try this!</div>
+  </a>
+</div>
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[3]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ocaml"><pre><span></span><span class="nn">Imandra_scheduler</span><span class="p">.</span><span class="nn">Solve</span><span class="p">.</span><span class="n">top</span> <span class="o">~</span><span class="n">lines</span><span class="o">:</span><span class="n">student_csv_data</span> <span class="o">~</span><span class="n">classes</span><span class="o">:</span><span class="n">class_csv_data</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[3]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>Solving complete!
+Result: 
+Student Rachael GRAHAM goes on Monday
+Student William GRAHAM goes on Monday
+Student James BAILEY goes on Monday
+Student Rachael BAILEY goes on Monday
+Student Alan FLORES goes on Tuesday
+Student Robert GRAHAM goes on Wednesday
+Student Thomas PETERSON goes on Tuesday
+Student Kenneth PERRY goes on Thursday
+Student Jade PERRY goes on Thursday
+Student Alan PERRY goes on Thursday
+Student Suzanne RAMOS goes on Wednesday
+Student Kerry EDWARDS goes on Friday
+Student Hannah MYERS goes on Tuesday
+Student James MYERS goes on Tuesday
+Student Neil BROOKS goes on Wednesday
+Student Steven BROOKS goes on Wednesday
+Student Jade BROOKS goes on Wednesday
+Student James MURPHY goes on Thursday
+Student William MURPHY goes on Thursday
+Student Jenna RAMOS goes on Thursday
+Student Colin RAMOS goes on Thursday
+Student Kenneth RAMOS goes on Thursday
+Student Lynsey HENDERSON goes on Monday
+Student Graham HENDERSON goes on Monday
+Student Scott HENDERSON goes on Monday
+Student Pamela BAILEY goes on Friday
+Student Eilidh COOPER goes on Monday
+Student Alison WARD goes on Tuesday
+Student Alexander LONG goes on Friday
+Student Martin LONG goes on Friday
+Student Caroline LONG goes on Friday
+Student Graeme BUTLER goes on Tuesday
+Student Natasha REED goes on Monday
+Student Derek RIVERA goes on Thursday
+Student Alan RIVERA goes on Thursday
+Student Kayleigh WEST goes on Friday
+Student Thomas CHENG goes on Thursday
+Student Iain ETOO goes on Wednesday
+Student George ETOO goes on Wednesday
+Student Iain MORRIS goes on Monday
+Student Jenna MORRIS goes on Monday
+Student Gary COLE goes on Friday
+Student Kenneth KHAN goes on Monday
+Student Iain FISHER goes on Wednesday
+Student Leanne FISHER goes on Wednesday
+Student Kathryn FISHER goes on Wednesday
+Student Scott LONG goes on Monday
+Student Thomas LONG goes on Monday
+Student Ian WEST goes on Tuesday
+Student Hannah STEWART goes on Wednesday
+Student Hayley CARTER goes on Thursday
+Student Susan CARTER goes on Thursday
+Student Caroline CARTER goes on Thursday
+Student Christopher BENNETT goes on Monday
+Student George CARTER goes on Tuesday
+Student Colin CARTER goes on Tuesday
+Student James CARTER goes on Tuesday
+Student Paul MORALES goes on Friday
+Student Susan BUTLER goes on Wednesday
+Student Andrew EDWARDS goes on Tuesday
+Student Alison EDWARDS goes on Tuesday
+Student Suzanne EDWARDS goes on Tuesday
+Student Graham BAILEY goes on Friday
+Student Susan PHILLIPS goes on Wednesday
+Student Joanne PHILLIPS goes on Wednesday
+Student Thomas PHILLIPS goes on Wednesday
+Student Richard COOK goes on Tuesday
+Student Jade COOPER goes on Tuesday
+Student Thomas RAMOS goes on Wednesday
+Student Clare RAMOS goes on Wednesday
+Student Martin SULLIVAN goes on Thursday
+Student Stuart SULLIVAN goes on Thursday
+Student Kenneth SULLIVAN goes on Thursday
+Student Kerry BARNES goes on Friday
+Student Thomas BARNES goes on Friday
+Student Joanne BARNES goes on Friday
+Student Lynsey GRIFFIN goes on Friday
+Student Rachael NGUYEN goes on Monday
+Student Kenneth POWELL goes on Tuesday
+Student Karen POWELL goes on Tuesday
+Student Hannah POWELL goes on Tuesday
+Student Elizabeth POWELL goes on Tuesday
+Student Richard ALEXANDER goes on Friday
+Student Lynsey ALEXANDER goes on Friday
+Student Christopher ROGERS goes on Wednesday
+Student Susan SULLIVAN goes on Thursday
+Student Colin SULLIVAN goes on Thursday
+Student Michael SULLIVAN goes on Thursday
+Student Catherine COLEMAN goes on Thursday
+Student Karen COLEMAN goes on Thursday
+Student Julie CRUZ goes on Wednesday
+Student Eilidh CARTER goes on Thursday
+Student Elizabeth MYERS goes on Monday
+Student Susan MORALES goes on Wednesday
+Student Graham BENNETT goes on Thursday
+Student Jade REYES goes on Friday
+Student Rachael HAMILTON goes on Monday
+Student Robert HAMILTON goes on Monday
+Student Alan HAMILTON goes on Monday
+Student Andrew HAMILTON goes on Monday
+Student Paul WARD goes on Tuesday
+Student Alexander PHILLIPS goes on Monday
+Student Jade PHILLIPS goes on Monday
+Student Eilidh EDWARDS goes on Friday
+Student Kayleigh EDWARDS goes on Friday
+Student Scott FLORES goes on Thursday
+Student Natasha MORGAN goes on Thursday
+Student Pamela MORGAN goes on Thursday
+Student Andrew MORGAN goes on Thursday
+Student Derek CHENG goes on Tuesday
+Student Ian CHENG goes on Tuesday
+Student Kathryn SANDERS goes on Wednesday
+Student Lynsey SANDERS goes on Wednesday
+Student Kathryn SANDERS goes on Wednesday
+Student Alexander BAILEY goes on Thursday
+Student Craig MORRIS goes on Monday
+Student Robert MORRIS goes on Monday
+Student George ROSS goes on Wednesday
+Student Christopher FISHER goes on Monday
+Student Kerry REYNOLDS goes on Monday
+Student James PRICE goes on Tuesday
+Student Ian PRICE goes on Tuesday
+Student Michael PRICE goes on Tuesday
+Student Leanne COOPER goes on Tuesday
+Student Christopher COOPER goes on Tuesday
+Student Natasha LONG goes on Wednesday
+Student Kerry BELL goes on Friday
+Student Caroline BELL goes on Friday
+Student Craig BELL goes on Friday
+Student Caroline WEST goes on Wednesday
+Student Hayley WEST goes on Wednesday
+Student Gary WEST goes on Wednesday
+Student Natasha BENNETT goes on Tuesday
+Student Kathryn BENNETT goes on Tuesday
+Student Kenneth BENNETT goes on Tuesday
+Student Kathryn CRUZ goes on Tuesday
+Student Alan LONG goes on Wednesday
+Student Elizabeth LONG goes on Wednesday
+Student Alison LONG goes on Wednesday
+Student Neil ETOO goes on Wednesday
+Student Thomas HOWARD goes on Thursday
+Student Michael HOWARD goes on Thursday
+Student Hayley HOWARD goes on Thursday
+Student Ian CRUZ goes on Thursday
+Student Alison GOMEZ goes on Tuesday
+Student Elizabeth JORDAN goes on Monday
+Student Hayley JORDAN goes on Monday
+Student Siobhan JORDAN goes on Monday
+Student Rachael WEST goes on Tuesday
+Student Gordon WEST goes on Tuesday
+Student Kayleigh RAMOS goes on Wednesday
+Student Mark FOSTER goes on Friday
+Student Susan FOSTER goes on Friday
+Student Lynsey FOSTER goes on Friday
+Student Kathryn KHAN goes on Monday
+Student Barry HUGHES goes on Friday
+Student Peter GRIFFIN goes on Tuesday
+Student Kenneth GRAHAM goes on Friday
+Student Julie GRAHAM goes on Friday
+Student James PETERSON goes on Friday
+Student Elizabeth ETOO goes on Friday
+Student Steven WARD goes on Thursday
+Student Robert FLORES goes on Thursday
+Student Thomas FLORES goes on Thursday
+Student Lynsey FLORES goes on Thursday
+Student Clare JAMES goes on Monday
+Student Scott JAMES goes on Monday
+Student Iain RAMOS goes on Thursday
+Student Alison RAMOS goes on Thursday
+Student Graham TORRES goes on Wednesday
+Student Kenneth TORRES goes on Wednesday
+Student Deborah GONZALES goes on Tuesday
+Student Graham GONZALES goes on Tuesday
+Student Colin MURPHY goes on Wednesday
+Student Brian MURPHY goes on Wednesday
+Student Susan EDWARDS goes on Thursday
+Student Peter ROGERS goes on Wednesday
+Student Ian PATEL goes on Friday
+Student Martin WEST goes on Monday
+Student Siobhan BUTLER goes on Monday
+Student Mark SANDERS goes on Monday
+Student Hayley HUGHES goes on Monday
+Student Kathryn RICHARDSON goes on Wednesday
+Student Neil RICHARDSON goes on Wednesday
+Student Caroline GRAHAM goes on Friday
+Student Craig GRAHAM goes on Friday
+Student Catherine WARD goes on Tuesday
+Student Susan HUGHES goes on Tuesday
+Student Lynsey HUGHES goes on Tuesday
+Student George HUGHES goes on Tuesday
+Student Craig PATTERSON goes on Thursday
+Student Gordon PATTERSON goes on Thursday
+Student Scott PATTERSON goes on Thursday
+Student Kerry ROSS goes on Thursday
+Student Katie ROSS goes on Thursday
+Student Katie ROSS goes on Thursday
+Student Kathryn HOWARD goes on Friday
+Student Caroline HOWARD goes on Friday
+Student Graeme COLE goes on Monday
+Student Kevin COLE goes on Monday
+Student Iain COLE goes on Monday
+Student George COLE goes on Monday
+Student Gordon ORTIZ goes on Monday
+Student Gordon BENNETT goes on Friday
+Student Robert BENNETT goes on Friday
+Student Elizabeth NGUYEN goes on Thursday
+Student Gordon NGUYEN goes on Thursday
+Student George PATEL goes on Friday
+Student Jacqueline PATEL goes on Friday
+Student James PATEL goes on Friday
+Student Brian PATEL goes on Friday
+Student Paul WALLACE goes on Monday
+Student Kenneth BARNES goes on Tuesday
+Student Craig BARNES goes on Tuesday
+Student Jason MYERS goes on Wednesday
+Student Scott RICHARDSON goes on Thursday
+Student Kenneth RICHARDSON goes on Monday
+Student Andrew RICHARDSON goes on Monday
+Student Iain RICHARDSON goes on Monday
+Student Colin RICHARDSON goes on Monday
+Student Siobhan RICHARDSON goes on Monday
+Student Stephen FISHER goes on Friday
+Student Suzanne FISHER goes on Friday
+Student Alan GRAHAM goes on Monday
+Student Karen GRAHAM goes on Monday
+Student Katie HENDERSON goes on Wednesday
+Student Leanne HENDERSON goes on Wednesday
+Student Andrew WOOD goes on Friday
+Student George JENKINS goes on Tuesday
+Student Barry JENKINS goes on Tuesday
+Student Andrew PATEL goes on Tuesday
+Student Deborah PATEL goes on Tuesday
+Student William KELLY goes on Friday
+Student Kathryn KELLY goes on Friday
+Student Karen KELLY goes on Friday
+Student Thomas KELLY goes on Friday
+Student Hannah MORRIS goes on Monday
+Student Katie MORRIS goes on Monday
+Student Joanne MORRIS goes on Monday
+Student Elizabeth MORRIS goes on Monday
+Student Thomas FISHER goes on Wednesday
+Student Peter FISHER goes on Wednesday
+Student Graeme FISHER goes on Wednesday
+Student Steven WALLACE goes on Monday
+Student Deborah WOOD goes on Tuesday
+Student Brian PATEL goes on Tuesday
+Student Deborah PATEL goes on Tuesday
+Student Jenna SIMMONS goes on Wednesday
+Student Darren EVANS goes on Monday
+Student Catherine HAMILTON goes on Wednesday
+Student Martin HAMILTON goes on Wednesday
+Student Andrew HAMILTON goes on Wednesday
+Student Suzanne BUTLER goes on Thursday
+Student Peter PERRY goes on Friday
+Student Mark GRIFFIN goes on Thursday
+Student Alexander LONG goes on Wednesday
+Student Alan LONG goes on Wednesday
+Student Jacqueline LONG goes on Wednesday
+Student Kenneth RUSSELL goes on Thursday
+Student Neil REYNOLDS goes on Monday
+Student Lynsey MORRIS goes on Wednesday
+Student Pamela SANDERS goes on Monday
+Student Kathryn SANDERS goes on Monday
+Student Alan BROOKS goes on Thursday
+Student Graham BROOKS goes on Thursday
+Student Graham BROOKS goes on Thursday
+Student Scott GONZALES goes on Thursday
+Student Eilidh GONZALES goes on Thursday
+Student Peter ALEXANDER goes on Monday
+Student Craig ALEXANDER goes on Monday
+Student Kenneth WARD goes on Tuesday
+Student Julie GUTIERREZ goes on Friday
+Student Alexander EDWARDS goes on Friday
+Student Leanne MYERS goes on Thursday
+Student Robert MYERS goes on Thursday
+Student Clare MYERS goes on Thursday
+Student Leanne COLLINS goes on Tuesday
+Student Darren HAMILTON goes on Tuesday
+Student George HAMILTON goes on Tuesday
+Student Siobhan HAMILTON goes on Tuesday
+Student Siobhan GOMEZ goes on Friday
+Student Karen BENNETT goes on Thursday
+Student Christopher BENNETT goes on Thursday
+Student Alison BENNETT goes on Thursday
+Student Susan LONG goes on Monday
+Student Kenneth COLEMAN goes on Tuesday
+Student Craig COLEMAN goes on Tuesday
+Student Kenneth COLEMAN goes on Tuesday
+Student Andrew COX goes on Tuesday
+Student Derek MORRIS goes on Tuesday
+Student Kevin MORRIS goes on Tuesday
+Student Rachael PHILLIPS goes on Friday
+Student Lynsey PHILLIPS goes on Friday
+Student Alan BROOKS goes on Monday
+Student Kevin BROOKS goes on Monday
+Student Martin RAMOS goes on Thursday
+Student Jason FLORES goes on Thursday
+Student Caroline FLORES goes on Thursday
+Student Joanne FLORES goes on Thursday
+Student Peter FLORES goes on Thursday
+Student Ian NGUYEN goes on Wednesday
+Student Richard HENDERSON goes on Tuesday
+Student Colin TURNER goes on Wednesday
+Student Graeme TURNER goes on Wednesday
+Student Jenna TURNER goes on Wednesday
+Student William SIMMONS goes on Monday
+Student Karen SIMMONS goes on Monday
+Student Kayleigh SIMMONS goes on Monday
+Student Clare SIMMONS goes on Monday
+Student Gordon CARTER goes on Wednesday
+Student Iain CARTER goes on Wednesday
+Student Stephen COX goes on Tuesday
+Student Joanne COX goes on Tuesday
+Student Rachael GRIFFIN goes on Wednesday
+Student Elizabeth GRIFFIN goes on Wednesday
+Student Paul GRIFFIN goes on Wednesday
+Student Christopher COLLINS goes on Friday
+Student Brian GONZALES goes on Thursday
+Student Pamela GONZALES goes on Thursday
+Student Eilidh JENKINS goes on Thursday
+Student Alison RUSSELL goes on Monday
+Student Iain LONG goes on Friday
+Student Elizabeth ROGERS goes on Wednesday
+Student Eilidh ROGERS goes on Wednesday
+Student Mark JAMES goes on Thursday
+Student Mark JAMES goes on Thursday
+Student Iain JAMES goes on Thursday
+Student Mark PRICE goes on Wednesday
+Student Leanne PRICE goes on Wednesday
+Student Scott RICHARDSON goes on Thursday
+Student Kenneth JENKINS goes on Monday
+Student Scott KELLY goes on Friday
+Student Pamela SIMMONS goes on Friday
+Student Leanne SIMMONS goes on Friday
+Student Joanne FOSTER goes on Wednesday
+Student Jenna FOSTER goes on Wednesday
+Student Darren SIMMONS goes on Wednesday
+Student Kenneth MURPHY goes on Wednesday
+Student Stuart MURPHY goes on Wednesday
+Student Darren GRAHAM goes on Friday
+Student Elizabeth BARNES goes on Monday
+Student Jason RIVERA goes on Tuesday
+Student Natasha RIVERA goes on Tuesday
+Student Alan WALLACE goes on Tuesday
+Student Mark KIM goes on Wednesday
+Student Stuart KIM goes on Wednesday
+Student Colin KIM goes on Wednesday
+Student Eilidh BELL goes on Friday
+Student Caroline BARNES goes on Tuesday
+Student Derek RAMOS goes on Tuesday
+Student Pamela RAMOS goes on Tuesday
+Student Stuart WATSON goes on Monday
+Student Stephen WATSON goes on Monday
+Student Alison COOK goes on Friday
+Student Stephen POWELL goes on Thursday
+Student Barry EVANS goes on Tuesday
+Student Stuart COOK goes on Monday
+Student Leanne WEST goes on Wednesday
+Student Darren NGUYEN goes on Thursday
+Student Thomas NGUYEN goes on Thursday
+Student Caroline COOPER goes on Friday
+Student Thomas HOWARD goes on Friday
+Student Barry ROSS goes on Wednesday
+Student Natasha ROSS goes on Wednesday
+Student Natasha COX goes on Monday
+Student Stephen COX goes on Monday
+Student Lynsey SULLIVAN goes on Monday
+Student Deborah SULLIVAN goes on Monday
+Student Jason SULLIVAN goes on Monday
+Student Brian SULLIVAN goes on Monday
+Student Catherine BARNES goes on Friday
+Student Martin KHAN goes on Thursday
+Student Jason KHAN goes on Thursday
+Student Rachael PRICE goes on Monday
+Student Joanne RUSSELL goes on Tuesday
+Student Jenna POWELL goes on Tuesday
+Student Steven REYNOLDS goes on Friday
+Student Graham PARKER goes on Wednesday
+Student Julie PARKER goes on Wednesday
+Student Craig GOMEZ goes on Tuesday
+Student Peter JENKINS goes on Friday
+Student Jacqueline JENKINS goes on Friday
+Student Siobhan JENKINS goes on Friday
+Student Iain GRIFFIN goes on Monday
+Student Clare COLE goes on Thursday
+Student Gordon RICHARDSON goes on Friday
+Student Clare RICHARDSON goes on Friday
+Student Kerry RICHARDSON goes on Friday
+Student Neil RICHARDSON goes on Friday
+Student Clare BARNES goes on Friday
+Student Leanne BARNES goes on Friday
+Student Kerry BELL goes on Monday
+Student Jade BELL goes on Monday
+Student Iain BENNETT goes on Tuesday
+Student Alexander MYERS goes on Monday
+Student Derek GRAHAM goes on Monday
+Student Steven GRAHAM goes on Monday
+Student Derek BAILEY goes on Thursday
+Student Kevin BAILEY goes on Thursday
+Student Lynsey JORDAN goes on Tuesday
+Student Deborah JORDAN goes on Tuesday
+Student Brian JORDAN goes on Tuesday
+Student Barry PETERSON goes on Monday
+Student Hayley HOWARD goes on Monday
+Student Susan NGUYEN goes on Wednesday
+Student Deborah NGUYEN goes on Wednesday
+Student Peter NGUYEN goes on Wednesday
+Student Graham NGUYEN goes on Wednesday
+Student Steven MORALES goes on Thursday
+Student Alexander DIAZ goes on Wednesday
+Student Susan DIAZ goes on Wednesday
+Student Susan WEST goes on Tuesday
+Student Clare JORDAN goes on Tuesday
+Student Scott SULLIVAN goes on Tuesday
+Student Lynsey SULLIVAN goes on Tuesday
+Student Neil COLE goes on Thursday
+Student Steven COLE goes on Thursday
+Student Kenneth BARNES goes on Monday
+Student Graham BARNES goes on Monday
+Student Stuart HUGHES goes on Monday
+Student Elizabeth COLEMAN goes on Tuesday
+Student Peter COLEMAN goes on Tuesday
+Student Robert COLEMAN goes on Tuesday
+Student Derek COLEMAN goes on Tuesday
+Student Michael ALEXANDER goes on Wednesday
+Student Joanne ALEXANDER goes on Wednesday
+Student Joanne ALEXANDER goes on Wednesday
+Student Colin SULLIVAN goes on Tuesday
+Student Barry SULLIVAN goes on Tuesday
+Student Craig SULLIVAN goes on Tuesday
+Student Darren HENDERSON goes on Wednesday
+Student Leanne HENDERSON goes on Wednesday
+Student Gary STEWART goes on Wednesday
+Student Kathryn STEWART goes on Wednesday
+Student Alexander STEWART goes on Wednesday
+Student Hayley STEWART goes on Wednesday
+Student Michael PHILLIPS goes on Monday
+Student Clare PHILLIPS goes on Monday
+Student Stuart WATSON goes on Thursday
+Student Hayley WATSON goes on Thursday
+Student Kerry KHAN goes on Wednesday
+Student Kayleigh KHAN goes on Wednesday
+Student Clare BAILEY goes on Thursday
+Student Ian BAILEY goes on Thursday
+Student Pamela GONZALES goes on Friday
+Student Clare GONZALES goes on Friday
+Student Derek GUTIERREZ goes on Tuesday
+Student Jenna GUTIERREZ goes on Tuesday
+Student Kathryn HUGHES goes on Monday
+Student Pamela WEST goes on Wednesday
+Student Brian WEST goes on Wednesday
+Student Graeme HAMILTON goes on Thursday
+Student Kenneth NGUYEN goes on Wednesday
+Student Steven PERRY goes on Thursday
+Student Graeme PERRY goes on Thursday
+Student Clare PATEL goes on Monday
+Student Elizabeth PATEL goes on Monday
+Student Joanne FOSTER goes on Wednesday
+Student Siobhan FISHER goes on Tuesday
+Student Paul KIM goes on Wednesday
+Student Christopher ORTIZ goes on Monday
+Student Pamela ORTIZ goes on Monday
+Student Suzanne ORTIZ goes on Monday
+Student Thomas ORTIZ goes on Monday
+Student Hayley CRUZ goes on Tuesday
+Student Stuart CRUZ goes on Tuesday
+Student Jacqueline CRUZ goes on Tuesday
+Student Gary REYES goes on Thursday
+Student Jenna GRIFFIN goes on Friday
+Student Graham GRIFFIN goes on Friday
+Student Steven GUTIERREZ goes on Tuesday
+Student Derek GUTIERREZ goes on Tuesday
+Student Stephen BARNES goes on Thursday
+Student Peter BARNES goes on Thursday
+Student Eilidh REYNOLDS goes on Wednesday
+Student Peter CHENG goes on Tuesday
+Student Neil CHENG goes on Tuesday
+Student Steven KELLY goes on Tuesday
+Student Karen KELLY goes on Tuesday
+Student Jenna KELLY goes on Tuesday
+Student Julie BELL goes on Wednesday
+Student Deborah BELL goes on Wednesday
+Student Karen BELL goes on Wednesday
+Student Jason ORTIZ goes on Thursday
+Student Rachael ORTIZ goes on Thursday
+Student Michael FOSTER goes on Wednesday
+Student Hayley FOSTER goes on Wednesday
+Student Thomas HENDERSON goes on Monday
+Student Pamela HENDERSON goes on Monday
+Student Natasha HENDERSON goes on Monday
+Student George DIAZ goes on Tuesday
+Student Suzanne BROOKS goes on Wednesday
+Student Lynsey BROOKS goes on Wednesday
+Student Susan MYERS goes on Friday
+Student Mark MYERS goes on Friday
+Student Alison MYERS goes on Friday
+Student Colin REYES goes on Friday
+Student Mark REYES goes on Friday
+Student Derek CRUZ goes on Thursday
+Student Craig CRUZ goes on Thursday
+Student Stephen CRUZ goes on Thursday
+Student Eilidh GUTIERREZ goes on Tuesday
+Student Julie EVANS goes on Friday
+Student William EVANS goes on Friday
+Student Darren JORDAN goes on Thursday
+Student Stephen JORDAN goes on Thursday
+Student Gary RIVERA goes on Wednesday
+Student Barry RIVERA goes on Wednesday
+Student Ian HENDERSON goes on Wednesday
+Student Stuart JAMES goes on Friday
+Student Kenneth JAMES goes on Friday
+Student Julie JAMES goes on Friday
+Student Eilidh REYES goes on Monday
+Student Kevin REYES goes on Monday
+Student Jacqueline COOPER goes on Wednesday
+Student Kevin JENKINS goes on Monday
+Student Julie SULLIVAN goes on Monday
+Student Suzanne SULLIVAN goes on Monday
+Student Stuart BUTLER goes on Monday
+Student Gordon BUTLER goes on Monday
+Student Scott BUTLER goes on Monday
+Student Alan GOMEZ goes on Thursday
+Student Deborah GOMEZ goes on Thursday
+Student Julie RUSSELL goes on Friday
+Student Jacqueline SULLIVAN goes on Thursday
+Student Joanne KELLY goes on Friday
+Student Darren SIMMONS goes on Friday
+Student Craig SIMMONS goes on Friday
+Student Graham BUTLER goes on Monday
+Student Brian JENKINS goes on Thursday
+Student Kenneth GUTIERREZ goes on Tuesday
+Student Richard HUGHES goes on Wednesday
+Student Natasha HUGHES goes on Wednesday
+Student Jade HUGHES goes on Wednesday
+Student Thomas HUGHES goes on Monday
+Student Barry HUGHES goes on Monday
+Student Steven KHAN goes on Monday
+Student Rachael KHAN goes on Monday
+Student Susan MYERS goes on Tuesday
+Student Deborah MYERS goes on Tuesday
+Student Derek MYERS goes on Tuesday
+Student Paul MYERS goes on Tuesday
+Student Michael ORTIZ goes on Tuesday
+Student Christopher ORTIZ goes on Tuesday
+Student Alexander WARD goes on Wednesday
+Student Peter WOOD goes on Thursday
+Student Hannah WOOD goes on Thursday
+Student Catherine WOOD goes on Thursday
+Student Joanne JORDAN goes on Thursday
+Student William JORDAN goes on Thursday
+Student Catherine COOPER goes on Monday
+Student Julie PETERSON goes on Thursday
+Student Jacqueline PETERSON goes on Thursday
+Student Richard GRAHAM goes on Friday
+Student Rachael GRAHAM goes on Friday
+Student Steven GRAHAM goes on Friday
+Student Kayleigh GOMEZ goes on Wednesday
+Student Karen GOMEZ goes on Wednesday
+Student Siobhan GOMEZ goes on Wednesday
+Student Neil NGUYEN goes on Tuesday
+Student Siobhan NGUYEN goes on Tuesday
+Student Brian EDWARDS goes on Wednesday
+Student Kerry EDWARDS goes on Wednesday
+Student Martin RAMOS goes on Thursday
+Student Karen RAMOS goes on Thursday
+Student Jacqueline RAMOS goes on Thursday
+Student Barry ROGERS goes on Friday
+Student Joanne PATEL goes on Tuesday
+Student Kevin JENKINS goes on Monday
+Student Michael JENKINS goes on Monday
+Student Colin RUSSELL goes on Tuesday
+Student Caroline RUSSELL goes on Tuesday
+Student Eilidh BAILEY goes on Wednesday
+Student Iain RICHARDSON goes on Wednesday
+Student Stuart RICHARDSON goes on Wednesday
+Student Jade RICHARDSON goes on Wednesday
+Student Paul TORRES goes on Tuesday
+Student Jade CRUZ goes on Friday
+Student Rachael BENNETT goes on Tuesday
+Student Gordon FISHER goes on Monday
+Student Lynsey FISHER goes on Monday
+Student Christopher WOOD goes on Friday
+Student James WOOD goes on Friday
+Student Hayley WOOD goes on Friday
+Student Derek MURPHY goes on Friday
+Student Siobhan MURPHY goes on Friday
+Student Kenneth MORGAN goes on Monday
+Student Darren REED goes on Tuesday
+Student Graeme REED goes on Tuesday
+Student Christopher REED goes on Thursday
+Student Thomas REED goes on Thursday
+Student Karen TURNER goes on Tuesday
+Student Scott TURNER goes on Tuesday
+Student William COOPER goes on Wednesday
+Student Derek COOPER goes on Wednesday
+Student Leanne COOPER goes on Wednesday
+Student Kenneth WATSON goes on Friday
+Student Jade WATSON goes on Friday
+Student Barry WATSON goes on Friday
+Student Jenna KIM goes on Monday
+Student Christopher KIM goes on Monday
+Student Alexander KIM goes on Monday
+Student Kerry CRUZ goes on Thursday
+Student Alan ROSS goes on Monday
+Student Colin LONG goes on Monday
+Student Robert LONG goes on Thursday
+Student Pamela LONG goes on Thursday
+Student Gordon LONG goes on Thursday
+Student Stephen COLE goes on Monday
+Student Jenna COLE goes on Monday
+Student Lynsey COLE goes on Monday
+Student Paul PARKER goes on Monday
+Student Barry PARKER goes on Monday
+Student Kerry PARKER goes on Monday
+Student Steven COOK goes on Tuesday
+Student Jenna KHAN goes on Friday
+Student Alison KHAN goes on Friday
+Student Stuart KHAN goes on Friday
+Student Natasha SULLIVAN goes on Wednesday
+Student Natasha WALLACE goes on Wednesday
+Student Robert REED goes on Tuesday
+Student Darren BUTLER goes on Wednesday
+Student Eilidh GONZALES goes on Thursday
+Student Neil JAMES goes on Tuesday
+Student Mark JAMES goes on Tuesday
+Student Natasha KELLY goes on Thursday
+Student Rachael RUSSELL goes on Wednesday
+Student Graeme RUSSELL goes on Wednesday
+Student Stuart RUSSELL goes on Wednesday
+Student Craig RUSSELL goes on Wednesday
+Student Christopher GRIFFIN goes on Friday
+Student Suzanne JAMES goes on Thursday
+Student Gordon HAMILTON goes on Tuesday
+Student Stuart HAMILTON goes on Tuesday
+Student Karen HAMILTON goes on Tuesday
+Student Eilidh SULLIVAN goes on Tuesday
+Student Jacqueline SULLIVAN goes on Tuesday
+Student Kerry MURPHY goes on Wednesday
+Student Eilidh MURPHY goes on Wednesday
+Student Jacqueline MURPHY goes on Wednesday
+Student Graeme RUSSELL goes on Thursday
+Student Hannah DIAZ goes on Thursday
+Student Leanne COX goes on Friday
+Student Catherine COX goes on Friday
+Student Darren COLLINS goes on Wednesday
+Student Jenna DIAZ goes on Thursday
+Student Jacqueline DIAZ goes on Thursday
+Student Mark DIAZ goes on Thursday
+Student Gordon KHAN goes on Friday
+Student Martin GRAHAM goes on Monday
+Student Eilidh CHENG goes on Tuesday
+Student Alexander CHENG goes on Tuesday
+Student Lynsey CARTER goes on Tuesday
+Student Kayleigh CARTER goes on Tuesday
+Student Leanne CARTER goes on Tuesday
+Student Stuart CARTER goes on Tuesday
+Student William COOPER goes on Thursday
+Student Iain SIMMONS goes on Thursday
+Student George BAILEY goes on Friday
+Student Caroline WEST goes on Wednesday
+Student Barry SULLIVAN goes on Wednesday
+Student Gordon PETERSON goes on Wednesday
+Student Karen PETERSON goes on Wednesday
+Student Suzanne PARKER goes on Friday
+Student Hannah PARKER goes on Friday
+Student Elizabeth PARKER goes on Friday
+Student Kerry MORRIS goes on Wednesday
+Student Alison GRIFFIN goes on Wednesday
+Student Robert GRIFFIN goes on Wednesday
+Student Lynsey GRAHAM goes on Thursday
+Student Joanne GRAHAM goes on Thursday
+Student Deborah GRAHAM goes on Thursday
+Student Christopher COOPER goes on Thursday
+Student Leanne LONG goes on Thursday
+Student Thomas REYES goes on Thursday
+Student Alan PATTERSON goes on Friday
+Student Clare PATTERSON goes on Friday
+Student Darren PATTERSON goes on Friday
+Student Natasha RUSSELL goes on Wednesday
+Student Scott CHENG goes on Thursday
+Student William CHENG goes on Thursday
+Student Thomas CHENG goes on Thursday
+Student Thomas PERRY goes on Thursday
+Student Kerry PERRY goes on Thursday
+Student Thomas DIAZ goes on Friday
+Student James POWELL goes on Friday
+Student Joanne POWELL goes on Friday
+Student Alexander POWELL goes on Friday
+Student Caroline EVANS goes on Thursday
+Student Julie EVANS goes on Thursday
+Student Martin SIMMONS goes on Friday
+Student Derek COOPER goes on Friday
+Student Deborah COOPER goes on Tuesday
+Student Richard COOPER goes on Tuesday
+Student Neil COOPER goes on Tuesday
+Student George ORTIZ goes on Friday
+Student Julie WARD goes on Friday
+Student Eilidh WARD goes on Friday
+Student Darren WARD goes on Friday
+Student Catherine COOPER goes on Thursday
+Student Derek COOPER goes on Thursday
+Student Christopher REYES goes on Friday
+Student Eilidh RAMOS goes on Friday
+Student Ian RAMOS goes on Friday
+Student Hannah RAMOS goes on Friday
+Student Jason RAMOS goes on Friday
+Student Gordon WATSON goes on Friday
+Student Thomas SANDERS goes on Friday
+Student Andrew PERRY goes on Friday
+Student Kerry PERRY goes on Friday
+Student Elizabeth COX goes on Friday
+Student Jade COX goes on Friday
+Student Eilidh BARNES goes on Wednesday
+Student Alan PATEL goes on Thursday
+Student Christopher PATEL goes on Thursday
+Student Stuart PATEL goes on Thursday
+Student Hannah JENKINS goes on Friday
+Student Stephen JENKINS goes on Friday
+Student Kathryn STEWART goes on Friday
+Student Pamela ROSS goes on Friday
+
+
+- : unit = ()
 </pre>
 </div>
 
