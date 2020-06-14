@@ -654,7 +654,7 @@
   
   
   
-  <a class="side__nav-link--within-page side__nav-link--within-page--h1" href="#Initial-data">Initial data</a>
+  <a class="side__nav-link--within-page side__nav-link--within-page--h1" href="#Solution-using-the-Imandra-Scheduler">Solution using the Imandra Scheduler</a>
   
   
                                         </div>
@@ -849,8 +849,9 @@
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html"><h1 id="Stating-the-problem">Stating the problem<a class="anchor-link" href="#Stating-the-problem">&#182;</a></h1><p>During the Covid pandemic of 2019/2020 it became apparent that due to social distancing, children going to school in the Scotland and elsewhere would only be able to attend for a restricted number of days per week. One of the primary concerns for families was that siblings should attend on the same day. This problem is a classic scheduling problem which can become very tricky due to a combinatorial explosion. This notebook demonstrates how it is possible to encode such a problem and use imandra to write a solver to find a solution.</p>
 <h1 id="Representation-of-classes,-families-and-students">Representation of classes, families and students<a class="anchor-link" href="#Representation-of-classes,-families-and-students">&#182;</a></h1><p>For the purposes of this demonstration, we assume (without loss of generality) that there are seven years of a primary school, each with 3 classes of between 30 and 40 students. We randomly populate the school with students and families in such a way as to mimic realistic data. The school is full and is comprised of families of 1,2,3 and 4 students. Each student is mapped to each of 21 classes - <code>P1A</code> through to <code>P7C</code>.</p>
-<h1 id="Initial-data">Initial data<a class="anchor-link" href="#Initial-data">&#182;</a></h1><p>The initial data for this school is represented by various function on the students and families to denote the distribution of families and students to classes. We also introduce days <code>M,T,W,Th,F</code> to represent days. In this instance we solve for the problem of students going one day a week - this is also generalisable according to the specifics of the problem. At the time of writing this was realistic according to the social distancing guidelines in schools meaning a class which ordinarily would accommodate 30 to 40 children would now accommodate between 6 and 9 depending on the class.</p>
-<p>This csv format data held in <a href="https://gist.github.com/ewenmaclean/3040c39c424d7d2f1e43c82f9fff2f06">this csv file</a> is stored in the variable <code>students_csv</code> and copies the format in which schools already encapsulate their data:</p>
+<p>Due to social distancing, we assume that a class which ordinarily would accommodate 30 to 40 students may now only accommodate between 6 and 9 students.</p>
+<p>We import the student information from "Comma Separated Value (csv)" files such as the one shown below (click for full version)
+<a href="https://gist.github.com/ewenmaclean/3040c39c424d7d2f1e43c82f9fff2f06"><img src="https://storage.googleapis.com/imandra-notebook-assets/studentscsv.png" alt="Imandrabot"></a></p>
 </div>
 </div>
 </div>
@@ -914,7 +915,8 @@
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html"><p>denotes a family of two students, Katie and Christopher Gonzales, in classes <code>P3C</code> and <code>P4B</code>. We want to ensure that Katie and Christopher both go to school on the same day, and make sure this is the case for all families at the school.</p>
 <p>In this example there are 21 classes and 720 students, which 30 in each class ordinarily, but now this is restricted to between 6 and 9 depending on the class.</p>
-<p>This class allocation size data with the names of classes and the number of students allowed to be in each showed by <a href="https://gist.github.com/ewenmaclean/4cf1c29402e63426f32c312a14ca86df">this csv file</a></p>
+<p>This class allocation size data with the names of classes and the number of students allowed to be in each is also encapsulated in a csv file (click for full version):
+<a href="https://gist.github.com/ewenmaclean/4cf1c29402e63426f32c312a14ca86df"><img src="https://storage.googleapis.com/imandra-notebook-assets/classescsv.png" alt="Imandrabot"></a></p>
 </div>
 </div>
 </div>
@@ -961,7 +963,7 @@
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html"><p>We can now exploit the <code>Imandra Scheduler</code> to find a solution to the problem. This simply gives back a list of days corresponding to a day allocation per family.</p>
+<div class="text_cell_render border-box-sizing rendered_html"><h1 id="Solution-using-the-Imandra-Scheduler">Solution using the Imandra Scheduler<a class="anchor-link" href="#Solution-using-the-Imandra-Scheduler">&#182;</a></h1><p>We can now exploit the <code>Imandra Scheduler</code> to find a solution to the problem. This simply gives back a list of days corresponding to a day allocation per family.</p>
 </div>
 </div>
 </div>
@@ -1731,7 +1733,7 @@ Student Pamela ROSS goes on Friday
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html"><p>What is shown here is an example of dealing with the problem of students going on one day with a given restricted class size of 6 per day for a class with ordinarily 30 students. This is fully configurable and can be adapted with variable classes and allocations and number of days according to the restrictions that exist, and will be as efficient at finding a solution.</p>
+<div class="text_cell_render border-box-sizing rendered_html"><p>What is shown here is an example of dealing with the problem of students going on one day with a given restricted class size of between 6 and 9 per day for a class with ordinarily between 30 and 40 students. This is fully configurable and can be adapted with variable classes and allocations and number of days according to the restrictions that exist, and will be as efficient at finding a solution.</p>
 </div>
 </div>
 </div>
