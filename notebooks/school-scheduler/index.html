@@ -6,7 +6,7 @@
         <meta property="og:url" content="https://docs.imandra.ai/imandra-docs/notebooks/school-scheduler/">
         <meta property="og:type" content="website">
         <meta property="og:title" content="Imandra Documentation - Scheduling smaller class sizes during Covid">
-        <meta property="og:description" content="This notebook demonstrates how to encode and solve a constraint problem of making sure all children from the same family go to school on the same day, when days at school are restricted due to Covid.">
+        <meta property="og:description" content="This notebook demonstrates how to encode and solve a constraint problem of making sure all children from the same family go to school on the same day, when days at school are restricted due to COVID-19.">
         <meta property="og:image" content="https://storage.googleapis.com/imandra-assets/images/og_image_default_i78.jpg">
 
 
@@ -650,6 +650,10 @@
   
   
   
+  <a class="side__nav-link--within-page side__nav-link--within-page--h1" href="#Stating-the-problem">Stating the problem</a>
+  
+  
+  
   <a class="side__nav-link--within-page side__nav-link--within-page--h1" href="#Representation-of-classes,-families-and-students">Representation of classes, families and students</a>
   
   
@@ -847,9 +851,25 @@
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html"><h1 id="Stating-the-problem">Stating the problem<a class="anchor-link" href="#Stating-the-problem">&#182;</a></h1><p>During the Covid pandemic of 2019/2020 it became apparent that due to social distancing, children going to school in the Scotland and elsewhere would only be able to attend for a restricted number of days per week. One of the primary concerns for families was that siblings should attend on the same day. This problem is a classic scheduling problem which can become very tricky due to a combinatorial explosion. This notebook demonstrates how it is possible to encode such a problem and use imandra to write a solver to find a solution.</p>
-<h1 id="Representation-of-classes,-families-and-students">Representation of classes, families and students<a class="anchor-link" href="#Representation-of-classes,-families-and-students">&#182;</a></h1><p>For the purposes of this demonstration, we assume (without loss of generality) that there are seven years of a primary school, each with 3 classes of between 30 and 40 students. We randomly populate the school with students and families in such a way as to mimic realistic data. The school is full and is comprised of families of 1,2,3 and 4 students. Each student is mapped to each of 21 classes - <code>P1A</code> through to <code>P7C</code>.</p>
-<p>Due to social distancing, we assume that a class which ordinarily would accommodate 30 to 40 students may now only accommodate between 6 and 9 students.</p>
+<div class="text_cell_render border-box-sizing rendered_html"><h1 id="Get-in-touch">Get in touch<a class="anchor-link" href="#Get-in-touch">&#182;</a></h1><p>Is your school facing tough scheduling problems in order to facilitate social distancing?
+We'd love to help! We're offering free Imandra licenses and pro bono consulting to help
+schools solve their COVID-19 scheduling challenges.</p>
+<p>Please contact us at <a href="mailto:contact@imandra.ai">contact@imandra.ai</a> and we'll help you get started.</p>
+<h1 id="Stating-the-problem">Stating the problem<a class="anchor-link" href="#Stating-the-problem">&#182;</a></h1><p>During the COVID-19 pandemic of 2020, it's become apparent that due to social
+distancing, children going to school in Scotland and elsewhere will only be
+able to attend for a restricted number of days per week. One of the primary
+concerns for families is that siblings should attend on the same day. This
+problem is a classical scheduling problem which can become very tricky due to a
+combinatorial explosion. This notebook demonstrates how it is possible to encode
+such a problem and use Imandra to find a solution.</p>
+<h1 id="Representation-of-classes,-families-and-students">Representation of classes, families and students<a class="anchor-link" href="#Representation-of-classes,-families-and-students">&#182;</a></h1><p>In this notebook, we present a realistic case study of how our
+<code>Imandra_scheduler</code> tool can be used to automatically solve tough school
+scheduling problems. Due to privacy restrictions, we do this demonstration using
+synthetic (i.e., randomly generated) student data for a primary school with 720
+students and social distancing restrictions limiting the number of students per
+class per day to between 6 and 9 students in the same group. The school is full
+and is comprised of families of 1,2,3 and 4 students. Each student is mapped to
+each of 21 classes - <code>P1A</code> through to <code>P7C</code>.</p>
 <p>We import the student information from "Comma Separated Value (csv)" files such as the one shown below (click for full version)
 <a href="https://gist.github.com/ewenmaclean/3040c39c424d7d2f1e43c82f9fff2f06"><img src="https://storage.googleapis.com/imandra-notebook-assets/studentscsv.png" alt="Imandrabot"></a></p>
 </div>
@@ -898,7 +918,7 @@
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html"><p>and contains text of randomly generated sample school data which describes on each line families of students, and at the end of each comma separated student entry, a designated class is given. For example</p>
+<div class="text_cell_render border-box-sizing rendered_html"><p>and contains data which describes students, families and their classes. For example</p>
 </div>
 </div>
 </div>
@@ -913,10 +933,14 @@
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html"><p>denotes a family of two students, Katie and Christopher Gonzales, in classes <code>P3C</code> and <code>P4B</code>. We want to ensure that Katie and Christopher both go to school on the same day, and make sure this is the case for all families at the school.</p>
-<p>In this example there are 21 classes and 720 students, which 30 in each class ordinarily, but now this is restricted to between 6 and 9 depending on the class.</p>
-<p>This class allocation size data with the names of classes and the number of students allowed to be in each is also encapsulated in a csv file (click for full version):
-<a href="https://gist.github.com/ewenmaclean/4cf1c29402e63426f32c312a14ca86df"><img src="https://storage.googleapis.com/imandra-notebook-assets/classescsv.png" alt="Imandrabot"></a></p>
+<div class="text_cell_render border-box-sizing rendered_html"><p>denotes a family of two students, Katie and Christopher Gonzales, in classes
+<code>P3C</code> and <code>P4B</code>, respectively. We want to ensure that Katie and Christopher both
+go to school on the same day, and make sure this "siblings attend on the same
+day" property holds for all families at the school.</p>
+<p>This class allocation size data with the names of classes and the number of
+students allowed to be in each is also encapsulated in a csv file (click for
+full version):</p>
+<p><a href="https://gist.github.com/ewenmaclean/4cf1c29402e63426f32c312a14ca86df"><img src="https://storage.googleapis.com/imandra-notebook-assets/classescsv.png" alt="Imandrabot"></a></p>
 </div>
 </div>
 </div>
@@ -963,7 +987,7 @@
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html"><h1 id="Solution-using-the-Imandra-Scheduler">Solution using the Imandra Scheduler<a class="anchor-link" href="#Solution-using-the-Imandra-Scheduler">&#182;</a></h1><p>We can now exploit the <code>Imandra Scheduler</code> to find a solution to the problem. This simply gives back a list of days corresponding to a day allocation per family.</p>
+<div class="text_cell_render border-box-sizing rendered_html"><h1 id="Solution-using-the-Imandra-Scheduler">Solution using the Imandra Scheduler<a class="anchor-link" href="#Solution-using-the-Imandra-Scheduler">&#182;</a></h1><p>We can now exploit the <code>Imandra Scheduler</code> to find a solution to the problem.</p>
 </div>
 </div>
 </div>
@@ -1733,7 +1757,12 @@ Student Pamela ROSS goes on Friday
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html"><p>What is shown here is an example of dealing with the problem of students going on one day with a given restricted class size of between 6 and 9 per day for a class with ordinarily between 30 and 40 students. This is fully configurable and can be adapted with variable classes and allocations and number of days according to the restrictions that exist, and will be as efficient at finding a solution.</p>
+<div class="text_cell_render border-box-sizing rendered_html"><p>What is shown here is an example of dealing with the problem of students in a
+school of 720 students going on one day with a given restricted class size of
+between 6 and 9 per day for a class with ordinarily between 30 and 40 students.
+This is fully configurable and can be adapted with variable classes and
+allocations and number of days according to the restrictions that exist.</p>
+<p>Please get in touch with us at <a href="mailto:contact@imandra.ai">contact@imandra.ai</a> and we'd be happy to help you get started!</p>
 </div>
 </div>
 </div>
