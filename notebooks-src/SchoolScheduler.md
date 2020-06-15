@@ -88,3 +88,7 @@ This is fully configurable and can be adapted with variable classes and
 allocations and number of days according to the restrictions that exist.
 
 Please get in touch with us at <contact@imandra.ai> and we'd be happy to help you get started!
+
+```{.imandra .input}
+
+```
