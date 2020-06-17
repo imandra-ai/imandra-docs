@@ -17,6 +17,8 @@ schools solve their COVID-19 scheduling challenges.
 
 Please contact us at <contact@imandra.ai> and we'll help you get started.
 
+![Imandra Scheduling](https://storage.googleapis.com/imandra-notebook-assets/scheduler__general-diagram.svg)
+
 # Stating the problem
 
 During the COVID-19 pandemic of 2020, it's become apparent that due to social
@@ -27,7 +29,9 @@ problem is a classical scheduling problem which can become very tricky due to a
 combinatorial explosion. This notebook demonstrates how it is possible to encode
 such a problem and use Imandra to find a solution.
 
-The schools in Edinburgh, Scotland, adopted an "ABC" approach where children would attend 1/3 of the time during a shortened 4 day week. This meant that students would attend one day a week, with two days every third week. The challenge is to organise this so families go on the same days. 
+The schools in Edinburgh, Scotland, adopted an "ABC" approach where children would attend 1/3 of the time during a shortened 4 day week. This meant that students would attend one day a week, with two days every third week. Each subdivision of a class A, B or C would always attend school on the same days in order to minimise the spread of infection but restricting contact for students to "bubbles". 
+
+The challenge is to organise this so families go on the same days, but with the added complication that some children already have days on which they can attend pre-determined. This may be on account of their parents being "keyworkers" - in which case they attend "Hub Schools" which determine which days they can attend, or it may be that they are vulnerable children with particular needs. 
 
 # Representation of classes, families and students
 
@@ -69,12 +73,21 @@ full version):
 #use_gist "ewenmaclean/4cf1c29402e63426f32c312a14ca86df";;
 ```
 
+In addition to this data we import a file of keyworker families - those where the  parents are both classed as keyworkers. These families are assumed to have the days on which they can attend normal school (not Hub school) predetermined, and hence their "bubble" (A, B or C) of their class for this school already decided. 
+
+[![Imandrabot](https://storage.googleapis.com/imandra-notebook-assets/keyworkers.png)](https://gist.github.com/ewenmaclean/cc15cef4fd563404e3152d7b3e40c4a5)
+
+```{.imandra .input}
+#use_gist "ewenmaclean/cc15cef4fd563404e3152d7b3e40c4a5";;
+```
+
+
 # Solution using the Imandra Scheduler
 
 We can now exploit the `Imandra Scheduler` to find a solution to the problem.
 
 ```{.imandra .input}
-Imandra_scheduler.Solve.top ~lines:student_csv_data ~classes:class_csv_data
+Imandra_scheduler.Solve.top ~lines:student_csv_data ~classes:class_csv_data ~keyworkers:keyworkers_csv_data
 ```
 
 The resulting csv can be loaded into a spreadsheet program and manipulated directly (click to view full version). 
