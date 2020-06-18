@@ -855,6 +855,7 @@
 We'd love to help! We're offering free Imandra licenses and pro bono consulting to help
 schools solve their COVID-19 scheduling challenges.</p>
 <p>Please contact us at <a href="mailto:contact@imandra.ai">contact@imandra.ai</a> and we'll help you get started.</p>
+<p><img src="https://storage.googleapis.com/imandra-notebook-assets/scheduler__general-diagram.svg" alt="Imandra Scheduling"></p>
 <h1 id="Stating-the-problem">Stating the problem<a class="anchor-link" href="#Stating-the-problem">&#182;</a></h1><p>During the COVID-19 pandemic of 2020, it's become apparent that due to social
 distancing, children going to school in Scotland and elsewhere will only be
 able to attend for a restricted number of days per week. One of the primary
@@ -862,7 +863,8 @@ concerns for families is that siblings should attend on the same day. This
 problem is a classical scheduling problem which can become very tricky due to a
 combinatorial explosion. This notebook demonstrates how it is possible to encode
 such a problem and use Imandra to find a solution.</p>
-<p>The schools in Edinburgh, Scotland, adopted an "ABC" approach where children would attend 1/3 of the time during a shortened 4 day week. This meant that students would attend one day a week, with two days every third week. The challenge is to organise this so families go on the same days.</p>
+<p>The schools in Edinburgh, Scotland, adopted an "ABC" approach where children would attend 1/3 of the time during a shortened 4 day week. This meant that students would attend one day a week, with two days every third week. Each subdivision of a class A, B or C would always attend school on the same days in order to minimise the spread of infection but restricting contact for students to "bubbles".</p>
+<p>The challenge is to organise this so families go on the same days, but with the added complication that some children already have days on which they can attend pre-determined. This may be on account of their parents being "keyworkers" - in which case they attend "Hub Schools" which determine which days they can attend, or it may be that they are vulnerable children with particular needs.</p>
 <h1 id="Representation-of-classes,-families-and-students">Representation of classes, families and students<a class="anchor-link" href="#Representation-of-classes,-families-and-students">&#182;</a></h1><p>In this notebook, we present a realistic case study of how our
 <code>Imandra_scheduler</code> tool can be used to automatically solve tough school
 scheduling problems. Due to privacy restrictions, we do this demonstration using
@@ -988,7 +990,8 @@ full version):</p>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html"><h1 id="Solution-using-the-Imandra-Scheduler">Solution using the Imandra Scheduler<a class="anchor-link" href="#Solution-using-the-Imandra-Scheduler">&#182;</a></h1><p>We can now exploit the <code>Imandra Scheduler</code> to find a solution to the problem.</p>
+<div class="text_cell_render border-box-sizing rendered_html"><p>In addition to this data we import a file of keyworker families - those where the  parents are both classed as keyworkers. These families are assumed to have the days on which they can attend normal school (not Hub school) predetermined, and hence their "bubble" (A, B or C) of their class for this school already decided.</p>
+<p><a href="https://gist.github.com/ewenmaclean/cc15cef4fd563404e3152d7b3e40c4a5"><img src="https://storage.googleapis.com/imandra-notebook-assets/keyworkers.png" alt="Imandrabot"></a></p>
 </div>
 </div>
 </div>
@@ -1002,7 +1005,7 @@ full version):</p>
 <div class="prompt input_prompt">In&nbsp;[3]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ocaml"><pre><span></span><span class="nn">Imandra_scheduler</span><span class="p">.</span><span class="nn">Solve</span><span class="p">.</span><span class="n">top</span> <span class="o">~</span><span class="n">lines</span><span class="o">:</span><span class="n">student_csv_data</span> <span class="o">~</span><span class="n">classes</span><span class="o">:</span><span class="n">class_csv_data</span>
+<div class=" highlight hl-ocaml"><pre><span></span><span class="o">#</span><span class="n">use_gist</span> <span class="s2">&quot;ewenmaclean/cc15cef4fd563404e3152d7b3e40c4a5&quot;</span><span class="o">;;</span>
 </pre></div>
 
 </div>
@@ -1021,8 +1024,53 @@ full version):</p>
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>Sol
-Solving complete!
+<pre>val keyworkers_csv_data : string = &#34;0,A\n1,A\n15,B\n23,B\n34,C\n45,B\n57,A&#34;
+</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html"><h1 id="Solution-using-the-Imandra-Scheduler">Solution using the Imandra Scheduler<a class="anchor-link" href="#Solution-using-the-Imandra-Scheduler">&#182;</a></h1><p>We can now exploit the <code>Imandra Scheduler</code> to find a solution to the problem.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="try-this-container">
+  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/SchoolScheduler.ipynb%23try-cell-10" target="_blank" rel="nofollow">
+    <div class="try-this">Try this!</div>
+  </a>
+</div>
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[4]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ocaml"><pre><span></span><span class="nn">Imandra_scheduler</span><span class="p">.</span><span class="nn">Solve</span><span class="p">.</span><span class="n">top</span> <span class="o">~</span><span class="n">lines</span><span class="o">:</span><span class="n">student_csv_data</span> <span class="o">~</span><span class="n">classes</span><span class="o">:</span><span class="n">class_csv_data</span> <span class="o">~</span><span class="n">keyworkers</span><span class="o">:</span><span class="n">keyworkers_csv_data</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[4]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>Solving complete!
 - : unit = ()
 </pre>
 </div>
