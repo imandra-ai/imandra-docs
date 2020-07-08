@@ -920,9 +920,9 @@ An additional constraint which is not enforciable by the OCaml type system but i
     type i = Int of int | Zero
     type event = Add of i | Sub of int | Reset
     type state = int
-    val init_state : Z.t
-    val step : event -&gt; int -&gt; int
-    val is_valid : event -&gt; int -&gt; bool
+    val init_state : state
+    val step : event -&gt; state -&gt; state
+    val is_valid : event -&gt; state -&gt; bool
   end
 </pre>
 </div>
@@ -1037,8 +1037,8 @@ An additional constraint which is not enforciable by the OCaml type system but i
 <pre>module TPL :
   sig
     type t = Add | AddInt | Sub | Reset | Any
-    type c = SM.event
-    val concrete : t -&gt; SM.event -&gt; bool
+    type c = TPL.c
+    val concrete : t -&gt; c -&gt; bool
   end
 </pre>
 </div>
@@ -1146,71 +1146,50 @@ An additional constraint which is not enforciable by the OCaml type system but i
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>val g___1 : Decomp.State_machine.event list -&gt; Decomp.State_machine.state =
-  &lt;fun&gt;
+<pre>val g___1 : TPL.c list -&gt; int = &lt;fun&gt;
 module Mex :
   sig
-    val get_option :
-      (Imandra_interactive.Extract.expr -&gt; &#39;a_0) -&gt;
-      Imandra_interactive.Extract.expr -&gt; &#39;a_0 option
-    val get_nativeint : Imandra_interactive.Extract.expr -&gt; nativeint
-    val get_Peano_nat_t : Imandra_interactive.Extract.expr -&gt; Peano_nat.t
-    val get_unit : Imandra_interactive.Extract.expr -&gt; unit
+    val get_option : (Term.term -&gt; &#39;a_0) -&gt; Term.term -&gt; &#39;a_0 option
+    val get_nativeint : Term.term -&gt; nativeint
+    val get_Peano_nat_t : Term.term -&gt; Peano_nat.t
+    val get_unit : Term.term -&gt; unit
     val get_result :
-      (Imandra_interactive.Extract.expr -&gt; &#39;a_0) -&gt;
-      (Imandra_interactive.Extract.expr -&gt; &#39;a_1) -&gt;
-      Imandra_interactive.Extract.expr -&gt; (&#39;a_0, &#39;a_1) result
+      (Term.term -&gt; &#39;a_0) -&gt;
+      (Term.term -&gt; &#39;a_1) -&gt; Term.term -&gt; (&#39;a_0, &#39;a_1) result
     val get_Result_t :
-      (Imandra_interactive.Extract.expr -&gt; &#39;a_0) -&gt;
-      (Imandra_interactive.Extract.expr -&gt; &#39;a_1) -&gt;
-      Imandra_interactive.Extract.expr -&gt; (&#39;a_0, &#39;a_1) Result.t
+      (Term.term -&gt; &#39;a_0) -&gt;
+      (Term.term -&gt; &#39;a_1) -&gt; Term.term -&gt; (&#39;a_0, &#39;a_1) result
     val get_either :
-      (Imandra_interactive.Extract.expr -&gt; &#39;a_0) -&gt;
-      (Imandra_interactive.Extract.expr -&gt; &#39;a_1) -&gt;
-      Imandra_interactive.Extract.expr -&gt; (&#39;a_0, &#39;a_1) either
-    val get_List_t :
-      (Imandra_interactive.Extract.expr -&gt; &#39;a_0) -&gt;
-      Imandra_interactive.Extract.expr -&gt; &#39;a_0 List.t
-    val get_Int_t : Imandra_interactive.Extract.expr -&gt; Int.t
-    val get_Bool_t : Imandra_interactive.Extract.expr -&gt; Bool.t
-    val get_Option_t :
-      (Imandra_interactive.Extract.expr -&gt; &#39;a_0) -&gt;
-      Imandra_interactive.Extract.expr -&gt; &#39;a_0 Option.t
-    val get_Real_t : Imandra_interactive.Extract.expr -&gt; Real.t
+      (Term.term -&gt; &#39;a_0) -&gt;
+      (Term.term -&gt; &#39;a_1) -&gt; Term.term -&gt; (&#39;a_0, &#39;a_1) either
+    val get_List_t : (Term.term -&gt; &#39;a_0) -&gt; Term.term -&gt; &#39;a_0 list
+    val get_Int_t : Term.term -&gt; int
+    val get_Bool_t : Term.term -&gt; bool
+    val get_Option_t : (Term.term -&gt; &#39;a_0) -&gt; Term.term -&gt; &#39;a_0 option
+    val get_Real_t : Term.term -&gt; real
     val get_Map_t :
-      (Imandra_interactive.Extract.expr -&gt; &#39;a_0) -&gt;
-      (Imandra_interactive.Extract.expr -&gt; &#39;a_1) -&gt;
-      Imandra_interactive.Extract.expr -&gt; (&#39;a_0, &#39;a_1) Map.t
-    val get_Multiset_t :
-      (Imandra_interactive.Extract.expr -&gt; &#39;a_0) -&gt;
-      Imandra_interactive.Extract.expr -&gt; &#39;a_0 Multiset.t
-    val get_Set_t :
-      (Imandra_interactive.Extract.expr -&gt; &#39;a_0) -&gt;
-      Imandra_interactive.Extract.expr -&gt; &#39;a_0 Set.t
-    val get_String_t : Imandra_interactive.Extract.expr -&gt; String.t
-    val get_Float_t : Imandra_interactive.Extract.expr -&gt; Float.t
-    val get_Reflect_Uid_t : Imandra_interactive.Extract.expr -&gt; Reflect.Uid.t
-    val get_Reflect_Type_t :
-      Imandra_interactive.Extract.expr -&gt; Reflect.Type.t
-    val get_Reflect_Var_t : Imandra_interactive.Extract.expr -&gt; Reflect.Var.t
-    val get_Reflect_Term_const :
-      Imandra_interactive.Extract.expr -&gt; Reflect.Term.const
+      (Term.term -&gt; &#39;a_0) -&gt;
+      (Term.term -&gt; &#39;a_1) -&gt; Term.term -&gt; (&#39;a_0, &#39;a_1) Map.t
+    val get_Multiset_t : (Term.term -&gt; &#39;a_0) -&gt; Term.term -&gt; &#39;a_0 Multiset.t
+    val get_Set_t : (Term.term -&gt; &#39;a_0) -&gt; Term.term -&gt; &#39;a_0 Set.t
+    val get_String_t : Term.term -&gt; string
+    val get_Float_t : Term.term -&gt; float
+    val get_Reflect_Uid_t : Term.term -&gt; Reflect.Uid.t
+    val get_Reflect_Type_t : Term.term -&gt; Reflect.Type.t
+    val get_Reflect_Var_t : Term.term -&gt; Reflect.Var.t
+    val get_Reflect_Term_const : Term.term -&gt; Reflect.Term.const
     val get_Reflect_Term_binding :
-      (Imandra_interactive.Extract.expr -&gt; &#39;a_0) -&gt;
-      Imandra_interactive.Extract.expr -&gt; &#39;a_0 Reflect.Term.binding
-    val get_Reflect_Term_t :
-      Imandra_interactive.Extract.expr -&gt; Reflect.Term.t
-    val get_SM_i : Imandra_interactive.Extract.expr -&gt; SM.i
-    val get_SM_event : Imandra_interactive.Extract.expr -&gt; SM.event
-    val get_SM_state : Imandra_interactive.Extract.expr -&gt; SM.state
-    val get_TPL_t : Imandra_interactive.Extract.expr -&gt; TPL.t
-    val get_TPL_c : Imandra_interactive.Extract.expr -&gt; TPL.c
-    type e_t = SM.event list
+      (Term.term -&gt; &#39;a_0) -&gt; Term.term -&gt; &#39;a_0 Reflect.Term.binding
+    val get_Reflect_Term_t : Term.term -&gt; Reflect.Term.t
+    val get_SM_i : Term.term -&gt; SM.i
+    val get_SM_event : Term.term -&gt; TPL.c
+    val get_SM_state : Term.term -&gt; int
+    val get_TPL_t : Term.term -&gt; TPL.t
+    val get_TPL_c : Term.term -&gt; TPL.c
+    type e_t = TPL.c list
     type extract_type = { e : e_t; }
     val ret_e : extract_type -&gt; e_t
-    val of_model :
-      ?signature:string -&gt;
-      Imandra_surface.Top_result.term_model -&gt; extract_type
+    val of_model : ?signature:string -&gt; Top_result.term_model -&gt; extract_type
   end
 - : unit = ()
 module IDF :
@@ -1219,56 +1198,56 @@ module IDF :
       sig
         module State_machine :
           sig
-            type state = Decomp.State_machine.state
-            type event = Decomp.State_machine.event
+            type state = int
+            type event = TPL.c
             val init_state : state
             val step : event -&gt; state -&gt; state
             val is_valid : event -&gt; state -&gt; bool
           end
         module Template :
           sig
-            type t = Decomp.Template.t
+            type t = TPL.t
             type c = State_machine.event
             val concrete : t -&gt; c -&gt; bool
           end
         val module_name : string
       end
-    val pp_state : DSM.State_machine.state -&gt; string
-    type target = DSM.Template.t list
-    type node = Imandra_tools__Idf.Make(Decomp).node
+    val pp_state : int -&gt; string
+    type target = TPL.t list
+    type node = IDF.node
     type path = node list
     module G :
       sig
-        type t = Imandra_tools__Idf.Make(Decomp).G.t
+        type t = IDF.G.t
         module V :
           sig
             type t = node
-            val compare : t -&gt; t -&gt; int
-            val hash : t -&gt; int
+            val compare : t -&gt; t -&gt; int/2
+            val hash : t -&gt; int/2
             val equal : t -&gt; t -&gt; bool
-            type label = node
-            val create : label -&gt; t
-            val label : t -&gt; label
+            type label = t
+            val create : t -&gt; t
+            val label : t -&gt; t
           end
-        type vertex = V.t
+        type vertex = node
         module E :
           sig
-            type t = Imandra_tools__Idf.Make(Decomp).G.E.t
-            val compare : t -&gt; t -&gt; int
-            type vertex = vertex
+            type t = IDF.G.edge
+            val compare : t -&gt; t -&gt; int/2
+            type vertex = node
             val src : t -&gt; vertex
             val dst : t -&gt; vertex
-            type label = Imandra_tools__Idf.Make(Decomp).G.E.label
+            type label = IDF.G.E.label
             val create : vertex -&gt; label -&gt; vertex -&gt; t
             val label : t -&gt; label
           end
         type edge = E.t
         val is_directed : bool
         val is_empty : t -&gt; bool
-        val nb_vertex : t -&gt; int
-        val nb_edges : t -&gt; int
-        val out_degree : t -&gt; vertex -&gt; int
-        val in_degree : t -&gt; vertex -&gt; int
+        val nb_vertex : t -&gt; int/2
+        val nb_edges : t -&gt; int/2
+        val out_degree : t -&gt; vertex -&gt; int/2
+        val in_degree : t -&gt; vertex -&gt; int/2
         val mem_vertex : t -&gt; vertex -&gt; bool
         val mem_edge : t -&gt; vertex -&gt; vertex -&gt; bool
         val mem_edge_e : t -&gt; edge -&gt; bool
@@ -1293,7 +1272,7 @@ module IDF :
         val fold_succ_e : (edge -&gt; &#39;a -&gt; &#39;a) -&gt; t -&gt; vertex -&gt; &#39;a -&gt; &#39;a
         val iter_pred_e : (edge -&gt; unit) -&gt; t -&gt; vertex -&gt; unit
         val fold_pred_e : (edge -&gt; &#39;a -&gt; &#39;a) -&gt; t -&gt; vertex -&gt; &#39;a -&gt; &#39;a
-        val create : ?size:int -&gt; unit -&gt; t
+        val create : ?size:int/2 -&gt; unit -&gt; t
         val clear : t -&gt; unit
         val copy : t -&gt; t
         val add_vertex : t -&gt; vertex -&gt; unit
@@ -1302,24 +1281,23 @@ module IDF :
         val add_edge_e : t -&gt; edge -&gt; unit
         val remove_edge : t -&gt; vertex -&gt; vertex -&gt; unit
         val remove_edge_e : t -&gt; edge -&gt; unit
-        val root : t -&gt; node
-        val leaves : t -&gt; node list
+        val root : t -&gt; vertex
+        val leaves : t -&gt; vertex list
         val output_graph : t -&gt; file:string -&gt; unit
       end
     val paths : ?from:node -&gt; G.t -&gt; path list
-    val region : node -&gt; Imandra_surface.Modular_region.t
-    val expanded_constraints : node -&gt; Imandra_surface.Term.t list
-    val sample : node -&gt; DSM.State_machine.event list
-    val sample_region :
-      Imandra_surface.Modular_region.t -&gt; DSM.State_machine.event list
-    val target_steps : node -&gt; (DSM.Template.t * bool option) list
+    val region : node -&gt; Top_result.modular_region
+    val expanded_constraints : node -&gt; Term.term list
+    val sample : node -&gt; TPL.c list
+    val sample_region : Top_result.modular_region -&gt; TPL.c list
+    val target_steps : node -&gt; (TPL.t * bool option) list
     type replay_sample =
-      Imandra_tools__Idf.Make(Decomp).replay_sample = {
-      state_before : DSM.State_machine.state;
-      event : DSM.State_machine.event;
-      state_after : DSM.State_machine.state;
+      IDF.replay_sample = {
+      state_before : int;
+      event : TPL.c;
+      state_after : int;
     }
-    val replay_events : DSM.State_machine.event list -&gt; replay_sample list
+    val replay_events : TPL.c list -&gt; replay_sample list
     val replay : node -&gt; replay_sample list
     val decompose :
       g:G.t -&gt;
@@ -1379,10 +1357,10 @@ module IDF :
 <div class="output_text output_subarea output_execute_result">
 <pre>val g : IDF.G.t = &lt;abstr&gt;
 - : unit = ()
-val guard_g___2_0 : Decomp.State_machine.event list -&gt; bool = &lt;fun&gt;
-val target_g___2_0 : Decomp.State_machine.event list -&gt; int = &lt;fun&gt;
-val guard_g___2_1 : Decomp.State_machine.event list -&gt; bool = &lt;fun&gt;
-val target_g___2_1 : Decomp.State_machine.event list -&gt; int = &lt;fun&gt;
+val guard_g___2_0 : TPL.c list -&gt; bool = &lt;fun&gt;
+val target_g___2_0 : TPL.c list -&gt; int = &lt;fun&gt;
+val guard_g___2_1 : TPL.c list -&gt; bool = &lt;fun&gt;
+val target_g___2_1 : TPL.c list -&gt; int = &lt;fun&gt;
 - : unit = ()
 </pre>
 </div>
@@ -1771,7 +1749,7 @@ val full_node : IDF.node = &lt;abstr&gt;
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>val samples : IDF.DSM.State_machine.event list =
+<pre>val samples : TPL.c list =
   [Decomp.State_machine.Reset;
    Decomp.State_machine.Add (Decomp.State_machine.Int 9001)]
 </pre>
@@ -1876,7 +1854,7 @@ val full_node : IDF.node = &lt;abstr&gt;
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>val regions : Imandra_surface.Modular_region.t list =
+<pre>val regions : Top_result.modular_region list =
   [---[region]---
    Constraints:
      [  ]

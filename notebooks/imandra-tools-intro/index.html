@@ -896,14 +896,14 @@
 <div class="output_text output_subarea output_execute_result">
 <pre>module Imandra_tools :
   sig
-    module Idf = Imandra_tools__Idf
-    module Idf_intf = Imandra_tools__Idf_intf
-    module Region_idx = Imandra_tools__Region_idx
-    module Region_json = Imandra_tools__Region_json
-    module Region_pp = Imandra_tools__Region_pp
-    module Region_pp_intf = Imandra_tools__Region_pp_intf
-    module Region_probs = Imandra_tools__Region_probs
-    module Region_term_synth = Imandra_tools__Region_term_synth
+    module Idf = Imandra_tools.Idf
+    module Idf_intf = Imandra_tools.Idf_intf
+    module Region_idx = Imandra_tools.Region_idx
+    module Region_json = Imandra_tools.Region_json
+    module Region_pp = Imandra_tools.Region_pp
+    module Region_pp_intf = Imandra_tools.Region_pp_intf
+    module Region_probs = Imandra_tools.Region_probs
+    module Region_term_synth = Imandra_tools.Region_term_synth
   end
 </pre>
 </div>
@@ -1111,7 +1111,7 @@ Note: this is an introductory walkthrough of the capabilities of `imandra-tools`
       sig
         type t = Add | Sub | Reset | Any
         type c = State_machine.event
-        val concrete : t -&gt; Model.message -&gt; bool
+        val concrete : t -&gt; c -&gt; bool
       end
   end
 </pre>
@@ -1165,77 +1165,51 @@ Note: this is an introductory walkthrough of the capabilities of `imandra-tools`
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>val g___1 : Decomp.State_machine.event list -&gt; Decomp.State_machine.state =
-  &lt;fun&gt;
+<pre>val g___1 : Model.message list -&gt; Model.counter_state = &lt;fun&gt;
 module Mex :
   sig
-    val get_option :
-      (Imandra_interactive.Extract.expr -&gt; &#39;a_0) -&gt;
-      Imandra_interactive.Extract.expr -&gt; &#39;a_0 option
-    val get_nativeint : Imandra_interactive.Extract.expr -&gt; nativeint
-    val get_Peano_nat_t : Imandra_interactive.Extract.expr -&gt; Peano_nat.t
-    val get_unit : Imandra_interactive.Extract.expr -&gt; unit
+    val get_option : (Term.term -&gt; &#39;a_0) -&gt; Term.term -&gt; &#39;a_0 option
+    val get_nativeint : Term.term -&gt; nativeint
+    val get_Peano_nat_t : Term.term -&gt; Peano_nat.t
+    val get_unit : Term.term -&gt; unit
     val get_result :
-      (Imandra_interactive.Extract.expr -&gt; &#39;a_0) -&gt;
-      (Imandra_interactive.Extract.expr -&gt; &#39;a_1) -&gt;
-      Imandra_interactive.Extract.expr -&gt; (&#39;a_0, &#39;a_1) result
+      (Term.term -&gt; &#39;a_0) -&gt;
+      (Term.term -&gt; &#39;a_1) -&gt; Term.term -&gt; (&#39;a_0, &#39;a_1) result
     val get_Result_t :
-      (Imandra_interactive.Extract.expr -&gt; &#39;a_0) -&gt;
-      (Imandra_interactive.Extract.expr -&gt; &#39;a_1) -&gt;
-      Imandra_interactive.Extract.expr -&gt; (&#39;a_0, &#39;a_1) Result.t
+      (Term.term -&gt; &#39;a_0) -&gt;
+      (Term.term -&gt; &#39;a_1) -&gt; Term.term -&gt; (&#39;a_0, &#39;a_1) result
     val get_either :
-      (Imandra_interactive.Extract.expr -&gt; &#39;a_0) -&gt;
-      (Imandra_interactive.Extract.expr -&gt; &#39;a_1) -&gt;
-      Imandra_interactive.Extract.expr -&gt; (&#39;a_0, &#39;a_1) either
-    val get_List_t :
-      (Imandra_interactive.Extract.expr -&gt; &#39;a_0) -&gt;
-      Imandra_interactive.Extract.expr -&gt; &#39;a_0 List.t
-    val get_Int_t : Imandra_interactive.Extract.expr -&gt; Int.t
-    val get_Bool_t : Imandra_interactive.Extract.expr -&gt; Bool.t
-    val get_Option_t :
-      (Imandra_interactive.Extract.expr -&gt; &#39;a_0) -&gt;
-      Imandra_interactive.Extract.expr -&gt; &#39;a_0 Option.t
-    val get_Real_t : Imandra_interactive.Extract.expr -&gt; Real.t
+      (Term.term -&gt; &#39;a_0) -&gt;
+      (Term.term -&gt; &#39;a_1) -&gt; Term.term -&gt; (&#39;a_0, &#39;a_1) either
+    val get_List_t : (Term.term -&gt; &#39;a_0) -&gt; Term.term -&gt; &#39;a_0 list
+    val get_Int_t : Term.term -&gt; int
+    val get_Bool_t : Term.term -&gt; bool
+    val get_Option_t : (Term.term -&gt; &#39;a_0) -&gt; Term.term -&gt; &#39;a_0 option
+    val get_Real_t : Term.term -&gt; real
     val get_Map_t :
-      (Imandra_interactive.Extract.expr -&gt; &#39;a_0) -&gt;
-      (Imandra_interactive.Extract.expr -&gt; &#39;a_1) -&gt;
-      Imandra_interactive.Extract.expr -&gt; (&#39;a_0, &#39;a_1) Map.t
-    val get_Multiset_t :
-      (Imandra_interactive.Extract.expr -&gt; &#39;a_0) -&gt;
-      Imandra_interactive.Extract.expr -&gt; &#39;a_0 Multiset.t
-    val get_Set_t :
-      (Imandra_interactive.Extract.expr -&gt; &#39;a_0) -&gt;
-      Imandra_interactive.Extract.expr -&gt; &#39;a_0 Set.t
-    val get_String_t : Imandra_interactive.Extract.expr -&gt; String.t
-    val get_Float_t : Imandra_interactive.Extract.expr -&gt; Float.t
-    val get_Reflect_Uid_t : Imandra_interactive.Extract.expr -&gt; Reflect.Uid.t
-    val get_Reflect_Type_t :
-      Imandra_interactive.Extract.expr -&gt; Reflect.Type.t
-    val get_Reflect_Var_t : Imandra_interactive.Extract.expr -&gt; Reflect.Var.t
-    val get_Reflect_Term_const :
-      Imandra_interactive.Extract.expr -&gt; Reflect.Term.const
+      (Term.term -&gt; &#39;a_0) -&gt;
+      (Term.term -&gt; &#39;a_1) -&gt; Term.term -&gt; (&#39;a_0, &#39;a_1) Map.t
+    val get_Multiset_t : (Term.term -&gt; &#39;a_0) -&gt; Term.term -&gt; &#39;a_0 Multiset.t
+    val get_Set_t : (Term.term -&gt; &#39;a_0) -&gt; Term.term -&gt; &#39;a_0 Set.t
+    val get_String_t : Term.term -&gt; string
+    val get_Float_t : Term.term -&gt; float
+    val get_Reflect_Uid_t : Term.term -&gt; Reflect.Uid.t
+    val get_Reflect_Type_t : Term.term -&gt; Reflect.Type.t
+    val get_Reflect_Var_t : Term.term -&gt; Reflect.Var.t
+    val get_Reflect_Term_const : Term.term -&gt; Reflect.Term.const
     val get_Reflect_Term_binding :
-      (Imandra_interactive.Extract.expr -&gt; &#39;a_0) -&gt;
-      Imandra_interactive.Extract.expr -&gt; &#39;a_0 Reflect.Term.binding
-    val get_Reflect_Term_t :
-      Imandra_interactive.Extract.expr -&gt; Reflect.Term.t
-    val get_Model_message : Imandra_interactive.Extract.expr -&gt; Model.message
-    val get_Model_counter_state :
-      Imandra_interactive.Extract.expr -&gt; Model.counter_state
-    val get_Decomp_State_machine_event :
-      Imandra_interactive.Extract.expr -&gt; Decomp.State_machine.event
-    val get_Decomp_State_machine_state :
-      Imandra_interactive.Extract.expr -&gt; Decomp.State_machine.state
-    val get_Decomp_Template_t :
-      Imandra_interactive.Extract.expr -&gt; Decomp.Template.t
-    val get_Decomp_Template_c :
-      Imandra_interactive.Extract.expr -&gt; Decomp.Template.c
-    type e_t = Decomp.State_machine.event list
+      (Term.term -&gt; &#39;a_0) -&gt; Term.term -&gt; &#39;a_0 Reflect.Term.binding
+    val get_Reflect_Term_t : Term.term -&gt; Reflect.Term.t
+    val get_Model_message : Term.term -&gt; Model.message
+    val get_Model_counter_state : Term.term -&gt; Model.counter_state
+    val get_Decomp_State_machine_event : Term.term -&gt; Model.message
+    val get_Decomp_State_machine_state : Term.term -&gt; Model.counter_state
+    val get_Decomp_Template_t : Term.term -&gt; Decomp.Template.t
+    val get_Decomp_Template_c : Term.term -&gt; Model.message
+    type e_t = Model.message list
     type extract_type = { e : e_t; }
     val ret_e : extract_type -&gt; e_t
-    val of_model :
-      ?signature:string -&gt;
-      Imandra_surface.Top_result.term_model -&gt; extract_type
+    val of_model : ?signature:string -&gt; Top_result.term_model -&gt; extract_type
   end
 - : unit = ()
 module IDF :
@@ -1244,8 +1218,8 @@ module IDF :
       sig
         module State_machine :
           sig
-            type state = Decomp.State_machine.state
-            type event = Decomp.State_machine.event
+            type state = Model.counter_state
+            type event = Model.message
             val init_state : state
             val step : event -&gt; state -&gt; state
             val is_valid : event -&gt; state -&gt; bool
@@ -1258,42 +1232,42 @@ module IDF :
           end
         val module_name : string
       end
-    val pp_state : DSM.State_machine.state -&gt; string
+    val pp_state : Model.counter_state -&gt; string
     type target = DSM.Template.t list
-    type node = Imandra_tools__Idf.Make(Decomp).node
+    type node = IDF.node
     type path = node list
     module G :
       sig
-        type t = Imandra_tools__Idf.Make(Decomp).G.t
+        type t = IDF.G.t
         module V :
           sig
             type t = node
-            val compare : t -&gt; t -&gt; int
-            val hash : t -&gt; int
+            val compare : t -&gt; t -&gt; int/2
+            val hash : t -&gt; int/2
             val equal : t -&gt; t -&gt; bool
-            type label = node
-            val create : label -&gt; t
-            val label : t -&gt; label
+            type label = t
+            val create : t -&gt; t
+            val label : t -&gt; t
           end
-        type vertex = V.t
+        type vertex = node
         module E :
           sig
-            type t = Imandra_tools__Idf.Make(Decomp).G.E.t
-            val compare : t -&gt; t -&gt; int
-            type vertex = vertex
+            type t = IDF.G.edge
+            val compare : t -&gt; t -&gt; int/2
+            type vertex = node
             val src : t -&gt; vertex
             val dst : t -&gt; vertex
-            type label = Imandra_tools__Idf.Make(Decomp).G.E.label
+            type label = IDF.G.E.label
             val create : vertex -&gt; label -&gt; vertex -&gt; t
             val label : t -&gt; label
           end
         type edge = E.t
         val is_directed : bool
         val is_empty : t -&gt; bool
-        val nb_vertex : t -&gt; int
-        val nb_edges : t -&gt; int
-        val out_degree : t -&gt; vertex -&gt; int
-        val in_degree : t -&gt; vertex -&gt; int
+        val nb_vertex : t -&gt; int/2
+        val nb_edges : t -&gt; int/2
+        val out_degree : t -&gt; vertex -&gt; int/2
+        val in_degree : t -&gt; vertex -&gt; int/2
         val mem_vertex : t -&gt; vertex -&gt; bool
         val mem_edge : t -&gt; vertex -&gt; vertex -&gt; bool
         val mem_edge_e : t -&gt; edge -&gt; bool
@@ -1318,7 +1292,7 @@ module IDF :
         val fold_succ_e : (edge -&gt; &#39;a -&gt; &#39;a) -&gt; t -&gt; vertex -&gt; &#39;a -&gt; &#39;a
         val iter_pred_e : (edge -&gt; unit) -&gt; t -&gt; vertex -&gt; unit
         val fold_pred_e : (edge -&gt; &#39;a -&gt; &#39;a) -&gt; t -&gt; vertex -&gt; &#39;a -&gt; &#39;a
-        val create : ?size:int -&gt; unit -&gt; t
+        val create : ?size:int/2 -&gt; unit -&gt; t
         val clear : t -&gt; unit
         val copy : t -&gt; t
         val add_vertex : t -&gt; vertex -&gt; unit
@@ -1327,24 +1301,23 @@ module IDF :
         val add_edge_e : t -&gt; edge -&gt; unit
         val remove_edge : t -&gt; vertex -&gt; vertex -&gt; unit
         val remove_edge_e : t -&gt; edge -&gt; unit
-        val root : t -&gt; node
-        val leaves : t -&gt; node list
+        val root : t -&gt; vertex
+        val leaves : t -&gt; vertex list
         val output_graph : t -&gt; file:string -&gt; unit
       end
     val paths : ?from:node -&gt; G.t -&gt; path list
-    val region : node -&gt; Imandra_surface.Modular_region.t
-    val expanded_constraints : node -&gt; Imandra_surface.Term.t list
-    val sample : node -&gt; DSM.State_machine.event list
-    val sample_region :
-      Imandra_surface.Modular_region.t -&gt; DSM.State_machine.event list
+    val region : node -&gt; Top_result.modular_region
+    val expanded_constraints : node -&gt; Term.term list
+    val sample : node -&gt; Model.message list
+    val sample_region : Top_result.modular_region -&gt; Model.message list
     val target_steps : node -&gt; (DSM.Template.t * bool option) list
     type replay_sample =
-      Imandra_tools__Idf.Make(Decomp).replay_sample = {
-      state_before : DSM.State_machine.state;
-      event : DSM.State_machine.event;
-      state_after : DSM.State_machine.state;
+      IDF.replay_sample = {
+      state_before : Model.counter_state;
+      event : Model.message;
+      state_after : Model.counter_state;
     }
-    val replay_events : DSM.State_machine.event list -&gt; replay_sample list
+    val replay_events : Model.message list -&gt; replay_sample list
     val replay : node -&gt; replay_sample list
     val decompose :
       g:G.t -&gt;
@@ -1358,15 +1331,12 @@ module IDF :
   end
 val g : IDF.G.t = &lt;abstr&gt;
 - : unit = ()
-val guard_g___2_0 : Decomp.State_machine.event list -&gt; bool = &lt;fun&gt;
-val target_g___2_0 :
-  Decomp.State_machine.event list -&gt; Decomp.State_machine.state = &lt;fun&gt;
-val guard_g___2_1 : Decomp.State_machine.event list -&gt; bool = &lt;fun&gt;
-val target_g___2_1 :
-  Decomp.State_machine.event list -&gt; Decomp.State_machine.state = &lt;fun&gt;
-val guard_g___2_2 : Decomp.State_machine.event list -&gt; bool = &lt;fun&gt;
-val target_g___2_2 :
-  Decomp.State_machine.event list -&gt; Decomp.State_machine.state = &lt;fun&gt;
+val guard_g___2_0 : Model.message list -&gt; bool = &lt;fun&gt;
+val target_g___2_0 : Model.message list -&gt; Model.counter_state = &lt;fun&gt;
+val guard_g___2_1 : Model.message list -&gt; bool = &lt;fun&gt;
+val target_g___2_1 : Model.message list -&gt; Model.counter_state = &lt;fun&gt;
+val guard_g___2_2 : Model.message list -&gt; bool = &lt;fun&gt;
+val target_g___2_2 : Model.message list -&gt; Model.counter_state = &lt;fun&gt;
 - : unit = ()
 </pre>
 </div>
@@ -2119,7 +2089,7 @@ val first_path : IDF.path = [&lt;abstr&gt;; &lt;abstr&gt;; &lt;abstr&gt;; &lt;ab
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>val first_path_regions : Imandra_surface.Modular_region.t list =
+<pre>val first_path_regions : Top_result.modular_region list =
   [{Imandra_surface.Modular_region.mreg_session = 1i; mreg_id = 0i;
     mreg_constraints = [true];
     mreg_invariant = {Model.counter = 0; Model.default = 23};
@@ -2203,7 +2173,7 @@ val first_path : IDF.path = [&lt;abstr&gt;; &lt;abstr&gt;; &lt;abstr&gt;; &lt;ab
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>- : Imandra_surface.Modular_region.t list =
+<pre>- : Top_result.modular_region list =
 [---[region]---
  Constraints:
    [  ]
@@ -2297,7 +2267,7 @@ val first_path : IDF.path = [&lt;abstr&gt;; &lt;abstr&gt;; &lt;abstr&gt;; &lt;ab
 
 <div class="output_text output_subarea output_execute_result">
 <pre>val f : int Set.t -&gt; int Set.t -&gt; int -&gt; int Set.t = &lt;fun&gt;
-val d : Imandra_interactive.Modular_decomp.MD.t =
+val d : Top_result.modular_decomposition =
   {Imandra_interactive.Modular_decomp.MD.md_session = 2i;
    md_f =
     {Imandra_surface.Uid.name = &#34;f&#34;; id = &lt;abstr&gt;; special_tag = &lt;abstr&gt;;
@@ -2306,7 +2276,7 @@ val d : Imandra_interactive.Modular_decomp.MD.t =
      depth = (3i, 2i)};
    md_args = [(x : (int, bool) Map.t); (y : (int, bool) Map.t); (z : int)];
    md_regions = &lt;abstr&gt;}
-val rs : Imandra_interactive.Modular_decomp.MR.t CCList.t =
+val rs : Top_result.modular_region list =
   [---[region]---
    Constraints:
      [ not (Set.subset x y) ]
@@ -2331,7 +2301,7 @@ val rs : Imandra_interactive.Modular_decomp.MR.t CCList.t =
 
 
 <div class="output_html rendered_html output_subarea ">
-<div class="imandra-alternatives" id="alt-b274d0f2-17fb-4235-8e23-e1f40900ba45"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi (2 of 2)</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-20e85575-e37e-411b-afa7-48d5de58851e" class="decompose"><textarea class="display-none">{
+<div class="imandra-alternatives" id="alt-0d0b16fd-ef0a-4619-82cc-d5d2a634d5ca"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi (2 of 2)</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-3f7b859d-85a3-4c7e-b83d-a71b7a44c920" class="decompose"><textarea class="display-none">{
   &quot;regions&quot;: [
     {
       &quot;constraints&quot;: [ &quot;not (Set.subset x y)&quot; ],
@@ -2357,13 +2327,13 @@ val rs : Imandra_interactive.Modular_decomp.MR.t CCList.t =
 }</textarea><div class="decompose-foamtree"></div><div class="decompose-details"><div class="decompose-details-header">Regions details</div><div class="decompose-details-no-selection"><p>No group selected.</p><ul><li>Concrete regions are numbered</li><li>Unnumbered regions are groups whose children share a particular constraint</li><li>Click on a region to view its details</li><li>Double click on a region to zoom in on it</li><li>Shift+double click to zoom out</li><li>Hit escape to reset back to the top</li></ul></div><div class="decompose-details-selection hidden"><div><span class="decompose-details-label">Direct sub-regions: </span><span class="decompose-details-direct-sub-regions-text">-</span></div><div><span class="decompose-details-label">Contained regions: </span><span class="decompose-details-contained-regions-text">-</span></div><div class="decompose-details-section-header">Constraints</div><div class="decompose-details-constraints"><pre class="decompose-details-constraint">&lt;constraint&gt;</pre></div><div class="decompose-details-invariant"><div class="decompose-details-section-header">Invariant</div><pre class="decompose-details-invariant-text">&lt;invariant&gt;</pre></div></div></div><script>
 (function () {
   require(['nbextensions/nbimandra/regions'], function (regions) {
-    var target = '#decompose-20e85575-e37e-411b-afa7-48d5de58851e';
+    var target = '#decompose-3f7b859d-85a3-4c7e-b83d-a71b7a44c920';
     regions.hydrate(target);
   });
 })();
-</script></div></div><div class="tab-pane"><div><div>decomp of (f x, y, z<div class="imandra-table" id="table-094f9330-60d3-4c65-9136-c8269237101b"><table><thead><tr><th>Reg_id</th><th>Constraints</th><th>Invariant</th></tr></thead><tr><td>1</td><td><ul><li><pre>not (Set.subset x y)</pre></li></ul></td><td><pre>Set.add z Set.empty</pre></td></tr><tr><td>0</td><td><ul><li><pre>Set.subset x y</pre></li></ul></td><td><pre>Set.add z x</pre></td></tr></table></div></div></div></div></div><script>
+</script></div></div><div class="tab-pane"><div><div>decomp of (f x, y, z<div class="imandra-table" id="table-774cfe11-148d-4f4a-939a-c5627954336d"><table><thead><tr><th>Reg_id</th><th>Constraints</th><th>Invariant</th></tr></thead><tr><td>1</td><td><ul><li><pre>not (Set.subset x y)</pre></li></ul></td><td><pre>Set.add z Set.empty</pre></td></tr><tr><td>0</td><td><ul><li><pre>Set.subset x y</pre></li></ul></td><td><pre>Set.add z x</pre></td></tr></table></div></div></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-b274d0f2-17fb-4235-8e23-e1f40900ba45';
+  var target = '#alt-0d0b16fd-ef0a-4619-82cc-d5d2a634d5ca';
   alternatives.hydrate(target);
 });
 </script></div>
@@ -2481,55 +2451,45 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
 <div class="output_text output_subarea output_execute_result">
 <pre>module Custom :
   sig
-    type t = Set of t Imandra_tools.Region_pp_intf.node_ list
-    val map :
-      (t Imandra_tools.Region_pp_intf.node_ -&gt;
-       t Imandra_tools.Region_pp_intf.node_) -&gt;
-      t -&gt; t
-    val compare :
-      (t Imandra_tools.Region_pp_intf.node_ -&gt;
-       t Imandra_tools.Region_pp_intf.node_ -&gt;
-       Imandra_tools.Region_pp_intf.comparison) -&gt;
-      t -&gt; t -&gt; Imandra_tools.Region_pp_intf.comparison
+    type t = Set of t node_ list
+    val map : (t node_ -&gt; t node_) -&gt; t -&gt; t
+    val compare : (t node_ -&gt; t node_ -&gt; comparison) -&gt; t -&gt; t -&gt; comparison
     val print :
-      t Imandra_tools.Region_pp_intf.node_ CCFormat.printer -&gt;
-      focus:&#39;a -&gt; CCFormat.t -&gt; t -&gt; unit
+      t node_ CCFormat.printer -&gt; focus:&#39;a -&gt; Format.formatter -&gt; t -&gt; unit
   end
 module PPrinter :
   sig
-    type custom = Custom.t
-    type node = custom Imandra_tools.Region_pp_intf.node_
+    type custom = PPrinter.custom
+    type node = custom node_
     module XF :
       sig
         val map : (node -&gt; node) -&gt; node -&gt; node
         val walk : pre:(node -&gt; node) -&gt; ?post:(node -&gt; node) -&gt; node -&gt; node
-        val fix_ : ?bound:int -&gt; (&#39;a -&gt; &#39;a) -&gt; &#39;a -&gt; &#39;a -&gt; &#39;a
-        val fix : ?bound:int -&gt; (&#39;a -&gt; &#39;a) -&gt; &#39;a -&gt; &#39;a
-        val walk_fix : ?bound:int -&gt; (node -&gt; node) -&gt; node -&gt; node
+        val fix_ : ?bound:int/2 -&gt; (&#39;a -&gt; &#39;a) -&gt; &#39;a -&gt; &#39;a -&gt; &#39;a
+        val fix : ?bound:int/2 -&gt; (&#39;a -&gt; &#39;a) -&gt; &#39;a -&gt; &#39;a
+        val walk_fix : ?bound:int/2 -&gt; (node -&gt; node) -&gt; node -&gt; node
         val iterated : unit -&gt; &#39;a
         val iter : f:(node -&gt; unit) -&gt; node -&gt; unit
         val exists : f:(node -&gt; bool) -&gt; node -&gt; bool
       end
-    val vars : node -&gt; Imandra_tools.Region_pp_intf.var_name list
+    val vars : node -&gt; string list
     val has_symbolic_term : node -&gt; bool
     module Printer :
       sig
         val print :
           ?p:(node CCFormat.printer -&gt;
-              CCFormat.formatter -&gt; node -&gt; unit option) -&gt;
-          ?focus:Imandra_tools.Region_pp_intf.var_name -&gt;
-          unit -&gt; node CCFormat.printer
+              Format.formatter -&gt; node -&gt; unit option) -&gt;
+          ?focus:string -&gt; unit -&gt; node CCFormat.printer
         val to_string :
           ?p:(node CCFormat.printer -&gt;
-              CCFormat.formatter -&gt; node -&gt; unit option) -&gt;
-          ?focus:Imandra_tools.Region_pp_intf.var_name -&gt; node -&gt; string
+              Format.formatter -&gt; node -&gt; unit option) -&gt;
+          ?focus:string -&gt; node -&gt; string
       end
     module Comparator :
       sig
-        val is_eq : Imandra_tools.Region_pp_intf.comparison -&gt; bool
-        val compare : node -&gt; node -&gt; Imandra_tools.Region_pp_intf.comparison
-        val compare_all :
-          node list -&gt; node list -&gt; Imandra_tools.Region_pp_intf.comparison
+        val is_eq : comparison -&gt; bool
+        val compare : node -&gt; node -&gt; comparison
+        val compare_all : node list -&gt; node list -&gt; comparison
       end
     module Simplifier : sig val simplify : node -&gt; node end
     module Unifier :
@@ -2537,38 +2497,31 @@ module PPrinter :
         type unifier = node -&gt; node -&gt; node option
         val unify : ?unify:unifier -&gt; node list -&gt; node list
       end
-    module Parser : sig val parse : Imandra_surface.Term.t -&gt; node option end
+    module Parser : sig val parse : Term.term -&gt; node option end
     module Compactor : sig val compact : node list -&gt; node list end
     type refiner = node -&gt; node list
     type pprinter =
         ?unify:Unifier.unifier -&gt;
-        ?refine:refiner -&gt;
-        ?inv:bool -&gt; Imandra_surface.Term.t list -&gt; node list
+        ?refine:refiner -&gt; ?inv:bool -&gt; Term.term list -&gt; node list
     val pp : pprinter
     val print :
       ?pp:pprinter -&gt;
       ?unify:Unifier.unifier -&gt;
       ?refine:refiner -&gt;
       ?print:(node CCFormat.printer -&gt;
-              CCFormat.formatter -&gt; node -&gt; unit option) -&gt;
+              Format.formatter -&gt; node -&gt; unit option) -&gt;
       ?skip_invariant:bool -&gt;
-      ?focus:Imandra_tools.Region_pp_intf.var_name -&gt;
-      unit -&gt; Format.formatter -&gt; Imandra_surface.Modular_region.t -&gt; unit
+      ?focus:string -&gt;
+      unit -&gt; Format.formatter -&gt; Top_result.modular_region -&gt; unit
     val to_string :
       ?unify:Unifier.unifier -&gt;
-      ?refine:refiner -&gt; Imandra_surface.Modular_region.t -&gt; string
+      ?refine:refiner -&gt; Top_result.modular_region -&gt; string
   end
-val refine_ :
-  PPrinter.custom Imandra_tools.Region_pp_intf.node_ -&gt;
-  PPrinter.custom Imandra_tools.Region_pp_intf.node_ = &lt;fun&gt;
-val gather_keys :
-  PPrinter.custom Imandra_tools.Region_pp_intf.node_ -&gt;
-  PPrinter.custom Imandra_tools.Region_pp_intf.node_ list = &lt;fun&gt;
-val is_proper_set :
-  PPrinter.custom Imandra_tools.Region_pp_intf.node_ -&gt; bool = &lt;fun&gt;
-val refine : PPrinter.node -&gt; PPrinter.node CCList.t = &lt;fun&gt;
-val print : Format.formatter -&gt; Imandra_surface.Modular_region.t -&gt; unit =
-  &lt;fun&gt;
+val refine_ : custom node_ -&gt; custom node_ = &lt;fun&gt;
+val gather_keys : custom node_ -&gt; custom node_ list = &lt;fun&gt;
+val is_proper_set : custom node_ -&gt; bool = &lt;fun&gt;
+val refine : node -&gt; node list = &lt;fun&gt;
+val print : Format.formatter -&gt; Top_result.modular_region -&gt; unit = &lt;fun&gt;
 </pre>
 </div>
 
@@ -2621,7 +2574,7 @@ val print : Format.formatter -&gt; Imandra_surface.Modular_region.t -&gt; unit =
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>- : Imandra_interactive.Modular_decomp.MR.t CCList.t =
+<pre>- : Top_result.modular_region list =
 [---[region]---
  Constraints:
    [ not (Set.subset x y) ]
@@ -2694,7 +2647,7 @@ val print : Format.formatter -&gt; Imandra_surface.Modular_region.t -&gt; unit =
 <div class="output_text output_subarea output_execute_result">
 <pre>val region_0 : &#39;a Set.t -&gt; &#39;a Set.t -&gt; &#39;b -&gt; bool = &lt;fun&gt;
 val region_1 : &#39;a Set.t -&gt; &#39;a Set.t -&gt; &#39;b -&gt; bool = &lt;fun&gt;
-- : String.t list = [&#34;region_0&#34;; &#34;region_1&#34;]
+- : string list = [&#34;region_0&#34;; &#34;region_1&#34;]
 </pre>
 </div>
 
@@ -2805,9 +2758,9 @@ After providing a first class module specificing the types of the arguments to t
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>val g___3 : &#39;a Set.t -&gt; &#39;a Set.t -&gt; &#39;b -&gt; int = &lt;fun&gt;
+<pre>val g___3 : &#39;a Set.t -&gt; &#39;a Set.t -&gt; &#39;b -&gt; int/2 = &lt;fun&gt;
 - : unit = ()
-val idx : (int * Imandra_surface.Modular_region.t) list =
+val idx : (int/2 * Top_result.modular_region) list =
   [(0i,
     ---[region]---
     Constraints:
@@ -2822,7 +2775,7 @@ val idx : (int * Imandra_surface.Modular_region.t) list =
     Invariant:
       F = Set.add z x
      -------------)]
-val indexer : int Set.t * int Set.t * int -&gt; int = &lt;fun&gt;
+val indexer : int/1 Set.t * int/1 Set.t * int/1 -&gt; int/2 = &lt;fun&gt;
 </pre>
 </div>
 
@@ -2870,7 +2823,7 @@ val indexer : int Set.t * int Set.t * int -&gt; int = &lt;fun&gt;
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>- : Imandra_surface.Modular_region.t =
+<pre>- : Top_result.modular_region =
 ---[region]---
 Constraints:
   [ Set.subset x y ]
@@ -2945,8 +2898,8 @@ Invariant:
 <div class="output_text output_subarea output_execute_result">
 <pre>type colour = Red | Green | Blue
 type obj = { colour : colour; broken : bool; }
-type dom = obj * Q.t * Z.t
-val f&#39; : obj * real * Z.t -&gt; Z.t * real = &lt;fun&gt;
+type dom = obj * real * int
+val f&#39; : obj * real * int -&gt; int * real = &lt;fun&gt;
 </pre>
 </div>
 
@@ -3004,8 +2957,8 @@ val f&#39; : obj * real * Z.t -&gt; Z.t * real = &lt;fun&gt;
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>val distribution : unit -&gt; obj * Q.t * Z.t = &lt;fun&gt;
-- : obj * Q.t * Z.t =
+<pre>val distribution : unit -&gt; obj * real * int = &lt;fun&gt;
+- : obj * real * int =
 ({colour = Red; broken = false}, 3692047287333181/281474976710656, 5)
 </pre>
 </div>
@@ -3063,7 +3016,7 @@ val f&#39; : obj * real * Z.t -&gt; Z.t * real = &lt;fun&gt;
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>val d : Imandra_interactive.Modular_decomp.MD.t =
+<pre>val d : Top_result.modular_decomposition =
   {Imandra_interactive.Modular_decomp.MD.md_session = 3i;
    md_f =
     {Imandra_surface.Uid.name = &#34;f&#39;&#34;; id = &lt;abstr&gt;; special_tag = &lt;abstr&gt;;
@@ -3072,7 +3025,7 @@ val f&#39; : obj * real * Z.t -&gt; Z.t * real = &lt;fun&gt;
      depth = (3i, 3i)};
    md_args = [(_x : (obj * real * int))]; md_regions = &lt;abstr&gt;}
 - : unit = ()
-val regions : Imandra_interactive.Modular_decomp.MR.t CCList.t =
+val regions : Top_result.modular_region list =
   [---[region]---
    Constraints:
      [ _x[0].colour is Blue
@@ -3137,24 +3090,23 @@ module Example :
   sig
     type domain = dom
     val get_probs :
-      Imandra_surface.Modular_region.t list -&gt;
+      Top_result.modular_region list -&gt;
       ?assuming:string -&gt;
-      ?n:Z.t -&gt;
+      ?n:int/1 -&gt;
       ?d:string -&gt;
-      ?step_function:(domain -&gt; domain) -&gt;
-      ?num_steps:Z.t -&gt;
-      unit -&gt; (int, float * Imandra_surface.Modular_region.t) Hashtbl.t
+      ?step_function:(dom -&gt; dom) -&gt;
+      ?num_steps:int/1 -&gt;
+      unit -&gt; (int/2, float * Top_result.modular_region) Hashtbl.t
     val query :
-      (domain -&gt; bool) -&gt;
-      ?n:Z.t -&gt;
-      ?d:string -&gt; ?max_std_err:Q.t -&gt; ?precision:Z.t -&gt; unit -&gt; unit
-    val save : string -&gt; ?n:Z.t -&gt; ?d:domain list -&gt; unit -&gt; unit
-    val load : string -&gt; domain list
+      (dom -&gt; bool) -&gt;
+      ?n:int -&gt;
+      ?d:string -&gt; ?max_std_err:real -&gt; ?precision:int -&gt; unit -&gt; unit
+    val save : string -&gt; ?n:int -&gt; ?d:dom list -&gt; unit -&gt; unit
+    val load : string -&gt; dom list
   end
-val g___21 : obj * real * &#39;a -&gt; int = &lt;fun&gt;
+val g___21 : obj * real * &#39;a -&gt; int/2 = &lt;fun&gt;
 - : unit = ()
-val probs : (int, float * Imandra_surface.Modular_region.t) Hashtbl.t =
-  &lt;abstr&gt;
+val probs : (int/2, float * Top_result.modular_region) Hashtbl.t = &lt;abstr&gt;
 Region   Probability
 6        0.0733
 2        0.0516
@@ -3178,7 +3130,7 @@ Region   Probability
 
 
 <div class="output_html rendered_html output_subarea ">
-<div class="imandra-alternatives" id="alt-f12e5f1b-6876-4a92-89e6-344fb65b155b"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi (8 of 8)</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-6b70d059-601d-4b0e-be71-63a9a65ad656" class="decompose"><textarea class="display-none">{
+<div class="imandra-alternatives" id="alt-28671d36-4d63-4a69-a603-0ad538afcf38"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi (8 of 8)</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-f21312b9-a34a-4e87-92d4-66aec2f66d75" class="decompose"><textarea class="display-none">{
   &quot;regions&quot;: [
     {
       &quot;constraints&quot;: [ &quot;_x[1] &gt; 37/2&quot; ],
@@ -3312,13 +3264,13 @@ Region   Probability
 }</textarea><div class="decompose-foamtree"></div><div class="decompose-details"><div class="decompose-details-header">Regions details</div><div class="decompose-details-no-selection"><p>No group selected.</p><ul><li>Concrete regions are numbered</li><li>Unnumbered regions are groups whose children share a particular constraint</li><li>Click on a region to view its details</li><li>Double click on a region to zoom in on it</li><li>Shift+double click to zoom out</li><li>Hit escape to reset back to the top</li></ul></div><div class="decompose-details-selection hidden"><div><span class="decompose-details-label">Direct sub-regions: </span><span class="decompose-details-direct-sub-regions-text">-</span></div><div><span class="decompose-details-label">Contained regions: </span><span class="decompose-details-contained-regions-text">-</span></div><div class="decompose-details-section-header">Constraints</div><div class="decompose-details-constraints"><pre class="decompose-details-constraint">&lt;constraint&gt;</pre></div><div class="decompose-details-invariant"><div class="decompose-details-section-header">Invariant</div><pre class="decompose-details-invariant-text">&lt;invariant&gt;</pre></div></div></div><script>
 (function () {
   require(['nbextensions/nbimandra/regions'], function (regions) {
-    var target = '#decompose-6b70d059-601d-4b0e-be71-63a9a65ad656';
+    var target = '#decompose-f21312b9-a34a-4e87-92d4-66aec2f66d75';
     regions.hydrate(target);
   });
 })();
-</script></div></div><div class="tab-pane"><div><div>decomp of (f' _x<div class="imandra-table" id="table-38c4e8d9-af6d-483e-939d-1ea184a30900"><table><thead><tr><th>Reg_id</th><th>Constraints</th><th>Invariant</th></tr></thead><tr><td>7</td><td><ul><li><pre>not (_x.0.colour = Green)</pre></li><li><pre>not (_x.1 &gt;. 37/2)</pre></li><li><pre>not (_x.0.colour = Red)</pre></li></ul></td><td><pre>(_x.2 * 2, 141/10)</pre></td></tr><tr><td>6</td><td><ul><li><pre>_x.0.colour = Green</pre></li><li><pre>not (_x.1 &gt;. 37/2)</pre></li><li><pre>not (_x.0.colour = Red)</pre></li></ul></td><td><pre>(_x.2 * 2, _x.1 -. 39/5)</pre></td></tr><tr><td>5</td><td><ul><li><pre>_x.0.colour = Green</pre></li><li><pre>not (_x.0.colour = Blue)</pre></li><li><pre>_x.1 &gt;. 37/2</pre></li><li><pre>not (_x.0.colour = Red)</pre></li></ul></td><td><pre>(_x.2 * 2, _x.1 -. 39/5)</pre></td></tr><tr><td>4</td><td><ul><li><pre>_x.0.colour = Blue</pre></li><li><pre>_x.1 &gt;. 37/2</pre></li><li><pre>not (_x.0.colour = Red)</pre></li></ul></td><td><pre>(_x.2 * 2, _x.1 +. 43/10)</pre></td></tr><tr><td>3</td><td><ul><li><pre>not (_x.0.colour = Green)</pre></li><li><pre>not (_x.1 &gt;. 37/2)</pre></li><li><pre>not _x.0.broken</pre></li><li><pre>_x.0.colour = Red</pre></li></ul></td><td><pre>(7, 141/10)</pre></td></tr><tr><td>2</td><td><ul><li><pre>not (_x.0.colour = Green)</pre></li><li><pre>not (_x.0.colour = Blue)</pre></li><li><pre>_x.1 &gt;. 37/2</pre></li><li><pre>not _x.0.broken</pre></li><li><pre>_x.0.colour = Red</pre></li></ul></td><td><pre>(7, 141/10)</pre></td></tr><tr><td>1</td><td><ul><li><pre>not (_x.0.colour = Green)</pre></li><li><pre>not (_x.1 &gt;. 37/2)</pre></li><li><pre>_x.0.broken</pre></li><li><pre>_x.0.colour = Red</pre></li></ul></td><td><pre>(_x.2, 141/10)</pre></td></tr><tr><td>0</td><td><ul><li><pre>not (_x.0.colour = Green)</pre></li><li><pre>not (_x.0.colour = Blue)</pre></li><li><pre>_x.1 &gt;. 37/2</pre></li><li><pre>_x.0.broken</pre></li><li><pre>_x.0.colour = Red</pre></li></ul></td><td><pre>(_x.2, 141/10)</pre></td></tr></table></div></div></div></div></div><script>
+</script></div></div><div class="tab-pane"><div><div>decomp of (f' _x<div class="imandra-table" id="table-b6147504-1723-421c-9fdc-b8a967e54deb"><table><thead><tr><th>Reg_id</th><th>Constraints</th><th>Invariant</th></tr></thead><tr><td>7</td><td><ul><li><pre>not (_x.0.colour = Green)</pre></li><li><pre>not (_x.1 &gt;. 37/2)</pre></li><li><pre>not (_x.0.colour = Red)</pre></li></ul></td><td><pre>(_x.2 * 2, 141/10)</pre></td></tr><tr><td>6</td><td><ul><li><pre>_x.0.colour = Green</pre></li><li><pre>not (_x.1 &gt;. 37/2)</pre></li><li><pre>not (_x.0.colour = Red)</pre></li></ul></td><td><pre>(_x.2 * 2, _x.1 -. 39/5)</pre></td></tr><tr><td>5</td><td><ul><li><pre>_x.0.colour = Green</pre></li><li><pre>not (_x.0.colour = Blue)</pre></li><li><pre>_x.1 &gt;. 37/2</pre></li><li><pre>not (_x.0.colour = Red)</pre></li></ul></td><td><pre>(_x.2 * 2, _x.1 -. 39/5)</pre></td></tr><tr><td>4</td><td><ul><li><pre>_x.0.colour = Blue</pre></li><li><pre>_x.1 &gt;. 37/2</pre></li><li><pre>not (_x.0.colour = Red)</pre></li></ul></td><td><pre>(_x.2 * 2, _x.1 +. 43/10)</pre></td></tr><tr><td>3</td><td><ul><li><pre>not (_x.0.colour = Green)</pre></li><li><pre>not (_x.1 &gt;. 37/2)</pre></li><li><pre>not _x.0.broken</pre></li><li><pre>_x.0.colour = Red</pre></li></ul></td><td><pre>(7, 141/10)</pre></td></tr><tr><td>2</td><td><ul><li><pre>not (_x.0.colour = Green)</pre></li><li><pre>not (_x.0.colour = Blue)</pre></li><li><pre>_x.1 &gt;. 37/2</pre></li><li><pre>not _x.0.broken</pre></li><li><pre>_x.0.colour = Red</pre></li></ul></td><td><pre>(7, 141/10)</pre></td></tr><tr><td>1</td><td><ul><li><pre>not (_x.0.colour = Green)</pre></li><li><pre>not (_x.1 &gt;. 37/2)</pre></li><li><pre>_x.0.broken</pre></li><li><pre>_x.0.colour = Red</pre></li></ul></td><td><pre>(_x.2, 141/10)</pre></td></tr><tr><td>0</td><td><ul><li><pre>not (_x.0.colour = Green)</pre></li><li><pre>not (_x.0.colour = Blue)</pre></li><li><pre>_x.1 &gt;. 37/2</pre></li><li><pre>_x.0.broken</pre></li><li><pre>_x.0.colour = Red</pre></li></ul></td><td><pre>(_x.2, 141/10)</pre></td></tr></table></div></div></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-f12e5f1b-6876-4a92-89e6-344fb65b155b';
+  var target = '#alt-28671d36-4d63-4a69-a603-0ad538afcf38';
   alternatives.hydrate(target);
 });
 </script></div>

@@ -916,10 +916,10 @@
 <div class="output_text output_subarea output_execute_result">
 <pre>type choice = int
 type player = Imandra | Opponent
-type state = Inplay of int | Terminal of player
-val create_initial_state : int -&gt; state = &lt;fun&gt;
-val final_state : Z.t -&gt; bool = &lt;fun&gt;
-val remove_pins : Z.t -&gt; state -&gt; state = &lt;fun&gt;
+type state = Inplay of choice | Terminal of player
+val create_initial_state : choice -&gt; state = &lt;fun&gt;
+val final_state : choice -&gt; bool = &lt;fun&gt;
+val remove_pins : choice -&gt; state -&gt; state = &lt;fun&gt;
 </pre>
 </div>
 
@@ -979,9 +979,9 @@ val remove_pins : Z.t -&gt; state -&gt; state = &lt;fun&gt;
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>val step : int -&gt; state -&gt; state = &lt;fun&gt;
-val find_all_available_choices : state -&gt; Z.t list = &lt;fun&gt;
-val is_valid_choice : int -&gt; state -&gt; bool = &lt;fun&gt;
+<pre>val step : choice -&gt; state -&gt; state = &lt;fun&gt;
+val find_all_available_choices : state -&gt; choice list = &lt;fun&gt;
+val is_valid_choice : choice -&gt; state -&gt; bool = &lt;fun&gt;
 </pre>
 </div>
 
@@ -1168,7 +1168,7 @@ val instance_function : state -&gt; (state * choice) list list -&gt; bool = &lt;
 
 <div class="output_text output_subarea output_execute_result">
 <pre>- : (state * choice) list list -&gt; bool = &lt;fun&gt;
-module CX : sig val steps : (state * Z.t) list list end
+module CX : sig val steps : (state * choice) list list end
 </pre>
 </div>
 
@@ -1181,7 +1181,7 @@ module CX : sig val steps : (state * Z.t) list list end
 
 
 <div class="output_html rendered_html output_subarea ">
-<div><pre>Instance (after 518 steps, 18.327s):
+<div><pre>Instance (after 518 steps, 21.048s):
   let steps =
     [[(Inplay 16, 3)]; [(Inplay 12, 3); (Inplay 11, 2); (Inplay 10, 1)];
      [(Inplay 8, 3); (Inplay 7, 2); (Inplay 6, 1)];
@@ -1311,11 +1311,12 @@ module CX : sig val steps : (state * Z.t) list list end
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>val gather_inputs : int -&gt; int = &lt;fun&gt;
+<pre>val gather_inputs : choice -&gt; choice = &lt;fun&gt;
 val winner_message : player -&gt; string = &lt;fun&gt;
-val print_state : state -&gt; String.t = &lt;fun&gt;
-val print_choice : int -&gt; String.t = &lt;fun&gt;
-val play_against_imandra : state -&gt; (state * int) list list -&gt; unit = &lt;fun&gt;
+val print_state : state -&gt; string = &lt;fun&gt;
+val print_choice : choice -&gt; string = &lt;fun&gt;
+val play_against_imandra : state -&gt; (state * choice) list list -&gt; unit =
+  &lt;fun&gt;
 </pre>
 </div>
 

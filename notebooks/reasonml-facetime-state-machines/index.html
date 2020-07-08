@@ -1408,7 +1408,7 @@ type ideal_state = Idle | CallActive of call | CallIncoming of person
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>val add_person_property : state -&gt; int -&gt; bool = &lt;fun&gt;
+<pre>val add_person_property : state -&gt; person -&gt; bool = &lt;fun&gt;
 </pre>
 </div>
 
@@ -1454,8 +1454,8 @@ type ideal_state = Idle | CallActive of call | CallIncoming of person
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>- : state -&gt; int -&gt; bool = &lt;fun&gt;
-module CX : sig val state : state val person : int end
+<pre>- : state -&gt; person -&gt; bool = &lt;fun&gt;
+module CX : sig val state : state val person : person end
 </pre>
 </div>
 
@@ -1468,7 +1468,7 @@ module CX : sig val state : state val person : int end
 
 
 <div class="output_html rendered_html output_subarea ">
-<div><pre>Counterexample (after 2 steps, 0.011s):
+<div><pre>Counterexample (after 2 steps, 0.010s):
  let (state : state) =
    {status = Idle; callIncomingFrom = None; peopleInCall = []}
  let (person : int) = 2
@@ -1485,7 +1485,7 @@ module CX : sig val state : state val person : int end
 
 
 <div class="output_html rendered_html output_subarea ">
-<div><div style="font-size: 1.2em; padding: 0.5em; border-top: 1px dashed #D84315; border-bottom: 1px dashed #D84315"><i class="fa fa-times-circle-o" style="margin-right: 0.5em; color: #D84315"></i><span>Refuted</span></div><div><div class="imandra-alternatives" id="alt-7fe017d2-761c-42bd-8e6e-2b9a4f07eebb"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>call graph</a></li><li class="" data-toggle="tab"><a>proof</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-graphviz" id="graphviz-733554d4-6937-4f2f-bbb6-20124ca54fdf"><textarea style="display: none">digraph &quot;call graph&quot; {
+<div><div style="font-size: 1.2em; padding: 0.5em; border-top: 1px dashed #D84315; border-bottom: 1px dashed #D84315"><i class="fa fa-times-circle-o" style="margin-right: 0.5em; color: #D84315"></i><span>Refuted</span></div><div><div class="imandra-alternatives" id="alt-3ff346ae-9ab5-4645-8383-25cfcbadb7d8"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>call graph</a></li><li class="" data-toggle="tab"><a>proof</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-graphviz" id="graphviz-b9f6506a-1873-487c-b7d8-4d4c2b189103"><textarea style="display: none">digraph &quot;call graph&quot; {
 goal [label=&quot;not\l(List.length (person :: state.peopleInCall) \&lt;= 0 \|\| state.status = CallActive)&quot;,shape=box,style=filled,color=&quot;cyan&quot;,fontname=&quot;courier&quot;,fontsize=14];
 goal -&gt; call_66 [label=&quot;calls&quot;];
 call_66 [label=&quot;List.length (person :: state.peopleInCall)&quot;,shape=box,style=filled,color=&quot;green&quot;,fontname=&quot;courier&quot;,fontsize=14];
@@ -1496,32 +1496,32 @@ call_208 [label=&quot;List.length (List.tl state.peopleInCall)&quot;,shape=box,s
 }
 </textarea><button class="btn btn-primary">Load graph</button><div class="imandra-graphviz-loading display-none">Loading..</div><div class="imandra-graphviz-target"></div><script>
 require(['nbextensions/nbimandra/graphviz'], function (graphviz) {
-  var target = '#graphviz-733554d4-6937-4f2f-bbb6-20124ca54fdf';
+  var target = '#graphviz-b9f6506a-1873-487c-b7d8-4d4c2b189103';
   graphviz.hydrate(target);
 });
-</script></div></div><div class="tab-pane"><div class="imandra-proof-top"><div class="imandra-fold panel panel-default" id="fold-07fed9a3-267b-4db6-bd1c-4039fa7dd0a1"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>proof attempt</span></div></div><div class="panel-body collapse"><div class="imandra-proof"><div class="imandra-alternatives" id="alt-4ae46924-c293-4915-bc61-add50cb90841"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>summary</a></li><li class="" data-toggle="tab"><a>full</a></li><li class="" data-toggle="tab"><a>graph</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-table" id="table-61585ce3-aa8c-41cb-8bc0-13c361e16ae2"><table><tr><td><b>ground_instances</b></td><td>2</td></tr><tr><td><b>definitions</b></td><td>0</td></tr><tr><td><b>inductions</b></td><td>0</td></tr><tr><td><b>search_time</b></td><td><pre>0.011s</pre></td></tr><tr><td><b>details</b></td><td><div class="imandra-fold panel panel-default" id="fold-4794e01b-7c46-486a-afa0-d7f2c5b42aac"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><div class="imandra-table" id="table-a874c53a-c6ba-4a0f-9aa3-31703483e3ae"><table><tr><td><b>smt_stats</b></td><td><div class="imandra-table" id="table-7cdf677b-cfb9-4c12-a8d1-4d80f6c9ffb3"><table><tr><td><b>num checks</b></td><td>5</td></tr><tr><td><b>arith assert lower</b></td><td>3</td></tr><tr><td><b>arith pivots</b></td><td>1</td></tr><tr><td><b>rlimit count</b></td><td>1041</td></tr><tr><td><b>mk clause</b></td><td>7</td></tr><tr><td><b>datatype occurs check</b></td><td>18</td></tr><tr><td><b>mk bool var</b></td><td>42</td></tr><tr><td><b>arith assert upper</b></td><td>2</td></tr><tr><td><b>datatype splits</b></td><td>9</td></tr><tr><td><b>decisions</b></td><td>11</td></tr><tr><td><b>propagations</b></td><td>4</td></tr><tr><td><b>conflicts</b></td><td>4</td></tr><tr><td><b>arith fixed eqs</b></td><td>1</td></tr><tr><td><b>datatype accessor ax</b></td><td>12</td></tr><tr><td><b>datatype constructor ax</b></td><td>13</td></tr><tr><td><b>num allocs</b></td><td>1040700979</td></tr><tr><td><b>final checks</b></td><td>6</td></tr><tr><td><b>added eqs</b></td><td>37</td></tr><tr><td><b>del clause</b></td><td>3</td></tr><tr><td><b>arith eq adapter</b></td><td>2</td></tr><tr><td><b>memory</b></td><td>17.720000</td></tr><tr><td><b>max memory</b></td><td>17.830000</td></tr></table></div></td></tr></table></div></div><script>
+</script></div></div><div class="tab-pane"><div class="imandra-proof-top"><div class="imandra-fold panel panel-default" id="fold-b476fa71-67fa-4447-946b-393a2b587977"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>proof attempt</span></div></div><div class="panel-body collapse"><div class="imandra-proof"><div class="imandra-alternatives" id="alt-fbdccb5c-cea6-455a-bb0b-448a201c719d"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>summary</a></li><li class="" data-toggle="tab"><a>full</a></li><li class="" data-toggle="tab"><a>graph</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-table" id="table-deb533f3-32f6-4337-93f5-03d599299d7c"><table><tr><td><b>ground_instances</b></td><td>2</td></tr><tr><td><b>definitions</b></td><td>0</td></tr><tr><td><b>inductions</b></td><td>0</td></tr><tr><td><b>search_time</b></td><td><pre>0.010s</pre></td></tr><tr><td><b>details</b></td><td><div class="imandra-fold panel panel-default" id="fold-f4d019e2-0f0c-4a11-b460-f49649d62c80"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><div class="imandra-table" id="table-b9a65af1-71af-4ba0-9540-aca0eae44ee6"><table><tr><td><b>smt_stats</b></td><td><div class="imandra-table" id="table-0c2b2c27-9f20-4c22-94e7-cbf3e546ec8a"><table><tr><td><b>num checks</b></td><td>5</td></tr><tr><td><b>arith assert lower</b></td><td>3</td></tr><tr><td><b>arith pivots</b></td><td>1</td></tr><tr><td><b>rlimit count</b></td><td>1041</td></tr><tr><td><b>mk clause</b></td><td>7</td></tr><tr><td><b>datatype occurs check</b></td><td>18</td></tr><tr><td><b>mk bool var</b></td><td>42</td></tr><tr><td><b>arith assert upper</b></td><td>2</td></tr><tr><td><b>datatype splits</b></td><td>9</td></tr><tr><td><b>decisions</b></td><td>11</td></tr><tr><td><b>propagations</b></td><td>4</td></tr><tr><td><b>conflicts</b></td><td>4</td></tr><tr><td><b>arith fixed eqs</b></td><td>1</td></tr><tr><td><b>datatype accessor ax</b></td><td>12</td></tr><tr><td><b>datatype constructor ax</b></td><td>13</td></tr><tr><td><b>num allocs</b></td><td>1045037285</td></tr><tr><td><b>final checks</b></td><td>6</td></tr><tr><td><b>added eqs</b></td><td>37</td></tr><tr><td><b>del clause</b></td><td>3</td></tr><tr><td><b>arith eq adapter</b></td><td>2</td></tr><tr><td><b>memory</b></td><td>20.890000</td></tr><tr><td><b>max memory</b></td><td>26.900000</td></tr></table></div></td></tr></table></div></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-4794e01b-7c46-486a-afa0-d7f2c5b42aac';
+  var target = '#fold-f4d019e2-0f0c-4a11-b460-f49649d62c80';
   fold.hydrate(target);
 });
-</script></div></td></tr></table></div></div><div class="tab-pane"><div class="imandra-fold panel panel-default" id="fold-1d50a115-52eb-4060-9355-891b1a453abc"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.011s]
+</script></div></td></tr></table></div></div><div class="tab-pane"><div class="imandra-fold panel panel-default" id="fold-3333bbf8-17ec-4e9b-8aa0-55556118e48e"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.010s]
   if List.length
      (if AddPerson :var_0: = CallRejected then … else …).peopleInCall &gt; 
      0
   then
     (if AddPerson :var_0: = CallRejected then … else …).status =
     CallActive
-  else true</pre></li><li><div><h4>simplify</h4><div class="imandra-table" id="table-a118f53d-a968-4ab0-97f1-58f64d066ca5"><table><tr><td><b>into</b></td><td><pre>List.length (:var_0: :: :var_1:.peopleInCall) &lt;= 0
-|| :var_1:.status = CallActive</pre></td></tr><tr><td><b>expansions</b></td><td><pre>[]</pre></td></tr><tr><td><b>rewrite_steps</b></td><td><ul></ul></td></tr><tr><td><b>forward_chaining</b></td><td><ul></ul></td></tr></table></div></div></li><li><div>unroll<div class="imandra-table" id="table-2bbc4403-8088-41de-9ab5-e22d70e8d4a4"><table><tr><td><b>expr</b></td><td><pre>(|List.length_1711| (|::_3| person_76 (peopleInCall_27 state_75)))</pre></td></tr><tr><td><b>expansions</b></td><td><ul></ul></td></tr></table></div></div></li><li><div>unroll<div class="imandra-table" id="table-de2f01f7-782b-4822-b2ad-a1ab3cc9f02f"><table><tr><td><b>expr</b></td><td><pre>(|List.length_1711| (peopleInCall_27 state_75))</pre></td></tr><tr><td><b>expansions</b></td><td><ul></ul></td></tr></table></div></div></li><li>Sat (Some  let (state : state) =
+  else true</pre></li><li><div><h4>simplify</h4><div class="imandra-table" id="table-cd80b860-a248-48bb-b3bd-1da50c56759e"><table><tr><td><b>into</b></td><td><pre>List.length (:var_0: :: :var_1:.peopleInCall) &lt;= 0
+|| :var_1:.status = CallActive</pre></td></tr><tr><td><b>expansions</b></td><td><pre>[]</pre></td></tr><tr><td><b>rewrite_steps</b></td><td><ul></ul></td></tr><tr><td><b>forward_chaining</b></td><td><ul></ul></td></tr></table></div></div></li><li><div>unroll<div class="imandra-table" id="table-bee1a4d3-ca3d-4ae7-a37a-979aed311d0a"><table><tr><td><b>expr</b></td><td><pre>(|List.length_1975| (|::_3| person_76 (peopleInCall_27 state_75)))</pre></td></tr><tr><td><b>expansions</b></td><td><ul></ul></td></tr></table></div></div></li><li><div>unroll<div class="imandra-table" id="table-9c868478-4719-4c05-8825-2bcbc288020d"><table><tr><td><b>expr</b></td><td><pre>(|List.length_1975| (peopleInCall_27 state_75))</pre></td></tr><tr><td><b>expansions</b></td><td><ul></ul></td></tr></table></div></div></li><li>Sat (Some  let (state : state) =
    {status = Idle; callIncomingFrom = None; peopleInCall = []}
  let (person : int) = 2
 )</li></ul></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-1d50a115-52eb-4060-9355-891b1a453abc';
+  var target = '#fold-3333bbf8-17ec-4e9b-8aa0-55556118e48e';
   fold.hydrate(target);
 });
-</script></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-e9595afb-affa-47c5-b640-0e68128f696f"><textarea style="display: none">digraph &quot;proof&quot; {
-p_249 [label=&quot;Start (if List.length\l          (if AddPerson :var_0: = CallRejected then … else …).peopleInCall\l          \&gt; 0\l       then\l         (if AddPerson :var_0: = CallRejected then … else …).status =\l         CallActive\l       else true :time 0.011s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+</script></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-3e2ebfd7-dc32-4274-9963-7472d232ccb0"><textarea style="display: none">digraph &quot;proof&quot; {
+p_249 [label=&quot;Start (if List.length\l          (if AddPerson :var_0: = CallRejected then … else …).peopleInCall\l          \&gt; 0\l       then\l         (if AddPerson :var_0: = CallRejected then … else …).status =\l         CallActive\l       else true :time 0.010s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_249 -&gt; p_248 [label=&quot;&quot;];
 p_248 [label=&quot;Simplify (List.length (:var_0: :: :var_1:.peopleInCall) \&lt;= 0\l          \|\| :var_1:.status = CallActive :expansions [] :rw [] :fc [])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_248 -&gt; p_247 [label=&quot;&quot;];
@@ -1533,22 +1533,22 @@ p_245 [label=&quot;Sat (Some  let (state : state) =\l   \{status = Idle; callInc
 }
 </textarea><button class="btn btn-primary">Load graph</button><div class="imandra-graphviz-loading display-none">Loading..</div><div class="imandra-graphviz-target"></div><script>
 require(['nbextensions/nbimandra/graphviz'], function (graphviz) {
-  var target = '#graphviz-e9595afb-affa-47c5-b640-0e68128f696f';
+  var target = '#graphviz-3e2ebfd7-dc32-4274-9963-7472d232ccb0';
   graphviz.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-4ae46924-c293-4915-bc61-add50cb90841';
+  var target = '#alt-fbdccb5c-cea6-455a-bb0b-448a201c719d';
   alternatives.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-07fed9a3-267b-4db6-bd1c-4039fa7dd0a1';
+  var target = '#fold-b476fa71-67fa-4447-946b-393a2b587977';
   fold.hydrate(target);
 });
 </script></div></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-7fe017d2-761c-42bd-8e6e-2b9a4f07eebb';
+  var target = '#alt-3ff346ae-9ab5-4645-8383-25cfcbadb7d8';
   alternatives.hydrate(target);
 });
 </script></div></div></div>
@@ -1598,6 +1598,8 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
 
 <div class="output_text output_subarea output_execute_result">
 <pre>File &#34;jupyter cell 12&#34;, line 1, characters 12-19:
+1 | List.length(CX._x_0.peopleInCall);
+                ^^^^^^^
 Error: Unbound value CX._x_0
 </pre>
 </div>
@@ -1702,6 +1704,11 @@ Error: Unbound value CX._x_0
 <div class="output_text output_subarea output_execute_result">
 <pre>val initial_state : state =
   {status = Idle; callIncomingFrom = None; peopleInCall = []}
+File &#34;jupyter cell 14&#34;, line 2, characters 16-80:
+2 | verify ~upto=50 call_with_people_in_is_active_property(update_v2, initial_state);
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Warning 5: this function application is partial,
+maybe some arguments are missing.
 - : action_v2 list -&gt; bool = &lt;fun&gt;
 module CX : sig val _x_0 : action_v2 list end
 </pre>
@@ -1716,7 +1723,7 @@ module CX : sig val _x_0 : action_v2 list end
 
 
 <div class="output_html rendered_html output_subarea ">
-<div><pre>Counterexample (after 4 steps, 0.031s):
+<div><pre>Counterexample (after 4 steps, 0.017s):
  let (_x_0 : action_v2 list) = [(AddPerson (4))]
 </pre></div>
 
@@ -1731,32 +1738,32 @@ module CX : sig val _x_0 : action_v2 list end
 
 
 <div class="output_html rendered_html output_subarea ">
-<div><div style="font-size: 1.2em; padding: 0.5em; border-top: 1px dashed #D84315; border-bottom: 1px dashed #D84315"><i class="fa fa-times-circle-o" style="margin-right: 0.5em; color: #D84315"></i><span>Refuted</span></div><div><div class="imandra-alternatives" id="alt-dd711b62-e79a-4abf-84c7-0650316a95ed"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>call graph</a></li><li class="" data-toggle="tab"><a>proof</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-graphviz" id="graphviz-55afb435-eae6-4df2-a538-18448de9957c"><textarea style="display: none">digraph &quot;call graph&quot; {
+<div><div style="font-size: 1.2em; padding: 0.5em; border-top: 1px dashed #D84315; border-bottom: 1px dashed #D84315"><i class="fa fa-times-circle-o" style="margin-right: 0.5em; color: #D84315"></i><span>Refuted</span></div><div><div class="imandra-alternatives" id="alt-fe121418-cdcf-49df-988b-2e8b017067b5"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>call graph</a></li><li class="" data-toggle="tab"><a>proof</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-graphviz" id="graphviz-bfff62ce-39fb-4091-8eba-4b21883be870"><textarea style="display: none">digraph &quot;call graph&quot; {
 goal [label=&quot;not\l(List.length\l (List.fold_left update_v2\l  \{status = …; callIncomingFrom = …; peopleInCall = …\} _x_0).peopleInCall\l \&lt;= 0\l \|\| (List.fold_left update_v2\l     \{status = …; callIncomingFrom = …; peopleInCall = …\} _x_0).status\l    = CallActive)&quot;,shape=box,style=filled,color=&quot;cyan&quot;,fontname=&quot;courier&quot;,fontsize=14];
 goal -&gt; call_30 [label=&quot;calls&quot;];
 goal -&gt; call_32 [label=&quot;calls&quot;];
 call_30 [label=&quot;List.fold_left update_v2\l\{status = Idle; callIncomingFrom = None; peopleInCall = []\} _x_0&quot;,shape=box,style=filled,color=&quot;green&quot;,fontname=&quot;courier&quot;,fontsize=14];
-call_30 -&gt; call_256 [label=&quot;calls&quot;];
+call_30 -&gt; call_278 [label=&quot;calls&quot;];
 call_32 [label=&quot;List.length\l(List.fold_left update_v2\l \{status = …; callIncomingFrom = …; peopleInCall = …\} _x_0).peopleInCall&quot;,shape=box,style=filled,color=&quot;green&quot;,fontname=&quot;courier&quot;,fontsize=14];
-call_32 -&gt; call_385 [label=&quot;calls&quot;];
-call_256 [label=&quot;List.fold_left update_v2\l(if Is_a(CallIncomingFrom, List.hd _x_0)\l then \{status = CallIncoming; callIncomingFrom = Some …; peopleInCall = []\}\l else\l if List.hd _x_0 = CallRejected\l then \{status = …; callIncomingFrom = …; peopleInCall = []\}\l else\l if List.hd _x_0 = CallAccepted\l then \{status = …; callIncomingFrom = …; peopleInCall = []\} else …)\l(List.tl _x_0)&quot;,shape=box,style=filled,color=&quot;green&quot;,fontname=&quot;courier&quot;,fontsize=14];
-call_256 -&gt; call_565 [label=&quot;calls&quot;];
-call_385 [label=&quot;List.length\l(List.tl\l (List.fold_left update_v2\l  \{status = …; callIncomingFrom = …; peopleInCall = …\} _x_0).peopleInCall)&quot;,shape=box,style=filled,color=&quot;green&quot;,fontname=&quot;courier&quot;,fontsize=14];
-call_385 -&gt; call_467 [label=&quot;calls&quot;];
-call_565 [label=&quot;List.fold_left update_v2\l(if Is_a(CallIncomingFrom, List.hd (List.tl _x_0))\l then\l   \{status = CallIncoming; callIncomingFrom = Some …;\l    peopleInCall = ….peopleInCall\}\l else\l if List.hd (List.tl _x_0) = CallRejected\l then \{status = …; callIncomingFrom = …; peopleInCall = ….peopleInCall\}\l else if List.hd (List.tl _x_0) = CallAccepted then … else …)\l(List.tl (List.tl _x_0))&quot;,shape=box,style=filled,color=&quot;yellow&quot;,fontname=&quot;courier&quot;,fontsize=14];
-call_467 [label=&quot;List.length\l(List.tl\l (List.tl\l  (List.fold_left update_v2\l   \{status = …; callIncomingFrom = …; peopleInCall = …\} _x_0).peopleInCall))&quot;,shape=box,style=filled,color=&quot;yellow&quot;,fontname=&quot;courier&quot;,fontsize=14];
+call_32 -&gt; call_407 [label=&quot;calls&quot;];
+call_278 [label=&quot;List.fold_left update_v2\l(if Is_a(CallIncomingFrom, List.hd _x_0)\l then \{status = CallIncoming; callIncomingFrom = Some …; peopleInCall = []\}\l else\l if List.hd _x_0 = CallRejected\l then \{status = …; callIncomingFrom = …; peopleInCall = []\}\l else\l if List.hd _x_0 = CallAccepted\l then \{status = …; callIncomingFrom = …; peopleInCall = []\} else …)\l(List.tl _x_0)&quot;,shape=box,style=filled,color=&quot;green&quot;,fontname=&quot;courier&quot;,fontsize=14];
+call_278 -&gt; call_587 [label=&quot;calls&quot;];
+call_407 [label=&quot;List.length\l(List.tl\l (List.fold_left update_v2\l  \{status = …; callIncomingFrom = …; peopleInCall = …\} _x_0).peopleInCall)&quot;,shape=box,style=filled,color=&quot;green&quot;,fontname=&quot;courier&quot;,fontsize=14];
+call_407 -&gt; call_489 [label=&quot;calls&quot;];
+call_587 [label=&quot;List.fold_left update_v2\l(if Is_a(CallIncomingFrom, List.hd (List.tl _x_0))\l then\l   \{status = CallIncoming; callIncomingFrom = Some …;\l    peopleInCall = ….peopleInCall\}\l else\l if List.hd (List.tl _x_0) = CallRejected\l then \{status = …; callIncomingFrom = …; peopleInCall = ….peopleInCall\}\l else if List.hd (List.tl _x_0) = CallAccepted then … else …)\l(List.tl (List.tl _x_0))&quot;,shape=box,style=filled,color=&quot;yellow&quot;,fontname=&quot;courier&quot;,fontsize=14];
+call_489 [label=&quot;List.length\l(List.tl\l (List.tl\l  (List.fold_left update_v2\l   \{status = …; callIncomingFrom = …; peopleInCall = …\} _x_0).peopleInCall))&quot;,shape=box,style=filled,color=&quot;yellow&quot;,fontname=&quot;courier&quot;,fontsize=14];
 }
 </textarea><button class="btn btn-primary">Load graph</button><div class="imandra-graphviz-loading display-none">Loading..</div><div class="imandra-graphviz-target"></div><script>
 require(['nbextensions/nbimandra/graphviz'], function (graphviz) {
-  var target = '#graphviz-55afb435-eae6-4df2-a538-18448de9957c';
+  var target = '#graphviz-bfff62ce-39fb-4091-8eba-4b21883be870';
   graphviz.hydrate(target);
 });
-</script></div></div><div class="tab-pane"><div class="imandra-proof-top"><div class="imandra-fold panel panel-default" id="fold-e0e03ac4-771b-43d3-8d3c-2255afd534d3"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>proof attempt</span></div></div><div class="panel-body collapse"><div class="imandra-proof"><div class="imandra-alternatives" id="alt-42c726ec-314d-46db-8257-87d6d9a3c8c2"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>summary</a></li><li class="" data-toggle="tab"><a>full</a></li><li class="" data-toggle="tab"><a>graph</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-table" id="table-3a60feca-2b71-4e20-8732-26ebbee7b918"><table><tr><td><b>ground_instances</b></td><td>4</td></tr><tr><td><b>definitions</b></td><td>0</td></tr><tr><td><b>inductions</b></td><td>0</td></tr><tr><td><b>search_time</b></td><td><pre>0.031s</pre></td></tr><tr><td><b>details</b></td><td><div class="imandra-fold panel panel-default" id="fold-095c395c-3f3e-4beb-a756-8b24483a7e6b"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><div class="imandra-table" id="table-5ef89dea-4618-4973-a1ab-1e5ec9611e18"><table><tr><td><b>smt_stats</b></td><td><div class="imandra-table" id="table-2a49c75c-af89-4bab-b8e8-b0d1b7792bbd"><table><tr><td><b>num checks</b></td><td>9</td></tr><tr><td><b>arith assert lower</b></td><td>5</td></tr><tr><td><b>arith pivots</b></td><td>1</td></tr><tr><td><b>rlimit count</b></td><td>4924</td></tr><tr><td><b>mk clause</b></td><td>43</td></tr><tr><td><b>datatype occurs check</b></td><td>235</td></tr><tr><td><b>mk bool var</b></td><td>249</td></tr><tr><td><b>arith assert upper</b></td><td>3</td></tr><tr><td><b>datatype splits</b></td><td>46</td></tr><tr><td><b>decisions</b></td><td>162</td></tr><tr><td><b>arith add rows</b></td><td>1</td></tr><tr><td><b>propagations</b></td><td>155</td></tr><tr><td><b>conflicts</b></td><td>23</td></tr><tr><td><b>arith fixed eqs</b></td><td>5</td></tr><tr><td><b>datatype accessor ax</b></td><td>50</td></tr><tr><td><b>arith assert diseq</b></td><td>2</td></tr><tr><td><b>datatype constructor ax</b></td><td>58</td></tr><tr><td><b>num allocs</b></td><td>1100860538</td></tr><tr><td><b>final checks</b></td><td>17</td></tr><tr><td><b>added eqs</b></td><td>338</td></tr><tr><td><b>del clause</b></td><td>6</td></tr><tr><td><b>arith eq adapter</b></td><td>6</td></tr><tr><td><b>memory</b></td><td>18.500000</td></tr><tr><td><b>max memory</b></td><td>21.180000</td></tr></table></div></td></tr></table></div></div><script>
+</script></div></div><div class="tab-pane"><div class="imandra-proof-top"><div class="imandra-fold panel panel-default" id="fold-43301bc0-4419-4a27-b2e1-0b31511895da"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>proof attempt</span></div></div><div class="panel-body collapse"><div class="imandra-proof"><div class="imandra-alternatives" id="alt-15002fc3-82f6-4c4f-81a4-4f94d1789d0c"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>summary</a></li><li class="" data-toggle="tab"><a>full</a></li><li class="" data-toggle="tab"><a>graph</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-table" id="table-39b11204-682b-4af6-876f-22713635e524"><table><tr><td><b>ground_instances</b></td><td>4</td></tr><tr><td><b>definitions</b></td><td>0</td></tr><tr><td><b>inductions</b></td><td>0</td></tr><tr><td><b>search_time</b></td><td><pre>0.017s</pre></td></tr><tr><td><b>details</b></td><td><div class="imandra-fold panel panel-default" id="fold-610fbdb4-4fe4-4905-bf68-eebff3abed75"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><div class="imandra-table" id="table-c6eb3d1a-23b9-4009-a6f3-64ca3af56d1e"><table><tr><td><b>smt_stats</b></td><td><div class="imandra-table" id="table-e4a365e1-c148-407a-8e74-353d526f09f4"><table><tr><td><b>num checks</b></td><td>9</td></tr><tr><td><b>arith assert lower</b></td><td>5</td></tr><tr><td><b>arith pivots</b></td><td>1</td></tr><tr><td><b>rlimit count</b></td><td>5426</td></tr><tr><td><b>mk clause</b></td><td>46</td></tr><tr><td><b>datatype occurs check</b></td><td>292</td></tr><tr><td><b>mk bool var</b></td><td>276</td></tr><tr><td><b>arith assert upper</b></td><td>3</td></tr><tr><td><b>datatype splits</b></td><td>55</td></tr><tr><td><b>decisions</b></td><td>208</td></tr><tr><td><b>arith add rows</b></td><td>1</td></tr><tr><td><b>propagations</b></td><td>172</td></tr><tr><td><b>conflicts</b></td><td>26</td></tr><tr><td><b>arith fixed eqs</b></td><td>5</td></tr><tr><td><b>datatype accessor ax</b></td><td>56</td></tr><tr><td><b>arith assert diseq</b></td><td>2</td></tr><tr><td><b>datatype constructor ax</b></td><td>67</td></tr><tr><td><b>num allocs</b></td><td>1104587905</td></tr><tr><td><b>final checks</b></td><td>20</td></tr><tr><td><b>added eqs</b></td><td>377</td></tr><tr><td><b>del clause</b></td><td>6</td></tr><tr><td><b>arith eq adapter</b></td><td>6</td></tr><tr><td><b>memory</b></td><td>21.660000</td></tr><tr><td><b>max memory</b></td><td>26.900000</td></tr></table></div></td></tr></table></div></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-095c395c-3f3e-4beb-a756-8b24483a7e6b';
+  var target = '#fold-610fbdb4-4fe4-4905-bf68-eebff3abed75';
   fold.hydrate(target);
 });
-</script></div></td></tr></table></div></div><div class="tab-pane"><div class="imandra-fold panel panel-default" id="fold-30d6b325-b336-4ce8-b50b-1de62fe3346b"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.031s]
+</script></div></td></tr></table></div></div><div class="tab-pane"><div class="imandra-fold panel panel-default" id="fold-b9d82bf0-3a7e-4a58-8516-81372786b4f0"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.017s]
   if List.length
      (List.fold_left update_v2
       {status = …; callIncomingFrom = …; peopleInCall = …} :var_0:).peopleInCall
@@ -1765,27 +1772,27 @@ require(['nbextensions/nbimandra/fold'], function (fold) {
     (List.fold_left update_v2
      {status = …; callIncomingFrom = …; peopleInCall = …} :var_0:).status
     = CallActive
-  else true</pre></li><li><div><h4>simplify</h4><div class="imandra-table" id="table-93f20ee3-00fc-4a98-a491-695157e7a728"><table><tr><td><b>into</b></td><td><pre>List.length
+  else true</pre></li><li><div><h4>simplify</h4><div class="imandra-table" id="table-23331235-3c61-41e0-b8dd-ccb4960c096f"><table><tr><td><b>into</b></td><td><pre>List.length
 (List.fold_left update_v2
  {status = …; callIncomingFrom = …; peopleInCall = …} :var_0:).peopleInCall
 &lt;= 0
 || (List.fold_left update_v2
     {status = …; callIncomingFrom = …; peopleInCall = …} :var_0:).status
-   = CallActive</pre></td></tr><tr><td><b>expansions</b></td><td><pre>[]</pre></td></tr><tr><td><b>rewrite_steps</b></td><td><ul></ul></td></tr><tr><td><b>forward_chaining</b></td><td><ul></ul></td></tr></table></div></div></li><li><div>unroll<div class="imandra-table" id="table-09381108-df55-4b87-ac79-f05630455d6b"><table><tr><td><b>expr</b></td><td><pre>(|`List.fold_left update_v2[0]`_1776|
-  (|rec_mk.state_1766| Idle_21 None_4 |[]_2|)
-  _x_0_85)</pre></td></tr><tr><td><b>expansions</b></td><td><ul></ul></td></tr></table></div></div></li><li><div>unroll<div class="imandra-table" id="table-117c446c-4f65-4984-9911-c7c1c93754fe"><table><tr><td><b>expr</b></td><td><pre>(|List.length_1781|
-  (peopleInCall_27 (|`List.fold_left update_v2[0]`_1776|
-                     (|…</pre></td></tr><tr><td><b>expansions</b></td><td><ul></ul></td></tr></table></div></div></li><li><div>unroll<div class="imandra-table" id="table-96fae93a-5703-44ad-87e5-7c360dd19d25"><table><tr><td><b>expr</b></td><td><pre>(let ((a!1 (|get.::.1_1771| (peopleInCall_27 (|`List.fold_left update_v2[0]`_1776|
-                 …</pre></td></tr><tr><td><b>expansions</b></td><td><ul></ul></td></tr></table></div></div></li><li><div>unroll<div class="imandra-table" id="table-69c76c65-4ae5-41aa-b364-8963bf0f7d3b"><table><tr><td><b>expr</b></td><td><pre>(let ((a!1 (|rec_mk.state_1766|
+   = CallActive</pre></td></tr><tr><td><b>expansions</b></td><td><pre>[]</pre></td></tr><tr><td><b>rewrite_steps</b></td><td><ul></ul></td></tr><tr><td><b>forward_chaining</b></td><td><ul></ul></td></tr></table></div></div></li><li><div>unroll<div class="imandra-table" id="table-370b8762-17f9-4965-bbaf-004fc1344e9d"><table><tr><td><b>expr</b></td><td><pre>(|`List.fold_left update_v2[0]`_2040|
+  (|rec_mk.state_2030| Idle_21 None_4 |[]_2|)
+  _x_0_85)</pre></td></tr><tr><td><b>expansions</b></td><td><ul></ul></td></tr></table></div></div></li><li><div>unroll<div class="imandra-table" id="table-681a59c7-1eed-41ef-96c1-93ae4d8b4cf4"><table><tr><td><b>expr</b></td><td><pre>(|List.length_2045|
+  (peopleInCall_27 (|`List.fold_left update_v2[0]`_2040|
+                     (|…</pre></td></tr><tr><td><b>expansions</b></td><td><ul></ul></td></tr></table></div></div></li><li><div>unroll<div class="imandra-table" id="table-16ad92c2-c393-42fc-a6f9-2617fbbde6df"><table><tr><td><b>expr</b></td><td><pre>(let ((a!1 (|get.::.1_2035| (peopleInCall_27 (|`List.fold_left update_v2[0]`_2040|
+                 …</pre></td></tr><tr><td><b>expansions</b></td><td><ul></ul></td></tr></table></div></div></li><li><div>unroll<div class="imandra-table" id="table-2b1ec60f-eb0d-439a-8822-7723f85d53a7"><table><tr><td><b>expr</b></td><td><pre>(let ((a!1 (|rec_mk.state_2030|
              CallIncoming_23
              (Some_5 (|get.CallIncoming…</pre></td></tr><tr><td><b>expansions</b></td><td><ul></ul></td></tr></table></div></div></li><li>Sat (Some  let (_x_0 : action_v2 list) = [(AddPerson (4))]
 )</li></ul></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-30d6b325-b336-4ce8-b50b-1de62fe3346b';
+  var target = '#fold-b9d82bf0-3a7e-4a58-8516-81372786b4f0';
   fold.hydrate(target);
 });
-</script></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-a1f922f5-4dcf-4bfa-a9ef-583fbbf22403"><textarea style="display: none">digraph &quot;proof&quot; {
-p_256 [label=&quot;Start (if List.length\l          (List.fold_left update_v2\l           \{status = …; callIncomingFrom = …; peopleInCall = …\} :var_0:).peopleInCall\l          \&gt; 0\l       then\l         (List.fold_left update_v2\l          \{status = …; callIncomingFrom = …; peopleInCall = …\} :var_0:).status\l         = CallActive\l       else true :time 0.031s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+</script></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-42557d96-1d45-4b2e-ac1c-8a7c6799d101"><textarea style="display: none">digraph &quot;proof&quot; {
+p_256 [label=&quot;Start (if List.length\l          (List.fold_left update_v2\l           \{status = …; callIncomingFrom = …; peopleInCall = …\} :var_0:).peopleInCall\l          \&gt; 0\l       then\l         (List.fold_left update_v2\l          \{status = …; callIncomingFrom = …; peopleInCall = …\} :var_0:).status\l         = CallActive\l       else true :time 0.017s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_256 -&gt; p_255 [label=&quot;&quot;];
 p_255 [label=&quot;Simplify (List.length\l          (List.fold_left update_v2\l           \{status = …; callIncomingFrom = …; peopleInCall = …\} :var_0:).peopleInCall\l          \&lt;= 0\l          \|\| (List.fold_left update_v2\l              \{status = …; callIncomingFrom = …; peopleInCall = …\}\l              :var_0:).status\l             = CallActive\l          :expansions [] :rw [] :fc [])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_255 -&gt; p_254 [label=&quot;&quot;];
@@ -1801,22 +1808,22 @@ p_250 [label=&quot;Sat (Some  let (_x_0 : action_v2 list) = [(AddPerson (4))]\l)
 }
 </textarea><button class="btn btn-primary">Load graph</button><div class="imandra-graphviz-loading display-none">Loading..</div><div class="imandra-graphviz-target"></div><script>
 require(['nbextensions/nbimandra/graphviz'], function (graphviz) {
-  var target = '#graphviz-a1f922f5-4dcf-4bfa-a9ef-583fbbf22403';
+  var target = '#graphviz-42557d96-1d45-4b2e-ac1c-8a7c6799d101';
   graphviz.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-42c726ec-314d-46db-8257-87d6d9a3c8c2';
+  var target = '#alt-15002fc3-82f6-4c4f-81a4-4f94d1789d0c';
   alternatives.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-e0e03ac4-771b-43d3-8d3c-2255afd534d3';
+  var target = '#fold-43301bc0-4419-4a27-b2e1-0b31511895da';
   fold.hydrate(target);
 });
 </script></div></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-dd711b62-e79a-4abf-84c7-0650316a95ed';
+  var target = '#alt-fe121418-cdcf-49df-988b-2e8b017067b5';
   alternatives.hydrate(target);
 });
 </script></div></div></div>
@@ -1911,7 +1918,12 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>- : action list -&gt; bool = &lt;fun&gt;
+<pre>File &#34;jupyter cell 16&#34;, line 1, characters 16-77:
+1 | verify ~upto=50 call_with_people_in_is_active_property(update, initial_state);
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Warning 5: this function application is partial,
+maybe some arguments are missing.
+- : action list -&gt; bool = &lt;fun&gt;
 module CX : sig val _x_0 : action list end
 </pre>
 </div>
@@ -1941,38 +1953,38 @@ module CX : sig val _x_0 : action list end
 
 
 <div class="output_html rendered_html output_subarea ">
-<div><div style="font-size: 1.2em; padding: 0.5em; border-top: 1px dashed #D84315; border-bottom: 1px dashed #D84315"><i class="fa fa-times-circle-o" style="margin-right: 0.5em; color: #D84315"></i><span>Refuted</span></div><div><div class="imandra-alternatives" id="alt-708f7b9d-d16c-4efc-8105-05c434730325"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>call graph</a></li><li class="" data-toggle="tab"><a>proof</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-graphviz" id="graphviz-118e4a93-0efd-481d-bb44-be374d3eef2d"><textarea style="display: none">digraph &quot;call graph&quot; {
+<div><div style="font-size: 1.2em; padding: 0.5em; border-top: 1px dashed #D84315; border-bottom: 1px dashed #D84315"><i class="fa fa-times-circle-o" style="margin-right: 0.5em; color: #D84315"></i><span>Refuted</span></div><div><div class="imandra-alternatives" id="alt-bf9215b1-f00e-4f7e-8ca4-1ccb715e6043"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>call graph</a></li><li class="" data-toggle="tab"><a>proof</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-graphviz" id="graphviz-429b88a3-77dc-4484-9c80-abd16795e52c"><textarea style="display: none">digraph &quot;call graph&quot; {
 goal [label=&quot;not\l(List.length\l (List.fold_left update\l  \{status = …; callIncomingFrom = …; peopleInCall = …\} _x_0).peopleInCall\l \&lt;= 0\l \|\| (List.fold_left update\l     \{status = …; callIncomingFrom = …; peopleInCall = …\} _x_0).status\l    = CallActive)&quot;,shape=box,style=filled,color=&quot;cyan&quot;,fontname=&quot;courier&quot;,fontsize=14];
-goal -&gt; call_32 [label=&quot;calls&quot;];
 goal -&gt; call_30 [label=&quot;calls&quot;];
-call_32 [label=&quot;List.length\l(List.fold_left update\l \{status = …; callIncomingFrom = …; peopleInCall = …\} _x_0).peopleInCall&quot;,shape=box,style=filled,color=&quot;green&quot;,fontname=&quot;courier&quot;,fontsize=14];
-call_32 -&gt; call_369 [label=&quot;calls&quot;];
+goal -&gt; call_32 [label=&quot;calls&quot;];
 call_30 [label=&quot;List.fold_left update\l\{status = Idle; callIncomingFrom = None; peopleInCall = []\} _x_0&quot;,shape=box,style=filled,color=&quot;green&quot;,fontname=&quot;courier&quot;,fontsize=14];
 call_30 -&gt; call_258 [label=&quot;calls&quot;];
-call_369 [label=&quot;List.length\l(List.tl\l (List.fold_left update\l  \{status = …; callIncomingFrom = …; peopleInCall = …\} _x_0).peopleInCall)&quot;,shape=box,style=filled,color=&quot;green&quot;,fontname=&quot;courier&quot;,fontsize=14];
-call_369 -&gt; call_434 [label=&quot;calls&quot;];
+call_32 [label=&quot;List.length\l(List.fold_left update\l \{status = …; callIncomingFrom = …; peopleInCall = …\} _x_0).peopleInCall&quot;,shape=box,style=filled,color=&quot;green&quot;,fontname=&quot;courier&quot;,fontsize=14];
+call_32 -&gt; call_369 [label=&quot;calls&quot;];
 call_258 [label=&quot;List.fold_left update\l(if Is_a(CallIncomingFrom, List.hd _x_0)\l then \{status = CallIncoming; callIncomingFrom = Some …; peopleInCall = []\}\l else \{status = Idle; callIncomingFrom = None; peopleInCall = []\})\l(List.tl _x_0)&quot;,shape=box,style=filled,color=&quot;green&quot;,fontname=&quot;courier&quot;,fontsize=14];
 call_258 -&gt; call_525 [label=&quot;calls&quot;];
-call_434 [label=&quot;List.length\l(List.tl\l (List.tl\l  (List.fold_left update\l   \{status = …; callIncomingFrom = …; peopleInCall = …\} _x_0).peopleInCall))&quot;,shape=box,style=filled,color=&quot;green&quot;,fontname=&quot;courier&quot;,fontsize=14];
-call_434 -&gt; call_771 [label=&quot;calls&quot;];
+call_369 [label=&quot;List.length\l(List.tl\l (List.fold_left update\l  \{status = …; callIncomingFrom = …; peopleInCall = …\} _x_0).peopleInCall)&quot;,shape=box,style=filled,color=&quot;green&quot;,fontname=&quot;courier&quot;,fontsize=14];
+call_369 -&gt; call_434 [label=&quot;calls&quot;];
 call_525 [label=&quot;List.fold_left update\l(if Is_a(CallIncomingFrom, List.hd (List.tl _x_0))\l then\l   \{status = CallIncoming; callIncomingFrom = Some …;\l    peopleInCall = ….peopleInCall\}\l else\l if List.hd (List.tl _x_0) = CallRejected\l then \{status = …; callIncomingFrom = …; peopleInCall = ….peopleInCall\}\l else if List.hd (List.tl _x_0) = CallAccepted then … else …)\l(List.tl (List.tl _x_0))&quot;,shape=box,style=filled,color=&quot;green&quot;,fontname=&quot;courier&quot;,fontsize=14];
 call_525 -&gt; call_854 [label=&quot;calls&quot;];
-call_771 [label=&quot;List.length\l(List.tl\l (List.tl\l  (List.tl\l   (List.fold_left update\l    \{status = …; callIncomingFrom = …; peopleInCall = …\} _x_0).peopleInCall)))&quot;,shape=box,style=filled,color=&quot;yellow&quot;,fontname=&quot;courier&quot;,fontsize=14];
+call_434 [label=&quot;List.length\l(List.tl\l (List.tl\l  (List.fold_left update\l   \{status = …; callIncomingFrom = …; peopleInCall = …\} _x_0).peopleInCall))&quot;,shape=box,style=filled,color=&quot;green&quot;,fontname=&quot;courier&quot;,fontsize=14];
+call_434 -&gt; call_771 [label=&quot;calls&quot;];
 call_854 [label=&quot;List.fold_left update\l(if Is_a(CallIncomingFrom, List.hd (List.tl (List.tl _x_0)))\l then\l   \{status = CallIncoming; callIncomingFrom = Some …;\l    peopleInCall = ….peopleInCall\}\l else\l if List.hd (List.tl (List.tl _x_0)) = CallRejected\l then \{status = …; callIncomingFrom = …; peopleInCall = ….peopleInCall\}\l else if List.hd (List.tl (List.tl _x_0)) = CallAccepted then … else …)\l(List.tl (List.tl (List.tl _x_0)))&quot;,shape=box,style=filled,color=&quot;green&quot;,fontname=&quot;courier&quot;,fontsize=14];
 call_854 -&gt; call_1344 [label=&quot;calls&quot;];
+call_771 [label=&quot;List.length\l(List.tl\l (List.tl\l  (List.tl\l   (List.fold_left update\l    \{status = …; callIncomingFrom = …; peopleInCall = …\} _x_0).peopleInCall)))&quot;,shape=box,style=filled,color=&quot;yellow&quot;,fontname=&quot;courier&quot;,fontsize=14];
 call_1344 [label=&quot;List.fold_left update\l(if Is_a(CallIncomingFrom, List.hd (List.tl (List.tl (List.tl _x_0))))\l then\l   \{status = CallIncoming; callIncomingFrom = Some …;\l    peopleInCall = ….peopleInCall\}\l else\l if List.hd (List.tl (List.tl (List.tl _x_0))) = CallRejected\l then \{status = …; callIncomingFrom = …; peopleInCall = ….peopleInCall\}\l else\l if List.hd (List.tl (List.tl (List.tl _x_0))) = CallAccepted then …\l else …)\l(List.tl (List.tl (List.tl (List.tl _x_0))))&quot;,shape=box,style=filled,color=&quot;yellow&quot;,fontname=&quot;courier&quot;,fontsize=14];
 }
 </textarea><button class="btn btn-primary">Load graph</button><div class="imandra-graphviz-loading display-none">Loading..</div><div class="imandra-graphviz-target"></div><script>
 require(['nbextensions/nbimandra/graphviz'], function (graphviz) {
-  var target = '#graphviz-118e4a93-0efd-481d-bb44-be374d3eef2d';
+  var target = '#graphviz-429b88a3-77dc-4484-9c80-abd16795e52c';
   graphviz.hydrate(target);
 });
-</script></div></div><div class="tab-pane"><div class="imandra-proof-top"><div class="imandra-fold panel panel-default" id="fold-41fcb2d1-2300-4050-b0ff-d6a81f514973"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>proof attempt</span></div></div><div class="panel-body collapse"><div class="imandra-proof"><div class="imandra-alternatives" id="alt-3cae1d38-0b5a-405b-bef5-ab3a974169c3"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>summary</a></li><li class="" data-toggle="tab"><a>full</a></li><li class="" data-toggle="tab"><a>graph</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-table" id="table-c85d26c8-63bd-468f-81aa-7d0ac45926d4"><table><tr><td><b>ground_instances</b></td><td>7</td></tr><tr><td><b>definitions</b></td><td>0</td></tr><tr><td><b>inductions</b></td><td>0</td></tr><tr><td><b>search_time</b></td><td><pre>0.025s</pre></td></tr><tr><td><b>details</b></td><td><div class="imandra-fold panel panel-default" id="fold-0f0e2c31-1afb-4318-ae29-a7ceb13c75f5"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><div class="imandra-table" id="table-f7488a15-17e3-4291-991b-99aaffc1900c"><table><tr><td><b>smt_stats</b></td><td><div class="imandra-table" id="table-0fd39345-98a0-4a76-b90b-f699da727dfe"><table><tr><td><b>arith offset eqs</b></td><td>15</td></tr><tr><td><b>num checks</b></td><td>15</td></tr><tr><td><b>arith assert lower</b></td><td>40</td></tr><tr><td><b>arith pivots</b></td><td>26</td></tr><tr><td><b>rlimit count</b></td><td>13627</td></tr><tr><td><b>mk clause</b></td><td>139</td></tr><tr><td><b>datatype occurs check</b></td><td>632</td></tr><tr><td><b>mk bool var</b></td><td>810</td></tr><tr><td><b>arith assert upper</b></td><td>58</td></tr><tr><td><b>datatype splits</b></td><td>159</td></tr><tr><td><b>decisions</b></td><td>429</td></tr><tr><td><b>arith add rows</b></td><td>65</td></tr><tr><td><b>arith bound prop</b></td><td>4</td></tr><tr><td><b>propagations</b></td><td>506</td></tr><tr><td><b>conflicts</b></td><td>61</td></tr><tr><td><b>arith fixed eqs</b></td><td>66</td></tr><tr><td><b>datatype accessor ax</b></td><td>142</td></tr><tr><td><b>minimized lits</b></td><td>4</td></tr><tr><td><b>arith assert diseq</b></td><td>22</td></tr><tr><td><b>datatype constructor ax</b></td><td>181</td></tr><tr><td><b>num allocs</b></td><td>1139178001</td></tr><tr><td><b>final checks</b></td><td>40</td></tr><tr><td><b>added eqs</b></td><td>1629</td></tr><tr><td><b>del clause</b></td><td>70</td></tr><tr><td><b>arith eq adapter</b></td><td>51</td></tr><tr><td><b>memory</b></td><td>22.170000</td></tr><tr><td><b>max memory</b></td><td>22.170000</td></tr></table></div></td></tr></table></div></div><script>
+</script></div></div><div class="tab-pane"><div class="imandra-proof-top"><div class="imandra-fold panel panel-default" id="fold-5795a075-e3f8-4507-8b92-b2768132ab14"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>proof attempt</span></div></div><div class="panel-body collapse"><div class="imandra-proof"><div class="imandra-alternatives" id="alt-f333f1e2-7818-4f00-a8e7-1bacaf13855d"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>summary</a></li><li class="" data-toggle="tab"><a>full</a></li><li class="" data-toggle="tab"><a>graph</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-table" id="table-717d2ec1-44f3-45fb-a19b-ebab50638768"><table><tr><td><b>ground_instances</b></td><td>7</td></tr><tr><td><b>definitions</b></td><td>0</td></tr><tr><td><b>inductions</b></td><td>0</td></tr><tr><td><b>search_time</b></td><td><pre>0.025s</pre></td></tr><tr><td><b>details</b></td><td><div class="imandra-fold panel panel-default" id="fold-2eb2ffcf-067c-40ba-92d1-78142865513f"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><div class="imandra-table" id="table-77e67d2a-1b5d-430c-b769-cde37c10a329"><table><tr><td><b>smt_stats</b></td><td><div class="imandra-table" id="table-9458aa5d-0027-4b72-a38f-48649bb20f3c"><table><tr><td><b>arith offset eqs</b></td><td>15</td></tr><tr><td><b>num checks</b></td><td>15</td></tr><tr><td><b>arith assert lower</b></td><td>40</td></tr><tr><td><b>arith pivots</b></td><td>26</td></tr><tr><td><b>rlimit count</b></td><td>13627</td></tr><tr><td><b>mk clause</b></td><td>139</td></tr><tr><td><b>datatype occurs check</b></td><td>632</td></tr><tr><td><b>mk bool var</b></td><td>810</td></tr><tr><td><b>arith assert upper</b></td><td>58</td></tr><tr><td><b>datatype splits</b></td><td>159</td></tr><tr><td><b>decisions</b></td><td>429</td></tr><tr><td><b>arith add rows</b></td><td>65</td></tr><tr><td><b>arith bound prop</b></td><td>4</td></tr><tr><td><b>propagations</b></td><td>506</td></tr><tr><td><b>conflicts</b></td><td>61</td></tr><tr><td><b>arith fixed eqs</b></td><td>66</td></tr><tr><td><b>datatype accessor ax</b></td><td>142</td></tr><tr><td><b>minimized lits</b></td><td>4</td></tr><tr><td><b>arith assert diseq</b></td><td>22</td></tr><tr><td><b>datatype constructor ax</b></td><td>181</td></tr><tr><td><b>num allocs</b></td><td>1221029700</td></tr><tr><td><b>final checks</b></td><td>40</td></tr><tr><td><b>added eqs</b></td><td>1629</td></tr><tr><td><b>del clause</b></td><td>70</td></tr><tr><td><b>arith eq adapter</b></td><td>51</td></tr><tr><td><b>memory</b></td><td>16.190000</td></tr><tr><td><b>max memory</b></td><td>26.900000</td></tr></table></div></td></tr></table></div></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-0f0e2c31-1afb-4318-ae29-a7ceb13c75f5';
+  var target = '#fold-2eb2ffcf-067c-40ba-92d1-78142865513f';
   fold.hydrate(target);
 });
-</script></div></td></tr></table></div></div><div class="tab-pane"><div class="imandra-fold panel panel-default" id="fold-8f1c8b09-371f-43a1-9999-e1e28cf7542d"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.025s]
+</script></div></td></tr></table></div></div><div class="tab-pane"><div class="imandra-fold panel panel-default" id="fold-21d05cdd-2bac-4377-b7af-1183acbf803f"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.025s]
   if List.length
      (List.fold_left update
       {status = …; callIncomingFrom = …; peopleInCall = …} :var_0:).peopleInCall
@@ -1981,30 +1993,30 @@ require(['nbextensions/nbimandra/fold'], function (fold) {
     (List.fold_left update
      {status = …; callIncomingFrom = …; peopleInCall = …} :var_0:).status
     = CallActive
-  else true</pre></li><li><div><h4>simplify</h4><div class="imandra-table" id="table-8a4deaef-4521-4a53-b18e-fcc210cc7ab7"><table><tr><td><b>into</b></td><td><pre>List.length
+  else true</pre></li><li><div><h4>simplify</h4><div class="imandra-table" id="table-44a2cd84-6b07-48cc-b558-c7dffada00cd"><table><tr><td><b>into</b></td><td><pre>List.length
 (List.fold_left update
  {status = …; callIncomingFrom = …; peopleInCall = …} :var_0:).peopleInCall
 &lt;= 0
 || (List.fold_left update
     {status = …; callIncomingFrom = …; peopleInCall = …} :var_0:).status
-   = CallActive</pre></td></tr><tr><td><b>expansions</b></td><td><pre>[]</pre></td></tr><tr><td><b>rewrite_steps</b></td><td><ul></ul></td></tr><tr><td><b>forward_chaining</b></td><td><ul></ul></td></tr></table></div></div></li><li><div>unroll<div class="imandra-table" id="table-2c655af0-6de4-4aaf-a26c-a165e283d2bb"><table><tr><td><b>expr</b></td><td><pre>(|`List.fold_left update[0]`_1859|
-  (|rec_mk.state_1849| Idle_21 None_4 |[]_2|)
-  _x_0_87)</pre></td></tr><tr><td><b>expansions</b></td><td><ul></ul></td></tr></table></div></div></li><li><div>unroll<div class="imandra-table" id="table-254b9ec2-f5ca-4557-9706-2441e89d6550"><table><tr><td><b>expr</b></td><td><pre>(|List.length_1864|
-  (peopleInCall_27 (|`List.fold_left update[0]`_1859|
-                     (|rec…</pre></td></tr><tr><td><b>expansions</b></td><td><ul></ul></td></tr></table></div></div></li><li><div>unroll<div class="imandra-table" id="table-5da79ccc-4a2e-4d26-9ed3-e731ef23ea72"><table><tr><td><b>expr</b></td><td><pre>(let ((a!1 (|get.::.1_1854| (peopleInCall_27 (|`List.fold_left update[0]`_1859|
-                    …</pre></td></tr><tr><td><b>expansions</b></td><td><ul></ul></td></tr></table></div></div></li><li><div>unroll<div class="imandra-table" id="table-959a4d4f-6c23-47c8-a2a7-7bc3f7bbeef1"><table><tr><td><b>expr</b></td><td><pre>(let ((a!1 (|rec_mk.state_1849|
+   = CallActive</pre></td></tr><tr><td><b>expansions</b></td><td><pre>[]</pre></td></tr><tr><td><b>rewrite_steps</b></td><td><ul></ul></td></tr><tr><td><b>forward_chaining</b></td><td><ul></ul></td></tr></table></div></div></li><li><div>unroll<div class="imandra-table" id="table-a9fde285-0f51-4196-923c-aae69e038be7"><table><tr><td><b>expr</b></td><td><pre>(|`List.fold_left update[0]`_2123|
+  (|rec_mk.state_2113| Idle_21 None_4 |[]_2|)
+  _x_0_87)</pre></td></tr><tr><td><b>expansions</b></td><td><ul></ul></td></tr></table></div></div></li><li><div>unroll<div class="imandra-table" id="table-cd28ccbf-3214-46ad-b8a3-7d32c3af7ab6"><table><tr><td><b>expr</b></td><td><pre>(|List.length_2128|
+  (peopleInCall_27 (|`List.fold_left update[0]`_2123|
+                     (|rec…</pre></td></tr><tr><td><b>expansions</b></td><td><ul></ul></td></tr></table></div></div></li><li><div>unroll<div class="imandra-table" id="table-07342515-4b30-46f4-a45e-b0ebf4b98ac2"><table><tr><td><b>expr</b></td><td><pre>(let ((a!1 (|get.::.1_2118| (peopleInCall_27 (|`List.fold_left update[0]`_2123|
+                    …</pre></td></tr><tr><td><b>expansions</b></td><td><ul></ul></td></tr></table></div></div></li><li><div>unroll<div class="imandra-table" id="table-e5c46212-f50a-454b-92c5-9ecc0381a97d"><table><tr><td><b>expr</b></td><td><pre>(let ((a!1 (|rec_mk.state_2113|
              CallIncoming_23
-             (Some_5 (|get.CallIncoming…</pre></td></tr><tr><td><b>expansions</b></td><td><ul></ul></td></tr></table></div></div></li><li><div>unroll<div class="imandra-table" id="table-82d05158-408b-4251-b336-f64eb9323400"><table><tr><td><b>expr</b></td><td><pre>(let ((a!1 (|get.::.1_1854| (peopleInCall_27 (|`List.fold_left update[0]`_1859|
-                    …</pre></td></tr><tr><td><b>expansions</b></td><td><ul></ul></td></tr></table></div></div></li><li><div>unroll<div class="imandra-table" id="table-613b2bb2-67e5-42fe-886e-c81640392a06"><table><tr><td><b>expr</b></td><td><pre>(let ((a!1 (Some_5 (|get.CallIncomingFrom.0_1845|
-                     (|get.::.0_1847| (|get.::.1_1…</pre></td></tr><tr><td><b>expansions</b></td><td><ul></ul></td></tr></table></div></div></li><li><div>unroll<div class="imandra-table" id="table-998adc74-fdfa-425a-b479-da4a4714d9e0"><table><tr><td><b>expr</b></td><td><pre>(let ((a!1 ((_ is (CallIncomingFrom_16 (Int) action_15))
-             (|get.::.0_1847| (|get.::.1_18…</pre></td></tr><tr><td><b>expansions</b></td><td><ul></ul></td></tr></table></div></div></li><li>Sat (Some  let (_x_0 : action list) =
+             (Some_5 (|get.CallIncoming…</pre></td></tr><tr><td><b>expansions</b></td><td><ul></ul></td></tr></table></div></div></li><li><div>unroll<div class="imandra-table" id="table-dafd0b88-b355-4fdf-afbd-5ef030443cc1"><table><tr><td><b>expr</b></td><td><pre>(let ((a!1 (|get.::.1_2118| (peopleInCall_27 (|`List.fold_left update[0]`_2123|
+                    …</pre></td></tr><tr><td><b>expansions</b></td><td><ul></ul></td></tr></table></div></div></li><li><div>unroll<div class="imandra-table" id="table-b4f1390b-a949-4637-aa3d-80e3802c3b3a"><table><tr><td><b>expr</b></td><td><pre>(let ((a!1 (Some_5 (|get.CallIncomingFrom.0_2109|
+                     (|get.::.0_2111| (|get.::.1_2…</pre></td></tr><tr><td><b>expansions</b></td><td><ul></ul></td></tr></table></div></div></li><li><div>unroll<div class="imandra-table" id="table-8b25ede9-fd09-46e8-949e-99f7d75c02db"><table><tr><td><b>expr</b></td><td><pre>(let ((a!1 ((_ is (CallIncomingFrom_16 (Int) action_15))
+             (|get.::.0_2111| (|get.::.1_21…</pre></td></tr><tr><td><b>expansions</b></td><td><ul></ul></td></tr></table></div></div></li><li>Sat (Some  let (_x_0 : action list) =
    [(CallIncomingFrom (4)); CallAccepted; (CallIncomingFrom (5))]
 )</li></ul></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-8f1c8b09-371f-43a1-9999-e1e28cf7542d';
+  var target = '#fold-21d05cdd-2bac-4377-b7af-1183acbf803f';
   fold.hydrate(target);
 });
-</script></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-c0040a39-6281-4e5f-9f11-64fb05e6daf4"><textarea style="display: none">digraph &quot;proof&quot; {
+</script></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-fecdc008-4429-49d6-8d9b-e193208ee0ec"><textarea style="display: none">digraph &quot;proof&quot; {
 p_266 [label=&quot;Start (if List.length\l          (List.fold_left update\l           \{status = …; callIncomingFrom = …; peopleInCall = …\} :var_0:).peopleInCall\l          \&gt; 0\l       then\l         (List.fold_left update\l          \{status = …; callIncomingFrom = …; peopleInCall = …\} :var_0:).status\l         = CallActive\l       else true :time 0.025s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_266 -&gt; p_265 [label=&quot;&quot;];
 p_265 [label=&quot;Simplify (List.length\l          (List.fold_left update\l           \{status = …; callIncomingFrom = …; peopleInCall = …\} :var_0:).peopleInCall\l          \&lt;= 0\l          \|\| (List.fold_left update\l              \{status = …; callIncomingFrom = …; peopleInCall = …\}\l              :var_0:).status\l             = CallActive\l          :expansions [] :rw [] :fc [])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
@@ -2027,22 +2039,22 @@ p_257 [label=&quot;Sat (Some  let (_x_0 : action list) =\l   [(CallIncomingFrom 
 }
 </textarea><button class="btn btn-primary">Load graph</button><div class="imandra-graphviz-loading display-none">Loading..</div><div class="imandra-graphviz-target"></div><script>
 require(['nbextensions/nbimandra/graphviz'], function (graphviz) {
-  var target = '#graphviz-c0040a39-6281-4e5f-9f11-64fb05e6daf4';
+  var target = '#graphviz-fecdc008-4429-49d6-8d9b-e193208ee0ec';
   graphviz.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-3cae1d38-0b5a-405b-bef5-ab3a974169c3';
+  var target = '#alt-f333f1e2-7818-4f00-a8e7-1bacaf13855d';
   alternatives.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-41fcb2d1-2300-4050-b0ff-d6a81f514973';
+  var target = '#fold-5795a075-e3f8-4507-8b92-b2768132ab14';
   fold.hydrate(target);
 });
 </script></div></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-708f7b9d-d16c-4efc-8105-05c434730325';
+  var target = '#alt-bf9215b1-f00e-4f7e-8ca4-1ccb715e6043';
   alternatives.hydrate(target);
 });
 </script></div></div></div>
@@ -2202,7 +2214,12 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>- : action_v2 list -&gt; bool = &lt;fun&gt;
+<pre>File &#34;jupyter cell 19&#34;, line 1, characters 16-82:
+1 | verify ~upto=50 call_with_people_in_is_active_property(good_update, initial_state);
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Warning 5: this function application is partial,
+maybe some arguments are missing.
+- : action_v2 list -&gt; bool = &lt;fun&gt;
 </pre>
 </div>
 
@@ -2215,7 +2232,7 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
 
 
 <div class="output_html rendered_html output_subarea ">
-<div><div style="font-size: 1.2em; padding: 0.5em; border-top: 1px solid green; border-bottom: 1px solid green"><i class="fa fa-check-circle" style="margin-right: 0.5em; color: green"></i><span>Proved up to 50 steps</span></div><div><div class="imandra-graphviz" id="graphviz-ac7209b7-6f33-46c7-af2f-c335ad4f4d9c"><textarea style="display: none">digraph &quot;call graph&quot; {
+<div><div style="font-size: 1.2em; padding: 0.5em; border-top: 1px solid green; border-bottom: 1px solid green"><i class="fa fa-check-circle" style="margin-right: 0.5em; color: green"></i><span>Proved up to 50 steps</span></div><div><div class="imandra-graphviz" id="graphviz-51634d44-16b3-4650-916b-d805e0d1f559"><textarea style="display: none">digraph &quot;call graph&quot; {
 goal [label=&quot;not\l(List.length\l (List.fold_left good_update\l  \{status = …; callIncomingFrom = …; peopleInCall = …\} _x_0).peopleInCall\l \&lt;= 0\l \|\| (List.fold_left good_update\l     \{status = …; callIncomingFrom = …; peopleInCall = …\} _x_0).status\l    = CallActive)&quot;,shape=box,style=filled,color=&quot;cyan&quot;,fontname=&quot;courier&quot;,fontsize=14];
 goal -&gt; call_30 [label=&quot;calls&quot;];
 goal -&gt; call_32 [label=&quot;calls&quot;];
@@ -2324,7 +2341,7 @@ call_420979 [label=&quot;List.fold_left good_update\l(if (if (if ….status = Id
 }
 </textarea><button class="btn btn-primary">Load graph</button><div class="imandra-graphviz-loading display-none">Loading..</div><div class="imandra-graphviz-target"></div><script>
 require(['nbextensions/nbimandra/graphviz'], function (graphviz) {
-  var target = '#graphviz-ac7209b7-6f33-46c7-af2f-c335ad4f4d9c';
+  var target = '#graphviz-51634d44-16b3-4650-916b-d805e0d1f559';
   graphviz.hydrate(target);
 });
 </script></div></div></div>
@@ -2374,7 +2391,12 @@ require(['nbextensions/nbimandra/graphviz'], function (graphviz) {
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>- : action_v2 list -&gt; bool = &lt;fun&gt;
+<pre>File &#34;jupyter cell 20&#34;, line 1, characters 15-81:
+1 | [@auto] verify call_with_people_in_is_active_property(good_update, initial_state);
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Warning 5: this function application is partial,
+maybe some arguments are missing.
+- : action_v2 list -&gt; bool = &lt;fun&gt;
 <span class="ansi-white-intense-fg ansi-bold">Goal</span>:
 
 call_with_people_in_is_active_property good_update initial_state _x_0.
@@ -2394,9 +2416,6 @@ call_with_people_in_is_active_property good_update initial_state _x_0.
 
 
 Must try induction.
-
-The recursive terms in the conjecture suggest 2 inductions.
-Subsumption and merging reduces this to 1.
 
 We shall induct according to a scheme derived from <span class="ansi-blue-intense-fg ansi-bold">List.fold_left</span>.
 
@@ -2524,13 +2543,33 @@ This simplifies, using the definition of <span class="ansi-blue-intense-fg ansi-
 
 Candidates for generalization:
 
+ Some (Destruct(CallIncomingFrom, 0, _x_01))
  List.fold_left good_update
  {status = Idle; callIncomingFrom = None; peopleInCall = []} _x_02
+
+This produces the modified subgoal:
+
+<span class="ansi-white-intense-fg ansi-bold">Subgoal 1.1.2&#39;&#39;&#39;</span>:
+
+ H0. gen_2.status = CallActive
+ H1. Is_a(CallIncomingFrom, _x_01)
+|---------------------------------------------------------------------------
+ C0. List.length gen_2.peopleInCall &lt;= 0
+ C1. List.length
+     (List.fold_left good_update
+      {status = CallIncoming; callIncomingFrom = gen_1; peopleInCall = []}
+      _x_02).peopleInCall
+     &lt;= 0
+ C2. (List.fold_left good_update
+      {status = CallIncoming; callIncomingFrom = gen_1; peopleInCall = []}
+      _x_02).status
+     = CallActive
+
+
+Candidates for generalization:
+
  List.fold_left good_update
- {status = CallIncoming;
-  callIncomingFrom = Some (Destruct(CallIncomingFrom, 0, _x_01));
-  peopleInCall = []}
- _x_02
+ {status = CallIncoming; callIncomingFrom = gen_1; peopleInCall = []} _x_02
 
 However, we can refute the result of performing this generalization and thus
 abandon it.
@@ -2538,272 +2577,228 @@ abandon it.
 <span class="ansi-yellow-intense-fg ansi-bold">Hint:</span> It may be useful to examine the abandoned generalized formula, to help
 you derive relevant generalization rules:
 
- H0. gen_1.status = CallActive
+ H0. gen_2.status = CallActive
  H1. Is_a(CallIncomingFrom, _x_01)
 <span class="ansi-white-fg">|---------------------------------------------------------------------------</span>
- C0. List.length gen_1.peopleInCall &lt;= 0
- C1. List.length gen_2.peopleInCall &lt;= 0
- C2. gen_2.status = CallActive
+ C0. List.length gen_2.peopleInCall &lt;= 0
+ C1. List.length gen_3.peopleInCall &lt;= 0
+ C2. gen_3.status = CallActive
 
 Must try induction.
-
-The recursive terms in the conjecture suggest 4 inductions.
-Subsumption and merging reduces this to 1.
 
 We shall induct according to a scheme derived from <span class="ansi-blue-intense-fg ansi-bold">List.fold_left</span>.
 
 <span class="ansi-cyan-intense-fg ansi-bold">Induction scheme</span>:
 
- (_x_02 = [] ==&gt; φ _x_01 _x_02)
- &amp;&amp; (not (_x_02 = []) &amp;&amp; φ _x_01 (List.tl _x_02) ==&gt; φ _x_01 _x_02).
+ (_x_02 = [] ==&gt; φ _x_01 _x_02 gen_1 gen_2)
+ &amp;&amp; (not (_x_02 = []) &amp;&amp; φ _x_01 (List.tl _x_02) gen_1 gen_2
+     ==&gt; φ _x_01 _x_02 gen_1 gen_2).
 
 2 nontautological subgoals.
 
-<span class="ansi-white-intense-fg ansi-bold">Subgoal 1.1.2&#39;&#39;.2</span>:
+<span class="ansi-white-intense-fg ansi-bold">Subgoal 1.1.2&#39;&#39;&#39;.2</span>:
 
  H0. _x_02 = []
- H1. (List.fold_left good_update
-      {status = Idle; callIncomingFrom = None; peopleInCall = []} _x_02).status
-     = CallActive
+ H1. gen_2.status = CallActive
  H2. Is_a(CallIncomingFrom, _x_01)
 |---------------------------------------------------------------------------
- C0. List.length
-     (List.fold_left good_update
-      {status = Idle; callIncomingFrom = None; peopleInCall = []} _x_02).peopleInCall
-     &lt;= 0
+ C0. List.length gen_2.peopleInCall &lt;= 0
  C1. List.length
      (List.fold_left good_update
-      {status = CallIncoming;
-       callIncomingFrom = Some (Destruct(CallIncomingFrom, 0, _x_01));
-       peopleInCall = []}
+      {status = CallIncoming; callIncomingFrom = gen_1; peopleInCall = []}
       _x_02).peopleInCall
      &lt;= 0
  C2. (List.fold_left good_update
-      {status = CallIncoming;
-       callIncomingFrom = Some (Destruct(CallIncomingFrom, 0, _x_01));
-       peopleInCall = []}
+      {status = CallIncoming; callIncomingFrom = gen_1; peopleInCall = []}
       _x_02).status
      = CallActive
 
 But simplification reduces this to true, using the definitions of
 <span class="ansi-blue-intense-fg ansi-bold">List.fold_left </span>and<span class="ansi-blue-intense-fg ansi-bold"> List.length</span>.
 
-<span class="ansi-white-intense-fg ansi-bold">Subgoal 1.1.2&#39;&#39;.1</span>:
+<span class="ansi-white-intense-fg ansi-bold">Subgoal 1.1.2&#39;&#39;&#39;.1</span>:
 
  H0. not (_x_02 = [])
- H1. (((not
-        ((List.fold_left good_update
-          {status = Idle; callIncomingFrom = None; peopleInCall = []}
-          (List.tl _x_02)).status
-         = CallActive)
-        || not Is_a(CallIncomingFrom, _x_01))
-       || List.length
-          (List.fold_left good_update
-           {status = Idle; callIncomingFrom = None; peopleInCall = []}
-           (List.tl _x_02)).peopleInCall
-          &lt;= 0)
+ H1. (((not (gen_2.status = CallActive) || not Is_a(CallIncomingFrom, _x_01))
+       || List.length gen_2.peopleInCall &lt;= 0)
       || List.length
          (List.fold_left good_update
-          {status = CallIncoming;
-           callIncomingFrom = Some (Destruct(CallIncomingFrom, 0, _x_01));
-           peopleInCall = []}
+          {status = CallIncoming; callIncomingFrom = gen_1; peopleInCall = []}
           (List.tl _x_02)).peopleInCall
          &lt;= 0)
      || (List.fold_left good_update
-         {status = CallIncoming;
-          callIncomingFrom = Some (Destruct(CallIncomingFrom, 0, _x_01));
-          peopleInCall = []}
+         {status = CallIncoming; callIncomingFrom = gen_1; peopleInCall = []}
          (List.tl _x_02)).status
         = CallActive
- H2. (List.fold_left good_update
-      {status = Idle; callIncomingFrom = None; peopleInCall = []} _x_02).status
-     = CallActive
+ H2. gen_2.status = CallActive
  H3. Is_a(CallIncomingFrom, _x_01)
 |---------------------------------------------------------------------------
- C0. List.length
-     (List.fold_left good_update
-      {status = Idle; callIncomingFrom = None; peopleInCall = []} _x_02).peopleInCall
-     &lt;= 0
+ C0. List.length gen_2.peopleInCall &lt;= 0
  C1. List.length
      (List.fold_left good_update
-      {status = CallIncoming;
-       callIncomingFrom = Some (Destruct(CallIncomingFrom, 0, _x_01));
-       peopleInCall = []}
+      {status = CallIncoming; callIncomingFrom = gen_1; peopleInCall = []}
       _x_02).peopleInCall
      &lt;= 0
  C2. (List.fold_left good_update
-      {status = CallIncoming;
-       callIncomingFrom = Some (Destruct(CallIncomingFrom, 0, _x_01));
-       peopleInCall = []}
+      {status = CallIncoming; callIncomingFrom = gen_1; peopleInCall = []}
       _x_02).status
      = CallActive
 
 This simplifies, using the forward-chaining rule <span class="ansi-yellow-intense-fg ansi-bold">List.len_nonnegative</span> to the
-following 4 subgoals:
+following 2 subgoals:
 
-<span class="ansi-white-intense-fg ansi-bold">Subgoal 1.1.2&#39;&#39;.1.4</span>:
+<span class="ansi-white-intense-fg ansi-bold">Subgoal 1.1.2&#39;&#39;&#39;.1.2</span>:
 
  H0. _x_02 &lt;&gt; []
  H1. (List.fold_left good_update
-      {status = CallIncoming;
-       callIncomingFrom = Some (Destruct(CallIncomingFrom, 0, _x_01));
-       peopleInCall = []}
+      {status = CallIncoming; callIncomingFrom = gen_1; peopleInCall = []}
       (List.tl _x_02)).status
      = CallActive
- H2. (List.fold_left good_update
-      {status = Idle; callIncomingFrom = None; peopleInCall = []}
-      (List.tl _x_02)).status
-     = CallActive
- H3. (List.fold_left good_update
-      {status = Idle; callIncomingFrom = None; peopleInCall = []} _x_02).status
-     = CallActive
- H4. Is_a(CallIncomingFrom, _x_01)
+ H2. gen_2.status = CallActive
+ H3. Is_a(CallIncomingFrom, _x_01)
 |---------------------------------------------------------------------------
  C0. List.length
      (List.fold_left good_update
-      {status = Idle; callIncomingFrom = None; peopleInCall = []}
+      {status = CallIncoming; callIncomingFrom = gen_1; peopleInCall = []}
       (List.tl _x_02)).peopleInCall
      &lt;= 0
- C1. List.length
-     (List.fold_left good_update
-      {status = CallIncoming;
-       callIncomingFrom = Some (Destruct(CallIncomingFrom, 0, _x_01));
-       peopleInCall = []}
-      (List.tl _x_02)).peopleInCall
-     &lt;= 0
+ C1. List.length gen_2.peopleInCall &lt;= 0
  C2. List.length
      (List.fold_left good_update
-      {status = Idle; callIncomingFrom = None; peopleInCall = []} _x_02).peopleInCall
-     &lt;= 0
- C3. List.length
-     (List.fold_left good_update
-      {status = CallIncoming;
-       callIncomingFrom = Some (Destruct(CallIncomingFrom, 0, _x_01));
-       peopleInCall = []}
+      {status = CallIncoming; callIncomingFrom = gen_1; peopleInCall = []}
       _x_02).peopleInCall
      &lt;= 0
- C4. (List.fold_left good_update
-      {status = CallIncoming;
-       callIncomingFrom = Some (Destruct(CallIncomingFrom, 0, _x_01));
-       peopleInCall = []}
+ C3. (List.fold_left good_update
+      {status = CallIncoming; callIncomingFrom = gen_1; peopleInCall = []}
       _x_02).status
      = CallActive
 
 
 We can eliminate destructors by the following
 substitution:
- _x_01 -&gt; CallIncomingFrom _x_011
  _x_02 -&gt; _x_021 :: _x_022
 
 This produces the modified subgoal:
 
-<span class="ansi-white-intense-fg ansi-bold">Subgoal 1.1.2&#39;&#39;.1.4&#39;</span>:
+<span class="ansi-white-intense-fg ansi-bold">Subgoal 1.1.2&#39;&#39;&#39;.1.2&#39;</span>:
 
  H0. (List.fold_left good_update
-      {status = CallIncoming; callIncomingFrom = Some _x_011;
-       peopleInCall = []}
+      {status = CallIncoming; callIncomingFrom = gen_1; peopleInCall = []}
       _x_022).status
      = CallActive
- H1. (List.fold_left good_update
-      {status = Idle; callIncomingFrom = None; peopleInCall = []} _x_022).status
-     = CallActive
- H2. (List.fold_left good_update
-      {status = Idle; callIncomingFrom = None; peopleInCall = []}
-      (_x_021 :: _x_022)).status
-     = CallActive
+ H1. gen_2.status = CallActive
+ H2. Is_a(CallIncomingFrom, _x_01)
 |---------------------------------------------------------------------------
  C0. List.length
      (List.fold_left good_update
-      {status = Idle; callIncomingFrom = None; peopleInCall = []} _x_022).peopleInCall
-     &lt;= 0
- C1. List.length
-     (List.fold_left good_update
-      {status = CallIncoming; callIncomingFrom = Some _x_011;
-       peopleInCall = []}
+      {status = CallIncoming; callIncomingFrom = gen_1; peopleInCall = []}
       _x_022).peopleInCall
      &lt;= 0
+ C1. List.length gen_2.peopleInCall &lt;= 0
  C2. List.length
      (List.fold_left good_update
-      {status = Idle; callIncomingFrom = None; peopleInCall = []}
+      {status = CallIncoming; callIncomingFrom = gen_1; peopleInCall = []}
       (_x_021 :: _x_022)).peopleInCall
      &lt;= 0
- C3. List.length
-     (List.fold_left good_update
-      {status = CallIncoming; callIncomingFrom = Some _x_011;
-       peopleInCall = []}
-      (_x_021 :: _x_022)).peopleInCall
-     &lt;= 0
- C4. (List.fold_left good_update
-      {status = CallIncoming; callIncomingFrom = Some _x_011;
-       peopleInCall = []}
+ C3. (List.fold_left good_update
+      {status = CallIncoming; callIncomingFrom = gen_1; peopleInCall = []}
       (_x_021 :: _x_022)).status
      = CallActive
 
-This simplifies, using the definition of <span class="ansi-blue-intense-fg ansi-bold">List.fold_left</span> to:
+This simplifies, using the definition of <span class="ansi-blue-intense-fg ansi-bold">List.fold_left</span> to the following 2
+subgoals:
 
-<span class="ansi-white-intense-fg ansi-bold">Subgoal 1.1.2&#39;&#39;.1.4&#39;&#39;</span>:
+<span class="ansi-white-intense-fg ansi-bold">Subgoal 1.1.2&#39;&#39;&#39;.1.2&#39;.2</span>:
 
  H0. (List.fold_left good_update
-      {status = CallIncoming; callIncomingFrom = Some _x_011;
-       peopleInCall = []}
+      {status = CallIncoming; callIncomingFrom = gen_1; peopleInCall = []}
       _x_022).status
      = CallActive
- H1. (List.fold_left good_update
-      {status = Idle; callIncomingFrom = None; peopleInCall = []} _x_022).status
-     = CallActive
- H2. _x_021 = CallAccepted
+ H1. gen_2.status = CallActive
+ H2. Is_a(CallIncomingFrom, _x_01)
+ H3. _x_021 = CallAccepted
+ H4. Is_a(Some, gen_1)
 |---------------------------------------------------------------------------
  C0. List.length
      (List.fold_left good_update
-      {status = Idle; callIncomingFrom = None; peopleInCall = []} _x_022).peopleInCall
-     &lt;= 0
- C1. List.length
-     (List.fold_left good_update
-      {status = CallIncoming; callIncomingFrom = Some _x_011;
-       peopleInCall = []}
+      {status = CallIncoming; callIncomingFrom = gen_1; peopleInCall = []}
       _x_022).peopleInCall
      &lt;= 0
+ C1. List.length gen_2.peopleInCall &lt;= 0
  C2. List.length
      (List.fold_left good_update
-      {status = CallActive; callIncomingFrom = None; peopleInCall = [_x_011]}
+      {status = CallActive; callIncomingFrom = None;
+       peopleInCall = [Option.get gen_1]}
       _x_022).peopleInCall
      &lt;= 0
  C3. (List.fold_left good_update
-      {status = CallActive; callIncomingFrom = None; peopleInCall = [_x_011]}
+      {status = CallActive; callIncomingFrom = None;
+       peopleInCall = [Option.get gen_1]}
       _x_022).status
      = CallActive
  C4. _x_021 = CallRejected
 
 This simplifies, using the forward-chaining rule <span class="ansi-yellow-intense-fg ansi-bold">List.len_nonnegative</span> to:
 
-<span class="ansi-white-intense-fg ansi-bold">Subgoal 1.1.2&#39;&#39;.1.4&#39;&#39;&#39;</span>:
+<span class="ansi-white-intense-fg ansi-bold">Subgoal 1.1.2&#39;&#39;&#39;.1.2&#39;.2&#39;</span>:
 
  H0. (List.fold_left good_update
-      {status = CallIncoming; callIncomingFrom = Some _x_011;
-       peopleInCall = []}
+      {status = CallIncoming; callIncomingFrom = gen_1; peopleInCall = []}
       _x_022).status
      = CallActive
- H1. (List.fold_left good_update
-      {status = Idle; callIncomingFrom = None; peopleInCall = []} _x_022).status
-     = CallActive
+ H1. gen_2.status = CallActive
+ H2. Is_a(CallIncomingFrom, _x_01)
+ H3. Is_a(Some, gen_1)
 |---------------------------------------------------------------------------
  C0. List.length
      (List.fold_left good_update
-      {status = Idle; callIncomingFrom = None; peopleInCall = []} _x_022).peopleInCall
-     &lt;= 0
- C1. List.length
-     (List.fold_left good_update
-      {status = CallIncoming; callIncomingFrom = Some _x_011;
-       peopleInCall = []}
+      {status = CallIncoming; callIncomingFrom = gen_1; peopleInCall = []}
       _x_022).peopleInCall
      &lt;= 0
+ C1. List.length gen_2.peopleInCall &lt;= 0
  C2. List.length
      (List.fold_left good_update
-      {status = CallActive; callIncomingFrom = None; peopleInCall = [_x_011]}
+      {status = CallActive; callIncomingFrom = None;
+       peopleInCall = [Option.get gen_1]}
       _x_022).peopleInCall
      &lt;= 0
  C3. (List.fold_left good_update
-      {status = CallActive; callIncomingFrom = None; peopleInCall = [_x_011]}
+      {status = CallActive; callIncomingFrom = None;
+       peopleInCall = [Option.get gen_1]}
+      _x_022).status
+     = CallActive
+
+
+We can eliminate destructors by the following
+substitution:
+ gen_1 -&gt; Some gen_11
+
+This produces the modified subgoal:
+
+<span class="ansi-white-intense-fg ansi-bold">Subgoal 1.1.2&#39;&#39;&#39;.1.2&#39;.2&#39;&#39;</span>:
+
+ H0. (List.fold_left good_update
+      {status = CallIncoming; callIncomingFrom = Some gen_11;
+       peopleInCall = []}
+      _x_022).status
+     = CallActive
+ H1. gen_2.status = CallActive
+ H2. Is_a(CallIncomingFrom, _x_01)
+|---------------------------------------------------------------------------
+ C0. List.length
+     (List.fold_left good_update
+      {status = CallIncoming; callIncomingFrom = Some gen_11;
+       peopleInCall = []}
+      _x_022).peopleInCall
+     &lt;= 0
+ C1. List.length gen_2.peopleInCall &lt;= 0
+ C2. List.length
+     (List.fold_left good_update
+      {status = CallActive; callIncomingFrom = None; peopleInCall = [gen_11]}
+      _x_022).peopleInCall
+     &lt;= 0
+ C3. (List.fold_left good_update
+      {status = CallActive; callIncomingFrom = None; peopleInCall = [gen_11]}
       _x_022).status
      = CallActive
 
@@ -2811,12 +2806,10 @@ This simplifies, using the forward-chaining rule <span class="ansi-yellow-intens
 Candidates for generalization:
 
  List.fold_left good_update
- {status = CallIncoming; callIncomingFrom = Some _x_011; peopleInCall = []}
+ {status = CallActive; callIncomingFrom = None; peopleInCall = [gen_11]}
  _x_022
  List.fold_left good_update
- {status = Idle; callIncomingFrom = None; peopleInCall = []} _x_022
- List.fold_left good_update
- {status = CallActive; callIncomingFrom = None; peopleInCall = [_x_011]}
+ {status = CallIncoming; callIncomingFrom = Some gen_11; peopleInCall = []}
  _x_022
 
 However, we can refute the result of performing this generalization and thus
@@ -2825,189 +2818,163 @@ abandon it.
 <span class="ansi-yellow-intense-fg ansi-bold">Hint:</span> It may be useful to examine the abandoned generalized formula, to help
 you derive relevant generalization rules:
 
- H0. gen_1.status = CallActive
+ H0. gen_2.status = CallActive
  H1. gen_2.status = CallActive
+ H2. Is_a(CallIncomingFrom, _x_01)
 <span class="ansi-white-fg">|---------------------------------------------------------------------------</span>
  C0. List.length gen_2.peopleInCall &lt;= 0
- C1. List.length gen_1.peopleInCall &lt;= 0
- C2. List.length gen_3.peopleInCall &lt;= 0
- C3. gen_3.status = CallActive
+ C1. List.length gen_2.peopleInCall &lt;= 0
+ C2. List.length gen_1.peopleInCall &lt;= 0
+ C3. gen_1.status = CallActive
 
 Must try induction.
 
-The recursive terms in the conjecture suggest 6 inductions.
+The recursive terms in the conjecture suggest 2 inductions.
 Subsumption and merging reduces this to 1.
 
 We shall induct according to a scheme derived from <span class="ansi-blue-intense-fg ansi-bold">List.fold_left</span>.
 
 <span class="ansi-cyan-intense-fg ansi-bold">Induction scheme</span>:
 
- (_x_022 = [] ==&gt; φ _x_011 _x_022)
- &amp;&amp; (not (_x_022 = []) &amp;&amp; φ _x_011 (List.tl _x_022) ==&gt; φ _x_011 _x_022).
+ (_x_022 = [] ==&gt; φ _x_01 _x_022 gen_11 gen_2)
+ &amp;&amp; (not (_x_022 = []) &amp;&amp; φ _x_01 (List.tl _x_022) gen_11 gen_2
+     ==&gt; φ _x_01 _x_022 gen_11 gen_2).
 
 2 nontautological subgoals.
 
-<span class="ansi-white-intense-fg ansi-bold">Subgoal 1.1.2&#39;&#39;.1.4&#39;&#39;&#39;.2</span>:
+<span class="ansi-white-intense-fg ansi-bold">Subgoal 1.1.2&#39;&#39;&#39;.1.2&#39;.2&#39;&#39;.2</span>:
 
  H0. _x_022 = []
  H1. (List.fold_left good_update
-      {status = CallIncoming; callIncomingFrom = Some _x_011;
+      {status = CallIncoming; callIncomingFrom = Some gen_11;
        peopleInCall = []}
       _x_022).status
      = CallActive
- H2. (List.fold_left good_update
-      {status = Idle; callIncomingFrom = None; peopleInCall = []} _x_022).status
-     = CallActive
+ H2. gen_2.status = CallActive
+ H3. Is_a(CallIncomingFrom, _x_01)
 |---------------------------------------------------------------------------
  C0. List.length
      (List.fold_left good_update
-      {status = Idle; callIncomingFrom = None; peopleInCall = []} _x_022).peopleInCall
-     &lt;= 0
- C1. List.length
-     (List.fold_left good_update
-      {status = CallIncoming; callIncomingFrom = Some _x_011;
+      {status = CallIncoming; callIncomingFrom = Some gen_11;
        peopleInCall = []}
       _x_022).peopleInCall
      &lt;= 0
+ C1. List.length gen_2.peopleInCall &lt;= 0
  C2. List.length
      (List.fold_left good_update
-      {status = CallActive; callIncomingFrom = None; peopleInCall = [_x_011]}
+      {status = CallActive; callIncomingFrom = None; peopleInCall = [gen_11]}
       _x_022).peopleInCall
      &lt;= 0
  C3. (List.fold_left good_update
-      {status = CallActive; callIncomingFrom = None; peopleInCall = [_x_011]}
+      {status = CallActive; callIncomingFrom = None; peopleInCall = [gen_11]}
       _x_022).status
      = CallActive
 
 But simplification reduces this to true, using the definition of
 <span class="ansi-blue-intense-fg ansi-bold">List.fold_left</span>.
 
-<span class="ansi-white-intense-fg ansi-bold">Subgoal 1.1.2&#39;&#39;.1.4&#39;&#39;&#39;.1</span>:
+<span class="ansi-white-intense-fg ansi-bold">Subgoal 1.1.2&#39;&#39;&#39;.1.2&#39;.2&#39;&#39;.1</span>:
 
  H0. not (_x_022 = [])
- H1. ((((not
-         ((List.fold_left good_update
-           {status = CallIncoming; callIncomingFrom = Some _x_011;
-            peopleInCall = []}
-           (List.tl _x_022)).status
-          = CallActive)
-         || not
-            ((List.fold_left good_update
-              {status = Idle; callIncomingFrom = None; peopleInCall = []}
-              (List.tl _x_022)).status
-             = CallActive))
+ H1. (((((not
+          ((List.fold_left good_update
+            {status = CallIncoming; callIncomingFrom = Some gen_11;
+             peopleInCall = []}
+            (List.tl _x_022)).status
+           = CallActive)
+          || not (gen_2.status = CallActive))
+         || not Is_a(CallIncomingFrom, _x_01))
         || List.length
            (List.fold_left good_update
-            {status = Idle; callIncomingFrom = None; peopleInCall = []}
+            {status = CallIncoming; callIncomingFrom = Some gen_11;
+             peopleInCall = []}
             (List.tl _x_022)).peopleInCall
            &lt;= 0)
-       || List.length
-          (List.fold_left good_update
-           {status = CallIncoming; callIncomingFrom = Some _x_011;
-            peopleInCall = []}
-           (List.tl _x_022)).peopleInCall
-          &lt;= 0)
+       || List.length gen_2.peopleInCall &lt;= 0)
       || List.length
          (List.fold_left good_update
           {status = CallActive; callIncomingFrom = None;
-           peopleInCall = [_x_011]}
+           peopleInCall = [gen_11]}
           (List.tl _x_022)).peopleInCall
          &lt;= 0)
      || (List.fold_left good_update
          {status = CallActive; callIncomingFrom = None;
-          peopleInCall = [_x_011]}
+          peopleInCall = [gen_11]}
          (List.tl _x_022)).status
         = CallActive
  H2. (List.fold_left good_update
-      {status = CallIncoming; callIncomingFrom = Some _x_011;
+      {status = CallIncoming; callIncomingFrom = Some gen_11;
        peopleInCall = []}
       _x_022).status
      = CallActive
- H3. (List.fold_left good_update
-      {status = Idle; callIncomingFrom = None; peopleInCall = []} _x_022).status
-     = CallActive
+ H3. gen_2.status = CallActive
+ H4. Is_a(CallIncomingFrom, _x_01)
 |---------------------------------------------------------------------------
  C0. List.length
      (List.fold_left good_update
-      {status = Idle; callIncomingFrom = None; peopleInCall = []} _x_022).peopleInCall
-     &lt;= 0
- C1. List.length
-     (List.fold_left good_update
-      {status = CallIncoming; callIncomingFrom = Some _x_011;
+      {status = CallIncoming; callIncomingFrom = Some gen_11;
        peopleInCall = []}
       _x_022).peopleInCall
      &lt;= 0
+ C1. List.length gen_2.peopleInCall &lt;= 0
  C2. List.length
      (List.fold_left good_update
-      {status = CallActive; callIncomingFrom = None; peopleInCall = [_x_011]}
+      {status = CallActive; callIncomingFrom = None; peopleInCall = [gen_11]}
       _x_022).peopleInCall
      &lt;= 0
  C3. (List.fold_left good_update
-      {status = CallActive; callIncomingFrom = None; peopleInCall = [_x_011]}
+      {status = CallActive; callIncomingFrom = None; peopleInCall = [gen_11]}
       _x_022).status
      = CallActive
 
 This simplifies, using the forward-chaining rule <span class="ansi-yellow-intense-fg ansi-bold">List.len_nonnegative</span> to the
-following 6 subgoals:
+following 4 subgoals:
 
-<span class="ansi-white-intense-fg ansi-bold">Subgoal 1.1.2&#39;&#39;.1.4&#39;&#39;&#39;.1.6</span>:
+<span class="ansi-white-intense-fg ansi-bold">Subgoal 1.1.2&#39;&#39;&#39;.1.2&#39;.2&#39;&#39;.1.4</span>:
 
  H0. _x_022 &lt;&gt; []
  H1. (List.fold_left good_update
-      {status = CallActive; callIncomingFrom = None; peopleInCall = [_x_011]}
+      {status = CallActive; callIncomingFrom = None; peopleInCall = [gen_11]}
       (List.tl _x_022)).status
      = CallActive
  H2. (List.fold_left good_update
-      {status = CallIncoming; callIncomingFrom = Some _x_011;
+      {status = CallIncoming; callIncomingFrom = Some gen_11;
        peopleInCall = []}
       (List.tl _x_022)).status
      = CallActive
  H3. (List.fold_left good_update
-      {status = Idle; callIncomingFrom = None; peopleInCall = []}
-      (List.tl _x_022)).status
-     = CallActive
- H4. (List.fold_left good_update
-      {status = CallIncoming; callIncomingFrom = Some _x_011;
+      {status = CallIncoming; callIncomingFrom = Some gen_11;
        peopleInCall = []}
       _x_022).status
      = CallActive
- H5. (List.fold_left good_update
-      {status = Idle; callIncomingFrom = None; peopleInCall = []} _x_022).status
-     = CallActive
+ H4. gen_2.status = CallActive
+ H5. Is_a(CallIncomingFrom, _x_01)
 |---------------------------------------------------------------------------
  C0. List.length
      (List.fold_left good_update
-      {status = Idle; callIncomingFrom = None; peopleInCall = []}
+      {status = CallIncoming; callIncomingFrom = Some gen_11;
+       peopleInCall = []}
       (List.tl _x_022)).peopleInCall
      &lt;= 0
  C1. List.length
      (List.fold_left good_update
-      {status = CallIncoming; callIncomingFrom = Some _x_011;
-       peopleInCall = []}
+      {status = CallActive; callIncomingFrom = None; peopleInCall = [gen_11]}
       (List.tl _x_022)).peopleInCall
      &lt;= 0
  C2. List.length
      (List.fold_left good_update
-      {status = CallActive; callIncomingFrom = None; peopleInCall = [_x_011]}
-      (List.tl _x_022)).peopleInCall
-     &lt;= 0
- C3. List.length
-     (List.fold_left good_update
-      {status = Idle; callIncomingFrom = None; peopleInCall = []} _x_022).peopleInCall
-     &lt;= 0
- C4. List.length
-     (List.fold_left good_update
-      {status = CallIncoming; callIncomingFrom = Some _x_011;
+      {status = CallIncoming; callIncomingFrom = Some gen_11;
        peopleInCall = []}
       _x_022).peopleInCall
      &lt;= 0
- C5. List.length
+ C3. List.length gen_2.peopleInCall &lt;= 0
+ C4. List.length
      (List.fold_left good_update
-      {status = CallActive; callIncomingFrom = None; peopleInCall = [_x_011]}
+      {status = CallActive; callIncomingFrom = None; peopleInCall = [gen_11]}
       _x_022).peopleInCall
      &lt;= 0
- C6. (List.fold_left good_update
-      {status = CallActive; callIncomingFrom = None; peopleInCall = [_x_011]}
+ C5. (List.fold_left good_update
+      {status = CallActive; callIncomingFrom = None; peopleInCall = [gen_11]}
       _x_022).status
      = CallActive
 
@@ -3018,126 +2985,139 @@ substitution:
 
 This produces the modified subgoal:
 
-<span class="ansi-white-intense-fg ansi-bold">Subgoal 1.1.2&#39;&#39;.1.4&#39;&#39;&#39;.1.6&#39;</span>:
+<span class="ansi-white-intense-fg ansi-bold">Subgoal 1.1.2&#39;&#39;&#39;.1.2&#39;.2&#39;&#39;.1.4&#39;</span>:
 
  H0. (List.fold_left good_update
-      {status = CallActive; callIncomingFrom = None; peopleInCall = [_x_011]}
+      {status = CallActive; callIncomingFrom = None; peopleInCall = [gen_11]}
       _x_0222).status
      = CallActive
  H1. (List.fold_left good_update
-      {status = CallIncoming; callIncomingFrom = Some _x_011;
+      {status = CallIncoming; callIncomingFrom = Some gen_11;
        peopleInCall = []}
       _x_0222).status
      = CallActive
  H2. (List.fold_left good_update
-      {status = Idle; callIncomingFrom = None; peopleInCall = []} _x_0222).status
-     = CallActive
- H3. (List.fold_left good_update
-      {status = CallIncoming; callIncomingFrom = Some _x_011;
+      {status = CallIncoming; callIncomingFrom = Some gen_11;
        peopleInCall = []}
       (_x_0221 :: _x_0222)).status
      = CallActive
- H4. (List.fold_left good_update
-      {status = Idle; callIncomingFrom = None; peopleInCall = []}
-      (_x_0221 :: _x_0222)).status
-     = CallActive
+ H3. gen_2.status = CallActive
+ H4. Is_a(CallIncomingFrom, _x_01)
 |---------------------------------------------------------------------------
  C0. List.length
      (List.fold_left good_update
-      {status = Idle; callIncomingFrom = None; peopleInCall = []} _x_0222).peopleInCall
+      {status = CallIncoming; callIncomingFrom = Some gen_11;
+       peopleInCall = []}
+      _x_0222).peopleInCall
      &lt;= 0
  C1. List.length
      (List.fold_left good_update
-      {status = CallIncoming; callIncomingFrom = Some _x_011;
-       peopleInCall = []}
+      {status = CallActive; callIncomingFrom = None; peopleInCall = [gen_11]}
       _x_0222).peopleInCall
      &lt;= 0
  C2. List.length
      (List.fold_left good_update
-      {status = CallActive; callIncomingFrom = None; peopleInCall = [_x_011]}
-      _x_0222).peopleInCall
-     &lt;= 0
- C3. List.length
-     (List.fold_left good_update
-      {status = Idle; callIncomingFrom = None; peopleInCall = []}
+      {status = CallIncoming; callIncomingFrom = Some gen_11;
+       peopleInCall = []}
       (_x_0221 :: _x_0222)).peopleInCall
      &lt;= 0
+ C3. List.length gen_2.peopleInCall &lt;= 0
  C4. List.length
      (List.fold_left good_update
-      {status = CallIncoming; callIncomingFrom = Some _x_011;
-       peopleInCall = []}
+      {status = CallActive; callIncomingFrom = None; peopleInCall = [gen_11]}
       (_x_0221 :: _x_0222)).peopleInCall
      &lt;= 0
- C5. List.length
-     (List.fold_left good_update
-      {status = CallActive; callIncomingFrom = None; peopleInCall = [_x_011]}
-      (_x_0221 :: _x_0222)).peopleInCall
-     &lt;= 0
- C6. (List.fold_left good_update
-      {status = CallActive; callIncomingFrom = None; peopleInCall = [_x_011]}
+ C5. (List.fold_left good_update
+      {status = CallActive; callIncomingFrom = None; peopleInCall = [gen_11]}
       (_x_0221 :: _x_0222)).status
      = CallActive
 
-This simplifies, using the definition of <span class="ansi-blue-intense-fg ansi-bold">List.fold_left</span> to:
+This simplifies, using the definition of <span class="ansi-blue-intense-fg ansi-bold">List.fold_left</span> to the following 2
+subgoals:
 
-<span class="ansi-white-intense-fg ansi-bold">Subgoal 1.1.2&#39;&#39;.1.4&#39;&#39;&#39;.1.6&#39;&#39;</span>:
+<span class="ansi-white-intense-fg ansi-bold">Subgoal 1.1.2&#39;&#39;&#39;.1.2&#39;.2&#39;&#39;.1.4&#39;.2</span>:
 
  H0. (List.fold_left good_update
-      {status = CallActive; callIncomingFrom = None; peopleInCall = [_x_011]}
+      {status = CallActive; callIncomingFrom = None; peopleInCall = [gen_11]}
       _x_0222).status
      = CallActive
  H1. (List.fold_left good_update
-      {status = CallIncoming; callIncomingFrom = Some _x_011;
+      {status = CallIncoming; callIncomingFrom = Some gen_11;
        peopleInCall = []}
       _x_0222).status
      = CallActive
- H2. (List.fold_left good_update
-      {status = Idle; callIncomingFrom = None; peopleInCall = []} _x_0222).status
-     = CallActive
- H3. Is_a(AddPerson, _x_0221)
+ H2. gen_2.status = CallActive
+ H3. Is_a(CallIncomingFrom, _x_01)
+ H4. _x_0221 = EndCall
 |---------------------------------------------------------------------------
  C0. List.length
      (List.fold_left good_update
-      {status = Idle; callIncomingFrom = None; peopleInCall = []} _x_0222).peopleInCall
-     &lt;= 0
- C1. List.length
-     (List.fold_left good_update
-      {status = CallIncoming; callIncomingFrom = Some _x_011;
+      {status = CallIncoming; callIncomingFrom = Some gen_11;
        peopleInCall = []}
       _x_0222).peopleInCall
      &lt;= 0
- C2. List.length
+ C1. List.length
      (List.fold_left good_update
-      {status = CallActive; callIncomingFrom = None; peopleInCall = [_x_011]}
+      {status = CallActive; callIncomingFrom = None; peopleInCall = [gen_11]}
       _x_0222).peopleInCall
      &lt;= 0
+ C2. List.length gen_2.peopleInCall &lt;= 0
  C3. List.length
      (List.fold_left good_update
-      {status = CallActive; callIncomingFrom = None;
-       peopleInCall = [Destruct(AddPerson, 0, _x_0221); _x_011]}
-      _x_0222).peopleInCall
+      {status = Idle; callIncomingFrom = None; peopleInCall = []} _x_0222).peopleInCall
      &lt;= 0
  C4. (List.fold_left good_update
-      {status = CallActive; callIncomingFrom = None;
-       peopleInCall = [Destruct(AddPerson, 0, _x_0221); _x_011]}
+      {status = Idle; callIncomingFrom = None; peopleInCall = []} _x_0222).status
+     = CallActive
+ C5. Is_a(AddPerson, _x_0221)
+
+This simplifies, using the forward-chaining rule <span class="ansi-yellow-intense-fg ansi-bold">List.len_nonnegative</span> to:
+
+<span class="ansi-white-intense-fg ansi-bold">Subgoal 1.1.2&#39;&#39;&#39;.1.2&#39;.2&#39;&#39;.1.4&#39;.2&#39;</span>:
+
+ H0. (List.fold_left good_update
+      {status = CallActive; callIncomingFrom = None; peopleInCall = [gen_11]}
       _x_0222).status
+     = CallActive
+ H1. (List.fold_left good_update
+      {status = CallIncoming; callIncomingFrom = Some gen_11;
+       peopleInCall = []}
+      _x_0222).status
+     = CallActive
+ H2. gen_2.status = CallActive
+ H3. Is_a(CallIncomingFrom, _x_01)
+|---------------------------------------------------------------------------
+ C0. List.length
+     (List.fold_left good_update
+      {status = CallIncoming; callIncomingFrom = Some gen_11;
+       peopleInCall = []}
+      _x_0222).peopleInCall
+     &lt;= 0
+ C1. List.length
+     (List.fold_left good_update
+      {status = CallActive; callIncomingFrom = None; peopleInCall = [gen_11]}
+      _x_0222).peopleInCall
+     &lt;= 0
+ C2. List.length gen_2.peopleInCall &lt;= 0
+ C3. List.length
+     (List.fold_left good_update
+      {status = Idle; callIncomingFrom = None; peopleInCall = []} _x_0222).peopleInCall
+     &lt;= 0
+ C4. (List.fold_left good_update
+      {status = Idle; callIncomingFrom = None; peopleInCall = []} _x_0222).status
      = CallActive
 
 
 Candidates for generalization:
 
  List.fold_left good_update
- {status = CallActive; callIncomingFrom = None; peopleInCall = [_x_011]}
+ {status = CallActive; callIncomingFrom = None; peopleInCall = [gen_11]}
  _x_0222
  List.fold_left good_update
- {status = CallIncoming; callIncomingFrom = Some _x_011; peopleInCall = []}
+ {status = CallIncoming; callIncomingFrom = Some gen_11; peopleInCall = []}
  _x_0222
  List.fold_left good_update
  {status = Idle; callIncomingFrom = None; peopleInCall = []} _x_0222
- List.fold_left good_update
- {status = CallActive; callIncomingFrom = None;
-  peopleInCall = [Destruct(AddPerson, 0, _x_0221); _x_011]}
- _x_0222
 
 However, we can refute the result of performing this generalization and thus
 abandon it.
@@ -3147,14 +3127,14 @@ you derive relevant generalization rules:
 
  H0. gen_1.status = CallActive
  H1. gen_2.status = CallActive
- H2. gen_3.status = CallActive
- H3. Is_a(AddPerson, _x_0221)
+ H2. gen_2.status = CallActive
+ H3. Is_a(CallIncomingFrom, _x_01)
 <span class="ansi-white-fg">|---------------------------------------------------------------------------</span>
- C0. List.length gen_3.peopleInCall &lt;= 0
- C1. List.length gen_2.peopleInCall &lt;= 0
- C2. List.length gen_1.peopleInCall &lt;= 0
- C3. List.length gen_4.peopleInCall &lt;= 0
- C4. gen_4.status = CallActive
+ C0. List.length gen_2.peopleInCall &lt;= 0
+ C1. List.length gen_1.peopleInCall &lt;= 0
+ C2. List.length gen_2.peopleInCall &lt;= 0
+ C3. List.length gen_3.peopleInCall &lt;= 0
+ C4. gen_3.status = CallActive
 
 Must try induction.
 
@@ -3169,107 +3149,84 @@ Must try induction.
 <span class="ansi-cyan-intense-fg ansi-bold">Checkpoints</span>:
 
  H0. (List.fold_left good_update
-      {status = CallActive; callIncomingFrom = None; peopleInCall = [_x_011]}
+      {status = CallActive; callIncomingFrom = None; peopleInCall = [gen_11]}
       _x_0222).status
      = CallActive
  H1. (List.fold_left good_update
-      {status = CallIncoming; callIncomingFrom = Some _x_011;
+      {status = CallIncoming; callIncomingFrom = Some gen_11;
        peopleInCall = []}
       _x_0222).status
      = CallActive
- H2. (List.fold_left good_update
-      {status = Idle; callIncomingFrom = None; peopleInCall = []} _x_0222).status
-     = CallActive
- H3. Is_a(AddPerson, _x_0221)
+ H2. gen_2.status = CallActive
+ H3. Is_a(CallIncomingFrom, _x_01)
 <span class="ansi-white-fg">|---------------------------------------------------------------------------</span>
  C0. List.length
+     (List.fold_left good_update
+      {status = CallIncoming; callIncomingFrom = Some gen_11;
+       peopleInCall = []}
+      _x_0222).peopleInCall
+     &lt;= 0
+ C1. List.length
+     (List.fold_left good_update
+      {status = CallActive; callIncomingFrom = None; peopleInCall = [gen_11]}
+      _x_0222).peopleInCall
+     &lt;= 0
+ C2. List.length gen_2.peopleInCall &lt;= 0
+ C3. List.length
      (List.fold_left good_update
       {status = Idle; callIncomingFrom = None; peopleInCall = []} _x_0222).peopleInCall
      &lt;= 0
- C1. List.length
-     (List.fold_left good_update
-      {status = CallIncoming; callIncomingFrom = Some _x_011;
-       peopleInCall = []}
-      _x_0222).peopleInCall
-     &lt;= 0
- C2. List.length
-     (List.fold_left good_update
-      {status = CallActive; callIncomingFrom = None; peopleInCall = [_x_011]}
-      _x_0222).peopleInCall
-     &lt;= 0
- C3. List.length
-     (List.fold_left good_update
-      {status = CallActive; callIncomingFrom = None;
-       peopleInCall = [Destruct(AddPerson, 0, _x_0221); _x_011]}
-      _x_0222).peopleInCall
-     &lt;= 0
  C4. (List.fold_left good_update
-      {status = CallActive; callIncomingFrom = None;
-       peopleInCall = [Destruct(AddPerson, 0, _x_0221); _x_011]}
-      _x_0222).status
+      {status = Idle; callIncomingFrom = None; peopleInCall = []} _x_0222).status
      = CallActive
 
  H0. (List.fold_left good_update
-      {status = CallIncoming; callIncomingFrom = Some _x_011;
+      {status = CallIncoming; callIncomingFrom = Some gen_11;
        peopleInCall = []}
       _x_022).status
      = CallActive
- H1. (List.fold_left good_update
-      {status = Idle; callIncomingFrom = None; peopleInCall = []} _x_022).status
-     = CallActive
+ H1. gen_2.status = CallActive
+ H2. Is_a(CallIncomingFrom, _x_01)
 <span class="ansi-white-fg">|---------------------------------------------------------------------------</span>
  C0. List.length
      (List.fold_left good_update
-      {status = Idle; callIncomingFrom = None; peopleInCall = []} _x_022).peopleInCall
-     &lt;= 0
- C1. List.length
-     (List.fold_left good_update
-      {status = CallIncoming; callIncomingFrom = Some _x_011;
+      {status = CallIncoming; callIncomingFrom = Some gen_11;
        peopleInCall = []}
       _x_022).peopleInCall
      &lt;= 0
+ C1. List.length gen_2.peopleInCall &lt;= 0
  C2. List.length
      (List.fold_left good_update
-      {status = CallActive; callIncomingFrom = None; peopleInCall = [_x_011]}
+      {status = CallActive; callIncomingFrom = None; peopleInCall = [gen_11]}
       _x_022).peopleInCall
      &lt;= 0
  C3. (List.fold_left good_update
-      {status = CallActive; callIncomingFrom = None; peopleInCall = [_x_011]}
+      {status = CallActive; callIncomingFrom = None; peopleInCall = [gen_11]}
       _x_022).status
      = CallActive
 
- H0. (List.fold_left good_update
-      {status = Idle; callIncomingFrom = None; peopleInCall = []} _x_02).status
-     = CallActive
+ H0. gen_2.status = CallActive
  H1. Is_a(CallIncomingFrom, _x_01)
 <span class="ansi-white-fg">|---------------------------------------------------------------------------</span>
- C0. List.length
-     (List.fold_left good_update
-      {status = Idle; callIncomingFrom = None; peopleInCall = []} _x_02).peopleInCall
-     &lt;= 0
+ C0. List.length gen_2.peopleInCall &lt;= 0
  C1. List.length
      (List.fold_left good_update
-      {status = CallIncoming;
-       callIncomingFrom = Some (Destruct(CallIncomingFrom, 0, _x_01));
-       peopleInCall = []}
+      {status = CallIncoming; callIncomingFrom = gen_1; peopleInCall = []}
       _x_02).peopleInCall
      &lt;= 0
  C2. (List.fold_left good_update
-      {status = CallIncoming;
-       callIncomingFrom = Some (Destruct(CallIncomingFrom, 0, _x_01));
-       peopleInCall = []}
+      {status = CallIncoming; callIncomingFrom = gen_1; peopleInCall = []}
       _x_02).status
      = CallActive
 
+module CX : sig val _x_01 : action_v2 val gen_2 : state val gen_3 : state end
 module CX : sig val _x_01 : action_v2 val gen_1 : state val gen_2 : state end
-module CX : sig val gen_1 : state val gen_2 : state val gen_3 : state end
 module CX :
   sig
-    val _x_0221 : action_v2
+    val _x_01 : action_v2
     val gen_1 : state
     val gen_2 : state
     val gen_3 : state
-    val gen_4 : state
   end
 <span class="ansi-red-intense-fg ansi-bold">Error</span>[/server]: Maximum induction depth reached (3). You can set this with #max_induct.
 </pre>
@@ -3364,7 +3321,12 @@ module CX :
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>- : action_v2 list -&gt; bool = &lt;fun&gt;
+<pre>File &#34;jupyter cell 22&#34;, line 1, characters 14-93:
+1 | [@auto] verify(call_with_people_in_is_active_property_fold_right(good_update, initial_state));
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Warning 5: this function application is partial,
+maybe some arguments are missing.
+- : action_v2 list -&gt; bool = &lt;fun&gt;
 <span class="ansi-white-intense-fg ansi-bold">Goal</span>:
 
 call_with_people_in_is_active_property_fold_right good_update initial_state
@@ -3385,9 +3347,6 @@ _x_0.
 
 
 Must try induction.
-
-The recursive terms in the conjecture suggest 2 inductions.
-Subsumption and merging reduces this to 1.
 
 We shall induct according to a scheme derived from <span class="ansi-blue-intense-fg ansi-bold">List.fold_right</span>.
 
@@ -3455,7 +3414,7 @@ But simplification reduces this to true, using the definitions of
 
 
 <div class="output_html rendered_html output_subarea ">
-<div><div style="font-size: 1.2em; padding: 0.5em; border-top: 1px solid green; border-bottom: 1px solid green"><i class="fa fa-check-circle" style="margin-right: 0.5em; color: green"></i><span>Proved</span></div><div><div class="imandra-proof-top"><div class="imandra-fold panel panel-default" id="fold-15020b4b-3378-4b3a-9f79-75db38f5addb"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>proof</span></div></div><div class="panel-body collapse"><div class="imandra-proof"><div class="imandra-alternatives" id="alt-8b442a05-5329-43b7-a678-f501679028c2"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>summary</a></li><li class="" data-toggle="tab"><a>full</a></li><li class="" data-toggle="tab"><a>graph</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-table" id="table-eb8e336c-e246-4aef-8517-1049592255cd"><table><tr><td><b>ground_instances</b></td><td>0</td></tr><tr><td><b>definitions</b></td><td>15</td></tr><tr><td><b>inductions</b></td><td>1</td></tr><tr><td><b>search_time</b></td><td><pre>1.256s</pre></td></tr></table></div></div><div class="tab-pane"><div class="imandra-fold panel panel-default" id="fold-e2d2bb5f-1e3f-4606-b6c8-211254b4ccc6"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><ul><li><pre>start[1.256s, &quot;Goal&quot;]
+<div><div style="font-size: 1.2em; padding: 0.5em; border-top: 1px solid green; border-bottom: 1px solid green"><i class="fa fa-check-circle" style="margin-right: 0.5em; color: green"></i><span>Proved</span></div><div><div class="imandra-proof-top"><div class="imandra-fold panel panel-default" id="fold-d32dee3b-161d-4b91-90a8-a1b367ffd6c4"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>proof</span></div></div><div class="panel-body collapse"><div class="imandra-proof"><div class="imandra-alternatives" id="alt-2ed52e18-7212-467b-8874-2299ed6f2e5a"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>summary</a></li><li class="" data-toggle="tab"><a>full</a></li><li class="" data-toggle="tab"><a>graph</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-table" id="table-a2c1051a-e08e-448e-b690-ec2e4985e3e9"><table><tr><td><b>ground_instances</b></td><td>0</td></tr><tr><td><b>definitions</b></td><td>15</td></tr><tr><td><b>inductions</b></td><td>1</td></tr><tr><td><b>search_time</b></td><td><pre>0.455s</pre></td></tr></table></div></div><div class="tab-pane"><div class="imandra-fold panel panel-default" id="fold-0e287b95-7d7e-4d89-93f3-9c0ed700f7f3"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.455s, &quot;Goal&quot;]
   if List.length
      (List.fold_right ((fun update_fn a b -&gt; update_fn b a) good_update)
       {status = …; callIncomingFrom = …; peopleInCall = …} :var_0:).peopleInCall
@@ -3464,13 +3423,13 @@ But simplification reduces this to true, using the definitions of
     (List.fold_right ((fun update_fn a b -&gt; update_fn b a) good_update)
      {status = …; callIncomingFrom = …; peopleInCall = …} :var_0:).status
     = CallActive
-  else true</pre></li><li><div><h4>subproof</h4><div class="imandra-fold panel panel-default" id="fold-a54b42f1-9d0a-4dd4-96a4-f746b7431bfc"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>List.length
+  else true</pre></li><li><div><h4>subproof</h4><div class="imandra-fold panel panel-default" id="fold-957c5554-c16e-43e3-9962-b31c06119fff"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>List.length
 (List.fold_right ((fun update_fn a b -&gt; update_fn b a) good_update)
  {status = …; callIncomingFrom = …; peopleInCall = …} _x_0).peopleInCall
 &lt;= 0
 || (List.fold_right ((fun update_fn a b -&gt; update_fn b a) good_update)
     {status = …; callIncomingFrom = …; peopleInCall = …} _x_0).status
-   = CallActive</span></div></div><div class="panel-body collapse"><ul><li><pre>start[1.256s, &quot;1&quot;]
+   = CallActive</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.455s, &quot;1&quot;]
   List.length
   (List.fold_right ((fun update_fn a b -&gt; update_fn b a) good_update)
    {status = …; callIncomingFrom = …; peopleInCall = …} _x_0).peopleInCall
@@ -3551,7 +3510,7 @@ But simplification reduces this to true, using the definitions of
                    ((fun update_fn a b -&gt; update_fn b a) good_update)
                    {status = …; callIncomingFrom = …; peopleInCall = …}
                    _x_0).status
-                  = CallActive])</pre><ul><li><div><h5>subproof</h5><div class="imandra-fold panel panel-default" id="fold-21a4babe-e036-4442-bbb7-08963b191d0d"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>((_x_0 = []
+                  = CallActive])</pre><ul><li><div><h5>subproof</h5><div class="imandra-fold panel panel-default" id="fold-d62448b5-b8c4-4ab8-84e9-e14b0f53cde3"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>((_x_0 = []
   || not
      (List.length
       (List.fold_right ((fun update_fn a b -&gt; update_fn b a) good_update)
@@ -3568,7 +3527,7 @@ But simplification reduces this to true, using the definitions of
     &lt;= 0)
 || (List.fold_right ((fun update_fn a b -&gt; update_fn b a) good_update)
     {status = …; callIncomingFrom = …; peopleInCall = …} _x_0).status
-   = CallActive</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.903s, &quot;1.1&quot;]
+   = CallActive</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.302s, &quot;1.1&quot;]
   ((_x_0 = []
     || not
        (List.length
@@ -3587,21 +3546,21 @@ But simplification reduces this to true, using the definitions of
       &lt;= 0)
   || (List.fold_right ((fun update_fn a b -&gt; update_fn b a) good_update)
       {status = …; callIncomingFrom = …; peopleInCall = …} _x_0).status
-     = CallActive</pre></li><li><div><h6>simplify</h6><div class="imandra-table" id="table-a2c113e4-b763-4a20-8be3-ce8bfda4b6bb"><table><tr><td><b>into</b></td><td><pre>true</pre></td></tr><tr><td><b>expansions</b></td><td><pre>[List.fold_right, List.fold_right, List.fold_right, List.length,
+     = CallActive</pre></li><li><div><h6>simplify</h6><div class="imandra-table" id="table-90d029ec-cc88-4135-a645-7869d5f25fbe"><table><tr><td><b>into</b></td><td><pre>true</pre></td></tr><tr><td><b>expansions</b></td><td><pre>[List.fold_right, List.fold_right, List.fold_right, List.length,
  List.fold_right, List.fold_right, List.fold_right, List.fold_right,
  List.fold_right, List.length, List.fold_right, List.fold_right]</pre></td></tr><tr><td><b>rewrite_steps</b></td><td><ul></ul></td></tr><tr><td><b>forward_chaining</b></td><td><ul><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li></ul></td></tr></table></div></div></li></ul></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-21a4babe-e036-4442-bbb7-08963b191d0d';
+  var target = '#fold-d62448b5-b8c4-4ab8-84e9-e14b0f53cde3';
   fold.hydrate(target);
 });
-</script></div></div></li><li><div><h5>subproof</h5><div class="imandra-fold panel panel-default" id="fold-0cac9b55-b6cb-420b-a3dc-57c6fbc09648"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>(not (_x_0 = [])
+</script></div></div></li><li><div><h5>subproof</h5><div class="imandra-fold panel panel-default" id="fold-aa3fbe4e-b1a8-408e-ae86-8fe4d9e2b28f"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>(not (_x_0 = [])
  || List.length
     (List.fold_right ((fun update_fn a b -&gt; update_fn b a) good_update)
      {status = …; callIncomingFrom = …; peopleInCall = …} _x_0).peopleInCall
     &lt;= 0)
 || (List.fold_right ((fun update_fn a b -&gt; update_fn b a) good_update)
     {status = …; callIncomingFrom = …; peopleInCall = …} _x_0).status
-   = CallActive</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.903s, &quot;1.2&quot;]
+   = CallActive</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.302s, &quot;1.2&quot;]
   (not (_x_0 = [])
    || List.length
       (List.fold_right ((fun update_fn a b -&gt; update_fn b a) good_update)
@@ -3609,60 +3568,60 @@ require(['nbextensions/nbimandra/fold'], function (fold) {
       &lt;= 0)
   || (List.fold_right ((fun update_fn a b -&gt; update_fn b a) good_update)
       {status = …; callIncomingFrom = …; peopleInCall = …} _x_0).status
-     = CallActive</pre></li><li><div><h6>simplify</h6><div class="imandra-table" id="table-9c9e07e7-1b2c-41f8-8696-5cd6eb064ee4"><table><tr><td><b>into</b></td><td><pre>true</pre></td></tr><tr><td><b>expansions</b></td><td><pre>[List.length, List.fold_right, List.fold_right]</pre></td></tr><tr><td><b>rewrite_steps</b></td><td><ul></ul></td></tr><tr><td><b>forward_chaining</b></td><td><ul><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li></ul></td></tr></table></div></div></li></ul></div><script>
+     = CallActive</pre></li><li><div><h6>simplify</h6><div class="imandra-table" id="table-b9c62059-6eab-4486-9ac2-b87bbe4c7673"><table><tr><td><b>into</b></td><td><pre>true</pre></td></tr><tr><td><b>expansions</b></td><td><pre>[List.length, List.fold_right, List.fold_right]</pre></td></tr><tr><td><b>rewrite_steps</b></td><td><ul></ul></td></tr><tr><td><b>forward_chaining</b></td><td><ul><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li></ul></td></tr></table></div></div></li></ul></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-0cac9b55-b6cb-420b-a3dc-57c6fbc09648';
+  var target = '#fold-aa3fbe4e-b1a8-408e-ae86-8fe4d9e2b28f';
   fold.hydrate(target);
 });
 </script></div></div></li></ul></div></li></ul></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-a54b42f1-9d0a-4dd4-96a4-f746b7431bfc';
+  var target = '#fold-957c5554-c16e-43e3-9962-b31c06119fff';
   fold.hydrate(target);
 });
 </script></div></div></li></ul></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-e2d2bb5f-1e3f-4606-b6c8-211254b4ccc6';
+  var target = '#fold-0e287b95-7d7e-4d89-93f3-9c0ed700f7f3';
   fold.hydrate(target);
 });
-</script></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-67111ccb-e327-48b8-b00e-57a6b886d249"><textarea style="display: none">digraph &quot;proof&quot; {
-p_398 [label=&quot;Start (if List.length\l          (List.fold_right ((fun update_fn a b -\&gt; update_fn b a) good_update)\l           \{status = …; callIncomingFrom = …; peopleInCall = …\} :var_0:).peopleInCall\l          \&gt; 0\l       then\l         (List.fold_right ((fun update_fn a b -\&gt; update_fn b a) good_update)\l          \{status = …; callIncomingFrom = …; peopleInCall = …\} :var_0:).status\l         = CallActive\l       else true :name \&quot;Goal\&quot; :time 1.256s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
-p_398 -&gt; p_396 [label=&quot;&quot;];
-subgraph cluster_397 {
+</script></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-16b18155-76a7-4213-9549-b7d1d69bf73e"><textarea style="display: none">digraph &quot;proof&quot; {
+p_412 [label=&quot;Start (if List.length\l          (List.fold_right ((fun update_fn a b -\&gt; update_fn b a) good_update)\l           \{status = …; callIncomingFrom = …; peopleInCall = …\} :var_0:).peopleInCall\l          \&gt; 0\l       then\l         (List.fold_right ((fun update_fn a b -\&gt; update_fn b a) good_update)\l          \{status = …; callIncomingFrom = …; peopleInCall = …\} :var_0:).status\l         = CallActive\l       else true :name \&quot;Goal\&quot; :time 0.455s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+p_412 -&gt; p_410 [label=&quot;&quot;];
+subgraph cluster_411 {
   color=blue;
-p_396 [label=&quot;Start (List.length\l       (List.fold_right ((fun update_fn a b -\&gt; update_fn b a) good_update)\l        \{status = …; callIncomingFrom = …; peopleInCall = …\} _x_0).peopleInCall\l       \&lt;= 0\l       \|\| (List.fold_right ((fun update_fn a b -\&gt; update_fn b a) good_update)\l           \{status = …; callIncomingFrom = …; peopleInCall = …\} _x_0).status\l          = CallActive\l       :name \&quot;1\&quot; :time 1.256s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
-p_396 -&gt; p_395 [label=&quot;&quot;];
-p_395 [label=&quot;Induct ((functional ),\l        :scheme (_x_0 = [] ==\&gt; φ _x_0)\l                &amp;&amp; (not (_x_0 = []) &amp;&amp; φ (List.tl _x_0) ==\&gt; φ _x_0))&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
-p_395 -&gt; p_394 [label=&quot;&quot;];
-p_394 [label=&quot;Split (((not (_x_0 = [])\l         \|\| List.length\l            (List.fold_right\l             ((fun update_fn a b -\&gt; update_fn b a) good_update)\l             \{status = …; callIncomingFrom = …; peopleInCall = …\} _x_0).peopleInCall\l            \&lt;= 0)\l        \|\| (List.fold_right\l            ((fun update_fn a b -\&gt; update_fn b a) good_update)\l            \{status = …; callIncomingFrom = …; peopleInCall = …\} _x_0).status\l           = CallActive)\l       &amp;&amp; ((not\l            (not (_x_0 = [])\l             &amp;&amp; (List.length\l                 (List.fold_right\l                  ((fun update_fn a b -\&gt; update_fn b a) good_update)\l                  \{status = …; callIncomingFrom = …; peopleInCall = …\}\l                  (List.tl _x_0)).peopleInCall\l                 \&lt;= 0\l                 \|\| (List.fold_right\l                     ((fun update_fn a b -\&gt; update_fn b a) good_update)\l                     \{status = …; callIncomingFrom = …;\l                      peopleInCall = …\}\l                     (List.tl _x_0)).status\l                    = CallActive))\l            \|\| List.length\l               (List.fold_right\l                ((fun update_fn a b -\&gt; update_fn b a) good_update)\l                \{status = …; callIncomingFrom = …; peopleInCall = …\}\l                _x_0).peopleInCall\l               \&lt;= 0)\l           \|\| (List.fold_right\l               ((fun update_fn a b -\&gt; update_fn b a) good_update)\l               \{status = …; callIncomingFrom = …; peopleInCall = …\}\l               _x_0).status\l              = CallActive)\l       :cases [(not (_x_0 = [])\l                \|\| List.length\l                   (List.fold_right\l                    ((fun update_fn a b -\&gt; update_fn b a) good_update)\l                    \{status = …; callIncomingFrom = …; peopleInCall = …\}\l                    _x_0).peopleInCall\l                   \&lt;= 0)\l               \|\| (List.fold_right\l                   ((fun update_fn a b -\&gt; update_fn b a) good_update)\l                   \{status = …; callIncomingFrom = …; peopleInCall = …\}\l                   _x_0).status\l                  = CallActive;\l               ((_x_0 = []\l                 \|\| not\l                    (List.length\l                     (List.fold_right\l                      ((fun update_fn a b -\&gt; update_fn b a) good_update)\l                      \{status = …; callIncomingFrom = …;\l                       peopleInCall = …\}\l                      (List.tl _x_0)).peopleInCall\l                     \&lt;= 0\l                     \|\| (List.fold_right\l                         ((fun update_fn a b -\&gt; update_fn b a) good_update)\l                         \{status = …; callIncomingFrom = …;\l                          peopleInCall = …\}\l                         (List.tl _x_0)).status\l                        = CallActive))\l                \|\| List.length\l                   (List.fold_right\l                    ((fun update_fn a b -\&gt; update_fn b a) good_update)\l                    \{status = …; callIncomingFrom = …; peopleInCall = …\}\l                    _x_0).peopleInCall\l                   \&lt;= 0)\l               \|\| (List.fold_right\l                   ((fun update_fn a b -\&gt; update_fn b a) good_update)\l                   \{status = …; callIncomingFrom = …; peopleInCall = …\}\l                   _x_0).status\l                  = CallActive])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
-p_394 -&gt; p_389 [label=&quot;&quot;];
-subgraph cluster_390 {
+p_410 [label=&quot;Start (List.length\l       (List.fold_right ((fun update_fn a b -\&gt; update_fn b a) good_update)\l        \{status = …; callIncomingFrom = …; peopleInCall = …\} _x_0).peopleInCall\l       \&lt;= 0\l       \|\| (List.fold_right ((fun update_fn a b -\&gt; update_fn b a) good_update)\l           \{status = …; callIncomingFrom = …; peopleInCall = …\} _x_0).status\l          = CallActive\l       :name \&quot;1\&quot; :time 0.455s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+p_410 -&gt; p_409 [label=&quot;&quot;];
+p_409 [label=&quot;Induct ((functional ),\l        :scheme (_x_0 = [] ==\&gt; φ _x_0)\l                &amp;&amp; (not (_x_0 = []) &amp;&amp; φ (List.tl _x_0) ==\&gt; φ _x_0))&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+p_409 -&gt; p_408 [label=&quot;&quot;];
+p_408 [label=&quot;Split (((not (_x_0 = [])\l         \|\| List.length\l            (List.fold_right\l             ((fun update_fn a b -\&gt; update_fn b a) good_update)\l             \{status = …; callIncomingFrom = …; peopleInCall = …\} _x_0).peopleInCall\l            \&lt;= 0)\l        \|\| (List.fold_right\l            ((fun update_fn a b -\&gt; update_fn b a) good_update)\l            \{status = …; callIncomingFrom = …; peopleInCall = …\} _x_0).status\l           = CallActive)\l       &amp;&amp; ((not\l            (not (_x_0 = [])\l             &amp;&amp; (List.length\l                 (List.fold_right\l                  ((fun update_fn a b -\&gt; update_fn b a) good_update)\l                  \{status = …; callIncomingFrom = …; peopleInCall = …\}\l                  (List.tl _x_0)).peopleInCall\l                 \&lt;= 0\l                 \|\| (List.fold_right\l                     ((fun update_fn a b -\&gt; update_fn b a) good_update)\l                     \{status = …; callIncomingFrom = …;\l                      peopleInCall = …\}\l                     (List.tl _x_0)).status\l                    = CallActive))\l            \|\| List.length\l               (List.fold_right\l                ((fun update_fn a b -\&gt; update_fn b a) good_update)\l                \{status = …; callIncomingFrom = …; peopleInCall = …\}\l                _x_0).peopleInCall\l               \&lt;= 0)\l           \|\| (List.fold_right\l               ((fun update_fn a b -\&gt; update_fn b a) good_update)\l               \{status = …; callIncomingFrom = …; peopleInCall = …\}\l               _x_0).status\l              = CallActive)\l       :cases [(not (_x_0 = [])\l                \|\| List.length\l                   (List.fold_right\l                    ((fun update_fn a b -\&gt; update_fn b a) good_update)\l                    \{status = …; callIncomingFrom = …; peopleInCall = …\}\l                    _x_0).peopleInCall\l                   \&lt;= 0)\l               \|\| (List.fold_right\l                   ((fun update_fn a b -\&gt; update_fn b a) good_update)\l                   \{status = …; callIncomingFrom = …; peopleInCall = …\}\l                   _x_0).status\l                  = CallActive;\l               ((_x_0 = []\l                 \|\| not\l                    (List.length\l                     (List.fold_right\l                      ((fun update_fn a b -\&gt; update_fn b a) good_update)\l                      \{status = …; callIncomingFrom = …;\l                       peopleInCall = …\}\l                      (List.tl _x_0)).peopleInCall\l                     \&lt;= 0\l                     \|\| (List.fold_right\l                         ((fun update_fn a b -\&gt; update_fn b a) good_update)\l                         \{status = …; callIncomingFrom = …;\l                          peopleInCall = …\}\l                         (List.tl _x_0)).status\l                        = CallActive))\l                \|\| List.length\l                   (List.fold_right\l                    ((fun update_fn a b -\&gt; update_fn b a) good_update)\l                    \{status = …; callIncomingFrom = …; peopleInCall = …\}\l                    _x_0).peopleInCall\l                   \&lt;= 0)\l               \|\| (List.fold_right\l                   ((fun update_fn a b -\&gt; update_fn b a) good_update)\l                   \{status = …; callIncomingFrom = …; peopleInCall = …\}\l                   _x_0).status\l                  = CallActive])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+p_408 -&gt; p_403 [label=&quot;&quot;];
+subgraph cluster_404 {
   color=blue;
-p_389 [label=&quot;Start (((_x_0 = []\l         \|\| not\l            (List.length\l             (List.fold_right\l              ((fun update_fn a b -\&gt; update_fn b a) good_update)\l              \{status = …; callIncomingFrom = …; peopleInCall = …\}\l              (List.tl _x_0)).peopleInCall\l             \&lt;= 0\l             \|\| (List.fold_right\l                 ((fun update_fn a b -\&gt; update_fn b a) good_update)\l                 \{status = …; callIncomingFrom = …; peopleInCall = …\}\l                 (List.tl _x_0)).status\l                = CallActive))\l        \|\| List.length\l           (List.fold_right\l            ((fun update_fn a b -\&gt; update_fn b a) good_update)\l            \{status = …; callIncomingFrom = …; peopleInCall = …\} _x_0).peopleInCall\l           \&lt;= 0)\l       \|\| (List.fold_right ((fun update_fn a b -\&gt; update_fn b a) good_update)\l           \{status = …; callIncomingFrom = …; peopleInCall = …\} _x_0).status\l          = CallActive\l       :name \&quot;1.1\&quot; :time 0.903s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
-p_389 -&gt; p_388 [label=&quot;&quot;];
-p_388 [label=&quot;Simplify (true\l          :expansions [List.fold_right;\l                       List.fold_right;\l                       List.fold_right;\l                       List.length;\l                       List.fold_right;\l                       List.fold_right;\l                       List.fold_right;\l                       List.fold_right;\l                       List.fold_right;\l                       List.length;\l                       List.fold_right;\l                       List.fold_right]\l          :rw []\l          :fc [List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+p_403 [label=&quot;Start (((_x_0 = []\l         \|\| not\l            (List.length\l             (List.fold_right\l              ((fun update_fn a b -\&gt; update_fn b a) good_update)\l              \{status = …; callIncomingFrom = …; peopleInCall = …\}\l              (List.tl _x_0)).peopleInCall\l             \&lt;= 0\l             \|\| (List.fold_right\l                 ((fun update_fn a b -\&gt; update_fn b a) good_update)\l                 \{status = …; callIncomingFrom = …; peopleInCall = …\}\l                 (List.tl _x_0)).status\l                = CallActive))\l        \|\| List.length\l           (List.fold_right\l            ((fun update_fn a b -\&gt; update_fn b a) good_update)\l            \{status = …; callIncomingFrom = …; peopleInCall = …\} _x_0).peopleInCall\l           \&lt;= 0)\l       \|\| (List.fold_right ((fun update_fn a b -\&gt; update_fn b a) good_update)\l           \{status = …; callIncomingFrom = …; peopleInCall = …\} _x_0).status\l          = CallActive\l       :name \&quot;1.1\&quot; :time 0.302s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+p_403 -&gt; p_402 [label=&quot;&quot;];
+p_402 [label=&quot;Simplify (true\l          :expansions [List.fold_right;\l                       List.fold_right;\l                       List.fold_right;\l                       List.length;\l                       List.fold_right;\l                       List.fold_right;\l                       List.fold_right;\l                       List.fold_right;\l                       List.fold_right;\l                       List.length;\l                       List.fold_right;\l                       List.fold_right]\l          :rw []\l          :fc [List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 }
-p_394 -&gt; p_392 [label=&quot;&quot;];
-subgraph cluster_393 {
+p_408 -&gt; p_406 [label=&quot;&quot;];
+subgraph cluster_407 {
   color=blue;
-p_392 [label=&quot;Start ((not (_x_0 = [])\l        \|\| List.length\l           (List.fold_right\l            ((fun update_fn a b -\&gt; update_fn b a) good_update)\l            \{status = …; callIncomingFrom = …; peopleInCall = …\} _x_0).peopleInCall\l           \&lt;= 0)\l       \|\| (List.fold_right ((fun update_fn a b -\&gt; update_fn b a) good_update)\l           \{status = …; callIncomingFrom = …; peopleInCall = …\} _x_0).status\l          = CallActive\l       :name \&quot;1.2\&quot; :time 0.903s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
-p_392 -&gt; p_391 [label=&quot;&quot;];
-p_391 [label=&quot;Simplify (true :expansions [List.length; List.fold_right; List.fold_right]\l          :rw [] :fc [List.len_nonnegative; List.len_nonnegative])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+p_406 [label=&quot;Start ((not (_x_0 = [])\l        \|\| List.length\l           (List.fold_right\l            ((fun update_fn a b -\&gt; update_fn b a) good_update)\l            \{status = …; callIncomingFrom = …; peopleInCall = …\} _x_0).peopleInCall\l           \&lt;= 0)\l       \|\| (List.fold_right ((fun update_fn a b -\&gt; update_fn b a) good_update)\l           \{status = …; callIncomingFrom = …; peopleInCall = …\} _x_0).status\l          = CallActive\l       :name \&quot;1.2\&quot; :time 0.302s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+p_406 -&gt; p_405 [label=&quot;&quot;];
+p_405 [label=&quot;Simplify (true :expansions [List.length; List.fold_right; List.fold_right]\l          :rw [] :fc [List.len_nonnegative; List.len_nonnegative])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 }
 }
 }
 </textarea><button class="btn btn-primary">Load graph</button><div class="imandra-graphviz-loading display-none">Loading..</div><div class="imandra-graphviz-target"></div><script>
 require(['nbextensions/nbimandra/graphviz'], function (graphviz) {
-  var target = '#graphviz-67111ccb-e327-48b8-b00e-57a6b886d249';
+  var target = '#graphviz-16b18155-76a7-4213-9549-b7d1d69bf73e';
   graphviz.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-8b442a05-5329-43b7-a678-f501679028c2';
+  var target = '#alt-2ed52e18-7212-467b-8874-2299ed6f2e5a';
   alternatives.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-15020b4b-3378-4b3a-9f79-75db38f5addb';
+  var target = '#fold-d32dee3b-161d-4b91-90a8-a1b367ffd6c4';
   fold.hydrate(target);
 });
 </script></div></div></div></div>
