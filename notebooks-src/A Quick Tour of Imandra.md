@@ -15,7 +15,7 @@ assert:
     - "<span>Proved</span>"
     - "fa-times-circle-o"
     - "<span>Refuted</span>"
-    - "Z.t = 105"
+    - "int = 105"
     - "Counterexample (after 0 steps"
     - "let (x : int) = 69"
     - "module CX : sig val x : int end"
