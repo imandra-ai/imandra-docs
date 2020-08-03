@@ -9,10 +9,9 @@ slug: installation
 
 We offer several ways to install Imandra:
 
+- [Installer](Installation%20-%20Simple.md): If you’re new to the OCaml ecosystem, the simplest way to go from zero to a working local Imandra Core setup is to use the Imandra CLI. The CLI also gives you access to our cloud-based APIs.
 
-- [Installer (macOS and Linux only)](Installation%20-%20Simple.md): If you’re new to the OCaml ecosystem, the simplest way to go from zero to a working Imandra installation is to use the Imandra installer.
-
-- [Opam (macOS and Linux only)](Installation%20-%20Manual.md): If you have the [opam](https://opam.ocaml.org/) package manager available, you can install Imandra using our public opam repo.
+- [OPAM](Installation%20-%20Manual.md): If you have the [opam](https://opam.ocaml.org/) package manager available, you can install Imandra OCaml components using our public opam repo.
 
 - [Docker Image](Installation%20-%20Docker.md): If you don't want to bother with setting up a native environment, you can use our docker image.
 

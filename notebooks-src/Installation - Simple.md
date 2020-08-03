@@ -5,20 +5,24 @@ kernel: imandra
 slug: installation-simple
 ---
 
-# Simple Installer
+# Installation
 
-N.B. the following installer is supported natively on MacOS and Linux, on Windows you'll need to use [WSL](https://docs.microsoft.com/en-us/windows/wsl/install-win10)
+N.B. the following is supported natively on MacOS and Linux. On Windows you'll need to use [WSL](https://docs.microsoft.com/en-us/windows/wsl/install-win10).
 
-The simple installer will set up a new OCaml environment (using the `opam` installer), and then install Imandra. Execute the install script from a terminal:
+Install the Imandra CLI helper tool, `imandra-do`, by running the command below in a terminal:
 
 ```sh.copy
-sh <(curl -s "https://storage.googleapis.com/imandra-installer/install.sh")
+sh <(curl -s "https://storage.googleapis.com/imandra-do/install.sh")
 ```
 
-Or, if you have `wget` available instead of `curl`:
+This tool is Python based (requires Python 3) allows you to use Imandra's cloud APIs, and also aids with installation of Imandra Core.
+
+## Installation of Imandra Core
+
+In order to use Imandra Core tools such as our Imandra REPL, you additionally need a local OCaml environment to be setup. The installer will set up a new OCaml environment (using the `opam` installer), and then install Imandra. Invoke the installer by running:
 
 ```sh.copy
-sh <(wget -O - "https://storage.googleapis.com/imandra-installer/install.sh")
+imandra-do install-imandra-core
 ```
 
 The installer will:
@@ -29,7 +33,7 @@ The installer will:
 - Download, setup and install Imandra into its OCaml environment in `/usr/local/var/imandra/` (documentation for Imandra modules can be found in `_opam/doc/index.html`)
 - Install system-level binaries for the Imandra repl and its utilities
 
-The entire setup process will take a while, usually around 30 minutes; the process is almost entirely automatic but you might be prompted for input a couple of times, either to authenticate using `sudo` or for setting installation paths (we recommend using the default options).
+The entire setup process will take a while. The process is almost entirely automatic but you might be prompted for input a couple of times, either to authenticate using `sudo` or for setting installation paths (we recommend using the default options).
 
 After the installation is finished, you should have the following binaries installed in your installation path (`/usr/local/bin` unless you specified a custom one):
 - `imandra`: this is the main Imandra entrypoint
