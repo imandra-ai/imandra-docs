@@ -9,7 +9,7 @@ slug: installation-simple
 
 N.B. the following is supported natively on MacOS and Linux. On Windows you'll need to use [WSL](https://docs.microsoft.com/en-us/windows/wsl/install-win10).
 
-Install the Imandra CLI helper tool, `imandra-do`, by running the command below in a terminal:
+Install the Imandra CLI `imandra`, by running the command below in a terminal:
 
 ```sh.copy
 sh <(curl -s "https://storage.googleapis.com/imandra-do/install.sh")
@@ -22,7 +22,7 @@ This tool is Python based (requires Python 3) allows you to use Imandra's cloud 
 In order to use Imandra Core tools such as our Imandra REPL, you additionally need a local OCaml environment to be setup. The installer will set up a new OCaml environment (using the `opam` installer), and then install Imandra. Invoke the installer by running:
 
 ```sh.copy
-imandra-do install-imandra-core
+imandra core install
 ```
 
 The installer will:
