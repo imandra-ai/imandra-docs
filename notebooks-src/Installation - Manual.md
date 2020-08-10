@@ -7,12 +7,12 @@ slug: installation-manual-opam
 
 # Manual Installation with opam
 
-If you’re already familiar with the OCaml ecosystem and opam, you can use Imandra as a normal opam package, provided your switch is setup using ocaml 4.06.
+If you’re already familiar with the OCaml ecosystem and opam, you can use Imandra as a normal opam package, provided your switch is setup using ocaml 4.08.
 
 The simplest way to install imandra in a custom switch is to install the `imandra-dist` metapackage, which includes the full Imandra distribution:
 
 ```sh.copy
-opam switch create . ocaml-base-compiler.4.06.1
+opam switch create . ocaml-base-compiler.4.08.1
 opam repo add imandra https://github.com/AestheticIntegration/opam-repository.git
 opam update
 opam depext imandra-dist
@@ -43,4 +43,3 @@ For more advanced installations, we include a list of the available packages in 
 - `imandra-voronoi`: Library for visualizing Imandra Regions as a Voronoi diagram
 - `imandra-vscode-server`: Provides the `imandra-vscode-server` binary, providing the backend for the VSCode based [Imandra IDE](https://marketplace.visualstudio.com/items?itemName=aestheticintegration.iml-vscode). Please see the [Installation Page](Installation%20-%20VSCode.md) for details.
 - `jupyter-imandra`: Jupyter notebook frontend for Imandra
-
