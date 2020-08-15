@@ -1300,7 +1300,9 @@ module IDF :
     val expanded_constraints : node -&gt; Term.term list
     val sample : node -&gt; TPL.c list
     val sample_region : Top_result.modular_region -&gt; TPL.c list
-    val target_steps : node -&gt; (TPL.t * bool option) list
+    type region_expander = string option * string list * string option
+    val target_steps :
+      node -&gt; (TPL.t * bool option * region_expander option) list
     type replay_sample =
       IDF.replay_sample = {
       state_before : int;
@@ -1316,8 +1318,7 @@ module IDF :
       ?expanding:string list -&gt;
       ?valid_pol:bool option list -&gt;
       ?assuming:string -&gt;
-      ?region_expander:(string option * string list * string option) list -&gt;
-      target -&gt; unit -&gt; unit
+      ?region_expander:region_expander list -&gt; target -&gt; unit -&gt; unit
   end
 </pre>
 </div>
@@ -1377,6 +1378,58 @@ val target_Q01oWlRQekF4cXdRb2N5UFlkTzhtMzBHUDFEbEExNUJtcjdLL1NWZE5NWQ_VFBMLkFueT
   TPL.c list -&gt; int = &lt;fun&gt;
 - : unit = ()
 </pre>
+</div>
+
+</div>
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+
+<div class="output_html rendered_html output_subarea ">
+<div><pre></pre></div>
+
+</div>
+
+</div>
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+
+<div class="output_html rendered_html output_subarea ">
+<div><pre></pre></div>
+
+</div>
+
+</div>
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+
+<div class="output_html rendered_html output_subarea ">
+<div><pre></pre></div>
+
+</div>
+
+</div>
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+
+<div class="output_html rendered_html output_subarea ">
+<div><pre></pre></div>
+
 </div>
 
 </div>
@@ -1764,8 +1817,8 @@ val full_node : IDF.node = &lt;abstr&gt;
 
 <div class="output_text output_subarea output_execute_result">
 <pre>val samples : TPL.c list =
-  [Decomp.State_machine.Reset;
-   Decomp.State_machine.Add (Decomp.State_machine.Int 51)]
+  [Decomp.State_machine.Add (Decomp.State_machine.Int 51);
+   Decomp.State_machine.Add (Decomp.State_machine.Int 1)]
 </pre>
 </div>
 
@@ -1814,11 +1867,12 @@ val full_node : IDF.node = &lt;abstr&gt;
 
 <div class="output_text output_subarea output_execute_result">
 <pre>val replayed_node : IDF.replay_sample list =
-  [{IDF.state_before = 0; event = Decomp.State_machine.Reset;
-    state_after = 0};
-   {IDF.state_before = 0;
+  [{IDF.state_before = 0;
     event = Decomp.State_machine.Add (Decomp.State_machine.Int 51);
-    state_after = 51}]
+    state_after = 51};
+   {IDF.state_before = 51;
+    event = Decomp.State_machine.Add (Decomp.State_machine.Int 1);
+    state_after = 52}]
 </pre>
 </div>
 
@@ -1884,15 +1938,21 @@ val full_node : IDF.node = &lt;abstr&gt;
     -------------;
    ---[region]---
    Constraints:
-     [ (List.hd e) is SM.Reset
+     [ Destruct(SM.Add, 0, (List.hd e)) is SM.Int
+     ; (List.hd e) is SM.Add
      ; (List.hd (List.tl e)) is SM.Add
      ; Destruct(SM.Add, 0, (List.hd (List.tl e))) is SM.Int
-     ; 50 &lt;
-       Destruct(SM.Int, 0, Destruct(SM.Add, 0, (List.hd (List.tl e)))) &lt;=
-       9000
+     ; Destruct(SM.Int, 0, Destruct(SM.Add, 0, (List.hd e))) &gt; 50
+     ; Destruct(SM.Int, 0, Destruct(SM.Add, 0, (List.hd e))) &lt;&gt; 1337
+     ; (Destruct(SM.Int, 0, Destruct(SM.Add, 0, (List.hd (List.tl e)))) +
+          Destruct(SM.Int, 0, Destruct(SM.Add, 0, (List.hd e))))
+         &lt;= 9000
+     ; Destruct(SM.Int, 0, Destruct(SM.Add, 0, (List.hd (List.tl e)))) &gt; 0
      ; (List.tl (List.tl e)) = [] ]
    Invariant:
-     F = Destruct(SM.Int, 0, Destruct(SM.Add, 0, (List.hd (List.tl e))))
+     F =
+     Destruct(SM.Int, 0, Destruct(SM.Add, 0, (List.hd e))) +
+       Destruct(SM.Int, 0, Destruct(SM.Add, 0, (List.hd (List.tl e))))
     -------------]
 </pre>
 </div>
