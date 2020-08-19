@@ -1818,7 +1818,7 @@ val full_node : IDF.node = &lt;abstr&gt;
 <div class="output_text output_subarea output_execute_result">
 <pre>val samples : TPL.c list =
   [Decomp.State_machine.Add (Decomp.State_machine.Int 51);
-   Decomp.State_machine.Add (Decomp.State_machine.Int 1)]
+   Decomp.State_machine.Add (Decomp.State_machine.Int 8950)]
 </pre>
 </div>
 
@@ -1871,8 +1871,8 @@ val full_node : IDF.node = &lt;abstr&gt;
     event = Decomp.State_machine.Add (Decomp.State_machine.Int 51);
     state_after = 51};
    {IDF.state_before = 51;
-    event = Decomp.State_machine.Add (Decomp.State_machine.Int 1);
-    state_after = 52}]
+    event = Decomp.State_machine.Add (Decomp.State_machine.Int 8950);
+    state_after = 0}]
 </pre>
 </div>
 
@@ -1931,10 +1931,12 @@ val full_node : IDF.node = &lt;abstr&gt;
     -------------;
    ---[region]---
    Constraints:
-     [ (List.hd e) is SM.Reset
+     [ (List.hd e) is SM.Add
+     ; Destruct(SM.Add, 0, (List.hd e)) is SM.Int
+     ; 50 &lt; Destruct(SM.Int, 0, Destruct(SM.Add, 0, (List.hd e))) &lt;= 9000
      ; (List.tl e) = [] ]
    Invariant:
-     F = 0
+     F = Destruct(SM.Int, 0, Destruct(SM.Add, 0, (List.hd e)))
     -------------;
    ---[region]---
    Constraints:
@@ -1942,17 +1944,16 @@ val full_node : IDF.node = &lt;abstr&gt;
      ; (List.hd e) is SM.Add
      ; (List.hd (List.tl e)) is SM.Add
      ; Destruct(SM.Add, 0, (List.hd (List.tl e))) is SM.Int
-     ; Destruct(SM.Int, 0, Destruct(SM.Add, 0, (List.hd e))) &gt; 50
+     ; 50 &lt; Destruct(SM.Int, 0, Destruct(SM.Add, 0, (List.hd e))) &lt;= 9000
+     ; Destruct(SM.Int, 0, Destruct(SM.Add, 0, (List.hd (List.tl e)))) &gt; 0
      ; Destruct(SM.Int, 0, Destruct(SM.Add, 0, (List.hd e))) &lt;&gt; 1337
      ; (Destruct(SM.Int, 0, Destruct(SM.Add, 0, (List.hd (List.tl e)))) +
           Destruct(SM.Int, 0, Destruct(SM.Add, 0, (List.hd e))))
-         &lt;= 9000
-     ; Destruct(SM.Int, 0, Destruct(SM.Add, 0, (List.hd (List.tl e)))) &gt; 0
-     ; (List.tl (List.tl e)) = [] ]
+         &gt; 9000
+     ; (List.tl (List.tl e)) = []
+     ; Destruct(SM.Int, 0, Destruct(SM.Add, 0, (List.hd (List.tl e)))) &lt;&gt; 0 ]
    Invariant:
-     F =
-     Destruct(SM.Int, 0, Destruct(SM.Add, 0, (List.hd e))) +
-       Destruct(SM.Int, 0, Destruct(SM.Add, 0, (List.hd (List.tl e))))
+     F = 0
     -------------]
 </pre>
 </div>
