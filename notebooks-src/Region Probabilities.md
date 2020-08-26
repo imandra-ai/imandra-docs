@@ -99,13 +99,9 @@ let price apple =
   in let p = (per_gram apple.kind) *. apple.mass in
   if apple.days_old >= 5 then p /. 2. else p;;
 
-let d = Modular_decomp.top "price" [@@program];;
+let d = Modular_decomp.top ~prune:true "price" [@@program];;
 
-Modular_decomp.prune d [@@program];;
-
-let regions =
-  Modular_decomposition.to_region_list d
-  |> CCList.map (fun (i, _) -> Modular_decomp.get_region d i) [@@program];;
+let regions = Modular_decomp.get_regions d [@@program];;
 
 ```
 

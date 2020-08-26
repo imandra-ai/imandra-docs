@@ -150,9 +150,7 @@ verify
 Let's now use Imandra's Principal Region Decomposition to enumerate all the possible distinct regions of behavior of the intersection:
 ```{.imandra .input}
 #program;;
-let d = Modular_decomp.top ~assuming:"valid_car_state" "one_step";;
-Modular_decomp.prune d;;
-d;;
+let d = Modular_decomp.top ~prune:true ~assuming:"valid_car_state" "one_step";;
 ```
 
 Imandra has computed all the regions of behavior, let's now implement a custom printer using the `Imandra-tools` library to explore the behavior of the car in plain english:
