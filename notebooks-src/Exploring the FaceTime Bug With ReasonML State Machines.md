@@ -199,13 +199,13 @@ let add_person_property =
 This is a function that takes an arbitrary state and person, performs some actions on them, and then returns `true` or `false` to indicate whether the property holds. So here we're saying that if there are people in the call after responding to the `AddPerson` message, we're in the `CallActive` state, which is a nice general concept we'd like to be true! We are specifically testing the action that we know is broken here, but let's accept that for now and see what happens when we ask Imandra to verify the property for us (we're specifying a max unrolling depth for verification of 50 with the `~upto` flag - we'll come back to this later):
 
 ```{.imandra .input}
-verify ~upto=50 add_person_property;
+verify upto:50 add_person_property;
 ```
 
 Imandra analyses our code symbolically and we don't just get a pass/failure result - we get concrete counterexample values for the inputs to our function that illustrate the flaw in our thinking. If we want, we can compute and experiment with them (which can be very useful for investigating bugs Imandra has found):
 
 ```{.imandra .input}
-List.length(CX._x_0.peopleInCall);
+List.length(CX.state.peopleInCall);
 ```
 
 As we said, the goal above is fairly focused in on our new feature, and we've written it already knowing there's a bug in the area we're targeting - let's work with something that's more universal, helped by the fact that we've modeled things as a state machine. A helpful pattern when dealing with state machines is to check that properties hold under arbitrary sequences of actions:
@@ -227,7 +227,7 @@ We simulate actions run in a react-like reducer using a `fold` (`fold` and `redu
 
 ```{.imandra .input}
 let initial_state = { status: Idle, callIncomingFrom: None, peopleInCall: [] };
-verify ~upto=50 call_with_people_in_is_active_property(update_v2, initial_state);
+verify upto:50 call_with_people_in_is_active_property(update_v2, initial_state);
 ```
 
 The sequence of actions with a single `AddPerson` item already contradicts our property, which immediately shows us our issue and gives us an example to help out:
@@ -239,7 +239,7 @@ update_v2(initial_state, AddPerson(4));
 Let's try running the same property on our original update function, from before we added the new `AddPerson` action:
 
 ```{.imandra .input}
-verify ~upto=50 call_with_people_in_is_active_property(update, initial_state);
+verify upto:50 call_with_people_in_is_active_property(update, initial_state);
 ```
 
 This reveals another case we hadn't considered! We don't handle the `CallIncomingFrom` action from the `CallActive` state - it drops us straight out of `CallActive` back into `CallIncoming` while leaving people in the call, which might not be what we want.
@@ -276,7 +276,7 @@ let good_update = (state: state, action: action_v2): state =>
 Next, let's check it with our general property:
 
 ```{.imandra .input}
-verify ~upto=50 call_with_people_in_is_active_property(good_update, initial_state);
+verify upto:50 call_with_people_in_is_active_property(good_update, initial_state);
 ```
 
 Imandra's standard unrolling verification method can't find any issues up to our fairly high bound of 50 here. Although it hasn't totally proved things for us, this is a good indicator that we're on the right lines as it can't find any counterexamples. It's pretty hard for us to prove things completely in this case using this method, due to the nature of our property - as the list of actions is arbitrary and our state machine contains cycles, there are valid sequences of actions that are infinite, for example `[CallIncoming(1), CallAccepted, EndCall, CallIncoming(1), CallAccepted, EndCall, ...]`.

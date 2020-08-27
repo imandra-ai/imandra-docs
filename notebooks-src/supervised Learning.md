@@ -230,9 +230,7 @@ let partial_observation x =
   x.concavity_worst = 0.26000 &&
   x.concave_points_worst = 0.11460;;
 
-let d = Modular_decomp.top ~assuming:"partial_observation" "rf_model" [@@program];;
-Modular_decomp.prune d;;
-d
+Modular_decomp.top ~prune:true ~assuming:"partial_observation" "rf_model" [@@program];;
 ```
 
 ## Regression

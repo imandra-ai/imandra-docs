@@ -412,12 +412,9 @@ distribution ();;
 Now we have all these components we can find the regions of `f`, create a model from our `distribution` function, then estimate and display region probabilities:
 
 ```{.imandra .input}
-let d = Modular_decomp.top "f'" [@@program];;
-Modular_decomp.prune d [@@program];;
+let d = Modular_decomp.top ~prune:true "f'" [@@program];;
 
-let regions =
-  Modular_decomposition.to_region_list d
-  |> CCList.map (fun (i, _) -> Modular_decomp.get_region d i) [@@program];;
+let regions = Modular_decomp.get_regions d [@@program];;
 
 module Example = Distribution.From_Sampler (struct type domain = dom let dist = distribution end) [@@program];;
 

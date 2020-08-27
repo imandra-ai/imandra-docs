@@ -74,13 +74,5 @@ This verification fails, and Imandra gives us an example input that violates the
 We can also ask for a decomposition of all the regions in the `get_auth_result` function, which gives us an idea of the various conditions and complexity:
 
 ```{.imandra .input}
-let d = Modular_decomp.top "get_auth_result" [@@program];;
-Modular_decomp.prune d;; 
-d
-
-
-```
-
-```{.imandra .input}
-
+Modular_decomp.top ~prune:true "get_auth_result" [@@program];;
 ```
