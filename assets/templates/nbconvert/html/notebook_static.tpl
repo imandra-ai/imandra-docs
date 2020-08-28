@@ -272,12 +272,12 @@
                     lastId = id;
                     // Set/remove active class
                     menuItems.each(function (idx, item) {
-                      var $item = $(item);
-                      $item.removeClass("side__nav-link--within-page--active");
+                    var $item = $(item);
+                    $item.removeClass("side__nav-link--within-page--active");
 
-                      if (item.href.endsWith('#' + lastId)) {
+                    if (item.href.endsWith('#' + lastId)) {
                         $item.addClass("side__nav-link--within-page--active");
-                      };
+                    };
                     });
                 }
             });
