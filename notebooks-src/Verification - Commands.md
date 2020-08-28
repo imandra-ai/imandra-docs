@@ -43,7 +43,7 @@ Imandra has a number of powerful verification commands:
    than verifying it. This is of course dangerous and should be used with
    extreme care.
 
-### Examples
+## Examples
 
 ```{.imandra .input}
 verify (fun x -> x + 1 > x)

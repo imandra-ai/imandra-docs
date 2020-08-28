@@ -32,7 +32,7 @@ where `imandra-extract` fits in, allowing you to extract `.ml` and `.re` files.
 The `imandra-extract` binary comes bundled with your [Imandra
 installation](./Installation.md).
 
-### Example
+## Example
 
 ```ocaml
 let int_of_bit (a : bool) : Z.t =
