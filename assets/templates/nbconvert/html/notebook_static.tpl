@@ -271,16 +271,14 @@
                 if (id && lastId !== id) {
                     lastId = id;
                     // Set/remove active class
-                    if (menuItems.length > 1) {
-                        menuItems.each(function (idx, item) {
-                        var $item = $(item);
-                        $item.removeClass("side__nav-link--within-page--active");
+                    menuItems.each(function (idx, item) {
+                    var $item = $(item);
+                    $item.removeClass("side__nav-link--within-page--active");
 
-                        if (item.href.endsWith('#' + lastId)) {
-                            $item.addClass("side__nav-link--within-page--active");
-                            };
-                        });
+                    if (item.href.endsWith('#' + lastId)) {
+                        $item.addClass("side__nav-link--within-page--active");
                     };
+                    });
                 }
             });
         })()
