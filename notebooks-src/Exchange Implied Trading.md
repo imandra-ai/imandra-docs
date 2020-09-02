@@ -626,7 +626,7 @@ let transitivity s1 s2 s3 =
 verify transitivity
 ```
 
-## Ooops! It seems that our ranking criteria is not transitive. Let's check the results (note that the counter examples are now reflected into the run time in the CX module)
+*Ooops! It seems that our ranking criteria is not transitive. Let's check the results (note that the counter examples are now reflected into the run time in the CX module)*
 
 ```{.imandra .input}
 priority_strat CX.s1 CX.s2
