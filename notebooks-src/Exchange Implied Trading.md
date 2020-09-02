@@ -549,7 +549,7 @@ let no_lost_qtys (b : book) =
   book_nonneg_nonimp ==> (count_before = count_after)
 ;;
 
-verify ~upto_bound:15 no_lost_qtys
+verify ~upto:15 no_lost_qtys
 ```
 
 ### 2.4 Test generation
