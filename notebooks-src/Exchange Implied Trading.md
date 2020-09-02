@@ -570,7 +570,7 @@ let d = Modular_decomp.top ~assuming:"cond" "uncross_book" ~prune:true [@@progra
 (* Now let's try to generate some test cases *)
 
 (* This will auto-generate model extractor *)
-Extract.eval ~signature:(Event.DB.fun_id_of_str "uncross_book") ();;
+Extract.eval ~quiet:true ~signature:(Event.DB.fun_id_of_str "uncross_book") ();;
 
 #remove_doc doc_of_book;;
 #remove_doc doc_of_order;;
