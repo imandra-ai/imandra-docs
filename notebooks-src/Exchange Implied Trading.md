@@ -512,7 +512,7 @@ let fill_price_midpoint (b : book) =
 ;;
 
 
-verify upto:15 fill_price_midpoint
+verify ~upto:15 fill_price_midpoint
 ```
 
 Our second verification goal will look to make sure that no quantities are lost during uncrossing. Note that no fills are generated for implied orders (there's a different mechanism for that), so when we look at the book we will only consider outright orders. Note that `o_qty` represents the residual order quantity - for this demo, we do not differentiate between original, filled and residual order quantity. When order is created, the `qty` is set to that number and is decreased when filled.
