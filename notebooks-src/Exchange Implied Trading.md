@@ -573,8 +573,10 @@ let d = Modular_decomp.top ~assuming:"cond" "uncross_book" ~prune:true [@@progra
 Extract.eval ~signature:(Event.DB.fun_id_of_str "uncross_book") ();;
 
 #remove_doc doc_of_book;;
+#remove_doc doc_of_order;;
 Modular_decomp.get_regions d |> CCList.map (fun r -> r |> Modular_decomp.get_model |> Mex.of_model);;
-#install_printer doc_of_book;;
+#install_doc doc_of_order;;
+#install_doc doc_of_book;;
 ```
 
 ## 3 Implied trading
