@@ -1163,7 +1163,10 @@ An additional constraint which is not enforciable by the OCaml type system but i
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>val root_Q01oWlRQekF4cXdRb2N5UFlkTzhtMzBHUDFEbEExNUJtcjdLL1NWZE5NWQ :
+<pre>- : unit = ()
+val root_Q01oWlRQekF4cXdRb2N5UFlkTzhtMzBHUDFEbEExNUJtcjdLL1NWZE5NWQ_val : int =
+  0
+val root_Q01oWlRQekF4cXdRb2N5UFlkTzhtMzBHUDFEbEExNUJtcjdLL1NWZE5NWQ :
   TPL.c list -&gt; int = &lt;fun&gt;
 module Mex :
   sig
@@ -1319,14 +1322,18 @@ module IDF :
     }
     val replay_events : TPL.c list -&gt; replay_sample list
     val replay : node -&gt; replay_sample list
-    val decompose :
-      g:G.t -&gt;
-      ?basis:string list -&gt;
-      ?include_partial_paths:bool -&gt;
-      ?expanding:string list -&gt;
-      ?valid_pol:bool option list -&gt;
-      ?assuming:string -&gt;
-      ?region_expander:region_expander list -&gt; target -&gt; unit -&gt; unit
+    type &#39;a decomp =
+        g:G.t -&gt;
+        ?basis:string list -&gt;
+        ?expanding:string list -&gt;
+        ?valid_pol:bool option list -&gt;
+        ?assuming:string -&gt;
+        ?region_expander:region_expander list -&gt; target -&gt; &#39;a
+    type runner = IDF.runner
+    val create : unit -&gt; runner
+    val add : runner:runner -&gt; unit decomp
+    val run : runner -&gt; unit -&gt; unit
+    val decompose : (unit -&gt; unit) decomp
   end
 </pre>
 </div>
