@@ -19,7 +19,6 @@ If you prefer investigating a particular topic in a bit more depth, take a look 
 - [Tic Tac Toe with ReasonML](Tic%20Tac%20Toe%20with%20ReasonML.md): ReasonML provides an alternative syntax for OCaml, which Imandra can read. Let's walk through an example ReasonML model of Tic Tac Toe and use Imandra to understand and verify some properties of it.
 - [Exploring The Apple FaceTime Bug with ReasonML State Machines](Exploring%20the%20FaceTime%20Bug%20With%20ReasonML%20State%20Machines.md): In this notebook we explore the Apple FaceTime bug and different ways of modelling our applications as state machines.
 - [Crossing the River Safely](Crossing_the_river_safely.md): For the sake of brain scrambling, we're going to solve this ancient puzzle using Imandra (again!). As most polyvalent farmers will tell you, going to the market with your pet wolf, tastiest goat, and freshest cabbage is sometimes difficult as they tend to have appetite for one another. The good news is that there is a way to cross this river safely anyway.
-- [Creating and Verifying a ROS Node](Creating%20and%20Verifying%20a%20ROS%20Node.md): At AI, we've been working on an IML (Imandra Modelling Language) interface to ROS, allowing one to develop ROS nodes and use Imandra to verify their properties. In this notebook, we will go through creation and verification of a Robotic Operating System (ROS) node in Imandra. We will make a robot control node that controls the motion of a simple 2-wheeler bot.
 
 ## Intermediate
 

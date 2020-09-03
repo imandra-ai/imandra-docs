@@ -22,11 +22,12 @@ docker-dev:
     -v ~/.imandra:/home/jovyan/.imandra \
     imandra-docs-dev:latest
 
-_build/login_token:
-	mkdir -p $(dir $@)
-	@echo "$(IMANDRA_TOKEN)" > $@
+_build:
+	mkdir _build
 
-docker-build-docs: _build/login_token
+docker-build-docs: _build
+	@echo "$(IMANDRA_TOKEN)" > _build/login_token
+	docker pull $(IMANDRA_DOCS_BUILDER)
 	docker run --rm \
     -v `pwd`:/mnt/src \
     -v `pwd`/_build:/mnt/dst \
