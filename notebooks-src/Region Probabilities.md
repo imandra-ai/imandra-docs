@@ -3,6 +3,7 @@ title: "Region Probabilities"
 description: "Estimating Region Probabilities from Statistical Models and Datasets"
 kernel: imandra
 slug: region-probabilities
+difficulty: advanced
 ---
 
 # Region Probabilities

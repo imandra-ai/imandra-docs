@@ -3,6 +3,7 @@ title: "Verifying Merge Sort in Imandra"
 description: "Merge sort is a widely used efficient general purpose sorting algorithm, and a prototypical divide and conquer algorithm. It forms the basis of standard library sorting functions in languages like OCaml, Java and Python. Let's verify it with Imandra!"
 kernel: imandra
 slug: verifying-merge-sort
+difficulty: advanced
 ---
 
 # Verifying Merge Sort in Imandra
@@ -208,7 +209,7 @@ Analysing the output of this proof attempt, we notice the following components o
 
 Ah, of course! We need to prove a lemma that `merge` respects the sortedness of its inputs.
 
-Let's do this by functional induction following the definition of `merge` and install it as a `rewrite` rule. 
+Let's do this by functional induction following the definition of `merge` and install it as a `rewrite` rule.
 We'll allow nested induction (`#max_induct 2`), but it's a good exercise to do this proof without it (deriving an additional lemma!).
 
 ```{.imandra .input}

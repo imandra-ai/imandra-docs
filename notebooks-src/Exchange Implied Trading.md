@@ -5,6 +5,7 @@ kernel: imandra
 slug: exchange-implied-trading
 key-phrases:
   - financial exchanges
+difficulty: intermediate
 ---
 
 In this notebook, we'll look into modelling implied trading within an exchange. Implied trading refers to ability to connect liquidity on strategy and outright order books (e.g. Euronext).
@@ -45,7 +46,7 @@ let month_comp (m1 : month) (m2 : month) =
 type instrument =
   | Strategy of strategy_id
   | Outright of outright_id
-    
+
 (* Level information *)
 type level_info = {
   li_qty : int
@@ -79,7 +80,7 @@ type order = {
 
 (* Helper function to make order creation simpler *)
 let make si qty price id inst clientid isimp time =
-  {o_qty = qty ; o_price = price; o_id = id; o_side = si; 
+  {o_qty = qty ; o_price = price; o_id = id; o_side = si;
    o_client_id = clientid; o_inst = inst; o_is_implied = isimp;
    o_time = time }
 
@@ -91,7 +92,7 @@ type book = {
 }
 
 let empty_book = { b_buys = []; b_sells = [] }
-    
+
 (* Individual leg *)
 type leg = {
   leg_sec_idx : outright_id
@@ -111,7 +112,7 @@ let make_strat tcreated m1 m2 m3 = {
   time_created = tcreated
   ; leg1 = { leg_sec_idx = OUT1; leg_mult = m1 }
   ; leg2 = { leg_sec_idx = OUT2; leg_mult = m2 }
-  ; leg3 = { leg_sec_idx = OUT3; leg_mult = m3 } 
+  ; leg3 = { leg_sec_idx = OUT3; leg_mult = m3 }
 }
 
 type implied_strat_ord = {
@@ -137,7 +138,7 @@ type cancel_ord_msg = {
 }
 
 (* Inbound messages type *)
-type inbound_msg = 
+type inbound_msg =
   | NewOrder of new_ord_msg
   | CancelOrder of cancel_ord_msg
   | ImpliedUncross
@@ -179,7 +180,7 @@ type uncross_res = {
 }
 
 (* outbound message type *)
-type outbound_msg = 
+type outbound_msg =
   | Ack of ack_msg
   | Fill of fill
   | UncrossResult of uncross_res
@@ -227,16 +228,16 @@ let html_of_order (o : order) =
   let module H = Tyxml.Html in
   H.div
   ~a:(if o.o_is_implied then [H.a_style "color: red"] else [])
-  [ H.div 
+  [ H.div
     ~a:[H.a_style "font-size: 1.4em"]
     [H.txt (Format.asprintf "%s (%s)" (Z.to_string o.o_price) (Z.to_string o.o_qty))]
   ; H.div (if o.o_is_implied then [H.txt "Implied"] else [])
   ]
-  
+
 let doc_of_order (o:order) =
   let module H = Tyxml.Html in
   Document.html (H.div [html_of_order o]);;
-  
+
 #install_doc doc_of_order
 
 let html_of_book ?(title="") (b: book) =
@@ -248,36 +249,36 @@ let html_of_book ?(title="") (b: book) =
       | [], s :: ss -> build_rows (acc @ [H.tr [H.td [H.txt "-"]; H.td [html_of_order s]]]) [] ss
       | [], [] -> acc
   in
-  H.div 
+  H.div
   ~a:[H.a_style "margin-right:1em; display: flex; flex-direction: column; align-items: center; justify-content: flex-start"]
   [ H.div ~a:[H.a_style "font-weight: bold"] [H.txt title]
   ; H.table
     ~thead:(H.thead [H.tr [H.th [H.txt "Buys"]; H.th [H.txt "Sells"]]])
     (build_rows [] b.b_buys b.b_sells)]
-  
+
 let doc_of_book (b:book) =
   let module H = Tyxml.Html in
   Document.html (H.div [html_of_book ~title:"M1 Mar21" b]);;
-  
+
 #install_doc doc_of_book;;
 
 let html_of_market (m: market) =
   let module H = Tyxml.Html in
-  H.div 
+  H.div
   [ H.div ~a:[H.a_style "display: flex"]
-    [ html_of_book ~title:"Strategy 1" m.s_book1 
+    [ html_of_book ~title:"Strategy 1" m.s_book1
     ; html_of_book ~title:"Strategy 2" m.s_book2
     ]
   ; H.div ~a:[H.a_style "margin-top: 1em; display: flex"]
-    [ html_of_book ~title:"Book 1" m.out_book1 
+    [ html_of_book ~title:"Book 1" m.out_book1
     ; html_of_book ~title:"Book 2" m.out_book2
     ; html_of_book ~title:"Book 3" m.out_book3
     ]]
-    
+
 let doc_of_market (m : market) =
   let module H = Tyxml.Html in
   Document.html (html_of_market m);;
-  
+
 #install_doc doc_of_market;;
 
 #logic;;
@@ -291,7 +292,7 @@ let leg = { leg_sec_idx = OUT1; leg_mult = 1 } in
 let strat = { time_created = 0; leg1 = leg; leg2 = leg; leg3 = leg } in
 
 let b1 = {
-  b_buys = [ 
+  b_buys = [
     (make BUY 100 54 1 (Outright OUT1) 1 true 1)
     ;(make BUY 100 54 2 (Outright OUT1) 1 false 1)
   ]
@@ -321,7 +322,7 @@ let b1 = {
 ```{.imandra .input}
 (* Convert fills into outbound messages *)
 let rec create_fill_msgs (f : fill list) =
-  match f with 
+  match f with
   | [] -> []
   | x::xs -> (Fill x) :: create_fill_msgs xs
 
@@ -337,7 +338,7 @@ let rec cancel_ord_side (orders : order list) (c : cancel_ord_msg) =
 
 (* Helper to cancel orders *)
 let cancel_ord_book (co : cancel_ord_msg) (b : book) =
-  match co.co_side with 
+  match co.co_side with
   | BUY -> { b with b_buys = (cancel_ord_side b.b_buys co) }
   | SELL -> { b with b_sells = (cancel_ord_side b.b_sells co) }
 
@@ -354,7 +355,7 @@ let rec insert_order_side (orders : order list) (o : order) =
     end
 
 (* insert order into the book *)
-let insert_order (o : order) (b : book) = 
+let insert_order (o : order) (b : book) =
   if o.o_side = BUY then
     { b with b_buys = (insert_order_side b.b_buys o) }
   else
@@ -362,7 +363,7 @@ let insert_order (o : order) (b : book) =
 
 (* The fills are adjusted to a single fill price during the uncross *)
 let rec adjust_fill_prices (fills : fill list) ( f_price : int ) =
-  match fills with 
+  match fills with
   | [] -> []
   | x::xs -> { x with fill_price = f_price } :: ( adjust_fill_prices xs f_price )
 ;;
@@ -378,10 +379,10 @@ let rec adjust_fill_prices (fills : fill list) ( f_price : int ) =
 let book_measure b =
   Ordinal.of_int (List.length b.b_buys + List.length b.b_sells)
 
-let rec uncross_book (b : book) (fills : fill list) (filled_qty : int) = 
+let rec uncross_book (b : book) (fills : fill list) (filled_qty : int) =
   match b.b_buys, b.b_sells with
   | [], [] | _, [] | [], _ ->
-    (* we need to check whether there have been fills before, 
+    (* we need to check whether there have been fills before,
       if so we need to adjust fill prices before getting out *)
     begin
       match fills with
@@ -402,13 +403,13 @@ let rec uncross_book (b : book) (fills : fill list) (filled_qty : int) =
         let sell' = { sell with o_qty = sell.o_qty - fill_qty } in
 
         (* create the fills *)
-        let fill1 = { 
+        let fill1 = {
           fill_client_id = buy.o_client_id
           ; fill_qty = fill_qty
           ; fill_price = fill_price
           ; fill_order_id = buy.o_id
           ; fill_order_done = true } in
-        
+
         let fill2 = {
           fill_client_id = sell.o_client_id
           ; fill_qty = fill_qty
@@ -433,7 +434,7 @@ let rec uncross_book (b : book) (fills : fill list) (filled_qty : int) =
         (* recursively go to the next level *)
         uncross_book b' fills' (filled_qty + fill_qty)
       end
-      
+
     else
       (* nothing to do here *)
       { uncrossed_book = b; uncrossed_fills = fills; uncrossed_qty = filled_qty }
@@ -481,7 +482,7 @@ let rec side_price_sorted (si : side) (orders : order list) =
 ;;
 
 (* Let's make sure all the fills have this price *)
-let rec fills_good_price (fills : fill list) (p : int) = 
+let rec fills_good_price (fills : fill list) (p : int) =
   match fills with
   | [] -> true
   | x::xs -> (x.fill_price = p) && (fills_good_price xs p)
@@ -493,7 +494,7 @@ let fill_price_midpoint (b : book) =
   let buys_sorted = side_price_sorted BUY b.b_buys in
   let sells_sorted = side_price_sorted SELL b.b_sells in
 
-  let result_good = 
+  let result_good =
     begin
       match b.b_buys, b.b_sells with
       | [], _ -> true
@@ -519,8 +520,8 @@ Our second verification goal will look to make sure that no quantities are lost 
 
 ```{.imandra .input}
 (* All no quantities get lost during uncross *)
-let no_lost_qtys (b : book) = 
-  
+let no_lost_qtys (b : book) =
+
   let rec qtys_pos_nonimp = function
     | [] -> true
     | x::xs -> x.o_qty >= 0 && not x.o_is_implied && (qtys_pos_nonimp xs) in
@@ -534,15 +535,15 @@ let no_lost_qtys (b : book) =
     | x::xs -> x.fill_qty + (sum_fill_qtys xs) in
 
   let unc_res = uncross_book b [] 0 in
-  
+
   (* We need to make sure the book is non-negative *)
   let book_nonneg_nonimp = (qtys_pos_nonimp b.b_buys) && (qtys_pos_nonimp b.b_sells) in
 
   (* Let's sum up all of the quantities of orders before the uncross *)
   let count_before = (sum_qtys b.b_buys) + (sum_qtys b.b_sells) in
-  
+
   (* And after *)
-  let count_after = (sum_qtys unc_res.uncrossed_book.b_buys) + 
+  let count_after = (sum_qtys unc_res.uncrossed_book.b_buys) +
                     (sum_qtys unc_res.uncrossed_book.b_sells) +
                     (sum_fill_qtys unc_res.uncrossed_fills) in
 
@@ -557,7 +558,7 @@ verify ~upto:15 no_lost_qtys
 First, we will decompose the function and then generate test cases for it.
 
 ```{.imandra .input}
-(* This is a 'side_condition' function that tells decomposition that we're only interested in cases where the 
+(* This is a 'side_condition' function that tells decomposition that we're only interested in cases where the
 initial fills are empty *)
 let cond (b : book) (fills : fill list) (filled_qty : int) =
  fills = [] && filled_qty = 0
@@ -587,19 +588,19 @@ When generating implied orders for strategies, there's a criteria used to rank s
 
 ```{.imandra .input}
 (* Calculate somehow how big the ratio is *)
-let leg_ratio (s : strategy) = 
+let leg_ratio (s : strategy) =
   let abs x = if x < 0 then -x else x in
   (abs s.leg1.leg_mult) + (abs s.leg2.leg_mult) + (abs s.leg3.leg_mult)
 ;;
 
 (* Nearest time to expiry *)
 let nearest_time_to_exp (s : strategy) =
-  let exp = 
+  let exp =
     if (month_to_int (contract_expiry s.leg1.leg_sec_idx)) < (month_to_int (contract_expiry s.leg2.leg_sec_idx)) then
       contract_expiry s.leg1.leg_sec_idx
     else
       contract_expiry s.leg2.leg_sec_idx in
-  
+
   if (month_to_int exp) < (month_to_int (contract_expiry s.leg2.leg_sec_idx)) then
     exp
   else
@@ -614,7 +615,7 @@ let priority_strat (s1 : strategy) (s2 : strategy) =
     3. strategy creation times *)
   if (month_to_int (nearest_time_to_exp s1)) < (month_to_int (nearest_time_to_exp s2)) then
     true
-  else 
+  else
     if (leg_ratio s1) > (leg_ratio s2) then
       true
     else
@@ -624,7 +625,7 @@ let priority_strat (s1 : strategy) (s2 : strategy) =
 ```{.imandra .input}
 let transitivity s1 s2 s3 =
  ((priority_strat s1 s2) && (priority_strat s2 s3)) ==> (priority_strat s1 s3)
- 
+
 verify transitivity
 ```
 
@@ -647,7 +648,7 @@ priority_strat CX.s1 CX.s3
 ```{.imandra .input}
 (* return the sum of volume at the highest level *)
 let rec get_level_sums (orders : order list) (li : level_info option) =
-  match orders with 
+  match orders with
   | [] -> li
   | x::xs ->
     begin
@@ -661,14 +662,14 @@ let rec get_level_sums (orders : order list) (li : level_info option) =
     end
 
 (* Return best bid/ask levels *)
-let get_book_tops (b : book) = 
+let get_book_tops (b : book) =
   let bid_info = get_level_sums b.b_buys None in
   let ask_info = get_level_sums b.b_sells None in
   { bid_info; ask_info }
 ;;
 
 (* Get the maximum number of strategy units here *)
-(* Note that the units may have different signs, so we 
+(* Note that the units may have different signs, so we
  need to make sure that we have enough *)
 let calc_implied_strat_order (sid : strategy_id) (s : strategy) (books : books_info) (si : side) (time : int) =
   let abs x = if x < 0 then -x else x in
@@ -697,19 +698,19 @@ let calc_implied_strat_order (sid : strategy_id) (s : strategy) (books : books_i
   let mult3 = calc_max_out_mult s.leg3.leg_mult books.book3 in
 
   (* Compute the quantity *)
-  let max_strat = 
-    begin 
-       match mult1 with 
+  let max_strat =
+    begin
+       match mult1 with
        | None -> 0
        | Some x -> x
     end in
-  let max_strat = 
+  let max_strat =
     begin
        match mult2 with
        | None -> max_strat
        | Some x -> if x < max_strat then x else max_strat
     end in
-  let max_strat = 
+  let max_strat =
     begin
      match mult3 with
      | None -> max_strat
@@ -717,11 +718,11 @@ let calc_implied_strat_order (sid : strategy_id) (s : strategy) (books : books_i
     end in
 
   (* Now compute the price *)
-  let strat_price = 
-    begin 
-       match mult1 with 
+  let strat_price =
+    begin
+       match mult1 with
        | None -> 0
-       | Some x -> 
+       | Some x ->
          begin
             if (adjust s.leg1.leg_mult) > 0 then
                 match books.book1.bid_info with
@@ -733,11 +734,11 @@ let calc_implied_strat_order (sid : strategy_id) (s : strategy) (books : books_i
                 | None -> 0
          end
     end in
-  let strat_price = 
-    begin 
-       match mult2 with 
+  let strat_price =
+    begin
+       match mult2 with
        | None -> strat_price
-       | Some x -> 
+       | Some x ->
          begin
             if (adjust s.leg2.leg_mult) > 0 then
                 match books.book2.bid_info with
@@ -749,11 +750,11 @@ let calc_implied_strat_order (sid : strategy_id) (s : strategy) (books : books_i
                 | None -> strat_price
          end
     end in
-  let strat_price = 
-    begin 
-       match mult3 with 
+  let strat_price =
+    begin
+       match mult3 with
        | None -> strat_price
-       | Some x -> 
+       | Some x ->
          begin
             if (adjust s.leg3.leg_mult) > 0 then
                 match books.book3.bid_info with
@@ -792,7 +793,7 @@ let strat1 = {
 let books = {
     book1 = { bid_info = None ; ask_info = Some { li_qty = 100 ; li_price = 450 }}
   ; book2 = { bid_info = Some { li_qty = 125 ; li_price = 100 }; ask_info = Some { li_qty = 100 ; li_price = 350 }}
-  ; book3 = { bid_info = None ; ask_info = Some { li_qty = 100 ; li_price = 425 }} 
+  ; book3 = { bid_info = None ; ask_info = Some { li_qty = 100 ; li_price = 425 }}
 };;
 
 (* This should just replicate the OUT1 security on the SELL side *)
@@ -831,7 +832,7 @@ let strat = {
 let books = {
     book1 = { bid_info = Some { li_qty = 500; li_price = 50 } ; ask_info = Some { li_qty = 750 ; li_price = 50 }}
   ; book2 = { bid_info = Some { li_qty = 200 ; li_price = 60 }; ask_info = Some { li_qty = 500 ; li_price = 70 }}
-  ; book3 = { bid_info = None ; ask_info = None } 
+  ; book3 = { bid_info = None ; ask_info = None }
 };;
 
 calc_implied_strat_order STRAT1 strat books BUY 1
@@ -843,26 +844,26 @@ calc_implied_strat_order STRAT1 strat books BUY 1
 
 (* removes implied orders from a book *)
 let remove_imp_orders (b : book) =
-  let rec remove_imp_orders_side (orders : order list) = 
+  let rec remove_imp_orders_side (orders : order list) =
     match orders with
     | [] -> []
-    | x::xs -> 
-        if x.o_is_implied then 
+    | x::xs ->
+        if x.o_is_implied then
           (remove_imp_orders_side xs)
         else
           x::(remove_imp_orders_side xs) in
-    
+
   { b_buys = (remove_imp_orders_side b.b_buys)
   ; b_sells = (remove_imp_orders_side b.b_sells)
   }
 
 (* Allocate implied fills to the book and return fills *)
-let allocate_implied_fills (b : book) (qty : int) (price : int) (time : int) = 
+let allocate_implied_fills (b : book) (qty : int) (price : int) (time : int) =
   if qty = 0 then {
     uncrossed_book = b
     ; uncrossed_fills = []
     ; uncrossed_qty = 0
-  } else 
+  } else
   begin
     (* Insert new order into the book and uncross it *)
     let new_order = {
@@ -874,8 +875,8 @@ let allocate_implied_fills (b : book) (qty : int) (price : int) (time : int) =
       ; o_client_id = -1
       ; o_inst = Outright OUT1
       ; o_is_implied = true
-    } in 
-    
+    } in
+
     (* create new order that we will trade *)
     let b' = insert_order new_order b in
 
@@ -910,7 +911,7 @@ let implied_uncross_side (sd : side) (s_id : strategy_id) (s : strategy) (m : ma
   (* 0. get the top of the book s*)
   let book1 = get_book_tops m.out_book1 in
   let book2 = get_book_tops m.out_book2 in
-  let book3 = get_book_tops m.out_book3 in 
+  let book3 = get_book_tops m.out_book3 in
 
   let books_tops = { book1; book2; book3 } in
 
@@ -937,15 +938,15 @@ let implied_uncross_side (sd : side) (s_id : strategy_id) (s : strategy) (m : ma
     (* Since we didn't trade anything, let's just return the original market state *)
     m
   else
-  
+
   let adjust (mult : int) =
     let mult = -mult in
     if sd = BUY then mult else -mult in
-  
+
   let adj_mul1 = adjust s.leg1.leg_mult in
   let adj_mul2 = adjust s.leg2.leg_mult in
   let adj_mul3 = adjust s.leg3.leg_mult in
-  
+
   (* calculate the prices at which outright orders will trade *)
   let price1 = calc_implied_trade_price adj_mul1 book1 in
   let price2 = calc_implied_trade_price adj_mul2 book2 in
@@ -966,7 +967,7 @@ let implied_uncross_side (sd : side) (s_id : strategy_id) (s : strategy) (m : ma
   let new_fill_msgs = create_fill_msgs (unc_result.uncrossed_fills @ out_book1_res.uncrossed_fills
     @ out_book2_res.uncrossed_fills @ out_book3_res.uncrossed_fills) in
 
-  { m with 
+  { m with
     outbound_msgs = new_fill_msgs @ m.outbound_msgs
     ; out_book1 = out_book1_res.uncrossed_book
     ; out_book2 = out_book2_res.uncrossed_book
@@ -993,12 +994,12 @@ let strat = {
 let books = {
     book1 = { bid_info = Some { li_qty = 500; li_price = 50 } ; ask_info = Some { li_qty = 750 ; li_price = 50 }}
   ; book2 = { bid_info = Some { li_qty = 200 ; li_price = 60 }; ask_info = Some { li_qty = 500 ; li_price = 70 }}
-  ; book3 = { bid_info = None ; ask_info = None } 
+  ; book3 = { bid_info = None ; ask_info = None }
 };;
 
 let m = {
   curr_time = 1
-  
+
   ; last_ord_id = 0
 
   (* first strategy is 2*x1 - x2 + x3 *)
@@ -1007,33 +1008,33 @@ let m = {
   ; strat2 = (make_strat 2 0 1 0)
 
   (* outright books *)
-  ; out_book1 = { 
+  ; out_book1 = {
     b_buys = [ (make BUY 500 50 1 (Outright OUT1) 1 false 1) ]
-    ; b_sells = [ (make SELL 750 55 2 (Outright OUT1) 1 false 1) ] 
+    ; b_sells = [ (make SELL 750 55 2 (Outright OUT1) 1 false 1) ]
   }
 
   ; out_book2 = {
     b_buys = [ (make BUY 200 60 3 (Outright OUT1) 1 false 1) ]
-    ; b_sells = [ (make SELL 500 70 4 (Outright OUT1) 1 false 1) ] 
+    ; b_sells = [ (make SELL 500 70 4 (Outright OUT1) 1 false 1) ]
   }
 
-  ; out_book3 = { 
+  ; out_book3 = {
     b_buys = [ ]
-    ; b_sells = [] 
+    ; b_sells = []
   }
 
   (* Strategy books *)
-  ; s_book1 = { 
-    b_buys = [ 
+  ; s_book1 = {
+    b_buys = [
     ]
     ; b_sells = [
       (make SELL 100 (-100) 5 (Strategy STRAT1) 1 false 1)
-    ] 
+    ]
   }
   ; s_book2 = empty_book
 
   (* Inbound and outbound message queues *)
-  ; inbound_msgs = [] 
+  ; inbound_msgs = []
   ; outbound_msgs = []
 } in
 
@@ -1047,12 +1048,12 @@ m'.outbound_msgs
 ### 3.5 Implied uncrossing decomposition
 
 ```{.imandra .input}
-(* Let's try to decompose the logic of 'implied_uncross_side' - we will put 
+(* Let's try to decompose the logic of 'implied_uncross_side' - we will put
    several functions in the basis to focus on the critical aspects of the logic *)
-let d = Modular_decomp.top "implied_uncross_side" 
+let d = Modular_decomp.top "implied_uncross_side"
         ~basis:["get_book_tops"; "allocate_implied_fills"; "insert_order";
         "create_fill_msgs"; "calc_implied_strat_order"] ~prune:true [@@program];;
-    
+
 ```
 
 ### 3.6 Full book implied uncross
@@ -1065,7 +1066,7 @@ let implied_uncross_books (s : strategy_id) (m : market) =
       let m = implied_uncross_side BUY s m.strat1 m in
       implied_uncross_side SELL s m.strat1 m
     end
-  else 
+  else
     begin
       let m = implied_uncross_side BUY s m.strat2 m in
       implied_uncross_side SELL s m.strat2 m
@@ -1091,8 +1092,8 @@ let run_new_order (m : market) (no : new_ord_msg) =
     ; o_is_implied = false (* these are always outright *)
   } in
 
-  let m' = 
-    match no.no_inst_type with 
+  let m' =
+    match no.no_inst_type with
     | Strategy STRAT1 -> { m with s_book1 = (insert_order o m.s_book1) }
     | Strategy STRAT2 -> { m with s_book2 = (insert_order o m.s_book2) }
     | Outright OUT1   -> { m with out_book1 = (insert_order o m.out_book1) }
@@ -1107,7 +1108,7 @@ let run_new_order (m : market) (no : new_ord_msg) =
 
 ```{.imandra .input}
 (* Cancel an order *)
-let run_cancel_order (m : market) (co : cancel_ord_msg) = 
+let run_cancel_order (m : market) (co : cancel_ord_msg) =
   match co.co_instrument with
   | Strategy STRAT1 -> {m with s_book1 = (cancel_ord_book co m.s_book1)}
   | Strategy STRAT2 -> {m with s_book2 = (cancel_ord_book co m.s_book2)}
@@ -1121,17 +1122,17 @@ let run_cancel_order (m : market) (co : cancel_ord_msg) =
 
 ```{.imandra .input}
 (* Perform opreation to execute new fill *)
-let run_implied_uncross (m : market) = 
+let run_implied_uncross (m : market) =
 
   (* Do the typical uncross between the strategies *)
   let sbook1_res = uncross_book m.s_book1 [] 0 in
-  let sbook2_res = uncross_book m.s_book2 [] 0 in 
+  let sbook2_res = uncross_book m.s_book2 [] 0 in
 
   (*  outright books  *)
   let obook1_res = uncross_book m.out_book1 [] 0 in
   let obook2_res = uncross_book m.out_book2 [] 0 in
   let obook3_res = uncross_book m.out_book3 [] 0 in
-  
+
   (* Now let's update the entire market state *)
   let m' = {
     m with
@@ -1142,18 +1143,18 @@ let run_implied_uncross (m : market) =
       ; out_book2 = obook2_res.uncrossed_book
       ; out_book3 = obook3_res.uncrossed_book
 
-      ; outbound_msgs = 
+      ; outbound_msgs =
           create_fill_msgs (
             sbook1_res.uncrossed_fills @
             sbook2_res.uncrossed_fills @
             obook1_res.uncrossed_fills @
-            obook2_res.uncrossed_fills @ 
+            obook2_res.uncrossed_fills @
             obook3_res.uncrossed_fills )
   } in
 
   (* Now we should be done with uncrossing the books the old way,
-    let's now create implied orders here. 
-    Notice that we're using the priority function to determine which 
+    let's now create implied orders here.
+    Notice that we're using the priority function to determine which
     strategy order book runs first... *)
   if priority_strat m'.strat1 m'.strat2 then
     let m' = implied_uncross_books STRAT1 m' in
@@ -1170,9 +1171,9 @@ let run_implied_uncross (m : market) =
 
 let m2 = {
   curr_time = 1
-  
+
   ; last_ord_id = 0
-  
+
   (* In a larger model, we can *)
   (* first strategy is 2*x1 - x2 + x3 *)
   ; strat1 = (make_strat 1 2 (-1) 1)
@@ -1180,14 +1181,14 @@ let m2 = {
   ; strat2 = (make_strat 2 0 1 0)
 
   (* outright books *)
-  ; out_book1 = { 
+  ; out_book1 = {
     b_buys = [ (make BUY 500 50 1 (Outright OUT1) 1 false 1) ]
-    ; b_sells = [ (make SELL 750 55 2 (Outright OUT1) 1 false 1) ] 
+    ; b_sells = [ (make SELL 750 55 2 (Outright OUT1) 1 false 1) ]
   }
 
   ; out_book2 = {
     b_buys = [ (make BUY 200 60 3 (Outright OUT1) 1 false 1) ]
-    ; b_sells = [ (make SELL 500 70 4 (Outright OUT1) 1 false 1) ] 
+    ; b_sells = [ (make SELL 500 70 4 (Outright OUT1) 1 false 1) ]
   }
   ; out_book3 = empty_book
 
@@ -1196,7 +1197,7 @@ let m2 = {
   ; s_book2 = empty_book
 
   (* Inbound and outbound message queues *)
-  ; inbound_msgs = [] 
+  ; inbound_msgs = []
   ; outbound_msgs = []
 }
 ```
@@ -1206,7 +1207,7 @@ This is where we put it all together. Note that this is a 'shortened' version of
 
 ```{.imandra .input}
 (* The main state transition loop of the exchange state *)
-let step (m : market) (msg : inbound_msg) = 
+let step (m : market) (msg : inbound_msg) =
  begin
   match msg with
   | NewOrder no -> run_new_order m no
@@ -1232,9 +1233,9 @@ Now let's have a complete example that shows how to insert and then trade outrig
 let m4 = {
 
   curr_time = 1
-  
+
   ; last_ord_id = 0
-  
+
   (* first strategy is 2*x1 - x2 + x3 *)
   ; strat1 = (make_strat 1 2 (-1) 1)
   (* second strategy is just the 3rd outright security *)

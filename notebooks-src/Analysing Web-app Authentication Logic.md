@@ -7,6 +7,7 @@ keywords:
   - web-app
   - testing
   - counterexample
+difficulty: beginner
 ---
 
 # Analysing Web-app Authentication Logic

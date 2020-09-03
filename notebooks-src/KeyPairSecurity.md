@@ -9,6 +9,7 @@ key-phrases:
   - probabilities
   - counterexample
   - verify
+difficulty: intermediate
 ---
 
 # Key Pair Security in Imandra

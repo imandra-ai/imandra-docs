@@ -10,6 +10,7 @@ key-phrases:
   - ReasonML
   - interactive development
   - document printers
+difficulty: beginner
 ---
 
 # Tic Tac Toe with ReasonML

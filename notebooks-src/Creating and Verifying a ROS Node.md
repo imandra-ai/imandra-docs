@@ -6,6 +6,7 @@ slug: verifying-an-ros-node
 key-phrases:
   - ROS
   - counterexample
+difficulty: intermediate
 ---
 
 # Creating and Verifying a ROS Node

@@ -3,6 +3,7 @@ title: "Verifying a Simple Autonomous Vehicle Controller in Imandra"
 description: "In this notebook, we'll design and verify a simple autonomous vehicle controller in Imandra. The controller we analyse is due to Boyer, Green and Moore, and is described and analysed in their article The Use of a Formal Simulator to Verify a Simple Real Time Control Program."
 kernel: imandra
 slug: simple-vehicle-controller
+difficulty: beginner
 ---
 
 # Verifying a simple autonomous vehicle controller in Imandra
@@ -30,8 +31,8 @@ At each sampling interval, the controller may increment or decrement the `y`-com
 
 # The Imandra model
 
-The Imandra model of our system and its environment is rooted in a `state` vector consisting of three values: 
- - `w` - current wind velocity 
+The Imandra model of our system and its environment is rooted in a `state` vector consisting of three values:
+ - `w` - current wind velocity
  - `y` - current y-position of the vehicle
  - `v` - accumulated velocity of the vehicle
 

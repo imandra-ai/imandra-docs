@@ -10,6 +10,7 @@ key-phrases:
   - ReasonML
   - interactive development
   - state machines
+difficulty: beginner
 ---
 
 # Exploring The Apple FaceTime Bug with ReasonML State Machines

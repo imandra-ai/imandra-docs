@@ -3,6 +3,7 @@ title: "Verifying a Ripple Carry Adder"
 description: "In this notebook, we'll verify a simple hardware design in Imandra, that of a full (arbitrary width) ripple-carry adder. We'll express this simple piece of hardware at the gate level. The theorem we'll prove expresses that our (arbitrary width) adder circuit is correct for all possible bit sequences."
 kernel: imandra
 slug: ripple-carry-adder
+difficulty: advanced
 ---
 
 # Verifying a Ripple-Carry Adder in Imandra
@@ -56,9 +57,9 @@ To help us understand and document how it works, we can use Imandra's `Document`
 ```{.imandra .input}
 let args = CCList.cartesian_product [[true; false]; [true; false]; [true; false]] in
 let pb b = Document.s (string_of_bool b) in
-Imandra.display @@ 
+Imandra.display @@
  Document.(tbl ~headers:["a";"b";"cin";"sum";"cout"] @@
-  List.map (function [a;b;cin] -> 
+  List.map (function [a;b;cin] ->
    [pb a; pb b; pb cin; pb (adder_sum a b cin); pb (adder_carry_out a b cin)]
    | _ -> [])
    args)
@@ -137,7 +138,7 @@ int_of_bits (ripple_carry_adder CX.a CX.a false)
 
 Let's now prove our main theorem, namely that `ripple_carry_adder` is correct.
 
-We'll prove this theorem by induction following the recursive definition of `ripple_carry_adder`. 
+We'll prove this theorem by induction following the recursive definition of `ripple_carry_adder`.
 
 ```{.imandra .input}
 theorem full_ripple_carry_adder_correct a b cin =
@@ -162,7 +163,7 @@ theorem single_adder_circuit_correct a b cin =
 [@@rewrite]
 ```
 
-Notice the above `Warnings`, in particular about `int_of_bit` and `adder_sum`. These are printed because we've specified Imandra to install this theorem as a `rewrite` rule, and the LHS (left-hand-side) of the rule contains non-recursive functions which will, unless they are disabled, be expanded before rewriting can be applied. 
+Notice the above `Warnings`, in particular about `int_of_bit` and `adder_sum`. These are printed because we've specified Imandra to install this theorem as a `rewrite` rule, and the LHS (left-hand-side) of the rule contains non-recursive functions which will, unless they are disabled, be expanded before rewriting can be applied.
 
 Can you see an alternative proof of our main theorem which makes use of this rule? We just need to follow the advice of the warning!
 
@@ -194,7 +195,7 @@ let bad_adder_carry_out a b cin =
 ```
 
 ```{.imandra .input}
-verify (fun a b cin -> 
+verify (fun a b cin ->
  int_of_bit (bad_adder_sum a b cin)
     = int_of_bit a + int_of_bit b + int_of_bit cin - (2 * (int_of_bit (bad_adder_carry_out a b cin))))
 ```

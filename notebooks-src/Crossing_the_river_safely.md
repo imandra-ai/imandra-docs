@@ -3,6 +3,7 @@ title: "Crossing the River Safely"
 description: "River example notebooks"
 kernel: imandra
 slug: crossing-river-safely
+difficulty: beginner
 ---
 
 # Crossing the River Safely
@@ -53,7 +54,7 @@ let boat_empty (s:state) =
   (s.cabbage <> Boat) &&
   (s.goat    <> Boat) &&
   (s.wolf    <> Boat)
-  
+
 ```
 
 Now, transition from a state to the next one is done via *actions*:
