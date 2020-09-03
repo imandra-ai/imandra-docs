@@ -872,7 +872,7 @@
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html"><h1 id="Synthesising-a-Game-Solver-in-Imandra">Synthesising a Game Solver in Imandra<a class="anchor-link" href="#Synthesising-a-Game-Solver-in-Imandra">&#182;</a></h1><p>In this notebook we introduce a simple game called "Les Bâtonnets Géants", and show how imandra can be exploited to synthesise a strategy which always wins. The game itself consists of 16 pegs, and opponents take turns in taking 1,2 or 3 pegs from the end. The loser is the player with 1 remaining peg a their turn. 
+<div class="text_cell_render border-box-sizing rendered_html"><h1 id="Synthesising-a-Game-Solver-in-Imandra">Synthesising a Game Solver in Imandra<a class="anchor-link" href="#Synthesising-a-Game-Solver-in-Imandra">&#182;</a></h1><p>In this notebook we introduce a simple game called "Les Bâtonnets Géants", and show how imandra can be exploited to synthesise a strategy which always wins. The game itself consists of 16 pegs, and opponents take turns in taking 1,2 or 3 pegs from the end. The loser is the player with 1 remaining peg a their turn.
 <img src="https://storage.googleapis.com/imandra-notebook-assets/batonnets.jpg" alt="Imandrabot"></p>
 <h2 id="Game-specific-rules">Game specific rules<a class="anchor-link" href="#Game-specific-rules">&#182;</a></h2><p>Let us first set up a very simple representation of this game consisting of a state which is either in play with n pieces or ended with a winner:</p>
 </div>
@@ -891,26 +891,26 @@
 <div class=" highlight hl-ocaml"><pre><span></span><span class="k">type</span> <span class="n">choice</span> <span class="o">=</span> <span class="kt">int</span>
 <span class="o">;;</span>
 
-<span class="k">type</span> <span class="n">player</span> <span class="o">=</span> 
+<span class="k">type</span> <span class="n">player</span> <span class="o">=</span>
   <span class="o">|</span> <span class="nc">Imandra</span>
-  <span class="o">|</span> <span class="nc">Opponent</span> 
+  <span class="o">|</span> <span class="nc">Opponent</span>
 <span class="o">;;</span>
 
-<span class="k">type</span> <span class="n">state</span> <span class="o">=</span> 
+<span class="k">type</span> <span class="n">state</span> <span class="o">=</span>
   <span class="o">|</span> <span class="nc">Inplay</span> <span class="k">of</span> <span class="kt">int</span>
   <span class="o">|</span> <span class="nc">Terminal</span> <span class="k">of</span> <span class="n">player</span>
 <span class="o">;;</span>
 
-<span class="k">let</span> <span class="n">create_initial_state</span> <span class="n">n</span> <span class="o">=</span> 
+<span class="k">let</span> <span class="n">create_initial_state</span> <span class="n">n</span> <span class="o">=</span>
   <span class="nc">Inplay</span> <span class="n">n</span><span class="o">;;</span>
 
-<span class="k">let</span> <span class="n">final_state</span> <span class="n">n</span> <span class="o">=</span> 
+<span class="k">let</span> <span class="n">final_state</span> <span class="n">n</span> <span class="o">=</span>
   <span class="n">n</span><span class="o">=</span><span class="mi">1</span>
 <span class="o">;;</span>
 
-<span class="k">let</span> <span class="n">remove_pins</span> <span class="n">num_pins</span> <span class="n">state</span> <span class="o">=</span> 
- <span class="k">match</span> <span class="n">state</span> <span class="k">with</span> 
- <span class="o">|</span> <span class="nc">Terminal</span> <span class="n">p</span> <span class="o">-&gt;</span> <span class="nc">Terminal</span> <span class="n">p</span> 
+<span class="k">let</span> <span class="n">remove_pins</span> <span class="n">num_pins</span> <span class="n">state</span> <span class="o">=</span>
+ <span class="k">match</span> <span class="n">state</span> <span class="k">with</span>
+ <span class="o">|</span> <span class="nc">Terminal</span> <span class="n">p</span> <span class="o">-&gt;</span> <span class="nc">Terminal</span> <span class="n">p</span>
  <span class="o">|</span> <span class="nc">Inplay</span> <span class="n">n</span> <span class="o">-&gt;</span> <span class="k">if</span> <span class="n">n</span><span class="o">-</span><span class="n">num_pins</span> <span class="o">&gt;=</span> <span class="mi">1</span> <span class="k">then</span> <span class="nc">Inplay</span> <span class="o">(</span><span class="n">n</span> <span class="o">-</span> <span class="n">num_pins</span><span class="o">)</span> <span class="k">else</span> <span class="nc">Inplay</span> <span class="n">n</span>
 <span class="o">;;</span>
 </pre></div>
@@ -963,20 +963,20 @@ val remove_pins : choice -&gt; state -&gt; state = &lt;fun&gt;
 <div class="prompt input_prompt">In&nbsp;[2]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ocaml"><pre><span></span><span class="k">let</span> <span class="n">step</span> <span class="n">choice</span> <span class="n">state</span> <span class="o">=</span> 
+<div class=" highlight hl-ocaml"><pre><span></span><span class="k">let</span> <span class="n">step</span> <span class="n">choice</span> <span class="n">state</span> <span class="o">=</span>
   <span class="k">if</span> <span class="n">choice</span> <span class="o">&lt;=</span><span class="mi">0</span> <span class="o">||</span> <span class="n">choice</span> <span class="o">&gt;</span><span class="mi">3</span> <span class="k">then</span> <span class="n">state</span> <span class="k">else</span> <span class="n">remove_pins</span> <span class="n">choice</span> <span class="n">state</span>
 <span class="o">;;</span>
 
-<span class="k">let</span> <span class="n">find_all_available_choices</span> <span class="n">state</span> <span class="o">=</span> 
- <span class="k">match</span> <span class="n">state</span> <span class="k">with</span> 
- <span class="o">|</span> <span class="nc">Inplay</span> <span class="n">n</span> <span class="o">-&gt;</span> 
+<span class="k">let</span> <span class="n">find_all_available_choices</span> <span class="n">state</span> <span class="o">=</span>
+ <span class="k">match</span> <span class="n">state</span> <span class="k">with</span>
+ <span class="o">|</span> <span class="nc">Inplay</span> <span class="n">n</span> <span class="o">-&gt;</span>
   <span class="k">if</span> <span class="n">n</span><span class="o">&gt;</span><span class="mi">3</span> <span class="k">then</span> <span class="o">[</span><span class="mi">1</span><span class="o">;</span><span class="mi">2</span><span class="o">;</span><span class="mi">3</span><span class="o">]</span> <span class="k">else</span> <span class="k">if</span> <span class="n">n</span><span class="o">&gt;</span><span class="mi">2</span> <span class="k">then</span> <span class="o">[</span><span class="mi">2</span><span class="o">;</span><span class="mi">1</span><span class="o">]</span> <span class="k">else</span> <span class="k">if</span> <span class="n">n</span><span class="o">&gt;</span><span class="mi">1</span> <span class="k">then</span> <span class="o">[</span><span class="mi">1</span><span class="o">]</span>
  <span class="k">else</span> <span class="bp">[]</span>
  <span class="o">|</span> <span class="nc">Terminal</span> <span class="o">_</span> <span class="o">-&gt;</span> <span class="bp">[]</span><span class="o">;;</span>
 
 <span class="k">let</span> <span class="n">is_valid_choice</span> <span class="n">choice</span> <span class="n">state</span> <span class="o">=</span>
-  <span class="n">choice</span> <span class="o">&lt;=</span><span class="mi">3</span> <span class="o">&amp;&amp;</span> <span class="n">choice</span> <span class="o">&gt;=</span><span class="mi">1</span> <span class="o">&amp;&amp;</span> <span class="k">match</span> <span class="n">state</span> <span class="k">with</span> 
-  <span class="o">|</span> <span class="nc">Inplay</span> <span class="n">s</span> <span class="o">-&gt;</span> <span class="n">s</span> <span class="o">&gt;</span> <span class="n">choice</span> 
+  <span class="n">choice</span> <span class="o">&lt;=</span><span class="mi">3</span> <span class="o">&amp;&amp;</span> <span class="n">choice</span> <span class="o">&gt;=</span><span class="mi">1</span> <span class="o">&amp;&amp;</span> <span class="k">match</span> <span class="n">state</span> <span class="k">with</span>
+  <span class="o">|</span> <span class="nc">Inplay</span> <span class="n">s</span> <span class="o">-&gt;</span> <span class="n">s</span> <span class="o">&gt;</span> <span class="n">choice</span>
   <span class="o">|</span> <span class="nc">Terminal</span> <span class="o">_</span> <span class="o">-&gt;</span> <span class="bp">false</span><span class="o">;;</span>
 </pre></div>
 
@@ -1026,27 +1026,27 @@ val is_valid_choice : choice -&gt; state -&gt; bool = &lt;fun&gt;
 <div class="prompt input_prompt">In&nbsp;[3]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ocaml"><pre><span></span><span class="k">let</span> <span class="n">one_step</span> <span class="o">(</span><span class="n">choice_map</span><span class="o">:</span> <span class="o">(</span><span class="n">state</span><span class="o">*</span><span class="n">choice</span><span class="o">)</span> <span class="kt">list</span><span class="o">)</span> <span class="o">(</span><span class="n">states</span><span class="o">:</span><span class="n">state</span> <span class="kt">list</span><span class="o">):</span> <span class="n">state</span> <span class="kt">list</span> <span class="o">=</span> 
-  <span class="k">let</span> <span class="n">new_states</span> <span class="o">=</span> 
-    <span class="nn">List</span><span class="p">.</span><span class="n">fold_left</span> <span class="o">(</span><span class="k">fun</span> <span class="n">acc</span> <span class="n">el</span> <span class="o">-&gt;</span> 
-        <span class="k">match</span> <span class="nn">List</span><span class="p">.</span><span class="n">find</span> <span class="o">(</span><span class="k">fun</span> <span class="o">(</span><span class="n">x</span><span class="o">,_)</span> <span class="o">-&gt;</span> <span class="n">x</span><span class="o">=</span><span class="n">el</span><span class="o">)</span> <span class="n">choice_map</span> <span class="k">with</span> 
+<div class=" highlight hl-ocaml"><pre><span></span><span class="k">let</span> <span class="n">one_step</span> <span class="o">(</span><span class="n">choice_map</span><span class="o">:</span> <span class="o">(</span><span class="n">state</span><span class="o">*</span><span class="n">choice</span><span class="o">)</span> <span class="kt">list</span><span class="o">)</span> <span class="o">(</span><span class="n">states</span><span class="o">:</span><span class="n">state</span> <span class="kt">list</span><span class="o">):</span> <span class="n">state</span> <span class="kt">list</span> <span class="o">=</span>
+  <span class="k">let</span> <span class="n">new_states</span> <span class="o">=</span>
+    <span class="nn">List</span><span class="p">.</span><span class="n">fold_left</span> <span class="o">(</span><span class="k">fun</span> <span class="n">acc</span> <span class="n">el</span> <span class="o">-&gt;</span>
+        <span class="k">match</span> <span class="nn">List</span><span class="p">.</span><span class="n">find</span> <span class="o">(</span><span class="k">fun</span> <span class="o">(</span><span class="n">x</span><span class="o">,_)</span> <span class="o">-&gt;</span> <span class="n">x</span><span class="o">=</span><span class="n">el</span><span class="o">)</span> <span class="n">choice_map</span> <span class="k">with</span>
         <span class="o">|</span> <span class="nc">None</span> <span class="o">-&gt;</span> <span class="n">el</span><span class="o">::</span><span class="n">acc</span>
-        <span class="o">|</span> <span class="nc">Some</span> <span class="o">(_,</span><span class="n">choice</span><span class="o">)</span> <span class="o">-&gt;</span> 
+        <span class="o">|</span> <span class="nc">Some</span> <span class="o">(_,</span><span class="n">choice</span><span class="o">)</span> <span class="o">-&gt;</span>
           <span class="k">let</span> <span class="n">a</span> <span class="o">=</span> <span class="n">step</span> <span class="n">choice</span> <span class="n">el</span> <span class="k">in</span> <span class="k">if</span> <span class="nn">List</span><span class="p">.</span><span class="n">mem</span> <span class="n">a</span> <span class="n">acc</span> <span class="k">then</span> <span class="n">acc</span> <span class="k">else</span>
             <span class="o">(</span><span class="n">step</span> <span class="n">choice</span> <span class="n">el</span><span class="o">)::</span><span class="n">acc</span><span class="o">)</span> <span class="bp">[]</span> <span class="n">states</span> <span class="k">in</span>
-  <span class="k">let</span> <span class="n">annealed_states</span> <span class="o">=</span> <span class="nn">List</span><span class="p">.</span><span class="n">map</span> <span class="o">(</span><span class="k">fun</span> <span class="n">x</span> <span class="o">-&gt;</span> 
-      <span class="k">match</span> <span class="n">x</span> <span class="k">with</span> 
-      <span class="o">|</span> <span class="nc">Inplay</span> <span class="n">l</span> <span class="o">-&gt;</span> 
-        <span class="k">if</span> <span class="n">final_state</span> <span class="n">l</span> <span class="k">then</span> <span class="nc">Terminal</span> <span class="nc">Imandra</span> <span class="k">else</span> <span class="nc">Inplay</span> <span class="n">l</span> 
+  <span class="k">let</span> <span class="n">annealed_states</span> <span class="o">=</span> <span class="nn">List</span><span class="p">.</span><span class="n">map</span> <span class="o">(</span><span class="k">fun</span> <span class="n">x</span> <span class="o">-&gt;</span>
+      <span class="k">match</span> <span class="n">x</span> <span class="k">with</span>
+      <span class="o">|</span> <span class="nc">Inplay</span> <span class="n">l</span> <span class="o">-&gt;</span>
+        <span class="k">if</span> <span class="n">final_state</span> <span class="n">l</span> <span class="k">then</span> <span class="nc">Terminal</span> <span class="nc">Imandra</span> <span class="k">else</span> <span class="nc">Inplay</span> <span class="n">l</span>
       <span class="o">|</span> <span class="nc">Terminal</span> <span class="n">p</span> <span class="o">-&gt;</span> <span class="nc">Terminal</span> <span class="n">p</span>
-    <span class="o">)</span> <span class="n">new_states</span> <span class="k">in</span> 
-  <span class="nn">List</span><span class="p">.</span><span class="n">fold_left</span> <span class="o">(</span><span class="k">fun</span> <span class="n">acc</span> <span class="n">el</span> <span class="o">-&gt;</span> 
-      <span class="k">match</span> <span class="n">el</span> <span class="k">with</span> 
+    <span class="o">)</span> <span class="n">new_states</span> <span class="k">in</span>
+  <span class="nn">List</span><span class="p">.</span><span class="n">fold_left</span> <span class="o">(</span><span class="k">fun</span> <span class="n">acc</span> <span class="n">el</span> <span class="o">-&gt;</span>
+      <span class="k">match</span> <span class="n">el</span> <span class="k">with</span>
       <span class="o">|</span> <span class="nc">Terminal</span> <span class="n">p</span> <span class="o">-&gt;</span> <span class="o">(</span><span class="nc">Terminal</span> <span class="n">p</span><span class="o">)::</span><span class="n">acc</span>
-      <span class="o">|</span> <span class="nc">Inplay</span> <span class="n">l</span> <span class="o">-&gt;</span> 
-        <span class="k">let</span> <span class="n">next_states</span> <span class="o">=</span> <span class="nn">List</span><span class="p">.</span><span class="n">fold_left</span> <span class="o">(</span><span class="k">fun</span> <span class="n">acc</span> <span class="n">el</span> <span class="o">-&gt;</span> 
+      <span class="o">|</span> <span class="nc">Inplay</span> <span class="n">l</span> <span class="o">-&gt;</span>
+        <span class="k">let</span> <span class="n">next_states</span> <span class="o">=</span> <span class="nn">List</span><span class="p">.</span><span class="n">fold_left</span> <span class="o">(</span><span class="k">fun</span> <span class="n">acc</span> <span class="n">el</span> <span class="o">-&gt;</span>
             <span class="o">(</span><span class="n">step</span> <span class="n">el</span> <span class="o">(</span><span class="nc">Inplay</span> <span class="n">l</span><span class="o">))::</span><span class="n">acc</span>
-          <span class="o">)</span> <span class="bp">[]</span> <span class="o">(</span><span class="n">find_all_available_choices</span> <span class="o">(</span><span class="nc">Inplay</span> <span class="n">l</span><span class="o">))</span> <span class="k">in</span> 
+          <span class="o">)</span> <span class="bp">[]</span> <span class="o">(</span><span class="n">find_all_available_choices</span> <span class="o">(</span><span class="nc">Inplay</span> <span class="n">l</span><span class="o">))</span> <span class="k">in</span>
         <span class="nn">List</span><span class="p">.</span><span class="n">fold_left</span> <span class="o">(</span><span class="k">fun</span> <span class="n">acc</span> <span class="n">el</span> <span class="o">-&gt;</span> <span class="k">if</span> <span class="nn">List</span><span class="p">.</span><span class="n">mem</span> <span class="n">el</span> <span class="n">acc</span> <span class="k">then</span> <span class="n">acc</span> <span class="k">else</span> <span class="n">el</span><span class="o">::</span><span class="n">acc</span><span class="o">)</span> <span class="n">acc</span> <span class="n">next_states</span>
     <span class="o">)</span> <span class="bp">[]</span> <span class="n">annealed_states</span>
 <span class="o">;;</span>
@@ -1097,26 +1097,26 @@ val is_valid_choice : choice -&gt; state -&gt; bool = &lt;fun&gt;
     <div class="input_area">
 <div class=" highlight hl-ocaml"><pre><span></span><span class="k">let</span> <span class="n">init_state</span> <span class="o">=</span> <span class="n">create_initial_state</span> <span class="mi">16</span><span class="o">;;</span>
 
-<span class="k">let</span> <span class="n">instance_function</span> <span class="n">init_state</span> <span class="n">steps</span> <span class="o">=</span>   
-  <span class="k">let</span> <span class="n">states</span><span class="o">,</span><span class="n">validity_cond</span> <span class="o">=</span> <span class="nn">List</span><span class="p">.</span><span class="n">fold_left</span> <span class="o">(</span><span class="k">fun</span> <span class="n">acc</span> <span class="n">el</span> <span class="o">-&gt;</span> 
-      <span class="k">match</span> <span class="n">acc</span> <span class="k">with</span> 
-      <span class="o">|</span> <span class="n">first</span><span class="o">,</span><span class="n">second</span> <span class="o">-&gt;</span> 
+<span class="k">let</span> <span class="n">instance_function</span> <span class="n">init_state</span> <span class="n">steps</span> <span class="o">=</span>
+  <span class="k">let</span> <span class="n">states</span><span class="o">,</span><span class="n">validity_cond</span> <span class="o">=</span> <span class="nn">List</span><span class="p">.</span><span class="n">fold_left</span> <span class="o">(</span><span class="k">fun</span> <span class="n">acc</span> <span class="n">el</span> <span class="o">-&gt;</span>
+      <span class="k">match</span> <span class="n">acc</span> <span class="k">with</span>
+      <span class="o">|</span> <span class="n">first</span><span class="o">,</span><span class="n">second</span> <span class="o">-&gt;</span>
         <span class="o">(</span><span class="n">one_step</span> <span class="n">el</span> <span class="n">first</span><span class="o">,</span>
          <span class="n">second</span> <span class="o">&amp;&amp;</span> <span class="o">(</span>
-           <span class="k">let</span> <span class="n">fsts</span> <span class="o">=</span> <span class="nn">List</span><span class="p">.</span><span class="n">map</span> <span class="n">fst</span> <span class="n">el</span> <span class="k">in</span> 
-           <span class="n">fsts</span><span class="o">=</span><span class="n">first</span> <span class="o">&amp;&amp;</span> 
+           <span class="k">let</span> <span class="n">fsts</span> <span class="o">=</span> <span class="nn">List</span><span class="p">.</span><span class="n">map</span> <span class="n">fst</span> <span class="n">el</span> <span class="k">in</span>
+           <span class="n">fsts</span><span class="o">=</span><span class="n">first</span> <span class="o">&amp;&amp;</span>
            <span class="nn">List</span><span class="p">.</span><span class="n">for_all</span> <span class="o">(</span>
-             <span class="k">fun</span> <span class="o">(</span><span class="n">s</span><span class="o">,</span><span class="n">c</span><span class="o">)</span> <span class="o">-&gt;</span> 
-               <span class="k">match</span> <span class="nn">List</span><span class="p">.</span><span class="n">find</span> <span class="o">(</span><span class="k">fun</span> <span class="o">(</span><span class="n">x</span><span class="o">,_)</span> <span class="o">-&gt;</span> <span class="n">x</span> <span class="o">=</span> <span class="n">s</span><span class="o">)</span> <span class="n">el</span> <span class="k">with</span> 
-               <span class="o">|</span> <span class="nc">None</span> <span class="o">-&gt;</span> <span class="bp">false</span> 
-               <span class="o">|</span> <span class="nc">Some</span> <span class="o">(</span><span class="n">s</span><span class="o">,</span><span class="n">c</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="n">is_valid_choice</span> <span class="n">c</span> <span class="n">s</span> 
+             <span class="k">fun</span> <span class="o">(</span><span class="n">s</span><span class="o">,</span><span class="n">c</span><span class="o">)</span> <span class="o">-&gt;</span>
+               <span class="k">match</span> <span class="nn">List</span><span class="p">.</span><span class="n">find</span> <span class="o">(</span><span class="k">fun</span> <span class="o">(</span><span class="n">x</span><span class="o">,_)</span> <span class="o">-&gt;</span> <span class="n">x</span> <span class="o">=</span> <span class="n">s</span><span class="o">)</span> <span class="n">el</span> <span class="k">with</span>
+               <span class="o">|</span> <span class="nc">None</span> <span class="o">-&gt;</span> <span class="bp">false</span>
+               <span class="o">|</span> <span class="nc">Some</span> <span class="o">(</span><span class="n">s</span><span class="o">,</span><span class="n">c</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="n">is_valid_choice</span> <span class="n">c</span> <span class="n">s</span>
            <span class="o">)</span> <span class="n">el</span>
          <span class="o">)</span>
-        <span class="o">))</span> <span class="o">([</span><span class="n">init_state</span><span class="o">],</span><span class="bp">true</span><span class="o">)</span> <span class="n">steps</span> <span class="k">in</span> 
+        <span class="o">))</span> <span class="o">([</span><span class="n">init_state</span><span class="o">],</span><span class="bp">true</span><span class="o">)</span> <span class="n">steps</span> <span class="k">in</span>
   <span class="n">validity_cond</span> <span class="o">&amp;&amp;</span>
   <span class="nn">List</span><span class="p">.</span><span class="n">for_all</span> <span class="o">(</span><span class="k">fun</span> <span class="n">x</span> <span class="o">-&gt;</span>
-      <span class="k">match</span> <span class="n">x</span> <span class="k">with</span> 
-      <span class="o">|</span> <span class="nc">Terminal</span> <span class="nc">Imandra</span> <span class="o">-&gt;</span> <span class="bp">true</span> 
+      <span class="k">match</span> <span class="n">x</span> <span class="k">with</span>
+      <span class="o">|</span> <span class="nc">Terminal</span> <span class="nc">Imandra</span> <span class="o">-&gt;</span> <span class="bp">true</span>
       <span class="o">|</span> <span class="o">_</span> <span class="o">-&gt;</span> <span class="bp">false</span><span class="o">)</span> <span class="n">states</span><span class="o">;;</span>
 </pre></div>
 
@@ -1164,7 +1164,7 @@ val instance_function : state -&gt; (state * choice) list list -&gt; bool = &lt;
 <div class="prompt input_prompt">In&nbsp;[5]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ocaml"><pre><span></span><span class="n">instance</span> <span class="o">(</span><span class="k">fun</span> <span class="n">steps</span> <span class="o">-&gt;</span> 
+<div class=" highlight hl-ocaml"><pre><span></span><span class="n">instance</span> <span class="o">(</span><span class="k">fun</span> <span class="n">steps</span> <span class="o">-&gt;</span>
     <span class="n">instance_function</span> <span class="n">init_state</span> <span class="n">steps</span><span class="o">)</span> <span class="o">[@@</span><span class="n">blast</span><span class="o">];;</span>
 </pre></div>
 
@@ -1198,7 +1198,7 @@ module CX : sig val steps : (state * choice) list list end
 
 
 <div class="output_html rendered_html output_subarea ">
-<div><pre>Instance (after 431 steps, 9.176s):
+<div><pre>Instance (after 431 steps, 8.243s):
   let steps =
     [[(Inplay 16, 3)]; [(Inplay 12, 3); (Inplay 11, 2); (Inplay 10, 1)];
      [(Inplay 8, 3); (Inplay 7, 2); (Inplay 6, 1)];
@@ -1244,51 +1244,51 @@ module CX : sig val steps : (state * choice) list list end
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ocaml"><pre><span></span><span class="o">[@@@</span><span class="n">program</span><span class="o">]</span>
-<span class="k">let</span> <span class="k">rec</span> <span class="n">gather_inputs</span> <span class="n">max</span> <span class="o">=</span> 
+<span class="k">let</span> <span class="k">rec</span> <span class="n">gather_inputs</span> <span class="n">max</span> <span class="o">=</span>
     <span class="k">let</span> <span class="n">user_input</span> <span class="o">=</span> <span class="n">read_line</span> <span class="bp">()</span> <span class="k">in</span>
     <span class="k">if</span> <span class="n">user_input</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span> <span class="k">then</span> <span class="n">gather_inputs</span> <span class="n">max</span> <span class="k">else</span>
       <span class="k">let</span> <span class="n">n</span> <span class="o">=</span> <span class="nn">String</span><span class="p">.</span><span class="n">to_nat</span> <span class="n">user_input</span> <span class="k">in</span>
-      <span class="k">match</span> <span class="n">n</span> <span class="k">with</span> 
-      <span class="o">|</span> <span class="nc">None</span> <span class="o">-&gt;</span> <span class="n">gather_inputs</span> <span class="n">max</span> 
-      <span class="o">|</span> <span class="nc">Some</span> <span class="n">n</span> <span class="o">-&gt;</span> 
-      <span class="k">if</span> <span class="n">n</span> <span class="o">&lt;=</span><span class="mi">0</span> <span class="o">||</span> <span class="n">n</span> <span class="o">&gt;</span><span class="n">max</span> <span class="k">then</span> <span class="n">gather_inputs</span> <span class="n">max</span> <span class="k">else</span> 
+      <span class="k">match</span> <span class="n">n</span> <span class="k">with</span>
+      <span class="o">|</span> <span class="nc">None</span> <span class="o">-&gt;</span> <span class="n">gather_inputs</span> <span class="n">max</span>
+      <span class="o">|</span> <span class="nc">Some</span> <span class="n">n</span> <span class="o">-&gt;</span>
+      <span class="k">if</span> <span class="n">n</span> <span class="o">&lt;=</span><span class="mi">0</span> <span class="o">||</span> <span class="n">n</span> <span class="o">&gt;</span><span class="n">max</span> <span class="k">then</span> <span class="n">gather_inputs</span> <span class="n">max</span> <span class="k">else</span>
       <span class="n">n</span><span class="o">;;</span>
-      
+
 
 <span class="k">let</span> <span class="n">winner_message</span> <span class="n">p</span> <span class="o">=</span>
   <span class="k">match</span> <span class="n">p</span> <span class="k">with</span> <span class="nc">Imandra</span> <span class="o">-&gt;</span> <span class="s2">&quot;imandra wins &quot;</span> <span class="o">|</span> <span class="nc">Opponent</span> <span class="o">-&gt;</span> <span class="s2">&quot;you win&quot;</span><span class="o">;;</span>
 
-<span class="k">let</span> <span class="n">print_state</span> <span class="n">state</span> <span class="o">=</span> 
-  <span class="k">let</span> <span class="k">rec</span> <span class="n">print_state_aux</span> <span class="n">l</span> <span class="o">=</span> 
+<span class="k">let</span> <span class="n">print_state</span> <span class="n">state</span> <span class="o">=</span>
+  <span class="k">let</span> <span class="k">rec</span> <span class="n">print_state_aux</span> <span class="n">l</span> <span class="o">=</span>
     <span class="k">if</span> <span class="n">l</span> <span class="o">&lt;=</span><span class="mi">0</span> <span class="k">then</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
     <span class="k">else</span> <span class="s2">&quot;|&quot;</span><span class="o">^(</span><span class="n">print_state_aux</span> <span class="o">(</span><span class="n">l</span><span class="o">-</span><span class="mi">1</span><span class="o">))</span> <span class="k">in</span>
-  <span class="k">match</span> <span class="n">state</span> <span class="k">with</span> 
-  <span class="o">|</span> <span class="nc">Terminal</span> <span class="n">p</span> <span class="o">-&gt;</span> 
+  <span class="k">match</span> <span class="n">state</span> <span class="k">with</span>
+  <span class="o">|</span> <span class="nc">Terminal</span> <span class="n">p</span> <span class="o">-&gt;</span>
     <span class="n">winner_message</span> <span class="n">p</span>
-  <span class="o">|</span> <span class="nc">Inplay</span> <span class="n">l</span> <span class="o">-&gt;</span> 
+  <span class="o">|</span> <span class="nc">Inplay</span> <span class="n">l</span> <span class="o">-&gt;</span>
     <span class="n">print_state_aux</span> <span class="n">l</span><span class="o">;;</span>
 
-<span class="k">let</span> <span class="n">print_choice</span> <span class="n">choice</span> <span class="o">=</span> 
+<span class="k">let</span> <span class="n">print_choice</span> <span class="n">choice</span> <span class="o">=</span>
   <span class="nn">String</span><span class="p">.</span><span class="n">of_int</span> <span class="n">choice</span><span class="o">;;</span>
 
-<span class="k">let</span> <span class="k">rec</span> <span class="n">play_against_imandra</span> <span class="n">state</span> <span class="n">solver</span>  <span class="o">=</span> 
-  <span class="k">match</span> <span class="n">state</span> <span class="k">with</span> 
-  <span class="o">|</span> <span class="nc">Terminal</span> <span class="n">p</span> <span class="o">-&gt;</span> 
+<span class="k">let</span> <span class="k">rec</span> <span class="n">play_against_imandra</span> <span class="n">state</span> <span class="n">solver</span>  <span class="o">=</span>
+  <span class="k">match</span> <span class="n">state</span> <span class="k">with</span>
+  <span class="o">|</span> <span class="nc">Terminal</span> <span class="n">p</span> <span class="o">-&gt;</span>
     <span class="n">print_endline</span> <span class="o">(</span><span class="n">winner_message</span> <span class="n">p</span><span class="o">)</span>
-  <span class="o">|</span> <span class="nc">Inplay</span> <span class="n">l</span> <span class="o">-&gt;</span> 
-    <span class="k">if</span> <span class="n">final_state</span> <span class="n">l</span> <span class="k">then</span> 
+  <span class="o">|</span> <span class="nc">Inplay</span> <span class="n">l</span> <span class="o">-&gt;</span>
+    <span class="k">if</span> <span class="n">final_state</span> <span class="n">l</span> <span class="k">then</span>
       <span class="n">print_endline</span> <span class="o">(</span><span class="n">winner_message</span> <span class="nc">Imandra</span><span class="o">)</span>
     <span class="k">else</span>
       <span class="k">begin</span>
-        <span class="k">match</span> <span class="n">solver</span> <span class="k">with</span> 
+        <span class="k">match</span> <span class="n">solver</span> <span class="k">with</span>
         <span class="o">|</span> <span class="bp">[]</span> <span class="o">-&gt;</span> <span class="bp">()</span>
-        <span class="o">|</span> <span class="n">h</span><span class="o">::</span><span class="n">t</span> <span class="o">-&gt;</span> 
+        <span class="o">|</span> <span class="n">h</span><span class="o">::</span><span class="n">t</span> <span class="o">-&gt;</span>
           <span class="k">begin</span>
-            <span class="k">match</span> <span class="nn">List</span><span class="p">.</span><span class="n">find</span> <span class="o">(</span><span class="k">fun</span> <span class="o">(</span><span class="n">x</span><span class="o">,_)</span> <span class="o">-&gt;</span> <span class="n">x</span> <span class="o">=</span> <span class="n">state</span><span class="o">)</span> <span class="n">h</span> <span class="k">with</span> 
+            <span class="k">match</span> <span class="nn">List</span><span class="p">.</span><span class="n">find</span> <span class="o">(</span><span class="k">fun</span> <span class="o">(</span><span class="n">x</span><span class="o">,_)</span> <span class="o">-&gt;</span> <span class="n">x</span> <span class="o">=</span> <span class="n">state</span><span class="o">)</span> <span class="n">h</span> <span class="k">with</span>
             <span class="o">|</span> <span class="nc">None</span> <span class="o">-&gt;</span> <span class="n">print_endline</span> <span class="s2">&quot;Solver error&quot;</span><span class="o">;</span> <span class="bp">()</span>
-            <span class="o">|</span> <span class="nc">Some</span> <span class="o">(_,</span><span class="n">choice</span><span class="o">)</span> <span class="o">-&gt;</span> 
-              <span class="k">begin</span> 
-                <span class="k">let</span> <span class="n">next_state</span> <span class="o">=</span> <span class="n">step</span> <span class="n">choice</span> <span class="n">state</span> <span class="k">in</span> 
+            <span class="o">|</span> <span class="nc">Some</span> <span class="o">(_,</span><span class="n">choice</span><span class="o">)</span> <span class="o">-&gt;</span>
+              <span class="k">begin</span>
+                <span class="k">let</span> <span class="n">next_state</span> <span class="o">=</span> <span class="n">step</span> <span class="n">choice</span> <span class="n">state</span> <span class="k">in</span>
                 <span class="n">print_endline</span> <span class="o">(</span><span class="s2">&quot;Imandra plays: &quot;</span><span class="o">^</span> <span class="o">(</span><span class="n">print_choice</span> <span class="n">choice</span><span class="o">)^</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">);</span>
                 <span class="n">print_endline</span> <span class="o">(</span><span class="n">print_state</span> <span class="n">next_state</span><span class="o">);</span>
                 <span class="k">if</span> <span class="o">(</span><span class="k">match</span> <span class="n">next_state</span> <span class="k">with</span> <span class="o">|</span><span class="nc">Inplay</span> <span class="n">l</span> <span class="o">-&gt;</span> <span class="n">final_state</span> <span class="n">l</span> <span class="o">|</span> <span class="o">_</span> <span class="o">-&gt;</span> <span class="bp">false</span><span class="o">)</span><span class="k">then</span>
@@ -1296,16 +1296,16 @@ module CX : sig val steps : (state * choice) list list end
                   <span class="n">print_endline</span> <span class="s2">&quot;Enter your choices&quot;</span><span class="o">;</span>
                 <span class="k">let</span> <span class="n">user_choice</span> <span class="o">=</span> <span class="n">gather_inputs</span> <span class="o">(</span><span class="k">match</span> <span class="n">next_state</span> <span class="k">with</span> <span class="nc">Terminal</span> <span class="o">_</span> <span class="o">-&gt;</span> <span class="mi">0</span> <span class="o">|</span> <span class="nc">Inplay</span> <span class="n">n</span> <span class="o">-&gt;</span> <span class="n">n</span><span class="o">-</span><span class="mi">1</span> <span class="o">)</span> <span class="k">in</span>
                 <span class="k">if</span> <span class="n">is_valid_choice</span> <span class="n">user_choice</span> <span class="n">next_state</span>
-                <span class="k">then</span> 
-                  <span class="k">let</span> <span class="n">next_state</span> <span class="o">=</span> <span class="n">step</span> <span class="n">user_choice</span> <span class="n">next_state</span> <span class="k">in</span> 
+                <span class="k">then</span>
+                  <span class="k">let</span> <span class="n">next_state</span> <span class="o">=</span> <span class="n">step</span> <span class="n">user_choice</span> <span class="n">next_state</span> <span class="k">in</span>
                   <span class="n">print_endline</span> <span class="o">(</span><span class="s2">&quot;You played: &quot;</span><span class="o">^</span> <span class="o">(</span><span class="n">print_choice</span> <span class="n">user_choice</span><span class="o">)^</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">);</span>
                   <span class="n">print_endline</span> <span class="o">(</span><span class="n">print_state</span> <span class="n">next_state</span><span class="o">);</span>
                   <span class="k">if</span> <span class="o">(</span><span class="k">match</span> <span class="n">next_state</span> <span class="k">with</span> <span class="o">|</span><span class="nc">Inplay</span> <span class="n">l</span> <span class="o">-&gt;</span> <span class="n">final_state</span> <span class="n">l</span> <span class="o">|</span> <span class="o">_</span> <span class="o">-&gt;</span> <span class="bp">false</span><span class="o">)</span><span class="k">then</span>
                     <span class="n">print_endline</span> <span class="s2">&quot;You win</span><span class="se">\n</span><span class="s2">&quot;</span><span class="k">else</span>
                     <span class="n">play_against_imandra</span> <span class="n">next_state</span> <span class="n">t</span>
-                <span class="k">else</span> 
+                <span class="k">else</span>
                   <span class="n">print_endline</span> <span class="s2">&quot;invalid choices - replaying...&quot;</span><span class="o">;</span>
-                <span class="n">play_against_imandra</span> <span class="n">state</span> <span class="n">solver</span> 
+                <span class="n">play_against_imandra</span> <span class="n">state</span> <span class="n">solver</span>
               <span class="k">end</span>
           <span class="k">end</span>
       <span class="k">end</span>
@@ -1354,7 +1354,7 @@ val play_against_imandra : state -&gt; (state * choice) list list -&gt; unit =
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<pre><code>let play () = 
+<pre><code>let play () =
   print_endline (print_state init_state);
   play_against_imandra init_state CX.steps
 ;;
