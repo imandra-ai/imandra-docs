@@ -8,6 +8,7 @@ key-phrases:
   - induction
   - rewriting
   - rewrite rules
+difficulty: advanced
 ---
 
 # Recursion, Induction and Rewriting
@@ -19,7 +20,7 @@ Let's start by defining our own `append` function on lists. It should take two l
 _Note: Imandra contains a `List` module with predefined functions like `List.append` (i.e., `(@)`), `List.rev`, etc. However, we define our own versions of these functions by hand in this notebook so that all definitions and proofs are illustrated from scratch._
 
 ```{.imandra .input}
-let rec append x y = 
+let rec append x y =
  match x with
   | [] -> y
   | x :: xs -> x :: append xs y
@@ -62,7 +63,7 @@ Let's now investigate a more interesting conjecture: That `append` is _associati
 That is,
 
  `(forall (x,y,z) : 'a list. append x (append y z) = append (append x y) z)`.
- 
+
  Is this property true? Let's ask Imandra.
 
 ```{.imandra .input}
@@ -77,7 +78,7 @@ This gives us some confidence that this conjecture is true. Let's now ask Imandr
 verify (fun x y z -> append x (append y z) = append (append x y) z) [@@induct]
 ```
 
-Beautiful! So, we see Imandra proved our goal by induction on `x`, using a structural induction principle derived from the `'a list` datatype. We now know the property holds for all possible inputs (of which there are infinitely many!). 
+Beautiful! So, we see Imandra proved our goal by induction on `x`, using a structural induction principle derived from the `'a list` datatype. We now know the property holds for all possible inputs (of which there are infinitely many!).
 
 By the way, we can always view Imandra's current session configuration with the `#config` directive:
 
@@ -119,7 +120,7 @@ Let us see the use of rewrite rules through a prove about the function `reverse`
 Let's define a function to reverse a list. Note how it uses our `append` function we defined above:
 
 ```{.imandra .input}
-let rec reverse x = 
+let rec reverse x =
  match x with
   | [] -> []
   | x :: xs -> append (reverse xs) [x]
@@ -163,12 +164,12 @@ reverse CX.x = CX.x
 
 # Reverse of Reverse is the Identity
 
-Now that we've defined our `reverse` function and experimented a bit with it, let's try to prove an interesting theorem. Let's prove that 
+Now that we've defined our `reverse` function and experimented a bit with it, let's try to prove an interesting theorem. Let's prove that
 
  `(forall x, (reverse (reverse x)) = x)`.
- 
+
  That is, if we take an arbitrary list `x` and we reverse it twice, we always get our original `x` back unscathed.
- 
+
  As usual, let's start by asking Imandra to `verify` this via bounded checking (a.k.a. _recursive unrolling_).
 
 ```{.imandra .input}
@@ -183,7 +184,7 @@ So, our conjecture seems like a good candidate for proof by induction.
 verify (fun x -> reverse (reverse x) = x) [@@induct]
 ```
 
-Success! 
+Success!
 
 Imandra proves this fact automatically, and its inductive proof actually involves a nested subinduction.
 
@@ -215,7 +216,7 @@ Excellent!
 Now, let's try to prove another interesting conjecture about our functions `append` and `reverse`:
 
  `reverse (append x y) = append (reverse y) (reverse x)`
- 
+
  Actually, first let's pretend we made a mistake in formulating this conjecture, and accidentally swapped the `x` and `y` on the RHS (Right Hand Side) of the equality. Let's constrain the types of lists involved to make the counterexample especially easy to read:
 
 ```{.imandra .input}
@@ -234,7 +235,7 @@ Our conjecture has passed through to depth 100 recursive unrolling, so we feel p
 verify (fun x y -> reverse (append x y) = append (reverse y) (reverse x)) [@@induct]
 ```
 
-Success! And in a proof with _three_ inductions! If we inspect the proof, we'll see that those subsequent inductions actually suggest some very useful lemmas. 
+Success! And in a proof with _three_ inductions! If we inspect the proof, we'll see that those subsequent inductions actually suggest some very useful lemmas.
 
 In fact, this phenomenon of goals proved by subinductions suggesting useful lemmas happens so often, that we commonly like to work with a very low `#max_induct` value. Let's attempt the same proof as above, but instruct Imandra to only perform inductions of depth 1 (i.e., no subinductions allowed):
 

@@ -6,6 +6,7 @@ slug: ubs-case-study
 key-phrases:
   - custom document printers
   - counterexample
+difficulty: intermediate
 ---
 
 # Imandra encoding of UBS dark pool (Form ATS)
@@ -16,8 +17,8 @@ We observe that as described, the order priority logic suffers from a fundamenta
 
 This type of subtle issue in matching logic strongly motivates the use of formal, [machine reasonable](https://medium.com/imandra/machine-reasonable-apis-and-regulations-20f29e1bd4cf) disclosures.
 
-Some relevant references: 
- - [Bloomberg - Intel's Pentium Bug Fix Is Proposed as Solution for Dark Pools](https://www.bloomberg.com/news/articles/2016-03-04/intel-s-pentium-bug-fix-is-proposed-as-solution-for-dark-pools)  
+Some relevant references:
+ - [Bloomberg - Intel's Pentium Bug Fix Is Proposed as Solution for Dark Pools](https://www.bloomberg.com/news/articles/2016-03-04/intel-s-pentium-bug-fix-is-proposed-as-solution-for-dark-pools)
  - our 2017 Lecture Notes in AI paper [Formal Verification of Financial Algorithms](https://link.springer.com/chapter/10.1007/978-3-319-63046-5_3)
  - our 2016 [SEC Reg ATS-N comment letter](https://www.sec.gov/comments/s7-23-15/s72315-24.pdf) proposing the _Precise Specification Standard_ for disclosure of financial algorithms
  - our 2018 [Machine Reasonable APIs and Regulations](https://medium.com/imandra/machine-reasonable-apis-and-regulations-20f29e1bd4cf) Medium post
@@ -26,7 +27,7 @@ Some relevant references:
 
 <img src="https://storage.googleapis.com/imandra-notebook-assets/winningubsfinals2015_jpg-large.jpg" width=500>
 
-This analysis was part of Aesthetic Integration's entry in the 2015 UBS Future of Finance Challenge, for which we won first place (out of 620 companies from 52 countries!). This analysis is based purely on publicly available documents, and is based on our interpretation of the English prose written in the Form ATS. 
+This analysis was part of Aesthetic Integration's entry in the 2015 UBS Future of Finance Challenge, for which we won first place (out of 620 companies from 52 countries!). This analysis is based purely on publicly available documents, and is based on our interpretation of the English prose written in the Form ATS.
 
 <img src="https://storage.googleapis.com/imandra-notebook-assets/ubs-form-ats-first-page.png" width=500>
 
@@ -570,8 +571,8 @@ let doc_of_mkt mkt =
 [@@program];;
 
 let pp_rank (side, o1, o2, o3, mkt) =
-  Document.(tbl ~headers:["side";"order1";"order2";"order3";"mkt"] 
-    @@ [[doc_of_side side; doc_of_order o1; doc_of_order o2; doc_of_order o3; doc_of_mkt mkt]]) 
+  Document.(tbl ~headers:["side";"order1";"order2";"order3";"mkt"]
+    @@ [[doc_of_side side; doc_of_order o1; doc_of_order o2; doc_of_order o3; doc_of_mkt mkt]])
  [@@program];;
 
 #install_doc pp_rank

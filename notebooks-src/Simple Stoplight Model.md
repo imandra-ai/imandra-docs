@@ -3,6 +3,7 @@ title: "Decomposing a Simple car intersection model"
 description: "In this notebook, we'll implement a simple model of a road interseciton with a car approaching, we'll then use Imandra's Principal Region Decomposition to explore its state space and define custom printers in order to explore the behavior of the car approaching the intersection using english prose."
 kernel: imandra
 slug: simple-stoplight-model
+difficulty: beginner
 ---
 
 # The stoplight model

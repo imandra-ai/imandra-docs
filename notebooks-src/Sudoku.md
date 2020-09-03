@@ -3,6 +3,7 @@ title: "Sudoku"
 description: "Crossing the River Safely: a Puzzle"
 kernel: imandra
 slug: sudoku
+difficulty: intermediate
 ---
 
 # Sudoku
@@ -28,14 +29,14 @@ type nat = Z | S of nat;;
 (* readability matters, so we write a pretty-printer for nats *)
 let rec int_of_nat = function Z -> 0i | S n -> Caml.Int.(1i + int_of_nat n) [@@program]
 let pp_nat out n = Format.fprintf out "%d" (int_of_nat n) [@@program];;
-#install_printer pp_nat;;  
+#install_printer pp_nat;;
 ```
 
 ```{.imandra .input}
 let rec length = function
   | [] -> Z
   | _ :: tl -> S (length tl)
-  
+
 let n3 = S (S (S Z));;
 let n6 = S (S (S n3));;
 let n9 = S (S (S n6));;
@@ -53,11 +54,11 @@ let rec transpose3 = function
   | [] :: tl -> transpose3 tl
   | (_::t) :: tl -> t :: transpose3 tl
 
-let rec get_heads = function                                                                       
+let rec get_heads = function
   | [] -> []
   | [] :: tl -> get_heads tl
-  | (h :: _) :: tl -> h :: get_heads tl                                                            
-;;     
+  | (h :: _) :: tl -> h :: get_heads tl
+;;
 
 (** We need a custom termination function here *)
 let measure_transpose = function
@@ -173,7 +174,7 @@ type cell = C1 | C2 | C3 | C4 | C5 | C6 | C7 | C8 | C9 ;;
    it to good use later. *)
 let doc_of_cell c =
   Document.s (match c with C1->"1"|C2->"2"|C3->"3"|C4->"4"|C5->"5"|C6->"6"|C7->"7"|C8->"8"|C9->"9") [@@program];;
-  
+
 #install_doc doc_of_cell;;
 ```
 
@@ -185,15 +186,15 @@ type sudoku = { rows: cell option list list } ;;
 (* now install a nice printer for sudoku grids *)
 let doc_of_sudoku (s:sudoku) : Document.t =
   let module D = Document in
-  let d_of_c = function None -> D.s "·" | Some c -> doc_of_cell c in 
+  let d_of_c = function None -> D.s "·" | Some c -> doc_of_cell c in
   D.tbl_of d_of_c s.rows [@@program]
   ;;
-  
+
 #install_doc doc_of_sudoku;;
 ```
 
 We're going to solve the following instance (still from Dan Rosén and Koen Claessen's code).
-The custom printer we installed earlier shows the grid in a readable way. 
+The custom printer we installed earlier shows the grid in a readable way.
 
 ```{.imandra .input}
 let the_problem : sudoku =
@@ -222,7 +223,7 @@ let satisfies_constraints (x:sudoku) = List.for_all block_satisfies_constraints 
 (** is a sudoku entirely defined (all cells are filled)? *)
 let is_solved (x:sudoku) =
   List.for_all (List.for_all Option.is_some) x.rows;;
-  
+
 (** Is [x] of the correct shape, i.e. a 9×9 grid? *)
 let is_valid_sudoku (x:sudoku) =
   length x.rows = n9 &&

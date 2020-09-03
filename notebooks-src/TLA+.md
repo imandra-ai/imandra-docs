@@ -3,6 +3,7 @@ title: "A comparison with TLA+"
 description: "Encoding the examples from Learn TLA+ in Imandra"
 kernel: imandra
 slug: a-comparison-with-tla-plus
+difficulty: advanced
 ---
 
 # A comparison with TLA+

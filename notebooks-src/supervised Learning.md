@@ -3,6 +3,7 @@ title: "Supervised Learning"
 description: "Analysing Machine Learning Models with Imandra"
 kernel: imandra
 slug: supervised-learning
+difficulty: advanced
 ---
 
 # Analysing Machine Learning Models With Imandra

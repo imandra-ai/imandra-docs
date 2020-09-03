@@ -9,15 +9,16 @@ key-phrases:
   - probabilities
   - counterexample
   - instance
+difficulty: advanced
 ---
 
 
-An amazing feature of Imandra is the ability to reason about functional inputs and generate functional instances and counterexamples. For example we can introduce a variant type and a second-order function that evaluates its argument on each variant and computes the sum of the results. 
+An amazing feature of Imandra is the ability to reason about functional inputs and generate functional instances and counterexamples. For example we can introduce a variant type and a second-order function that evaluates its argument on each variant and computes the sum of the results.
 
 
 ```{.imandra .input}
 type t = A | B | C
-let sum = (f) => f(A) + f(B) + f(C)  
+let sum = (f) => f(A) + f(B) + f(C)
 ```
 
 Now, let's ask Imandra to come up with an instance of a function `f` that returns positive values and that produces `42` when calling `sum(f)`:
@@ -54,7 +55,7 @@ type choice =
   | Stay
   | Swap
 
-type scenario = 
+type scenario =
   { prize       : door
   , first_guess : door
   , choice      : choice
@@ -76,16 +77,16 @@ Not any function can be a probability mass function — PMFs must satisfy th
 
 
 ```{.imandra .input}
-let valid_door_pmf : (door => real) => bool =  
+let valid_door_pmf : (door => real) => bool =
   (pmf) => Real.(
     (pmf(DoorA) + pmf(DoorB) + pmf(DoorC) == 1.0) &&
     (pmf(DoorA) >= 0.0) &&
     (pmf(DoorB) >= 0.0) &&
-    (pmf(DoorC) >= 0.0)  
+    (pmf(DoorC) >= 0.0)
   )
 ```
 
-To check that this predicate works we use it on our `pDoorsEqual` function. 
+To check that this predicate works we use it on our `pDoorsEqual` function.
 
 
 ```{.imandra .input}
@@ -100,8 +101,8 @@ let random_then_stay_strategy : (door => choice => real) =
   (door) => (choice) => Real.(
     switch(door,choice){
     | ( _ ,Stay) => 1.0 / 3.0
-    | ( _ ,Swap) => 0.0 
-    } 
+    | ( _ ,Swap) => 0.0
+    }
   )
 ```
 
@@ -109,14 +110,14 @@ A strategy’s type is `door => choice => real`: it takes in which door the play
 
 
 ```{.imandra .input}
-let valid_strategy : (door => choice => real) => bool = 
-  (strategy) => Real.({  
+let valid_strategy : (door => choice => real) => bool =
+  (strategy) => Real.({
     (strategy(DoorA,Stay) >= 0.0) && (strategy(DoorA,Swap) >= 0.0) &&
     (strategy(DoorB,Stay) >= 0.0) && (strategy(DoorB,Swap) >= 0.0) &&
     (strategy(DoorC,Stay) >= 0.0) && (strategy(DoorC,Swap) >= 0.0) &&
     ( strategy(DoorA,Stay) + strategy(DoorA,Swap) +
       strategy(DoorB,Stay) + strategy(DoorB,Swap) +
-      strategy(DoorC,Stay) + strategy(DoorC,Swap) == 1.0) 
+      strategy(DoorC,Stay) + strategy(DoorC,Swap) == 1.0)
   });
 ```
 
@@ -129,7 +130,7 @@ Finally, we’ll need one last function that constructs a PMF over the whole sce
 
 
 ```{.imandra .input}
-let make_scenario_pmf : (door => real) => (door => choice => real) => (scenario => real) = 
+let make_scenario_pmf : (door => real) => (door => choice => real) => (scenario => real) =
   (door_pmf) => (strategy) => (s) => Real.({
     door_pmf(s.prize) * strategy(s.first_guess, s.choice)
   })
@@ -142,29 +143,29 @@ Given a `scenario` variable, we calculate a reward that the player gets. When th
 
 ```{.imandra .input}
 let reward = (scenario) =>
-  if( scenario.prize == scenario.first_guess ) { 
+  if( scenario.prize == scenario.first_guess ) {
       if(scenario.choice == Stay) prize else 0.0;
-  } else { 
+  } else {
       if(scenario.choice == Swap) prize else 0.0;
   }
 ```
 
-Given a probability distribution over scenarios, we want to calculate the expected value of the reward - the probability-weighted average of possible values of the reward for each outcome. 
+Given a probability distribution over scenarios, we want to calculate the expected value of the reward - the probability-weighted average of possible values of the reward for each outcome.
 $$ E[reward] = \sum_s P(s)\,reward(s) $$
 We create a function that performs this averaging: it takes in a scenario PMF of type `scenario => real` and returns a `real` value for the expectation value:
 
 
 ```{.imandra .input}
-let expected_reward : (scenario => real) => real = 
+let expected_reward : (scenario => real) => real =
   (scenario_pmf) => Real.({
     let pr = (s) => scenario_pmf(s) * reward(s);
       let avg = (choice) => {
         let avg = (first_guess) => {
           pr { prize: DoorA, first_guess, choice} +
           pr { prize: DoorB, first_guess, choice} +
-          pr { prize: DoorC, first_guess, choice} 
+          pr { prize: DoorC, first_guess, choice}
         };
-      avg(DoorA) + avg(DoorB) + avg(DoorC) 
+      avg(DoorA) + avg(DoorB) + avg(DoorC)
       };
     avg(Stay) + avg(Swap)
   })
@@ -178,7 +179,7 @@ As a final example, let’s use what we’ve built so far to calculate the expec
 ```{.imandra .input}
 expected_reward(
   make_scenario_pmf(pDoorsEqual, random_then_stay_strategy)
-) 
+)
 ```
 
 We get an obvious result that if we choose a random door and stay with it, then the expected reward is 1/3 of a $1,000,000. That seems reasonable and it is not very obvious that one can increase his chances of winning.
@@ -193,7 +194,7 @@ verify ( (strategy) => Real.({
   valid_strategy(strategy) ==>
   ( expected_reward (
       make_scenario_pmf(pDoorsEqual,strategy)
-  ) <= 1000000.0 / 3.0 ) 
+  ) <= 1000000.0 / 3.0 )
 }))
 ```
 
@@ -210,7 +211,7 @@ The counterexample strategy that Imandra produced increased our expected winning
 
 
 ```{.imandra .input}
-let random_then_swap_strategy = (door : door,choice) => 
+let random_then_swap_strategy = (door : door,choice) =>
     switch(door,choice){ | (_,Swap) => Real.(1.0 / 3.0) | _ => 0.0 };
 expected_reward(
   make_scenario_pmf(pDoorsEqual,random_then_swap_strategy)
@@ -225,7 +226,7 @@ verify ( (strategy) => Real.({
   valid_strategy(strategy) ==>
   ( expected_reward (
       make_scenario_pmf(pDoorsEqual,strategy)
-  ) <= 2000000.0 / 3.0 ) 
+  ) <= 2000000.0 / 3.0 )
 }))
 ```
 
@@ -239,7 +240,7 @@ instance ( (strategy) => Real.({
   valid_strategy(strategy) &&
   ( expected_reward (
       make_scenario_pmf(pDoorsEqual,strategy)
-  ) == 2000000.0 / 3.0 ) 
+  ) == 2000000.0 / 3.0 )
 }))
 ```
 
@@ -271,7 +272,7 @@ verify ( (strategy) => Real.({
   valid_strategy(strategy) ==>
   ( expected_reward (
       make_scenario_pmf(pDoorsBiased,strategy)
-  ) <= 2000000.0 / 3.0 ) 
+  ) <= 2000000.0 / 3.0 )
 }))
 ```
 
@@ -279,12 +280,12 @@ Imandra suggests that we can do better than 2/3 if we use a mixed strategy of ei
 
 
 ```{.imandra .input}
-let aStayStrategy = (door,choice) => 
+let aStayStrategy = (door,choice) =>
     switch(door,choice){ | (DoorA,Stay) => 1.0 | _ => 0.0 };
 expected_reward(
   make_scenario_pmf(pDoorsBiased,aStayStrategy)
 );
-let cSwapStrategy = (door,choice) => 
+let cSwapStrategy = (door,choice) =>
     switch(door,choice){ | (DoorC,Swap) => 1.0 | _ => 0.0 };
 expected_reward(
   make_scenario_pmf(pDoorsBiased,cSwapStrategy)
@@ -299,7 +300,7 @@ verify ( (strategy) => Real.({
   valid_strategy(strategy) ==>
   ( expected_reward (
       make_scenario_pmf(pDoorsBiased,strategy)
-  ) <= 800000.0 ) 
+  ) <= 800000.0 )
 }))
 ```
 
@@ -313,7 +314,7 @@ Using this approach one can go further and analyse even more complicated Monty-H
 let pDoorsComplex = (door : door) => Real.(
   switch (door){
   | DoorA => 5.0 / 10.0
-  | DoorB => 3.0 / 10.0 
+  | DoorB => 3.0 / 10.0
   | DoorC => 2.0 / 10.0
   }
 );
@@ -322,25 +323,25 @@ let reward_complex = (scenario) => {
   let prize = switch(scenario.prize) {
   | DoorA => 1000000.
   | DoorB => 2000000.
-  | DoorC => 4000000.      
-  }; 
-  if( scenario.prize == scenario.first_guess ) { 
+  | DoorC => 4000000.
+  };
+  if( scenario.prize == scenario.first_guess ) {
       if(scenario.choice == Stay) prize else 0.0;
-  } else { 
+  } else {
       if(scenario.choice == Swap) prize else 0.0;
   }
 };
 
-let expected_reward_complex : (scenario => real) => real = 
+let expected_reward_complex : (scenario => real) => real =
   (scenario_pmf) => Real.({
     let pr = (s) => scenario_pmf(s) * reward_complex(s);
       let avg = (choice) => {
         let avg = (first_guess) => {
           pr { prize: DoorA, first_guess, choice} +
           pr { prize: DoorB, first_guess, choice} +
-          pr { prize: DoorC, first_guess, choice} 
+          pr { prize: DoorC, first_guess, choice}
         };
-      avg(DoorA) + avg(DoorB) + avg(DoorC) 
+      avg(DoorA) + avg(DoorB) + avg(DoorC)
       };
     avg(Stay) + avg(Swap)
   })
@@ -352,7 +353,7 @@ verify ( (strategy) => Real.({
   valid_strategy(strategy) ==>
   ( expected_reward_complex (
       make_scenario_pmf(pDoorsComplex,strategy)
-  ) <= 1400000.0 ) 
+  ) <= 1400000.0 )
 }))
 ```
 
@@ -362,7 +363,7 @@ instance ( (strategy) => Real.({
   valid_strategy(strategy) &&
   ( expected_reward_complex (
       make_scenario_pmf(pDoorsComplex,strategy)
-  ) == 1400000.0 ) 
+  ) == 1400000.0 )
 }))
 ```
 
