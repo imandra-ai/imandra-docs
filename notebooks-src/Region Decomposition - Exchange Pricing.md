@@ -301,6 +301,7 @@ To *decompose* the state-space of `match_price`, we'll use `Modular_decomp.top` 
 
 
 ```{.imandra .input}
+#program;;
 let d = Modular_decomp.top ~prune:true "match_price";;
 ```
 
