@@ -1,6 +1,6 @@
 ---
 title: "Sudoku"
-description: "Crossing the River Safely: a Puzzle"
+description: "Solving a sudoku"
 kernel: imandra
 slug: sudoku
 difficulty: intermediate
