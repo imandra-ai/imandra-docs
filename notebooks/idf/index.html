@@ -1391,7 +1391,7 @@ module IDF :
     val sample_region : Top_result.modular_region -&gt; TPL.c list
     type region_expander = string option * string list * string option
     val target_steps :
-      node -&gt; (TPL.t * bool option * region_expander option) list
+      node -&gt; (TPL.t * bool option * region_expander option) list list
     type replay_sample =
       IDF.replay_sample = {
       state_before : int;
@@ -1400,18 +1400,23 @@ module IDF :
     }
     val replay_events : TPL.c list -&gt; replay_sample list
     val replay : node -&gt; replay_sample list
-    type &#39;a decomp =
-        g:G.t -&gt;
-        ?basis:string list -&gt;
-        ?expanding:string list -&gt;
-        ?valid_pol:bool option list -&gt;
-        ?assuming:string -&gt;
-        ?region_expander:region_expander list -&gt; target -&gt; &#39;a
     type runner = IDF.runner
-    val create : unit -&gt; runner
-    val add : runner:runner -&gt; unit decomp
+    val create :
+      ?basis:string list -&gt;
+      ?expanding:string list -&gt; ?assuming:string -&gt; unit -&gt; runner
+    val add :
+      runner:runner -&gt;
+      g:G.t -&gt;
+      ?valid_pol:bool option list -&gt;
+      ?region_expander:region_expander list -&gt; target -&gt; unit
     val run : runner -&gt; unit -&gt; unit
-    val decompose : (unit -&gt; unit) decomp
+    val decompose :
+      g:G.t -&gt;
+      ?basis:string list -&gt;
+      ?expanding:string list -&gt;
+      ?assuming:string -&gt;
+      ?valid_pol:bool option list -&gt;
+      ?region_expander:region_expander list -&gt; target -&gt; unit -&gt; unit
   end
 </pre>
 </div>
