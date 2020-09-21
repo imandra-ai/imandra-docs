@@ -11,7 +11,9 @@ You'll need to have pre-agreed access to an `imandra-server` image repository wi
 
 You'll also need `docker` installed and authenticated to the `imandra-server` image repository. Make sure you're able to run a pull command from the repo without issue, e.g.:
 
-    docker pull url-of-imandra-docker-registry/imandra-server:latest
+```shell
+docker pull url-of-imandra-docker-registry/imandra-server:latest
+```
 
 # Installation
 
@@ -19,7 +21,9 @@ First, run the normal installation process, following the [Simple installation i
 
 Next, tell the Imandra binaries where your `imandra-server` image is located:
 
-    echo 'url-of-imandra-docker-registry/imandra-server' > ~/.imandra/server-image
+```shell
+echo 'url-of-imandra-docker-registry/imandra-server' > ~/.imandra/server-image
+```
 
 This configures the local Imandra client to launch the server component locally inside a docker. Make sure you do not specify a `:version` tag at the end of the url - this is set automatically by the client so the correct server version is run against the currently installed version of the Imandra client.
 
