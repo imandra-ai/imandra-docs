@@ -2,11 +2,11 @@
 <html>
     <head><meta charset="utf-8" />
         <meta content="width=device-width, initial-scale=1.0" name="viewport">
-        <title>Imandra Documentation - Installation - Jupyter Notebook</title>
-        <meta property="og:url" content="https://docs.imandra.ai/imandra-docs/notebooks/installation-jupyter/">
+        <title>Imandra Documentation - Installation - Server Image</title>
+        <meta property="og:url" content="https://docs.imandra.ai/imandra-docs/notebooks/installation-server-image/">
         <meta property="og:type" content="website">
-        <meta property="og:title" content="Imandra Documentation - Installation - Jupyter Notebook">
-        <meta property="og:description" content="Using Imandra via a local Jupyter notebook">
+        <meta property="og:title" content="Imandra Documentation - Installation - Server Image">
+        <meta property="og:description" content="Getting set up with a local installation of Imandra, with a local server">
         <meta property="og:image" content="https://storage.googleapis.com/imandra-assets/images/og_image_default_i78.jpg">
 
 
@@ -326,13 +326,9 @@
                                         
                                         <li class="side__nav-list-item--sub-level-2 side__nav-list--sub-level-2--empty">
                                             
-                                            <a class="side__nav-link side__nav-link--active" href="/imandra-docs/notebooks/installation-jupyter">Jupyter Notebook</a>
+                                            <a class="side__nav-link" href="/imandra-docs/notebooks/installation-jupyter">Jupyter Notebook</a>
                                             
                                             
-                                            
-                                            <div class="side__within-page-nav--sub-level-2">
-                                            
-                                            </div>
                                             
                                         </li>
                                         
@@ -346,9 +342,23 @@
                                         
                                         <li class="side__nav-list-item--sub-level-2 side__nav-list--sub-level-2--empty">
                                             
-                                            <a class="side__nav-link" href="/imandra-docs/notebooks/installation-server-image">Server Image</a>
+                                            <a class="side__nav-link side__nav-link--active" href="/imandra-docs/notebooks/installation-server-image">Server Image</a>
                                             
                                             
+                                            
+                                            <div class="side__within-page-nav--sub-level-2">
+                                            
+  
+  
+  
+  <a class="side__nav-link--within-page side__nav-link--within-page--h1" href="#Installation">Installation</a>
+  
+  
+  
+  <a class="side__nav-link--within-page side__nav-link--within-page--h2" href="#Server-image-tarball-setup">Server image tarball setup</a>
+  
+  
+                                            </div>
                                             
                                         </li>
                                         
@@ -985,110 +995,85 @@
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html"><h1 id="Jupyter-Notebook">Jupyter Notebook<a class="anchor-link" href="#Jupyter-Notebook">&#182;</a></h1><p>You'll first need to run the <a href="/imandra-docs/notebooks/installation-simple/">recommended, simple installation of Imandra</a>.</p>
-<p>After running the simple installer, you should see <code>imandra-jupyter-kernel</code> on your path. You'll now need to install the kernel as part of your local Jupyter setup in order to invoke this.</p>
-<p>To install the Imandra and Imandra-reason kernels, run the following commands:</p>
-<p>(Note: if you have a more intricate Jupyter environment setup or if you use <code>conda</code>, you'll need to adjust the commands accordingly to install things into the correct location).</p>
+<div class="text_cell_render border-box-sizing rendered_html"><h1 id="Prerequisites">Prerequisites<a class="anchor-link" href="#Prerequisites">&#182;</a></h1><p>You'll need to have pre-agreed access to an <code>imandra-server</code> image repository with us for this to work, <code>imandra-server</code> is not available as standard.</p>
+<p>You'll also need <code>docker</code> installed and authenticated to the <code>imandra-server</code> image repository. Make sure you're able to run a pull command from the repo without issue, e.g.:</p>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html"><div class="terminal">
-    <div class="terminal__copy-ready">
-      <div class="terminal__copy-ready--top"><span class="terminal__copy-msg">Ready!</span></div>
-      <div class="terminal__copy-ready--bottom"></div>
-    </div>
-    <code>
-    <div class="highlight"><pre><span></span><span class="c1"># install imandra and imandra kernels</span>
-jupyter kernelspec install /usr/local/var/imandra/_opam/share/jupyter/kernelspec/imandra
-jupyter kernelspec install /usr/local/var/imandra/_opam/share/jupyter/kernelspec/imandra-reason
-
-<span class="c1">#install nbimandra notebook extensions as a python package (assumes this is in the same package target as jupyter itself)</span>
-pip install /usr/local/var/imandra/_opam/share/jupyter/nbextensions/nbimandra
-
-<span class="c1">#install nbimandra as an extension from the installed python package</span>
-jupyter nbextension install --py nbimandra
-jupyter nbextension <span class="nb">enable</span> --py nbimandra
+<div class="text_cell_render border-box-sizing rendered_html"><div class="highlight"><pre><span></span>$ docker login
+$ docker pull imandra/imandra-server:latest
 </pre></div>
-
-    </code>
-    <div id="copy-button-id--1" class="terminal__copy-cover">
-      <img src="/imandra-docs/static/img/copy.svg">
-    </div>
-  </div>
-  <script>document.getElementById('copy-button-id--1').addEventListener('click', handleCopyClick);</script>
-
-  
-  </div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html"><h2 id="Docker-image">Docker image<a class="anchor-link" href="#Docker-image">&#182;</a></h2><p>The notebook is also available as a docker image: <code>imandra/imandra-client-notebook</code>.</p>
-<p>If you haven't authenticated yet and don't have an <code>~/.imandra</code> folder on your docker host, first authenticate using the regular <code>imandra/imandra-client</code> image:</p>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html"><div class="terminal">
-    <div class="terminal__copy-ready">
-      <div class="terminal__copy-ready--top"><span class="terminal__copy-msg">Ready!</span></div>
-      <div class="terminal__copy-ready--bottom"></div>
-    </div>
-    <code>
-    <div class="highlight"><pre><span></span>docker pull imandra/imandra-client:latest <span class="o">&amp;&amp;</span> <span class="se">\</span>
-  docker run -it --rm -v <span class="si">${</span><span class="nv">HOME</span><span class="si">}</span>/.imandra:/root/.imandra -p <span class="m">8000</span>:8000 <span class="se">\</span>
-  imandra/imandra-client:latest
+<div class="text_cell_render border-box-sizing rendered_html"><h1 id="Installation">Installation<a class="anchor-link" href="#Installation">&#182;</a></h1><p>First, run the normal installation process, following the <a href="/imandra-docs/notebooks/installation-simple/">Simple installation instructions</a>.</p>
+<p>Next, tell the Imandra binaries where your <code>imandra-server</code> image is located:</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html"><div class="highlight"><pre><span></span>$ <span class="nb">echo</span> <span class="s1">&#39;imandra/imandra-server&#39;</span> &gt; ~/.imandra/server-image
 </pre></div>
-
-    </code>
-    <div id="copy-button-id--2" class="terminal__copy-cover">
-      <img src="/imandra-docs/static/img/copy.svg">
-    </div>
-  </div>
-  <script>document.getElementById('copy-button-id--2').addEventListener('click', handleCopyClick);</script>
-
-  
-  </div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html"><p>If everything succeeds you should be dropped into an <code>imandra-repl</code> session. Exit this with <code>C-d</code>.</p>
-<p>Then to launch the notebook, mount your <code>~/.imandra</code> folder as a volume in the container. You may find it useful to mount the current directory in the container too so you can save notebooks you've edited:</p>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html"><div class="terminal">
-    <div class="terminal__copy-ready">
-      <div class="terminal__copy-ready--top"><span class="terminal__copy-msg">Ready!</span></div>
-      <div class="terminal__copy-ready--bottom"></div>
-    </div>
-    <code>
-    <div class="highlight"><pre><span></span>docker pull imandra/imandra-client-notebook:latest <span class="o">&amp;&amp;</span> <span class="se">\</span>
-  docker run -it --rm -v <span class="si">${</span><span class="nv">HOME</span><span class="si">}</span>/.imandra:/home/jovyan/.imandra -p <span class="m">8888</span>:8888 <span class="se">\</span>
-  -v <span class="sb">`</span><span class="nb">pwd</span><span class="sb">`</span>:/home/jovyan/workdir <span class="se">\</span>
-  imandra/imandra-client-notebook
+<div class="text_cell_render border-box-sizing rendered_html"><p>This configures the local Imandra clients to launch the server component locally inside a docker. Make sure you do not specify a <code>:version</code> tag at the end of the url - this is set automatically by the client so the correct server version is run against the currently installed version of the Imandra client.</p>
+<p>Now you should be able to use Imandra Core commands, such as <code>imandra core repl</code> and the Imandra VSCode extension without connecting to our reasoning cloud.</p>
+<h2 id="Server-image-tarball-setup">Server image tarball setup<a class="anchor-link" href="#Server-image-tarball-setup">&#182;</a></h2><p>We may provide you with a <code>.tar.gz</code> file containing the <code>imandra-server</code> image while we're setting up docker repo access. Note that this will only be a single version of the <code>server</code>, and will not work after <code>imandra-client</code> upgrades itself - you will need full docker repo access for ongoing updates to work correctly.</p>
+<p>The <code>.tar.gz</code> file can be loaded into a local docker image as a substitute for <code>docker pull</code> from our registry:</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html"><div class="highlight"><pre><span></span>$ docker load -i imandra-server_&lt;server-version&gt;.tar.gz
+Loaded image: imandra/imandra-server:&lt;server-version&gt;
 </pre></div>
-
-    </code>
-    <div id="copy-button-id--3" class="terminal__copy-cover">
-      <img src="/imandra-docs/static/img/copy.svg">
-    </div>
-  </div>
-  <script>document.getElementById('copy-button-id--3').addEventListener('click', handleCopyClick);</script>
-
-  
-  </div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html"><p>Docker will now be able to resolve the image when the Imandra clients attempt to start <code>imandra-server</code>.</p>
+<p>If your <code>imandra-client</code> has already upgraded to a newer version automatically, you can install a specific version of the <code>imandra-client</code> using:</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html"><div class="highlight"><pre><span></span>$ sh &lt;<span class="o">(</span>curl -s <span class="s2">&quot;https://storage.googleapis.com/imandra-installer/install-&lt;installer-version&gt;.sh&quot;</span><span class="o">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html"><p>NOTE: the version number for the installer is different from the version number for the server! Make sure you use the correct pair of installer+server image versions provided by us.</p>
+<p>You can then launch a repl skipping auto-update using the <code>--skip-update</code> flag, which will keep you on the version you have a server image for:</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html"><div class="highlight"><pre><span></span>$ imandra core repl --skip-update
+</pre></div>
+</div>
 </div>
 </div>
                     </div>
