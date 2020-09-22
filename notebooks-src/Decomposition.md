@@ -35,7 +35,7 @@ Imandra decomposed the function `target` into 2 regions: the first region tells 
 
 When using Region Decomposition from a REPL instead of from the jupyter notebook, we recommend installing the vornoi printer (producing the above diagram) via the `Imandra_voronoi.Voronoi.print` printer
 
-# Api
+## Api
 
 At its very core, modular decomposition allows us to "splice" the state space of a function into (possibly infeasible) regions of behavior.
 
@@ -105,9 +105,3 @@ let d2 = Modular_decomp.(top ~prune:true "f" |> get_regions
                                    (Modular_region.args r |> List.hd |> Term.var)
                                      (Term.int 1)])) [@@program];;
 ```
-
-# Advanced Usage
-
-- [Imandra Tools Introduction](Imandra-tools%20Introduction.md)
-- [Iterative Decomposition Framework](Iterative%20Decomposition%20Framework.md)
-- [Region Probabilities](Region%20Probabilities.md)
