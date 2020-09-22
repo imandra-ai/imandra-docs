@@ -31,7 +31,7 @@ We provide access to a Docker registry containing the `imandra-server` image, bu
 
 Note that the `.tar.gz` archive only contains a single version of the server image and may stop working as your local Imandra clients auto-update.
 
-### Loading the `.tar.gz` image into docker
+### Loading Server as Tar file
 
 The `.tar.gz` archive can be loaded into a local docker image as a substitute for it being fetched automatically from our registry (substituting `<server-version>` with the value in your tar archive filename):
 
@@ -52,7 +52,7 @@ Imandra v1.0.5
 
 and observing the value of `<server-version>` that is output. If the version doesn't match, please contact us for an updated server `.tar.gz` archive for the newer version, or for image repository access.
 
-### Configuring image fetch from our image repository
+### Pulling Server from DockerHub
 
 If we've configured your access to our image repository, you will need to login with `docker` on the authenticated dockerhub account:
 
