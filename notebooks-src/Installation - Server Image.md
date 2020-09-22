@@ -13,7 +13,7 @@ You'll also need `docker` installed so the Imandra clients can run the `imandra-
 
 # Installation
 
-## Imandra client
+## Imandra Client
 
 First, run the normal local Imandra client installation process, following the [Simple installation instructions](Installation%20-%20Simple.md).
 
@@ -25,7 +25,7 @@ $ echo 'imandra/imandra-server' > ~/.imandra/server-image
 
 Your local Imandra clients will now try to launch the server component locally inside a docker container. To switch back to using our cloud for `imandra-server`, remove the `~/.imandra/server-image` file.
 
-## Imandra server
+## Imandra Server
 
 We provide access to a Docker registry containing the `imandra-server` image, but initially we may provide the image in the form of a `.tar.gz` archive while we're coordinating access.
 
