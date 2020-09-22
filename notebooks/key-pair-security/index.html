@@ -119,24 +119,42 @@
 
         <!-- Loading mathjax macro -->
         <!-- Load mathjax -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS_HTML"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-MML-AM_CHTML-full,Safe"> </script>
     <!-- MathJax configuration -->
     <script type="text/x-mathjax-config">
-    MathJax.Hub.Config({
-        tex2jax: {
-            inlineMath: [ ['$','$'], ["\\(","\\)"] ],
-            displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
-            processEscapes: true,
-            processEnvironments: true
-        },
-        // Center justify equations in code and markdown cells. Elsewhere
-        // we use CSS to left justify single line equations in code cells.
-        displayAlign: 'center',
-        "HTML-CSS": {
-            styles: {'.MathJax_Display': {"margin": 0}},
-            linebreaks: { automatic: true }
+    init_mathjax = function() {
+        if (window.MathJax) {
+        // MathJax loaded
+            MathJax.Hub.Config({
+                TeX: {
+                    equationNumbers: {
+                    autoNumber: "AMS",
+                    useLabelIds: true
+                    }
+                },
+                tex2jax: {
+                    inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+                    displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+                    processEscapes: true,
+                    processEnvironments: true
+                },
+                displayAlign: 'center',
+                CommonHTML: {
+                    linebreaks: { 
+                    automatic: true 
+                    }
+                },
+                "HTML-CSS": {
+                    linebreaks: { 
+                    automatic: true 
+                    }
+                }
+            });
+        
+            MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
         }
-    });
+    }
+    init_mathjax();
     </script>
     <!-- End of mathjax configuration --><script>
   function handleCopyClick() {
@@ -1424,44 +1442,44 @@ val init : state =
 
 
 <div class="output_html rendered_html output_subarea ">
-<div><div class="imandra-fold panel panel-default" id="fold-65ea90c5-4dfb-4c64-8755-540062b30768"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>termination proof</span></div></div><div class="panel-body collapse"><div><h3>Termination proof</h3><p></p><div class="imandra-fold panel panel-default" id="fold-ece0b06b-ff69-4763-8a98-42694c5f68b9"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>call `graph_inner (List.tl xs)` from `graph_inner xs`</span></div></div><div class="panel-body collapse"><div class="imandra-table" id="table-53a0c854-97c1-4811-8e5d-6627990c2fe8"><table><tr><td><b>original</b></td><td>graph_inner xs</td></tr><tr><td><b>sub</b></td><td>graph_inner (List.tl xs)</td></tr><tr><td><b>original ordinal</b></td><td>Ordinal.Int (Ordinal.count xs)</td></tr><tr><td><b>sub ordinal</b></td><td>Ordinal.Int (Ordinal.count (List.tl xs))</td></tr><tr><td><b>path</b></td><td>[not (xs = [])]</td></tr><tr><td><b>proof</b></td><td><div class="imandra-fold panel panel-default" id="fold-2eb94af8-6479-40a3-a195-0cb9ac873ed3"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>detailed proof</span></div></div><div class="panel-body collapse"><div class="imandra-proof"><div class="imandra-alternatives" id="alt-e94dc9a6-2116-4418-a65c-ffa3c0a82ebe"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>summary</a></li><li class="" data-toggle="tab"><a>full</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-table" id="table-2e22acb2-c3bc-4c40-9074-49ca04bf21e7"><table><tr><td><b>ground_instances</b></td><td>3</td></tr><tr><td><b>definitions</b></td><td>0</td></tr><tr><td><b>inductions</b></td><td>0</td></tr><tr><td><b>search_time</b></td><td><pre>0.023s</pre></td></tr><tr><td><b>details</b></td><td><div class="imandra-fold panel panel-default" id="fold-5d8dbbe9-8d67-460c-a845-f582d6a414de"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><div class="imandra-table" id="table-baba7178-3558-4774-9405-886ffddeeb6c"><table><tr><td><b>smt_stats</b></td><td><div class="imandra-table" id="table-6cbb65c5-505c-40aa-a15d-628147ef5e26"><table><tr><td><b>num checks</b></td><td>8</td></tr><tr><td><b>arith-make-feasible</b></td><td>44</td></tr><tr><td><b>arith-max-columns</b></td><td>40</td></tr><tr><td><b>arith-conflicts</b></td><td>4</td></tr><tr><td><b>rlimit count</b></td><td>9225</td></tr><tr><td><b>arith-cheap-eqs</b></td><td>1</td></tr><tr><td><b>mk clause</b></td><td>147</td></tr><tr><td><b>datatype occurs check</b></td><td>55</td></tr><tr><td><b>mk bool var</b></td><td>832</td></tr><tr><td><b>arith-lower</b></td><td>44</td></tr><tr><td><b>arith-diseq</b></td><td>11</td></tr><tr><td><b>datatype splits</b></td><td>198</td></tr><tr><td><b>decisions</b></td><td>191</td></tr><tr><td><b>arith-propagations</b></td><td>5</td></tr><tr><td><b>propagations</b></td><td>206</td></tr><tr><td><b>arith-bound-propagations-cheap</b></td><td>5</td></tr><tr><td><b>arith-max-rows</b></td><td>20</td></tr><tr><td><b>conflicts</b></td><td>20</td></tr><tr><td><b>datatype accessor ax</b></td><td>97</td></tr><tr><td><b>arith-bound-propagations-lp</b></td><td>2</td></tr><tr><td><b>datatype constructor ax</b></td><td>297</td></tr><tr><td><b>num allocs</b></td><td>943728721</td></tr><tr><td><b>final checks</b></td><td>8</td></tr><tr><td><b>added eqs</b></td><td>1164</td></tr><tr><td><b>del clause</b></td><td>47</td></tr><tr><td><b>arith eq adapter</b></td><td>44</td></tr><tr><td><b>arith-upper</b></td><td>52</td></tr><tr><td><b>memory</b></td><td>12.870000</td></tr><tr><td><b>max memory</b></td><td>19.570000</td></tr></table></div></td></tr></table></div></div><script>
+<div><div class="imandra-fold panel panel-default" id="fold-4b8b9329-d252-4bb9-b8ea-bce75068341f"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>termination proof</span></div></div><div class="panel-body collapse"><div><h3>Termination proof</h3><p></p><div class="imandra-fold panel panel-default" id="fold-a23a4574-5078-4c64-aa0d-d71e76b7f4c2"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>call `graph_inner (List.tl xs)` from `graph_inner xs`</span></div></div><div class="panel-body collapse"><div class="imandra-table" id="table-3e9373a6-730d-436f-ac77-11742fe263a3"><table><tr><td><b>original</b></td><td>graph_inner xs</td></tr><tr><td><b>sub</b></td><td>graph_inner (List.tl xs)</td></tr><tr><td><b>original ordinal</b></td><td>Ordinal.Int (Ordinal.count xs)</td></tr><tr><td><b>sub ordinal</b></td><td>Ordinal.Int (Ordinal.count (List.tl xs))</td></tr><tr><td><b>path</b></td><td>[not (xs = [])]</td></tr><tr><td><b>proof</b></td><td><div class="imandra-fold panel panel-default" id="fold-aabca135-4ff7-4bf1-bbde-8d063a0f6a3b"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>detailed proof</span></div></div><div class="panel-body collapse"><div class="imandra-proof"><div class="imandra-alternatives" id="alt-97911cc0-0819-47d9-8091-a5a3a8729e5c"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>summary</a></li><li class="" data-toggle="tab"><a>full</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-table" id="table-4eb8a068-84ce-4588-be32-bbbe995286d6"><table><tr><td><b>ground_instances</b></td><td>3</td></tr><tr><td><b>definitions</b></td><td>0</td></tr><tr><td><b>inductions</b></td><td>0</td></tr><tr><td><b>search_time</b></td><td><pre>0.022s</pre></td></tr><tr><td><b>details</b></td><td><div class="imandra-fold panel panel-default" id="fold-aa2c5a8e-c10f-4704-a91a-a584a352d10c"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><div class="imandra-table" id="table-9c93a842-25f9-40bb-b901-b54f26f9e056"><table><tr><td><b>smt_stats</b></td><td><div class="imandra-table" id="table-f361c2d7-7be1-493d-9942-413a93888c66"><table><tr><td><b>num checks</b></td><td>8</td></tr><tr><td><b>arith-make-feasible</b></td><td>44</td></tr><tr><td><b>arith-max-columns</b></td><td>40</td></tr><tr><td><b>arith-conflicts</b></td><td>4</td></tr><tr><td><b>rlimit count</b></td><td>9273</td></tr><tr><td><b>arith-cheap-eqs</b></td><td>1</td></tr><tr><td><b>mk clause</b></td><td>147</td></tr><tr><td><b>datatype occurs check</b></td><td>55</td></tr><tr><td><b>mk bool var</b></td><td>832</td></tr><tr><td><b>arith-lower</b></td><td>44</td></tr><tr><td><b>arith-diseq</b></td><td>11</td></tr><tr><td><b>datatype splits</b></td><td>198</td></tr><tr><td><b>decisions</b></td><td>191</td></tr><tr><td><b>arith-propagations</b></td><td>5</td></tr><tr><td><b>propagations</b></td><td>206</td></tr><tr><td><b>arith-bound-propagations-cheap</b></td><td>5</td></tr><tr><td><b>arith-max-rows</b></td><td>20</td></tr><tr><td><b>conflicts</b></td><td>20</td></tr><tr><td><b>datatype accessor ax</b></td><td>97</td></tr><tr><td><b>arith-bound-propagations-lp</b></td><td>2</td></tr><tr><td><b>datatype constructor ax</b></td><td>297</td></tr><tr><td><b>num allocs</b></td><td>922545004</td></tr><tr><td><b>final checks</b></td><td>8</td></tr><tr><td><b>added eqs</b></td><td>1164</td></tr><tr><td><b>del clause</b></td><td>47</td></tr><tr><td><b>arith eq adapter</b></td><td>44</td></tr><tr><td><b>arith-upper</b></td><td>52</td></tr><tr><td><b>memory</b></td><td>15.410000</td></tr><tr><td><b>max memory</b></td><td>19.560000</td></tr></table></div></td></tr></table></div></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-5d8dbbe9-8d67-460c-a845-f582d6a414de';
+  var target = '#fold-aa2c5a8e-c10f-4704-a91a-a584a352d10c';
   fold.hydrate(target);
 });
-</script></div></td></tr></table></div></div><div class="tab-pane"><div class="imandra-fold panel panel-default" id="fold-7432485e-c759-4d70-9bec-8407153e4911"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.023s]
+</script></div></td></tr></table></div></div><div class="tab-pane"><div class="imandra-fold panel panel-default" id="fold-76241683-9883-4068-82f5-d2ea67cd927b"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.022s]
   let (_x_0 : int) = Ordinal.count xs in
   let (_x_1 : action list) = List.tl xs in
   let (_x_2 : int) = Ordinal.count _x_1 in
   not (xs = []) &amp;&amp; _x_0 &gt;= 0 &amp;&amp; _x_2 &gt;= 0
-  ==&gt; _x_1 = [] || Ordinal.( &lt;&lt; ) (Ordinal.Int _x_2) (Ordinal.Int _x_0)</pre></li><li><div><h5>simplify</h5><div class="imandra-table" id="table-5f311ce8-e921-4ca8-873d-ffa6bf8d69e6"><table><tr><td><b>into</b></td><td><pre>let (_x_0 : action list) = List.tl xs in
+  ==&gt; _x_1 = [] || Ordinal.( &lt;&lt; ) (Ordinal.Int _x_2) (Ordinal.Int _x_0)</pre></li><li><div><h5>simplify</h5><div class="imandra-table" id="table-3656771b-f308-45ce-9677-81a02bd4213f"><table><tr><td><b>into</b></td><td><pre>let (_x_0 : action list) = List.tl xs in
 let (_x_1 : int) = Ordinal.count _x_0 in
 let (_x_2 : int) = Ordinal.count xs in
 (_x_0 = [] || Ordinal.( &lt;&lt; ) (Ordinal.Int _x_1) (Ordinal.Int _x_2))
-|| not ((not (xs = []) &amp;&amp; _x_2 &gt;= 0) &amp;&amp; _x_1 &gt;= 0)</pre></td></tr><tr><td><b>expansions</b></td><td><pre>[]</pre></td></tr><tr><td><b>rewrite_steps</b></td><td><ul></ul></td></tr><tr><td><b>forward_chaining</b></td><td><ul></ul></td></tr></table></div></div></li><li><div>unroll<div class="imandra-table" id="table-bba431f7-f45c-4ea3-9efc-c5d932c51028"><table><tr><td><b>expr</b></td><td><pre>(|count_`action list`_3067| xs_3058)</pre></td></tr><tr><td><b>expansions</b></td><td><ul></ul></td></tr></table></div></div></li><li><div>unroll<div class="imandra-table" id="table-00b9f075-f0b2-4ba2-b2ba-fb68d3ee8c74"><table><tr><td><b>expr</b></td><td><pre>(|count_`action list`_3067| (|get.::.1_3057| xs_3058))</pre></td></tr><tr><td><b>expansions</b></td><td><ul></ul></td></tr></table></div></div></li><li><div>unroll<div class="imandra-table" id="table-d110a885-086d-42df-ae8a-ac93673b8e65"><table><tr><td><b>expr</b></td><td><pre>(|Ordinal.&lt;&lt;_102| (|Ordinal.Int_93| (|count_`action list`_3067|
+|| not ((not (xs = []) &amp;&amp; _x_2 &gt;= 0) &amp;&amp; _x_1 &gt;= 0)</pre></td></tr><tr><td><b>expansions</b></td><td><pre>[]</pre></td></tr><tr><td><b>rewrite_steps</b></td><td><ul></ul></td></tr><tr><td><b>forward_chaining</b></td><td><ul></ul></td></tr></table></div></div></li><li><div>unroll<div class="imandra-table" id="table-0c263ebc-165f-4f27-93ed-ec262ab6666f"><table><tr><td><b>expr</b></td><td><pre>(|count_`action list`_3067| xs_3058)</pre></td></tr><tr><td><b>expansions</b></td><td><ul></ul></td></tr></table></div></div></li><li><div>unroll<div class="imandra-table" id="table-5e197af6-e26c-4384-b88c-69b2cef62fbd"><table><tr><td><b>expr</b></td><td><pre>(|count_`action list`_3067| (|get.::.1_3057| xs_3058))</pre></td></tr><tr><td><b>expansions</b></td><td><ul></ul></td></tr></table></div></div></li><li><div>unroll<div class="imandra-table" id="table-def191c0-65fb-4be7-890f-b6a8521d7b45"><table><tr><td><b>expr</b></td><td><pre>(|Ordinal.&lt;&lt;_102| (|Ordinal.Int_93| (|count_`action list`_3067|
                                     …</pre></td></tr><tr><td><b>expansions</b></td><td><ul></ul></td></tr></table></div></div></li><li>Unsat</li></ul></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-7432485e-c759-4d70-9bec-8407153e4911';
+  var target = '#fold-76241683-9883-4068-82f5-d2ea67cd927b';
   fold.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-e94dc9a6-2116-4418-a65c-ffa3c0a82ebe';
+  var target = '#alt-97911cc0-0819-47d9-8091-a5a3a8729e5c';
   alternatives.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-2eb94af8-6479-40a3-a195-0cb9ac873ed3';
+  var target = '#fold-aabca135-4ff7-4bf1-bbde-8d063a0f6a3b';
   fold.hydrate(target);
 });
 </script></div></td></tr></table></div></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-ece0b06b-ff69-4763-8a98-42694c5f68b9';
+  var target = '#fold-a23a4574-5078-4c64-aa0d-d71e76b7f4c2';
   fold.hydrate(target);
 });
 </script></div><p></p></div></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-65ea90c5-4dfb-4c64-8755-540062b30768';
+  var target = '#fold-4b8b9329-d252-4bb9-b8ea-bce75068341f';
   fold.hydrate(target);
 });
 </script></div></div>
@@ -1581,7 +1599,7 @@ module CX :
 
 
 <div class="output_html rendered_html output_subarea ">
-<div><pre>Counterexample (after 64 steps, 0.139s):
+<div><pre>Counterexample (after 64 steps, 0.379s):
   let x1 = Alice
   let x2 = Mallory
   let m = 0
@@ -1619,7 +1637,7 @@ module CX :
 
 
 <div class="output_html rendered_html output_subarea ">
-<div><div class="imandra-graphviz" id="graphviz-98708ed9-ae3d-4a5b-90b9-0125e96475ba"><textarea style="display: none">digraph G {
+<div><div class="imandra-graphviz" id="graphviz-88cc93ab-ca0d-4093-a893-2acc06639edb"><textarea style="display: none">digraph G {
 Alice [color=blue];
 Mallory [color=red];
 Bob [color=green];
@@ -1633,7 +1651,7 @@ Bob-&gt;Alice[label=&quot;Alice&quot;,color=black];
 }
 </textarea><button class="btn btn-primary">Load graph</button><div class="imandra-graphviz-loading display-none">Loading..</div><div class="imandra-graphviz-target"></div><script>
 require(['nbextensions/nbimandra/graphviz'], function (graphviz) {
-  var target = '#graphviz-98708ed9-ae3d-4a5b-90b9-0125e96475ba';
+  var target = '#graphviz-88cc93ab-ca0d-4093-a893-2acc06639edb';
   graphviz.hydrate(target);
 });
 </script></div></div>
@@ -1714,7 +1732,7 @@ module CX :
 
 
 <div class="output_html rendered_html output_subarea ">
-<div><pre>Counterexample (after 93 steps, 0.313s):
+<div><pre>Counterexample (after 93 steps, 0.303s):
   let x1 = Alice
   let x2 = Bob
   let x3 = Mallory
@@ -1756,7 +1774,7 @@ module CX :
 
 
 <div class="output_html rendered_html output_subarea ">
-<div><div class="imandra-graphviz" id="graphviz-9bf485ca-07a4-440a-b36f-4da2a562e256"><textarea style="display: none">digraph G {
+<div><div class="imandra-graphviz" id="graphviz-a8045075-31f4-40d0-be00-ad15426431fe"><textarea style="display: none">digraph G {
 Alice [color=blue];
 Mallory [color=red];
 Bob [color=green];
@@ -1772,7 +1790,7 @@ Bob-&gt;Alice[label=&quot;Alice&quot;,color=black];
 }
 </textarea><button class="btn btn-primary">Load graph</button><div class="imandra-graphviz-loading display-none">Loading..</div><div class="imandra-graphviz-target"></div><script>
 require(['nbextensions/nbimandra/graphviz'], function (graphviz) {
-  var target = '#graphviz-9bf485ca-07a4-440a-b36f-4da2a562e256';
+  var target = '#graphviz-a8045075-31f4-40d0-be00-ad15426431fe';
   graphviz.hydrate(target);
 });
 </script></div></div>
@@ -1800,7 +1818,7 @@ require(['nbextensions/nbimandra/graphviz'], function (graphviz) {
             </footer>
         </div>
     
- 
+
 
 
     <script>

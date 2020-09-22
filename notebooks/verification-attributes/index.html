@@ -119,24 +119,42 @@
 
         <!-- Loading mathjax macro -->
         <!-- Load mathjax -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS_HTML"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-MML-AM_CHTML-full,Safe"> </script>
     <!-- MathJax configuration -->
     <script type="text/x-mathjax-config">
-    MathJax.Hub.Config({
-        tex2jax: {
-            inlineMath: [ ['$','$'], ["\\(","\\)"] ],
-            displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
-            processEscapes: true,
-            processEnvironments: true
-        },
-        // Center justify equations in code and markdown cells. Elsewhere
-        // we use CSS to left justify single line equations in code cells.
-        displayAlign: 'center',
-        "HTML-CSS": {
-            styles: {'.MathJax_Display': {"margin": 0}},
-            linebreaks: { automatic: true }
+    init_mathjax = function() {
+        if (window.MathJax) {
+        // MathJax loaded
+            MathJax.Hub.Config({
+                TeX: {
+                    equationNumbers: {
+                    autoNumber: "AMS",
+                    useLabelIds: true
+                    }
+                },
+                tex2jax: {
+                    inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+                    displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+                    processEscapes: true,
+                    processEnvironments: true
+                },
+                displayAlign: 'center',
+                CommonHTML: {
+                    linebreaks: { 
+                    automatic: true 
+                    }
+                },
+                "HTML-CSS": {
+                    linebreaks: { 
+                    automatic: true 
+                    }
+                }
+            });
+        
+            MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
         }
-    });
+    }
+    init_mathjax();
     </script>
     <!-- End of mathjax configuration --><script>
   function handleCopyClick() {
@@ -1171,9 +1189,9 @@ But simplification reduces this to true, using the definitions of <span class="a
 
 
 <div class="output_html rendered_html output_subarea ">
-<div><div style="font-size: 1.2em; padding: 0.5em; border-top: 1px solid green; border-bottom: 1px solid green"><i class="fa fa-check-circle" style="margin-right: 0.5em; color: green"></i><span>Proved</span></div><div><div class="imandra-proof-top"><div class="imandra-fold panel panel-default" id="fold-9e89e3c5-98db-4cd9-a5f5-5e89550d111f"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>proof</span></div></div><div class="panel-body collapse"><div class="imandra-proof"><div class="imandra-alternatives" id="alt-5d6f611c-73ca-4552-a172-04d335764eaa"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>summary</a></li><li class="" data-toggle="tab"><a>full</a></li><li class="" data-toggle="tab"><a>graph</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-table" id="table-a4288b4e-9693-4e1e-9bf0-cb29ec08ff0c"><table><tr><td><b>ground_instances</b></td><td>0</td></tr><tr><td><b>definitions</b></td><td>5</td></tr><tr><td><b>inductions</b></td><td>1</td></tr><tr><td><b>search_time</b></td><td><pre>0.095s</pre></td></tr></table></div></div><div class="tab-pane"><div class="imandra-fold panel panel-default" id="fold-489a1d36-b819-4429-a932-b3f50ec318dc"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.095s, &quot;Goal&quot;]
+<div><div style="font-size: 1.2em; padding: 0.5em; border-top: 1px solid green; border-bottom: 1px solid green"><i class="fa fa-check-circle" style="margin-right: 0.5em; color: green"></i><span>Proved</span></div><div><div class="imandra-proof-top"><div class="imandra-fold panel panel-default" id="fold-4aa7bcf5-6756-4acf-8b14-c830b0acae70"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>proof</span></div></div><div class="panel-body collapse"><div class="imandra-proof"><div class="imandra-alternatives" id="alt-f72753b5-2209-43ca-85eb-1dd27575f25d"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>summary</a></li><li class="" data-toggle="tab"><a>full</a></li><li class="" data-toggle="tab"><a>graph</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-table" id="table-455682c5-b8f3-41ba-af07-c7dd8fac9c70"><table><tr><td><b>ground_instances</b></td><td>0</td></tr><tr><td><b>definitions</b></td><td>5</td></tr><tr><td><b>inductions</b></td><td>1</td></tr><tr><td><b>search_time</b></td><td><pre>0.146s</pre></td></tr></table></div></div><div class="tab-pane"><div class="imandra-fold panel panel-default" id="fold-5ab1ff33-06f2-4f29-bf81-3ed424b63d14"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.146s, &quot;Goal&quot;]
   List.length (List.append :var_0: :var_1:) =
-  List.length :var_0: + List.length :var_1:</pre></li><li><div><h4>subproof</h4><div class="imandra-fold panel panel-default" id="fold-584e99e1-7d8d-43e7-8f33-655bd661b04e"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>List.length (List.append x y) = List.length x + List.length y</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.095s, &quot;1&quot;]
+  List.length :var_0: + List.length :var_1:</pre></li><li><div><h4>subproof</h4><div class="imandra-fold panel panel-default" id="fold-5206eb1a-ed48-4eae-82d6-5ab2b31c7a4b"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>List.length (List.append x y) = List.length x + List.length y</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.146s, &quot;1&quot;]
   List.length (List.append x y) = List.length x + List.length y</pre></li><li><pre>induction on (functional )
 :scheme (x = [] ==&gt; φ x y) &amp;&amp; (not (x = []) &amp;&amp; φ (List.tl x) y ==&gt; φ x y)</pre></li><li><div><pre>Split (let (_x_0 : bool) = not (x = []) in
        let (_x_1 : int) = List.length y in
@@ -1195,41 +1213,41 @@ But simplification reduces this to true, using the definitions of <span class="a
                 || not
                    (List.length (List.append _x_0 y) =
                     List.length _x_0 + _x_1))
-               || List.length (List.append x y) = List.length x + _x_1])</pre><ul><li><div><h5>subproof</h5><div class="imandra-fold panel panel-default" id="fold-d0d7868b-a960-4b14-a4f0-8f23e57b7fe6"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>let (_x_0 : sko_ty_0 list) = List.tl x in
+               || List.length (List.append x y) = List.length x + _x_1])</pre><ul><li><div><h5>subproof</h5><div class="imandra-fold panel panel-default" id="fold-b6f5cabf-6ba8-44e5-af80-cd8a769fea10"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>let (_x_0 : sko_ty_0 list) = List.tl x in
 let (_x_1 : int) = List.length y in
 (x = [] || not (List.length (List.append _x_0 y) = List.length _x_0 + _x_1))
-|| List.length (List.append x y) = List.length x + _x_1</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.053s, &quot;1.1&quot;]
+|| List.length (List.append x y) = List.length x + _x_1</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.090s, &quot;1.1&quot;]
   let (_x_0 : sko_ty_0 list) = List.tl x in
   let (_x_1 : int) = List.length y in
   (x = [] || not (List.length (List.append _x_0 y) = List.length _x_0 + _x_1))
-  || List.length (List.append x y) = List.length x + _x_1</pre></li><li><div><h6>simplify</h6><div class="imandra-table" id="table-f4f1ad42-4acd-41f3-9fae-af009160e3b4"><table><tr><td><b>into</b></td><td><pre>true</pre></td></tr><tr><td><b>expansions</b></td><td><pre>[List.length, List.length, List.append]</pre></td></tr><tr><td><b>rewrite_steps</b></td><td><ul></ul></td></tr><tr><td><b>forward_chaining</b></td><td><ul><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li></ul></td></tr></table></div></div></li></ul></div><script>
+  || List.length (List.append x y) = List.length x + _x_1</pre></li><li><div><h6>simplify</h6><div class="imandra-table" id="table-3f94a0b5-166d-4fbc-8e1e-c310acc04da5"><table><tr><td><b>into</b></td><td><pre>true</pre></td></tr><tr><td><b>expansions</b></td><td><pre>[List.length, List.length, List.append]</pre></td></tr><tr><td><b>rewrite_steps</b></td><td><ul></ul></td></tr><tr><td><b>forward_chaining</b></td><td><ul><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li></ul></td></tr></table></div></div></li></ul></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-d0d7868b-a960-4b14-a4f0-8f23e57b7fe6';
+  var target = '#fold-b6f5cabf-6ba8-44e5-af80-cd8a769fea10';
   fold.hydrate(target);
 });
-</script></div></div></li><li><div><h5>subproof</h5><div class="imandra-fold panel panel-default" id="fold-1f27beff-f9be-4d27-91e2-a758d6ed5d34"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>not (x = []) || List.length (List.append x y) = List.length x + List.length y</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.053s, &quot;1.2&quot;]
+</script></div></div></li><li><div><h5>subproof</h5><div class="imandra-fold panel panel-default" id="fold-a0049963-eb29-4826-a09d-8b322736610d"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>not (x = []) || List.length (List.append x y) = List.length x + List.length y</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.090s, &quot;1.2&quot;]
   not (x = [])
-  || List.length (List.append x y) = List.length x + List.length y</pre></li><li><div><h6>simplify</h6><div class="imandra-table" id="table-f59b52f7-2da9-47d7-b60b-77458b3f941a"><table><tr><td><b>into</b></td><td><pre>true</pre></td></tr><tr><td><b>expansions</b></td><td><pre>[List.length, List.append]</pre></td></tr><tr><td><b>rewrite_steps</b></td><td><ul></ul></td></tr><tr><td><b>forward_chaining</b></td><td><ul><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li></ul></td></tr></table></div></div></li></ul></div><script>
+  || List.length (List.append x y) = List.length x + List.length y</pre></li><li><div><h6>simplify</h6><div class="imandra-table" id="table-dabfe1fc-76b2-437b-97ef-dbf0d14a0ed8"><table><tr><td><b>into</b></td><td><pre>true</pre></td></tr><tr><td><b>expansions</b></td><td><pre>[List.length, List.append]</pre></td></tr><tr><td><b>rewrite_steps</b></td><td><ul></ul></td></tr><tr><td><b>forward_chaining</b></td><td><ul><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li></ul></td></tr></table></div></div></li></ul></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-1f27beff-f9be-4d27-91e2-a758d6ed5d34';
+  var target = '#fold-a0049963-eb29-4826-a09d-8b322736610d';
   fold.hydrate(target);
 });
 </script></div></div></li></ul></div></li></ul></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-584e99e1-7d8d-43e7-8f33-655bd661b04e';
+  var target = '#fold-5206eb1a-ed48-4eae-82d6-5ab2b31c7a4b';
   fold.hydrate(target);
 });
 </script></div></div></li></ul></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-489a1d36-b819-4429-a932-b3f50ec318dc';
+  var target = '#fold-5ab1ff33-06f2-4f29-bf81-3ed424b63d14';
   fold.hydrate(target);
 });
-</script></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-3d518aca-a5b8-445d-9e50-6d6345f37a21"><textarea style="display: none">digraph &quot;proof&quot; {
-p_264 [label=&quot;Start (List.length (List.append :var_0: :var_1:) =\l       List.length :var_0: + List.length :var_1: :name \&quot;Goal\&quot; :time 0.095s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+</script></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-19699a98-aad9-4538-bfd9-8ff19067700d"><textarea style="display: none">digraph &quot;proof&quot; {
+p_264 [label=&quot;Start (List.length (List.append :var_0: :var_1:) =\l       List.length :var_0: + List.length :var_1: :name \&quot;Goal\&quot; :time 0.146s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_264 -&gt; p_262 [label=&quot;&quot;];
 subgraph cluster_263 {
   color=blue;
-p_262 [label=&quot;Start (List.length (List.append x y) = List.length x + List.length y\l       :name \&quot;1\&quot; :time 0.095s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+p_262 [label=&quot;Start (List.length (List.append x y) = List.length x + List.length y\l       :name \&quot;1\&quot; :time 0.146s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_262 -&gt; p_261 [label=&quot;&quot;];
 p_261 [label=&quot;Induct ((functional ),\l        :scheme (x = [] ==\&gt; φ x y)\l                &amp;&amp; (not (x = []) &amp;&amp; φ (List.tl x) y ==\&gt; φ x y))&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_261 -&gt; p_260 [label=&quot;&quot;];
@@ -1237,14 +1255,14 @@ p_260 [label=&quot;Split (let (_x_0 : bool) = not (x = []) in\l       let (_x_1 
 p_260 -&gt; p_255 [label=&quot;&quot;];
 subgraph cluster_256 {
   color=blue;
-p_255 [label=&quot;Start (let (_x_0 : sko_ty_0 list) = List.tl x in\l       let (_x_1 : int) = List.length y in\l       (x = []\l        \|\| not (List.length (List.append _x_0 y) = List.length _x_0 + _x_1))\l       \|\| List.length (List.append x y) = List.length x + _x_1 :name \&quot;1.1\&quot;\l       :time 0.053s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+p_255 [label=&quot;Start (let (_x_0 : sko_ty_0 list) = List.tl x in\l       let (_x_1 : int) = List.length y in\l       (x = []\l        \|\| not (List.length (List.append _x_0 y) = List.length _x_0 + _x_1))\l       \|\| List.length (List.append x y) = List.length x + _x_1 :name \&quot;1.1\&quot;\l       :time 0.090s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_255 -&gt; p_254 [label=&quot;&quot;];
 p_254 [label=&quot;Simplify (true :expansions [List.length; List.length; List.append] :rw []\l          :fc [List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 }
 p_260 -&gt; p_258 [label=&quot;&quot;];
 subgraph cluster_259 {
   color=blue;
-p_258 [label=&quot;Start (not (x = [])\l       \|\| List.length (List.append x y) = List.length x + List.length y\l       :name \&quot;1.2\&quot; :time 0.053s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+p_258 [label=&quot;Start (not (x = [])\l       \|\| List.length (List.append x y) = List.length x + List.length y\l       :name \&quot;1.2\&quot; :time 0.090s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_258 -&gt; p_257 [label=&quot;&quot;];
 p_257 [label=&quot;Simplify (true :expansions [List.length; List.append] :rw []\l          :fc [List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 }
@@ -1252,17 +1270,17 @@ p_257 [label=&quot;Simplify (true :expansions [List.length; List.append] :rw []\
 }
 </textarea><button class="btn btn-primary">Load graph</button><div class="imandra-graphviz-loading display-none">Loading..</div><div class="imandra-graphviz-target"></div><script>
 require(['nbextensions/nbimandra/graphviz'], function (graphviz) {
-  var target = '#graphviz-3d518aca-a5b8-445d-9e50-6d6345f37a21';
+  var target = '#graphviz-19699a98-aad9-4538-bfd9-8ff19067700d';
   graphviz.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-5d6f611c-73ca-4552-a172-04d335764eaa';
+  var target = '#alt-f72753b5-2209-43ca-85eb-1dd27575f25d';
   alternatives.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-9e89e3c5-98db-4cd9-a5f5-5e89550d111f';
+  var target = '#fold-4aa7bcf5-6756-4acf-8b14-c830b0acae70';
   fold.hydrate(target);
 });
 </script></div></div></div></div>
@@ -1317,19 +1335,19 @@ require(['nbextensions/nbimandra/fold'], function (fold) {
 
 
 <div class="output_html rendered_html output_subarea ">
-<div><div style="font-size: 1.2em; padding: 0.5em; border-top: 1px solid green; border-bottom: 1px solid green"><i class="fa fa-check-circle" style="margin-right: 0.5em; color: green"></i><span>Proved</span></div><div><div class="imandra-alternatives" id="alt-6a352b9e-ef7c-4c37-a03f-37eb989c9b2b"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>proof</a></li><li class="" data-toggle="tab"><a>call graph</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-proof-top"><div class="imandra-fold panel panel-default" id="fold-3f9c74f9-9e30-466a-9901-2251f0aa4e16"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>proof</span></div></div><div class="panel-body collapse"><div class="imandra-proof"><div class="imandra-alternatives" id="alt-6b076d2e-a01e-4db9-9b6b-0feae302e4dc"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>summary</a></li><li class="" data-toggle="tab"><a>full</a></li><li class="" data-toggle="tab"><a>graph</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-table" id="table-bad6ba00-dcdc-4567-8841-1c720f94ead0"><table><tr><td><b>ground_instances</b></td><td>0</td></tr><tr><td><b>definitions</b></td><td>1</td></tr><tr><td><b>inductions</b></td><td>0</td></tr><tr><td><b>search_time</b></td><td><pre>0.030s</pre></td></tr><tr><td><b>details</b></td><td><div class="imandra-fold panel panel-default" id="fold-54baeaef-69db-40ee-b96c-3153161ac838"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><div class="imandra-table" id="table-6f342d89-741f-4a83-b1a4-d9ada54f2e3c"><table><tr><td><b>smt_stats</b></td><td><div class="imandra-table" id="table-f64bb27d-0bb3-4944-a2c9-c86575caf1e8"><table><tr><td><b>rlimit count</b></td><td>384</td></tr><tr><td><b>mk bool var</b></td><td>1</td></tr><tr><td><b>num allocs</b></td><td>1179649390</td></tr><tr><td><b>memory</b></td><td>14.950000</td></tr><tr><td><b>max memory</b></td><td>19.570000</td></tr></table></div></td></tr></table></div></div><script>
+<div><div style="font-size: 1.2em; padding: 0.5em; border-top: 1px solid green; border-bottom: 1px solid green"><i class="fa fa-check-circle" style="margin-right: 0.5em; color: green"></i><span>Proved</span></div><div><div class="imandra-alternatives" id="alt-ec24979e-a17b-4fc4-b0a4-3a7da4bee97d"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>proof</a></li><li class="" data-toggle="tab"><a>call graph</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-proof-top"><div class="imandra-fold panel panel-default" id="fold-27f23f65-92bd-4557-9d04-ddcc5536894d"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>proof</span></div></div><div class="panel-body collapse"><div class="imandra-proof"><div class="imandra-alternatives" id="alt-fe9ad175-a297-42a9-8c6a-bf20c1fa44ab"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>summary</a></li><li class="" data-toggle="tab"><a>full</a></li><li class="" data-toggle="tab"><a>graph</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-table" id="table-0e0e8006-0164-4dfe-bb41-010cf7a9d9ea"><table><tr><td><b>ground_instances</b></td><td>0</td></tr><tr><td><b>definitions</b></td><td>1</td></tr><tr><td><b>inductions</b></td><td>0</td></tr><tr><td><b>search_time</b></td><td><pre>0.058s</pre></td></tr><tr><td><b>details</b></td><td><div class="imandra-fold panel panel-default" id="fold-f7211fab-a3f3-4255-9f99-82a7526b5bdc"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><div class="imandra-table" id="table-c1001e3e-698a-4425-949f-63278958d521"><table><tr><td><b>smt_stats</b></td><td><div class="imandra-table" id="table-81dcc37e-72ce-49dd-95ac-680cc53bfb04"><table><tr><td><b>rlimit count</b></td><td>384</td></tr><tr><td><b>mk bool var</b></td><td>1</td></tr><tr><td><b>num allocs</b></td><td>1159825007</td></tr><tr><td><b>memory</b></td><td>17.500000</td></tr><tr><td><b>max memory</b></td><td>20.810000</td></tr></table></div></td></tr></table></div></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-54baeaef-69db-40ee-b96c-3153161ac838';
+  var target = '#fold-f7211fab-a3f3-4255-9f99-82a7526b5bdc';
   fold.hydrate(target);
 });
-</script></div></td></tr></table></div></div><div class="tab-pane"><div class="imandra-fold panel panel-default" id="fold-b0e897ad-4bae-474b-b478-0c68c469d0ea"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.030s]
-  List.append :var_0: (List.append [] :var_0:) = List.append :var_0: :var_0:</pre></li><li><div><h4>simplify</h4><div class="imandra-table" id="table-418ccbeb-26fe-450f-8ddf-5cd805df5aa0"><table><tr><td><b>into</b></td><td><pre>true</pre></td></tr><tr><td><b>expansions</b></td><td><pre>List.append</pre></td></tr><tr><td><b>rewrite_steps</b></td><td><ul></ul></td></tr><tr><td><b>forward_chaining</b></td><td><ul></ul></td></tr></table></div></div></li><li>Unsat</li></ul></div><script>
+</script></div></td></tr></table></div></div><div class="tab-pane"><div class="imandra-fold panel panel-default" id="fold-0a589fb6-e801-484f-b23d-71ff4be5ac7f"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.058s]
+  List.append :var_0: (List.append [] :var_0:) = List.append :var_0: :var_0:</pre></li><li><div><h4>simplify</h4><div class="imandra-table" id="table-e23e4c27-ee36-46cf-90bd-f21bd34c8972"><table><tr><td><b>into</b></td><td><pre>true</pre></td></tr><tr><td><b>expansions</b></td><td><pre>List.append</pre></td></tr><tr><td><b>rewrite_steps</b></td><td><ul></ul></td></tr><tr><td><b>forward_chaining</b></td><td><ul></ul></td></tr></table></div></div></li><li>Unsat</li></ul></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-b0e897ad-4bae-474b-b478-0c68c469d0ea';
+  var target = '#fold-0a589fb6-e801-484f-b23d-71ff4be5ac7f';
   fold.hydrate(target);
 });
-</script></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-d6f397c2-773c-4a0d-aa54-66473be274f9"><textarea style="display: none">digraph &quot;proof&quot; {
-p_267 [label=&quot;Start (List.append :var_0: (List.append [] :var_0:) =\l       List.append :var_0: :var_0: :time 0.030s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+</script></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-1349c46a-dfab-46be-9a96-e447c6ba4bea"><textarea style="display: none">digraph &quot;proof&quot; {
+p_267 [label=&quot;Start (List.append :var_0: (List.append [] :var_0:) =\l       List.append :var_0: :var_0: :time 0.058s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_267 -&gt; p_266 [label=&quot;&quot;];
 p_266 [label=&quot;Simplify (true :expansions [List.append] :rw [] :fc [])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_266 -&gt; p_265 [label=&quot;&quot;];
@@ -1337,30 +1355,30 @@ p_265 [label=&quot;Unsat&quot;,shape=box,style=filled,fontname=&quot;courier&quo
 }
 </textarea><button class="btn btn-primary">Load graph</button><div class="imandra-graphviz-loading display-none">Loading..</div><div class="imandra-graphviz-target"></div><script>
 require(['nbextensions/nbimandra/graphviz'], function (graphviz) {
-  var target = '#graphviz-d6f397c2-773c-4a0d-aa54-66473be274f9';
+  var target = '#graphviz-1349c46a-dfab-46be-9a96-e447c6ba4bea';
   graphviz.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-6b076d2e-a01e-4db9-9b6b-0feae302e4dc';
+  var target = '#alt-fe9ad175-a297-42a9-8c6a-bf20c1fa44ab';
   alternatives.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-3f9c74f9-9e30-466a-9901-2251f0aa4e16';
+  var target = '#fold-27f23f65-92bd-4557-9d04-ddcc5536894d';
   fold.hydrate(target);
 });
-</script></div></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-eb513ca5-0345-4039-be4e-3d32cba8b539"><textarea style="display: none">digraph &quot;call graph&quot; {
+</script></div></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-4ae302ed-5601-4499-acea-be1f2c109465"><textarea style="display: none">digraph &quot;call graph&quot; {
 goal [label=&quot;not true&quot;,shape=box,style=filled,color=&quot;cyan&quot;,fontname=&quot;courier&quot;,fontsize=14];
 }
 </textarea><button class="btn btn-primary">Load graph</button><div class="imandra-graphviz-loading display-none">Loading..</div><div class="imandra-graphviz-target"></div><script>
 require(['nbextensions/nbimandra/graphviz'], function (graphviz) {
-  var target = '#graphviz-eb513ca5-0345-4039-be4e-3d32cba8b539';
+  var target = '#graphviz-4ae302ed-5601-4499-acea-be1f2c109465';
   graphviz.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-6a352b9e-ef7c-4c37-a03f-37eb989c9b2b';
+  var target = '#alt-ec24979e-a17b-4fc4-b0a4-3a7da4bee97d';
   alternatives.hydrate(target);
 });
 </script></div></div></div>
@@ -1467,9 +1485,9 @@ But simplification reduces this to true, using the definitions of <span class="a
 
 
 <div class="output_html rendered_html output_subarea ">
-<div><div style="font-size: 1.2em; padding: 0.5em; border-top: 1px solid green; border-bottom: 1px solid green"><i class="fa fa-check-circle" style="margin-right: 0.5em; color: green"></i><span>Proved</span></div><div><div class="imandra-proof-top"><div class="imandra-fold panel panel-default" id="fold-f8b70e03-9408-42ab-be66-25da52aff808"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>proof</span></div></div><div class="panel-body collapse"><div class="imandra-proof"><div class="imandra-alternatives" id="alt-145a334f-a461-41b0-9b76-90d1279b32ac"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>summary</a></li><li class="" data-toggle="tab"><a>full</a></li><li class="" data-toggle="tab"><a>graph</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-table" id="table-93ce8ff1-1cd4-4a40-b54a-0d23cf11b8ee"><table><tr><td><b>ground_instances</b></td><td>0</td></tr><tr><td><b>definitions</b></td><td>5</td></tr><tr><td><b>inductions</b></td><td>1</td></tr><tr><td><b>search_time</b></td><td><pre>0.100s</pre></td></tr></table></div></div><div class="tab-pane"><div class="imandra-fold panel panel-default" id="fold-1046526c-8cdb-4403-b26b-5af724086fa6"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.100s, &quot;Goal&quot;]
+<div><div style="font-size: 1.2em; padding: 0.5em; border-top: 1px solid green; border-bottom: 1px solid green"><i class="fa fa-check-circle" style="margin-right: 0.5em; color: green"></i><span>Proved</span></div><div><div class="imandra-proof-top"><div class="imandra-fold panel panel-default" id="fold-e1bc7831-cbc2-4848-9ca8-4f20c02b9c05"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>proof</span></div></div><div class="panel-body collapse"><div class="imandra-proof"><div class="imandra-alternatives" id="alt-74c071f2-92cc-4fcf-97da-1063d083a484"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>summary</a></li><li class="" data-toggle="tab"><a>full</a></li><li class="" data-toggle="tab"><a>graph</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-table" id="table-98e25108-810e-4c37-a279-24d84d74c0fa"><table><tr><td><b>ground_instances</b></td><td>0</td></tr><tr><td><b>definitions</b></td><td>5</td></tr><tr><td><b>inductions</b></td><td>1</td></tr><tr><td><b>search_time</b></td><td><pre>0.117s</pre></td></tr></table></div></div><div class="tab-pane"><div class="imandra-fold panel panel-default" id="fold-474a3f94-f173-4d34-9a26-52804d0f1f07"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.117s, &quot;Goal&quot;]
   List.length (List.append :var_0: :var_1:) =
-  List.length :var_0: + List.length :var_1:</pre></li><li><div><h4>subproof</h4><div class="imandra-fold panel panel-default" id="fold-3376489c-312f-431d-80ca-c90010a1224b"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>List.length (List.append x y) = List.length x + List.length y</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.100s, &quot;1&quot;]
+  List.length :var_0: + List.length :var_1:</pre></li><li><div><h4>subproof</h4><div class="imandra-fold panel panel-default" id="fold-91ae6500-420e-48b1-91ee-1abd6d0b7c59"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>List.length (List.append x y) = List.length x + List.length y</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.117s, &quot;1&quot;]
   List.length (List.append x y) = List.length x + List.length y</pre></li><li><pre>induction on (functional )
 :scheme (x = [] ==&gt; φ x y) &amp;&amp; (not (x = []) &amp;&amp; φ (List.tl x) y ==&gt; φ x y)</pre></li><li><div><pre>Split (let (_x_0 : bool) = not (x = []) in
        let (_x_1 : int) = List.length y in
@@ -1491,41 +1509,41 @@ But simplification reduces this to true, using the definitions of <span class="a
                 || not
                    (List.length (List.append _x_0 y) =
                     List.length _x_0 + _x_1))
-               || List.length (List.append x y) = List.length x + _x_1])</pre><ul><li><div><h5>subproof</h5><div class="imandra-fold panel panel-default" id="fold-86551d38-a35b-472c-936d-50eeddfd3389"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>let (_x_0 : sko_ty_0 list) = List.tl x in
+               || List.length (List.append x y) = List.length x + _x_1])</pre><ul><li><div><h5>subproof</h5><div class="imandra-fold panel panel-default" id="fold-d90741e2-5a64-483e-b689-a1393dc1b15f"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>let (_x_0 : sko_ty_0 list) = List.tl x in
 let (_x_1 : int) = List.length y in
 (x = [] || not (List.length (List.append _x_0 y) = List.length _x_0 + _x_1))
-|| List.length (List.append x y) = List.length x + _x_1</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.057s, &quot;1.1&quot;]
+|| List.length (List.append x y) = List.length x + _x_1</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.066s, &quot;1.1&quot;]
   let (_x_0 : sko_ty_0 list) = List.tl x in
   let (_x_1 : int) = List.length y in
   (x = [] || not (List.length (List.append _x_0 y) = List.length _x_0 + _x_1))
-  || List.length (List.append x y) = List.length x + _x_1</pre></li><li><div><h6>simplify</h6><div class="imandra-table" id="table-4a09492c-aae4-481b-94ce-a96fd0405cde"><table><tr><td><b>into</b></td><td><pre>true</pre></td></tr><tr><td><b>expansions</b></td><td><pre>[List.length, List.length, List.append]</pre></td></tr><tr><td><b>rewrite_steps</b></td><td><ul></ul></td></tr><tr><td><b>forward_chaining</b></td><td><ul><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li></ul></td></tr></table></div></div></li></ul></div><script>
+  || List.length (List.append x y) = List.length x + _x_1</pre></li><li><div><h6>simplify</h6><div class="imandra-table" id="table-eff3e730-a8a3-4b9b-8dfa-770a7294408a"><table><tr><td><b>into</b></td><td><pre>true</pre></td></tr><tr><td><b>expansions</b></td><td><pre>[List.length, List.length, List.append]</pre></td></tr><tr><td><b>rewrite_steps</b></td><td><ul></ul></td></tr><tr><td><b>forward_chaining</b></td><td><ul><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li></ul></td></tr></table></div></div></li></ul></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-86551d38-a35b-472c-936d-50eeddfd3389';
+  var target = '#fold-d90741e2-5a64-483e-b689-a1393dc1b15f';
   fold.hydrate(target);
 });
-</script></div></div></li><li><div><h5>subproof</h5><div class="imandra-fold panel panel-default" id="fold-d628e125-aeb5-45c5-9127-38035c9c6a91"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>not (x = []) || List.length (List.append x y) = List.length x + List.length y</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.057s, &quot;1.2&quot;]
+</script></div></div></li><li><div><h5>subproof</h5><div class="imandra-fold panel panel-default" id="fold-bcc56468-9fb8-4ccc-9e52-7cb7b8ad7c6f"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>not (x = []) || List.length (List.append x y) = List.length x + List.length y</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.066s, &quot;1.2&quot;]
   not (x = [])
-  || List.length (List.append x y) = List.length x + List.length y</pre></li><li><div><h6>simplify</h6><div class="imandra-table" id="table-3ff57ed7-cdda-49f2-875d-d9ac133e59f3"><table><tr><td><b>into</b></td><td><pre>true</pre></td></tr><tr><td><b>expansions</b></td><td><pre>[List.length, List.append]</pre></td></tr><tr><td><b>rewrite_steps</b></td><td><ul></ul></td></tr><tr><td><b>forward_chaining</b></td><td><ul><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li></ul></td></tr></table></div></div></li></ul></div><script>
+  || List.length (List.append x y) = List.length x + List.length y</pre></li><li><div><h6>simplify</h6><div class="imandra-table" id="table-c1549c1b-9ee4-4c4f-b80d-23fed4443319"><table><tr><td><b>into</b></td><td><pre>true</pre></td></tr><tr><td><b>expansions</b></td><td><pre>[List.length, List.append]</pre></td></tr><tr><td><b>rewrite_steps</b></td><td><ul></ul></td></tr><tr><td><b>forward_chaining</b></td><td><ul><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li><li><pre>List.len_nonnegative</pre></li></ul></td></tr></table></div></div></li></ul></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-d628e125-aeb5-45c5-9127-38035c9c6a91';
+  var target = '#fold-bcc56468-9fb8-4ccc-9e52-7cb7b8ad7c6f';
   fold.hydrate(target);
 });
 </script></div></div></li></ul></div></li></ul></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-3376489c-312f-431d-80ca-c90010a1224b';
+  var target = '#fold-91ae6500-420e-48b1-91ee-1abd6d0b7c59';
   fold.hydrate(target);
 });
 </script></div></div></li></ul></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-1046526c-8cdb-4403-b26b-5af724086fa6';
+  var target = '#fold-474a3f94-f173-4d34-9a26-52804d0f1f07';
   fold.hydrate(target);
 });
-</script></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-7e1c1e06-c2de-4d3a-83d1-d3797cb90a45"><textarea style="display: none">digraph &quot;proof&quot; {
-p_287 [label=&quot;Start (List.length (List.append :var_0: :var_1:) =\l       List.length :var_0: + List.length :var_1: :name \&quot;Goal\&quot; :time 0.100s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+</script></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-dbe55977-4e9b-4943-a433-6f1b1a6a7430"><textarea style="display: none">digraph &quot;proof&quot; {
+p_287 [label=&quot;Start (List.length (List.append :var_0: :var_1:) =\l       List.length :var_0: + List.length :var_1: :name \&quot;Goal\&quot; :time 0.117s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_287 -&gt; p_285 [label=&quot;&quot;];
 subgraph cluster_286 {
   color=blue;
-p_285 [label=&quot;Start (List.length (List.append x y) = List.length x + List.length y\l       :name \&quot;1\&quot; :time 0.100s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+p_285 [label=&quot;Start (List.length (List.append x y) = List.length x + List.length y\l       :name \&quot;1\&quot; :time 0.117s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_285 -&gt; p_284 [label=&quot;&quot;];
 p_284 [label=&quot;Induct ((functional ),\l        :scheme (x = [] ==\&gt; φ x y)\l                &amp;&amp; (not (x = []) &amp;&amp; φ (List.tl x) y ==\&gt; φ x y))&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_284 -&gt; p_283 [label=&quot;&quot;];
@@ -1533,14 +1551,14 @@ p_283 [label=&quot;Split (let (_x_0 : bool) = not (x = []) in\l       let (_x_1 
 p_283 -&gt; p_278 [label=&quot;&quot;];
 subgraph cluster_279 {
   color=blue;
-p_278 [label=&quot;Start (let (_x_0 : sko_ty_0 list) = List.tl x in\l       let (_x_1 : int) = List.length y in\l       (x = []\l        \|\| not (List.length (List.append _x_0 y) = List.length _x_0 + _x_1))\l       \|\| List.length (List.append x y) = List.length x + _x_1 :name \&quot;1.1\&quot;\l       :time 0.057s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+p_278 [label=&quot;Start (let (_x_0 : sko_ty_0 list) = List.tl x in\l       let (_x_1 : int) = List.length y in\l       (x = []\l        \|\| not (List.length (List.append _x_0 y) = List.length _x_0 + _x_1))\l       \|\| List.length (List.append x y) = List.length x + _x_1 :name \&quot;1.1\&quot;\l       :time 0.066s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_278 -&gt; p_277 [label=&quot;&quot;];
 p_277 [label=&quot;Simplify (true :expansions [List.length; List.length; List.append] :rw []\l          :fc [List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 }
 p_283 -&gt; p_281 [label=&quot;&quot;];
 subgraph cluster_282 {
   color=blue;
-p_281 [label=&quot;Start (not (x = [])\l       \|\| List.length (List.append x y) = List.length x + List.length y\l       :name \&quot;1.2\&quot; :time 0.057s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+p_281 [label=&quot;Start (not (x = [])\l       \|\| List.length (List.append x y) = List.length x + List.length y\l       :name \&quot;1.2\&quot; :time 0.066s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_281 -&gt; p_280 [label=&quot;&quot;];
 p_280 [label=&quot;Simplify (true :expansions [List.length; List.append] :rw []\l          :fc [List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 }
@@ -1548,17 +1566,17 @@ p_280 [label=&quot;Simplify (true :expansions [List.length; List.append] :rw []\
 }
 </textarea><button class="btn btn-primary">Load graph</button><div class="imandra-graphviz-loading display-none">Loading..</div><div class="imandra-graphviz-target"></div><script>
 require(['nbextensions/nbimandra/graphviz'], function (graphviz) {
-  var target = '#graphviz-7e1c1e06-c2de-4d3a-83d1-d3797cb90a45';
+  var target = '#graphviz-dbe55977-4e9b-4943-a433-6f1b1a6a7430';
   graphviz.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-145a334f-a461-41b0-9b76-90d1279b32ac';
+  var target = '#alt-74c071f2-92cc-4fcf-97da-1063d083a484';
   alternatives.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-f8b70e03-9408-42ab-be66-25da52aff808';
+  var target = '#fold-e1bc7831-cbc2-4848-9ca8-4f20c02b9c05';
   fold.hydrate(target);
 });
 </script></div></div></div></div>
@@ -1613,18 +1631,18 @@ require(['nbextensions/nbimandra/fold'], function (fold) {
 
 
 <div class="output_html rendered_html output_subarea ">
-<div><div style="font-size: 1.2em; padding: 0.5em; border-top: 1px solid green; border-bottom: 1px solid green"><i class="fa fa-check-circle" style="margin-right: 0.5em; color: green"></i><span>Proved</span></div><div><div class="imandra-alternatives" id="alt-9162f37b-1155-4d5a-b81f-7a48196cd664"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>proof</a></li><li class="" data-toggle="tab"><a>call graph</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-proof-top"><div class="imandra-fold panel panel-default" id="fold-7ab528c8-17e4-4098-a7a4-a09adb25f64e"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>proof</span></div></div><div class="panel-body collapse"><div class="imandra-proof"><div class="imandra-alternatives" id="alt-b889d456-50dc-4db8-97b3-38af26706ac6"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>summary</a></li><li class="" data-toggle="tab"><a>full</a></li><li class="" data-toggle="tab"><a>graph</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-table" id="table-2c14c6dc-0dc8-43c8-9cc4-dde8b343828d"><table><tr><td><b>ground_instances</b></td><td>0</td></tr><tr><td><b>definitions</b></td><td>0</td></tr><tr><td><b>inductions</b></td><td>0</td></tr><tr><td><b>search_time</b></td><td><pre>0.029s</pre></td></tr><tr><td><b>details</b></td><td><div class="imandra-fold panel panel-default" id="fold-788a285f-efd8-4a21-a8c5-89fc6ca658b2"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><div class="imandra-table" id="table-2167ee7f-99c5-4cf0-9652-2e64b5eef8c7"><table><tr><td><b>smt_stats</b></td><td><div class="imandra-table" id="table-9ace81b9-7a03-4bc3-80a3-8e3d0c013aea"><table><tr><td><b>rlimit count</b></td><td>470</td></tr><tr><td><b>mk bool var</b></td><td>1</td></tr><tr><td><b>num allocs</b></td><td>1589099930</td></tr><tr><td><b>memory</b></td><td>18.850000</td></tr><tr><td><b>max memory</b></td><td>22.120000</td></tr></table></div></td></tr></table></div></div><script>
+<div><div style="font-size: 1.2em; padding: 0.5em; border-top: 1px solid green; border-bottom: 1px solid green"><i class="fa fa-check-circle" style="margin-right: 0.5em; color: green"></i><span>Proved</span></div><div><div class="imandra-alternatives" id="alt-75c3e5f3-b715-40b9-b776-778e1a4ba43d"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>proof</a></li><li class="" data-toggle="tab"><a>call graph</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-proof-top"><div class="imandra-fold panel panel-default" id="fold-86784f5d-bfa9-4e03-ba10-52e4abe52c04"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>proof</span></div></div><div class="panel-body collapse"><div class="imandra-proof"><div class="imandra-alternatives" id="alt-0ee415ba-1201-4733-9dcf-1a02afc870c9"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>summary</a></li><li class="" data-toggle="tab"><a>full</a></li><li class="" data-toggle="tab"><a>graph</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-table" id="table-769c3fad-5a09-41ab-b902-79a10d3aa425"><table><tr><td><b>ground_instances</b></td><td>0</td></tr><tr><td><b>definitions</b></td><td>0</td></tr><tr><td><b>inductions</b></td><td>0</td></tr><tr><td><b>search_time</b></td><td><pre>0.035s</pre></td></tr><tr><td><b>details</b></td><td><div class="imandra-fold panel panel-default" id="fold-26272802-bcc6-47d7-a211-272709a13b2a"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><div class="imandra-table" id="table-70995454-0874-4ea4-a079-7f5edea0508b"><table><tr><td><b>smt_stats</b></td><td><div class="imandra-table" id="table-6dccf0d4-0ae4-452d-bf54-967eed21cfb9"><table><tr><td><b>rlimit count</b></td><td>470</td></tr><tr><td><b>mk bool var</b></td><td>1</td></tr><tr><td><b>num allocs</b></td><td>1567509101</td></tr><tr><td><b>memory</b></td><td>21.440000</td></tr><tr><td><b>max memory</b></td><td>24.580000</td></tr></table></div></td></tr></table></div></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-788a285f-efd8-4a21-a8c5-89fc6ca658b2';
+  var target = '#fold-26272802-bcc6-47d7-a211-272709a13b2a';
   fold.hydrate(target);
 });
-</script></div></td></tr></table></div></div><div class="tab-pane"><div class="imandra-fold panel panel-default" id="fold-41359c21-710e-4773-a808-742982a347b6"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.029s] List.length :var_0: &gt;= 0</pre></li><li><div><h4>simplify</h4><div class="imandra-table" id="table-31f2d2d9-527a-40bb-8728-ee97c5f910b5"><table><tr><td><b>into</b></td><td><pre>true</pre></td></tr><tr><td><b>expansions</b></td><td><pre>[]</pre></td></tr><tr><td><b>rewrite_steps</b></td><td><ul></ul></td></tr><tr><td><b>forward_chaining</b></td><td><pre>List.len_nonnegative</pre></td></tr></table></div></div></li><li>Unsat</li></ul></div><script>
+</script></div></td></tr></table></div></div><div class="tab-pane"><div class="imandra-fold panel panel-default" id="fold-c18a2faf-4dd4-422d-a955-2701962f6e79"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.035s] List.length :var_0: &gt;= 0</pre></li><li><div><h4>simplify</h4><div class="imandra-table" id="table-a74c279b-37fa-4ac2-960f-9ddecaf56d23"><table><tr><td><b>into</b></td><td><pre>true</pre></td></tr><tr><td><b>expansions</b></td><td><pre>[]</pre></td></tr><tr><td><b>rewrite_steps</b></td><td><ul></ul></td></tr><tr><td><b>forward_chaining</b></td><td><pre>List.len_nonnegative</pre></td></tr></table></div></div></li><li>Unsat</li></ul></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-41359c21-710e-4773-a808-742982a347b6';
+  var target = '#fold-c18a2faf-4dd4-422d-a955-2701962f6e79';
   fold.hydrate(target);
 });
-</script></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-f4fbb246-d0dd-46d9-a5e7-9b0ebcd3a1b7"><textarea style="display: none">digraph &quot;proof&quot; {
-p_290 [label=&quot;Start (List.length :var_0: \&gt;= 0 :time 0.029s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+</script></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-f7706eff-6d9b-4193-a6d4-a35cb217babc"><textarea style="display: none">digraph &quot;proof&quot; {
+p_290 [label=&quot;Start (List.length :var_0: \&gt;= 0 :time 0.035s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_290 -&gt; p_289 [label=&quot;&quot;];
 p_289 [label=&quot;Simplify (true :expansions [] :rw [] :fc [List.len_nonnegative])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_289 -&gt; p_288 [label=&quot;&quot;];
@@ -1632,30 +1650,30 @@ p_288 [label=&quot;Unsat&quot;,shape=box,style=filled,fontname=&quot;courier&quo
 }
 </textarea><button class="btn btn-primary">Load graph</button><div class="imandra-graphviz-loading display-none">Loading..</div><div class="imandra-graphviz-target"></div><script>
 require(['nbextensions/nbimandra/graphviz'], function (graphviz) {
-  var target = '#graphviz-f4fbb246-d0dd-46d9-a5e7-9b0ebcd3a1b7';
+  var target = '#graphviz-f7706eff-6d9b-4193-a6d4-a35cb217babc';
   graphviz.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-b889d456-50dc-4db8-97b3-38af26706ac6';
+  var target = '#alt-0ee415ba-1201-4733-9dcf-1a02afc870c9';
   alternatives.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-7ab528c8-17e4-4098-a7a4-a09adb25f64e';
+  var target = '#fold-86784f5d-bfa9-4e03-ba10-52e4abe52c04';
   fold.hydrate(target);
 });
-</script></div></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-d653ce2c-b53b-4aa3-9b25-6e3834a3207d"><textarea style="display: none">digraph &quot;call graph&quot; {
+</script></div></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-8f810466-c1bc-4f79-9945-2a9a1afae851"><textarea style="display: none">digraph &quot;call graph&quot; {
 goal [label=&quot;not true&quot;,shape=box,style=filled,color=&quot;cyan&quot;,fontname=&quot;courier&quot;,fontsize=14];
 }
 </textarea><button class="btn btn-primary">Load graph</button><div class="imandra-graphviz-loading display-none">Loading..</div><div class="imandra-graphviz-target"></div><script>
 require(['nbextensions/nbimandra/graphviz'], function (graphviz) {
-  var target = '#graphviz-d653ce2c-b53b-4aa3-9b25-6e3834a3207d';
+  var target = '#graphviz-8f810466-c1bc-4f79-9945-2a9a1afae851';
   graphviz.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-9162f37b-1155-4d5a-b81f-7a48196cd664';
+  var target = '#alt-75c3e5f3-b715-40b9-b776-778e1a4ba43d';
   alternatives.hydrate(target);
 });
 </script></div></div></div>
@@ -1742,7 +1760,7 @@ But simplification reduces this to true, using the definition of <span class="an
 
 
 <div class="output_html rendered_html output_subarea ">
-<div><div style="font-size: 1.2em; padding: 0.5em; border-top: 1px solid green; border-bottom: 1px solid green"><i class="fa fa-check-circle" style="margin-right: 0.5em; color: green"></i><span>Proved</span></div><div><div class="imandra-proof-top"><div class="imandra-fold panel panel-default" id="fold-fb56c6b9-95f7-4bd1-b575-6e45dba81c99"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>proof</span></div></div><div class="panel-body collapse"><div class="imandra-proof"><div class="imandra-alternatives" id="alt-05958ac3-5ba0-4ed0-8b4d-ba7d22ba3399"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>summary</a></li><li class="" data-toggle="tab"><a>full</a></li><li class="" data-toggle="tab"><a>graph</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-table" id="table-16cde00b-11dc-434e-a9c9-471ed4d7534d"><table><tr><td><b>ground_instances</b></td><td>0</td></tr><tr><td><b>definitions</b></td><td>2</td></tr><tr><td><b>inductions</b></td><td>1</td></tr><tr><td><b>search_time</b></td><td><pre>0.016s</pre></td></tr></table></div></div><div class="tab-pane"><div class="imandra-fold panel panel-default" id="fold-8e01bce7-d386-474b-ae2a-efb39adc69ba"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.016s, &quot;Goal&quot;] List.append :var_0: [] = :var_0:</pre></li><li><div><h4>subproof</h4><div class="imandra-fold panel panel-default" id="fold-0ffa09ef-d3a0-44df-9048-0873d7ad56e6"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>List.append x [] = x</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.016s, &quot;1&quot;] List.append x [] = x</pre></li><li><pre>induction on (structural+ x)
+<div><div style="font-size: 1.2em; padding: 0.5em; border-top: 1px solid green; border-bottom: 1px solid green"><i class="fa fa-check-circle" style="margin-right: 0.5em; color: green"></i><span>Proved</span></div><div><div class="imandra-proof-top"><div class="imandra-fold panel panel-default" id="fold-588a7ac7-d52b-47d4-ad59-769b281c8424"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>proof</span></div></div><div class="panel-body collapse"><div class="imandra-proof"><div class="imandra-alternatives" id="alt-48f1e4f9-c9f1-44aa-9ddb-e2fc841852e7"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>summary</a></li><li class="" data-toggle="tab"><a>full</a></li><li class="" data-toggle="tab"><a>graph</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-table" id="table-280b0d88-0e59-4a38-b4dd-91b1fb38a0d5"><table><tr><td><b>ground_instances</b></td><td>0</td></tr><tr><td><b>definitions</b></td><td>2</td></tr><tr><td><b>inductions</b></td><td>1</td></tr><tr><td><b>search_time</b></td><td><pre>0.024s</pre></td></tr></table></div></div><div class="tab-pane"><div class="imandra-fold panel panel-default" id="fold-16d9488e-022c-410a-9a4b-6d3471fa6e8b"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.024s, &quot;Goal&quot;] List.append :var_0: [] = :var_0:</pre></li><li><div><h4>subproof</h4><div class="imandra-fold panel panel-default" id="fold-bdede3a1-17ad-44c6-a331-b4fca67a6cff"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>List.append x [] = x</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.023s, &quot;1&quot;] List.append x [] = x</pre></li><li><pre>induction on (structural+ x)
 :scheme φ [] &amp;&amp; (x &lt;&gt; [] &amp;&amp; φ (List.tl x) ==&gt; φ x)</pre></li><li><div><pre>Split (let (_x_0 : sko_ty_0 list) = List.tl x in
        List.append [] [] = []
        &amp;&amp; (not (x &lt;&gt; [] &amp;&amp; List.append _x_0 [] = _x_0)
@@ -1750,35 +1768,35 @@ But simplification reduces this to true, using the definition of <span class="an
        :cases [List.append [] [] = [];
                let (_x_0 : sko_ty_0 list) = List.tl x in
                (not (x &lt;&gt; []) || not (List.append _x_0 [] = _x_0))
-               || List.append x [] = x])</pre><ul><li><div><h5>subproof</h5><div class="imandra-fold panel panel-default" id="fold-2e513f09-ecae-4de9-a780-103f9385723e"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>let (_x_0 : sko_ty_0 list) = List.tl x in
-(not (x &lt;&gt; []) || not (List.append _x_0 [] = _x_0)) || List.append x [] = x</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.016s, &quot;1&quot;]
+               || List.append x [] = x])</pre><ul><li><div><h5>subproof</h5><div class="imandra-fold panel panel-default" id="fold-ccfd99d1-1d45-48de-b752-85afde80d390"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>let (_x_0 : sko_ty_0 list) = List.tl x in
+(not (x &lt;&gt; []) || not (List.append _x_0 [] = _x_0)) || List.append x [] = x</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.023s, &quot;1&quot;]
   let (_x_0 : sko_ty_0 list) = List.tl x in
-  (not (x &lt;&gt; []) || not (List.append _x_0 [] = _x_0)) || List.append x [] = x</pre></li><li><div><h6>simplify</h6><div class="imandra-table" id="table-d0047576-ffa7-4f6e-88e9-b0fbfd629d72"><table><tr><td><b>into</b></td><td><pre>true</pre></td></tr><tr><td><b>expansions</b></td><td><pre>List.append</pre></td></tr><tr><td><b>rewrite_steps</b></td><td><ul></ul></td></tr><tr><td><b>forward_chaining</b></td><td><ul></ul></td></tr></table></div></div></li></ul></div><script>
+  (not (x &lt;&gt; []) || not (List.append _x_0 [] = _x_0)) || List.append x [] = x</pre></li><li><div><h6>simplify</h6><div class="imandra-table" id="table-8fde0dbd-26d3-4df6-896e-e0300e4adda6"><table><tr><td><b>into</b></td><td><pre>true</pre></td></tr><tr><td><b>expansions</b></td><td><pre>List.append</pre></td></tr><tr><td><b>rewrite_steps</b></td><td><ul></ul></td></tr><tr><td><b>forward_chaining</b></td><td><ul></ul></td></tr></table></div></div></li></ul></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-2e513f09-ecae-4de9-a780-103f9385723e';
+  var target = '#fold-ccfd99d1-1d45-48de-b752-85afde80d390';
   fold.hydrate(target);
 });
-</script></div></div></li><li><div><h5>subproof</h5><div class="imandra-fold panel panel-default" id="fold-3010407d-3872-48bb-94ad-fb8e0b032653"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>List.append [] [] = []</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.016s, &quot;2&quot;] List.append [] [] = []</pre></li><li><div><h6>simplify</h6><div class="imandra-table" id="table-cf1c6da9-4397-411d-bb85-4842bde44c7a"><table><tr><td><b>into</b></td><td><pre>true</pre></td></tr><tr><td><b>expansions</b></td><td><pre>List.append</pre></td></tr><tr><td><b>rewrite_steps</b></td><td><ul></ul></td></tr><tr><td><b>forward_chaining</b></td><td><ul></ul></td></tr></table></div></div></li></ul></div><script>
+</script></div></div></li><li><div><h5>subproof</h5><div class="imandra-fold panel panel-default" id="fold-b4349e16-9368-4f3e-b41f-4dce72b49d1d"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>List.append [] [] = []</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.023s, &quot;2&quot;] List.append [] [] = []</pre></li><li><div><h6>simplify</h6><div class="imandra-table" id="table-7c1472fb-865f-4eb1-9bd0-8a3a9f57d867"><table><tr><td><b>into</b></td><td><pre>true</pre></td></tr><tr><td><b>expansions</b></td><td><pre>List.append</pre></td></tr><tr><td><b>rewrite_steps</b></td><td><ul></ul></td></tr><tr><td><b>forward_chaining</b></td><td><ul></ul></td></tr></table></div></div></li></ul></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-3010407d-3872-48bb-94ad-fb8e0b032653';
+  var target = '#fold-b4349e16-9368-4f3e-b41f-4dce72b49d1d';
   fold.hydrate(target);
 });
 </script></div></div></li></ul></div></li></ul></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-0ffa09ef-d3a0-44df-9048-0873d7ad56e6';
+  var target = '#fold-bdede3a1-17ad-44c6-a331-b4fca67a6cff';
   fold.hydrate(target);
 });
 </script></div></div></li></ul></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-8e01bce7-d386-474b-ae2a-efb39adc69ba';
+  var target = '#fold-16d9488e-022c-410a-9a4b-6d3471fa6e8b';
   fold.hydrate(target);
 });
-</script></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-1e6c70b9-2456-423a-9b77-917b93164589"><textarea style="display: none">digraph &quot;proof&quot; {
-p_301 [label=&quot;Start (List.append :var_0: [] = :var_0: :name \&quot;Goal\&quot; :time 0.016s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+</script></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-d22bca6a-c5d2-4ffb-a88e-ac88f82884ab"><textarea style="display: none">digraph &quot;proof&quot; {
+p_301 [label=&quot;Start (List.append :var_0: [] = :var_0: :name \&quot;Goal\&quot; :time 0.024s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_301 -&gt; p_299 [label=&quot;&quot;];
 subgraph cluster_300 {
   color=blue;
-p_299 [label=&quot;Start (List.append x [] = x :name \&quot;1\&quot; :time 0.016s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+p_299 [label=&quot;Start (List.append x [] = x :name \&quot;1\&quot; :time 0.023s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_299 -&gt; p_298 [label=&quot;&quot;];
 p_298 [label=&quot;Induct ((structural+ x),\l        :scheme φ [] &amp;&amp; (x \&lt;\&gt; [] &amp;&amp; φ (List.tl x) ==\&gt; φ x))&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_298 -&gt; p_297 [label=&quot;&quot;];
@@ -1786,14 +1804,14 @@ p_297 [label=&quot;Split (let (_x_0 : sko_ty_0 list) = List.tl x in\l       List
 p_297 -&gt; p_292 [label=&quot;&quot;];
 subgraph cluster_293 {
   color=blue;
-p_292 [label=&quot;Start (let (_x_0 : sko_ty_0 list) = List.tl x in\l       (not (x \&lt;\&gt; []) \|\| not (List.append _x_0 [] = _x_0))\l       \|\| List.append x [] = x :name \&quot;1\&quot; :time 0.016s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+p_292 [label=&quot;Start (let (_x_0 : sko_ty_0 list) = List.tl x in\l       (not (x \&lt;\&gt; []) \|\| not (List.append _x_0 [] = _x_0))\l       \|\| List.append x [] = x :name \&quot;1\&quot; :time 0.023s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_292 -&gt; p_291 [label=&quot;&quot;];
 p_291 [label=&quot;Simplify (true :expansions [List.append] :rw [] :fc [])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 }
 p_297 -&gt; p_295 [label=&quot;&quot;];
 subgraph cluster_296 {
   color=blue;
-p_295 [label=&quot;Start (List.append [] [] = [] :name \&quot;2\&quot; :time 0.016s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+p_295 [label=&quot;Start (List.append [] [] = [] :name \&quot;2\&quot; :time 0.023s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_295 -&gt; p_294 [label=&quot;&quot;];
 p_294 [label=&quot;Simplify (true :expansions [List.append] :rw [] :fc [])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 }
@@ -1801,17 +1819,17 @@ p_294 [label=&quot;Simplify (true :expansions [List.append] :rw [] :fc [])&quot;
 }
 </textarea><button class="btn btn-primary">Load graph</button><div class="imandra-graphviz-loading display-none">Loading..</div><div class="imandra-graphviz-target"></div><script>
 require(['nbextensions/nbimandra/graphviz'], function (graphviz) {
-  var target = '#graphviz-1e6c70b9-2456-423a-9b77-917b93164589';
+  var target = '#graphviz-d22bca6a-c5d2-4ffb-a88e-ac88f82884ab';
   graphviz.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-05958ac3-5ba0-4ed0-8b4d-ba7d22ba3399';
+  var target = '#alt-48f1e4f9-c9f1-44aa-9ddb-e2fc841852e7';
   alternatives.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-fb56c6b9-95f7-4bd1-b575-6e45dba81c99';
+  var target = '#fold-588a7ac7-d52b-47d4-ad59-769b281c8424';
   fold.hydrate(target);
 });
 </script></div></div></div></div>
@@ -1832,7 +1850,7 @@ require(['nbextensions/nbimandra/fold'], function (fold) {
             </footer>
         </div>
     
- 
+
 
 
     <script>

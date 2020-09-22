@@ -119,24 +119,42 @@
 
         <!-- Loading mathjax macro -->
         <!-- Load mathjax -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS_HTML"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-MML-AM_CHTML-full,Safe"> </script>
     <!-- MathJax configuration -->
     <script type="text/x-mathjax-config">
-    MathJax.Hub.Config({
-        tex2jax: {
-            inlineMath: [ ['$','$'], ["\\(","\\)"] ],
-            displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
-            processEscapes: true,
-            processEnvironments: true
-        },
-        // Center justify equations in code and markdown cells. Elsewhere
-        // we use CSS to left justify single line equations in code cells.
-        displayAlign: 'center',
-        "HTML-CSS": {
-            styles: {'.MathJax_Display': {"margin": 0}},
-            linebreaks: { automatic: true }
+    init_mathjax = function() {
+        if (window.MathJax) {
+        // MathJax loaded
+            MathJax.Hub.Config({
+                TeX: {
+                    equationNumbers: {
+                    autoNumber: "AMS",
+                    useLabelIds: true
+                    }
+                },
+                tex2jax: {
+                    inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+                    displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+                    processEscapes: true,
+                    processEnvironments: true
+                },
+                displayAlign: 'center',
+                CommonHTML: {
+                    linebreaks: { 
+                    automatic: true 
+                    }
+                },
+                "HTML-CSS": {
+                    linebreaks: { 
+                    automatic: true 
+                    }
+                }
+            });
+        
+            MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
         }
-    });
+    }
+    init_mathjax();
     </script>
     <!-- End of mathjax configuration --><script>
   function handleCopyClick() {
@@ -355,7 +373,19 @@
   
   
   
-  <a class="side__nav-link--within-page side__nav-link--within-page--h2" href="#Server-image-tarball-setup">Server image tarball setup</a>
+  <a class="side__nav-link--within-page side__nav-link--within-page--h2" href="#Imandra-client">Imandra client</a>
+  
+  
+  
+  <a class="side__nav-link--within-page side__nav-link--within-page--h2" href="#Imandra-server">Imandra server</a>
+  
+  
+  
+  <a class="side__nav-link--within-page side__nav-link--within-page--h3" href="#Loading-Server-as-Tar-file">Loading Server as Tar file</a>
+  
+  
+  
+  <a class="side__nav-link--within-page side__nav-link--within-page--h3" href="#Pulling-Server-from-DockerHub">Pulling Server from DockerHub</a>
   
   
                                             </div>
@@ -995,25 +1025,10 @@
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html"><h1 id="Prerequisites">Prerequisites<a class="anchor-link" href="#Prerequisites">&#182;</a></h1><p>You'll need to have pre-agreed access to an <code>imandra-server</code> image repository with us for this to work, <code>imandra-server</code> is not available as standard.</p>
-<p>You'll also need <code>docker</code> installed and authenticated to the <code>imandra-server</code> image repository. Make sure you're able to run a pull command from the repo without issue, e.g.:</p>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html"><div class="highlight"><pre><span></span>$ docker login
-$ docker pull imandra/imandra-server:latest
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html"><h1 id="Installation">Installation<a class="anchor-link" href="#Installation">&#182;</a></h1><p>First, run the normal installation process, following the <a href="/imandra-docs/notebooks/installation-simple/">Simple installation instructions</a>.</p>
-<p>Next, tell the Imandra binaries where your <code>imandra-server</code> image is located:</p>
+<div class="text_cell_render border-box-sizing rendered_html"><h1 id="Prerequisites">Prerequisites<a class="anchor-link" href="#Prerequisites">&#182;</a></h1><p>You'll need to have pre-agreed access to <code>imandra-server</code> local installation with us for this to work, <code>imandra-server</code> is not available locally as standard.</p>
+<p>You'll also need <code>docker</code> installed so the Imandra clients can run the <code>imandra-server</code> docker image.</p>
+<h1 id="Installation">Installation<a class="anchor-link" href="#Installation">&#182;</a></h1><h2 id="Imandra-client">Imandra client<a class="anchor-link" href="#Imandra-client">&#182;</a></h2><p>First, run the normal local Imandra client installation process, following the <a href="/imandra-docs/notebooks/installation-simple/">Simple installation instructions</a>.</p>
+<p>Next, tell your Imandra client to use a local docker image for <code>imandra-server</code>:</p>
 </div>
 </div>
 </div>
@@ -1028,10 +1043,10 @@ $ docker pull imandra/imandra-server:latest
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html"><p>This configures the local Imandra clients to launch the server component locally inside a docker. Make sure you do not specify a <code>:version</code> tag at the end of the url - this is set automatically by the client so the correct server version is run against the currently installed version of the Imandra client.</p>
-<p>Now you should be able to use Imandra Core commands, such as <code>imandra core repl</code> and the Imandra VSCode extension without connecting to our reasoning cloud.</p>
-<h2 id="Server-image-tarball-setup">Server image tarball setup<a class="anchor-link" href="#Server-image-tarball-setup">&#182;</a></h2><p>We may provide you with a <code>.tar.gz</code> file containing the <code>imandra-server</code> image while we're setting up docker repo access. Note that this will only be a single version of the <code>server</code>, and will not work after <code>imandra-client</code> upgrades itself - you will need full docker repo access for ongoing updates to work correctly.</p>
-<p>The <code>.tar.gz</code> file can be loaded into a local docker image as a substitute for <code>docker pull</code> from our registry:</p>
+<div class="text_cell_render border-box-sizing rendered_html"><p>Your local Imandra clients will now try to launch the server component locally inside a docker container. To switch back to using our cloud for <code>imandra-server</code>, remove the <code>~/.imandra/server-image</code> file.</p>
+<h2 id="Imandra-server">Imandra server<a class="anchor-link" href="#Imandra-server">&#182;</a></h2><p>We provide access to a Docker registry containing the <code>imandra-server</code> image, but initially we may provide the image in the form of a <code>.tar.gz</code> archive while we're coordinating access.</p>
+<p>Note that the <code>.tar.gz</code> archive only contains a single version of the server image and may stop working as your local Imandra clients auto-update.</p>
+<h3 id="Loading-Server-as-Tar-file">Loading Server as Tar file<a class="anchor-link" href="#Loading-Server-as-Tar-file">&#182;</a></h3><p>The <code>.tar.gz</code> archive can be loaded into a local docker image as a substitute for it being fetched automatically from our registry (substituting <code>&lt;server-version&gt;</code> with the value in your tar archive filename):</p>
 </div>
 </div>
 </div>
@@ -1047,15 +1062,18 @@ Loaded image: imandra/imandra-server:&lt;server-version&gt;
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html"><p>Docker will now be able to resolve the image when the Imandra clients attempt to start <code>imandra-server</code>.</p>
-<p>If your <code>imandra-client</code> has already upgraded to a newer version automatically, you can install a specific version of the <code>imandra-client</code> using:</p>
+<div class="text_cell_render border-box-sizing rendered_html"><p>You can check which version of <code>imandra-server</code> your local Imandra installation expects by running:</p>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html"><div class="highlight"><pre><span></span>$ sh &lt;<span class="o">(</span>curl -s <span class="s2">&quot;https://storage.googleapis.com/imandra-installer/install-&lt;installer-version&gt;.sh&quot;</span><span class="o">)</span>
+<div class="text_cell_render border-box-sizing rendered_html"><div class="highlight"><pre><span></span>$ imandra core repl -no-backend -v
+Imandra v1.0.5
+<span class="o">(</span>c<span class="o">)</span>Copyright Imandra Inc., <span class="m">2014</span>-2020. All rights reserved.
+
+* Build commit ID &lt;server-version&gt;.
 </pre></div>
 </div>
 </div>
@@ -1063,16 +1081,39 @@ Loaded image: imandra/imandra-server:&lt;server-version&gt;
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html"><p>NOTE: the version number for the installer is different from the version number for the server! Make sure you use the correct pair of installer+server image versions provided by us.</p>
-<p>You can then launch a repl skipping auto-update using the <code>--skip-update</code> flag, which will keep you on the version you have a server image for:</p>
+<div class="text_cell_render border-box-sizing rendered_html"><p>and observing the value of <code>&lt;server-version&gt;</code> that is output. If the version doesn't match, please contact us for an updated server <code>.tar.gz</code> archive for the newer version, or for image repository access.</p>
+<h3 id="Pulling-Server-from-DockerHub">Pulling Server from DockerHub<a class="anchor-link" href="#Pulling-Server-from-DockerHub">&#182;</a></h3><p>If we've configured your access to our image repository, you will need to login with <code>docker</code> on the authenticated dockerhub account:</p>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html"><div class="highlight"><pre><span></span>$ imandra core repl --skip-update
+<div class="text_cell_render border-box-sizing rendered_html"><div class="highlight"><pre><span></span>$ docker login
 </pre></div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html"><p>Make sure you can pull an image from the repository without issue to confirm everything is setup:</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html"><div class="highlight"><pre><span></span>$ docker pull imandra/imandra-server:latest
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html"><p>The Imandra client should now fetch new server images at the correct version automatically.</p>
+<p>Now you should be able to use Imandra Core commands, such as <code>imandra core repl</code> and the Imandra VSCode extension without connecting to our reasoning cloud.</p>
 </div>
 </div>
 </div>
@@ -1084,7 +1125,7 @@ Loaded image: imandra/imandra-server:&lt;server-version&gt;
             </footer>
         </div>
     
- 
+
 
 
     <script>

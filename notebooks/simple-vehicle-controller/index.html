@@ -119,24 +119,42 @@
 
         <!-- Loading mathjax macro -->
         <!-- Load mathjax -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS_HTML"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-MML-AM_CHTML-full,Safe"> </script>
     <!-- MathJax configuration -->
     <script type="text/x-mathjax-config">
-    MathJax.Hub.Config({
-        tex2jax: {
-            inlineMath: [ ['$','$'], ["\\(","\\)"] ],
-            displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
-            processEscapes: true,
-            processEnvironments: true
-        },
-        // Center justify equations in code and markdown cells. Elsewhere
-        // we use CSS to left justify single line equations in code cells.
-        displayAlign: 'center',
-        "HTML-CSS": {
-            styles: {'.MathJax_Display': {"margin": 0}},
-            linebreaks: { automatic: true }
+    init_mathjax = function() {
+        if (window.MathJax) {
+        // MathJax loaded
+            MathJax.Hub.Config({
+                TeX: {
+                    equationNumbers: {
+                    autoNumber: "AMS",
+                    useLabelIds: true
+                    }
+                },
+                tex2jax: {
+                    inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+                    displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+                    processEscapes: true,
+                    processEnvironments: true
+                },
+                displayAlign: 'center',
+                CommonHTML: {
+                    linebreaks: { 
+                    automatic: true 
+                    }
+                },
+                "HTML-CSS": {
+                    linebreaks: { 
+                    automatic: true 
+                    }
+                }
+            });
+        
+            MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
         }
-    });
+    }
+    init_mathjax();
     </script>
     <!-- End of mathjax configuration --><script>
   function handleCopyClick() {
@@ -1342,44 +1360,44 @@ indicating how the wind changed between sampling intervals.</p>
 
 
 <div class="output_html rendered_html output_subarea ">
-<div><div class="imandra-fold panel panel-default" id="fold-763fee5b-407e-46cf-9458-069e7ff749f0"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>termination proof</span></div></div><div class="panel-body collapse"><div><h3>Termination proof</h3><p></p><div class="imandra-fold panel panel-default" id="fold-05f7b573-822f-427e-8c46-5915cff93ea7"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>call `final_state (next_state (List.hd dws) s) (List.tl dws)` from `final_state s dws`</span></div></div><div class="panel-body collapse"><div class="imandra-table" id="table-6280f96b-d6ab-4f98-be60-837a9e32fe0a"><table><tr><td><b>original</b></td><td>final_state s dws</td></tr><tr><td><b>sub</b></td><td>final_state (next_state (List.hd dws) s) (List.tl dws)</td></tr><tr><td><b>original ordinal</b></td><td>Ordinal.Int (Ordinal.count dws)</td></tr><tr><td><b>sub ordinal</b></td><td>Ordinal.Int (Ordinal.count (List.tl dws))</td></tr><tr><td><b>path</b></td><td>[not (dws = [])]</td></tr><tr><td><b>proof</b></td><td><div class="imandra-fold panel panel-default" id="fold-27c2fb70-8815-4cb4-8e84-746a702ad979"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>detailed proof</span></div></div><div class="panel-body collapse"><div class="imandra-proof"><div class="imandra-alternatives" id="alt-a2413f11-6cb3-4801-a14d-cd3c0da7b77c"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>summary</a></li><li class="" data-toggle="tab"><a>full</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-table" id="table-9fe98389-0674-4528-993e-ad83d5e92ebe"><table><tr><td><b>ground_instances</b></td><td>3</td></tr><tr><td><b>definitions</b></td><td>0</td></tr><tr><td><b>inductions</b></td><td>0</td></tr><tr><td><b>search_time</b></td><td><pre>0.014s</pre></td></tr><tr><td><b>details</b></td><td><div class="imandra-fold panel panel-default" id="fold-f78a5139-5d58-4473-b612-705fe4f24960"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><div class="imandra-table" id="table-84abccb2-a345-4248-8919-3079ad048a4a"><table><tr><td><b>smt_stats</b></td><td><div class="imandra-table" id="table-14b1f9eb-41ce-492c-8da2-5c56426a6a3b"><table><tr><td><b>num checks</b></td><td>8</td></tr><tr><td><b>arith-make-feasible</b></td><td>20</td></tr><tr><td><b>arith-max-columns</b></td><td>18</td></tr><tr><td><b>arith-conflicts</b></td><td>2</td></tr><tr><td><b>rlimit count</b></td><td>2226</td></tr><tr><td><b>mk clause</b></td><td>12</td></tr><tr><td><b>datatype occurs check</b></td><td>22</td></tr><tr><td><b>mk bool var</b></td><td>65</td></tr><tr><td><b>arith-lower</b></td><td>14</td></tr><tr><td><b>arith-diseq</b></td><td>1</td></tr><tr><td><b>datatype splits</b></td><td>3</td></tr><tr><td><b>decisions</b></td><td>18</td></tr><tr><td><b>propagations</b></td><td>13</td></tr><tr><td><b>arith-max-rows</b></td><td>6</td></tr><tr><td><b>conflicts</b></td><td>10</td></tr><tr><td><b>datatype accessor ax</b></td><td>5</td></tr><tr><td><b>datatype constructor ax</b></td><td>8</td></tr><tr><td><b>num allocs</b></td><td>915612836</td></tr><tr><td><b>final checks</b></td><td>6</td></tr><tr><td><b>added eqs</b></td><td>43</td></tr><tr><td><b>del clause</b></td><td>5</td></tr><tr><td><b>arith eq adapter</b></td><td>10</td></tr><tr><td><b>arith-upper</b></td><td>13</td></tr><tr><td><b>memory</b></td><td>9.720000</td></tr><tr><td><b>max memory</b></td><td>19.570000</td></tr></table></div></td></tr></table></div></div><script>
+<div><div class="imandra-fold panel panel-default" id="fold-9ce5d206-b298-442f-97bf-b6a8c4b5bf7f"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>termination proof</span></div></div><div class="panel-body collapse"><div><h3>Termination proof</h3><p></p><div class="imandra-fold panel panel-default" id="fold-528af228-a00f-4d85-b609-48e40d6ea658"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>call `final_state (next_state (List.hd dws) s) (List.tl dws)` from `final_state s dws`</span></div></div><div class="panel-body collapse"><div class="imandra-table" id="table-209cf450-0946-462f-810c-00fee39068f0"><table><tr><td><b>original</b></td><td>final_state s dws</td></tr><tr><td><b>sub</b></td><td>final_state (next_state (List.hd dws) s) (List.tl dws)</td></tr><tr><td><b>original ordinal</b></td><td>Ordinal.Int (Ordinal.count dws)</td></tr><tr><td><b>sub ordinal</b></td><td>Ordinal.Int (Ordinal.count (List.tl dws))</td></tr><tr><td><b>path</b></td><td>[not (dws = [])]</td></tr><tr><td><b>proof</b></td><td><div class="imandra-fold panel panel-default" id="fold-6313460f-104a-4dce-87e0-939054691cdf"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>detailed proof</span></div></div><div class="panel-body collapse"><div class="imandra-proof"><div class="imandra-alternatives" id="alt-71e3af87-883d-4f47-928f-f1f6f59d7d3b"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>summary</a></li><li class="" data-toggle="tab"><a>full</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-table" id="table-59e82da9-85a9-4cfc-a1e7-2fdce215b288"><table><tr><td><b>ground_instances</b></td><td>3</td></tr><tr><td><b>definitions</b></td><td>0</td></tr><tr><td><b>inductions</b></td><td>0</td></tr><tr><td><b>search_time</b></td><td><pre>0.069s</pre></td></tr><tr><td><b>details</b></td><td><div class="imandra-fold panel panel-default" id="fold-324e00dc-0701-48e5-8015-7206208b5311"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><div class="imandra-table" id="table-c1947dc2-dba5-47e6-9f48-f40455ee2259"><table><tr><td><b>smt_stats</b></td><td><div class="imandra-table" id="table-5fe99c04-48e5-42eb-9c8f-b6a154316bde"><table><tr><td><b>num checks</b></td><td>8</td></tr><tr><td><b>arith-make-feasible</b></td><td>20</td></tr><tr><td><b>arith-max-columns</b></td><td>18</td></tr><tr><td><b>arith-conflicts</b></td><td>2</td></tr><tr><td><b>rlimit count</b></td><td>2226</td></tr><tr><td><b>mk clause</b></td><td>12</td></tr><tr><td><b>datatype occurs check</b></td><td>22</td></tr><tr><td><b>mk bool var</b></td><td>65</td></tr><tr><td><b>arith-lower</b></td><td>14</td></tr><tr><td><b>arith-diseq</b></td><td>1</td></tr><tr><td><b>datatype splits</b></td><td>3</td></tr><tr><td><b>decisions</b></td><td>18</td></tr><tr><td><b>propagations</b></td><td>13</td></tr><tr><td><b>arith-max-rows</b></td><td>6</td></tr><tr><td><b>conflicts</b></td><td>10</td></tr><tr><td><b>datatype accessor ax</b></td><td>5</td></tr><tr><td><b>datatype constructor ax</b></td><td>8</td></tr><tr><td><b>num allocs</b></td><td>900316468</td></tr><tr><td><b>final checks</b></td><td>6</td></tr><tr><td><b>added eqs</b></td><td>43</td></tr><tr><td><b>del clause</b></td><td>5</td></tr><tr><td><b>arith eq adapter</b></td><td>10</td></tr><tr><td><b>arith-upper</b></td><td>13</td></tr><tr><td><b>memory</b></td><td>12.250000</td></tr><tr><td><b>max memory</b></td><td>19.560000</td></tr></table></div></td></tr></table></div></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-f78a5139-5d58-4473-b612-705fe4f24960';
+  var target = '#fold-324e00dc-0701-48e5-8015-7206208b5311';
   fold.hydrate(target);
 });
-</script></div></td></tr></table></div></div><div class="tab-pane"><div class="imandra-fold panel panel-default" id="fold-fd4d96e5-db0e-4013-ad2e-082591858635"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.014s]
+</script></div></td></tr></table></div></div><div class="tab-pane"><div class="imandra-fold panel panel-default" id="fold-37f9fb62-2b6c-497e-b68f-2768118cce59"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.069s]
   let (_x_0 : int) = Ordinal.count dws in
   let (_x_1 : int list) = List.tl dws in
   let (_x_2 : int) = Ordinal.count _x_1 in
   not (dws = []) &amp;&amp; _x_0 &gt;= 0 &amp;&amp; _x_2 &gt;= 0
-  ==&gt; _x_1 = [] || Ordinal.( &lt;&lt; ) (Ordinal.Int _x_2) (Ordinal.Int _x_0)</pre></li><li><div><h5>simplify</h5><div class="imandra-table" id="table-239ab6dd-42c1-47d4-891d-b7485cbac090"><table><tr><td><b>into</b></td><td><pre>let (_x_0 : int list) = List.tl dws in
+  ==&gt; _x_1 = [] || Ordinal.( &lt;&lt; ) (Ordinal.Int _x_2) (Ordinal.Int _x_0)</pre></li><li><div><h5>simplify</h5><div class="imandra-table" id="table-fec23d73-5ed3-4200-b22a-866395e67423"><table><tr><td><b>into</b></td><td><pre>let (_x_0 : int list) = List.tl dws in
 let (_x_1 : int) = Ordinal.count _x_0 in
 let (_x_2 : int) = Ordinal.count dws in
 (_x_0 = [] || Ordinal.( &lt;&lt; ) (Ordinal.Int _x_1) (Ordinal.Int _x_2))
-|| not ((not (dws = []) &amp;&amp; _x_2 &gt;= 0) &amp;&amp; _x_1 &gt;= 0)</pre></td></tr><tr><td><b>expansions</b></td><td><pre>[]</pre></td></tr><tr><td><b>rewrite_steps</b></td><td><ul></ul></td></tr><tr><td><b>forward_chaining</b></td><td><ul></ul></td></tr></table></div></div></li><li><div>unroll<div class="imandra-table" id="table-1239d36a-e1b2-44cb-bde7-657aa18a98eb"><table><tr><td><b>expr</b></td><td><pre>(|count_`int list`_2463| dws_2453)</pre></td></tr><tr><td><b>expansions</b></td><td><ul></ul></td></tr></table></div></div></li><li><div>unroll<div class="imandra-table" id="table-272e35d1-d82a-4e26-8088-589e4018fc7d"><table><tr><td><b>expr</b></td><td><pre>(|count_`int list`_2463| (|get.::.1_2451| dws_2453))</pre></td></tr><tr><td><b>expansions</b></td><td><ul></ul></td></tr></table></div></div></li><li><div>unroll<div class="imandra-table" id="table-db7ad5c4-eb4a-4877-a6fc-4bd59827ca9d"><table><tr><td><b>expr</b></td><td><pre>(|Ordinal.&lt;&lt;_102| (|Ordinal.Int_93| (|count_`int list`_2463|
+|| not ((not (dws = []) &amp;&amp; _x_2 &gt;= 0) &amp;&amp; _x_1 &gt;= 0)</pre></td></tr><tr><td><b>expansions</b></td><td><pre>[]</pre></td></tr><tr><td><b>rewrite_steps</b></td><td><ul></ul></td></tr><tr><td><b>forward_chaining</b></td><td><ul></ul></td></tr></table></div></div></li><li><div>unroll<div class="imandra-table" id="table-e6253ad2-5324-4c18-a22a-06bdb7e656b9"><table><tr><td><b>expr</b></td><td><pre>(|count_`int list`_2463| dws_2453)</pre></td></tr><tr><td><b>expansions</b></td><td><ul></ul></td></tr></table></div></div></li><li><div>unroll<div class="imandra-table" id="table-9be98cb9-401d-4d6c-9bfa-a080fc7d11a0"><table><tr><td><b>expr</b></td><td><pre>(|count_`int list`_2463| (|get.::.1_2451| dws_2453))</pre></td></tr><tr><td><b>expansions</b></td><td><ul></ul></td></tr></table></div></div></li><li><div>unroll<div class="imandra-table" id="table-f1c3f9cd-4616-49e6-af9a-5c960daab8d4"><table><tr><td><b>expr</b></td><td><pre>(|Ordinal.&lt;&lt;_102| (|Ordinal.Int_93| (|count_`int list`_2463|
                                       (…</pre></td></tr><tr><td><b>expansions</b></td><td><ul></ul></td></tr></table></div></div></li><li>Unsat</li></ul></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-fd4d96e5-db0e-4013-ad2e-082591858635';
+  var target = '#fold-37f9fb62-2b6c-497e-b68f-2768118cce59';
   fold.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-a2413f11-6cb3-4801-a14d-cd3c0da7b77c';
+  var target = '#alt-71e3af87-883d-4f47-928f-f1f6f59d7d3b';
   alternatives.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-27c2fb70-8815-4cb4-8e84-746a702ad979';
+  var target = '#fold-6313460f-104a-4dce-87e0-939054691cdf';
   fold.hydrate(target);
 });
 </script></div></td></tr></table></div></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-05f7b573-822f-427e-8c46-5915cff93ea7';
+  var target = '#fold-528af228-a00f-4d85-b609-48e40d6ea658';
   fold.hydrate(target);
 });
 </script></div><p></p></div></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-763fee5b-407e-46cf-9458-069e7ff749f0';
+  var target = '#fold-9ce5d206-b298-442f-97bf-b6a8c4b5bf7f';
   fold.hydrate(target);
 });
 </script></div></div>
@@ -1511,12 +1529,12 @@ always end up in a "good" state.</p>
 
 
 <div class="output_html rendered_html output_subarea ">
-<div><div style="font-size: 1.2em; padding: 0.5em; border-top: 1px solid green; border-bottom: 1px solid green"><i class="fa fa-check-circle" style="margin-right: 0.5em; color: green"></i><span>Proved</span></div><div><div class="imandra-alternatives" id="alt-78b9c64d-81f5-4ca0-a368-004aa64cad95"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>proof</a></li><li class="" data-toggle="tab"><a>call graph</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-proof-top"><div class="imandra-fold panel panel-default" id="fold-31030132-0e62-409a-a218-ec71f60c8079"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>proof</span></div></div><div class="panel-body collapse"><div class="imandra-proof"><div class="imandra-alternatives" id="alt-7a2b75d1-07e1-400a-948b-77aa97c0360c"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>summary</a></li><li class="" data-toggle="tab"><a>full</a></li><li class="" data-toggle="tab"><a>graph</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-table" id="table-15bfc867-ea2e-43c1-8a6d-5ea6ac69e579"><table><tr><td><b>ground_instances</b></td><td>0</td></tr><tr><td><b>definitions</b></td><td>0</td></tr><tr><td><b>inductions</b></td><td>0</td></tr><tr><td><b>search_time</b></td><td><pre>0.032s</pre></td></tr><tr><td><b>details</b></td><td><div class="imandra-fold panel panel-default" id="fold-0d71a920-bf48-4279-b725-98320945aed3"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><div class="imandra-table" id="table-8e0f2b1a-d990-41ec-90ac-802ca0fc04e2"><table><tr><td><b>smt_stats</b></td><td><div class="imandra-table" id="table-ce8458ba-bcb0-46b9-970c-3ece38572d4f"><table><tr><td><b>num checks</b></td><td>1</td></tr><tr><td><b>arith-make-feasible</b></td><td>233</td></tr><tr><td><b>arith-max-columns</b></td><td>17</td></tr><tr><td><b>arith-conflicts</b></td><td>12</td></tr><tr><td><b>rlimit count</b></td><td>19044</td></tr><tr><td><b>arith-cheap-eqs</b></td><td>37</td></tr><tr><td><b>mk clause</b></td><td>2027</td></tr><tr><td><b>mk bool var</b></td><td>204</td></tr><tr><td><b>arith-lower</b></td><td>819</td></tr><tr><td><b>arith-diseq</b></td><td>1345</td></tr><tr><td><b>decisions</b></td><td>168</td></tr><tr><td><b>arith-propagations</b></td><td>1236</td></tr><tr><td><b>propagations</b></td><td>3614</td></tr><tr><td><b>arith-bound-propagations-cheap</b></td><td>1236</td></tr><tr><td><b>arith-max-rows</b></td><td>8</td></tr><tr><td><b>conflicts</b></td><td>88</td></tr><tr><td><b>datatype accessor ax</b></td><td>1</td></tr><tr><td><b>minimized lits</b></td><td>124</td></tr><tr><td><b>arith-bound-propagations-lp</b></td><td>343</td></tr><tr><td><b>datatype constructor ax</b></td><td>1</td></tr><tr><td><b>num allocs</b></td><td>980551051</td></tr><tr><td><b>added eqs</b></td><td>895</td></tr><tr><td><b>del clause</b></td><td>143</td></tr><tr><td><b>arith eq adapter</b></td><td>91</td></tr><tr><td><b>arith-upper</b></td><td>791</td></tr><tr><td><b>memory</b></td><td>10.630000</td></tr><tr><td><b>max memory</b></td><td>19.570000</td></tr></table></div></td></tr></table></div></div><script>
+<div><div style="font-size: 1.2em; padding: 0.5em; border-top: 1px solid green; border-bottom: 1px solid green"><i class="fa fa-check-circle" style="margin-right: 0.5em; color: green"></i><span>Proved</span></div><div><div class="imandra-alternatives" id="alt-c25f6122-c9db-4828-8f63-23c624ab010b"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>proof</a></li><li class="" data-toggle="tab"><a>call graph</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-proof-top"><div class="imandra-fold panel panel-default" id="fold-aef7564d-c97a-44cb-8f6e-0d867ddd4548"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>proof</span></div></div><div class="panel-body collapse"><div class="imandra-proof"><div class="imandra-alternatives" id="alt-601c418f-e63b-4f17-b1b6-10586e1be9db"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>summary</a></li><li class="" data-toggle="tab"><a>full</a></li><li class="" data-toggle="tab"><a>graph</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-table" id="table-01f2940a-4807-4fdf-ad28-b5ad79127b74"><table><tr><td><b>ground_instances</b></td><td>0</td></tr><tr><td><b>definitions</b></td><td>0</td></tr><tr><td><b>inductions</b></td><td>0</td></tr><tr><td><b>search_time</b></td><td><pre>0.067s</pre></td></tr><tr><td><b>details</b></td><td><div class="imandra-fold panel panel-default" id="fold-04145638-8403-4f71-afdf-5bb1737c39c2"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><div class="imandra-table" id="table-33a72eb2-a3aa-4fb6-a5c3-3712de01652d"><table><tr><td><b>smt_stats</b></td><td><div class="imandra-table" id="table-98514abe-5581-480a-a2d7-5faeb74ff835"><table><tr><td><b>num checks</b></td><td>1</td></tr><tr><td><b>arith-make-feasible</b></td><td>233</td></tr><tr><td><b>arith-max-columns</b></td><td>17</td></tr><tr><td><b>arith-conflicts</b></td><td>12</td></tr><tr><td><b>rlimit count</b></td><td>19044</td></tr><tr><td><b>arith-cheap-eqs</b></td><td>37</td></tr><tr><td><b>mk clause</b></td><td>2027</td></tr><tr><td><b>mk bool var</b></td><td>204</td></tr><tr><td><b>arith-lower</b></td><td>819</td></tr><tr><td><b>arith-diseq</b></td><td>1345</td></tr><tr><td><b>decisions</b></td><td>168</td></tr><tr><td><b>arith-propagations</b></td><td>1236</td></tr><tr><td><b>propagations</b></td><td>3614</td></tr><tr><td><b>arith-bound-propagations-cheap</b></td><td>1236</td></tr><tr><td><b>arith-max-rows</b></td><td>8</td></tr><tr><td><b>conflicts</b></td><td>88</td></tr><tr><td><b>datatype accessor ax</b></td><td>1</td></tr><tr><td><b>minimized lits</b></td><td>124</td></tr><tr><td><b>arith-bound-propagations-lp</b></td><td>343</td></tr><tr><td><b>datatype constructor ax</b></td><td>1</td></tr><tr><td><b>num allocs</b></td><td>965368154</td></tr><tr><td><b>added eqs</b></td><td>895</td></tr><tr><td><b>del clause</b></td><td>143</td></tr><tr><td><b>arith eq adapter</b></td><td>91</td></tr><tr><td><b>arith-upper</b></td><td>791</td></tr><tr><td><b>memory</b></td><td>13.170000</td></tr><tr><td><b>max memory</b></td><td>19.560000</td></tr></table></div></td></tr></table></div></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-0d71a920-bf48-4279-b725-98320945aed3';
+  var target = '#fold-04145638-8403-4f71-afdf-5bb1737c39c2';
   fold.hydrate(target);
 });
-</script></div></td></tr></table></div></div><div class="tab-pane"><div class="imandra-fold panel panel-default" id="fold-836525c7-9ad9-4751-9eb6-8f063b0fe967"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.032s]
+</script></div></td></tr></table></div></div><div class="tab-pane"><div class="imandra-fold panel panel-default" id="fold-8db7acf5-2c15-43a3-b70a-13b1bc024303"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.067s]
   let (_x_0 : int) = :var_0:.w in
   let (_x_1 : int) = :var_0:.v in
   let (_x_2 : int) = _x_0 + _x_1 in
@@ -1545,7 +1563,7 @@ require(['nbextensions/nbimandra/fold'], function (fold) {
        if _x_11 &amp;&amp; _x_10 then true
        else
        if _x_9 &amp;&amp; _x_10 then true
-       else if _x_9 &amp;&amp; -1 = _x_7 then true else …)</pre></li><li><div><h4>simplify</h4><div class="imandra-table" id="table-3b2dce1f-a589-426d-90ed-d65a0fa81ae4"><table><tr><td><b>into</b></td><td><pre>let (_x_0 : int) = :var_0:.w in
+       else if _x_9 &amp;&amp; -1 = _x_7 then true else …)</pre></li><li><div><h4>simplify</h4><div class="imandra-table" id="table-8ca70b7b-f3d7-4d1f-aebe-bfc29a39dc80"><table><tr><td><b>into</b></td><td><pre>let (_x_0 : int) = :var_0:.w in
 let (_x_1 : int) = :var_0:.v in
 let (_x_2 : int) = :var_0:.y in
 let (_x_3 : int) = _x_2 + _x_1 + _x_0 + :var_1: in
@@ -1598,11 +1616,11 @@ let (_x_23 : bool) = -2 = _x_2 in
      || _x_19 &amp;&amp; -3 = _x_2)
     &amp;&amp; ((:var_1: = -1 || :var_1: = 0) || :var_1: = 1))</pre></td></tr><tr><td><b>expansions</b></td><td><pre>[]</pre></td></tr><tr><td><b>rewrite_steps</b></td><td><ul></ul></td></tr><tr><td><b>forward_chaining</b></td><td><ul></ul></td></tr></table></div></div></li><li>Unsat</li></ul></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-836525c7-9ad9-4751-9eb6-8f063b0fe967';
+  var target = '#fold-8db7acf5-2c15-43a3-b70a-13b1bc024303';
   fold.hydrate(target);
 });
-</script></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-566474a9-8b8c-464b-abc2-427ae9bf40b1"><textarea style="display: none">digraph &quot;proof&quot; {
-p_253 [label=&quot;Start (let (_x_0 : int) = :var_0:.w in\l       let (_x_1 : int) = :var_0:.v in\l       let (_x_2 : int) = _x_0 + _x_1 in\l       let (_x_3 : bool) = 2 = _x_2 in\l       let (_x_4 : int) = :var_0:.y in\l       let (_x_5 : bool) = -2 = _x_4 in\l       let (_x_6 : bool) = 1 = _x_2 in\l       let (_x_7 : int) = _x_4 + _x_1 + _x_0 + :var_1: in\l       let (_x_8 : int)\l           = _x_0 + :var_1:\l             + (_x_1\l                + (-3 * (if _x_7 \&lt; 0 then -1 else if _x_7 = 0 then 0 else 1)\l                   + 2 * (if _x_4 \&lt; 0 then -1 else if _x_4 = 0 then 0 else 1)))\l       in\l       let (_x_9 : bool) = 2 = _x_8 in\l       let (_x_10 : bool) = -2 = _x_7 in\l       let (_x_11 : bool) = 1 = _x_8 in\l       (if _x_6 &amp;&amp; -3 = _x_4 then true\l        else\l        if _x_6 &amp;&amp; _x_5 then true\l        else\l        if _x_3 &amp;&amp; _x_5 then true\l        else if _x_3 &amp;&amp; -1 = _x_4 then true else …)\l       &amp;&amp; (:var_1: = -1 \|\| :var_1: = 0 \|\| :var_1: = 1)\l       ==\&gt; (if _x_11 &amp;&amp; -3 = _x_7 then true\l            else\l            if _x_11 &amp;&amp; _x_10 then true\l            else\l            if _x_9 &amp;&amp; _x_10 then true\l            else if _x_9 &amp;&amp; -1 = _x_7 then true else …)\l       :time 0.032s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+</script></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-9ed8f670-61a4-448c-bfec-c3b3bfb4a892"><textarea style="display: none">digraph &quot;proof&quot; {
+p_253 [label=&quot;Start (let (_x_0 : int) = :var_0:.w in\l       let (_x_1 : int) = :var_0:.v in\l       let (_x_2 : int) = _x_0 + _x_1 in\l       let (_x_3 : bool) = 2 = _x_2 in\l       let (_x_4 : int) = :var_0:.y in\l       let (_x_5 : bool) = -2 = _x_4 in\l       let (_x_6 : bool) = 1 = _x_2 in\l       let (_x_7 : int) = _x_4 + _x_1 + _x_0 + :var_1: in\l       let (_x_8 : int)\l           = _x_0 + :var_1:\l             + (_x_1\l                + (-3 * (if _x_7 \&lt; 0 then -1 else if _x_7 = 0 then 0 else 1)\l                   + 2 * (if _x_4 \&lt; 0 then -1 else if _x_4 = 0 then 0 else 1)))\l       in\l       let (_x_9 : bool) = 2 = _x_8 in\l       let (_x_10 : bool) = -2 = _x_7 in\l       let (_x_11 : bool) = 1 = _x_8 in\l       (if _x_6 &amp;&amp; -3 = _x_4 then true\l        else\l        if _x_6 &amp;&amp; _x_5 then true\l        else\l        if _x_3 &amp;&amp; _x_5 then true\l        else if _x_3 &amp;&amp; -1 = _x_4 then true else …)\l       &amp;&amp; (:var_1: = -1 \|\| :var_1: = 0 \|\| :var_1: = 1)\l       ==\&gt; (if _x_11 &amp;&amp; -3 = _x_7 then true\l            else\l            if _x_11 &amp;&amp; _x_10 then true\l            else\l            if _x_9 &amp;&amp; _x_10 then true\l            else if _x_9 &amp;&amp; -1 = _x_7 then true else …)\l       :time 0.067s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_253 -&gt; p_252 [label=&quot;&quot;];
 p_252 [label=&quot;Simplify (let (_x_0 : int) = :var_0:.w in\l          let (_x_1 : int) = :var_0:.v in\l          let (_x_2 : int) = :var_0:.y in\l          let (_x_3 : int) = _x_2 + _x_1 + _x_0 + :var_1: in\l          let (_x_4 : int)\l              = _x_0 + :var_1: + _x_1\l                + -3 * (if 0 \&lt;= _x_3 then if _x_3 = 0 then 0 else 1 else -1)\l                + 2 * (if 0 \&lt;= _x_2 then if _x_2 = 0 then 0 else 1 else -1)\l          in\l          let (_x_5 : bool) = 1 = _x_4 in\l          let (_x_6 : bool) = -2 = _x_3 in\l          let (_x_7 : bool) = 2 = _x_4 in\l          let (_x_8 : bool) = -1 = _x_3 in\l          let (_x_9 : bool) = -1 = _x_4 in\l          let (_x_10 : bool) = 0 = _x_3 in\l          let (_x_11 : bool) = -2 = _x_4 in\l          let (_x_12 : bool) = 1 = _x_3 in\l          let (_x_13 : bool) = 2 = _x_3 in\l          let (_x_14 : int) = _x_0 + _x_1 in\l          let (_x_15 : bool) = -1 = _x_14 in\l          let (_x_16 : bool) = -2 = _x_14 in\l          let (_x_17 : bool) = 2 = _x_2 in\l          let (_x_18 : bool) = 1 = _x_2 in\l          let (_x_19 : bool) = 1 = _x_14 in\l          let (_x_20 : bool) = 0 = _x_2 in\l          let (_x_21 : bool) = -1 = _x_2 in\l          let (_x_22 : bool) = 2 = _x_14 in\l          let (_x_23 : bool) = -2 = _x_2 in\l          ((((((((((((_x_5 &amp;&amp; -3 = _x_3 \|\| _x_5 &amp;&amp; _x_6) \|\| _x_7 &amp;&amp; _x_6)\l                    \|\| _x_7 &amp;&amp; _x_8)\l                   \|\| 3 = _x_4 &amp;&amp; _x_8)\l                  \|\| _x_9 &amp;&amp; _x_10)\l                 \|\| _x_5 &amp;&amp; _x_10)\l                \|\| 0 = _x_4 &amp;&amp; _x_10)\l               \|\| _x_11 &amp;&amp; _x_12)\l              \|\| -3 = _x_4 &amp;&amp; _x_12)\l             \|\| _x_9 &amp;&amp; _x_13)\l            \|\| _x_11 &amp;&amp; _x_13)\l           \|\| _x_9 &amp;&amp; 3 = _x_3)\l          \|\| not\l             (((((((((((((_x_15 &amp;&amp; 3 = _x_2 \|\| _x_16 &amp;&amp; _x_17)\l                         \|\| _x_15 &amp;&amp; _x_17)\l                        \|\| -3 = _x_14 &amp;&amp; _x_18)\l                       \|\| _x_16 &amp;&amp; _x_18)\l                      \|\| _x_19 &amp;&amp; _x_20)\l                     \|\| 0 = _x_14 &amp;&amp; _x_20)\l                    \|\| _x_15 &amp;&amp; _x_20)\l                   \|\| 3 = _x_14 &amp;&amp; _x_21)\l                  \|\| _x_22 &amp;&amp; _x_21)\l                 \|\| _x_22 &amp;&amp; _x_23)\l                \|\| _x_19 &amp;&amp; _x_23)\l               \|\| _x_19 &amp;&amp; -3 = _x_2)\l              &amp;&amp; ((:var_1: = -1 \|\| :var_1: = 0) \|\| :var_1: = 1))\l          :expansions [] :rw [] :fc [])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_252 -&gt; p_251 [label=&quot;&quot;];
@@ -1610,30 +1628,30 @@ p_251 [label=&quot;Unsat&quot;,shape=box,style=filled,fontname=&quot;courier&quo
 }
 </textarea><button class="btn btn-primary">Load graph</button><div class="imandra-graphviz-loading display-none">Loading..</div><div class="imandra-graphviz-target"></div><script>
 require(['nbextensions/nbimandra/graphviz'], function (graphviz) {
-  var target = '#graphviz-566474a9-8b8c-464b-abc2-427ae9bf40b1';
+  var target = '#graphviz-9ed8f670-61a4-448c-bfec-c3b3bfb4a892';
   graphviz.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-7a2b75d1-07e1-400a-948b-77aa97c0360c';
+  var target = '#alt-601c418f-e63b-4f17-b1b6-10586e1be9db';
   alternatives.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-31030132-0e62-409a-a218-ec71f60c8079';
+  var target = '#fold-aef7564d-c97a-44cb-8f6e-0d867ddd4548';
   fold.hydrate(target);
 });
-</script></div></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-051caa3d-e3cd-4f87-b6a7-a701e41fddee"><textarea style="display: none">digraph &quot;call graph&quot; {
+</script></div></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-156f7f28-b87e-4497-a67c-3f5ce81b4d97"><textarea style="display: none">digraph &quot;call graph&quot; {
 goal [label=&quot;let (_x_0 : int) = s.w in\llet (_x_1 : int) = s.v in\llet (_x_2 : int) = s.y in\llet (_x_3 : int) = _x_2 + _x_1 + _x_0 + dw in\llet (_x_4 : int)\l    = _x_0 + dw + _x_1\l      + -3 * (if 0 \&lt;= _x_3 then if _x_3 = 0 then 0 else 1 else -1)\l      + 2 * (if 0 \&lt;= _x_2 then if _x_2 = 0 then 0 else 1 else -1)\lin\llet (_x_5 : bool) = 1 = _x_4 in\llet (_x_6 : bool) = -2 = _x_3 in\llet (_x_7 : bool) = 2 = _x_4 in\llet (_x_8 : bool) = -1 = _x_3 in\llet (_x_9 : bool) = -1 = _x_4 in\llet (_x_10 : bool) = 0 = _x_3 in\llet (_x_11 : bool) = -2 = _x_4 in\llet (_x_12 : bool) = 1 = _x_3 in\llet (_x_13 : bool) = 2 = _x_3 in\llet (_x_14 : int) = _x_0 + _x_1 in\llet (_x_15 : bool) = -1 = _x_14 in\llet (_x_16 : bool) = -2 = _x_14 in\llet (_x_17 : bool) = 2 = _x_2 in\llet (_x_18 : bool) = 1 = _x_2 in\llet (_x_19 : bool) = 1 = _x_14 in\llet (_x_20 : bool) = 0 = _x_2 in\llet (_x_21 : bool) = -1 = _x_2 in\llet (_x_22 : bool) = 2 = _x_14 in\llet (_x_23 : bool) = -2 = _x_2 in\lnot\l(((((((((((((_x_5 &amp;&amp; -3 = _x_3 \|\| _x_5 &amp;&amp; _x_6) \|\| _x_7 &amp;&amp; _x_6)\l           \|\| _x_7 &amp;&amp; _x_8)\l          \|\| 3 = _x_4 &amp;&amp; _x_8)\l         \|\| _x_9 &amp;&amp; _x_10)\l        \|\| _x_5 &amp;&amp; _x_10)\l       \|\| 0 = _x_4 &amp;&amp; _x_10)\l      \|\| _x_11 &amp;&amp; _x_12)\l     \|\| -3 = _x_4 &amp;&amp; _x_12)\l    \|\| _x_9 &amp;&amp; _x_13)\l   \|\| _x_11 &amp;&amp; _x_13)\l  \|\| _x_9 &amp;&amp; 3 = _x_3)\l \|\| not\l    (((((((((((((_x_15 &amp;&amp; 3 = _x_2 \|\| _x_16 &amp;&amp; _x_17) \|\| _x_15 &amp;&amp; _x_17)\l               \|\| -3 = _x_14 &amp;&amp; _x_18)\l              \|\| _x_16 &amp;&amp; _x_18)\l             \|\| _x_19 &amp;&amp; _x_20)\l            \|\| 0 = _x_14 &amp;&amp; _x_20)\l           \|\| _x_15 &amp;&amp; _x_20)\l          \|\| 3 = _x_14 &amp;&amp; _x_21)\l         \|\| _x_22 &amp;&amp; _x_21)\l        \|\| _x_22 &amp;&amp; _x_23)\l       \|\| _x_19 &amp;&amp; _x_23)\l      \|\| _x_19 &amp;&amp; -3 = _x_2)\l     &amp;&amp; ((dw = -1 \|\| dw = 0) \|\| dw = 1)))&quot;,shape=box,style=filled,color=&quot;cyan&quot;,fontname=&quot;courier&quot;,fontsize=14];
 }
 </textarea><button class="btn btn-primary">Load graph</button><div class="imandra-graphviz-loading display-none">Loading..</div><div class="imandra-graphviz-target"></div><script>
 require(['nbextensions/nbimandra/graphviz'], function (graphviz) {
-  var target = '#graphviz-051caa3d-e3cd-4f87-b6a7-a701e41fddee';
+  var target = '#graphviz-156f7f28-b87e-4497-a67c-3f5ce81b4d97';
   graphviz.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-78b9c64d-81f5-4ca0-a368-004aa64cad95';
+  var target = '#alt-c25f6122-c9db-4828-8f63-23c624ab010b';
   alternatives.hydrate(target);
 });
 </script></div></div></div>
@@ -1819,12 +1837,12 @@ But simplification reduces this to true, using the rewrite rule <span class="ans
 
 
 <div class="output_html rendered_html output_subarea ">
-<div><div style="font-size: 1.2em; padding: 0.5em; border-top: 1px solid green; border-bottom: 1px solid green"><i class="fa fa-check-circle" style="margin-right: 0.5em; color: green"></i><span>Proved</span></div><div><div class="imandra-proof-top"><div class="imandra-fold panel panel-default" id="fold-850e4bc2-7061-40ff-b2ab-9c08308b3007"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>proof</span></div></div><div class="panel-body collapse"><div class="imandra-proof"><div class="imandra-alternatives" id="alt-faac0008-fd0a-4041-b229-da2dcad30075"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>summary</a></li><li class="" data-toggle="tab"><a>full</a></li><li class="" data-toggle="tab"><a>graph</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-table" id="table-b75433f5-a379-4418-b7ac-adce9881f719"><table><tr><td><b>ground_instances</b></td><td>0</td></tr><tr><td><b>definitions</b></td><td>11</td></tr><tr><td><b>inductions</b></td><td>1</td></tr><tr><td><b>search_time</b></td><td><pre>0.669s</pre></td></tr></table></div></div><div class="tab-pane"><div class="imandra-fold panel panel-default" id="fold-1c332fa7-4c5d-402c-a56f-d942f778fee9"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.669s, &quot;Goal&quot;]
+<div><div style="font-size: 1.2em; padding: 0.5em; border-top: 1px solid green; border-bottom: 1px solid green"><i class="fa fa-check-circle" style="margin-right: 0.5em; color: green"></i><span>Proved</span></div><div><div class="imandra-proof-top"><div class="imandra-fold panel panel-default" id="fold-5979b4f6-b8d2-435f-9de4-88e3a61f3280"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>proof</span></div></div><div class="panel-body collapse"><div class="imandra-proof"><div class="imandra-alternatives" id="alt-ecb3d18b-283d-4cb8-ae0e-2ef05ef50865"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>summary</a></li><li class="" data-toggle="tab"><a>full</a></li><li class="" data-toggle="tab"><a>graph</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-table" id="table-a864c807-f245-4aa1-9d3c-2b8e928f572b"><table><tr><td><b>ground_instances</b></td><td>0</td></tr><tr><td><b>definitions</b></td><td>11</td></tr><tr><td><b>inductions</b></td><td>1</td></tr><tr><td><b>search_time</b></td><td><pre>1.214s</pre></td></tr></table></div></div><div class="tab-pane"><div class="imandra-fold panel panel-default" id="fold-96fb903b-9754-4a51-a01a-aacc05df5801"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><ul><li><pre>start[1.214s, &quot;Goal&quot;]
   good_state :var_0:
   &amp;&amp; List.for_all (fun x -&gt; x = -1 || x = 0 || x = 1) :var_1:
-  ==&gt; good_state (final_state :var_0: :var_1:)</pre></li><li><div><h4>subproof</h4><div class="imandra-fold panel panel-default" id="fold-f1dab525-c87b-45a3-9307-6658e4214258"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>(not (good_state s)
+  ==&gt; good_state (final_state :var_0: :var_1:)</pre></li><li><div><h4>subproof</h4><div class="imandra-fold panel panel-default" id="fold-03c92fc1-cf46-476e-9828-99fb5bdff724"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>(not (good_state s)
  || not (List.for_all (fun x -&gt; x = -1 || x = 0 || x = 1) dws))
-|| good_state (final_state s dws)</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.669s, &quot;1&quot;]
+|| good_state (final_state s dws)</span></div></div><div class="panel-body collapse"><ul><li><pre>start[1.214s, &quot;1&quot;]
   (not (good_state s)
    || not (List.for_all (fun x -&gt; x = -1 || x = 0 || x = 1) dws))
   || good_state (final_state s dws)</pre></li><li><pre>induction on (functional final_state)
@@ -1863,7 +1881,7 @@ But simplification reduces this to true, using the rewrite rule <span class="ans
                    (good_state _x_0
                     &amp;&amp; List.for_all (fun x -&gt; x = -1 || x = 0 || x = 1) _x_1
                     ==&gt; good_state (final_state _x_0 _x_1)))
-               || good_state (final_state s dws)])</pre><ul><li><div><h5>subproof</h5><div class="imandra-fold panel panel-default" id="fold-26e7b455-af75-4ca6-b5ec-7693577ab7a5"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>let (_x_0 : state) = next_state (List.hd dws) s in
+               || good_state (final_state s dws)])</pre><ul><li><div><h5>subproof</h5><div class="imandra-fold panel panel-default" id="fold-663f3771-de54-4a7c-8832-41bf70237793"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>let (_x_0 : state) = next_state (List.hd dws) s in
 let (_x_1 : int list) = List.tl dws in
 (((not (good_state s)
    || not (List.for_all (fun x -&gt; x = -1 || x = 0 || x = 1) dws))
@@ -1871,7 +1889,7 @@ let (_x_1 : int list) = List.tl dws in
  || not
     (good_state _x_0 &amp;&amp; List.for_all (fun x -&gt; x = -1 || x = 0 || x = 1) _x_1
      ==&gt; good_state (final_state _x_0 _x_1)))
-|| good_state (final_state s dws)</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.669s, &quot;1&quot;]
+|| good_state (final_state s dws)</span></div></div><div class="panel-body collapse"><ul><li><pre>start[1.214s, &quot;1&quot;]
   let (_x_0 : state) = next_state (List.hd dws) s in
   let (_x_1 : int list) = List.tl dws in
   (((not (good_state s)
@@ -1881,7 +1899,7 @@ let (_x_1 : int list) = List.tl dws in
       (good_state _x_0
        &amp;&amp; List.for_all (fun x -&gt; x = -1 || x = 0 || x = 1) _x_1
        ==&gt; good_state (final_state _x_0 _x_1)))
-  || good_state (final_state s dws)</pre></li><li><div><div><h6>simplify</h6><div class="imandra-table" id="table-acf944cf-39e7-4bfe-8cfc-dfd9a9f3a5ec"><table><tr><td><b>into</b></td><td><pre>let (_x_0 : int) = List.hd dws in
+  || good_state (final_state s dws)</pre></li><li><div><div><h6>simplify</h6><div class="imandra-table" id="table-8bdbd3e5-0b1a-4c60-afb1-19b8bce62a88"><table><tr><td><b>into</b></td><td><pre>let (_x_0 : int) = List.hd dws in
 let (_x_1 : state) = next_state _x_0 s in
 let (_x_2 : int list) = List.tl dws in
 let (_x_3 : bool)
@@ -1898,37 +1916,37 @@ in
 &amp;&amp; ((_x_3 || not _x_4) || _x_7)</pre></td></tr><tr><td><b>expansions</b></td><td><pre>[final_state, final_state, final_state, List.for_all, List.for_all,
  final_state, final_state, final_state, List.for_all]</pre></td></tr><tr><td><b>rewrite_steps</b></td><td><ul></ul></td></tr><tr><td><b>forward_chaining</b></td><td><ul></ul></td></tr></table></div></div><ul><li><pre>Subproof</pre></li><li><pre>Subproof</pre></li><li><pre>Subproof</pre></li></ul></div></li></ul></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-26e7b455-af75-4ca6-b5ec-7693577ab7a5';
+  var target = '#fold-663f3771-de54-4a7c-8832-41bf70237793';
   fold.hydrate(target);
 });
-</script></div></div></li><li><div><h5>subproof</h5><div class="imandra-fold panel panel-default" id="fold-b9684801-1351-4567-b125-c334d710aaa9"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>((not (good_state s)
+</script></div></div></li><li><div><h5>subproof</h5><div class="imandra-fold panel panel-default" id="fold-64fe9b5f-39a0-4e27-b863-467c789bb042"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>((not (good_state s)
   || not (List.for_all (fun x -&gt; x = -1 || x = 0 || x = 1) dws))
  || not (dws = []))
-|| good_state (final_state s dws)</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.669s, &quot;2&quot;]
+|| good_state (final_state s dws)</span></div></div><div class="panel-body collapse"><ul><li><pre>start[1.214s, &quot;2&quot;]
   ((not (good_state s)
     || not (List.for_all (fun x -&gt; x = -1 || x = 0 || x = 1) dws))
    || not (dws = []))
-  || good_state (final_state s dws)</pre></li><li><div><h6>simplify</h6><div class="imandra-table" id="table-85d2a031-5b0c-45f9-bef4-a56900bfcaf6"><table><tr><td><b>into</b></td><td><pre>true</pre></td></tr><tr><td><b>expansions</b></td><td><pre>[final_state, List.for_all]</pre></td></tr><tr><td><b>rewrite_steps</b></td><td><ul></ul></td></tr><tr><td><b>forward_chaining</b></td><td><ul></ul></td></tr></table></div></div></li></ul></div><script>
+  || good_state (final_state s dws)</pre></li><li><div><h6>simplify</h6><div class="imandra-table" id="table-374e70d2-1b4f-4ef7-bcd2-79f8327d6aef"><table><tr><td><b>into</b></td><td><pre>true</pre></td></tr><tr><td><b>expansions</b></td><td><pre>[final_state, List.for_all]</pre></td></tr><tr><td><b>rewrite_steps</b></td><td><ul></ul></td></tr><tr><td><b>forward_chaining</b></td><td><ul></ul></td></tr></table></div></div></li></ul></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-b9684801-1351-4567-b125-c334d710aaa9';
+  var target = '#fold-64fe9b5f-39a0-4e27-b863-467c789bb042';
   fold.hydrate(target);
 });
 </script></div></div></li></ul></div></li></ul></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-f1dab525-c87b-45a3-9307-6658e4214258';
+  var target = '#fold-03c92fc1-cf46-476e-9828-99fb5bdff724';
   fold.hydrate(target);
 });
 </script></div></div></li></ul></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-1c332fa7-4c5d-402c-a56f-d942f778fee9';
+  var target = '#fold-96fb903b-9754-4a51-a01a-aacc05df5801';
   fold.hydrate(target);
 });
-</script></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-656e3764-87cf-4555-ab84-e2e512e98105"><textarea style="display: none">digraph &quot;proof&quot; {
-p_273 [label=&quot;Start (good_state :var_0:\l       &amp;&amp; List.for_all (fun x -\&gt; x = -1 \|\| x = 0 \|\| x = 1) :var_1:\l       ==\&gt; good_state (final_state :var_0: :var_1:) :name \&quot;Goal\&quot; :time 0.669s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+</script></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-3d7aa43b-8807-4610-8a6b-43223ad0d42d"><textarea style="display: none">digraph &quot;proof&quot; {
+p_273 [label=&quot;Start (good_state :var_0:\l       &amp;&amp; List.for_all (fun x -\&gt; x = -1 \|\| x = 0 \|\| x = 1) :var_1:\l       ==\&gt; good_state (final_state :var_0: :var_1:) :name \&quot;Goal\&quot; :time 1.214s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_273 -&gt; p_271 [label=&quot;&quot;];
 subgraph cluster_272 {
   color=blue;
-p_271 [label=&quot;Start ((not (good_state s)\l        \|\| not (List.for_all (fun x -\&gt; x = -1 \|\| x = 0 \|\| x = 1) dws))\l       \|\| good_state (final_state s dws) :name \&quot;1\&quot; :time 0.669s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+p_271 [label=&quot;Start ((not (good_state s)\l        \|\| not (List.for_all (fun x -\&gt; x = -1 \|\| x = 0 \|\| x = 1) dws))\l       \|\| good_state (final_state s dws) :name \&quot;1\&quot; :time 1.214s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_271 -&gt; p_270 [label=&quot;&quot;];
 p_270 [label=&quot;Induct ((functional final_state),\l        :scheme (dws = [] ==\&gt; φ dws s)\l                &amp;&amp; (not (dws = [])\l                    &amp;&amp; φ (List.tl dws) (next_state (List.hd dws) s)\l                    ==\&gt; φ dws s))&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_270 -&gt; p_269 [label=&quot;&quot;];
@@ -1936,27 +1954,27 @@ p_269 [label=&quot;Split (let (_x_0 : bool)\l           = good_state (final_stat
 p_269 -&gt; p_264 [label=&quot;&quot;];
 subgraph cluster_265 {
   color=blue;
-p_264 [label=&quot;Start (let (_x_0 : state) = next_state (List.hd dws) s in\l       let (_x_1 : int list) = List.tl dws in\l       (((not (good_state s)\l          \|\| not (List.for_all (fun x -\&gt; x = -1 \|\| x = 0 \|\| x = 1) dws))\l         \|\| dws = [])\l        \|\| not\l           (good_state _x_0\l            &amp;&amp; List.for_all (fun x -\&gt; x = -1 \|\| x = 0 \|\| x = 1) _x_1\l            ==\&gt; good_state (final_state _x_0 _x_1)))\l       \|\| good_state (final_state s dws) :name \&quot;1\&quot; :time 0.669s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+p_264 [label=&quot;Start (let (_x_0 : state) = next_state (List.hd dws) s in\l       let (_x_1 : int list) = List.tl dws in\l       (((not (good_state s)\l          \|\| not (List.for_all (fun x -\&gt; x = -1 \|\| x = 0 \|\| x = 1) dws))\l         \|\| dws = [])\l        \|\| not\l           (good_state _x_0\l            &amp;&amp; List.for_all (fun x -\&gt; x = -1 \|\| x = 0 \|\| x = 1) _x_1\l            ==\&gt; good_state (final_state _x_0 _x_1)))\l       \|\| good_state (final_state s dws) :name \&quot;1\&quot; :time 1.214s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_264 -&gt; p_263 [label=&quot;&quot;];
 p_263 [label=&quot;Simplify (let (_x_0 : int) = List.hd dws in\l          let (_x_1 : state) = next_state _x_0 s in\l          let (_x_2 : int list) = List.tl dws in\l          let (_x_3 : bool)\l              = ((dws = [] \|\| good_state (final_state _x_1 _x_2))\l                 \|\| good_state _x_1)\l                \|\| not (good_state s)\l          in\l          let (_x_4 : bool) = _x_0 = -1 in\l          let (_x_5 : bool) = _x_3 \|\| _x_4 in\l          let (_x_6 : bool) = _x_0 = 0 in\l          let (_x_7 : bool)\l              = not (List.for_all (fun x -\&gt; x = -1 \|\| x = 0 \|\| x = 1) _x_2)\l          in\l          ((((_x_5 \|\| _x_6) \|\| not (_x_0 = 1)) \|\| _x_7)\l           &amp;&amp; ((_x_5 \|\| not _x_6) \|\| _x_7))\l          &amp;&amp; ((_x_3 \|\| not _x_4) \|\| _x_7)\l          :expansions [final_state;\l                       final_state;\l                       final_state;\l                       List.for_all;\l                       List.for_all;\l                       final_state;\l                       final_state;\l                       final_state;\l                       List.for_all]\l          :rw [] :fc [])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_263 -&gt; p_255 [label=&quot;&quot;];
 subgraph cluster_256 {
   color=blue;
-p_255 [label=&quot;Start (let (_x_0 : int) = List.hd dws in\l       let (_x_1 : state) = next_state _x_0 s in\l       let (_x_2 : int list) = List.tl dws in\l       ((((dws = [] \|\| good_state (final_state _x_1 _x_2)) \|\| good_state _x_1)\l         \|\| not (good_state s))\l        \|\| not (_x_0 = -1))\l       \|\| not (List.for_all (fun x -\&gt; x = -1 \|\| x = 0 \|\| x = 1) _x_2)\l       :name \&quot;1.1\&quot; :time 0.312s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+p_255 [label=&quot;Start (let (_x_0 : int) = List.hd dws in\l       let (_x_1 : state) = next_state _x_0 s in\l       let (_x_2 : int list) = List.tl dws in\l       ((((dws = [] \|\| good_state (final_state _x_1 _x_2)) \|\| good_state _x_1)\l         \|\| not (good_state s))\l        \|\| not (_x_0 = -1))\l       \|\| not (List.for_all (fun x -\&gt; x = -1 \|\| x = 0 \|\| x = 1) _x_2)\l       :name \&quot;1.1\&quot; :time 0.781s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_255 -&gt; p_254 [label=&quot;&quot;];
 p_254 [label=&quot;Simplify (true :expansions [] :rw [safety_1] :fc [])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 }
 p_263 -&gt; p_258 [label=&quot;&quot;];
 subgraph cluster_259 {
   color=blue;
-p_258 [label=&quot;Start (let (_x_0 : int) = List.hd dws in\l       let (_x_1 : state) = next_state _x_0 s in\l       let (_x_2 : int list) = List.tl dws in\l       (((((dws = [] \|\| good_state (final_state _x_1 _x_2))\l           \|\| good_state _x_1)\l          \|\| not (good_state s))\l         \|\| _x_0 = -1)\l        \|\| not (_x_0 = 0))\l       \|\| not (List.for_all (fun x -\&gt; x = -1 \|\| x = 0 \|\| x = 1) _x_2)\l       :name \&quot;1.2\&quot; :time 0.313s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+p_258 [label=&quot;Start (let (_x_0 : int) = List.hd dws in\l       let (_x_1 : state) = next_state _x_0 s in\l       let (_x_2 : int list) = List.tl dws in\l       (((((dws = [] \|\| good_state (final_state _x_1 _x_2))\l           \|\| good_state _x_1)\l          \|\| not (good_state s))\l         \|\| _x_0 = -1)\l        \|\| not (_x_0 = 0))\l       \|\| not (List.for_all (fun x -\&gt; x = -1 \|\| x = 0 \|\| x = 1) _x_2)\l       :name \&quot;1.2\&quot; :time 0.781s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_258 -&gt; p_257 [label=&quot;&quot;];
 p_257 [label=&quot;Simplify (true :expansions [] :rw [safety_1] :fc [])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 }
 p_263 -&gt; p_261 [label=&quot;&quot;];
 subgraph cluster_262 {
   color=blue;
-p_261 [label=&quot;Start (let (_x_0 : int) = List.hd dws in\l       let (_x_1 : state) = next_state _x_0 s in\l       let (_x_2 : int list) = List.tl dws in\l       ((((((dws = [] \|\| good_state (final_state _x_1 _x_2))\l            \|\| good_state _x_1)\l           \|\| not (good_state s))\l          \|\| _x_0 = -1)\l         \|\| _x_0 = 0)\l        \|\| not (_x_0 = 1))\l       \|\| not (List.for_all (fun x -\&gt; x = -1 \|\| x = 0 \|\| x = 1) _x_2)\l       :name \&quot;1.3\&quot; :time 0.313s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+p_261 [label=&quot;Start (let (_x_0 : int) = List.hd dws in\l       let (_x_1 : state) = next_state _x_0 s in\l       let (_x_2 : int list) = List.tl dws in\l       ((((((dws = [] \|\| good_state (final_state _x_1 _x_2))\l            \|\| good_state _x_1)\l           \|\| not (good_state s))\l          \|\| _x_0 = -1)\l         \|\| _x_0 = 0)\l        \|\| not (_x_0 = 1))\l       \|\| not (List.for_all (fun x -\&gt; x = -1 \|\| x = 0 \|\| x = 1) _x_2)\l       :name \&quot;1.3\&quot; :time 0.781s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_261 -&gt; p_260 [label=&quot;&quot;];
 p_260 [label=&quot;Simplify (true :expansions [] :rw [safety_1] :fc [])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 }
@@ -1964,7 +1982,7 @@ p_260 [label=&quot;Simplify (true :expansions [] :rw [safety_1] :fc [])&quot;,sh
 p_269 -&gt; p_267 [label=&quot;&quot;];
 subgraph cluster_268 {
   color=blue;
-p_267 [label=&quot;Start (((not (good_state s)\l         \|\| not (List.for_all (fun x -\&gt; x = -1 \|\| x = 0 \|\| x = 1) dws))\l        \|\| not (dws = []))\l       \|\| good_state (final_state s dws) :name \&quot;2\&quot; :time 0.669s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+p_267 [label=&quot;Start (((not (good_state s)\l         \|\| not (List.for_all (fun x -\&gt; x = -1 \|\| x = 0 \|\| x = 1) dws))\l        \|\| not (dws = []))\l       \|\| good_state (final_state s dws) :name \&quot;2\&quot; :time 1.214s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_267 -&gt; p_266 [label=&quot;&quot;];
 p_266 [label=&quot;Simplify (true :expansions [final_state; List.for_all] :rw [] :fc [])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 }
@@ -1972,17 +1990,17 @@ p_266 [label=&quot;Simplify (true :expansions [final_state; List.for_all] :rw []
 }
 </textarea><button class="btn btn-primary">Load graph</button><div class="imandra-graphviz-loading display-none">Loading..</div><div class="imandra-graphviz-target"></div><script>
 require(['nbextensions/nbimandra/graphviz'], function (graphviz) {
-  var target = '#graphviz-656e3764-87cf-4555-ab84-e2e512e98105';
+  var target = '#graphviz-3d7aa43b-8807-4610-8a6b-43223ad0d42d';
   graphviz.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-faac0008-fd0a-4041-b229-da2dcad30075';
+  var target = '#alt-ecb3d18b-283d-4cb8-ae0e-2ef05ef50865';
   alternatives.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-850e4bc2-7061-40ff-b2ab-9c08308b3007';
+  var target = '#fold-5979b4f6-b8d2-435f-9de4-88e3a61f3280';
   fold.hydrate(target);
 });
 </script></div></div></div></div>
@@ -2052,23 +2070,23 @@ require(['nbextensions/nbimandra/fold'], function (fold) {
 
 
 <div class="output_html rendered_html output_subarea ">
-<div><div style="font-size: 1.2em; padding: 0.5em; border-top: 1px solid green; border-bottom: 1px solid green"><i class="fa fa-check-circle" style="margin-right: 0.5em; color: green"></i><span>Proved</span></div><div><div class="imandra-alternatives" id="alt-654c1614-876c-447d-aa81-ce50c208a517"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>proof</a></li><li class="" data-toggle="tab"><a>call graph</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-proof-top"><div class="imandra-fold panel panel-default" id="fold-b26e2bc5-aa06-41dc-ad48-aae207c3518d"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>proof</span></div></div><div class="panel-body collapse"><div class="imandra-proof"><div class="imandra-alternatives" id="alt-ad86d217-963e-4a4c-a5f3-27250ce59648"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>summary</a></li><li class="" data-toggle="tab"><a>full</a></li><li class="" data-toggle="tab"><a>graph</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-table" id="table-5e9761bd-ce2c-42e4-805f-8d3b5909b5dd"><table><tr><td><b>ground_instances</b></td><td>0</td></tr><tr><td><b>definitions</b></td><td>0</td></tr><tr><td><b>inductions</b></td><td>0</td></tr><tr><td><b>search_time</b></td><td><pre>0.091s</pre></td></tr><tr><td><b>details</b></td><td><div class="imandra-fold panel panel-default" id="fold-2a685f71-c7df-4cf5-be8f-69dbbc94c2d6"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><div class="imandra-table" id="table-8d5f8b32-64f2-4b7c-afa3-e06dddcedff1"><table><tr><td><b>smt_stats</b></td><td><div class="imandra-table" id="table-9583cd8e-9caa-488e-9c01-686abfbd09b5"><table><tr><td><b>rlimit count</b></td><td>8857</td></tr><tr><td><b>mk bool var</b></td><td>1</td></tr><tr><td><b>num allocs</b></td><td>3304053652</td></tr><tr><td><b>memory</b></td><td>15.000000</td></tr><tr><td><b>max memory</b></td><td>47.250000</td></tr></table></div></td></tr></table></div></div><script>
+<div><div style="font-size: 1.2em; padding: 0.5em; border-top: 1px solid green; border-bottom: 1px solid green"><i class="fa fa-check-circle" style="margin-right: 0.5em; color: green"></i><span>Proved</span></div><div><div class="imandra-alternatives" id="alt-9c6c2f0c-70a1-472f-818f-8f673c5d5e6d"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>proof</a></li><li class="" data-toggle="tab"><a>call graph</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-proof-top"><div class="imandra-fold panel panel-default" id="fold-8f40f06a-0e8d-4da9-8969-666bb30e444d"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>proof</span></div></div><div class="panel-body collapse"><div class="imandra-proof"><div class="imandra-alternatives" id="alt-b59d1909-68b0-49f3-8776-8888172b51cf"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>summary</a></li><li class="" data-toggle="tab"><a>full</a></li><li class="" data-toggle="tab"><a>graph</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-table" id="table-31e8da22-e1f6-43be-9558-198c0f96062c"><table><tr><td><b>ground_instances</b></td><td>0</td></tr><tr><td><b>definitions</b></td><td>0</td></tr><tr><td><b>inductions</b></td><td>0</td></tr><tr><td><b>search_time</b></td><td><pre>0.042s</pre></td></tr><tr><td><b>details</b></td><td><div class="imandra-fold panel panel-default" id="fold-87339411-4624-4eb5-85f7-ec9b683e019b"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><div class="imandra-table" id="table-ed1dc569-c6e7-487a-a150-084c70c99a06"><table><tr><td><b>smt_stats</b></td><td><div class="imandra-table" id="table-008b4eb5-0849-4a67-bbc3-5b0ca94827e5"><table><tr><td><b>rlimit count</b></td><td>8857</td></tr><tr><td><b>mk bool var</b></td><td>1</td></tr><tr><td><b>num allocs</b></td><td>3241771233</td></tr><tr><td><b>memory</b></td><td>21.020000</td></tr><tr><td><b>max memory</b></td><td>49.830000</td></tr></table></div></td></tr></table></div></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-2a685f71-c7df-4cf5-be8f-69dbbc94c2d6';
+  var target = '#fold-87339411-4624-4eb5-85f7-ec9b683e019b';
   fold.hydrate(target);
 });
-</script></div></td></tr></table></div></div><div class="tab-pane"><div class="imandra-fold panel panel-default" id="fold-37dc65b3-3824-4d5c-81ba-455a8ada3b80"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.091s]
+</script></div></td></tr></table></div></div><div class="tab-pane"><div class="imandra-fold panel panel-default" id="fold-90611482-2529-4806-8189-4e1420a8a5b4"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.042s]
   let (_x_0 : int) = (final_state {w = 0; y = 0; v = 0} :var_0:).y in
   List.for_all (fun x -&gt; x = -1 || x = 0 || x = 1) :var_0:
-  ==&gt; -3 &lt;= _x_0 &amp;&amp; _x_0 &lt;= 3</pre></li><li><div><h4>simplify</h4><div class="imandra-table" id="table-4024a622-d9d1-4077-bf90-8adc7515eab8"><table><tr><td><b>into</b></td><td><pre>let (_x_0 : int) = (final_state {w = 0; y = 0; v = 0} :var_0:).y in
+  ==&gt; -3 &lt;= _x_0 &amp;&amp; _x_0 &lt;= 3</pre></li><li><div><h4>simplify</h4><div class="imandra-table" id="table-2aff480b-d596-419c-b7fe-2f04c29f4af0"><table><tr><td><b>into</b></td><td><pre>let (_x_0 : int) = (final_state {w = 0; y = 0; v = 0} :var_0:).y in
 not (List.for_all (fun x -&gt; x = -1 || x = 0 || x = 1) :var_0:)
-|| -3 &lt;= _x_0 &amp;&amp; _x_0 &lt;= 3</pre></td></tr><tr><td><b>expansions</b></td><td><pre>[]</pre></td></tr><tr><td><b>rewrite_steps</b></td><td><ul></ul></td></tr><tr><td><b>forward_chaining</b></td><td><ul></ul></td></tr></table></div></div></li><li><div><h4>simplify</h4><div class="imandra-table" id="table-93ce61d0-7421-4483-a986-de214eae09ae"><table><tr><td><b>into</b></td><td><pre>true</pre></td></tr><tr><td><b>expansions</b></td><td><pre>[]</pre></td></tr><tr><td><b>rewrite_steps</b></td><td><ul></ul></td></tr><tr><td><b>forward_chaining</b></td><td><pre>all_good</pre></td></tr></table></div></div></li><li>Unsat</li></ul></div><script>
+|| -3 &lt;= _x_0 &amp;&amp; _x_0 &lt;= 3</pre></td></tr><tr><td><b>expansions</b></td><td><pre>[]</pre></td></tr><tr><td><b>rewrite_steps</b></td><td><ul></ul></td></tr><tr><td><b>forward_chaining</b></td><td><ul></ul></td></tr></table></div></div></li><li><div><h4>simplify</h4><div class="imandra-table" id="table-093a55e8-2376-4e24-b9bc-ef60edc2750c"><table><tr><td><b>into</b></td><td><pre>true</pre></td></tr><tr><td><b>expansions</b></td><td><pre>[]</pre></td></tr><tr><td><b>rewrite_steps</b></td><td><ul></ul></td></tr><tr><td><b>forward_chaining</b></td><td><pre>all_good</pre></td></tr></table></div></div></li><li>Unsat</li></ul></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-37dc65b3-3824-4d5c-81ba-455a8ada3b80';
+  var target = '#fold-90611482-2529-4806-8189-4e1420a8a5b4';
   fold.hydrate(target);
 });
-</script></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-99b381d2-a2cb-4a08-a367-90e9ed86b1a9"><textarea style="display: none">digraph &quot;proof&quot; {
-p_277 [label=&quot;Start (let (_x_0 : int) = (final_state \{w = 0; y = 0; v = 0\} :var_0:).y in\l       List.for_all (fun x -\&gt; x = -1 \|\| x = 0 \|\| x = 1) :var_0:\l       ==\&gt; -3 \&lt;= _x_0 &amp;&amp; _x_0 \&lt;= 3 :time 0.091s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+</script></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-39d9686e-7013-45c1-993e-423c9cb462dd"><textarea style="display: none">digraph &quot;proof&quot; {
+p_277 [label=&quot;Start (let (_x_0 : int) = (final_state \{w = 0; y = 0; v = 0\} :var_0:).y in\l       List.for_all (fun x -\&gt; x = -1 \|\| x = 0 \|\| x = 1) :var_0:\l       ==\&gt; -3 \&lt;= _x_0 &amp;&amp; _x_0 \&lt;= 3 :time 0.042s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_277 -&gt; p_276 [label=&quot;&quot;];
 p_276 [label=&quot;Simplify (let (_x_0 : int) = (final_state \{w = 0; y = 0; v = 0\} :var_0:).y in\l          not (List.for_all (fun x -\&gt; x = -1 \|\| x = 0 \|\| x = 1) :var_0:)\l          \|\| -3 \&lt;= _x_0 &amp;&amp; _x_0 \&lt;= 3 :expansions [] :rw [] :fc [])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_276 -&gt; p_275 [label=&quot;&quot;];
@@ -2078,30 +2096,30 @@ p_274 [label=&quot;Unsat&quot;,shape=box,style=filled,fontname=&quot;courier&quo
 }
 </textarea><button class="btn btn-primary">Load graph</button><div class="imandra-graphviz-loading display-none">Loading..</div><div class="imandra-graphviz-target"></div><script>
 require(['nbextensions/nbimandra/graphviz'], function (graphviz) {
-  var target = '#graphviz-99b381d2-a2cb-4a08-a367-90e9ed86b1a9';
+  var target = '#graphviz-39d9686e-7013-45c1-993e-423c9cb462dd';
   graphviz.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-ad86d217-963e-4a4c-a5f3-27250ce59648';
+  var target = '#alt-b59d1909-68b0-49f3-8776-8888172b51cf';
   alternatives.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-b26e2bc5-aa06-41dc-ad48-aae207c3518d';
+  var target = '#fold-8f40f06a-0e8d-4da9-8969-666bb30e444d';
   fold.hydrate(target);
 });
-</script></div></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-90de1d84-f3d7-409b-97b8-aea9e0e11cc9"><textarea style="display: none">digraph &quot;call graph&quot; {
+</script></div></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-e773da93-7a01-4d3b-b83c-752ad86ad301"><textarea style="display: none">digraph &quot;call graph&quot; {
 goal [label=&quot;not true&quot;,shape=box,style=filled,color=&quot;cyan&quot;,fontname=&quot;courier&quot;,fontsize=14];
 }
 </textarea><button class="btn btn-primary">Load graph</button><div class="imandra-graphviz-loading display-none">Loading..</div><div class="imandra-graphviz-target"></div><script>
 require(['nbextensions/nbimandra/graphviz'], function (graphviz) {
-  var target = '#graphviz-90de1d84-f3d7-409b-97b8-aea9e0e11cc9';
+  var target = '#graphviz-e773da93-7a01-4d3b-b83c-752ad86ad301';
   graphviz.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-654c1614-876c-447d-aa81-ce50c208a517';
+  var target = '#alt-9c6c2f0c-70a1-472f-818f-8f673c5d5e6d';
   alternatives.hydrate(target);
 });
 </script></div></div></div>
@@ -2302,47 +2320,12 @@ But simplification reduces this to true, using the definition of
  H3. (List.tl dws) &lt;&gt; []
  H4. (List.tl (List.tl dws)) &lt;&gt; []
  H5. good_state (next_state (List.hd dws) s)
- H6. List.hd dws = 0
- H7. List.for_all (fun x -&gt; x = 0) (List.tl dws)
- H8. List.hd (List.tl dws) = 0
+ H6. List.hd (List.tl dws) = 0
+ H7. List.hd dws = 0
+ H8. List.for_all (fun x -&gt; x = 0) (List.tl dws)
 |---------------------------------------------------------------------------
  C0. (final_state (next_state (List.hd dws) s) (List.tl dws)).y = 0
  C1. List.for_all (fun x -&gt; x = 0) (List.tl (List.tl dws))
-
-This simplifies, using the definition of <span class="ansi-blue-intense-fg ansi-bold">List.for_all</span>, and the rewrite rule
-<span class="ansi-magenta-intense-fg ansi-bold">safety_1</span> to the following 2 subgoals:
-
-<span class="ansi-white-intense-fg ansi-bold">Subgoal 1.2.2</span>:
-
- H0. good_state s
- H1. (List.tl (List.tl (List.tl dws))) &lt;&gt; []
- H2. dws &lt;&gt; []
- H3. (List.tl dws) &lt;&gt; []
- H4. (List.tl (List.tl dws)) &lt;&gt; []
- H5. List.hd dws = 0
- H6. List.hd (List.tl dws) = 0
- H7. List.for_all (fun x -&gt; x = 0) (List.tl (List.tl dws))
-|---------------------------------------------------------------------------
- C0. (final_state (next_state (List.hd dws) s) (List.tl dws)).y = 0
- C1. List.hd (List.tl (List.tl dws)) = 0
-
-But simplification reduces this to true, using the definition of
-<span class="ansi-blue-intense-fg ansi-bold">List.for_all</span>.
-
-<span class="ansi-white-intense-fg ansi-bold">Subgoal 1.2.1</span>:
-
- H0. good_state s
- H1. (List.tl (List.tl (List.tl dws))) &lt;&gt; []
- H2. dws &lt;&gt; []
- H3. (List.tl dws) &lt;&gt; []
- H4. (List.tl (List.tl dws)) &lt;&gt; []
- H5. List.hd dws = 0
- H6. List.hd (List.tl dws) = 0
- H7. List.for_all (fun x -&gt; x = 0) (List.tl (List.tl dws))
- H8. List.hd (List.tl (List.tl dws)) = 0
-|---------------------------------------------------------------------------
- C0. (final_state (next_state (List.hd dws) s) (List.tl dws)).y = 0
- C1. List.for_all (fun x -&gt; x = 0) (List.tl (List.tl (List.tl dws)))
 
 But simplification reduces this to true, using the definition of
 <span class="ansi-blue-intense-fg ansi-bold">List.for_all</span>.
@@ -2355,10 +2338,10 @@ But simplification reduces this to true, using the definition of
  H3. (List.tl dws) &lt;&gt; []
  H4. (List.tl (List.tl dws)) &lt;&gt; []
  H5. good_state (next_state (List.hd dws) s)
- H6. List.hd dws = 0
- H7. List.for_all (fun x -&gt; x = 0) (List.tl dws)
- H8. List.hd (List.tl dws) = 0
- H9. List.for_all (fun x -&gt; x = 0) (List.tl (List.tl dws))
+ H6. List.hd (List.tl dws) = 0
+ H7. List.hd dws = 0
+ H8. List.for_all (fun x -&gt; x = 0) (List.tl (List.tl dws))
+ H9. List.for_all (fun x -&gt; x = 0) (List.tl dws)
 |---------------------------------------------------------------------------
  C0. (List.tl (List.tl (List.tl (List.tl dws)))) &lt;&gt; []
  C1. (final_state (next_state (List.hd dws) s) (List.tl dws)).y = 0
@@ -2373,11 +2356,10 @@ This simplifies, using the definition of <span class="ansi-blue-intense-fg ansi-
  H2. dws &lt;&gt; []
  H3. (List.tl dws) &lt;&gt; []
  H4. (List.tl (List.tl dws)) &lt;&gt; []
- H5. List.hd dws = 0
- H6. List.hd (List.tl dws) = 0
- H7. List.for_all (fun x -&gt; x = 0) (List.tl (List.tl dws))
- H8. List.hd (List.tl (List.tl dws)) = 0
- H9. List.for_all (fun x -&gt; x = 0) (List.tl (List.tl (List.tl dws)))
+ H5. List.hd (List.tl dws) = 0
+ H6. List.hd dws = 0
+ H7. List.hd (List.tl (List.tl dws)) = 0
+ H8. List.for_all (fun x -&gt; x = 0) (List.tl (List.tl (List.tl dws)))
 |---------------------------------------------------------------------------
  C0. (List.tl (List.tl (List.tl (List.tl dws)))) &lt;&gt; []
  C1. (final_state (next_state (List.hd dws) s) (List.tl dws)).y = 0
@@ -2391,13 +2373,12 @@ This simplifies, using the definition of <span class="ansi-blue-intense-fg ansi-
  H2. dws &lt;&gt; []
  H3. (List.tl dws) &lt;&gt; []
  H4. (List.tl (List.tl dws)) &lt;&gt; []
- H5. List.hd (List.tl (List.tl (List.tl dws))) = 0
+ H5. List.hd (List.tl dws) = 0
  H6. List.hd dws = 0
- H7. List.hd (List.tl dws) = 0
+ H7. List.hd (List.tl (List.tl dws)) = 0
  H8. List.for_all (fun x -&gt; x = 0)
      (List.tl (List.tl (List.tl (List.tl dws))))
- H9. List.hd (List.tl (List.tl dws)) = 0
- H10. List.for_all (fun x -&gt; x = 0) (List.tl (List.tl (List.tl dws)))
+ H9. List.hd (List.tl (List.tl (List.tl dws))) = 0
 |---------------------------------------------------------------------------
  C0. (List.tl (List.tl (List.tl (List.tl dws)))) &lt;&gt; []
  C1. (final_state (next_state (List.hd dws) s) (List.tl dws)).y = 0
@@ -2411,10 +2392,10 @@ This simplifies, using the definition of <span class="ansi-blue-intense-fg ansi-
  H2. dws &lt;&gt; []
  H3. (List.tl dws) &lt;&gt; []
  H4. (List.tl (List.tl dws)) &lt;&gt; []
- H5. List.hd (List.tl (List.tl (List.tl dws))) = 0
+ H5. List.hd (List.tl dws) = 0
  H6. List.hd dws = 0
- H7. List.hd (List.tl dws) = 0
- H8. List.hd (List.tl (List.tl dws)) = 0
+ H7. List.hd (List.tl (List.tl dws)) = 0
+ H8. List.hd (List.tl (List.tl (List.tl dws))) = 0
 |---------------------------------------------------------------------------
  C0. (List.tl (List.tl (List.tl (List.tl dws)))) &lt;&gt; []
  C1. (final_state (next_state (List.hd dws) s) (List.tl dws)).y = 0
@@ -2428,10 +2409,10 @@ This further simplifies to:
  H2. dws &lt;&gt; []
  H3. (List.tl dws) &lt;&gt; []
  H4. (List.tl (List.tl dws)) &lt;&gt; []
- H5. List.hd (List.tl (List.tl (List.tl dws))) = 0
+ H5. List.hd (List.tl dws) = 0
  H6. List.hd dws = 0
- H7. List.hd (List.tl dws) = 0
- H8. List.hd (List.tl (List.tl dws)) = 0
+ H7. List.hd (List.tl (List.tl dws)) = 0
+ H8. List.hd (List.tl (List.tl (List.tl dws))) = 0
 |---------------------------------------------------------------------------
  C0. (List.tl (List.tl (List.tl (List.tl dws)))) &lt;&gt; []
  C1. (final_state (next_state 0 s) (List.tl dws)).y = 0
@@ -2457,25 +2438,25 @@ But we verify Subgoal 1.1&#39;&#39;&#39;&#39; by recursive unrolling.
 
 
 <div class="output_html rendered_html output_subarea ">
-<div><div style="font-size: 1.2em; padding: 0.5em; border-top: 1px solid green; border-bottom: 1px solid green"><i class="fa fa-check-circle" style="margin-right: 0.5em; color: green"></i><span>Proved</span></div><div><div class="imandra-proof-top"><div class="imandra-fold panel panel-default" id="fold-4b49180d-d94c-469a-a38e-239c64160744"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>proof</span></div></div><div class="panel-body collapse"><div class="imandra-proof"><div class="imandra-alternatives" id="alt-e2a2d430-9233-45e9-9979-7a7b03b21800"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>summary</a></li><li class="" data-toggle="tab"><a>full</a></li><li class="" data-toggle="tab"><a>graph</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-table" id="table-c8b1ef75-d5aa-4289-9ae2-75d250377937"><table><tr><td><b>ground_instances</b></td><td>4</td></tr><tr><td><b>definitions</b></td><td>24</td></tr><tr><td><b>inductions</b></td><td>1</td></tr><tr><td><b>search_time</b></td><td><pre>2.614s</pre></td></tr><tr><td><b>details</b></td><td><div class="imandra-fold panel panel-default" id="fold-9db7b560-510c-4b76-a3d3-753ab80058ba"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><div class="imandra-table" id="table-8d303b19-df30-4aa4-b999-7e9857cd503c"><table><tr><td><b>smt_stats</b></td><td><div class="imandra-table" id="table-e1087cfe-176a-466f-9d25-35c516fc0744"><table><tr><td><b>num checks</b></td><td>9</td></tr><tr><td><b>arith-assume-eqs</b></td><td>10</td></tr><tr><td><b>arith-make-feasible</b></td><td>346</td></tr><tr><td><b>arith-max-columns</b></td><td>76</td></tr><tr><td><b>arith-conflicts</b></td><td>22</td></tr><tr><td><b>rlimit count</b></td><td>246159</td></tr><tr><td><b>arith-cheap-eqs</b></td><td>423</td></tr><tr><td><b>mk clause</b></td><td>3012</td></tr><tr><td><b>datatype occurs check</b></td><td>68</td></tr><tr><td><b>mk bool var</b></td><td>1262</td></tr><tr><td><b>arith-lower</b></td><td>979</td></tr><tr><td><b>arith-diseq</b></td><td>1402</td></tr><tr><td><b>decisions</b></td><td>258</td></tr><tr><td><b>arith-propagations</b></td><td>1069</td></tr><tr><td><b>propagations</b></td><td>4791</td></tr><tr><td><b>interface eqs</b></td><td>10</td></tr><tr><td><b>arith-bound-propagations-cheap</b></td><td>1069</td></tr><tr><td><b>arith-max-rows</b></td><td>45</td></tr><tr><td><b>conflicts</b></td><td>89</td></tr><tr><td><b>datatype accessor ax</b></td><td>16</td></tr><tr><td><b>minimized lits</b></td><td>282</td></tr><tr><td><b>arith-bound-propagations-lp</b></td><td>355</td></tr><tr><td><b>datatype constructor ax</b></td><td>10</td></tr><tr><td><b>final checks</b></td><td>14</td></tr><tr><td><b>added eqs</b></td><td>3691</td></tr><tr><td><b>del clause</b></td><td>1270</td></tr><tr><td><b>arith eq adapter</b></td><td>363</td></tr><tr><td><b>arith-upper</b></td><td>1021</td></tr><tr><td><b>memory</b></td><td>42.340000</td></tr><tr><td><b>max memory</b></td><td>71.450000</td></tr><tr><td><b>num allocs</b></td><td>23115011505.000000</td></tr></table></div></td></tr></table></div></div><script>
+<div><div style="font-size: 1.2em; padding: 0.5em; border-top: 1px solid green; border-bottom: 1px solid green"><i class="fa fa-check-circle" style="margin-right: 0.5em; color: green"></i><span>Proved</span></div><div><div class="imandra-proof-top"><div class="imandra-fold panel panel-default" id="fold-10759226-4611-4368-b60e-4acbd53f47ae"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>proof</span></div></div><div class="panel-body collapse"><div class="imandra-proof"><div class="imandra-alternatives" id="alt-d5147d27-5b70-47f1-aa74-0c32ae035355"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>summary</a></li><li class="" data-toggle="tab"><a>full</a></li><li class="" data-toggle="tab"><a>graph</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-table" id="table-27aff552-b090-479a-bb43-7e3117a3a525"><table><tr><td><b>ground_instances</b></td><td>4</td></tr><tr><td><b>definitions</b></td><td>18</td></tr><tr><td><b>inductions</b></td><td>1</td></tr><tr><td><b>search_time</b></td><td><pre>1.949s</pre></td></tr><tr><td><b>details</b></td><td><div class="imandra-fold panel panel-default" id="fold-0aa8853b-eaf6-48b2-bdf3-259d6695c88c"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><div class="imandra-table" id="table-3c08b72e-ef4c-4830-aa53-9e239df71e1c"><table><tr><td><b>smt_stats</b></td><td><div class="imandra-table" id="table-0b9ef1cc-d5e1-4a98-afac-6a9e30ec5026"><table><tr><td><b>num checks</b></td><td>9</td></tr><tr><td><b>arith-assume-eqs</b></td><td>4</td></tr><tr><td><b>arith-make-feasible</b></td><td>334</td></tr><tr><td><b>arith-max-columns</b></td><td>73</td></tr><tr><td><b>arith-conflicts</b></td><td>11</td></tr><tr><td><b>rlimit count</b></td><td>212914</td></tr><tr><td><b>arith-cheap-eqs</b></td><td>229</td></tr><tr><td><b>mk clause</b></td><td>2685</td></tr><tr><td><b>datatype occurs check</b></td><td>29</td></tr><tr><td><b>mk bool var</b></td><td>1270</td></tr><tr><td><b>arith-lower</b></td><td>846</td></tr><tr><td><b>arith-diseq</b></td><td>859</td></tr><tr><td><b>decisions</b></td><td>205</td></tr><tr><td><b>arith-propagations</b></td><td>792</td></tr><tr><td><b>propagations</b></td><td>3340</td></tr><tr><td><b>interface eqs</b></td><td>4</td></tr><tr><td><b>arith-bound-propagations-cheap</b></td><td>792</td></tr><tr><td><b>arith-max-rows</b></td><td>42</td></tr><tr><td><b>conflicts</b></td><td>67</td></tr><tr><td><b>datatype accessor ax</b></td><td>16</td></tr><tr><td><b>minimized lits</b></td><td>226</td></tr><tr><td><b>arith-bound-propagations-lp</b></td><td>232</td></tr><tr><td><b>datatype constructor ax</b></td><td>10</td></tr><tr><td><b>final checks</b></td><td>8</td></tr><tr><td><b>added eqs</b></td><td>2950</td></tr><tr><td><b>del clause</b></td><td>1361</td></tr><tr><td><b>arith eq adapter</b></td><td>430</td></tr><tr><td><b>arith-upper</b></td><td>562</td></tr><tr><td><b>memory</b></td><td>48.880000</td></tr><tr><td><b>max memory</b></td><td>71.410000</td></tr><tr><td><b>num allocs</b></td><td>19546404179.000000</td></tr></table></div></td></tr></table></div></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-9db7b560-510c-4b76-a3d3-753ab80058ba';
+  var target = '#fold-0aa8853b-eaf6-48b2-bdf3-259d6695c88c';
   fold.hydrate(target);
 });
-</script></div></td></tr></table></div></div><div class="tab-pane"><div class="imandra-fold panel panel-default" id="fold-fa0219b9-5bce-4c4f-bbc3-dee98ff454eb"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><ul><li><pre>start[2.614s, &quot;Goal&quot;]
+</script></div></td></tr></table></div></div><div class="tab-pane"><div class="imandra-fold panel panel-default" id="fold-38891ddc-f15f-4599-ae0f-f2de79c2b86c"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><ul><li><pre>start[1.949s, &quot;Goal&quot;]
   let (_x_0 : int list) = List.tl :var_1: in
   let (_x_1 : int list) = List.tl _x_0 in
   good_state :var_0:
   &amp;&amp; List.for_all (fun x -&gt; x = 0) :var_1:
      &amp;&amp; :var_1: &lt;&gt; [] &amp;&amp; _x_0 &lt;&gt; [] &amp;&amp; _x_1 &lt;&gt; [] &amp;&amp; (List.tl _x_1) &lt;&gt; []
-  ==&gt; (final_state :var_0: :var_1:).y = 0</pre></li><li><div><h4>subproof</h4><div class="imandra-fold panel panel-default" id="fold-b3402782-a604-4654-b94b-b1bf450dfa5f"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>let (_x_0 : int list) = List.tl dws in
+  ==&gt; (final_state :var_0: :var_1:).y = 0</pre></li><li><div><h4>subproof</h4><div class="imandra-fold panel panel-default" id="fold-e8707945-81e6-4c9d-a247-6e8ec8905d49"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>let (_x_0 : int list) = List.tl dws in
 let (_x_1 : int list) = List.tl _x_0 in
 (((((not (good_state s) || not (List.for_all (fun x -&gt; x = 0) dws))
     || not (dws &lt;&gt; []))
    || not (_x_0 &lt;&gt; []))
   || not (_x_1 &lt;&gt; []))
  || not ((List.tl _x_1) &lt;&gt; []))
-|| (final_state s dws).y = 0</span></div></div><div class="panel-body collapse"><ul><li><pre>start[2.614s, &quot;1&quot;]
+|| (final_state s dws).y = 0</span></div></div><div class="panel-body collapse"><ul><li><pre>start[1.949s, &quot;1&quot;]
   let (_x_0 : int list) = List.tl dws in
   let (_x_1 : int list) = List.tl _x_0 in
   (((((not (good_state s) || not (List.for_all (fun x -&gt; x = 0) dws))
@@ -2547,7 +2528,7 @@ let (_x_1 : int list) = List.tl _x_0 in
                   || not _x_2)
                  || not _x_4)
                 || not _x_6)
-               || (final_state s dws).y = 0])</pre><ul><li><div><h5>subproof</h5><div class="imandra-fold panel panel-default" id="fold-3b444efb-963e-4a9c-8023-a9cf3786c1a7"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>let (_x_0 : state) = next_state (List.hd dws) s in
+               || (final_state s dws).y = 0])</pre><ul><li><div><h5>subproof</h5><div class="imandra-fold panel panel-default" id="fold-89e4e8d3-93d4-48c6-946b-d75177ac56a9"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>let (_x_0 : state) = next_state (List.hd dws) s in
 let (_x_1 : int list) = List.tl dws in
 let (_x_2 : bool) = _x_1 &lt;&gt; [] in
 let (_x_3 : int list) = List.tl _x_1 in
@@ -2566,7 +2547,7 @@ let (_x_6 : bool) = _x_5 &lt;&gt; [] in
    || not _x_2)
   || not _x_4)
  || not _x_6)
-|| (final_state s dws).y = 0</span></div></div><div class="panel-body collapse"><ul><li><pre>start[2.614s, &quot;1&quot;]
+|| (final_state s dws).y = 0</span></div></div><div class="panel-body collapse"><ul><li><pre>start[1.948s, &quot;1&quot;]
   let (_x_0 : state) = next_state (List.hd dws) s in
   let (_x_1 : int list) = List.tl dws in
   let (_x_2 : bool) = _x_1 &lt;&gt; [] in
@@ -2587,7 +2568,7 @@ let (_x_6 : bool) = _x_5 &lt;&gt; [] in
      || not _x_2)
     || not _x_4)
    || not _x_6)
-  || (final_state s dws).y = 0</pre></li><li><div><div><h6>simplify</h6><div class="imandra-table" id="table-2c447a82-ac2e-4e28-8023-06ea77c6cea3"><table><tr><td><b>into</b></td><td><pre>let (_x_0 : bool) = dws = [] in
+  || (final_state s dws).y = 0</pre></li><li><div><div><h6>simplify</h6><div class="imandra-table" id="table-1dfda586-30c6-405c-87ec-ba0b85b1e1ae"><table><tr><td><b>into</b></td><td><pre>let (_x_0 : bool) = dws = [] in
 let (_x_1 : int) = List.hd dws in
 let (_x_2 : state) = next_state _x_1 s in
 let (_x_3 : bool) = good_state _x_2 in
@@ -2603,9 +2584,7 @@ let (_x_12 : bool) = not (_x_1 = 0) in
 let (_x_13 : bool) = not (List.for_all (fun x -&gt; x = 0) _x_4) in
 let (_x_14 : bool) = not _x_3 in
 let (_x_15 : bool)
-    = (((((((_x_0 || _x_5) || _x_6) || _x_9) || _x_10) || _x_11) || _x_14)
-       || _x_12)
-      || _x_13
+    = (((((_x_0 || _x_5) || _x_6) || _x_9) || _x_10) || _x_11) || _x_14
 in
 let (_x_16 : bool) = List.hd _x_4 = 0 in
 let (_x_17 : bool) = not _x_16 in
@@ -2613,23 +2592,23 @@ let (_x_18 : bool) = List.for_all (fun x -&gt; x = 0) _x_7 in
 ((((((((((_x_0 || _x_3) || _x_5) || _x_6) || _x_9) || _x_10) || _x_11)
     || _x_12)
    || _x_13)
-  &amp;&amp; (_x_15 || _x_16))
- &amp;&amp; ((_x_15 || _x_17) || _x_18))
+  &amp;&amp; (((_x_15 || _x_12) || _x_16) || _x_13))
+ &amp;&amp; ((((_x_15 || _x_17) || _x_12) || _x_18) || _x_13))
 &amp;&amp; (((((((((((_x_0 || (List.tl _x_8) &lt;&gt; []) || _x_5) || _x_6) || _x_9)
           || _x_10)
          || _x_11)
         || _x_14)
-       || _x_12)
-      || _x_13)
-     || _x_17)
-    || not _x_18)</pre></td></tr><tr><td><b>expansions</b></td><td><pre>[final_state, List.for_all, final_state, List.for_all, final_state,
+       || _x_17)
+      || _x_12)
+     || not _x_18)
+    || _x_13)</pre></td></tr><tr><td><b>expansions</b></td><td><pre>[final_state, List.for_all, final_state, List.for_all, final_state,
  List.for_all, final_state, List.for_all, final_state, List.for_all,
- List.for_all]</pre></td></tr><tr><td><b>rewrite_steps</b></td><td><ul></ul></td></tr><tr><td><b>forward_chaining</b></td><td><ul><li><pre>all_good</pre></li><li><pre>all_good</pre></li><li><pre>all_good</pre></li><li><pre>all_good</pre></li><li><pre>all_good</pre></li><li><pre>all_good</pre></li><li><pre>all_good</pre></li><li><pre>all_good</pre></li><li><pre>all_good</pre></li><li><pre>all_good</pre></li><li><pre>all_good</pre></li><li><pre>all_good</pre></li><li><pre>all_good</pre></li><li><pre>all_good</pre></li><li><pre>all_good</pre></li><li><pre>all_good</pre></li><li><pre>all_good</pre></li><li><pre>all_good</pre></li><li><pre>all_good</pre></li><li><pre>all_good</pre></li><li><pre>all_good</pre></li><li><pre>all_good</pre></li><li><pre>all_good</pre></li><li><pre>all_good</pre></li><li><pre>all_good</pre></li><li><pre>all_good</pre></li><li><pre>all_good</pre></li><li><pre>all_good</pre></li><li><pre>all_good</pre></li><li><pre>all_good</pre></li><li><pre>all_good</pre></li><li><pre>all_good</pre></li><li><pre>all_good</pre></li><li><pre>all_good</pre></li><li><pre>all_good</pre></li><li><pre>all_good</pre></li></ul></td></tr></table></div></div><ul><li><pre>Subproof</pre></li><li><pre>Subproof</pre></li><li><pre>Subproof</pre></li><li><pre>Subproof</pre></li></ul></div></li></ul></div><script>
+ List.for_all]</pre></td></tr><tr><td><b>rewrite_steps</b></td><td><ul></ul></td></tr><tr><td><b>forward_chaining</b></td><td><ul><li><pre>all_good</pre></li><li><pre>all_good</pre></li><li><pre>all_good</pre></li><li><pre>all_good</pre></li><li><pre>all_good</pre></li><li><pre>all_good</pre></li><li><pre>all_good</pre></li><li><pre>all_good</pre></li><li><pre>all_good</pre></li><li><pre>all_good</pre></li><li><pre>all_good</pre></li><li><pre>all_good</pre></li><li><pre>all_good</pre></li><li><pre>all_good</pre></li><li><pre>all_good</pre></li><li><pre>all_good</pre></li><li><pre>all_good</pre></li><li><pre>all_good</pre></li><li><pre>all_good</pre></li><li><pre>all_good</pre></li><li><pre>all_good</pre></li><li><pre>all_good</pre></li><li><pre>all_good</pre></li><li><pre>all_good</pre></li><li><pre>all_good</pre></li><li><pre>all_good</pre></li><li><pre>all_good</pre></li><li><pre>all_good</pre></li><li><pre>all_good</pre></li><li><pre>all_good</pre></li><li><pre>all_good</pre></li><li><pre>all_good</pre></li><li><pre>all_good</pre></li><li><pre>all_good</pre></li><li><pre>all_good</pre></li><li><pre>all_good</pre></li><li><pre>all_good</pre></li><li><pre>all_good</pre></li><li><pre>all_good</pre></li><li><pre>all_good</pre></li><li><pre>all_good</pre></li><li><pre>all_good</pre></li><li><pre>all_good</pre></li><li><pre>all_good</pre></li><li><pre>all_good</pre></li><li><pre>all_good</pre></li><li><pre>all_good</pre></li><li><pre>all_good</pre></li></ul></td></tr></table></div></div><ul><li><pre>Subproof</pre></li><li><pre>Subproof</pre></li><li><pre>Subproof</pre></li><li><pre>Subproof</pre></li></ul></div></li></ul></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-3b444efb-963e-4a9c-8023-a9cf3786c1a7';
+  var target = '#fold-89e4e8d3-93d4-48c6-946b-d75177ac56a9';
   fold.hydrate(target);
 });
-</script></div></div></li><li><div><h5>subproof</h5><div class="imandra-fold panel panel-default" id="fold-5802c411-6593-4308-86ed-de28702c366d"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>let (_x_0 : int list) = List.tl dws in
+</script></div></div></li><li><div><h5>subproof</h5><div class="imandra-fold panel panel-default" id="fold-143dc646-48e5-462b-9daa-d22decd26325"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>let (_x_0 : int list) = List.tl dws in
 let (_x_1 : int list) = List.tl _x_0 in
 ((((((not (dws = []) || not (good_state s))
      || not (List.for_all (fun x -&gt; x = 0) dws))
@@ -2637,7 +2616,7 @@ let (_x_1 : int list) = List.tl _x_0 in
    || not (_x_0 &lt;&gt; []))
   || not (_x_1 &lt;&gt; []))
  || not ((List.tl _x_1) &lt;&gt; []))
-|| (final_state s dws).y = 0</span></div></div><div class="panel-body collapse"><ul><li><pre>start[2.614s, &quot;2&quot;]
+|| (final_state s dws).y = 0</span></div></div><div class="panel-body collapse"><ul><li><pre>start[1.948s, &quot;2&quot;]
   let (_x_0 : int list) = List.tl dws in
   let (_x_1 : int list) = List.tl _x_0 in
   ((((((not (dws = []) || not (good_state s))
@@ -2646,55 +2625,55 @@ let (_x_1 : int list) = List.tl _x_0 in
      || not (_x_0 &lt;&gt; []))
     || not (_x_1 &lt;&gt; []))
    || not ((List.tl _x_1) &lt;&gt; []))
-  || (final_state s dws).y = 0</pre></li><li><div><h6>simplify</h6><div class="imandra-table" id="table-77724791-5dd7-4017-a16e-bbc0529c65ab"><table><tr><td><b>into</b></td><td><pre>true</pre></td></tr><tr><td><b>expansions</b></td><td><pre>[]</pre></td></tr><tr><td><b>rewrite_steps</b></td><td><ul></ul></td></tr><tr><td><b>forward_chaining</b></td><td><ul></ul></td></tr></table></div></div></li></ul></div><script>
+  || (final_state s dws).y = 0</pre></li><li><div><h6>simplify</h6><div class="imandra-table" id="table-5dcc4a1c-5016-460c-94d9-23a1832bbde0"><table><tr><td><b>into</b></td><td><pre>true</pre></td></tr><tr><td><b>expansions</b></td><td><pre>[]</pre></td></tr><tr><td><b>rewrite_steps</b></td><td><ul></ul></td></tr><tr><td><b>forward_chaining</b></td><td><ul></ul></td></tr></table></div></div></li></ul></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-5802c411-6593-4308-86ed-de28702c366d';
+  var target = '#fold-143dc646-48e5-462b-9daa-d22decd26325';
   fold.hydrate(target);
 });
 </script></div></div></li></ul></div></li></ul></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-b3402782-a604-4654-b94b-b1bf450dfa5f';
+  var target = '#fold-e8707945-81e6-4c9d-a247-6e8ec8905d49';
   fold.hydrate(target);
 });
 </script></div></div></li></ul></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-fa0219b9-5bce-4c4f-bbc3-dee98ff454eb';
+  var target = '#fold-38891ddc-f15f-4599-ae0f-f2de79c2b86c';
   fold.hydrate(target);
 });
-</script></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-bb801310-dc65-4344-9fea-f1ee27f5ebd3"><textarea style="display: none">digraph &quot;proof&quot; {
-p_317 [label=&quot;Start (let (_x_0 : int list) = List.tl :var_1: in\l       let (_x_1 : int list) = List.tl _x_0 in\l       good_state :var_0:\l       &amp;&amp; List.for_all (fun x -\&gt; x = 0) :var_1:\l          &amp;&amp; :var_1: \&lt;\&gt; []\l             &amp;&amp; _x_0 \&lt;\&gt; [] &amp;&amp; _x_1 \&lt;\&gt; [] &amp;&amp; (List.tl _x_1) \&lt;\&gt; []\l       ==\&gt; (final_state :var_0: :var_1:).y = 0 :name \&quot;Goal\&quot; :time 2.614s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
-p_317 -&gt; p_315 [label=&quot;&quot;];
-subgraph cluster_316 {
+</script></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-a99a7b67-cf2e-4d4f-8b00-aa5be5312828"><textarea style="display: none">digraph &quot;proof&quot; {
+p_311 [label=&quot;Start (let (_x_0 : int list) = List.tl :var_1: in\l       let (_x_1 : int list) = List.tl _x_0 in\l       good_state :var_0:\l       &amp;&amp; List.for_all (fun x -\&gt; x = 0) :var_1:\l          &amp;&amp; :var_1: \&lt;\&gt; []\l             &amp;&amp; _x_0 \&lt;\&gt; [] &amp;&amp; _x_1 \&lt;\&gt; [] &amp;&amp; (List.tl _x_1) \&lt;\&gt; []\l       ==\&gt; (final_state :var_0: :var_1:).y = 0 :name \&quot;Goal\&quot; :time 1.949s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+p_311 -&gt; p_309 [label=&quot;&quot;];
+subgraph cluster_310 {
   color=blue;
-p_315 [label=&quot;Start (let (_x_0 : int list) = List.tl dws in\l       let (_x_1 : int list) = List.tl _x_0 in\l       (((((not (good_state s) \|\| not (List.for_all (fun x -\&gt; x = 0) dws))\l           \|\| not (dws \&lt;\&gt; []))\l          \|\| not (_x_0 \&lt;\&gt; []))\l         \|\| not (_x_1 \&lt;\&gt; []))\l        \|\| not ((List.tl _x_1) \&lt;\&gt; []))\l       \|\| (final_state s dws).y = 0 :name \&quot;1\&quot; :time 2.614s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
-p_315 -&gt; p_314 [label=&quot;&quot;];
-p_314 [label=&quot;Induct ((functional final_state),\l        :scheme (dws = [] ==\&gt; φ dws s)\l                &amp;&amp; (not (dws = [])\l                    &amp;&amp; φ (List.tl dws) (next_state (List.hd dws) s)\l                    ==\&gt; φ dws s))&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
-p_314 -&gt; p_313 [label=&quot;&quot;];
-p_313 [label=&quot;Split (let (_x_0 : bool) = (final_state s dws).y = 0 in\l       let (_x_1 : bool) = not (dws = []) in\l       let (_x_2 : int list) = List.tl dws in\l       let (_x_3 : bool) = _x_2 \&lt;\&gt; [] in\l       let (_x_4 : int list) = List.tl _x_2 in\l       let (_x_5 : bool) = _x_4 \&lt;\&gt; [] in\l       let (_x_6 : int list) = List.tl _x_4 in\l       let (_x_7 : bool) = _x_6 \&lt;\&gt; [] in\l       let (_x_8 : bool)\l           = not\l             (((((good_state s &amp;&amp; List.for_all (fun x -\&gt; x = 0) dws)\l                 &amp;&amp; dws \&lt;\&gt; [])\l                &amp;&amp; _x_3)\l               &amp;&amp; _x_5)\l              &amp;&amp; _x_7)\l       in\l       let (_x_9 : state) = next_state (List.hd dws) s in\l       ((_x_0 \|\| _x_1) \|\| _x_8)\l       &amp;&amp; ((_x_0\l            \|\| not\l               (_x_1\l                &amp;&amp; (not\l                    (((((good_state _x_9\l                         &amp;&amp; List.for_all (fun x -\&gt; x = 0) _x_2)\l                        &amp;&amp; _x_3)\l                       &amp;&amp; _x_5)\l                      &amp;&amp; _x_7)\l                     &amp;&amp; (List.tl _x_6) \&lt;\&gt; [])\l                    \|\| (final_state _x_9 _x_2).y = 0)))\l           \|\| _x_8)\l       :cases [let (_x_0 : int list) = List.tl dws in\l               let (_x_1 : int list) = List.tl _x_0 in\l               ((((((not (dws = []) \|\| not (good_state s))\l                    \|\| not (List.for_all (fun x -\&gt; x = 0) dws))\l                   \|\| not (dws \&lt;\&gt; []))\l                  \|\| not (_x_0 \&lt;\&gt; []))\l                 \|\| not (_x_1 \&lt;\&gt; []))\l                \|\| not ((List.tl _x_1) \&lt;\&gt; []))\l               \|\| (final_state s dws).y = 0;\l               let (_x_0 : state) = next_state (List.hd dws) s in\l               let (_x_1 : int list) = List.tl dws in\l               let (_x_2 : bool) = _x_1 \&lt;\&gt; [] in\l               let (_x_3 : int list) = List.tl _x_1 in\l               let (_x_4 : bool) = _x_3 \&lt;\&gt; [] in\l               let (_x_5 : int list) = List.tl _x_3 in\l               let (_x_6 : bool) = _x_5 \&lt;\&gt; [] in\l               (((((((dws = []\l                      \|\| not\l                         (((((good_state _x_0\l                              &amp;&amp; List.for_all (fun x -\&gt; x = 0) _x_1)\l                             &amp;&amp; _x_2)\l                            &amp;&amp; _x_4)\l                           &amp;&amp; _x_6)\l                          &amp;&amp; (List.tl _x_5) \&lt;\&gt; []\l                          ==\&gt; (final_state _x_0 _x_1).y = 0))\l                     \|\| not (good_state s))\l                    \|\| not (List.for_all (fun x -\&gt; x = 0) dws))\l                   \|\| not (dws \&lt;\&gt; []))\l                  \|\| not _x_2)\l                 \|\| not _x_4)\l                \|\| not _x_6)\l               \|\| (final_state s dws).y = 0])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
-p_313 -&gt; p_308 [label=&quot;&quot;];
-subgraph cluster_309 {
-  color=blue;
-p_308 [label=&quot;Start (let (_x_0 : state) = next_state (List.hd dws) s in\l       let (_x_1 : int list) = List.tl dws in\l       let (_x_2 : bool) = _x_1 \&lt;\&gt; [] in\l       let (_x_3 : int list) = List.tl _x_1 in\l       let (_x_4 : bool) = _x_3 \&lt;\&gt; [] in\l       let (_x_5 : int list) = List.tl _x_3 in\l       let (_x_6 : bool) = _x_5 \&lt;\&gt; [] in\l       (((((((dws = []\l              \|\| not\l                 (((((good_state _x_0 &amp;&amp; List.for_all (fun x -\&gt; x = 0) _x_1)\l                     &amp;&amp; _x_2)\l                    &amp;&amp; _x_4)\l                   &amp;&amp; _x_6)\l                  &amp;&amp; (List.tl _x_5) \&lt;\&gt; [] ==\&gt; (final_state _x_0 _x_1).y = 0))\l             \|\| not (good_state s))\l            \|\| not (List.for_all (fun x -\&gt; x = 0) dws))\l           \|\| not (dws \&lt;\&gt; []))\l          \|\| not _x_2)\l         \|\| not _x_4)\l        \|\| not _x_6)\l       \|\| (final_state s dws).y = 0 :name \&quot;1\&quot; :time 2.614s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+p_309 [label=&quot;Start (let (_x_0 : int list) = List.tl dws in\l       let (_x_1 : int list) = List.tl _x_0 in\l       (((((not (good_state s) \|\| not (List.for_all (fun x -\&gt; x = 0) dws))\l           \|\| not (dws \&lt;\&gt; []))\l          \|\| not (_x_0 \&lt;\&gt; []))\l         \|\| not (_x_1 \&lt;\&gt; []))\l        \|\| not ((List.tl _x_1) \&lt;\&gt; []))\l       \|\| (final_state s dws).y = 0 :name \&quot;1\&quot; :time 1.949s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+p_309 -&gt; p_308 [label=&quot;&quot;];
+p_308 [label=&quot;Induct ((functional final_state),\l        :scheme (dws = [] ==\&gt; φ dws s)\l                &amp;&amp; (not (dws = [])\l                    &amp;&amp; φ (List.tl dws) (next_state (List.hd dws) s)\l                    ==\&gt; φ dws s))&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_308 -&gt; p_307 [label=&quot;&quot;];
-p_307 [label=&quot;Simplify (let (_x_0 : bool) = dws = [] in\l          let (_x_1 : int) = List.hd dws in\l          let (_x_2 : state) = next_state _x_1 s in\l          let (_x_3 : bool) = good_state _x_2 in\l          let (_x_4 : int list) = List.tl dws in\l          let (_x_5 : bool) = (final_state _x_2 _x_4).y = 0 in\l          let (_x_6 : bool) = not (good_state s) in\l          let (_x_7 : int list) = List.tl _x_4 in\l          let (_x_8 : int list) = List.tl _x_7 in\l          let (_x_9 : bool) = not (_x_8 \&lt;\&gt; []) in\l          let (_x_10 : bool) = not (_x_4 \&lt;\&gt; []) in\l          let (_x_11 : bool) = not (_x_7 \&lt;\&gt; []) in\l          let (_x_12 : bool) = not (_x_1 = 0) in\l          let (_x_13 : bool) = not (List.for_all (fun x -\&gt; x = 0) _x_4) in\l          let (_x_14 : bool) = not _x_3 in\l          let (_x_15 : bool)\l              = (((((((_x_0 \|\| _x_5) \|\| _x_6) \|\| _x_9) \|\| _x_10) \|\| _x_11)\l                  \|\| _x_14)\l                 \|\| _x_12)\l                \|\| _x_13\l          in\l          let (_x_16 : bool) = List.hd _x_4 = 0 in\l          let (_x_17 : bool) = not _x_16 in\l          let (_x_18 : bool) = List.for_all (fun x -\&gt; x = 0) _x_7 in\l          ((((((((((_x_0 \|\| _x_3) \|\| _x_5) \|\| _x_6) \|\| _x_9) \|\| _x_10)\l               \|\| _x_11)\l              \|\| _x_12)\l             \|\| _x_13)\l            &amp;&amp; (_x_15 \|\| _x_16))\l           &amp;&amp; ((_x_15 \|\| _x_17) \|\| _x_18))\l          &amp;&amp; (((((((((((_x_0 \|\| (List.tl _x_8) \&lt;\&gt; []) \|\| _x_5) \|\| _x_6)\l                     \|\| _x_9)\l                    \|\| _x_10)\l                   \|\| _x_11)\l                  \|\| _x_14)\l                 \|\| _x_12)\l                \|\| _x_13)\l               \|\| _x_17)\l              \|\| not _x_18)\l          :expansions [final_state;\l                       List.for_all;\l                       final_state;\l                       List.for_all;\l                       final_state;\l                       List.for_all;\l                       final_state;\l                       List.for_all;\l                       final_state;\l                       List.for_all;\l                       List.for_all]\l          :rw []\l          :fc [all_good;\l               all_good;\l               all_good;\l               all_good;\l               all_good;\l               all_good;\l               all_good;\l               all_good;\l               all_good;\l               all_good;\l               all_good;\l               all_good;\l               all_good;\l               all_good;\l               all_good;\l               all_good;\l               all_good;\l               all_good;\l               all_good;\l               all_good;\l               all_good;\l               all_good;\l               all_good;\l               all_good;\l               all_good;\l               all_good;\l               all_good;\l               all_good;\l               all_good;\l               all_good;\l               all_good;\l               all_good;\l               all_good;\l               all_good;\l               all_good;\l               all_good])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
-p_307 -&gt; p_290 [label=&quot;&quot;];
+p_307 [label=&quot;Split (let (_x_0 : bool) = (final_state s dws).y = 0 in\l       let (_x_1 : bool) = not (dws = []) in\l       let (_x_2 : int list) = List.tl dws in\l       let (_x_3 : bool) = _x_2 \&lt;\&gt; [] in\l       let (_x_4 : int list) = List.tl _x_2 in\l       let (_x_5 : bool) = _x_4 \&lt;\&gt; [] in\l       let (_x_6 : int list) = List.tl _x_4 in\l       let (_x_7 : bool) = _x_6 \&lt;\&gt; [] in\l       let (_x_8 : bool)\l           = not\l             (((((good_state s &amp;&amp; List.for_all (fun x -\&gt; x = 0) dws)\l                 &amp;&amp; dws \&lt;\&gt; [])\l                &amp;&amp; _x_3)\l               &amp;&amp; _x_5)\l              &amp;&amp; _x_7)\l       in\l       let (_x_9 : state) = next_state (List.hd dws) s in\l       ((_x_0 \|\| _x_1) \|\| _x_8)\l       &amp;&amp; ((_x_0\l            \|\| not\l               (_x_1\l                &amp;&amp; (not\l                    (((((good_state _x_9\l                         &amp;&amp; List.for_all (fun x -\&gt; x = 0) _x_2)\l                        &amp;&amp; _x_3)\l                       &amp;&amp; _x_5)\l                      &amp;&amp; _x_7)\l                     &amp;&amp; (List.tl _x_6) \&lt;\&gt; [])\l                    \|\| (final_state _x_9 _x_2).y = 0)))\l           \|\| _x_8)\l       :cases [let (_x_0 : int list) = List.tl dws in\l               let (_x_1 : int list) = List.tl _x_0 in\l               ((((((not (dws = []) \|\| not (good_state s))\l                    \|\| not (List.for_all (fun x -\&gt; x = 0) dws))\l                   \|\| not (dws \&lt;\&gt; []))\l                  \|\| not (_x_0 \&lt;\&gt; []))\l                 \|\| not (_x_1 \&lt;\&gt; []))\l                \|\| not ((List.tl _x_1) \&lt;\&gt; []))\l               \|\| (final_state s dws).y = 0;\l               let (_x_0 : state) = next_state (List.hd dws) s in\l               let (_x_1 : int list) = List.tl dws in\l               let (_x_2 : bool) = _x_1 \&lt;\&gt; [] in\l               let (_x_3 : int list) = List.tl _x_1 in\l               let (_x_4 : bool) = _x_3 \&lt;\&gt; [] in\l               let (_x_5 : int list) = List.tl _x_3 in\l               let (_x_6 : bool) = _x_5 \&lt;\&gt; [] in\l               (((((((dws = []\l                      \|\| not\l                         (((((good_state _x_0\l                              &amp;&amp; List.for_all (fun x -\&gt; x = 0) _x_1)\l                             &amp;&amp; _x_2)\l                            &amp;&amp; _x_4)\l                           &amp;&amp; _x_6)\l                          &amp;&amp; (List.tl _x_5) \&lt;\&gt; []\l                          ==\&gt; (final_state _x_0 _x_1).y = 0))\l                     \|\| not (good_state s))\l                    \|\| not (List.for_all (fun x -\&gt; x = 0) dws))\l                   \|\| not (dws \&lt;\&gt; []))\l                  \|\| not _x_2)\l                 \|\| not _x_4)\l                \|\| not _x_6)\l               \|\| (final_state s dws).y = 0])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+p_307 -&gt; p_302 [label=&quot;&quot;];
+subgraph cluster_303 {
+  color=blue;
+p_302 [label=&quot;Start (let (_x_0 : state) = next_state (List.hd dws) s in\l       let (_x_1 : int list) = List.tl dws in\l       let (_x_2 : bool) = _x_1 \&lt;\&gt; [] in\l       let (_x_3 : int list) = List.tl _x_1 in\l       let (_x_4 : bool) = _x_3 \&lt;\&gt; [] in\l       let (_x_5 : int list) = List.tl _x_3 in\l       let (_x_6 : bool) = _x_5 \&lt;\&gt; [] in\l       (((((((dws = []\l              \|\| not\l                 (((((good_state _x_0 &amp;&amp; List.for_all (fun x -\&gt; x = 0) _x_1)\l                     &amp;&amp; _x_2)\l                    &amp;&amp; _x_4)\l                   &amp;&amp; _x_6)\l                  &amp;&amp; (List.tl _x_5) \&lt;\&gt; [] ==\&gt; (final_state _x_0 _x_1).y = 0))\l             \|\| not (good_state s))\l            \|\| not (List.for_all (fun x -\&gt; x = 0) dws))\l           \|\| not (dws \&lt;\&gt; []))\l          \|\| not _x_2)\l         \|\| not _x_4)\l        \|\| not _x_6)\l       \|\| (final_state s dws).y = 0 :name \&quot;1\&quot; :time 1.948s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+p_302 -&gt; p_301 [label=&quot;&quot;];
+p_301 [label=&quot;Simplify (let (_x_0 : bool) = dws = [] in\l          let (_x_1 : int) = List.hd dws in\l          let (_x_2 : state) = next_state _x_1 s in\l          let (_x_3 : bool) = good_state _x_2 in\l          let (_x_4 : int list) = List.tl dws in\l          let (_x_5 : bool) = (final_state _x_2 _x_4).y = 0 in\l          let (_x_6 : bool) = not (good_state s) in\l          let (_x_7 : int list) = List.tl _x_4 in\l          let (_x_8 : int list) = List.tl _x_7 in\l          let (_x_9 : bool) = not (_x_8 \&lt;\&gt; []) in\l          let (_x_10 : bool) = not (_x_4 \&lt;\&gt; []) in\l          let (_x_11 : bool) = not (_x_7 \&lt;\&gt; []) in\l          let (_x_12 : bool) = not (_x_1 = 0) in\l          let (_x_13 : bool) = not (List.for_all (fun x -\&gt; x = 0) _x_4) in\l          let (_x_14 : bool) = not _x_3 in\l          let (_x_15 : bool)\l              = (((((_x_0 \|\| _x_5) \|\| _x_6) \|\| _x_9) \|\| _x_10) \|\| _x_11)\l                \|\| _x_14\l          in\l          let (_x_16 : bool) = List.hd _x_4 = 0 in\l          let (_x_17 : bool) = not _x_16 in\l          let (_x_18 : bool) = List.for_all (fun x -\&gt; x = 0) _x_7 in\l          ((((((((((_x_0 \|\| _x_3) \|\| _x_5) \|\| _x_6) \|\| _x_9) \|\| _x_10)\l               \|\| _x_11)\l              \|\| _x_12)\l             \|\| _x_13)\l            &amp;&amp; (((_x_15 \|\| _x_12) \|\| _x_16) \|\| _x_13))\l           &amp;&amp; ((((_x_15 \|\| _x_17) \|\| _x_12) \|\| _x_18) \|\| _x_13))\l          &amp;&amp; (((((((((((_x_0 \|\| (List.tl _x_8) \&lt;\&gt; []) \|\| _x_5) \|\| _x_6)\l                     \|\| _x_9)\l                    \|\| _x_10)\l                   \|\| _x_11)\l                  \|\| _x_14)\l                 \|\| _x_17)\l                \|\| _x_12)\l               \|\| not _x_18)\l              \|\| _x_13)\l          :expansions [final_state;\l                       List.for_all;\l                       final_state;\l                       List.for_all;\l                       final_state;\l                       List.for_all;\l                       final_state;\l                       List.for_all;\l                       final_state;\l                       List.for_all;\l                       List.for_all]\l          :rw []\l          :fc [all_good;\l               all_good;\l               all_good;\l               all_good;\l               all_good;\l               all_good;\l               all_good;\l               all_good;\l               all_good;\l               all_good;\l               all_good;\l               all_good;\l               all_good;\l               all_good;\l               all_good;\l               all_good;\l               all_good;\l               all_good;\l               all_good;\l               all_good;\l               all_good;\l               all_good;\l               all_good;\l               all_good;\l               all_good;\l               all_good;\l               all_good;\l               all_good;\l               all_good;\l               all_good;\l               all_good;\l               all_good;\l               all_good;\l               all_good;\l               all_good;\l               all_good;\l               all_good;\l               all_good;\l               all_good;\l               all_good;\l               all_good;\l               all_good;\l               all_good;\l               all_good;\l               all_good;\l               all_good;\l               all_good;\l               all_good])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+p_301 -&gt; p_290 [label=&quot;&quot;];
 subgraph cluster_291 {
   color=blue;
-p_290 [label=&quot;Start (let (_x_0 : int list) = List.tl dws in\l       let (_x_1 : int list) = List.tl _x_0 in\l       let (_x_2 : int list) = List.tl _x_1 in\l       let (_x_3 : int) = List.hd dws in\l       let (_x_4 : state) = next_state _x_3 s in\l       ((((((((((dws = [] \|\| (List.tl _x_2) \&lt;\&gt; [])\l                \|\| (final_state _x_4 _x_0).y = 0)\l               \|\| not (good_state s))\l              \|\| not (_x_2 \&lt;\&gt; []))\l             \|\| not (_x_0 \&lt;\&gt; []))\l            \|\| not (_x_1 \&lt;\&gt; []))\l           \|\| not (good_state _x_4))\l          \|\| not (_x_3 = 0))\l         \|\| not (List.for_all (fun x -\&gt; x = 0) _x_0))\l        \|\| not (List.hd _x_0 = 0))\l       \|\| not (List.for_all (fun x -\&gt; x = 0) _x_1) :name \&quot;1.1\&quot; :time 2.191s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+p_290 [label=&quot;Start (let (_x_0 : int list) = List.tl dws in\l       let (_x_1 : int list) = List.tl _x_0 in\l       let (_x_2 : int list) = List.tl _x_1 in\l       let (_x_3 : int) = List.hd dws in\l       let (_x_4 : state) = next_state _x_3 s in\l       ((((((((((dws = [] \|\| (List.tl _x_2) \&lt;\&gt; [])\l                \|\| (final_state _x_4 _x_0).y = 0)\l               \|\| not (good_state s))\l              \|\| not (_x_2 \&lt;\&gt; []))\l             \|\| not (_x_0 \&lt;\&gt; []))\l            \|\| not (_x_1 \&lt;\&gt; []))\l           \|\| not (good_state _x_4))\l          \|\| not (List.hd _x_0 = 0))\l         \|\| not (_x_3 = 0))\l        \|\| not (List.for_all (fun x -\&gt; x = 0) _x_1))\l       \|\| not (List.for_all (fun x -\&gt; x = 0) _x_0) :name \&quot;1.1\&quot; :time 1.319s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_290 -&gt; p_289 [label=&quot;&quot;];
-p_289 [label=&quot;Simplify (let (_x_0 : int list) = List.tl dws in\l          let (_x_1 : int list) = List.tl _x_0 in\l          let (_x_2 : int list) = List.tl _x_1 in\l          let (_x_3 : int) = List.hd dws in\l          (((((((((((List.tl _x_2) \&lt;\&gt; []\l                    \|\| (final_state (next_state _x_3 s) _x_0).y = 0)\l                   \|\| not (good_state s))\l                  \|\| not (_x_2 \&lt;\&gt; []))\l                 \|\| not (dws \&lt;\&gt; []))\l                \|\| not (_x_0 \&lt;\&gt; []))\l               \|\| not (_x_1 \&lt;\&gt; []))\l              \|\| not (_x_3 = 0))\l             \|\| not (List.hd _x_0 = 0))\l            \|\| not (List.for_all (fun x -\&gt; x = 0) _x_1))\l           \|\| not (List.hd _x_1 = 0))\l          \|\| not (List.for_all (fun x -\&gt; x = 0) _x_2)\l          :expansions [List.for_all; List.for_all] :rw [safety_1]\l          :fc [all_good;\l               all_good;\l               all_good;\l               all_good;\l               all_good;\l               all_good;\l               all_good;\l               all_good;\l               all_good;\l               all_good;\l               all_good;\l               all_good])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+p_289 [label=&quot;Simplify (let (_x_0 : int list) = List.tl dws in\l          let (_x_1 : int list) = List.tl _x_0 in\l          let (_x_2 : int list) = List.tl _x_1 in\l          let (_x_3 : int) = List.hd dws in\l          ((((((((((List.tl _x_2) \&lt;\&gt; []\l                   \|\| (final_state (next_state _x_3 s) _x_0).y = 0)\l                  \|\| not (good_state s))\l                 \|\| not (_x_2 \&lt;\&gt; []))\l                \|\| not (dws \&lt;\&gt; []))\l               \|\| not (_x_0 \&lt;\&gt; []))\l              \|\| not (_x_1 \&lt;\&gt; []))\l             \|\| not (List.hd _x_0 = 0))\l            \|\| not (_x_3 = 0))\l           \|\| not (List.hd _x_1 = 0))\l          \|\| not (List.for_all (fun x -\&gt; x = 0) _x_2)\l          :expansions [List.for_all; List.for_all] :rw [safety_1]\l          :fc [all_good;\l               all_good;\l               all_good;\l               all_good;\l               all_good;\l               all_good;\l               all_good;\l               all_good;\l               all_good;\l               all_good;\l               all_good;\l               all_good])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_289 -&gt; p_288 [label=&quot;&quot;];
-p_288 [label=&quot;Simplify (let (_x_0 : int list) = List.tl dws in\l          let (_x_1 : int list) = List.tl _x_0 in\l          let (_x_2 : int list) = List.tl _x_1 in\l          let (_x_3 : int list) = List.tl _x_2 in\l          let (_x_4 : int) = List.hd dws in\l          (((((((((((_x_3 \&lt;\&gt; []\l                     \|\| (final_state (next_state _x_4 s) _x_0).y = 0)\l                    \|\| not (good_state s))\l                   \|\| not (_x_2 \&lt;\&gt; []))\l                  \|\| not (dws \&lt;\&gt; []))\l                 \|\| not (_x_0 \&lt;\&gt; []))\l                \|\| not (_x_1 \&lt;\&gt; []))\l               \|\| not (List.hd _x_2 = 0))\l              \|\| not (_x_4 = 0))\l             \|\| not (List.hd _x_0 = 0))\l            \|\| not (List.for_all (fun x -\&gt; x = 0) _x_3))\l           \|\| not (List.hd _x_1 = 0))\l          \|\| not (List.for_all (fun x -\&gt; x = 0) _x_2)\l          :expansions [List.for_all; List.for_all] :rw []\l          :fc [all_good;\l               all_good;\l               all_good;\l               all_good;\l               all_good;\l               all_good;\l               all_good;\l               all_good;\l               all_good;\l               all_good;\l               all_good;\l               all_good])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+p_288 [label=&quot;Simplify (let (_x_0 : int list) = List.tl dws in\l          let (_x_1 : int list) = List.tl _x_0 in\l          let (_x_2 : int list) = List.tl _x_1 in\l          let (_x_3 : int list) = List.tl _x_2 in\l          let (_x_4 : int) = List.hd dws in\l          ((((((((((_x_3 \&lt;\&gt; []\l                    \|\| (final_state (next_state _x_4 s) _x_0).y = 0)\l                   \|\| not (good_state s))\l                  \|\| not (_x_2 \&lt;\&gt; []))\l                 \|\| not (dws \&lt;\&gt; []))\l                \|\| not (_x_0 \&lt;\&gt; []))\l               \|\| not (_x_1 \&lt;\&gt; []))\l              \|\| not (List.hd _x_0 = 0))\l             \|\| not (_x_4 = 0))\l            \|\| not (List.hd _x_1 = 0))\l           \|\| not (List.for_all (fun x -\&gt; x = 0) _x_3))\l          \|\| not (List.hd _x_2 = 0) :expansions [List.for_all] :rw []\l          :fc [all_good;\l               all_good;\l               all_good;\l               all_good;\l               all_good;\l               all_good;\l               all_good;\l               all_good;\l               all_good;\l               all_good;\l               all_good])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_288 -&gt; p_287 [label=&quot;&quot;];
-p_287 [label=&quot;Simplify (let (_x_0 : int list) = List.tl dws in\l          let (_x_1 : int list) = List.tl _x_0 in\l          let (_x_2 : int list) = List.tl _x_1 in\l          let (_x_3 : int) = List.hd dws in\l          ((((((((((List.tl _x_2) \&lt;\&gt; []\l                   \|\| (final_state (next_state _x_3 s) _x_0).y = 0)\l                  \|\| not (good_state s))\l                 \|\| not (_x_2 \&lt;\&gt; []))\l                \|\| not (dws \&lt;\&gt; []))\l               \|\| not (_x_0 \&lt;\&gt; []))\l              \|\| not (_x_1 \&lt;\&gt; []))\l             \|\| not (List.hd _x_2 = 0))\l            \|\| not (_x_3 = 0))\l           \|\| not (List.hd _x_0 = 0))\l          \|\| not (List.hd _x_1 = 0) :expansions [List.for_all; List.for_all]\l          :rw []\l          :fc [all_good;\l               all_good;\l               all_good;\l               all_good;\l               all_good;\l               all_good;\l               all_good;\l               all_good;\l               all_good;\l               all_good;\l               all_good;\l               all_good;\l               all_good])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+p_287 [label=&quot;Simplify (let (_x_0 : int list) = List.tl dws in\l          let (_x_1 : int list) = List.tl _x_0 in\l          let (_x_2 : int list) = List.tl _x_1 in\l          let (_x_3 : int) = List.hd dws in\l          ((((((((((List.tl _x_2) \&lt;\&gt; []\l                   \|\| (final_state (next_state _x_3 s) _x_0).y = 0)\l                  \|\| not (good_state s))\l                 \|\| not (_x_2 \&lt;\&gt; []))\l                \|\| not (dws \&lt;\&gt; []))\l               \|\| not (_x_0 \&lt;\&gt; []))\l              \|\| not (_x_1 \&lt;\&gt; []))\l             \|\| not (List.hd _x_0 = 0))\l            \|\| not (_x_3 = 0))\l           \|\| not (List.hd _x_1 = 0))\l          \|\| not (List.hd _x_2 = 0) :expansions [List.for_all] :rw []\l          :fc [all_good;\l               all_good;\l               all_good;\l               all_good;\l               all_good;\l               all_good;\l               all_good;\l               all_good;\l               all_good;\l               all_good;\l               all_good;\l               all_good])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_287 -&gt; p_286 [label=&quot;&quot;];
-p_286 [label=&quot;Simplify (let (_x_0 : int list) = List.tl dws in\l          let (_x_1 : int list) = List.tl _x_0 in\l          let (_x_2 : int list) = List.tl _x_1 in\l          ((((((((((List.tl _x_2) \&lt;\&gt; [] \|\| not (good_state s))\l                  \|\| not (_x_2 \&lt;\&gt; []))\l                 \|\| not (dws \&lt;\&gt; []))\l                \|\| not (_x_0 \&lt;\&gt; []))\l               \|\| not (_x_1 \&lt;\&gt; []))\l              \|\| not (List.hd _x_2 = 0))\l             \|\| not (List.hd dws = 0))\l            \|\| not (List.hd _x_0 = 0))\l           \|\| not (List.hd _x_1 = 0))\l          \|\| (final_state (next_state 0 s) _x_0).y = 0 :expansions [] \l          :rw [] :fc [])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+p_286 [label=&quot;Simplify (let (_x_0 : int list) = List.tl dws in\l          let (_x_1 : int list) = List.tl _x_0 in\l          let (_x_2 : int list) = List.tl _x_1 in\l          ((((((((((List.tl _x_2) \&lt;\&gt; [] \|\| not (good_state s))\l                  \|\| not (_x_2 \&lt;\&gt; []))\l                 \|\| not (dws \&lt;\&gt; []))\l                \|\| not (_x_0 \&lt;\&gt; []))\l               \|\| not (_x_1 \&lt;\&gt; []))\l              \|\| not (List.hd _x_0 = 0))\l             \|\| not (List.hd dws = 0))\l            \|\| not (List.hd _x_1 = 0))\l           \|\| not (List.hd _x_2 = 0))\l          \|\| (final_state (next_state 0 s) _x_0).y = 0 :expansions [] \l          :rw [] :fc [])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_286 -&gt; p_284 [label=&quot;&quot;];
 subgraph cluster_285 {
   color=blue;
-p_284 [label=&quot;Start (let (_x_0 : int list) = List.tl :var_3: in\l       let (_x_1 : int list) = List.tl _x_0 in\l       let (_x_2 : int list) = List.tl _x_1 in\l       let (_x_3 : int) = :var_2:.w in\l       let (_x_4 : int) = :var_2:.y in\l       let (_x_5 : int) = :var_2:.v in\l       let (_x_6 : int) = _x_4 + _x_5 + _x_3 + 0 in\l       (((((((((not (good_state :var_2:) \|\| not (_x_2 \&lt;\&gt; []))\l               \|\| not (:var_3: \&lt;\&gt; []))\l              \|\| not (_x_0 \&lt;\&gt; []))\l             \|\| not (_x_1 \&lt;\&gt; []))\l            \|\| not (List.hd _x_2 = 0))\l           \|\| not (List.hd :var_3: = 0))\l          \|\| not (List.hd _x_0 = 0))\l         \|\| not (List.hd _x_1 = 0))\l        \|\| (List.tl _x_2) \&lt;\&gt; [])\l       \|\| (final_state\l           \{w = _x_3 + 0; y = _x_6;\l            v =\l            _x_5\l            + (-3 * (if _x_6 \&lt; 0 then -1 else …)\l               + 2 * (if _x_4 \&lt; 0 then -1 else …))\}\l           _x_0).y\l          = 0\l       :time 0.074s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+p_284 [label=&quot;Start (let (_x_0 : int) = :var_2:.w in\l       let (_x_1 : int) = :var_2:.v in\l       let (_x_2 : int) = _x_0 + _x_1 in\l       let (_x_3 : bool) = 2 = _x_2 in\l       let (_x_4 : int) = :var_2:.y in\l       let (_x_5 : bool) = -2 = _x_4 in\l       let (_x_6 : bool) = 1 = _x_2 in\l       let (_x_7 : int list) = List.tl :var_3: in\l       let (_x_8 : int list) = List.tl _x_7 in\l       let (_x_9 : int list) = List.tl _x_8 in\l       let (_x_10 : int) = _x_4 + _x_1 + _x_0 + 0 in\l       (((((((((not\l                (if _x_6 &amp;&amp; -3 = _x_4 then true\l                 else\l                 if _x_6 &amp;&amp; _x_5 then true\l                 else\l                 if _x_3 &amp;&amp; _x_5 then true\l                 else if _x_3 &amp;&amp; -1 = _x_4 then true else …)\l                \|\| not (_x_9 \&lt;\&gt; []))\l               \|\| not (:var_3: \&lt;\&gt; []))\l              \|\| not (_x_7 \&lt;\&gt; []))\l             \|\| not (_x_8 \&lt;\&gt; []))\l            \|\| not (List.hd _x_7 = 0))\l           \|\| not (List.hd :var_3: = 0))\l          \|\| not (List.hd _x_8 = 0))\l         \|\| not (List.hd _x_9 = 0))\l        \|\| (List.tl _x_9) \&lt;\&gt; [])\l       \|\| (final_state\l           \{w = _x_0 + 0; y = _x_10;\l            v =\l            _x_1\l            + (-3 * (if _x_10 \&lt; 0 then -1 else …)\l               + 2 * (if _x_4 \&lt; 0 then -1 else …))\}\l           _x_7).y\l          = 0\l       :time 0.047s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_284 -&gt; p_283 [label=&quot;&quot;];
-p_283 [label=&quot;Simplify (let (_x_0 : int list) = List.tl :var_3: in\l          let (_x_1 : int list) = List.tl _x_0 in\l          let (_x_2 : int list) = List.tl _x_1 in\l          let (_x_3 : int) = :var_2:.w in\l          let (_x_4 : int) = :var_2:.y in\l          let (_x_5 : int) = :var_2:.v in\l          let (_x_6 : int) = _x_4 + _x_5 + _x_3 in\l          (((((((((not (good_state :var_2:) \|\| not (_x_2 \&lt;\&gt; []))\l                  \|\| not (:var_3: \&lt;\&gt; []))\l                 \|\| not (_x_0 \&lt;\&gt; []))\l                \|\| not (_x_1 \&lt;\&gt; []))\l               \|\| not (List.hd _x_2 = 0))\l              \|\| not (List.hd :var_3: = 0))\l             \|\| not (List.hd _x_0 = 0))\l            \|\| not (List.hd _x_1 = 0))\l           \|\| (List.tl _x_2) \&lt;\&gt; [])\l          \|\| (final_state\l              \{w = _x_3; y = _x_6;\l               v =\l               _x_5 + -3 * (if 0 \&lt;= _x_6 then … else -1)\l               + 2 * (if 0 \&lt;= _x_4 then … else -1)\}\l              _x_0).y\l             = 0\l          :expansions [] :rw [] :fc [])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+p_283 [label=&quot;Simplify (let (_x_0 : int) = :var_2:.w in\l          let (_x_1 : int) = :var_2:.v in\l          let (_x_2 : int) = _x_0 + _x_1 in\l          let (_x_3 : int) = :var_2:.y in\l          let (_x_4 : bool) = 1 = _x_3 in\l          let (_x_5 : bool) = -1 = _x_3 in\l          let (_x_6 : bool) = 2 = _x_2 in\l          let (_x_7 : bool) = -2 = _x_3 in\l          let (_x_8 : bool) = -2 = _x_2 in\l          let (_x_9 : bool) = 2 = _x_3 in\l          let (_x_10 : bool) = 1 = _x_2 in\l          let (_x_11 : bool) = 0 = _x_3 in\l          let (_x_12 : bool) = -1 = _x_2 in\l          let (_x_13 : int list) = List.tl :var_3: in\l          let (_x_14 : int list) = List.tl _x_13 in\l          let (_x_15 : int) = _x_3 + _x_1 + _x_0 in\l          let (_x_16 : int list) = List.tl _x_14 in\l          (((((((((not (List.hd :var_3: = 0)\l                   \|\| not\l                      ((((((((((((-3 = _x_2 &amp;&amp; _x_4 \|\| 3 = _x_2 &amp;&amp; _x_5)\l                                 \|\| _x_6 &amp;&amp; _x_7)\l                                \|\| _x_8 &amp;&amp; _x_9)\l                               \|\| _x_10 &amp;&amp; _x_7)\l                              \|\| _x_10 &amp;&amp; _x_11)\l                             \|\| _x_8 &amp;&amp; _x_4)\l                            \|\| _x_12 &amp;&amp; _x_11)\l                           \|\| _x_12 &amp;&amp; _x_9)\l                          \|\| _x_6 &amp;&amp; _x_5)\l                         \|\| _x_10 &amp;&amp; -3 = _x_3)\l                        \|\| 0 = _x_2 &amp;&amp; _x_11)\l                       \|\| _x_12 &amp;&amp; 3 = _x_3))\l                  \|\| not (List.hd _x_14 = 0))\l                 \|\| not (_x_14 \&lt;\&gt; []))\l                \|\| (final_state\l                    \{w = _x_0; y = _x_15;\l                     v =\l                     _x_1 + -3 * (if 0 \&lt;= _x_15 then … else -1)\l                     + 2 * (if 0 \&lt;= _x_3 then … else -1)\}\l                    _x_13).y\l                   = 0)\l               \|\| not (:var_3: \&lt;\&gt; []))\l              \|\| not (List.hd _x_16 = 0))\l             \|\| (List.tl _x_16) \&lt;\&gt; [])\l            \|\| not (_x_13 \&lt;\&gt; []))\l           \|\| not (_x_16 \&lt;\&gt; []))\l          \|\| not (List.hd _x_13 = 0) :expansions [] :rw [] :fc [])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_283 -&gt; p_282 [label=&quot;&quot;];
 p_282 [label=&quot;Unroll ([let (_x_0 : int) = s.w in\l         let (_x_1 : int) = s.y in\l         let (_x_2 : int) = s.v in\l         let (_x_3 : int) = _x_1 + _x_2 + _x_0 in\l         final_state\l         \{w = _x_0; y = _x_3;\l          v =\l          _x_2 + -3 * (if 0 \&lt;= _x_3 then if _x_3 = 0 then 0 else 1 else -1)\l          + 2 * (if 0 \&lt;= _x_1 then if _x_1 = 0 then 0 else 1 else -1)\}\l         (List.tl dws)],\l        [[]])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_282 -&gt; p_281 [label=&quot;&quot;];
@@ -2707,64 +2686,50 @@ p_279 -&gt; p_278 [label=&quot;&quot;];
 p_278 [label=&quot;Unsat&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 }
 }
-p_307 -&gt; p_299 [label=&quot;&quot;];
-subgraph cluster_300 {
-  color=blue;
-p_299 [label=&quot;Start (let (_x_0 : int) = List.hd dws in\l       let (_x_1 : state) = next_state _x_0 s in\l       let (_x_2 : int list) = List.tl dws in\l       let (_x_3 : int list) = List.tl _x_2 in\l       (((((((((dws = [] \|\| (final_state _x_1 _x_2).y = 0)\l               \|\| not (good_state s))\l              \|\| not ((List.tl _x_3) \&lt;\&gt; []))\l             \|\| not (_x_2 \&lt;\&gt; []))\l            \|\| not (_x_3 \&lt;\&gt; []))\l           \|\| not (good_state _x_1))\l          \|\| not (_x_0 = 0))\l         \|\| not (List.for_all (fun x -\&gt; x = 0) _x_2))\l        \|\| not (List.hd _x_2 = 0))\l       \|\| List.for_all (fun x -\&gt; x = 0) _x_3 :name \&quot;1.2\&quot; :time 2.191s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
-p_299 -&gt; p_298 [label=&quot;&quot;];
-p_298 [label=&quot;Simplify (let (_x_0 : int) = List.hd dws in\l          let (_x_1 : int list) = List.tl dws in\l          let (_x_2 : int list) = List.tl _x_1 in\l          let (_x_3 : int list) = List.tl _x_2 in\l          let (_x_4 : bool)\l              = (((((final_state (next_state _x_0 s) _x_1).y = 0\l                    \|\| not (good_state s))\l                   \|\| not (_x_3 \&lt;\&gt; []))\l                  \|\| not (dws \&lt;\&gt; []))\l                 \|\| not (_x_1 \&lt;\&gt; []))\l                \|\| not (_x_2 \&lt;\&gt; [])\l          in\l          let (_x_5 : bool) = not (_x_0 = 0) in\l          let (_x_6 : bool) = not (List.hd _x_1 = 0) in\l          let (_x_7 : bool) = not (List.for_all (fun x -\&gt; x = 0) _x_2) in\l          let (_x_8 : bool) = List.hd _x_2 = 0 in\l          ((((_x_4 \|\| _x_5) \|\| _x_6) \|\| _x_7) \|\| _x_8)\l          &amp;&amp; (((((_x_4 \|\| List.for_all (fun x -\&gt; x = 0) _x_3) \|\| _x_5)\l                \|\| _x_6)\l               \|\| _x_7)\l              \|\| not _x_8)\l          :expansions [List.for_all; List.for_all; List.for_all]\l          :rw [safety_1; safety_1]\l          :fc [all_good;\l               all_good;\l               all_good;\l               all_good;\l               all_good;\l               all_good;\l               all_good;\l               all_good;\l               all_good;\l               all_good;\l               all_good;\l               all_good;\l               all_good;\l               all_good;\l               all_good;\l               all_good;\l               all_good;\l               all_good;\l               all_good;\l               all_good;\l               all_good])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
-p_298 -&gt; p_293 [label=&quot;&quot;];
+p_301 -&gt; p_293 [label=&quot;&quot;];
 subgraph cluster_294 {
   color=blue;
-p_293 [label=&quot;Start (let (_x_0 : int) = List.hd dws in\l       let (_x_1 : int list) = List.tl dws in\l       let (_x_2 : int list) = List.tl _x_1 in\l       let (_x_3 : int list) = List.tl _x_2 in\l       ((((((((((final_state (next_state _x_0 s) _x_1).y = 0\l                \|\| not (good_state s))\l               \|\| not (_x_3 \&lt;\&gt; []))\l              \|\| not (dws \&lt;\&gt; []))\l             \|\| not (_x_1 \&lt;\&gt; []))\l            \|\| not (_x_2 \&lt;\&gt; []))\l           \|\| List.for_all (fun x -\&gt; x = 0) _x_3)\l          \|\| not (_x_0 = 0))\l         \|\| not (List.hd _x_1 = 0))\l        \|\| not (List.for_all (fun x -\&gt; x = 0) _x_2))\l       \|\| not (List.hd _x_2 = 0) :name \&quot;1.2.1\&quot; :time 1.394s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+p_293 [label=&quot;Start (let (_x_0 : int) = List.hd dws in\l       let (_x_1 : state) = next_state _x_0 s in\l       let (_x_2 : int list) = List.tl dws in\l       let (_x_3 : int list) = List.tl _x_2 in\l       (((((((((dws = [] \|\| (final_state _x_1 _x_2).y = 0)\l               \|\| not (good_state s))\l              \|\| not ((List.tl _x_3) \&lt;\&gt; []))\l             \|\| not (_x_2 \&lt;\&gt; []))\l            \|\| not (_x_3 \&lt;\&gt; []))\l           \|\| not (good_state _x_1))\l          \|\| not (List.hd _x_2 = 0))\l         \|\| not (_x_0 = 0))\l        \|\| List.for_all (fun x -\&gt; x = 0) _x_3)\l       \|\| not (List.for_all (fun x -\&gt; x = 0) _x_2) :name \&quot;1.2\&quot; :time 1.320s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_293 -&gt; p_292 [label=&quot;&quot;];
-p_292 [label=&quot;Simplify (true :expansions [List.for_all] :rw [] :fc [all_good; all_good])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+p_292 [label=&quot;Simplify (true :expansions [List.for_all] :rw [] :fc [all_good])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 }
-p_298 -&gt; p_296 [label=&quot;&quot;];
+p_301 -&gt; p_296 [label=&quot;&quot;];
 subgraph cluster_297 {
   color=blue;
-p_296 [label=&quot;Start (let (_x_0 : int) = List.hd dws in\l       let (_x_1 : int list) = List.tl dws in\l       let (_x_2 : int list) = List.tl _x_1 in\l       (((((((((final_state (next_state _x_0 s) _x_1).y = 0\l               \|\| not (good_state s))\l              \|\| not ((List.tl _x_2) \&lt;\&gt; []))\l             \|\| not (dws \&lt;\&gt; []))\l            \|\| not (_x_1 \&lt;\&gt; []))\l           \|\| not (_x_2 \&lt;\&gt; []))\l          \|\| not (_x_0 = 0))\l         \|\| not (List.hd _x_1 = 0))\l        \|\| not (List.for_all (fun x -\&gt; x = 0) _x_2))\l       \|\| List.hd _x_2 = 0 :name \&quot;1.2.2\&quot; :time 1.394s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+p_296 [label=&quot;Start (let (_x_0 : int) = List.hd dws in\l       let (_x_1 : state) = next_state _x_0 s in\l       let (_x_2 : int list) = List.tl dws in\l       let (_x_3 : int list) = List.tl _x_2 in\l       ((((((((dws = [] \|\| (final_state _x_1 _x_2).y = 0)\l              \|\| not (good_state s))\l             \|\| not ((List.tl _x_3) \&lt;\&gt; []))\l            \|\| not (_x_2 \&lt;\&gt; []))\l           \|\| not (_x_3 \&lt;\&gt; []))\l          \|\| not (good_state _x_1))\l         \|\| not (_x_0 = 0))\l        \|\| List.hd _x_2 = 0)\l       \|\| not (List.for_all (fun x -\&gt; x = 0) _x_2) :name \&quot;1.3\&quot; :time 1.331s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_296 -&gt; p_295 [label=&quot;&quot;];
-p_295 [label=&quot;Simplify (true :expansions [List.for_all] :rw [] :fc [all_good; all_good])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+p_295 [label=&quot;Simplify (true :expansions [List.for_all] :rw [] :fc [all_good])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 }
-}
-p_307 -&gt; p_302 [label=&quot;&quot;];
-subgraph cluster_303 {
+p_301 -&gt; p_299 [label=&quot;&quot;];
+subgraph cluster_300 {
   color=blue;
-p_302 [label=&quot;Start (let (_x_0 : int) = List.hd dws in\l       let (_x_1 : state) = next_state _x_0 s in\l       let (_x_2 : int list) = List.tl dws in\l       let (_x_3 : int list) = List.tl _x_2 in\l       ((((((((dws = [] \|\| (final_state _x_1 _x_2).y = 0)\l              \|\| not (good_state s))\l             \|\| not ((List.tl _x_3) \&lt;\&gt; []))\l            \|\| not (_x_2 \&lt;\&gt; []))\l           \|\| not (_x_3 \&lt;\&gt; []))\l          \|\| not (good_state _x_1))\l         \|\| not (_x_0 = 0))\l        \|\| not (List.for_all (fun x -\&gt; x = 0) _x_2))\l       \|\| List.hd _x_2 = 0 :name \&quot;1.3\&quot; :time 2.191s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
-p_302 -&gt; p_301 [label=&quot;&quot;];
-p_301 [label=&quot;Simplify (true :expansions [List.for_all] :rw [] :fc [all_good; all_good])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+p_299 [label=&quot;Start (let (_x_0 : int) = List.hd dws in\l       let (_x_1 : state) = next_state _x_0 s in\l       let (_x_2 : int list) = List.tl dws in\l       let (_x_3 : int list) = List.tl _x_2 in\l       (((((((dws = [] \|\| good_state _x_1) \|\| (final_state _x_1 _x_2).y = 0)\l            \|\| not (good_state s))\l           \|\| not ((List.tl _x_3) \&lt;\&gt; []))\l          \|\| not (_x_2 \&lt;\&gt; []))\l         \|\| not (_x_3 \&lt;\&gt; []))\l        \|\| not (_x_0 = 0))\l       \|\| not (List.for_all (fun x -\&gt; x = 0) _x_2) :name \&quot;1.4\&quot; :time 1.331s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+p_299 -&gt; p_298 [label=&quot;&quot;];
+p_298 [label=&quot;Simplify (true :expansions [List.for_all] :rw [safety_1]\l          :fc [all_good;\l               all_good;\l               all_good;\l               all_good;\l               all_good;\l               all_good;\l               all_good;\l               all_good;\l               all_good])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+}
 }
 p_307 -&gt; p_305 [label=&quot;&quot;];
 subgraph cluster_306 {
   color=blue;
-p_305 [label=&quot;Start (let (_x_0 : int) = List.hd dws in\l       let (_x_1 : state) = next_state _x_0 s in\l       let (_x_2 : int list) = List.tl dws in\l       let (_x_3 : int list) = List.tl _x_2 in\l       (((((((dws = [] \|\| good_state _x_1) \|\| (final_state _x_1 _x_2).y = 0)\l            \|\| not (good_state s))\l           \|\| not ((List.tl _x_3) \&lt;\&gt; []))\l          \|\| not (_x_2 \&lt;\&gt; []))\l         \|\| not (_x_3 \&lt;\&gt; []))\l        \|\| not (_x_0 = 0))\l       \|\| not (List.for_all (fun x -\&gt; x = 0) _x_2) :name \&quot;1.4\&quot; :time 2.191s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+p_305 [label=&quot;Start (let (_x_0 : int list) = List.tl dws in\l       let (_x_1 : int list) = List.tl _x_0 in\l       ((((((not (dws = []) \|\| not (good_state s))\l            \|\| not (List.for_all (fun x -\&gt; x = 0) dws))\l           \|\| not (dws \&lt;\&gt; []))\l          \|\| not (_x_0 \&lt;\&gt; []))\l         \|\| not (_x_1 \&lt;\&gt; []))\l        \|\| not ((List.tl _x_1) \&lt;\&gt; []))\l       \|\| (final_state s dws).y = 0 :name \&quot;2\&quot; :time 1.948s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_305 -&gt; p_304 [label=&quot;&quot;];
-p_304 [label=&quot;Simplify (true :expansions [List.for_all] :rw [safety_1]\l          :fc [all_good;\l               all_good;\l               all_good;\l               all_good;\l               all_good;\l               all_good;\l               all_good;\l               all_good;\l               all_good])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
-}
-}
-p_313 -&gt; p_311 [label=&quot;&quot;];
-subgraph cluster_312 {
-  color=blue;
-p_311 [label=&quot;Start (let (_x_0 : int list) = List.tl dws in\l       let (_x_1 : int list) = List.tl _x_0 in\l       ((((((not (dws = []) \|\| not (good_state s))\l            \|\| not (List.for_all (fun x -\&gt; x = 0) dws))\l           \|\| not (dws \&lt;\&gt; []))\l          \|\| not (_x_0 \&lt;\&gt; []))\l         \|\| not (_x_1 \&lt;\&gt; []))\l        \|\| not ((List.tl _x_1) \&lt;\&gt; []))\l       \|\| (final_state s dws).y = 0 :name \&quot;2\&quot; :time 2.614s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
-p_311 -&gt; p_310 [label=&quot;&quot;];
-p_310 [label=&quot;Simplify (true :expansions [] :rw [] :fc [])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+p_304 [label=&quot;Simplify (true :expansions [] :rw [] :fc [])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 }
 }
 }
 </textarea><button class="btn btn-primary">Load graph</button><div class="imandra-graphviz-loading display-none">Loading..</div><div class="imandra-graphviz-target"></div><script>
 require(['nbextensions/nbimandra/graphviz'], function (graphviz) {
-  var target = '#graphviz-bb801310-dc65-4344-9fea-f1ee27f5ebd3';
+  var target = '#graphviz-a99a7b67-cf2e-4d4f-8b00-aa5be5312828';
   graphviz.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-e2a2d430-9233-45e9-9979-7a7b03b21800';
+  var target = '#alt-d5147d27-5b70-47f1-aa74-0c32ae035355';
   alternatives.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-4b49180d-d94c-469a-a38e-239c64160744';
+  var target = '#fold-10759226-4611-4368-b60e-4acbd53f47ae';
   fold.hydrate(target);
 });
 </script></div></div></div></div>
@@ -2834,62 +2799,62 @@ require(['nbextensions/nbimandra/fold'], function (fold) {
 
 
 <div class="output_html rendered_html output_subarea ">
-<div><div style="font-size: 1.2em; padding: 0.5em; border-top: 1px solid green; border-bottom: 1px solid green"><i class="fa fa-check-circle" style="margin-right: 0.5em; color: green"></i><span>Proved</span></div><div><div class="imandra-alternatives" id="alt-4b742513-0677-468a-b1f3-11692ac151ce"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>proof</a></li><li class="" data-toggle="tab"><a>call graph</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-proof-top"><div class="imandra-fold panel panel-default" id="fold-4044d075-15c9-4f50-a37f-be59343a2ade"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>proof</span></div></div><div class="panel-body collapse"><div class="imandra-proof"><div class="imandra-alternatives" id="alt-8ed5fab6-4f53-4d79-a773-b549e8069dd0"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>summary</a></li><li class="" data-toggle="tab"><a>full</a></li><li class="" data-toggle="tab"><a>graph</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-table" id="table-1ae18f5d-7eb9-4e39-ada1-92ba2ac9ec2f"><table><tr><td><b>ground_instances</b></td><td>0</td></tr><tr><td><b>definitions</b></td><td>0</td></tr><tr><td><b>inductions</b></td><td>0</td></tr><tr><td><b>search_time</b></td><td><pre>0.046s</pre></td></tr><tr><td><b>details</b></td><td><div class="imandra-fold panel panel-default" id="fold-157ea571-3d8a-4c3b-8910-8a6ab6d9dfe7"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><div class="imandra-table" id="table-58283b23-4c9e-4a69-bdb8-07d248ab0dd2"><table><tr><td><b>smt_stats</b></td><td><div class="imandra-table" id="table-9c266f23-b337-4adb-a745-2a729aa54fe9"><table><tr><td><b>rlimit count</b></td><td>16069</td></tr><tr><td><b>mk bool var</b></td><td>1</td></tr><tr><td><b>memory</b></td><td>46.330000</td></tr><tr><td><b>max memory</b></td><td>71.450000</td></tr><tr><td><b>num allocs</b></td><td>23462330523.000000</td></tr></table></div></td></tr></table></div></div><script>
+<div><div style="font-size: 1.2em; padding: 0.5em; border-top: 1px solid green; border-bottom: 1px solid green"><i class="fa fa-check-circle" style="margin-right: 0.5em; color: green"></i><span>Proved</span></div><div><div class="imandra-alternatives" id="alt-8470d5e5-2d03-4bc5-856d-5397ae8183ae"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>proof</a></li><li class="" data-toggle="tab"><a>call graph</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-proof-top"><div class="imandra-fold panel panel-default" id="fold-6252a0f4-17c5-4ab1-82a6-8563c5f0464b"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>proof</span></div></div><div class="panel-body collapse"><div class="imandra-proof"><div class="imandra-alternatives" id="alt-bef37670-c899-41fd-a694-5a52878fbe73"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>summary</a></li><li class="" data-toggle="tab"><a>full</a></li><li class="" data-toggle="tab"><a>graph</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-table" id="table-2a05a0f8-acad-4de0-a390-6e1bc5a01f1e"><table><tr><td><b>ground_instances</b></td><td>0</td></tr><tr><td><b>definitions</b></td><td>0</td></tr><tr><td><b>inductions</b></td><td>0</td></tr><tr><td><b>search_time</b></td><td><pre>0.052s</pre></td></tr><tr><td><b>details</b></td><td><div class="imandra-fold panel panel-default" id="fold-abdaabdb-f9bb-4b64-9b96-c5e46f37faae"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><div class="imandra-table" id="table-90ac3709-7ebd-467d-a7be-5405453af07a"><table><tr><td><b>smt_stats</b></td><td><div class="imandra-table" id="table-7a6dad1d-ae6e-4463-90c6-7a8b0f8f0fa2"><table><tr><td><b>rlimit count</b></td><td>16190</td></tr><tr><td><b>mk bool var</b></td><td>1</td></tr><tr><td><b>memory</b></td><td>39.120000</td></tr><tr><td><b>max memory</b></td><td>71.410000</td></tr><tr><td><b>num allocs</b></td><td>20382571369.000000</td></tr></table></div></td></tr></table></div></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-157ea571-3d8a-4c3b-8910-8a6ab6d9dfe7';
+  var target = '#fold-abdaabdb-f9bb-4b64-9b96-c5e46f37faae';
   fold.hydrate(target);
 });
-</script></div></td></tr></table></div></div><div class="tab-pane"><div class="imandra-fold panel panel-default" id="fold-b1f0ad49-7453-4d1f-8af6-8625f0818e2d"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.046s]
+</script></div></td></tr></table></div></div><div class="tab-pane"><div class="imandra-fold panel panel-default" id="fold-ec153e15-c7cd-421a-bfe9-9041630bd189"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.052s]
   let (_x_0 : int list) = List.tl :var_0: in
   let (_x_1 : int list) = List.tl _x_0 in
   List.for_all (fun x -&gt; x = 0) :var_0:
   &amp;&amp; :var_0: &lt;&gt; [] &amp;&amp; _x_0 &lt;&gt; [] &amp;&amp; _x_1 &lt;&gt; [] &amp;&amp; (List.tl _x_1) &lt;&gt; []
-  ==&gt; (final_state {w = 0; y = 0; v = 0} :var_0:).y = 0</pre></li><li><div><h4>simplify</h4><div class="imandra-table" id="table-a7836471-677b-42ae-b75b-76f0f9917fe8"><table><tr><td><b>into</b></td><td><pre>let (_x_0 : int list) = List.tl :var_0: in
+  ==&gt; (final_state {w = 0; y = 0; v = 0} :var_0:).y = 0</pre></li><li><div><h4>simplify</h4><div class="imandra-table" id="table-1909fa83-3e93-4ca2-a69b-293c30386966"><table><tr><td><b>into</b></td><td><pre>let (_x_0 : int list) = List.tl :var_0: in
 let (_x_1 : int list) = List.tl _x_0 in
 not
 ((((List.for_all (fun x -&gt; x = 0) :var_0: &amp;&amp; :var_0: &lt;&gt; []) &amp;&amp; _x_0 &lt;&gt; [])
   &amp;&amp; _x_1 &lt;&gt; [])
  &amp;&amp; (List.tl _x_1) &lt;&gt; [])
-|| (final_state {w = 0; y = 0; v = 0} :var_0:).y = 0</pre></td></tr><tr><td><b>expansions</b></td><td><pre>[]</pre></td></tr><tr><td><b>rewrite_steps</b></td><td><ul></ul></td></tr><tr><td><b>forward_chaining</b></td><td><ul></ul></td></tr></table></div></div></li><li><div><h4>simplify</h4><div class="imandra-table" id="table-c83376eb-5514-4df3-9a84-93324ea0235e"><table><tr><td><b>into</b></td><td><pre>true</pre></td></tr><tr><td><b>expansions</b></td><td><pre>[]</pre></td></tr><tr><td><b>rewrite_steps</b></td><td><ul></ul></td></tr><tr><td><b>forward_chaining</b></td><td><ul><li><pre>all_good</pre></li><li><pre>good_state_find_and_stay_zt_zero</pre></li></ul></td></tr></table></div></div></li><li>Unsat</li></ul></div><script>
+|| (final_state {w = 0; y = 0; v = 0} :var_0:).y = 0</pre></td></tr><tr><td><b>expansions</b></td><td><pre>[]</pre></td></tr><tr><td><b>rewrite_steps</b></td><td><ul></ul></td></tr><tr><td><b>forward_chaining</b></td><td><ul></ul></td></tr></table></div></div></li><li><div><h4>simplify</h4><div class="imandra-table" id="table-4fa97eee-c702-45b7-ae85-1fdb573bc881"><table><tr><td><b>into</b></td><td><pre>true</pre></td></tr><tr><td><b>expansions</b></td><td><pre>[]</pre></td></tr><tr><td><b>rewrite_steps</b></td><td><ul></ul></td></tr><tr><td><b>forward_chaining</b></td><td><ul><li><pre>all_good</pre></li><li><pre>good_state_find_and_stay_zt_zero</pre></li></ul></td></tr></table></div></div></li><li>Unsat</li></ul></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-b1f0ad49-7453-4d1f-8af6-8625f0818e2d';
+  var target = '#fold-ec153e15-c7cd-421a-bfe9-9041630bd189';
   fold.hydrate(target);
 });
-</script></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-10582bac-f484-4318-a6d4-edec43da8cd8"><textarea style="display: none">digraph &quot;proof&quot; {
-p_321 [label=&quot;Start (let (_x_0 : int list) = List.tl :var_0: in\l       let (_x_1 : int list) = List.tl _x_0 in\l       List.for_all (fun x -\&gt; x = 0) :var_0:\l       &amp;&amp; :var_0: \&lt;\&gt; [] &amp;&amp; _x_0 \&lt;\&gt; [] &amp;&amp; _x_1 \&lt;\&gt; [] &amp;&amp; (List.tl _x_1) \&lt;\&gt; []\l       ==\&gt; (final_state \{w = 0; y = 0; v = 0\} :var_0:).y = 0 :time 0.046s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
-p_321 -&gt; p_320 [label=&quot;&quot;];
-p_320 [label=&quot;Simplify (let (_x_0 : int list) = List.tl :var_0: in\l          let (_x_1 : int list) = List.tl _x_0 in\l          not\l          ((((List.for_all (fun x -\&gt; x = 0) :var_0: &amp;&amp; :var_0: \&lt;\&gt; [])\l             &amp;&amp; _x_0 \&lt;\&gt; [])\l            &amp;&amp; _x_1 \&lt;\&gt; [])\l           &amp;&amp; (List.tl _x_1) \&lt;\&gt; [])\l          \|\| (final_state \{w = 0; y = 0; v = 0\} :var_0:).y = 0 :expansions []\l          :rw [] :fc [])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
-p_320 -&gt; p_319 [label=&quot;&quot;];
-p_319 [label=&quot;Simplify (true :expansions [] :rw []\l          :fc [all_good; good_state_find_and_stay_zt_zero])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
-p_319 -&gt; p_318 [label=&quot;&quot;];
-p_318 [label=&quot;Unsat&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+</script></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-865db2b8-2b58-47d5-990d-77271961d2ff"><textarea style="display: none">digraph &quot;proof&quot; {
+p_315 [label=&quot;Start (let (_x_0 : int list) = List.tl :var_0: in\l       let (_x_1 : int list) = List.tl _x_0 in\l       List.for_all (fun x -\&gt; x = 0) :var_0:\l       &amp;&amp; :var_0: \&lt;\&gt; [] &amp;&amp; _x_0 \&lt;\&gt; [] &amp;&amp; _x_1 \&lt;\&gt; [] &amp;&amp; (List.tl _x_1) \&lt;\&gt; []\l       ==\&gt; (final_state \{w = 0; y = 0; v = 0\} :var_0:).y = 0 :time 0.052s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+p_315 -&gt; p_314 [label=&quot;&quot;];
+p_314 [label=&quot;Simplify (let (_x_0 : int list) = List.tl :var_0: in\l          let (_x_1 : int list) = List.tl _x_0 in\l          not\l          ((((List.for_all (fun x -\&gt; x = 0) :var_0: &amp;&amp; :var_0: \&lt;\&gt; [])\l             &amp;&amp; _x_0 \&lt;\&gt; [])\l            &amp;&amp; _x_1 \&lt;\&gt; [])\l           &amp;&amp; (List.tl _x_1) \&lt;\&gt; [])\l          \|\| (final_state \{w = 0; y = 0; v = 0\} :var_0:).y = 0 :expansions []\l          :rw [] :fc [])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+p_314 -&gt; p_313 [label=&quot;&quot;];
+p_313 [label=&quot;Simplify (true :expansions [] :rw []\l          :fc [all_good; good_state_find_and_stay_zt_zero])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+p_313 -&gt; p_312 [label=&quot;&quot;];
+p_312 [label=&quot;Unsat&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 }
 </textarea><button class="btn btn-primary">Load graph</button><div class="imandra-graphviz-loading display-none">Loading..</div><div class="imandra-graphviz-target"></div><script>
 require(['nbextensions/nbimandra/graphviz'], function (graphviz) {
-  var target = '#graphviz-10582bac-f484-4318-a6d4-edec43da8cd8';
+  var target = '#graphviz-865db2b8-2b58-47d5-990d-77271961d2ff';
   graphviz.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-8ed5fab6-4f53-4d79-a773-b549e8069dd0';
+  var target = '#alt-bef37670-c899-41fd-a694-5a52878fbe73';
   alternatives.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-4044d075-15c9-4f50-a37f-be59343a2ade';
+  var target = '#fold-6252a0f4-17c5-4ab1-82a6-8563c5f0464b';
   fold.hydrate(target);
 });
-</script></div></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-11ea97eb-1aa3-4823-a434-960e5393fcd5"><textarea style="display: none">digraph &quot;call graph&quot; {
+</script></div></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-b28703d9-adf1-43ed-a973-f51f7d27b51c"><textarea style="display: none">digraph &quot;call graph&quot; {
 goal [label=&quot;not true&quot;,shape=box,style=filled,color=&quot;cyan&quot;,fontname=&quot;courier&quot;,fontsize=14];
 }
 </textarea><button class="btn btn-primary">Load graph</button><div class="imandra-graphviz-loading display-none">Loading..</div><div class="imandra-graphviz-target"></div><script>
 require(['nbextensions/nbimandra/graphviz'], function (graphviz) {
-  var target = '#graphviz-11ea97eb-1aa3-4823-a434-960e5393fcd5';
+  var target = '#graphviz-b28703d9-adf1-43ed-a973-f51f7d27b51c';
   graphviz.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-4b742513-0677-468a-b1f3-11692ac151ce';
+  var target = '#alt-8470d5e5-2d03-4bc5-856d-5397ae8183ae';
   alternatives.hydrate(target);
 });
 </script></div></div></div>
@@ -3043,44 +3008,44 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
 
 
 <div class="output_html rendered_html output_subarea ">
-<div><div class="imandra-fold panel panel-default" id="fold-b0cd503d-6822-453d-bf29-d1913fa1724e"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>termination proof</span></div></div><div class="panel-body collapse"><div><h3>Termination proof</h3><p></p><div class="imandra-fold panel panel-default" id="fold-b1f4bdde-2d99-40df-9560-0c39194c18e4"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>call `bad_final_state (bad_next_state (List.hd dws) s) (List.tl dws)` from `bad_final_state s dws`</span></div></div><div class="panel-body collapse"><div class="imandra-table" id="table-b417a32a-964c-47e8-9281-d12348679823"><table><tr><td><b>original</b></td><td>bad_final_state s dws</td></tr><tr><td><b>sub</b></td><td>bad_final_state (bad_next_state (List.hd dws) s) (List.tl dws)</td></tr><tr><td><b>original ordinal</b></td><td>Ordinal.Int (Ordinal.count dws)</td></tr><tr><td><b>sub ordinal</b></td><td>Ordinal.Int (Ordinal.count (List.tl dws))</td></tr><tr><td><b>path</b></td><td>[not (dws = [])]</td></tr><tr><td><b>proof</b></td><td><div class="imandra-fold panel panel-default" id="fold-f308d9b9-254a-461e-89a4-57fe7cf3545d"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>detailed proof</span></div></div><div class="panel-body collapse"><div class="imandra-proof"><div class="imandra-alternatives" id="alt-a493d0bc-1e85-465f-bf49-e7edd4142281"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>summary</a></li><li class="" data-toggle="tab"><a>full</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-table" id="table-e6f0eb8a-e8da-4aba-8ebb-c8039d0ecf0e"><table><tr><td><b>ground_instances</b></td><td>3</td></tr><tr><td><b>definitions</b></td><td>0</td></tr><tr><td><b>inductions</b></td><td>0</td></tr><tr><td><b>search_time</b></td><td><pre>0.013s</pre></td></tr><tr><td><b>details</b></td><td><div class="imandra-fold panel panel-default" id="fold-520acbd5-cc1d-48cd-8ff5-f88a467658c5"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><div class="imandra-table" id="table-333a711d-76a8-488e-aeb0-571e21a9fa9e"><table><tr><td><b>smt_stats</b></td><td><div class="imandra-table" id="table-f0f55e2a-861e-4bfe-afe8-0e020befdc29"><table><tr><td><b>num checks</b></td><td>8</td></tr><tr><td><b>arith-make-feasible</b></td><td>20</td></tr><tr><td><b>arith-max-columns</b></td><td>18</td></tr><tr><td><b>arith-conflicts</b></td><td>2</td></tr><tr><td><b>rlimit count</b></td><td>2226</td></tr><tr><td><b>mk clause</b></td><td>12</td></tr><tr><td><b>datatype occurs check</b></td><td>22</td></tr><tr><td><b>mk bool var</b></td><td>65</td></tr><tr><td><b>arith-lower</b></td><td>14</td></tr><tr><td><b>arith-diseq</b></td><td>1</td></tr><tr><td><b>datatype splits</b></td><td>3</td></tr><tr><td><b>decisions</b></td><td>18</td></tr><tr><td><b>propagations</b></td><td>13</td></tr><tr><td><b>arith-max-rows</b></td><td>6</td></tr><tr><td><b>conflicts</b></td><td>10</td></tr><tr><td><b>datatype accessor ax</b></td><td>5</td></tr><tr><td><b>datatype constructor ax</b></td><td>8</td></tr><tr><td><b>final checks</b></td><td>6</td></tr><tr><td><b>added eqs</b></td><td>43</td></tr><tr><td><b>del clause</b></td><td>5</td></tr><tr><td><b>arith eq adapter</b></td><td>10</td></tr><tr><td><b>arith-upper</b></td><td>13</td></tr><tr><td><b>memory</b></td><td>47.040000</td></tr><tr><td><b>max memory</b></td><td>71.450000</td></tr><tr><td><b>num allocs</b></td><td>23682145095.000000</td></tr></table></div></td></tr></table></div></div><script>
+<div><div class="imandra-fold panel panel-default" id="fold-799c7d02-c502-4538-8881-e7735ab0865a"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>termination proof</span></div></div><div class="panel-body collapse"><div><h3>Termination proof</h3><p></p><div class="imandra-fold panel panel-default" id="fold-97dde2b4-975d-4c36-b4b1-49c4b055bd62"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>call `bad_final_state (bad_next_state (List.hd dws) s) (List.tl dws)` from `bad_final_state s dws`</span></div></div><div class="panel-body collapse"><div class="imandra-table" id="table-72918da4-2bde-47e1-94a0-829eb4d14282"><table><tr><td><b>original</b></td><td>bad_final_state s dws</td></tr><tr><td><b>sub</b></td><td>bad_final_state (bad_next_state (List.hd dws) s) (List.tl dws)</td></tr><tr><td><b>original ordinal</b></td><td>Ordinal.Int (Ordinal.count dws)</td></tr><tr><td><b>sub ordinal</b></td><td>Ordinal.Int (Ordinal.count (List.tl dws))</td></tr><tr><td><b>path</b></td><td>[not (dws = [])]</td></tr><tr><td><b>proof</b></td><td><div class="imandra-fold panel panel-default" id="fold-e6b9f54e-e82e-463f-9a14-023362a914b3"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>detailed proof</span></div></div><div class="panel-body collapse"><div class="imandra-proof"><div class="imandra-alternatives" id="alt-714f3052-e063-423b-9e76-3bc4f9194db9"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>summary</a></li><li class="" data-toggle="tab"><a>full</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-table" id="table-a848060f-c5f1-4904-bb49-c49656758ed7"><table><tr><td><b>ground_instances</b></td><td>3</td></tr><tr><td><b>definitions</b></td><td>0</td></tr><tr><td><b>inductions</b></td><td>0</td></tr><tr><td><b>search_time</b></td><td><pre>0.013s</pre></td></tr><tr><td><b>details</b></td><td><div class="imandra-fold panel panel-default" id="fold-7114f5a7-b244-4cd5-b688-48345b42c87e"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><div class="imandra-table" id="table-e12c9bf0-079d-4023-ad27-5b0c8fcae471"><table><tr><td><b>smt_stats</b></td><td><div class="imandra-table" id="table-4157a5dd-4cf6-4b07-86a3-2aca26fd5641"><table><tr><td><b>num checks</b></td><td>8</td></tr><tr><td><b>arith-make-feasible</b></td><td>20</td></tr><tr><td><b>arith-max-columns</b></td><td>18</td></tr><tr><td><b>arith-conflicts</b></td><td>2</td></tr><tr><td><b>rlimit count</b></td><td>2226</td></tr><tr><td><b>mk clause</b></td><td>12</td></tr><tr><td><b>datatype occurs check</b></td><td>22</td></tr><tr><td><b>mk bool var</b></td><td>65</td></tr><tr><td><b>arith-lower</b></td><td>14</td></tr><tr><td><b>arith-diseq</b></td><td>1</td></tr><tr><td><b>datatype splits</b></td><td>3</td></tr><tr><td><b>decisions</b></td><td>18</td></tr><tr><td><b>propagations</b></td><td>13</td></tr><tr><td><b>arith-max-rows</b></td><td>6</td></tr><tr><td><b>conflicts</b></td><td>10</td></tr><tr><td><b>datatype accessor ax</b></td><td>5</td></tr><tr><td><b>datatype constructor ax</b></td><td>8</td></tr><tr><td><b>final checks</b></td><td>6</td></tr><tr><td><b>added eqs</b></td><td>43</td></tr><tr><td><b>del clause</b></td><td>5</td></tr><tr><td><b>arith eq adapter</b></td><td>10</td></tr><tr><td><b>arith-upper</b></td><td>13</td></tr><tr><td><b>memory</b></td><td>39.850000</td></tr><tr><td><b>max memory</b></td><td>71.410000</td></tr><tr><td><b>num allocs</b></td><td>20586043265.000000</td></tr></table></div></td></tr></table></div></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-520acbd5-cc1d-48cd-8ff5-f88a467658c5';
+  var target = '#fold-7114f5a7-b244-4cd5-b688-48345b42c87e';
   fold.hydrate(target);
 });
-</script></div></td></tr></table></div></div><div class="tab-pane"><div class="imandra-fold panel panel-default" id="fold-707002ce-dd79-4927-a8cb-7344c6c76616"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.013s]
+</script></div></td></tr></table></div></div><div class="tab-pane"><div class="imandra-fold panel panel-default" id="fold-4743afaf-8c80-4a6d-b952-2830cfcd76d7"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.013s]
   let (_x_0 : int) = Ordinal.count dws in
   let (_x_1 : int list) = List.tl dws in
   let (_x_2 : int) = Ordinal.count _x_1 in
   not (dws = []) &amp;&amp; _x_0 &gt;= 0 &amp;&amp; _x_2 &gt;= 0
-  ==&gt; _x_1 = [] || Ordinal.( &lt;&lt; ) (Ordinal.Int _x_2) (Ordinal.Int _x_0)</pre></li><li><div><h5>simplify</h5><div class="imandra-table" id="table-f5da1cf9-e652-4fbe-9dd6-2cff7b8cb472"><table><tr><td><b>into</b></td><td><pre>let (_x_0 : int list) = List.tl dws in
+  ==&gt; _x_1 = [] || Ordinal.( &lt;&lt; ) (Ordinal.Int _x_2) (Ordinal.Int _x_0)</pre></li><li><div><h5>simplify</h5><div class="imandra-table" id="table-831e624b-d273-4a0c-abd2-3468cc17c69d"><table><tr><td><b>into</b></td><td><pre>let (_x_0 : int list) = List.tl dws in
 let (_x_1 : int) = Ordinal.count _x_0 in
 let (_x_2 : int) = Ordinal.count dws in
 (_x_0 = [] || Ordinal.( &lt;&lt; ) (Ordinal.Int _x_1) (Ordinal.Int _x_2))
-|| not ((not (dws = []) &amp;&amp; _x_2 &gt;= 0) &amp;&amp; _x_1 &gt;= 0)</pre></td></tr><tr><td><b>expansions</b></td><td><pre>[]</pre></td></tr><tr><td><b>rewrite_steps</b></td><td><ul></ul></td></tr><tr><td><b>forward_chaining</b></td><td><ul></ul></td></tr></table></div></div></li><li><div>unroll<div class="imandra-table" id="table-060fe035-6b8f-4cca-bc93-939aabf630f4"><table><tr><td><b>expr</b></td><td><pre>(|count_`int list`_4908| dws_4898)</pre></td></tr><tr><td><b>expansions</b></td><td><ul></ul></td></tr></table></div></div></li><li><div>unroll<div class="imandra-table" id="table-0574518e-54b9-4fae-826b-dc6d95718ccf"><table><tr><td><b>expr</b></td><td><pre>(|count_`int list`_4908| (|get.::.1_4896| dws_4898))</pre></td></tr><tr><td><b>expansions</b></td><td><ul></ul></td></tr></table></div></div></li><li><div>unroll<div class="imandra-table" id="table-97f7035a-a293-4a3f-b89f-7929f0f8986f"><table><tr><td><b>expr</b></td><td><pre>(|Ordinal.&lt;&lt;_102| (|Ordinal.Int_93| (|count_`int list`_4908|
+|| not ((not (dws = []) &amp;&amp; _x_2 &gt;= 0) &amp;&amp; _x_1 &gt;= 0)</pre></td></tr><tr><td><b>expansions</b></td><td><pre>[]</pre></td></tr><tr><td><b>rewrite_steps</b></td><td><ul></ul></td></tr><tr><td><b>forward_chaining</b></td><td><ul></ul></td></tr></table></div></div></li><li><div>unroll<div class="imandra-table" id="table-1e4d97cb-a205-4dff-bb02-1249530e1c72"><table><tr><td><b>expr</b></td><td><pre>(|count_`int list`_4723| dws_4713)</pre></td></tr><tr><td><b>expansions</b></td><td><ul></ul></td></tr></table></div></div></li><li><div>unroll<div class="imandra-table" id="table-1bcf22cb-c1db-4561-9f96-bc0f8f451b04"><table><tr><td><b>expr</b></td><td><pre>(|count_`int list`_4723| (|get.::.1_4711| dws_4713))</pre></td></tr><tr><td><b>expansions</b></td><td><ul></ul></td></tr></table></div></div></li><li><div>unroll<div class="imandra-table" id="table-c6dd02f9-f19d-402c-a989-8490810b9ae9"><table><tr><td><b>expr</b></td><td><pre>(|Ordinal.&lt;&lt;_102| (|Ordinal.Int_93| (|count_`int list`_4723|
                                       (…</pre></td></tr><tr><td><b>expansions</b></td><td><ul></ul></td></tr></table></div></div></li><li>Unsat</li></ul></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-707002ce-dd79-4927-a8cb-7344c6c76616';
+  var target = '#fold-4743afaf-8c80-4a6d-b952-2830cfcd76d7';
   fold.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-a493d0bc-1e85-465f-bf49-e7edd4142281';
+  var target = '#alt-714f3052-e063-423b-9e76-3bc4f9194db9';
   alternatives.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-f308d9b9-254a-461e-89a4-57fe7cf3545d';
+  var target = '#fold-e6b9f54e-e82e-463f-9a14-023362a914b3';
   fold.hydrate(target);
 });
 </script></div></td></tr></table></div></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-b1f4bdde-2d99-40df-9560-0c39194c18e4';
+  var target = '#fold-97dde2b4-975d-4c36-b4b1-49c4b055bd62';
   fold.hydrate(target);
 });
 </script></div><p></p></div></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-b0cd503d-6822-453d-bf29-d1913fa1724e';
+  var target = '#fold-799c7d02-c502-4538-8881-e7735ab0865a';
   fold.hydrate(target);
 });
 </script></div></div>
@@ -3148,7 +3113,7 @@ module CX : sig val dws : int list end
 
 
 <div class="output_html rendered_html output_subarea ">
-<div><pre>Counterexample (after 8 steps, 0.030s):
+<div><pre>Counterexample (after 8 steps, 0.040s):
  let (dws : int list) = [1; 1; 1]
 </pre></div>
 
@@ -3163,100 +3128,100 @@ module CX : sig val dws : int list end
 
 
 <div class="output_html rendered_html output_subarea ">
-<div><div style="font-size: 1.2em; padding: 0.5em; border-top: 1px dashed #D84315; border-bottom: 1px dashed #D84315"><i class="fa fa-times-circle-o" style="margin-right: 0.5em; color: #D84315"></i><span>Refuted</span></div><div><div class="imandra-alternatives" id="alt-b1db0543-9446-4d02-a8a3-958b56378fe7"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>call graph</a></li><li class="" data-toggle="tab"><a>proof</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-graphviz" id="graphviz-b532fdfe-8b61-4d8a-a23b-ce5b88428711"><textarea style="display: none">digraph &quot;call graph&quot; {
+<div><div style="font-size: 1.2em; padding: 0.5em; border-top: 1px dashed #D84315; border-bottom: 1px dashed #D84315"><i class="fa fa-times-circle-o" style="margin-right: 0.5em; color: #D84315"></i><span>Refuted</span></div><div><div class="imandra-alternatives" id="alt-c208de19-c4a8-4934-989e-5663eff2527f"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>call graph</a></li><li class="" data-toggle="tab"><a>proof</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-graphviz" id="graphviz-5ccf49a8-8e59-4f0e-9fd4-b85aaeca5b9f"><textarea style="display: none">digraph &quot;call graph&quot; {
 goal [label=&quot;let (_x_0 : int) = (bad_final_state \{w = 0; y = 0; v = 0\} dws).y in\lnot\l(not (List.for_all (fun x -\&gt; x = -1 \|\| x = 0 \|\| x = 1) dws)\l \|\| -3 \&lt;= _x_0 &amp;&amp; _x_0 \&lt;= 3)&quot;,shape=box,style=filled,color=&quot;cyan&quot;,fontname=&quot;courier&quot;,fontsize=14];
 goal -&gt; call_24 [label=&quot;calls&quot;];
 goal -&gt; call_22 [label=&quot;calls&quot;];
 call_24 [label=&quot;bad_final_state \{w = 0; y = 0; v = 0\} dws&quot;,shape=box,style=filled,color=&quot;green&quot;,fontname=&quot;courier&quot;,fontsize=14];
 call_24 -&gt; call_194 [label=&quot;calls&quot;];
 call_22 [label=&quot;List.for_all (fun x -\&gt; x = -1 \|\| x = 0 \|\| x = 1) dws&quot;,shape=box,style=filled,color=&quot;green&quot;,fontname=&quot;courier&quot;,fontsize=14];
-call_22 -&gt; call_462 [label=&quot;calls&quot;];
+call_22 -&gt; call_437 [label=&quot;calls&quot;];
 call_194 [label=&quot;bad_final_state (bad_next_state (List.hd dws) \{w = 0; y = 0; v = 0\})\l(List.tl dws)&quot;,shape=box,style=filled,color=&quot;green&quot;,fontname=&quot;courier&quot;,fontsize=14];
-call_194 -&gt; call_592 [label=&quot;calls&quot;];
-call_462 [label=&quot;List.for_all (fun x -\&gt; x = -1 \|\| x = 0 \|\| x = 1) (List.tl dws)&quot;,shape=box,style=filled,color=&quot;green&quot;,fontname=&quot;courier&quot;,fontsize=14];
-call_462 -&gt; call_893 [label=&quot;calls&quot;];
-call_592 [label=&quot;let (_x_0 : int list) = List.tl dws in\lbad_final_state\l(bad_next_state (List.hd _x_0)\l (bad_next_state (List.hd dws) \{w = 0; y = 0; v = 0\}))\l(List.tl _x_0)&quot;,shape=box,style=filled,color=&quot;green&quot;,fontname=&quot;courier&quot;,fontsize=14];
-call_592 -&gt; call_1077 [label=&quot;calls&quot;];
-call_893 [label=&quot;List.for_all (fun x -\&gt; x = -1 \|\| x = 0 \|\| x = 1) (List.tl (List.tl dws))&quot;,shape=box,style=filled,color=&quot;green&quot;,fontname=&quot;courier&quot;,fontsize=14];
-call_893 -&gt; call_1450 [label=&quot;calls&quot;];
-call_1077 [label=&quot;let (_x_0 : int list) = List.tl dws in\llet (_x_1 : int list) = List.tl _x_0 in\lbad_final_state\l(bad_next_state (List.hd _x_1)\l (bad_next_state (List.hd _x_0)\l  (bad_next_state (List.hd dws) \{w = 0; y = 0; v = 0\})))\l(List.tl _x_1)&quot;,shape=box,style=filled,color=&quot;green&quot;,fontname=&quot;courier&quot;,fontsize=14];
-call_1077 -&gt; call_1983 [label=&quot;calls&quot;];
-call_1450 [label=&quot;List.for_all (fun x -\&gt; x = -1 \|\| x = 0 \|\| x = 1)\l(List.tl (List.tl (List.tl dws)))&quot;,shape=box,style=filled,color=&quot;green&quot;,fontname=&quot;courier&quot;,fontsize=14];
-call_1450 -&gt; call_2213 [label=&quot;calls&quot;];
-call_1983 [label=&quot;let (_x_0 : int list) = List.tl dws in\llet (_x_1 : int list) = List.tl _x_0 in\llet (_x_2 : int list) = List.tl _x_1 in\lbad_final_state\l(bad_next_state (List.hd _x_2)\l (bad_next_state (List.hd _x_1)\l  (bad_next_state (List.hd _x_0)\l   (bad_next_state (List.hd dws) \{w = 0; y = 0; v = 0\}))))\l(List.tl _x_2)&quot;,shape=box,style=filled,color=&quot;yellow&quot;,fontname=&quot;courier&quot;,fontsize=14];
-call_2213 [label=&quot;List.for_all (fun x -\&gt; x = -1 \|\| x = 0 \|\| x = 1)\l(List.tl (List.tl (List.tl (List.tl dws))))&quot;,shape=box,style=filled,color=&quot;yellow&quot;,fontname=&quot;courier&quot;,fontsize=14];
+call_194 -&gt; call_533 [label=&quot;calls&quot;];
+call_437 [label=&quot;List.for_all (fun x -\&gt; x = -1 \|\| x = 0 \|\| x = 1) (List.tl dws)&quot;,shape=box,style=filled,color=&quot;green&quot;,fontname=&quot;courier&quot;,fontsize=14];
+call_437 -&gt; call_862 [label=&quot;calls&quot;];
+call_533 [label=&quot;let (_x_0 : int list) = List.tl dws in\lbad_final_state\l(bad_next_state (List.hd _x_0)\l (bad_next_state (List.hd dws) \{w = 0; y = 0; v = 0\}))\l(List.tl _x_0)&quot;,shape=box,style=filled,color=&quot;green&quot;,fontname=&quot;courier&quot;,fontsize=14];
+call_533 -&gt; call_1049 [label=&quot;calls&quot;];
+call_862 [label=&quot;List.for_all (fun x -\&gt; x = -1 \|\| x = 0 \|\| x = 1) (List.tl (List.tl dws))&quot;,shape=box,style=filled,color=&quot;green&quot;,fontname=&quot;courier&quot;,fontsize=14];
+call_862 -&gt; call_1415 [label=&quot;calls&quot;];
+call_1049 [label=&quot;let (_x_0 : int list) = List.tl dws in\llet (_x_1 : int list) = List.tl _x_0 in\lbad_final_state\l(bad_next_state (List.hd _x_1)\l (bad_next_state (List.hd _x_0)\l  (bad_next_state (List.hd dws) \{w = 0; y = 0; v = 0\})))\l(List.tl _x_1)&quot;,shape=box,style=filled,color=&quot;green&quot;,fontname=&quot;courier&quot;,fontsize=14];
+call_1049 -&gt; call_1978 [label=&quot;calls&quot;];
+call_1415 [label=&quot;List.for_all (fun x -\&gt; x = -1 \|\| x = 0 \|\| x = 1)\l(List.tl (List.tl (List.tl dws)))&quot;,shape=box,style=filled,color=&quot;green&quot;,fontname=&quot;courier&quot;,fontsize=14];
+call_1415 -&gt; call_2367 [label=&quot;calls&quot;];
+call_1978 [label=&quot;let (_x_0 : int list) = List.tl dws in\llet (_x_1 : int list) = List.tl _x_0 in\llet (_x_2 : int list) = List.tl _x_1 in\lbad_final_state\l(bad_next_state (List.hd _x_2)\l (bad_next_state (List.hd _x_1)\l  (bad_next_state (List.hd _x_0)\l   (bad_next_state (List.hd dws) \{w = 0; y = 0; v = 0\}))))\l(List.tl _x_2)&quot;,shape=box,style=filled,color=&quot;yellow&quot;,fontname=&quot;courier&quot;,fontsize=14];
+call_2367 [label=&quot;List.for_all (fun x -\&gt; x = -1 \|\| x = 0 \|\| x = 1)\l(List.tl (List.tl (List.tl (List.tl dws))))&quot;,shape=box,style=filled,color=&quot;yellow&quot;,fontname=&quot;courier&quot;,fontsize=14];
 }
 </textarea><button class="btn btn-primary">Load graph</button><div class="imandra-graphviz-loading display-none">Loading..</div><div class="imandra-graphviz-target"></div><script>
 require(['nbextensions/nbimandra/graphviz'], function (graphviz) {
-  var target = '#graphviz-b532fdfe-8b61-4d8a-a23b-ce5b88428711';
+  var target = '#graphviz-5ccf49a8-8e59-4f0e-9fd4-b85aaeca5b9f';
   graphviz.hydrate(target);
 });
-</script></div></div><div class="tab-pane"><div class="imandra-proof-top"><div class="imandra-fold panel panel-default" id="fold-75b56a29-bdfb-44e4-8400-db9ce90f566e"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>proof attempt</span></div></div><div class="panel-body collapse"><div class="imandra-proof"><div class="imandra-alternatives" id="alt-621038dd-2dc5-4b24-8c78-4fcb19147cc1"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>summary</a></li><li class="" data-toggle="tab"><a>full</a></li><li class="" data-toggle="tab"><a>graph</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-table" id="table-270ceeb1-03f5-405e-81db-41388a1c303f"><table><tr><td><b>ground_instances</b></td><td>8</td></tr><tr><td><b>definitions</b></td><td>0</td></tr><tr><td><b>inductions</b></td><td>0</td></tr><tr><td><b>search_time</b></td><td><pre>0.030s</pre></td></tr><tr><td><b>details</b></td><td><div class="imandra-fold panel panel-default" id="fold-f1ccada8-d06a-4629-b089-734ff5095ffc"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><div class="imandra-table" id="table-a3166631-7606-454f-bef3-1b2332603d33"><table><tr><td><b>smt_stats</b></td><td><div class="imandra-table" id="table-10c85427-df4e-4c76-a229-c613337190bd"><table><tr><td><b>num checks</b></td><td>17</td></tr><tr><td><b>arith-assume-eqs</b></td><td>12</td></tr><tr><td><b>arith-make-feasible</b></td><td>227</td></tr><tr><td><b>arith-max-columns</b></td><td>61</td></tr><tr><td><b>arith-conflicts</b></td><td>3</td></tr><tr><td><b>rlimit count</b></td><td>17439</td></tr><tr><td><b>arith-cheap-eqs</b></td><td>200</td></tr><tr><td><b>mk clause</b></td><td>1041</td></tr><tr><td><b>datatype occurs check</b></td><td>183</td></tr><tr><td><b>mk bool var</b></td><td>730</td></tr><tr><td><b>arith-lower</b></td><td>307</td></tr><tr><td><b>arith-diseq</b></td><td>521</td></tr><tr><td><b>datatype splits</b></td><td>41</td></tr><tr><td><b>decisions</b></td><td>176</td></tr><tr><td><b>arith-propagations</b></td><td>421</td></tr><tr><td><b>propagations</b></td><td>1707</td></tr><tr><td><b>interface eqs</b></td><td>12</td></tr><tr><td><b>arith-bound-propagations-cheap</b></td><td>421</td></tr><tr><td><b>arith-max-rows</b></td><td>32</td></tr><tr><td><b>conflicts</b></td><td>53</td></tr><tr><td><b>datatype accessor ax</b></td><td>41</td></tr><tr><td><b>minimized lits</b></td><td>23</td></tr><tr><td><b>arith-bound-propagations-lp</b></td><td>139</td></tr><tr><td><b>datatype constructor ax</b></td><td>49</td></tr><tr><td><b>final checks</b></td><td>39</td></tr><tr><td><b>added eqs</b></td><td>1244</td></tr><tr><td><b>del clause</b></td><td>178</td></tr><tr><td><b>arith eq adapter</b></td><td>198</td></tr><tr><td><b>arith-upper</b></td><td>535</td></tr><tr><td><b>memory</b></td><td>48.290000</td></tr><tr><td><b>max memory</b></td><td>71.450000</td></tr><tr><td><b>num allocs</b></td><td>23932536791.000000</td></tr></table></div></td></tr></table></div></div><script>
+</script></div></div><div class="tab-pane"><div class="imandra-proof-top"><div class="imandra-fold panel panel-default" id="fold-571a7bd7-b66a-414c-a430-4ad7d475e02d"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>proof attempt</span></div></div><div class="panel-body collapse"><div class="imandra-proof"><div class="imandra-alternatives" id="alt-2881631c-00dd-4176-b020-b0e17ae124b0"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>summary</a></li><li class="" data-toggle="tab"><a>full</a></li><li class="" data-toggle="tab"><a>graph</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-table" id="table-28bdcc12-a960-47d9-96be-bd172b8aa7b8"><table><tr><td><b>ground_instances</b></td><td>8</td></tr><tr><td><b>definitions</b></td><td>0</td></tr><tr><td><b>inductions</b></td><td>0</td></tr><tr><td><b>search_time</b></td><td><pre>0.040s</pre></td></tr><tr><td><b>details</b></td><td><div class="imandra-fold panel panel-default" id="fold-697296f9-907c-4633-a360-44856a42000f"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><div class="imandra-table" id="table-94ea30a8-5831-400e-b77d-3343e75db0c7"><table><tr><td><b>smt_stats</b></td><td><div class="imandra-table" id="table-7150c319-2d5d-4615-a319-30d8347c0099"><table><tr><td><b>num checks</b></td><td>17</td></tr><tr><td><b>arith-assume-eqs</b></td><td>14</td></tr><tr><td><b>arith-make-feasible</b></td><td>180</td></tr><tr><td><b>arith-max-columns</b></td><td>65</td></tr><tr><td><b>arith-conflicts</b></td><td>4</td></tr><tr><td><b>rlimit count</b></td><td>15254</td></tr><tr><td><b>arith-cheap-eqs</b></td><td>109</td></tr><tr><td><b>mk clause</b></td><td>914</td></tr><tr><td><b>datatype occurs check</b></td><td>201</td></tr><tr><td><b>mk bool var</b></td><td>682</td></tr><tr><td><b>arith-lower</b></td><td>257</td></tr><tr><td><b>arith-diseq</b></td><td>407</td></tr><tr><td><b>datatype splits</b></td><td>41</td></tr><tr><td><b>decisions</b></td><td>165</td></tr><tr><td><b>arith-propagations</b></td><td>329</td></tr><tr><td><b>propagations</b></td><td>1553</td></tr><tr><td><b>interface eqs</b></td><td>14</td></tr><tr><td><b>arith-bound-propagations-cheap</b></td><td>329</td></tr><tr><td><b>arith-max-rows</b></td><td>36</td></tr><tr><td><b>conflicts</b></td><td>51</td></tr><tr><td><b>datatype accessor ax</b></td><td>41</td></tr><tr><td><b>minimized lits</b></td><td>13</td></tr><tr><td><b>arith-bound-propagations-lp</b></td><td>108</td></tr><tr><td><b>datatype constructor ax</b></td><td>49</td></tr><tr><td><b>final checks</b></td><td>41</td></tr><tr><td><b>added eqs</b></td><td>1001</td></tr><tr><td><b>del clause</b></td><td>168</td></tr><tr><td><b>arith eq adapter</b></td><td>159</td></tr><tr><td><b>arith-upper</b></td><td>421</td></tr><tr><td><b>memory</b></td><td>41.100000</td></tr><tr><td><b>max memory</b></td><td>71.410000</td></tr><tr><td><b>num allocs</b></td><td>20817927226.000000</td></tr></table></div></td></tr></table></div></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-f1ccada8-d06a-4629-b089-734ff5095ffc';
+  var target = '#fold-697296f9-907c-4633-a360-44856a42000f';
   fold.hydrate(target);
 });
-</script></div></td></tr></table></div></div><div class="tab-pane"><div class="imandra-fold panel panel-default" id="fold-77238dea-c7fb-4319-88e0-ff64da50d05d"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.030s]
+</script></div></td></tr></table></div></div><div class="tab-pane"><div class="imandra-fold panel panel-default" id="fold-83474a38-69d7-4b86-92d4-89ddfdc7ec42"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.040s]
   let (_x_0 : int) = (bad_final_state {w = 0; y = 0; v = 0} :var_0:).y in
   List.for_all (fun x -&gt; x = -1 || x = 0 || x = 1) :var_0:
-  ==&gt; -3 &lt;= _x_0 &amp;&amp; _x_0 &lt;= 3</pre></li><li><div><h4>simplify</h4><div class="imandra-table" id="table-e33fe092-9f64-4661-93c2-0cb28d60f01d"><table><tr><td><b>into</b></td><td><pre>let (_x_0 : int) = (bad_final_state {w = 0; y = 0; v = 0} :var_0:).y in
+  ==&gt; -3 &lt;= _x_0 &amp;&amp; _x_0 &lt;= 3</pre></li><li><div><h4>simplify</h4><div class="imandra-table" id="table-753e993e-f13a-41f0-a49f-a1c955d1e4d5"><table><tr><td><b>into</b></td><td><pre>let (_x_0 : int) = (bad_final_state {w = 0; y = 0; v = 0} :var_0:).y in
 not (List.for_all (fun x -&gt; x = -1 || x = 0 || x = 1) :var_0:)
-|| -3 &lt;= _x_0 &amp;&amp; _x_0 &lt;= 3</pre></td></tr><tr><td><b>expansions</b></td><td><pre>[]</pre></td></tr><tr><td><b>rewrite_steps</b></td><td><ul></ul></td></tr><tr><td><b>forward_chaining</b></td><td><ul></ul></td></tr></table></div></div></li><li><div>unroll<div class="imandra-table" id="table-b82e2a18-ad8c-41b3-af2e-c76fc5fb41f4"><table><tr><td><b>expr</b></td><td><pre>(bad_final_state_94 (|rec_mk.state_4947| 0 0 0) dws_4941)</pre></td></tr><tr><td><b>expansions</b></td><td><ul></ul></td></tr></table></div></div></li><li><div>unroll<div class="imandra-table" id="table-45dcf68b-399f-4e17-bbc9-471b3975591e"><table><tr><td><b>expr</b></td><td><pre>(|`List.for_all anon_fun.arbitrary_delta_ws.1[0]`_4943| dws_4941)</pre></td></tr><tr><td><b>expansions</b></td><td><ul></ul></td></tr></table></div></div></li><li><div>unroll<div class="imandra-table" id="table-a119e025-155c-4e09-a9e3-7f17f179ebec"><table><tr><td><b>expr</b></td><td><pre>(bad_final_state_94
-  (bad_next_state_91 (|get.::.0_4939| dws_4941) (|rec_mk.state_4947| 0 0 0))
-  (…</pre></td></tr><tr><td><b>expansions</b></td><td><ul></ul></td></tr></table></div></div></li><li><div>unroll<div class="imandra-table" id="table-fa65c907-984f-434c-833f-c3af6384d19b"><table><tr><td><b>expr</b></td><td><pre>(|`List.for_all anon_fun.arbitrary_delta_ws.1[0]`_4943|
-  (|get.::.1_4940| dws_4941))</pre></td></tr><tr><td><b>expansions</b></td><td><ul></ul></td></tr></table></div></div></li><li><div>unroll<div class="imandra-table" id="table-aaf4e19a-e088-45d0-98c8-d69ec90fb348"><table><tr><td><b>expr</b></td><td><pre>(bad_final_state_94
+|| -3 &lt;= _x_0 &amp;&amp; _x_0 &lt;= 3</pre></td></tr><tr><td><b>expansions</b></td><td><pre>[]</pre></td></tr><tr><td><b>rewrite_steps</b></td><td><ul></ul></td></tr><tr><td><b>forward_chaining</b></td><td><ul></ul></td></tr></table></div></div></li><li><div>unroll<div class="imandra-table" id="table-a77afb4c-158b-480d-82cc-de09403e8ac3"><table><tr><td><b>expr</b></td><td><pre>(bad_final_state_94 (|rec_mk.state_4762| 0 0 0) dws_4756)</pre></td></tr><tr><td><b>expansions</b></td><td><ul></ul></td></tr></table></div></div></li><li><div>unroll<div class="imandra-table" id="table-fd3b7ea3-2c74-4def-b15f-e9705e390806"><table><tr><td><b>expr</b></td><td><pre>(|`List.for_all anon_fun.arbitrary_delta_ws.1[0]`_4758| dws_4756)</pre></td></tr><tr><td><b>expansions</b></td><td><ul></ul></td></tr></table></div></div></li><li><div>unroll<div class="imandra-table" id="table-c5700b5f-4e32-4264-a356-446feacda639"><table><tr><td><b>expr</b></td><td><pre>(bad_final_state_94
+  (bad_next_state_91 (|get.::.0_4754| dws_4756) (|rec_mk.state_4762| 0 0 0))
+  (…</pre></td></tr><tr><td><b>expansions</b></td><td><ul></ul></td></tr></table></div></div></li><li><div>unroll<div class="imandra-table" id="table-f79605e7-4b26-4e13-a77d-192b6d885dca"><table><tr><td><b>expr</b></td><td><pre>(|`List.for_all anon_fun.arbitrary_delta_ws.1[0]`_4758|
+  (|get.::.1_4755| dws_4756))</pre></td></tr><tr><td><b>expansions</b></td><td><ul></ul></td></tr></table></div></div></li><li><div>unroll<div class="imandra-table" id="table-ebd26d52-feb4-4396-a099-2154a9ffd02b"><table><tr><td><b>expr</b></td><td><pre>(bad_final_state_94
   (bad_next_state_91
-    (|get.::.0_4939| (|get.::.1_4940| dws_4941))
-    (bad_n…</pre></td></tr><tr><td><b>expansions</b></td><td><ul></ul></td></tr></table></div></div></li><li><div>unroll<div class="imandra-table" id="table-ce2a9a96-104b-4ec3-8628-d8afb716fc89"><table><tr><td><b>expr</b></td><td><pre>(|`List.for_all anon_fun.arbitrary_delta_ws.1[0]`_4943|
-  (|get.::.1_4940| (|get.::.1_4940| dws_4941…</pre></td></tr><tr><td><b>expansions</b></td><td><ul></ul></td></tr></table></div></div></li><li><div>unroll<div class="imandra-table" id="table-f9e5e8f1-0d79-457f-a4d6-52d06138f082"><table><tr><td><b>expr</b></td><td><pre>(let ((a!1 (bad_next_state_91
-             (|get.::.0_4939| (|get.::.1_4940| (|get.::.1_4940| dws_49…</pre></td></tr><tr><td><b>expansions</b></td><td><ul></ul></td></tr></table></div></div></li><li><div>unroll<div class="imandra-table" id="table-fe0a3368-52fd-4ddb-9c2c-bb4cfba7426c"><table><tr><td><b>expr</b></td><td><pre>(|`List.for_all anon_fun.arbitrary_delta_ws.1[0]`_4943|
-  (|get.::.1_4940| (|get.::.1_4940| (|get.::…</pre></td></tr><tr><td><b>expansions</b></td><td><ul></ul></td></tr></table></div></div></li><li>Sat (Some  let (dws : int list) = [1; 1; 1]
+    (|get.::.0_4754| (|get.::.1_4755| dws_4756))
+    (bad_n…</pre></td></tr><tr><td><b>expansions</b></td><td><ul></ul></td></tr></table></div></div></li><li><div>unroll<div class="imandra-table" id="table-5cb5f457-cf15-4760-8451-7f7b0ae4e664"><table><tr><td><b>expr</b></td><td><pre>(|`List.for_all anon_fun.arbitrary_delta_ws.1[0]`_4758|
+  (|get.::.1_4755| (|get.::.1_4755| dws_4756…</pre></td></tr><tr><td><b>expansions</b></td><td><ul></ul></td></tr></table></div></div></li><li><div>unroll<div class="imandra-table" id="table-4826ccc1-a758-4050-9b2e-bbdd005b0dd9"><table><tr><td><b>expr</b></td><td><pre>(let ((a!1 (bad_next_state_91
+             (|get.::.0_4754| (|get.::.1_4755| (|get.::.1_4755| dws_47…</pre></td></tr><tr><td><b>expansions</b></td><td><ul></ul></td></tr></table></div></div></li><li><div>unroll<div class="imandra-table" id="table-14ae16b5-94af-43b8-84a9-a74647471726"><table><tr><td><b>expr</b></td><td><pre>(|`List.for_all anon_fun.arbitrary_delta_ws.1[0]`_4758|
+  (|get.::.1_4755| (|get.::.1_4755| (|get.::…</pre></td></tr><tr><td><b>expansions</b></td><td><ul></ul></td></tr></table></div></div></li><li>Sat (Some  let (dws : int list) = [1; 1; 1]
 )</li></ul></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-77238dea-c7fb-4319-88e0-ff64da50d05d';
+  var target = '#fold-83474a38-69d7-4b86-92d4-89ddfdc7ec42';
   fold.hydrate(target);
 });
-</script></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-7e2a7b42-1dd5-4d83-aff0-9d366d9c4b30"><textarea style="display: none">digraph &quot;proof&quot; {
-p_338 [label=&quot;Start (let (_x_0 : int) = (bad_final_state \{w = 0; y = 0; v = 0\} :var_0:).y\l       in\l       List.for_all (fun x -\&gt; x = -1 \|\| x = 0 \|\| x = 1) :var_0:\l       ==\&gt; -3 \&lt;= _x_0 &amp;&amp; _x_0 \&lt;= 3 :time 0.030s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
-p_338 -&gt; p_337 [label=&quot;&quot;];
-p_337 [label=&quot;Simplify (let (_x_0 : int)\l              = (bad_final_state \{w = 0; y = 0; v = 0\} :var_0:).y\l          in\l          not (List.for_all (fun x -\&gt; x = -1 \|\| x = 0 \|\| x = 1) :var_0:)\l          \|\| -3 \&lt;= _x_0 &amp;&amp; _x_0 \&lt;= 3 :expansions [] :rw [] :fc [])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
-p_337 -&gt; p_336 [label=&quot;&quot;];
-p_336 [label=&quot;Unroll ([bad_final_state \{w = 0; y = 0; v = 0\} dws], [[]])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
-p_336 -&gt; p_335 [label=&quot;&quot;];
-p_335 [label=&quot;Unroll ([List.for_all (fun x -\&gt; x = -1 \|\| x = 0 \|\| x = 1) dws], [[]])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
-p_335 -&gt; p_334 [label=&quot;&quot;];
-p_334 [label=&quot;Unroll ([bad_final_state (bad_next_state (List.hd dws) \{w = 0; y = 0; v = 0\})\l         (List.tl dws)],\l        [[]])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
-p_334 -&gt; p_333 [label=&quot;&quot;];
-p_333 [label=&quot;Unroll ([List.for_all (fun x -\&gt; x = -1 \|\| x = 0 \|\| x = 1) (List.tl dws)],\l        [[]])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
-p_333 -&gt; p_332 [label=&quot;&quot;];
-p_332 [label=&quot;Unroll ([let (_x_0 : int list) = List.tl dws in\l         bad_final_state\l         (bad_next_state (List.hd _x_0)\l          (bad_next_state (List.hd dws) \{w = 0; y = 0; v = 0\}))\l         (List.tl _x_0)],\l        [[]])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+</script></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-47c3c1d6-196c-4231-a80d-f07281ce1ea3"><textarea style="display: none">digraph &quot;proof&quot; {
+p_332 [label=&quot;Start (let (_x_0 : int) = (bad_final_state \{w = 0; y = 0; v = 0\} :var_0:).y\l       in\l       List.for_all (fun x -\&gt; x = -1 \|\| x = 0 \|\| x = 1) :var_0:\l       ==\&gt; -3 \&lt;= _x_0 &amp;&amp; _x_0 \&lt;= 3 :time 0.040s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_332 -&gt; p_331 [label=&quot;&quot;];
-p_331 [label=&quot;Unroll ([List.for_all (fun x -\&gt; x = -1 \|\| x = 0 \|\| x = 1)\l         (List.tl (List.tl dws))],\l        [[]])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+p_331 [label=&quot;Simplify (let (_x_0 : int)\l              = (bad_final_state \{w = 0; y = 0; v = 0\} :var_0:).y\l          in\l          not (List.for_all (fun x -\&gt; x = -1 \|\| x = 0 \|\| x = 1) :var_0:)\l          \|\| -3 \&lt;= _x_0 &amp;&amp; _x_0 \&lt;= 3 :expansions [] :rw [] :fc [])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_331 -&gt; p_330 [label=&quot;&quot;];
-p_330 [label=&quot;Unroll ([let (_x_0 : int list) = List.tl dws in\l         let (_x_1 : int list) = List.tl _x_0 in\l         bad_final_state\l         (bad_next_state (List.hd _x_1)\l          (bad_next_state (List.hd _x_0)\l           (bad_next_state (List.hd dws) \{w = 0; y = 0; v = 0\})))\l         (List.tl _x_1)],\l        [[]])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+p_330 [label=&quot;Unroll ([bad_final_state \{w = 0; y = 0; v = 0\} dws], [[]])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_330 -&gt; p_329 [label=&quot;&quot;];
-p_329 [label=&quot;Unroll ([List.for_all (fun x -\&gt; x = -1 \|\| x = 0 \|\| x = 1)\l         (List.tl (List.tl (List.tl dws)))],\l        [[]])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+p_329 [label=&quot;Unroll ([List.for_all (fun x -\&gt; x = -1 \|\| x = 0 \|\| x = 1) dws], [[]])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_329 -&gt; p_328 [label=&quot;&quot;];
-p_328 [label=&quot;Sat (Some  let (dws : int list) = [1; 1; 1]\l)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+p_328 [label=&quot;Unroll ([bad_final_state (bad_next_state (List.hd dws) \{w = 0; y = 0; v = 0\})\l         (List.tl dws)],\l        [[]])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+p_328 -&gt; p_327 [label=&quot;&quot;];
+p_327 [label=&quot;Unroll ([List.for_all (fun x -\&gt; x = -1 \|\| x = 0 \|\| x = 1) (List.tl dws)],\l        [[]])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+p_327 -&gt; p_326 [label=&quot;&quot;];
+p_326 [label=&quot;Unroll ([let (_x_0 : int list) = List.tl dws in\l         bad_final_state\l         (bad_next_state (List.hd _x_0)\l          (bad_next_state (List.hd dws) \{w = 0; y = 0; v = 0\}))\l         (List.tl _x_0)],\l        [[]])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+p_326 -&gt; p_325 [label=&quot;&quot;];
+p_325 [label=&quot;Unroll ([List.for_all (fun x -\&gt; x = -1 \|\| x = 0 \|\| x = 1)\l         (List.tl (List.tl dws))],\l        [[]])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+p_325 -&gt; p_324 [label=&quot;&quot;];
+p_324 [label=&quot;Unroll ([let (_x_0 : int list) = List.tl dws in\l         let (_x_1 : int list) = List.tl _x_0 in\l         bad_final_state\l         (bad_next_state (List.hd _x_1)\l          (bad_next_state (List.hd _x_0)\l           (bad_next_state (List.hd dws) \{w = 0; y = 0; v = 0\})))\l         (List.tl _x_1)],\l        [[]])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+p_324 -&gt; p_323 [label=&quot;&quot;];
+p_323 [label=&quot;Unroll ([List.for_all (fun x -\&gt; x = -1 \|\| x = 0 \|\| x = 1)\l         (List.tl (List.tl (List.tl dws)))],\l        [[]])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+p_323 -&gt; p_322 [label=&quot;&quot;];
+p_322 [label=&quot;Sat (Some  let (dws : int list) = [1; 1; 1]\l)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 }
 </textarea><button class="btn btn-primary">Load graph</button><div class="imandra-graphviz-loading display-none">Loading..</div><div class="imandra-graphviz-target"></div><script>
 require(['nbextensions/nbimandra/graphviz'], function (graphviz) {
-  var target = '#graphviz-7e2a7b42-1dd5-4d83-aff0-9d366d9c4b30';
+  var target = '#graphviz-47c3c1d6-196c-4231-a80d-f07281ce1ea3';
   graphviz.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-621038dd-2dc5-4b24-8c78-4fcb19147cc1';
+  var target = '#alt-2881631c-00dd-4176-b020-b0e17ae124b0';
   alternatives.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-75b56a29-bdfb-44e4-8400-db9ce90f566e';
+  var target = '#fold-571a7bd7-b66a-414c-a430-4ad7d475e02d';
   fold.hydrate(target);
 });
 </script></div></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-b1db0543-9446-4d02-a8a3-958b56378fe7';
+  var target = '#alt-c208de19-c4a8-4934-989e-5663eff2527f';
   alternatives.hydrate(target);
 });
 </script></div></div></div>
@@ -3331,7 +3296,7 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
             </footer>
         </div>
     
- 
+
 
 
     <script>
