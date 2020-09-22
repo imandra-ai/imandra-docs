@@ -7,51 +7,65 @@ slug: installation-server-image
 
 # Prerequisites
 
-You'll need to have pre-agreed access to an `imandra-server` image repository with us for this to work, `imandra-server` is not available as standard.
+You'll need to have pre-agreed access to `imandra-server` local installation with us for this to work, `imandra-server` is not available locally as standard.
 
-You'll also need `docker` installed and authenticated to the `imandra-server` image repository. Make sure you're able to run a pull command from the repo without issue, e.g.:
-
-```shell
-$ docker login
-$ docker pull imandra/imandra-server:latest
-```
+You'll also need `docker` installed so the Imandra clients can run the `imandra-server` docker image.
 
 # Installation
 
-First, run the normal installation process, following the [Simple installation instructions](Installation%20-%20Simple.md).
+## Imandra client
 
-Next, tell the Imandra binaries where your `imandra-server` image is located:
+First, run the normal local Imandra client installation process, following the [Simple installation instructions](Installation%20-%20Simple.md).
+
+Next, tell your Imandra client to use a local docker image for `imandra-server`:
 
 ```shell
 $ echo 'imandra/imandra-server' > ~/.imandra/server-image
 ```
 
-This configures the local Imandra clients to launch the server component locally inside a docker. Make sure you do not specify a `:version` tag at the end of the url - this is set automatically by the client so the correct server version is run against the currently installed version of the Imandra client.
+Your local Imandra clients will now try to launch the server component locally inside a docker container. To switch back to using our cloud for `imandra-server`, remove the `~/.imandra/server-image` file.
 
-Now you should be able to use Imandra Core commands, such as `imandra core repl` and the Imandra VSCode extension without connecting to our reasoning cloud.
+## Imandra server
 
-## Server image tarball setup
+We provide access to a Docker registry containing the `imandra-server` image, but initially we may provide the image in the form of a `.tar.gz` archive while we're coordinating access.
 
-We may provide you with a `.tar.gz` file containing the `imandra-server` image while we're setting up docker repo access. Note that this will only be a single version of the `server`, and will not work after `imandra-client` upgrades itself - you will need full docker repo access for ongoing updates to work correctly.
+Note that the `.tar.gz` archive only contains a single version of the server image and may stop working as your local Imandra clients auto-update.
 
-The `.tar.gz` file can be loaded into a local docker image as a substitute for `docker pull` from our registry:
+### Loading the `.tar.gz` image into docker
+
+The `.tar.gz` archive can be loaded into a local docker image as a substitute for it being fetched automatically from our registry (substituting `<server-version>` with the value in your tar archive filename):
 
 ```shell
 $ docker load -i imandra-server_<server-version>.tar.gz
 Loaded image: imandra/imandra-server:<server-version>
 ```
 
-Docker will now be able to resolve the image when the Imandra clients attempt to start `imandra-server`.
-
-If your `imandra-client` has already upgraded to a newer version automatically, you can install a specific version of the `imandra-client` using:
+You can check which version of `imandra-server` your local Imandra installation expects by running:
 
 ```shell
-$ sh <(curl -s "https://storage.googleapis.com/imandra-installer/install-<installer-version>.sh")
-```
-NOTE: the version number for the installer is different from the version number for the server! Make sure you use the correct pair of installer+server image versions provided by us.
+$ imandra core repl -no-backend -v
+Imandra v1.0.5
+(c)Copyright Imandra Inc., 2014-2020. All rights reserved.
 
-You can then launch a repl skipping auto-update using the `--skip-update` flag, which will keep you on the version you have a server image for:
+* Build commit ID <server-version>.
+```
+
+and observing the value of `<server-version>` that is output. If the version doesn't match, please contact us for an updated server `.tar.gz` archive for the newer version, or for image repository access.
+
+### Configuring image fetch from our image repository
+
+If we've configured your access to our image repository, you will need to login with `docker` on the authenticated dockerhub account:
 
 ```shell
-$ imandra core repl --skip-update
+$ docker login
 ```
+
+Make sure you can pull an image from the repository without issue to confirm everything is setup:
+
+```shell
+$ docker pull imandra/imandra-server:latest
+```
+
+The Imandra client should now fetch new server images at the correct version automatically.
+
+Now you should be able to use Imandra Core commands, such as `imandra core repl` and the Imandra VSCode extension without connecting to our reasoning cloud.
