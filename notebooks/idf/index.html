@@ -1893,8 +1893,8 @@ val full_node : IDF.node = &lt;abstr&gt;
 
 <div class="output_text output_subarea output_execute_result">
 <pre>val samples : TPL.c list =
-  [Decomp.State_machine.Add (Decomp.State_machine.Int 1336);
-   Decomp.State_machine.Add (Decomp.State_machine.Int 7665)]
+  [Decomp.State_machine.Add (Decomp.State_machine.Int 9001);
+   Decomp.State_machine.Add (Decomp.State_machine.Int 9039)]
 </pre>
 </div>
 
@@ -1944,10 +1944,10 @@ val full_node : IDF.node = &lt;abstr&gt;
 <div class="output_text output_subarea output_execute_result">
 <pre>val replayed_node : IDF.replay_sample list =
   [{IDF.state_before = 0;
-    event = Decomp.State_machine.Add (Decomp.State_machine.Int 1336);
-    state_after = 1336};
-   {IDF.state_before = 1336;
-    event = Decomp.State_machine.Add (Decomp.State_machine.Int 7665);
+    event = Decomp.State_machine.Add (Decomp.State_machine.Int 9001);
+    state_after = 0};
+   {IDF.state_before = 0;
+    event = Decomp.State_machine.Add (Decomp.State_machine.Int 9039);
     state_after = 0}]
 </pre>
 </div>
@@ -2009,10 +2009,10 @@ val full_node : IDF.node = &lt;abstr&gt;
    Constraints:
      [ (List.hd e) is SM.Add
      ; Destruct(SM.Add, 0, (List.hd e)) is SM.Int
-     ; 50 &lt; Destruct(SM.Int, 0, Destruct(SM.Add, 0, (List.hd e))) &lt;= 9000
+     ; Destruct(SM.Int, 0, Destruct(SM.Add, 0, (List.hd e))) &gt; 9000
      ; (List.tl e) = [] ]
    Invariant:
-     F = Destruct(SM.Int, 0, Destruct(SM.Add, 0, (List.hd e)))
+     F = 0
     -------------;
    ---[region]---
    Constraints:
@@ -2020,14 +2020,9 @@ val full_node : IDF.node = &lt;abstr&gt;
      ; (List.hd e) is SM.Add
      ; (List.hd (List.tl e)) is SM.Add
      ; Destruct(SM.Add, 0, (List.hd (List.tl e))) is SM.Int
-     ; 50 &lt; Destruct(SM.Int, 0, Destruct(SM.Add, 0, (List.hd e))) &lt;= 9000
-     ; Destruct(SM.Int, 0, Destruct(SM.Add, 0, (List.hd (List.tl e)))) &gt; 0
-     ; Destruct(SM.Int, 0, Destruct(SM.Add, 0, (List.hd e))) &lt;&gt; 1337
-     ; (Destruct(SM.Int, 0, Destruct(SM.Add, 0, (List.hd (List.tl e)))) +
-          Destruct(SM.Int, 0, Destruct(SM.Add, 0, (List.hd e))))
-         &gt; 9000
-     ; (List.tl (List.tl e)) = []
-     ; Destruct(SM.Int, 0, Destruct(SM.Add, 0, (List.hd (List.tl e)))) &lt;&gt; 0 ]
+     ; Destruct(SM.Int, 0, Destruct(SM.Add, 0, (List.hd e))) &gt; 9000
+     ; Destruct(SM.Int, 0, Destruct(SM.Add, 0, (List.hd (List.tl e)))) &gt; 9000
+     ; (List.tl (List.tl e)) = [] ]
    Invariant:
      F = 0
     -------------]
