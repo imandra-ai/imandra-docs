@@ -1339,6 +1339,7 @@ val root_ZHMySlZ5akVYU1JPYmZKVm1UMGh0YUI4VDhBdTZJRFZ6TkRLTWJrcnk5RQ :
   Model.message list -&gt; Model.counter_state = &lt;fun&gt;
 module IDF :
   sig
+    type pol = IDF.pol = Valid | Invalid | No | Custom of string
     module DSM :
       sig
         module State_machine :
@@ -1439,7 +1440,7 @@ module IDF :
     type target_step =
       IDF.target_step = {
       event : DSM.Template.t;
-      valid_pol : bool option;
+      valid_pol : pol;
       region_expander : region_expander option;
     }
     val target_steps : node -&gt; target_step list list
@@ -1458,7 +1459,7 @@ module IDF :
     val add :
       runner:runner -&gt;
       g:G.t -&gt;
-      ?valid_pol:bool option list -&gt;
+      ?valid_pol:pol list -&gt;
       ?region_expander:region_expander list -&gt; target -&gt; unit
     val run : runner -&gt; unit -&gt; unit
     val decompose :
@@ -1466,21 +1467,21 @@ module IDF :
       ?basis:string list -&gt;
       ?expanding:string list -&gt;
       ?assuming:string -&gt;
-      ?valid_pol:bool option list -&gt;
+      ?valid_pol:pol list -&gt;
       ?region_expander:region_expander list -&gt; target -&gt; unit -&gt; unit
   end
 val g : IDF.G.t = &lt;abstr&gt;
-val guard_ZHMySlZ5akVYU1JPYmZKVm1UMGh0YUI4VDhBdTZJRFZ6TkRLTWJrcnk5RQ_RGVjb21wLlRlbXBsYXRlLkFueTpTb21lIHRydWU_true :
+val guard_ZHMySlZ5akVYU1JPYmZKVm1UMGh0YUI4VDhBdTZJRFZ6TkRLTWJrcnk5RQ_RGVjb21wLlRlbXBsYXRlLkFueTpWYWxpZA_true :
   Model.message list -&gt; bool = &lt;fun&gt;
-val target_ZHMySlZ5akVYU1JPYmZKVm1UMGh0YUI4VDhBdTZJRFZ6TkRLTWJrcnk5RQ_RGVjb21wLlRlbXBsYXRlLkFueTpTb21lIHRydWU_true :
+val target_ZHMySlZ5akVYU1JPYmZKVm1UMGh0YUI4VDhBdTZJRFZ6TkRLTWJrcnk5RQ_RGVjb21wLlRlbXBsYXRlLkFueTpWYWxpZA_true :
   Model.message list -&gt; Model.counter_state = &lt;fun&gt;
-val guard_ZHMySlZ5akVYU1JPYmZKVm1UMGh0YUI4VDhBdTZJRFZ6TkRLTWJrcnk5RQ_RGVjb21wLlRlbXBsYXRlLkFueTpTb21lIHRydWUsRGVjb21wLlRlbXBsYXRlLkFueTpTb21lIHRydWVEZWNvbXAuVGVtcGxhdGUuQWRkOlNvbWUgdHJ1ZQ_true :
+val guard_ZHMySlZ5akVYU1JPYmZKVm1UMGh0YUI4VDhBdTZJRFZ6TkRLTWJrcnk5RQ_RGVjb21wLlRlbXBsYXRlLkFueTpWYWxpZCxEZWNvbXAuVGVtcGxhdGUuQW55OlZhbGlkRGVjb21wLlRlbXBsYXRlLkFkZDpWYWxpZA_true :
   Model.message list -&gt; bool = &lt;fun&gt;
-val target_ZHMySlZ5akVYU1JPYmZKVm1UMGh0YUI4VDhBdTZJRFZ6TkRLTWJrcnk5RQ_RGVjb21wLlRlbXBsYXRlLkFueTpTb21lIHRydWUsRGVjb21wLlRlbXBsYXRlLkFueTpTb21lIHRydWVEZWNvbXAuVGVtcGxhdGUuQWRkOlNvbWUgdHJ1ZQ_true :
+val target_ZHMySlZ5akVYU1JPYmZKVm1UMGh0YUI4VDhBdTZJRFZ6TkRLTWJrcnk5RQ_RGVjb21wLlRlbXBsYXRlLkFueTpWYWxpZCxEZWNvbXAuVGVtcGxhdGUuQW55OlZhbGlkRGVjb21wLlRlbXBsYXRlLkFkZDpWYWxpZA_true :
   Model.message list -&gt; Model.counter_state = &lt;fun&gt;
-val guard_ZHMySlZ5akVYU1JPYmZKVm1UMGh0YUI4VDhBdTZJRFZ6TkRLTWJrcnk5RQ_RGVjb21wLlRlbXBsYXRlLkFueTpTb21lIHRydWUsRGVjb21wLlRlbXBsYXRlLkFueTpTb21lIHRydWVEZWNvbXAuVGVtcGxhdGUuQWRkOlNvbWUgdHJ1ZSxEZWNvbXAuVGVtcGxhdGUuQW55OlNvbWUgdHJ1ZURlY29tcC5UZW1wbGF0ZS5BZGQ6U29tZSB0cnVlRGVjb21wLlRlbXBsYXRlLkFueTpTb21lIHRydWU_true :
+val guard_ZHMySlZ5akVYU1JPYmZKVm1UMGh0YUI4VDhBdTZJRFZ6TkRLTWJrcnk5RQ_RGVjb21wLlRlbXBsYXRlLkFueTpWYWxpZCxEZWNvbXAuVGVtcGxhdGUuQW55OlZhbGlkRGVjb21wLlRlbXBsYXRlLkFkZDpWYWxpZCxEZWNvbXAuVGVtcGxhdGUuQW55OlZhbGlkRGVjb21wLlRlbXBsYXRlLkFkZDpWYWxpZERlY29tcC5UZW1wbGF0ZS5Bbnk6VmFsaWQ_true :
   Model.message list -&gt; bool = &lt;fun&gt;
-val target_ZHMySlZ5akVYU1JPYmZKVm1UMGh0YUI4VDhBdTZJRFZ6TkRLTWJrcnk5RQ_RGVjb21wLlRlbXBsYXRlLkFueTpTb21lIHRydWUsRGVjb21wLlRlbXBsYXRlLkFueTpTb21lIHRydWVEZWNvbXAuVGVtcGxhdGUuQWRkOlNvbWUgdHJ1ZSxEZWNvbXAuVGVtcGxhdGUuQW55OlNvbWUgdHJ1ZURlY29tcC5UZW1wbGF0ZS5BZGQ6U29tZSB0cnVlRGVjb21wLlRlbXBsYXRlLkFueTpTb21lIHRydWU_true :
+val target_ZHMySlZ5akVYU1JPYmZKVm1UMGh0YUI4VDhBdTZJRFZ6TkRLTWJrcnk5RQ_RGVjb21wLlRlbXBsYXRlLkFueTpWYWxpZCxEZWNvbXAuVGVtcGxhdGUuQW55OlZhbGlkRGVjb21wLlRlbXBsYXRlLkFkZDpWYWxpZCxEZWNvbXAuVGVtcGxhdGUuQW55OlZhbGlkRGVjb21wLlRlbXBsYXRlLkFkZDpWYWxpZERlY29tcC5UZW1wbGF0ZS5Bbnk6VmFsaWQ_true :
   Model.message list -&gt; Model.counter_state = &lt;fun&gt;
 - : unit = ()
 </pre>
@@ -2453,7 +2454,7 @@ val rs : Top_result.modular_region list =
 
 
 <div class="output_html rendered_html output_subarea ">
-<div class="imandra-alternatives" id="alt-460447cf-eb8a-46b9-9eab-819cb71e5659"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi (2 of 2)</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-0250d11e-7186-40b1-8a7a-629d450a23e1" class="decompose"><textarea class="display-none">{
+<div class="imandra-alternatives" id="alt-22d5ca41-b009-4230-9ec7-370c608f8bd5"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi (2 of 2)</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-f3f64ec8-cd1f-4dac-9a6e-0673b4f5d5c2" class="decompose"><textarea class="display-none">{
   &quot;regions&quot;: [
     {
       &quot;constraints&quot;: [ &quot;not (Set.subset x y)&quot; ],
@@ -2479,13 +2480,13 @@ val rs : Top_result.modular_region list =
 }</textarea><div class="decompose-foamtree"></div><div class="decompose-details"><div class="decompose-details-header">Regions details</div><div class="decompose-details-no-selection"><p>No group selected.</p><ul><li>Concrete regions are numbered</li><li>Unnumbered regions are groups whose children share a particular constraint</li><li>Click on a region to view its details</li><li>Double click on a region to zoom in on it</li><li>Shift+double click to zoom out</li><li>Hit escape to reset back to the top</li></ul></div><div class="decompose-details-selection hidden"><div><span class="decompose-details-label">Direct sub-regions: </span><span class="decompose-details-direct-sub-regions-text">-</span></div><div><span class="decompose-details-label">Contained regions: </span><span class="decompose-details-contained-regions-text">-</span></div><div class="decompose-details-section-header">Constraints</div><div class="decompose-details-constraints"><pre class="decompose-details-constraint">&lt;constraint&gt;</pre></div><div class="decompose-details-invariant"><div class="decompose-details-section-header">Invariant</div><pre class="decompose-details-invariant-text">&lt;invariant&gt;</pre></div></div></div><script>
 (function () {
   require(['nbextensions/nbimandra/regions'], function (regions) {
-    var target = '#decompose-0250d11e-7186-40b1-8a7a-629d450a23e1';
+    var target = '#decompose-f3f64ec8-cd1f-4dac-9a6e-0673b4f5d5c2';
     regions.hydrate(target);
   });
 })();
-</script></div></div><div class="tab-pane"><div><div>decomp of (f x, y, z<div class="imandra-table" id="table-0dd88bb4-6cef-4228-bdf5-94ed726eafad"><table><thead><tr><th>Reg_id</th><th>Constraints</th><th>Invariant</th></tr></thead><tr><td>1</td><td><ul><li><pre>not (Set.subset x y)</pre></li></ul></td><td><pre>Set.add z Set.empty</pre></td></tr><tr><td>0</td><td><ul><li><pre>Set.subset x y</pre></li></ul></td><td><pre>Set.add z x</pre></td></tr></table></div></div></div></div></div><script>
+</script></div></div><div class="tab-pane"><div><div>decomp of (f x, y, z<div class="imandra-table" id="table-93a82df1-791e-4920-941c-c94d92f64d64"><table><thead><tr><th>Reg_id</th><th>Constraints</th><th>Invariant</th></tr></thead><tr><td>1</td><td><ul><li><pre>not (Set.subset x y)</pre></li></ul></td><td><pre>Set.add z Set.empty</pre></td></tr><tr><td>0</td><td><ul><li><pre>Set.subset x y</pre></li></ul></td><td><pre>Set.add z x</pre></td></tr></table></div></div></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-460447cf-eb8a-46b9-9eab-819cb71e5659';
+  var target = '#alt-22d5ca41-b009-4230-9ec7-370c608f8bd5';
   alternatives.hydrate(target);
 });
 </script></div>
@@ -3278,7 +3279,7 @@ Region   Probability
 
 
 <div class="output_html rendered_html output_subarea ">
-<div class="imandra-alternatives" id="alt-15fbc5bf-9a4b-4730-aa33-d0164d1d7a96"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi (8 of 8)</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-753e9e2b-5e64-4e8b-8a36-f6897b89456d" class="decompose"><textarea class="display-none">{
+<div class="imandra-alternatives" id="alt-19512a8c-eebf-4330-8ec9-a45eb8a52105"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi (8 of 8)</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-2b1d22aa-7c9e-4b63-a78d-eb1d8d1549b7" class="decompose"><textarea class="display-none">{
   &quot;regions&quot;: [
     {
       &quot;constraints&quot;: [ &quot;_x[1] &gt; 37/2&quot; ],
@@ -3412,13 +3413,13 @@ Region   Probability
 }</textarea><div class="decompose-foamtree"></div><div class="decompose-details"><div class="decompose-details-header">Regions details</div><div class="decompose-details-no-selection"><p>No group selected.</p><ul><li>Concrete regions are numbered</li><li>Unnumbered regions are groups whose children share a particular constraint</li><li>Click on a region to view its details</li><li>Double click on a region to zoom in on it</li><li>Shift+double click to zoom out</li><li>Hit escape to reset back to the top</li></ul></div><div class="decompose-details-selection hidden"><div><span class="decompose-details-label">Direct sub-regions: </span><span class="decompose-details-direct-sub-regions-text">-</span></div><div><span class="decompose-details-label">Contained regions: </span><span class="decompose-details-contained-regions-text">-</span></div><div class="decompose-details-section-header">Constraints</div><div class="decompose-details-constraints"><pre class="decompose-details-constraint">&lt;constraint&gt;</pre></div><div class="decompose-details-invariant"><div class="decompose-details-section-header">Invariant</div><pre class="decompose-details-invariant-text">&lt;invariant&gt;</pre></div></div></div><script>
 (function () {
   require(['nbextensions/nbimandra/regions'], function (regions) {
-    var target = '#decompose-753e9e2b-5e64-4e8b-8a36-f6897b89456d';
+    var target = '#decompose-2b1d22aa-7c9e-4b63-a78d-eb1d8d1549b7';
     regions.hydrate(target);
   });
 })();
-</script></div></div><div class="tab-pane"><div><div>decomp of (f' _x<div class="imandra-table" id="table-56d37aef-af91-4d42-a392-1ff6f2202d09"><table><thead><tr><th>Reg_id</th><th>Constraints</th><th>Invariant</th></tr></thead><tr><td>7</td><td><ul><li><pre>not (_x.0.colour = Green)</pre></li><li><pre>not (_x.1 &gt;. 37/2)</pre></li><li><pre>not (_x.0.colour = Red)</pre></li></ul></td><td><pre>(_x.2 * 2, 141/10)</pre></td></tr><tr><td>6</td><td><ul><li><pre>_x.0.colour = Green</pre></li><li><pre>not (_x.1 &gt;. 37/2)</pre></li><li><pre>not (_x.0.colour = Red)</pre></li></ul></td><td><pre>(_x.2 * 2, _x.1 -. 39/5)</pre></td></tr><tr><td>5</td><td><ul><li><pre>_x.0.colour = Green</pre></li><li><pre>not (_x.0.colour = Blue)</pre></li><li><pre>_x.1 &gt;. 37/2</pre></li><li><pre>not (_x.0.colour = Red)</pre></li></ul></td><td><pre>(_x.2 * 2, _x.1 -. 39/5)</pre></td></tr><tr><td>4</td><td><ul><li><pre>_x.0.colour = Blue</pre></li><li><pre>_x.1 &gt;. 37/2</pre></li><li><pre>not (_x.0.colour = Red)</pre></li></ul></td><td><pre>(_x.2 * 2, _x.1 +. 43/10)</pre></td></tr><tr><td>3</td><td><ul><li><pre>not (_x.0.colour = Green)</pre></li><li><pre>not (_x.1 &gt;. 37/2)</pre></li><li><pre>not _x.0.broken</pre></li><li><pre>_x.0.colour = Red</pre></li></ul></td><td><pre>(7, 141/10)</pre></td></tr><tr><td>2</td><td><ul><li><pre>not (_x.0.colour = Green)</pre></li><li><pre>not (_x.0.colour = Blue)</pre></li><li><pre>_x.1 &gt;. 37/2</pre></li><li><pre>not _x.0.broken</pre></li><li><pre>_x.0.colour = Red</pre></li></ul></td><td><pre>(7, 141/10)</pre></td></tr><tr><td>1</td><td><ul><li><pre>not (_x.0.colour = Green)</pre></li><li><pre>not (_x.1 &gt;. 37/2)</pre></li><li><pre>_x.0.broken</pre></li><li><pre>_x.0.colour = Red</pre></li></ul></td><td><pre>(_x.2, 141/10)</pre></td></tr><tr><td>0</td><td><ul><li><pre>not (_x.0.colour = Green)</pre></li><li><pre>not (_x.0.colour = Blue)</pre></li><li><pre>_x.1 &gt;. 37/2</pre></li><li><pre>_x.0.broken</pre></li><li><pre>_x.0.colour = Red</pre></li></ul></td><td><pre>(_x.2, 141/10)</pre></td></tr></table></div></div></div></div></div><script>
+</script></div></div><div class="tab-pane"><div><div>decomp of (f' _x<div class="imandra-table" id="table-91325b48-2948-42ff-b106-0527403601b0"><table><thead><tr><th>Reg_id</th><th>Constraints</th><th>Invariant</th></tr></thead><tr><td>7</td><td><ul><li><pre>not (_x.0.colour = Green)</pre></li><li><pre>not (_x.1 &gt;. 37/2)</pre></li><li><pre>not (_x.0.colour = Red)</pre></li></ul></td><td><pre>(_x.2 * 2, 141/10)</pre></td></tr><tr><td>6</td><td><ul><li><pre>_x.0.colour = Green</pre></li><li><pre>not (_x.1 &gt;. 37/2)</pre></li><li><pre>not (_x.0.colour = Red)</pre></li></ul></td><td><pre>(_x.2 * 2, _x.1 -. 39/5)</pre></td></tr><tr><td>5</td><td><ul><li><pre>_x.0.colour = Green</pre></li><li><pre>not (_x.0.colour = Blue)</pre></li><li><pre>_x.1 &gt;. 37/2</pre></li><li><pre>not (_x.0.colour = Red)</pre></li></ul></td><td><pre>(_x.2 * 2, _x.1 -. 39/5)</pre></td></tr><tr><td>4</td><td><ul><li><pre>_x.0.colour = Blue</pre></li><li><pre>_x.1 &gt;. 37/2</pre></li><li><pre>not (_x.0.colour = Red)</pre></li></ul></td><td><pre>(_x.2 * 2, _x.1 +. 43/10)</pre></td></tr><tr><td>3</td><td><ul><li><pre>not (_x.0.colour = Green)</pre></li><li><pre>not (_x.1 &gt;. 37/2)</pre></li><li><pre>not _x.0.broken</pre></li><li><pre>_x.0.colour = Red</pre></li></ul></td><td><pre>(7, 141/10)</pre></td></tr><tr><td>2</td><td><ul><li><pre>not (_x.0.colour = Green)</pre></li><li><pre>not (_x.0.colour = Blue)</pre></li><li><pre>_x.1 &gt;. 37/2</pre></li><li><pre>not _x.0.broken</pre></li><li><pre>_x.0.colour = Red</pre></li></ul></td><td><pre>(7, 141/10)</pre></td></tr><tr><td>1</td><td><ul><li><pre>not (_x.0.colour = Green)</pre></li><li><pre>not (_x.1 &gt;. 37/2)</pre></li><li><pre>_x.0.broken</pre></li><li><pre>_x.0.colour = Red</pre></li></ul></td><td><pre>(_x.2, 141/10)</pre></td></tr><tr><td>0</td><td><ul><li><pre>not (_x.0.colour = Green)</pre></li><li><pre>not (_x.0.colour = Blue)</pre></li><li><pre>_x.1 &gt;. 37/2</pre></li><li><pre>_x.0.broken</pre></li><li><pre>_x.0.colour = Red</pre></li></ul></td><td><pre>(_x.2, 141/10)</pre></td></tr></table></div></div></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-15fbc5bf-9a4b-4730-aa33-d0164d1d7a96';
+  var target = '#alt-19512a8c-eebf-4330-8ec9-a45eb8a52105';
   alternatives.hydrate(target);
 });
 </script></div>

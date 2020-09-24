@@ -1319,6 +1319,7 @@ val root_Q01oWlRQekF4cXdRb2N5UFlkTzhtMzBHUDFEbEExNUJtcjdLL1NWZE5NWQ :
   TPL.c list -&gt; int = &lt;fun&gt;
 module IDF :
   sig
+    type pol = IDF.pol = Valid | Invalid | No | Custom of string
     module DSM :
       sig
         module State_machine :
@@ -1419,7 +1420,7 @@ module IDF :
     type target_step =
       IDF.target_step = {
       event : TPL.t;
-      valid_pol : bool option;
+      valid_pol : pol;
       region_expander : region_expander option;
     }
     val target_steps : node -&gt; target_step list list
@@ -1438,7 +1439,7 @@ module IDF :
     val add :
       runner:runner -&gt;
       g:G.t -&gt;
-      ?valid_pol:bool option list -&gt;
+      ?valid_pol:pol list -&gt;
       ?region_expander:region_expander list -&gt; target -&gt; unit
     val run : runner -&gt; unit -&gt; unit
     val decompose :
@@ -1446,7 +1447,7 @@ module IDF :
       ?basis:string list -&gt;
       ?expanding:string list -&gt;
       ?assuming:string -&gt;
-      ?valid_pol:bool option list -&gt;
+      ?valid_pol:pol list -&gt;
       ?region_expander:region_expander list -&gt; target -&gt; unit -&gt; unit
   end
 </pre>
@@ -1496,13 +1497,13 @@ module IDF :
 
 <div class="output_text output_subarea output_execute_result">
 <pre>val g : IDF.G.t = &lt;abstr&gt;
-val guard_Q01oWlRQekF4cXdRb2N5UFlkTzhtMzBHUDFEbEExNUJtcjdLL1NWZE5NWQ_VFBMLkFueTpTb21lIHRydWU_true :
+val guard_Q01oWlRQekF4cXdRb2N5UFlkTzhtMzBHUDFEbEExNUJtcjdLL1NWZE5NWQ_VFBMLkFueTpWYWxpZA_true :
   TPL.c list -&gt; bool = &lt;fun&gt;
-val target_Q01oWlRQekF4cXdRb2N5UFlkTzhtMzBHUDFEbEExNUJtcjdLL1NWZE5NWQ_VFBMLkFueTpTb21lIHRydWU_true :
+val target_Q01oWlRQekF4cXdRb2N5UFlkTzhtMzBHUDFEbEExNUJtcjdLL1NWZE5NWQ_VFBMLkFueTpWYWxpZA_true :
   TPL.c list -&gt; int = &lt;fun&gt;
-val guard_Q01oWlRQekF4cXdRb2N5UFlkTzhtMzBHUDFEbEExNUJtcjdLL1NWZE5NWQ_VFBMLkFueTpTb21lIHRydWUsVFBMLkFueTpTb21lIHRydWVUUEwuQWRkSW50OlNvbWUgdHJ1ZQ_true :
+val guard_Q01oWlRQekF4cXdRb2N5UFlkTzhtMzBHUDFEbEExNUJtcjdLL1NWZE5NWQ_VFBMLkFueTpWYWxpZCxUUEwuQW55OlZhbGlkVFBMLkFkZEludDpWYWxpZA_true :
   TPL.c list -&gt; bool = &lt;fun&gt;
-val target_Q01oWlRQekF4cXdRb2N5UFlkTzhtMzBHUDFEbEExNUJtcjdLL1NWZE5NWQ_VFBMLkFueTpTb21lIHRydWUsVFBMLkFueTpTb21lIHRydWVUUEwuQWRkSW50OlNvbWUgdHJ1ZQ_true :
+val target_Q01oWlRQekF4cXdRb2N5UFlkTzhtMzBHUDFEbEExNUJtcjdLL1NWZE5NWQ_VFBMLkFueTpWYWxpZCxUUEwuQW55OlZhbGlkVFBMLkFkZEludDpWYWxpZA_true :
   TPL.c list -&gt; int = &lt;fun&gt;
 - : unit = ()
 </pre>
