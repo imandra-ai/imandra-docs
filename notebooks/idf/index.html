@@ -1319,6 +1319,7 @@ val root_Q01oWlRQekF4cXdRb2N5UFlkTzhtMzBHUDFEbEExNUJtcjdLL1NWZE5NWQ :
   TPL.c list -&gt; int = &lt;fun&gt;
 module IDF :
   sig
+    type shape = IDF.shape = Tree | DAG
     type pol = IDF.pol = Valid | Invalid | No | Custom of string
     module DSM :
       sig
@@ -1415,7 +1416,6 @@ module IDF :
     val region : node -&gt; Top_result.modular_region
     val expanded_constraints : node -&gt; Term.term list
     val sample : node -&gt; TPL.c list
-    val sample_region : Top_result.modular_region -&gt; TPL.c list
     type region_expander = string option * string list * string option
     type target_step =
       IDF.target_step = {
@@ -1439,11 +1439,15 @@ module IDF :
     val add :
       runner:runner -&gt;
       g:G.t -&gt;
+      ?as_:shape -&gt;
+      ?prune_asm:bool -&gt;
       ?valid_pol:pol list -&gt;
       ?region_expander:region_expander list -&gt; target -&gt; unit
     val run : runner -&gt; unit -&gt; unit
     val decompose :
       g:G.t -&gt;
+      ?as_:shape -&gt;
+      ?prune_asm:bool -&gt;
       ?basis:string list -&gt;
       ?expanding:string list -&gt;
       ?assuming:string -&gt;
