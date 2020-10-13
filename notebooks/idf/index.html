@@ -1319,7 +1319,7 @@ val root_Q01oWlRQekF4cXdRb2N5UFlkTzhtMzBHUDFEbEExNUJtcjdLL1NWZE5NWQ :
   TPL.c list -&gt; int = &lt;fun&gt;
 module IDF :
   sig
-    type shape = IDF.shape = Tree | DAG
+    type shape = IDF.shape = Tree | DAG | DG
     type pol = IDF.pol = Valid | Invalid | No | Custom of string
     module DSM :
       sig
@@ -1342,7 +1342,9 @@ module IDF :
     val pp_state : int -&gt; string
     type target = TPL.t list
     type node = IDF.node
-    type path = node list
+    type node_dir = IDF.node_dir = Fwd of node | Bwd of node | Root of node
+    type path = node_dir list
+    val node : node_dir -&gt; node
     module G :
       sig
         type t = IDF.G.t
@@ -1827,7 +1829,7 @@ val target_Q01oWlRQekF4cXdRb2N5UFlkTzhtMzBHUDFEbEExNUJtcjdLL1NWZE5NWQ_VFBMLkFueT
 <div class="prompt input_prompt">In&nbsp;[7]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ocaml"><pre><span></span><span class="k">let</span> <span class="n">first_path</span> <span class="o">=</span> <span class="nn">IDF</span><span class="p">.</span><span class="n">paths</span> <span class="n">g</span> <span class="o">|&gt;</span> <span class="nn">List</span><span class="p">.</span><span class="n">hd</span><span class="o">;;</span>
+<div class=" highlight hl-ocaml"><pre><span></span><span class="k">let</span> <span class="n">first_path</span> <span class="o">=</span> <span class="nn">IDF</span><span class="p">.</span><span class="n">paths</span> <span class="n">g</span> <span class="o">|&gt;</span> <span class="nn">List</span><span class="p">.</span><span class="n">hd</span> <span class="o">|&gt;</span> <span class="nn">CCList</span><span class="p">.</span><span class="n">map</span> <span class="nn">IDF</span><span class="p">.</span><span class="n">node</span><span class="o">;;</span>
 <span class="k">let</span> <span class="n">full_node</span> <span class="o">=</span> <span class="n">first_path</span> <span class="o">|&gt;</span> <span class="nn">CCList</span><span class="p">.</span><span class="n">rev</span> <span class="o">|&gt;</span> <span class="nn">CCList</span><span class="p">.</span><span class="n">hd</span>
 </pre></div>
 
@@ -1847,7 +1849,7 @@ val target_Q01oWlRQekF4cXdRb2N5UFlkTzhtMzBHUDFEbEExNUJtcjdLL1NWZE5NWQ_VFBMLkFueT
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>val first_path : IDF.path = [&lt;abstr&gt;; &lt;abstr&gt;; &lt;abstr&gt;]
+<pre>val first_path : IDF.node list = [&lt;abstr&gt;; &lt;abstr&gt;; &lt;abstr&gt;]
 val full_node : IDF.node = &lt;abstr&gt;
 </pre>
 </div>
@@ -1898,8 +1900,8 @@ val full_node : IDF.node = &lt;abstr&gt;
 
 <div class="output_text output_subarea output_execute_result">
 <pre>val samples : TPL.c list =
-  [Decomp.State_machine.Add (Decomp.State_machine.Int 1337);
-   Decomp.State_machine.Add (Decomp.State_machine.Int 1)]
+  [Decomp.State_machine.Reset;
+   Decomp.State_machine.Add (Decomp.State_machine.Int 9001)]
 </pre>
 </div>
 
@@ -1948,12 +1950,11 @@ val full_node : IDF.node = &lt;abstr&gt;
 
 <div class="output_text output_subarea output_execute_result">
 <pre>val replayed_node : IDF.replay_sample list =
-  [{IDF.state_before = 0;
-    event = Decomp.State_machine.Add (Decomp.State_machine.Int 1337);
-    state_after = 1337};
-   {IDF.state_before = 1337;
-    event = Decomp.State_machine.Add (Decomp.State_machine.Int 1);
-    state_after = 1337}]
+  [{IDF.state_before = 0; event = Decomp.State_machine.Reset;
+    state_after = 0};
+   {IDF.state_before = 0;
+    event = Decomp.State_machine.Add (Decomp.State_machine.Int 9001);
+    state_after = 0}]
 </pre>
 </div>
 
@@ -2012,24 +2013,20 @@ val full_node : IDF.node = &lt;abstr&gt;
     -------------;
    ---[region]---
    Constraints:
-     [ (List.hd e) is SM.Add
-     ; Destruct(SM.Add, 0, (List.hd e)) is SM.Int
-     ; 50 &lt; Destruct(SM.Int, 0, Destruct(SM.Add, 0, (List.hd e))) &lt;= 9000
+     [ (List.hd e) is SM.Reset
      ; (List.tl e) = [] ]
    Invariant:
-     F = Destruct(SM.Int, 0, Destruct(SM.Add, 0, (List.hd e)))
+     F = 0
     -------------;
    ---[region]---
    Constraints:
-     [ Destruct(SM.Add, 0, (List.hd e)) is SM.Int
-     ; (List.hd e) is SM.Add
+     [ (List.hd e) is SM.Reset
      ; (List.hd (List.tl e)) is SM.Add
      ; Destruct(SM.Add, 0, (List.hd (List.tl e))) is SM.Int
-     ; Destruct(SM.Int, 0, Destruct(SM.Add, 0, (List.hd e))) = 1337
-     ; (List.tl (List.tl e)) = []
-     ; Destruct(SM.Int, 0, Destruct(SM.Add, 0, (List.hd (List.tl e)))) &lt;&gt; 0 ]
+     ; Destruct(SM.Int, 0, Destruct(SM.Add, 0, (List.hd (List.tl e)))) &gt; 9000
+     ; (List.tl (List.tl e)) = [] ]
    Invariant:
-     F = Destruct(SM.Int, 0, Destruct(SM.Add, 0, (List.hd e)))
+     F = 0
     -------------]
 </pre>
 </div>
