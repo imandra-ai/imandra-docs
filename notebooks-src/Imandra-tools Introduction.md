@@ -151,7 +151,7 @@ Since `IDF` generates a decomposition graph, we need to first create an empty gr
 
 ```{.imandra .input}
 let paths = IDF.paths g
-let first_path = List.hd paths
+let first_path = List.hd paths |> CCList.map IDF.node
 ```
 
 This output is not very useful, but we can ask `Idf` to play out a sample execution of that path:
