@@ -139,7 +139,7 @@ SM.
 In order to consume concrete paths, we must extract them from the decomposition graph `g`:
 
 ```{.imandra .input}
-let first_path = IDF.paths g |> List.hd;;
+let first_path = IDF.paths g |> List.hd |> CCList.map IDF.node;;
 let full_node = first_path |> CCList.rev |> CCList.hd
 ```
 
