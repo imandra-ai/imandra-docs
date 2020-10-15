@@ -1900,8 +1900,8 @@ val full_node : IDF.node = &lt;abstr&gt;
 
 <div class="output_text output_subarea output_execute_result">
 <pre>val samples : TPL.c list =
-  [Decomp.State_machine.Reset;
-   Decomp.State_machine.Add (Decomp.State_machine.Int 9001)]
+  [Decomp.State_machine.Add (Decomp.State_machine.Int 9001);
+   Decomp.State_machine.Add (Decomp.State_machine.Int 9039)]
 </pre>
 </div>
 
@@ -1950,10 +1950,11 @@ val full_node : IDF.node = &lt;abstr&gt;
 
 <div class="output_text output_subarea output_execute_result">
 <pre>val replayed_node : IDF.replay_sample list =
-  [{IDF.state_before = 0; event = Decomp.State_machine.Reset;
+  [{IDF.state_before = 0;
+    event = Decomp.State_machine.Add (Decomp.State_machine.Int 9001);
     state_after = 0};
    {IDF.state_before = 0;
-    event = Decomp.State_machine.Add (Decomp.State_machine.Int 9001);
+    event = Decomp.State_machine.Add (Decomp.State_machine.Int 9039);
     state_after = 0}]
 </pre>
 </div>
@@ -2013,16 +2014,20 @@ val full_node : IDF.node = &lt;abstr&gt;
     -------------;
    ---[region]---
    Constraints:
-     [ (List.hd e) is SM.Reset
+     [ (List.hd e) is SM.Add
+     ; Destruct(SM.Add, 0, (List.hd e)) is SM.Int
+     ; Destruct(SM.Int, 0, Destruct(SM.Add, 0, (List.hd e))) &gt; 9000
      ; (List.tl e) = [] ]
    Invariant:
      F = 0
     -------------;
    ---[region]---
    Constraints:
-     [ (List.hd e) is SM.Reset
+     [ Destruct(SM.Add, 0, (List.hd e)) is SM.Int
+     ; (List.hd e) is SM.Add
      ; (List.hd (List.tl e)) is SM.Add
      ; Destruct(SM.Add, 0, (List.hd (List.tl e))) is SM.Int
+     ; Destruct(SM.Int, 0, Destruct(SM.Add, 0, (List.hd e))) &gt; 9000
      ; Destruct(SM.Int, 0, Destruct(SM.Add, 0, (List.hd (List.tl e)))) &gt; 9000
      ; (List.tl (List.tl e)) = [] ]
    Invariant:
