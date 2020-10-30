@@ -20,6 +20,7 @@ First, run the normal local Imandra client installation process, following the [
 Next, tell your Imandra client to use a local docker image for `imandra-server`:
 
 ```shell
+$ mkdir -p ~/.imandra/
 $ echo 'imandra/imandra-server' > ~/.imandra/server-image
 ```
 
