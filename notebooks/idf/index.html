@@ -1484,7 +1484,7 @@ module IDF :
     module Mex : sig val of_model : Top_result.term_model -&gt; TPL.c list end
     val paths : ?from:node -&gt; G.t -&gt; path list
     val region : node -&gt; Top_result.modular_region
-    val expanded_constraints : node -&gt; Term.term list
+    val expanded_region_ids : node -&gt; (int/2 * int/2) list option
     val sample : node -&gt; TPL.c list
     val model : node -&gt; Top_result.term_model
     type region_expander = string option * string list * string option
@@ -2085,8 +2085,7 @@ val full_node : IDF.node = &lt;abstr&gt;
    Constraints:
      [ (List.hd e) is SM.Add
      ; Destruct(SM.Add, 0, (List.hd e)) is SM.Int
-     ; Destruct(SM.Int, 0, Destruct(SM.Add, 0, (List.hd e))) &gt; 9000
-     ; (List.tl e) = [] ]
+     ; Destruct(SM.Int, 0, Destruct(SM.Add, 0, (List.hd e))) &gt; 9000 ]
    Invariant:
      F = 0
     -------------;
@@ -2097,8 +2096,7 @@ val full_node : IDF.node = &lt;abstr&gt;
      ; (List.hd (List.tl e)) is SM.Add
      ; Destruct(SM.Add, 0, (List.hd (List.tl e))) is SM.Int
      ; Destruct(SM.Int, 0, Destruct(SM.Add, 0, (List.hd e))) &gt; 9000
-     ; Destruct(SM.Int, 0, Destruct(SM.Add, 0, (List.hd (List.tl e)))) &gt; 9000
-     ; (List.tl (List.tl e)) = [] ]
+     ; Destruct(SM.Int, 0, Destruct(SM.Add, 0, (List.hd (List.tl e)))) &gt; 9000 ]
    Invariant:
      F = 0
     -------------]
