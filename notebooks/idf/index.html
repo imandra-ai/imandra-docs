@@ -1969,8 +1969,8 @@ val full_node : IDF.node = &lt;abstr&gt;
 
 <div class="output_text output_subarea output_execute_result">
 <pre>val samples : TPL.c list =
-  [Decomp.State_machine.Add (Decomp.State_machine.Int 9001);
-   Decomp.State_machine.Add (Decomp.State_machine.Int 9039)]
+  [Decomp.State_machine.Add (Decomp.State_machine.Int 1337);
+   Decomp.State_machine.Add (Decomp.State_machine.Int 1)]
 </pre>
 </div>
 
@@ -2020,11 +2020,11 @@ val full_node : IDF.node = &lt;abstr&gt;
 <div class="output_text output_subarea output_execute_result">
 <pre>val replayed_node : IDF.replay_sample list =
   [{IDF.state_before = 0;
-    event = Decomp.State_machine.Add (Decomp.State_machine.Int 9001);
-    state_after = 0};
-   {IDF.state_before = 0;
-    event = Decomp.State_machine.Add (Decomp.State_machine.Int 9039);
-    state_after = 0}]
+    event = Decomp.State_machine.Add (Decomp.State_machine.Int 1337);
+    state_after = 1337};
+   {IDF.state_before = 1337;
+    event = Decomp.State_machine.Add (Decomp.State_machine.Int 1);
+    state_after = 1337}]
 </pre>
 </div>
 
@@ -2085,9 +2085,9 @@ val full_node : IDF.node = &lt;abstr&gt;
    Constraints:
      [ (List.hd e) is SM.Add
      ; Destruct(SM.Add, 0, (List.hd e)) is SM.Int
-     ; Destruct(SM.Int, 0, Destruct(SM.Add, 0, (List.hd e))) &gt; 9000 ]
+     ; 50 &lt; Destruct(SM.Int, 0, Destruct(SM.Add, 0, (List.hd e))) &lt;= 9000 ]
    Invariant:
-     F = 0
+     F = Destruct(SM.Int, 0, Destruct(SM.Add, 0, (List.hd e)))
     -------------;
    ---[region]---
    Constraints:
@@ -2095,10 +2095,10 @@ val full_node : IDF.node = &lt;abstr&gt;
      ; (List.hd e) is SM.Add
      ; (List.hd (List.tl e)) is SM.Add
      ; Destruct(SM.Add, 0, (List.hd (List.tl e))) is SM.Int
-     ; Destruct(SM.Int, 0, Destruct(SM.Add, 0, (List.hd e))) &gt; 9000
-     ; Destruct(SM.Int, 0, Destruct(SM.Add, 0, (List.hd (List.tl e)))) &gt; 9000 ]
+     ; Destruct(SM.Int, 0, Destruct(SM.Add, 0, (List.hd e))) = 1337
+     ; Destruct(SM.Int, 0, Destruct(SM.Add, 0, (List.hd (List.tl e)))) &lt;&gt; 0 ]
    Invariant:
-     F = 0
+     F = Destruct(SM.Int, 0, Destruct(SM.Add, 0, (List.hd e)))
     -------------]
 </pre>
 </div>
