@@ -337,7 +337,7 @@ module Refiner = struct
   | Funcall (Var "List.hd", [Funcall (Var "List.tl", [FieldOf (_, "buys", _)])]) -> Var "Second buy order"
   | Funcall (Var "List.hd", [Funcall (Var "List.tl", [FieldOf (_, "sells", _)])]) -> Var "Second sell order"
   | Is (t, ty, FieldOf (_, "order_type", x)) -> Is (t, ty, x)
-  | FieldOf (Assoc, (("order_id" | "order_qty" | "order_price" | "order_time") as field), x)
+  | FieldOf (Record, (("order_id" | "order_qty" | "order_price" | "order_time") as field), x)
     -> FieldOf(Human, field, x)
   | x -> x
 
