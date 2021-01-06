@@ -233,9 +233,9 @@ module Refiner = struct
 
   let walk (x : node) : node = match x with
 
-    | FieldOf (Assoc, "current_time", FieldOf (Assoc, "l", Var "i")) -> Var "Current time"
-    | FieldOf (Assoc, l, FieldOf (Assoc, "l", Var "i")) -> Var l
-    | FieldOf (Assoc, c, FieldOf (Assoc, "c", Var "i")) -> Var c
+    | FieldOf (Record, "current_time", FieldOf (Record, "l", Var "i")) -> Var "Current time"
+    | FieldOf (Record, l, FieldOf (Record, "l", Var "i")) -> Var l
+    | FieldOf (Record, c, FieldOf (Record, "c", Var "i")) -> Var c
 
     | Is (x, _, Var "car_drive_state") ->
        begin match x with
