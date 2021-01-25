@@ -35,7 +35,7 @@ let d = Modular_decomp.top "target" [@@program]
 
 Imandra decomposed the function `target` into 2 regions: the first region tells us that whenever the input argument `x` is less than or equal to 0, then the value returned by the function will be `-1`, the second region tells us that whenever `x` is positive, the output will be 1.
 
-## Aside: Voronoi diagrams
+# Aside: Voronoi diagrams
 
 When performing a region decomposition in a Jupyter notebook, the Imandra plugin will render the result as a Voronoi diagram.
 
@@ -89,7 +89,7 @@ val target : int -> int = <fun>
 Open: file:////var/folders/y2/bzjbz5bj0s91lz0mx42q_jd80000gn/T/voronoi_8710d3.html
 ```
 
-## Api
+# Api
 
 At its very core, modular decomposition allows us to "splice" the state space of a function into (possibly infeasible) regions of behavior.
 
