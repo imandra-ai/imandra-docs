@@ -2,11 +2,11 @@
 <html>
     <head><meta charset="utf-8" />
         <meta content="width=device-width, initial-scale=1.0" name="viewport">
-        <title>Imandra Documentation - Crossing the River Safely</title>
-        <meta property="og:url" content="https://docs.imandra.ai/imandra-docs/notebooks/crossing-river-safely/">
+        <title>Imandra Documentation - Decomposition</title>
+        <meta property="og:url" content="https://docs.imandra.ai/imandra-docs/notebooks/decomposition-intro/">
         <meta property="og:type" content="website">
-        <meta property="og:title" content="Imandra Documentation - Crossing the River Safely">
-        <meta property="og:description" content="River example notebooks">
+        <meta property="og:title" content="Imandra Documentation - Decomposition">
+        <meta property="og:description" content="Background to decomposition">
         <meta property="og:image" content="https://storage.googleapis.com/imandra-assets/images/og_image_default_i78.jpg">
 
 
@@ -485,7 +485,7 @@
                                 
                                 <a class="side__nav-link" href="/imandra-docs/notebooks/decomposition">Region Decomposition</a>
                                 
-                                <ul class="side__nav-list--sub-level-2 ">
+                                <ul class="side__nav-list--sub-level-2  side__nav-list--sub-level-2--active">
                                     
                                     
                                     
@@ -496,9 +496,23 @@
                                         
                                         <li class="side__nav-list-item--sub-level-2 side__nav-list--sub-level-2--empty">
                                             
-                                            <a class="side__nav-link" href="/imandra-docs/notebooks/decomposition-intro">Background to decomposition</a>
+                                            <a class="side__nav-link side__nav-link--active" href="/imandra-docs/notebooks/decomposition-intro">Background to decomposition</a>
                                             
                                             
+                                            
+                                            <div class="side__within-page-nav--sub-level-2">
+                                            
+  
+  
+  
+  <a class="side__nav-link--within-page side__nav-link--within-page--h2" href="#Aside:-Voronoi-diagrams">Aside: Voronoi diagrams</a>
+  
+  
+  
+  <a class="side__nav-link--within-page side__nav-link--within-page--h2" href="#Api">Api</a>
+  
+  
+                                            </div>
                                             
                                         </li>
                                         
@@ -625,7 +639,7 @@
                                 
                                 <a class="side__nav-link" href="/imandra-docs/notebooks/examples">Examples</a>
                                 
-                                <ul class="side__nav-list--sub-level-2  side__nav-list--sub-level-2--active">
+                                <ul class="side__nav-list--sub-level-2 ">
                                     
                                     
                                     
@@ -679,13 +693,9 @@
                                         
                                         <li class="side__nav-list-item--sub-level-2 side__nav-list--sub-level-2--empty">
                                             
-                                            <a class="side__nav-link side__nav-link--active" href="/imandra-docs/notebooks/crossing-river-safely">Crossing the river safely</a>
+                                            <a class="side__nav-link" href="/imandra-docs/notebooks/crossing-river-safely">Crossing the river safely</a>
                                             
                                             
-                                            
-                                            <div class="side__within-page-nav--sub-level-2">
-                                            
-                                            </div>
                                             
                                         </li>
                                         
@@ -1115,14 +1125,15 @@
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html"><h1 id="Crossing-the-River-Safely">Crossing the River Safely<a class="anchor-link" href="#Crossing-the-River-Safely">&#182;</a></h1><p>For the sake of brain scrambling, we're going to solve this <a href="https://en.wikipedia.org/wiki/Fox,_goose_and_bag_of_beans_puzzle">ancient puzzle</a> using Imandra (<a href="https://medium.com/imandra/the-wolf-goat-and-cabbage-exchange-97e7f3ff8d5a">again!</a>). As most polyvalent farmers will tell you, going to the market with your pet wolf, tastiest goat, and freshest cabbage is sometimes difficult as they tend to have appetite for one another. The good news is that there is a way to cross this river safely anyway.</p>
-<p>First we should define the problem by tallying our goods and looking around.</p>
+<div class="text_cell_render border-box-sizing rendered_html"><h1 id="Region-Decomposition">Region Decomposition<a class="anchor-link" href="#Region-Decomposition">&#182;</a></h1><p>The term Region Decomposition refers to a (<a href="https://en.wikipedia.org/wiki/Cylindrical_algebraic_decomposition">geometrically inspired</a>) "slicing" of an algorithm’s state-space into distinct regions where the behavior of the algorithm is invariant, i.e., where it behaves "the same."</p>
+<p>Each "slice" or region of the state-space describes a family of inputs and the output of the algorithm upon them, both of which may be symbolic and represent (potentially infinitely) many concrete instances.</p>
+<p>The entrypoint to decomposition is the <code>Modular_decomp.top</code> function, here's a quick basic example of how it can be used:</p>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="try-this-container">
-  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Crossing%20the%20river%20safely.ipynb%23try-cell-2" target="_blank" rel="nofollow">
+  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/DecompositionIntro.ipynb%23try-cell-2" target="_blank" rel="nofollow">
     <div class="try-this">Try this!</div>
   </a>
 </div>
@@ -1130,17 +1141,14 @@
 <div class="prompt input_prompt">In&nbsp;[1]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ocaml"><pre><span></span><span class="k">type</span> <span class="n">location</span> <span class="o">=</span>
-  <span class="o">|</span> <span class="nc">Boat</span>
-  <span class="o">|</span> <span class="nc">LeftCoast</span>
-  <span class="o">|</span> <span class="nc">RightCoast</span>
-  <span class="o">|</span> <span class="nc">Eaten</span>
+<div class=" highlight hl-ocaml"><pre><span></span><span class="k">let</span> <span class="n">target</span> <span class="n">x</span> <span class="o">=</span>
+  <span class="k">if</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">then</span>
+    <span class="mi">1</span>
+  <span class="k">else</span>
+    <span class="o">-</span><span class="mi">1</span>
+<span class="o">;;</span>
 
-<span class="k">type</span> <span class="n">boat</span> <span class="o">=</span>
-  <span class="o">|</span> <span class="nc">Left</span>
-  <span class="o">|</span> <span class="nc">Right</span>
-
-<span class="k">type</span> <span class="n">good</span> <span class="o">=</span> <span class="nc">Cabbage</span> <span class="o">|</span> <span class="nc">Goat</span> <span class="o">|</span> <span class="nc">Wolf</span>
+<span class="k">let</span> <span class="n">d</span> <span class="o">=</span> <span class="nn">Modular_decomp</span><span class="p">.</span><span class="n">top</span> <span class="s2">&quot;target&quot;</span> <span class="o">[@@</span><span class="n">program</span><span class="o">]</span>
 </pre></div>
 
 </div>
@@ -1159,10 +1167,58 @@
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>type location = Boat | LeftCoast | RightCoast | Eaten
-type boat = Left | Right
-type good = Cabbage | Goat | Wolf
+<pre>val target : int -&gt; int = &lt;fun&gt;
+val d : Modular_decomposition.t =
+  {Imandra_interactive.Modular_decomp.MD.md_session = 1i;
+   md_f =
+    {Imandra_surface.Uid.name = &#34;target&#34;; id = &lt;abstr&gt;;
+     special_tag = &lt;abstr&gt;; namespace = &lt;abstr&gt;;
+     chash = Some IJllFgjXGBXdmGllO51yKe2dFt1V0i4n85B2RT8f5B0;
+     depth = (3i, 1i)};
+   md_args = [(x : int)]; md_regions = &lt;abstr&gt;}
 </pre>
+</div>
+
+</div>
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+
+<div class="output_html rendered_html output_subarea ">
+<div class="imandra-alternatives" id="alt-20633bd9-ba5c-4a53-9481-e3a880ee6cc8"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi (2 of 2)</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-ee75826a-8f05-44c8-9ac6-d6cb12838f25" class="decompose"><textarea class="display-none">{
+  &quot;regions&quot;: [
+    {
+      &quot;constraints&quot;: [ &quot;x &gt; 0&quot; ],
+      &quot;region&quot;: { &quot;constraints&quot;: [ &quot;x &gt; 0&quot; ], &quot;invariant&quot;: &quot;F = 1&quot; },
+      &quot;groups&quot;: [],
+      &quot;label&quot;: &quot;2&quot;,
+      &quot;weight&quot;: 1
+    },
+    {
+      &quot;constraints&quot;: [ &quot;x &lt;= 0&quot; ],
+      &quot;region&quot;: { &quot;constraints&quot;: [ &quot;x &lt;= 0&quot; ], &quot;invariant&quot;: &quot;F = -1&quot; },
+      &quot;groups&quot;: [],
+      &quot;label&quot;: &quot;1&quot;,
+      &quot;weight&quot;: 1
+    }
+  ]
+}</textarea><div class="decompose-foamtree"></div><div class="decompose-details"><div class="decompose-details-header">Regions details</div><div class="decompose-details-no-selection"><p>No group selected.</p><ul><li>Concrete regions are numbered</li><li>Unnumbered regions are groups whose children share a particular constraint</li><li>Click on a region to view its details</li><li>Double click on a region to zoom in on it</li><li>Shift+double click to zoom out</li><li>Hit escape to reset back to the top</li></ul></div><div class="decompose-details-selection hidden"><div><span class="decompose-details-label">Direct sub-regions: </span><span class="decompose-details-direct-sub-regions-text">-</span></div><div><span class="decompose-details-label">Contained regions: </span><span class="decompose-details-contained-regions-text">-</span></div><div class="decompose-details-section-header">Constraints</div><div class="decompose-details-constraints"><pre class="decompose-details-constraint">&lt;constraint&gt;</pre></div><div class="decompose-details-invariant"><div class="decompose-details-section-header">Invariant</div><pre class="decompose-details-invariant-text">&lt;invariant&gt;</pre></div></div></div><script>
+(function () {
+  require(['nbextensions/nbimandra/regions'], function (regions) {
+    var target = '#decompose-ee75826a-8f05-44c8-9ac6-d6cb12838f25';
+    regions.hydrate(target);
+  });
+})();
+</script></div></div><div class="tab-pane"><div><div>decomp of (target x<div class="imandra-table" id="table-16ddcb7e-3146-4a7e-8fdb-db504806e78f"><table><thead><tr><th>Reg_id</th><th>Constraints</th><th>Invariant</th></tr></thead><tr><td>1</td><td><ul><li><pre>not (x &gt; 0)</pre></li></ul></td><td><pre>-1</pre></td></tr><tr><td>0</td><td><ul><li><pre>x &gt; 0</pre></li></ul></td><td><pre>1</pre></td></tr></table></div></div></div></div></div><script>
+require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
+  var target = '#alt-20633bd9-ba5c-4a53-9481-e3a880ee6cc8';
+  alternatives.hydrate(target);
+});
+</script></div>
+
 </div>
 
 </div>
@@ -1174,13 +1230,82 @@ type good = Cabbage | Goat | Wolf
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html"><p>This problem is delicate and will require multiple steps to be solved. Each step should take us from a <code>state</code> to another <code>state</code> (where, hopefully, no cabbage nor goat was hurt).</p>
+<div class="text_cell_render border-box-sizing rendered_html"><p>Imandra decomposed the function <code>target</code> into 2 regions: the first region tells us that whenever the input argument <code>x</code> is less than or equal to 0, then the value returned by the function will be <code>-1</code>, the second region tells us that whenever <code>x</code> is positive, the output will be 1.</p>
+<h2 id="Aside:-Voronoi-diagrams">Aside: Voronoi diagrams<a class="anchor-link" href="#Aside:-Voronoi-diagrams">&#182;</a></h2><p>When performing a region decomposition in a Jupyter notebook, the Imandra plugin will render the result as a Voronoi diagram.</p>
+<p>To render a Voronoi diagram from the REPL, use <code>Imandra_voronoi.Voronoi.print</code>:</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<pre><code># let target x = if x &gt; 0 then 1 else -1;;
+val target : int -&gt; int = &lt;fun&gt;
+
+# let d = Modular_decomp.top "target" [@@program];;
+- Beginning modular decomposition of target.
+* Computing fresh modular decomposition for target
+- Computed 2 regions.
+- Target modular decomposition of target complete (2 regions).
+- Integration complete in 0 rounds (2 regions).
+val d : Top_result.modular_decomposition =
+  {Imandra_interactive.Modular_decomp.MD.ipynb_session = 1i;
+   md_f =
+    {Imandra_surface.Uid.name = "target"; id = &lt;abstr&gt;;
+     special_tag = &lt;abstr&gt;; namespace = &lt;abstr&gt;;
+     chash = Some IJllFgjXGBXdmGllO51yKe2dFt1V0i4n85B2RT8f5B0;
+     depth = (3i, 1i)};
+   md_args = [(x : int)]; md_regions = &lt;abstr&gt;}
+
+# Imandra_voronoi.Voronoi.print () Format.std_formatter d;;
+Open: file:////var/folders/y2/bzjbz5bj0s91lz0mx42q_jd80000gn/T/voronoi_822f8d.html
+- : unit = ()</code></pre>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html"><p>Then open the temporary file in your browser.</p>
+<p>Alternatively, you can install the Voronoi printer to generate a diagram for every decomposition:</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<pre><code># let pp_voronoi = Imandra_voronoi.Voronoi.print () [@@program];;
+val pp_voronoi : Format.formatter -&gt; Top_result.modular_decomposition -&gt; unit =
+  &lt;fun&gt;
+
+# #install_printer pp_voronoi;;
+
+# let target x = if x &gt; 0 then 1 else -1;;
+val target : int -&gt; int = &lt;fun&gt;
+
+# Modular_decomp.top "target";;
+- Beginning modular decomposition of target.
+* Computing fresh modular decomposition for target
+- Computed 2 regions.
+- Target modular decomposition of target complete (2 regions).
+- Integration complete in 0 rounds (2 regions).
+- : Top_result.modular_decomposition =
+Open: file:////var/folders/y2/bzjbz5bj0s91lz0mx42q_jd80000gn/T/voronoi_8710d3.html</code></pre>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html"><h2 id="Api">Api<a class="anchor-link" href="#Api">&#182;</a></h2><p>At its very core, modular decomposition allows us to "splice" the state space of a function into (possibly infeasible) regions of behavior.</p>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="try-this-container">
-  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Crossing%20the%20river%20safely.ipynb%23try-cell-4" target="_blank" rel="nofollow">
+  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/DecompositionIntro.ipynb%23try-cell-8" target="_blank" rel="nofollow">
     <div class="try-this">Try this!</div>
   </a>
 </div>
@@ -1188,12 +1313,8 @@ type good = Cabbage | Goat | Wolf
 <div class="prompt input_prompt">In&nbsp;[2]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ocaml"><pre><span></span><span class="k">type</span> <span class="n">state</span> <span class="o">=</span> <span class="o">{</span>
-  <span class="n">cabbage</span> <span class="o">:</span> <span class="n">location</span><span class="o">;</span>
-  <span class="n">goat</span> <span class="o">:</span> <span class="n">location</span><span class="o">;</span>
-  <span class="n">wolf</span> <span class="o">:</span> <span class="n">location</span><span class="o">;</span>
-  <span class="n">boat</span> <span class="o">:</span> <span class="n">boat</span><span class="o">;</span>
-<span class="o">}</span>
+<div class=" highlight hl-ocaml"><pre><span></span><span class="k">let</span> <span class="n">f</span> <span class="n">x</span> <span class="o">=</span> <span class="k">if</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">then</span> <span class="k">if</span> <span class="n">x</span> <span class="o">*</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="k">then</span> <span class="n">x</span> <span class="k">else</span> <span class="n">x</span> <span class="o">+</span> <span class="mi">1</span> <span class="k">else</span> <span class="n">x</span><span class="o">;;</span>
+<span class="k">let</span> <span class="n">d</span> <span class="o">=</span> <span class="nn">Modular_decomp</span><span class="p">.</span><span class="n">top</span> <span class="s2">&quot;f&quot;</span> <span class="o">[@@</span><span class="n">program</span><span class="o">];;</span>
 </pre></div>
 
 </div>
@@ -1212,13 +1333,79 @@ type good = Cabbage | Goat | Wolf
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>type state = {
-  cabbage : location;
-  goat : location;
-  wolf : location;
-  boat : boat;
-}
+<pre>val f : int -&gt; int = &lt;fun&gt;
+val d : Modular_decomposition.t =
+  {Imandra_interactive.Modular_decomp.MD.md_session = 2i;
+   md_f =
+    {Imandra_surface.Uid.name = &#34;f&#34;; id = &lt;abstr&gt;; special_tag = &lt;abstr&gt;;
+     namespace = &lt;abstr&gt;;
+     chash = Some YeRAsRqGpQ4zwVxhfoofh9B8obWDXkyns26GyTmeZRI;
+     depth = (3i, 1i)};
+   md_args = [(x : int)]; md_regions = &lt;abstr&gt;}
 </pre>
+</div>
+
+</div>
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+
+<div class="output_html rendered_html output_subarea ">
+<div class="imandra-alternatives" id="alt-7d2ac145-9934-42b4-8fa9-81cacf0dbd08"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi (3 of 3)</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-b437cec2-83d1-4c4b-b77d-2f61e9ff369f" class="decompose"><textarea class="display-none">{
+  &quot;regions&quot;: [
+    {
+      &quot;constraints&quot;: [ &quot;x &lt;= 0&quot; ],
+      &quot;region&quot;: { &quot;constraints&quot;: [ &quot;x &lt;= 0&quot; ], &quot;invariant&quot;: &quot;F = x&quot; },
+      &quot;groups&quot;: [],
+      &quot;label&quot;: &quot;2&quot;,
+      &quot;weight&quot;: 1
+    },
+    {
+      &quot;constraints&quot;: [ &quot;x &gt; 0&quot; ],
+      &quot;region&quot;: null,
+      &quot;groups&quot;: [
+        {
+          &quot;constraints&quot;: [ &quot;x &gt; 0&quot;, &quot;(x * x) &gt;= 0&quot; ],
+          &quot;region&quot;: {
+            &quot;constraints&quot;: [ &quot;(x * x) &gt;= 0&quot;, &quot;x &gt; 0&quot; ],
+            &quot;invariant&quot;: &quot;F = x + 1&quot;
+          },
+          &quot;groups&quot;: [],
+          &quot;label&quot;: &quot;1.2&quot;,
+          &quot;weight&quot;: 1
+        },
+        {
+          &quot;constraints&quot;: [ &quot;x &gt; 0&quot;, &quot;(x * x) &lt; 0&quot; ],
+          &quot;region&quot;: {
+            &quot;constraints&quot;: [ &quot;(x * x) &lt; 0&quot;, &quot;x &gt; 0&quot; ],
+            &quot;invariant&quot;: &quot;F = x&quot;
+          },
+          &quot;groups&quot;: [],
+          &quot;label&quot;: &quot;1.1&quot;,
+          &quot;weight&quot;: 1
+        }
+      ],
+      &quot;label&quot;: &quot;&quot;,
+      &quot;weight&quot;: 2
+    }
+  ]
+}</textarea><div class="decompose-foamtree"></div><div class="decompose-details"><div class="decompose-details-header">Regions details</div><div class="decompose-details-no-selection"><p>No group selected.</p><ul><li>Concrete regions are numbered</li><li>Unnumbered regions are groups whose children share a particular constraint</li><li>Click on a region to view its details</li><li>Double click on a region to zoom in on it</li><li>Shift+double click to zoom out</li><li>Hit escape to reset back to the top</li></ul></div><div class="decompose-details-selection hidden"><div><span class="decompose-details-label">Direct sub-regions: </span><span class="decompose-details-direct-sub-regions-text">-</span></div><div><span class="decompose-details-label">Contained regions: </span><span class="decompose-details-contained-regions-text">-</span></div><div class="decompose-details-section-header">Constraints</div><div class="decompose-details-constraints"><pre class="decompose-details-constraint">&lt;constraint&gt;</pre></div><div class="decompose-details-invariant"><div class="decompose-details-section-header">Invariant</div><pre class="decompose-details-invariant-text">&lt;invariant&gt;</pre></div></div></div><script>
+(function () {
+  require(['nbextensions/nbimandra/regions'], function (regions) {
+    var target = '#decompose-b437cec2-83d1-4c4b-b77d-2f61e9ff369f';
+    regions.hydrate(target);
+  });
+})();
+</script></div></div><div class="tab-pane"><div><div>decomp of (f x<div class="imandra-table" id="table-3f48d58a-8152-42d6-b8bb-e878969d11f3"><table><thead><tr><th>Reg_id</th><th>Constraints</th><th>Invariant</th></tr></thead><tr><td>2</td><td><ul><li><pre>not (x &gt; 0)</pre></li></ul></td><td><pre>x</pre></td></tr><tr><td>1</td><td><ul><li><pre>not ((x * x) &lt; 0)</pre></li><li><pre>x &gt; 0</pre></li></ul></td><td><pre>x + 1</pre></td></tr><tr><td>0</td><td><ul><li><pre>(x * x) &lt; 0</pre></li><li><pre>x &gt; 0</pre></li></ul></td><td><pre>x</pre></td></tr></table></div></div></div></div></div><script>
+require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
+  var target = '#alt-7d2ac145-9934-42b4-8fa9-81cacf0dbd08';
+  alternatives.hydrate(target);
+});
+</script></div>
+
 </div>
 
 </div>
@@ -1230,13 +1417,13 @@ type good = Cabbage | Goat | Wolf
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html"><p>We can define a few helpers:</p>
+<div class="text_cell_render border-box-sizing rendered_html"><p>A side condition can be specified to inject extra constraints about the target function, this can be used to constrain and/or partition the explored state space</p>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="try-this-container">
-  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Crossing%20the%20river%20safely.ipynb%23try-cell-6" target="_blank" rel="nofollow">
+  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/DecompositionIntro.ipynb%23try-cell-10" target="_blank" rel="nofollow">
     <div class="try-this">Try this!</div>
   </a>
 </div>
@@ -1244,20 +1431,11 @@ type good = Cabbage | Goat | Wolf
 <div class="prompt input_prompt">In&nbsp;[3]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ocaml"><pre><span></span><span class="k">let</span> <span class="n">get_location</span> <span class="o">(</span><span class="n">s</span><span class="o">:</span><span class="n">state</span><span class="o">)</span> <span class="o">(</span><span class="n">g</span><span class="o">:</span><span class="n">good</span><span class="o">)</span> <span class="o">=</span> <span class="k">match</span> <span class="n">g</span> <span class="k">with</span>
-  <span class="o">|</span> <span class="nc">Cabbage</span> <span class="o">-&gt;</span> <span class="n">s</span><span class="o">.</span><span class="n">cabbage</span>
-  <span class="o">|</span> <span class="nc">Goat</span> <span class="o">-&gt;</span> <span class="n">s</span><span class="o">.</span><span class="n">goat</span>
-  <span class="o">|</span> <span class="nc">Wolf</span> <span class="o">-&gt;</span> <span class="n">s</span><span class="o">.</span><span class="n">wolf</span>
+<div class=" highlight hl-ocaml"><pre><span></span><span class="k">let</span> <span class="n">g</span> <span class="n">x</span> <span class="o">=</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="o">;;</span>
+<span class="k">let</span> <span class="n">d1</span> <span class="o">=</span> <span class="nn">Modular_decomp</span><span class="p">.</span><span class="n">top</span> <span class="o">~</span><span class="n">assuming</span><span class="o">:</span><span class="s2">&quot;g&quot;</span> <span class="s2">&quot;f&quot;</span> <span class="o">[@@</span><span class="n">program</span><span class="o">];;</span>
 
-<span class="k">let</span> <span class="n">set_location</span> <span class="o">(</span><span class="n">s</span><span class="o">:</span><span class="n">state</span><span class="o">)</span> <span class="o">(</span><span class="n">g</span><span class="o">:</span><span class="n">good</span><span class="o">)</span> <span class="o">(</span><span class="n">l</span><span class="o">:</span><span class="n">location</span><span class="o">)</span> <span class="o">=</span> <span class="k">match</span> <span class="n">g</span> <span class="k">with</span>
-  <span class="o">|</span> <span class="nc">Cabbage</span> <span class="o">-&gt;</span> <span class="o">{</span> <span class="n">s</span> <span class="k">with</span> <span class="n">cabbage</span> <span class="o">=</span> <span class="n">l</span><span class="o">}</span>
-  <span class="o">|</span> <span class="nc">Goat</span>    <span class="o">-&gt;</span> <span class="o">{</span> <span class="n">s</span> <span class="k">with</span> <span class="n">goat</span>    <span class="o">=</span> <span class="n">l</span><span class="o">}</span>
-  <span class="o">|</span> <span class="nc">Wolf</span>    <span class="o">-&gt;</span> <span class="o">{</span> <span class="n">s</span> <span class="k">with</span> <span class="n">wolf</span>    <span class="o">=</span> <span class="n">l</span><span class="o">}</span>
-
-<span class="k">let</span> <span class="n">boat_empty</span> <span class="o">(</span><span class="n">s</span><span class="o">:</span><span class="n">state</span><span class="o">)</span> <span class="o">=</span>
-  <span class="o">(</span><span class="n">s</span><span class="o">.</span><span class="n">cabbage</span> <span class="o">&lt;&gt;</span> <span class="nc">Boat</span><span class="o">)</span> <span class="o">&amp;&amp;</span>
-  <span class="o">(</span><span class="n">s</span><span class="o">.</span><span class="n">goat</span>    <span class="o">&lt;&gt;</span> <span class="nc">Boat</span><span class="o">)</span> <span class="o">&amp;&amp;</span>
-  <span class="o">(</span><span class="n">s</span><span class="o">.</span><span class="n">wolf</span>    <span class="o">&lt;&gt;</span> <span class="nc">Boat</span><span class="o">)</span>
+<span class="k">let</span> <span class="n">h</span> <span class="n">x</span> <span class="o">=</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="o">(</span><span class="n">x</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mi">5</span> <span class="o">||</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="o">-</span><span class="mi">6</span><span class="o">);;</span>
+<span class="k">let</span> <span class="n">d2</span> <span class="o">=</span> <span class="nn">Modular_decomp</span><span class="p">.</span><span class="n">top</span> <span class="o">~</span><span class="n">assuming</span><span class="o">:</span><span class="s2">&quot;h&quot;</span> <span class="s2">&quot;f&quot;</span> <span class="o">[@@</span><span class="n">program</span><span class="o">];;</span>
 </pre></div>
 
 </div>
@@ -1276,10 +1454,102 @@ type good = Cabbage | Goat | Wolf
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>val get_location : state -&gt; good -&gt; location = &lt;fun&gt;
-val set_location : state -&gt; good -&gt; location -&gt; state = &lt;fun&gt;
-val boat_empty : state -&gt; bool = &lt;fun&gt;
+<pre>val g : int -&gt; bool = &lt;fun&gt;
+val d1 : Modular_decomposition.t =
+  {Imandra_interactive.Modular_decomp.MD.md_session = 3i;
+   md_f =
+    {Imandra_surface.Uid.name = &#34;f&#34;; id = &lt;abstr&gt;; special_tag = &lt;abstr&gt;;
+     namespace = &lt;abstr&gt;;
+     chash = Some YeRAsRqGpQ4zwVxhfoofh9B8obWDXkyns26GyTmeZRI;
+     depth = (3i, 1i)};
+   md_args = [(x : int)]; md_regions = &lt;abstr&gt;}
+val h : int -&gt; bool = &lt;fun&gt;
+val d2 : Modular_decomposition.t =
+  {Imandra_interactive.Modular_decomp.MD.md_session = 4i;
+   md_f =
+    {Imandra_surface.Uid.name = &#34;f&#34;; id = &lt;abstr&gt;; special_tag = &lt;abstr&gt;;
+     namespace = &lt;abstr&gt;;
+     chash = Some YeRAsRqGpQ4zwVxhfoofh9B8obWDXkyns26GyTmeZRI;
+     depth = (3i, 1i)};
+   md_args = [(x : int)]; md_regions = &lt;abstr&gt;}
 </pre>
+</div>
+
+</div>
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+
+<div class="output_html rendered_html output_subarea ">
+<div class="imandra-alternatives" id="alt-38d56b96-75dd-40bf-bdbd-96fcab9e8675"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi (1 of 1)</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-e4b19edb-f1f7-48d7-875b-1f146e5636e2" class="decompose"><textarea class="display-none">{
+  &quot;regions&quot;: [
+    {
+      &quot;constraints&quot;: [ &quot;x &lt; 0&quot; ],
+      &quot;region&quot;: { &quot;constraints&quot;: [ &quot;x &lt; 0&quot; ], &quot;invariant&quot;: &quot;F = x&quot; },
+      &quot;groups&quot;: [],
+      &quot;label&quot;: &quot;1&quot;,
+      &quot;weight&quot;: 1
+    }
+  ]
+}</textarea><div class="decompose-foamtree"></div><div class="decompose-details"><div class="decompose-details-header">Regions details</div><div class="decompose-details-no-selection"><p>No group selected.</p><ul><li>Concrete regions are numbered</li><li>Unnumbered regions are groups whose children share a particular constraint</li><li>Click on a region to view its details</li><li>Double click on a region to zoom in on it</li><li>Shift+double click to zoom out</li><li>Hit escape to reset back to the top</li></ul></div><div class="decompose-details-selection hidden"><div><span class="decompose-details-label">Direct sub-regions: </span><span class="decompose-details-direct-sub-regions-text">-</span></div><div><span class="decompose-details-label">Contained regions: </span><span class="decompose-details-contained-regions-text">-</span></div><div class="decompose-details-section-header">Constraints</div><div class="decompose-details-constraints"><pre class="decompose-details-constraint">&lt;constraint&gt;</pre></div><div class="decompose-details-invariant"><div class="decompose-details-section-header">Invariant</div><pre class="decompose-details-invariant-text">&lt;invariant&gt;</pre></div></div></div><script>
+(function () {
+  require(['nbextensions/nbimandra/regions'], function (regions) {
+    var target = '#decompose-e4b19edb-f1f7-48d7-875b-1f146e5636e2';
+    regions.hydrate(target);
+  });
+})();
+</script></div></div><div class="tab-pane"><div><div>decomp of (f x<div class="imandra-table" id="table-6b642a4e-1352-4d77-af8d-b2623c9e8fd0"><table><thead><tr><th>Reg_id</th><th>Constraints</th><th>Invariant</th></tr></thead><tr><td>0</td><td><ul><li><pre>x &lt; 0</pre></li><li><pre>not (x &gt; 0)</pre></li></ul></td><td><pre>x</pre></td></tr></table></div></div></div></div></div><script>
+require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
+  var target = '#alt-38d56b96-75dd-40bf-bdbd-96fcab9e8675';
+  alternatives.hydrate(target);
+});
+</script></div>
+
+</div>
+
+</div>
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+
+<div class="output_html rendered_html output_subarea ">
+<div class="imandra-alternatives" id="alt-4f13b8d8-f301-4e5d-8353-9fbb0ffeda17"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi (2 of 2)</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-4d0e5426-f46d-408b-81af-f5f6dae6cefe" class="decompose"><textarea class="display-none">{
+  &quot;regions&quot;: [
+    {
+      &quot;constraints&quot;: [ &quot;x &lt; -6&quot; ],
+      &quot;region&quot;: { &quot;constraints&quot;: [ &quot;x &lt; -6&quot; ], &quot;invariant&quot;: &quot;F = x&quot; },
+      &quot;groups&quot;: [],
+      &quot;label&quot;: &quot;2&quot;,
+      &quot;weight&quot;: 1
+    },
+    {
+      &quot;constraints&quot;: [ &quot;-5 &lt; x &lt; 0&quot; ],
+      &quot;region&quot;: { &quot;constraints&quot;: [ &quot;-5 &lt; x &lt; 0&quot; ], &quot;invariant&quot;: &quot;F = x&quot; },
+      &quot;groups&quot;: [],
+      &quot;label&quot;: &quot;1&quot;,
+      &quot;weight&quot;: 1
+    }
+  ]
+}</textarea><div class="decompose-foamtree"></div><div class="decompose-details"><div class="decompose-details-header">Regions details</div><div class="decompose-details-no-selection"><p>No group selected.</p><ul><li>Concrete regions are numbered</li><li>Unnumbered regions are groups whose children share a particular constraint</li><li>Click on a region to view its details</li><li>Double click on a region to zoom in on it</li><li>Shift+double click to zoom out</li><li>Hit escape to reset back to the top</li></ul></div><div class="decompose-details-selection hidden"><div><span class="decompose-details-label">Direct sub-regions: </span><span class="decompose-details-direct-sub-regions-text">-</span></div><div><span class="decompose-details-label">Contained regions: </span><span class="decompose-details-contained-regions-text">-</span></div><div class="decompose-details-section-header">Constraints</div><div class="decompose-details-constraints"><pre class="decompose-details-constraint">&lt;constraint&gt;</pre></div><div class="decompose-details-invariant"><div class="decompose-details-section-header">Invariant</div><pre class="decompose-details-invariant-text">&lt;invariant&gt;</pre></div></div></div><script>
+(function () {
+  require(['nbextensions/nbimandra/regions'], function (regions) {
+    var target = '#decompose-4d0e5426-f46d-408b-81af-f5f6dae6cefe';
+    regions.hydrate(target);
+  });
+})();
+</script></div></div><div class="tab-pane"><div><div>decomp of (f x<div class="imandra-table" id="table-b0132753-f8aa-46f4-9f60-6b8961cc8f2c"><table><thead><tr><th>Reg_id</th><th>Constraints</th><th>Invariant</th></tr></thead><tr><td>1</td><td><ul><li><pre>x &lt; 0</pre></li><li><pre>not (x &gt; -5)</pre></li><li><pre>x &lt; -6</pre></li><li><pre>not (x &gt; 0)</pre></li></ul></td><td><pre>x</pre></td></tr><tr><td>0</td><td><ul><li><pre>x &lt; 0</pre></li><li><pre>x &gt; -5</pre></li><li><pre>not (x &gt; 0)</pre></li></ul></td><td><pre>x</pre></td></tr></table></div></div></div></div></div><script>
+require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
+  var target = '#alt-4f13b8d8-f301-4e5d-8353-9fbb0ffeda17';
+  alternatives.hydrate(target);
+});
+</script></div>
+
 </div>
 
 </div>
@@ -1291,13 +1561,13 @@ val boat_empty : state -&gt; bool = &lt;fun&gt;
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html"><p>Now, transition from a state to the next one is done via <em>actions</em>:</p>
+<div class="text_cell_render border-box-sizing rendered_html"><p>Pruning instructs modular decomposition to solve all the regions for feasibility using unrolling and throw away infeasible ones</p>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="try-this-container">
-  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Crossing%20the%20river%20safely.ipynb%23try-cell-8" target="_blank" rel="nofollow">
+  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/DecompositionIntro.ipynb%23try-cell-12" target="_blank" rel="nofollow">
     <div class="try-this">Try this!</div>
   </a>
 </div>
@@ -1305,66 +1575,7 @@ val boat_empty : state -&gt; bool = &lt;fun&gt;
 <div class="prompt input_prompt">In&nbsp;[4]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ocaml"><pre><span></span><span class="k">type</span> <span class="n">action</span> <span class="o">=</span>
-  <span class="o">|</span> <span class="nc">Pick</span> <span class="k">of</span> <span class="n">good</span>
-  <span class="o">|</span> <span class="nc">Drop</span> <span class="k">of</span> <span class="n">good</span>
-  <span class="o">|</span> <span class="nc">CrossRiver</span>
-
-<span class="k">let</span> <span class="n">process_action</span> <span class="o">(</span><span class="n">s</span><span class="o">:</span><span class="n">state</span><span class="o">)</span> <span class="o">(</span><span class="n">m</span><span class="o">:</span><span class="n">action</span><span class="o">)</span> <span class="o">:</span> <span class="n">state</span> <span class="o">=</span>
-  <span class="k">match</span> <span class="n">m</span> <span class="k">with</span>
-  <span class="o">|</span> <span class="nc">CrossRiver</span> <span class="o">-&gt;</span> <span class="o">{</span> <span class="n">s</span> <span class="k">with</span> <span class="n">boat</span> <span class="o">=</span> <span class="k">match</span> <span class="n">s</span><span class="o">.</span><span class="n">boat</span> <span class="k">with</span> <span class="nc">Left</span> <span class="o">-&gt;</span> <span class="nc">Right</span> <span class="o">|</span> <span class="nc">Right</span> <span class="o">-&gt;</span> <span class="nc">Left</span> <span class="o">}</span>
-  <span class="o">|</span> <span class="nc">Pick</span> <span class="n">x</span> <span class="o">-&gt;</span> <span class="k">begin</span>
-    <span class="k">if</span> <span class="n">not</span> <span class="o">@@</span> <span class="n">boat_empty</span> <span class="n">s</span> <span class="k">then</span> <span class="n">s</span> <span class="k">else</span>
-    <span class="k">match</span> <span class="n">get_location</span> <span class="n">s</span> <span class="n">x</span><span class="o">,</span> <span class="n">s</span><span class="o">.</span><span class="n">boat</span> <span class="k">with</span>
-    <span class="o">|</span>  <span class="nc">LeftCoast</span> <span class="o">,</span>  <span class="nc">Left</span> <span class="o">-&gt;</span> <span class="n">set_location</span> <span class="n">s</span> <span class="n">x</span> <span class="nc">Boat</span>
-    <span class="o">|</span> <span class="nc">RightCoast</span> <span class="o">,</span> <span class="nc">Right</span> <span class="o">-&gt;</span> <span class="n">set_location</span> <span class="n">s</span> <span class="n">x</span> <span class="nc">Boat</span>
-    <span class="o">|</span> <span class="o">_</span> <span class="o">-&gt;</span> <span class="n">s</span>
-  <span class="k">end</span>
-  <span class="o">|</span> <span class="nc">Drop</span> <span class="n">x</span> <span class="o">-&gt;</span> <span class="k">begin</span>
-    <span class="k">match</span> <span class="n">get_location</span> <span class="n">s</span> <span class="n">x</span><span class="o">,</span> <span class="n">s</span><span class="o">.</span><span class="n">boat</span> <span class="k">with</span>
-    <span class="o">|</span> <span class="nc">Boat</span> <span class="o">,</span>  <span class="nc">Left</span> <span class="o">-&gt;</span> <span class="n">set_location</span> <span class="n">s</span> <span class="n">x</span> <span class="nc">LeftCoast</span>
-    <span class="o">|</span> <span class="nc">Boat</span> <span class="o">,</span> <span class="nc">Right</span> <span class="o">-&gt;</span> <span class="n">set_location</span> <span class="n">s</span> <span class="n">x</span> <span class="nc">RightCoast</span>
-    <span class="o">|</span> <span class="o">_</span> <span class="o">-&gt;</span> <span class="n">s</span>
-  <span class="k">end</span>
-<span class="o">;;</span>
-
-<span class="k">let</span> <span class="n">process_eating</span> <span class="n">s</span> <span class="o">=</span>
-  <span class="k">match</span> <span class="n">s</span><span class="o">.</span><span class="n">boat</span><span class="o">,</span> <span class="n">s</span><span class="o">.</span><span class="n">cabbage</span><span class="o">,</span> <span class="n">s</span><span class="o">.</span><span class="n">goat</span><span class="o">,</span> <span class="n">s</span><span class="o">.</span><span class="n">wolf</span> <span class="k">with</span>
-  <span class="o">|</span> <span class="nc">Right</span><span class="o">,</span> <span class="nc">LeftCoast</span><span class="o">,</span> <span class="nc">LeftCoast</span><span class="o">,</span> <span class="o">_</span>    <span class="o">-&gt;</span> <span class="nc">Some</span> <span class="o">{</span> <span class="n">s</span> <span class="k">with</span> <span class="n">cabbage</span> <span class="o">=</span> <span class="nc">Eaten</span> <span class="o">}</span>
-  <span class="o">|</span> <span class="nc">Right</span><span class="o">,</span> <span class="o">_</span> <span class="o">,</span> <span class="nc">LeftCoast</span><span class="o">,</span> <span class="nc">LeftCoast</span>   <span class="o">-&gt;</span> <span class="nc">Some</span> <span class="o">{</span> <span class="n">s</span> <span class="k">with</span> <span class="n">goat</span> <span class="o">=</span> <span class="nc">Eaten</span> <span class="o">}</span>
-  <span class="o">|</span>  <span class="nc">Left</span><span class="o">,</span> <span class="nc">RightCoast</span><span class="o">,</span> <span class="nc">RightCoast</span><span class="o">,</span> <span class="o">_</span>  <span class="o">-&gt;</span> <span class="nc">Some</span> <span class="o">{</span> <span class="n">s</span> <span class="k">with</span> <span class="n">cabbage</span> <span class="o">=</span> <span class="nc">Eaten</span> <span class="o">}</span>
-  <span class="o">|</span>  <span class="nc">Left</span><span class="o">,</span> <span class="o">_</span> <span class="o">,</span> <span class="nc">RightCoast</span><span class="o">,</span> <span class="nc">RightCoast</span> <span class="o">-&gt;</span> <span class="nc">Some</span> <span class="o">{</span> <span class="n">s</span> <span class="k">with</span> <span class="n">goat</span> <span class="o">=</span> <span class="nc">Eaten</span> <span class="o">}</span>
-  <span class="o">|</span> <span class="o">_</span>  <span class="o">-&gt;</span> <span class="nc">None</span>
-
-<span class="c">(* is… it a bad state? *)</span>
-<span class="k">let</span> <span class="n">anything_eaten</span> <span class="n">s</span> <span class="o">=</span>
-  <span class="n">s</span><span class="o">.</span><span class="n">cabbage</span> <span class="o">=</span> <span class="nc">Eaten</span> <span class="o">||</span> <span class="n">s</span><span class="o">.</span><span class="n">goat</span> <span class="o">=</span> <span class="nc">Eaten</span>
-
-<span class="k">let</span> <span class="n">one_step</span> <span class="n">s</span> <span class="n">a</span> <span class="o">=</span>
-  <span class="k">if</span> <span class="n">anything_eaten</span> <span class="n">s</span> <span class="k">then</span> <span class="n">s</span>
-  <span class="k">else</span>
-    <span class="k">match</span> <span class="n">process_eating</span> <span class="n">s</span> <span class="k">with</span>
-    <span class="o">|</span> <span class="nc">Some</span> <span class="n">s</span> <span class="o">-&gt;</span> <span class="n">s</span>
-    <span class="o">|</span> <span class="nc">None</span> <span class="o">-&gt;</span>
-      <span class="n">process_action</span> <span class="n">s</span> <span class="n">a</span>
-
-<span class="c">(* process many actions. Note that we have to specify that [acts] is</span>
-<span class="c">   the argument that proves termination *)</span>
-<span class="k">let</span> <span class="k">rec</span> <span class="n">many_steps</span> <span class="n">s</span> <span class="n">acts</span> <span class="o">=</span>
-  <span class="k">match</span> <span class="n">acts</span> <span class="k">with</span>
-  <span class="o">|</span> <span class="bp">[]</span> <span class="o">-&gt;</span> <span class="n">s</span>
-  <span class="o">|</span> <span class="n">a</span> <span class="o">::</span> <span class="n">acts</span> <span class="o">-&gt;</span>
-    <span class="k">let</span> <span class="n">s&#39;</span> <span class="o">=</span> <span class="n">one_step</span> <span class="n">s</span> <span class="n">a</span> <span class="k">in</span>
-    <span class="n">many_steps</span> <span class="n">s&#39;</span> <span class="n">acts</span>
-<span class="o">[@@</span><span class="n">adm</span> <span class="mi">1</span><span class="n">n</span><span class="o">]</span>
-
-
-<span class="k">let</span> <span class="n">solved</span> <span class="n">s</span> <span class="o">=</span>
-  <span class="n">s</span><span class="o">.</span><span class="n">cabbage</span> <span class="o">=</span> <span class="nc">RightCoast</span>
-  <span class="o">&amp;&amp;</span> <span class="n">s</span><span class="o">.</span><span class="n">goat</span> <span class="o">=</span> <span class="nc">RightCoast</span>
-  <span class="o">&amp;&amp;</span> <span class="n">s</span><span class="o">.</span><span class="n">wolf</span> <span class="o">=</span> <span class="nc">RightCoast</span>
-  <span class="o">&amp;&amp;</span> <span class="n">s</span><span class="o">.</span><span class="n">boat</span> <span class="o">=</span> <span class="nc">Right</span>
-<span class="o">;;</span>
+<div class=" highlight hl-ocaml"><pre><span></span><span class="k">let</span> <span class="n">d</span> <span class="o">=</span> <span class="nn">Modular_decomp</span><span class="p">.</span><span class="n">top</span> <span class="o">~</span><span class="n">prune</span><span class="o">:</span><span class="bp">true</span> <span class="s2">&quot;f&quot;</span> <span class="o">[@@</span><span class="n">program</span><span class="o">];;</span>
 </pre></div>
 
 </div>
@@ -1383,13 +1594,14 @@ val boat_empty : state -&gt; bool = &lt;fun&gt;
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>type action = Pick of good | Drop of good | CrossRiver
-val process_action : state -&gt; action -&gt; state = &lt;fun&gt;
-val process_eating : state -&gt; state option = &lt;fun&gt;
-val anything_eaten : state -&gt; bool = &lt;fun&gt;
-val one_step : state -&gt; action -&gt; state = &lt;fun&gt;
-val many_steps : state -&gt; action list -&gt; state = &lt;fun&gt;
-val solved : state -&gt; bool = &lt;fun&gt;
+<pre>val d : Modular_decomposition.t =
+  {Imandra_interactive.Modular_decomp.MD.md_session = 5i;
+   md_f =
+    {Imandra_surface.Uid.name = &#34;f&#34;; id = &lt;abstr&gt;; special_tag = &lt;abstr&gt;;
+     namespace = &lt;abstr&gt;;
+     chash = Some YeRAsRqGpQ4zwVxhfoofh9B8obWDXkyns26GyTmeZRI;
+     depth = (3i, 1i)};
+   md_args = [(x : int)]; md_regions = &lt;abstr&gt;}
 </pre>
 </div>
 
@@ -1402,48 +1614,39 @@ val solved : state -&gt; bool = &lt;fun&gt;
 
 
 <div class="output_html rendered_html output_subarea ">
-<div><div class="imandra-fold panel panel-default" id="fold-ae2f106f-d96a-493f-9c75-17a9bb67d36b"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>termination proof</span></div></div><div class="panel-body collapse"><div><h3>Termination proof</h3><p></p><div class="imandra-fold panel panel-default" id="fold-7cfd983e-fdf3-47e7-9fa6-4193c95e7535"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>call `many_steps (one_step s (List.hd acts)) (List.tl acts)` from `many_steps s acts`</span></div></div><div class="panel-body collapse"><div class="imandra-table" id="table-2f748bd9-4595-44a8-a81d-7f9956faa35d"><table><tr><td><b>original</b></td><td>many_steps s acts</td></tr><tr><td><b>sub</b></td><td>many_steps (one_step s (List.hd acts)) (List.tl acts)</td></tr><tr><td><b>original ordinal</b></td><td>Ordinal.Int (_cnt acts)</td></tr><tr><td><b>sub ordinal</b></td><td>Ordinal.Int (_cnt (List.tl acts))</td></tr><tr><td><b>path</b></td><td>[not (acts = [])]</td></tr><tr><td><b>proof</b></td><td><div class="imandra-fold panel panel-default" id="fold-932ce1a2-5599-4d86-ada6-b41b6fe50a17"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>detailed proof</span></div></div><div class="panel-body collapse"><div class="imandra-proof"><div class="imandra-alternatives" id="alt-fdf84798-ee0c-436a-8dee-02b54dabea49"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>summary</a></li><li class="" data-toggle="tab"><a>full</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-table" id="table-63f11882-47c1-4d24-9d84-4c8614eaa947"><table><tr><td><b>ground_instances</b></td><td>3</td></tr><tr><td><b>definitions</b></td><td>0</td></tr><tr><td><b>inductions</b></td><td>0</td></tr><tr><td><b>search_time</b></td><td><pre>0.017s</pre></td></tr><tr><td><b>details</b></td><td><div class="imandra-fold panel panel-default" id="fold-4cabbeae-4573-4580-af39-c380651fb308"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><div class="imandra-table" id="table-bd78c111-a76b-4956-aebd-1b59d01392fb"><table><tr><td><b>smt_stats</b></td><td><div class="imandra-table" id="table-38943978-8727-4cf2-b8b2-775cf0bbba86"><table><tr><td><b>num checks</b></td><td>8</td></tr><tr><td><b>arith-make-feasible</b></td><td>21</td></tr><tr><td><b>arith-max-columns</b></td><td>16</td></tr><tr><td><b>arith-conflicts</b></td><td>1</td></tr><tr><td><b>rlimit count</b></td><td>2852</td></tr><tr><td><b>mk clause</b></td><td>24</td></tr><tr><td><b>datatype occurs check</b></td><td>36</td></tr><tr><td><b>mk bool var</b></td><td>120</td></tr><tr><td><b>arith-lower</b></td><td>13</td></tr><tr><td><b>datatype splits</b></td><td>22</td></tr><tr><td><b>decisions</b></td><td>40</td></tr><tr><td><b>propagations</b></td><td>27</td></tr><tr><td><b>arith-max-rows</b></td><td>6</td></tr><tr><td><b>conflicts</b></td><td>13</td></tr><tr><td><b>datatype accessor ax</b></td><td>15</td></tr><tr><td><b>datatype constructor ax</b></td><td>36</td></tr><tr><td><b>num allocs</b></td><td>953847849</td></tr><tr><td><b>final checks</b></td><td>9</td></tr><tr><td><b>added eqs</b></td><td>144</td></tr><tr><td><b>del clause</b></td><td>9</td></tr><tr><td><b>arith eq adapter</b></td><td>13</td></tr><tr><td><b>arith-upper</b></td><td>16</td></tr><tr><td><b>memory</b></td><td>13.450000</td></tr><tr><td><b>max memory</b></td><td>24.340000</td></tr></table></div></td></tr></table></div></div><script>
-require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-4cabbeae-4573-4580-af39-c380651fb308';
-  fold.hydrate(target);
-});
-</script></div></td></tr></table></div></div><div class="tab-pane"><div class="imandra-fold panel panel-default" id="fold-2df0fb18-77ca-4a87-a5e7-1497464fb732"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.017s]
-  let (_x_0 : int) = count.list count.action acts in
-  let (_x_1 : action list) = List.tl acts in
-  let (_x_2 : int) = count.list count.action _x_1 in
-  not (acts = []) &amp;&amp; _x_0 &gt;= 0 &amp;&amp; _x_2 &gt;= 0
-  ==&gt; _x_1 = [] || Ordinal.( &lt;&lt; ) (Ordinal.Int _x_2) (Ordinal.Int _x_0)</pre></li><li><div><h5>simplify</h5><div class="imandra-table" id="table-39d78c01-84e3-45ff-911b-c1c6f3a0efa2"><table><tr><td><b>into</b></td><td><pre>let (_x_0 : action list) = List.tl acts in
-let (_x_1 : int) = count.list count.action _x_0 in
-let (_x_2 : int) = count.list count.action acts in
-(_x_0 = [] || Ordinal.( &lt;&lt; ) (Ordinal.Int _x_1) (Ordinal.Int _x_2))
-|| not ((not (acts = []) &amp;&amp; _x_2 &gt;= 0) &amp;&amp; _x_1 &gt;= 0)</pre></td></tr><tr><td><b>expansions</b></td><td><pre>[]</pre></td></tr><tr><td><b>rewrite_steps</b></td><td><ul></ul></td></tr><tr><td><b>forward_chaining</b></td><td><ul></ul></td></tr></table></div></div></li><li><div>unroll<div class="imandra-table" id="table-007248fd-86b2-4688-b751-b54afe353ed9"><table><tr><td><b>expr</b></td><td><pre>(|`count.list count.action[0]`_2734| acts_2722)</pre></td></tr><tr><td><b>expansions</b></td><td><ul></ul></td></tr></table></div></div></li><li><div>unroll<div class="imandra-table" id="table-8a8b8a5e-3c6c-4a17-8b04-c27df6a3e8d5"><table><tr><td><b>expr</b></td><td><pre>(|`count.list count.action[0]`_2734| (|get.::.1_2714| acts_2722))</pre></td></tr><tr><td><b>expansions</b></td><td><ul></ul></td></tr></table></div></div></li><li><div>unroll<div class="imandra-table" id="table-5ab68e28-522c-4842-b51c-831279832f3c"><table><tr><td><b>expr</b></td><td><pre>(|Ordinal.&lt;&lt;_119| (|Ordinal.Int_108|
-                    (|`count.list count.action[0]`_2734|
-      …</pre></td></tr><tr><td><b>expansions</b></td><td><ul></ul></td></tr></table></div></div></li><li>Unsat</li></ul></div><script>
-require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-2df0fb18-77ca-4a87-a5e7-1497464fb732';
-  fold.hydrate(target);
-});
-</script></div></div></div><script>
+<div class="imandra-alternatives" id="alt-499e8579-c477-4afc-b2c8-9075de6ac255"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi (2 of 2)</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-c95dd6d9-4ed6-42e3-8619-131a4f76bf77" class="decompose"><textarea class="display-none">{
+  &quot;regions&quot;: [
+    {
+      &quot;constraints&quot;: [ &quot;x &lt;= 0&quot; ],
+      &quot;region&quot;: { &quot;constraints&quot;: [ &quot;x &lt;= 0&quot; ], &quot;invariant&quot;: &quot;F = x&quot; },
+      &quot;groups&quot;: [],
+      &quot;label&quot;: &quot;2&quot;,
+      &quot;weight&quot;: 1
+    },
+    {
+      &quot;constraints&quot;: [ &quot;(x * x) &gt;= 0&quot;, &quot;x &gt; 0&quot; ],
+      &quot;region&quot;: {
+        &quot;constraints&quot;: [ &quot;(x * x) &gt;= 0&quot;, &quot;x &gt; 0&quot; ],
+        &quot;invariant&quot;: &quot;F = x + 1&quot;
+      },
+      &quot;groups&quot;: [],
+      &quot;label&quot;: &quot;1.1&quot;,
+      &quot;weight&quot;: 1
+    }
+  ]
+}</textarea><div class="decompose-foamtree"></div><div class="decompose-details"><div class="decompose-details-header">Regions details</div><div class="decompose-details-no-selection"><p>No group selected.</p><ul><li>Concrete regions are numbered</li><li>Unnumbered regions are groups whose children share a particular constraint</li><li>Click on a region to view its details</li><li>Double click on a region to zoom in on it</li><li>Shift+double click to zoom out</li><li>Hit escape to reset back to the top</li></ul></div><div class="decompose-details-selection hidden"><div><span class="decompose-details-label">Direct sub-regions: </span><span class="decompose-details-direct-sub-regions-text">-</span></div><div><span class="decompose-details-label">Contained regions: </span><span class="decompose-details-contained-regions-text">-</span></div><div class="decompose-details-section-header">Constraints</div><div class="decompose-details-constraints"><pre class="decompose-details-constraint">&lt;constraint&gt;</pre></div><div class="decompose-details-invariant"><div class="decompose-details-section-header">Invariant</div><pre class="decompose-details-invariant-text">&lt;invariant&gt;</pre></div></div></div><script>
+(function () {
+  require(['nbextensions/nbimandra/regions'], function (regions) {
+    var target = '#decompose-c95dd6d9-4ed6-42e3-8619-131a4f76bf77';
+    regions.hydrate(target);
+  });
+})();
+</script></div></div><div class="tab-pane"><div><div>decomp of (f x<div class="imandra-table" id="table-a09ea029-3a13-497c-8b71-e352b397e053"><table><thead><tr><th>Reg_id</th><th>Constraints</th><th>Invariant</th></tr></thead><tr><td>2</td><td><ul><li><pre>not (x &gt; 0)</pre></li></ul></td><td><pre>x</pre></td></tr><tr><td>1</td><td><ul><li><pre>not ((x * x) &lt; 0)</pre></li><li><pre>x &gt; 0</pre></li></ul></td><td><pre>x + 1</pre></td></tr></table></div></div></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-fdf84798-ee0c-436a-8dee-02b54dabea49';
+  var target = '#alt-499e8579-c477-4afc-b2c8-9075de6ac255';
   alternatives.hydrate(target);
 });
-</script></div></div></div><script>
-require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-932ce1a2-5599-4d86-ada6-b41b6fe50a17';
-  fold.hydrate(target);
-});
-</script></div></td></tr></table></div></div><script>
-require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-7cfd983e-fdf3-47e7-9fa6-4193c95e7535';
-  fold.hydrate(target);
-});
-</script></div><p></p></div></div><script>
-require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-ae2f106f-d96a-493f-9c75-17a9bb67d36b';
-  fold.hydrate(target);
-});
-</script></div></div>
+</script></div>
 
 </div>
 
@@ -1452,10 +1655,17 @@ require(['nbextensions/nbimandra/fold'], function (fold) {
 </div>
 </div>
 
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html"><p>In some cases feasibility is not known via unrolling, so pruning may return regions of unknown feasibility</p>
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="try-this-container">
-  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Crossing%20the%20river%20safely.ipynb%23try-cell-9" target="_blank" rel="nofollow">
+  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/DecompositionIntro.ipynb%23try-cell-14" target="_blank" rel="nofollow">
     <div class="try-this">Try this!</div>
   </a>
 </div>
@@ -1463,13 +1673,11 @@ require(['nbextensions/nbimandra/fold'], function (fold) {
 <div class="prompt input_prompt">In&nbsp;[5]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ocaml"><pre><span></span><span class="c">(* initial state, on the west bank of Anduin with empty pockets and fuzzy side-kicks *)</span>
-<span class="k">let</span> <span class="n">init_state</span> <span class="o">=</span> <span class="o">{</span>
-  <span class="n">cabbage</span> <span class="o">=</span> <span class="nc">LeftCoast</span><span class="o">;</span>
-  <span class="n">goat</span> <span class="o">=</span> <span class="nc">LeftCoast</span><span class="o">;</span>
-  <span class="n">wolf</span> <span class="o">=</span> <span class="nc">LeftCoast</span><span class="o">;</span>
-  <span class="n">boat</span> <span class="o">=</span> <span class="nc">Left</span><span class="o">;</span>
-<span class="o">}</span>
+<div class=" highlight hl-ocaml"><pre><span></span><span class="k">let</span> <span class="n">i</span> <span class="o">(</span><span class="n">x</span> <span class="o">:</span> <span class="kt">int</span> <span class="kt">list</span><span class="o">)</span> <span class="o">=</span> <span class="k">if</span> <span class="o">(</span><span class="n">x</span> <span class="o">=</span> <span class="nn">List</span><span class="p">.</span><span class="n">rev</span> <span class="o">@@</span> <span class="nn">List</span><span class="p">.</span><span class="n">rev</span> <span class="n">x</span><span class="o">)</span> <span class="k">then</span> <span class="mi">1</span> <span class="k">else</span> <span class="mi">2</span><span class="o">;;</span>
+
+<span class="k">let</span> <span class="n">d</span> <span class="o">=</span> <span class="nn">Modular_decomp</span><span class="p">.</span><span class="n">top</span> <span class="o">~</span><span class="n">prune</span><span class="o">:</span><span class="bp">true</span> <span class="s2">&quot;i&quot;</span> <span class="o">[@@</span><span class="n">program</span><span class="o">];;</span>
+
+<span class="n">d</span> <span class="o">|&gt;</span> <span class="nn">Modular_decomp</span><span class="p">.</span><span class="n">get_regions</span> <span class="o">|&gt;</span> <span class="nn">CCList</span><span class="p">.</span><span class="n">map</span> <span class="o">(</span><span class="k">fun</span> <span class="n">r</span> <span class="o">-&gt;</span> <span class="n">r</span><span class="o">,</span> <span class="nn">Modular_region</span><span class="p">.</span><span class="o">(</span><span class="n">string_of_status</span> <span class="o">@@</span> <span class="n">status</span> <span class="n">r</span><span class="o">));;</span>
 </pre></div>
 
 </div>
@@ -1488,9 +1696,75 @@ require(['nbextensions/nbimandra/fold'], function (fold) {
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>val init_state : state =
-  {cabbage = LeftCoast; goat = LeftCoast; wolf = LeftCoast; boat = Left}
+<pre>val i : int list -&gt; int = &lt;fun&gt;
+val d : Modular_decomposition.t =
+  {Imandra_interactive.Modular_decomp.MD.md_session = 6i;
+   md_f =
+    {Imandra_surface.Uid.name = &#34;i&#34;; id = &lt;abstr&gt;; special_tag = &lt;abstr&gt;;
+     namespace = &lt;abstr&gt;;
+     chash = Some unV8dIDC/39XiU2kXUQtrFhLMPDj2XfFC3/dUOutHlk;
+     depth = (5i, 2i)};
+   md_args = [(x : int list)]; md_regions = &lt;abstr&gt;}
+- : (Modular_region.t * string) list =
+[({Imandra_surface.Modular_region.mreg_session = 6i; mreg_id = 1i;
+   mreg_constraints = [not (x = List.rev (List.rev x))]; mreg_invariant = 2;
+   mreg_args = [(x : int list)];
+   mreg_status = Imandra_surface.Modular_region.Unknown},
+  &#34;unknown&#34;);
+ ({Imandra_surface.Modular_region.mreg_session = 6i; mreg_id = 0i;
+   mreg_constraints = [x = List.rev (List.rev x)]; mreg_invariant = 1;
+   mreg_args = [(x : int list)];
+   mreg_status = Imandra_surface.Modular_region.Unknown},
+  &#34;unknown&#34;)]
 </pre>
+</div>
+
+</div>
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+
+<div class="output_html rendered_html output_subarea ">
+<div class="imandra-alternatives" id="alt-eef71232-dff1-400f-abef-c2dfd5a32509"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi (2 of 2)</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-17df5b4f-ea0b-4ce9-96b4-cff344359ab6" class="decompose"><textarea class="display-none">{
+  &quot;regions&quot;: [
+    {
+      &quot;constraints&quot;: [ &quot;x = (List.rev (List.rev x))&quot; ],
+      &quot;region&quot;: {
+        &quot;constraints&quot;: [ &quot;x = (List.rev (List.rev x))&quot; ],
+        &quot;invariant&quot;: &quot;F = 1&quot;
+      },
+      &quot;groups&quot;: [],
+      &quot;label&quot;: &quot;2&quot;,
+      &quot;weight&quot;: 1
+    },
+    {
+      &quot;constraints&quot;: [ &quot;x &lt;&gt; (List.rev (List.rev x))&quot; ],
+      &quot;region&quot;: {
+        &quot;constraints&quot;: [ &quot;x &lt;&gt; (List.rev (List.rev x))&quot; ],
+        &quot;invariant&quot;: &quot;F = 2&quot;
+      },
+      &quot;groups&quot;: [],
+      &quot;label&quot;: &quot;1&quot;,
+      &quot;weight&quot;: 1
+    }
+  ]
+}</textarea><div class="decompose-foamtree"></div><div class="decompose-details"><div class="decompose-details-header">Regions details</div><div class="decompose-details-no-selection"><p>No group selected.</p><ul><li>Concrete regions are numbered</li><li>Unnumbered regions are groups whose children share a particular constraint</li><li>Click on a region to view its details</li><li>Double click on a region to zoom in on it</li><li>Shift+double click to zoom out</li><li>Hit escape to reset back to the top</li></ul></div><div class="decompose-details-selection hidden"><div><span class="decompose-details-label">Direct sub-regions: </span><span class="decompose-details-direct-sub-regions-text">-</span></div><div><span class="decompose-details-label">Contained regions: </span><span class="decompose-details-contained-regions-text">-</span></div><div class="decompose-details-section-header">Constraints</div><div class="decompose-details-constraints"><pre class="decompose-details-constraint">&lt;constraint&gt;</pre></div><div class="decompose-details-invariant"><div class="decompose-details-section-header">Invariant</div><pre class="decompose-details-invariant-text">&lt;invariant&gt;</pre></div></div></div><script>
+(function () {
+  require(['nbextensions/nbimandra/regions'], function (regions) {
+    var target = '#decompose-17df5b4f-ea0b-4ce9-96b4-cff344359ab6';
+    regions.hydrate(target);
+  });
+})();
+</script></div></div><div class="tab-pane"><div><div>decomp of (i x<div class="imandra-table" id="table-fdb841ea-5e29-4c30-80a3-da20cdf52daf"><table><thead><tr><th>Reg_id</th><th>Constraints</th><th>Invariant</th></tr></thead><tr><td>1</td><td><ul><li><pre>not (x = List.rev (List.rev x))</pre></li></ul></td><td><pre>2</pre></td></tr><tr><td>0</td><td><ul><li><pre>x = List.rev (List.rev x)</pre></li></ul></td><td><pre>1</pre></td></tr></table></div></div></div></div></div><script>
+require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
+  var target = '#alt-eef71232-dff1-400f-abef-c2dfd5a32509';
+  alternatives.hydrate(target);
+});
+</script></div>
+
 </div>
 
 </div>
@@ -1502,13 +1776,13 @@ require(['nbextensions/nbimandra/fold'], function (fold) {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html"><p>We are now ready to ask for a solution! Because we're looking for a given solution rather than a universal proof, <code>instance</code> is the most natural.</p>
+<div class="text_cell_render border-box-sizing rendered_html"><p>Recursive functions are not expanded, nor functions belonging to the "basis" (but pruning can still unroll them when solving for feasibility)</p>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="try-this-container">
-  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Crossing%20the%20river%20safely.ipynb%23try-cell-11" target="_blank" rel="nofollow">
+  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/DecompositionIntro.ipynb%23try-cell-16" target="_blank" rel="nofollow">
     <div class="try-this">Try this!</div>
   </a>
 </div>
@@ -1516,9 +1790,8 @@ require(['nbextensions/nbimandra/fold'], function (fold) {
 <div class="prompt input_prompt">In&nbsp;[6]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ocaml"><pre><span></span><span class="o">#</span><span class="n">timeout</span> <span class="mi">10_000</span><span class="o">;;</span>
-
-<span class="n">instance</span> <span class="o">(</span><span class="k">fun</span> <span class="n">l</span> <span class="o">-&gt;</span> <span class="n">solved</span> <span class="o">@@</span> <span class="n">many_steps</span> <span class="n">init_state</span> <span class="n">l</span><span class="o">)</span> <span class="o">;;</span>
+<div class=" highlight hl-ocaml"><pre><span></span><span class="k">let</span> <span class="n">j</span> <span class="n">x</span> <span class="o">=</span> <span class="k">if</span> <span class="n">f</span> <span class="n">x</span> <span class="o">=</span> <span class="n">x</span> <span class="k">then</span> <span class="mi">1</span> <span class="k">else</span> <span class="mi">2</span><span class="o">;;</span>
+<span class="k">let</span> <span class="n">d</span> <span class="o">=</span> <span class="nn">Modular_decomp</span><span class="p">.</span><span class="n">top</span> <span class="o">~</span><span class="n">prune</span><span class="o">:</span><span class="bp">true</span> <span class="o">~</span><span class="n">basis</span><span class="o">:[</span><span class="s2">&quot;f&quot;</span><span class="o">]</span> <span class="s2">&quot;j&quot;</span> <span class="o">[@@</span><span class="n">program</span><span class="o">];;</span>
 </pre></div>
 
 </div>
@@ -1537,8 +1810,15 @@ require(['nbextensions/nbimandra/fold'], function (fold) {
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>- : action list -&gt; bool = &lt;fun&gt;
-module CX : sig val l : action list end
+<pre>val j : int -&gt; int = &lt;fun&gt;
+val d : Modular_decomposition.t =
+  {Imandra_interactive.Modular_decomp.MD.md_session = 7i;
+   md_f =
+    {Imandra_surface.Uid.name = &#34;j&#34;; id = &lt;abstr&gt;; special_tag = &lt;abstr&gt;;
+     namespace = &lt;abstr&gt;;
+     chash = Some H9wGcYtfpheNYLTXJ3FlBTiyj/LP2x1AfQEcZ/3n9mw;
+     depth = (4i, 1i)};
+   md_args = [(x : int)]; md_regions = &lt;abstr&gt;}
 </pre>
 </div>
 
@@ -1551,185 +1831,36 @@ module CX : sig val l : action list end
 
 
 <div class="output_html rendered_html output_subarea ">
-<div><pre>Instance (after 18 steps, 35.696s):
- let (l : action list) =
-  [(Pick (Goat)); CrossRiver; (Drop (Goat)); CrossRiver; (Pick (Cabbage));
-   CrossRiver; (Drop (Cabbage)); (Pick (Goat)); CrossRiver; (Drop (Goat));
-   (Pick (Wolf)); CrossRiver; (Drop (Wolf)); CrossRiver; (Pick (Goat));
-   CrossRiver; (Drop (Goat))]
-</pre></div>
-
-</div>
-
-</div>
-
-<div class="output_area">
-
-<div class="prompt"></div>
-
-
-
-<div class="output_html rendered_html output_subarea ">
-<div><div style="font-size: 1.2em; padding: 0.5em; border-top: 1px solid green; border-bottom: 1px solid green"><i class="fa fa-check-circle" style="margin-right: 0.5em; color: green"></i><span>Instance</span></div><div><div class="imandra-alternatives" id="alt-c811be79-0b38-4712-a6f6-6cd2cd88c92f"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>call graph</a></li><li class="" data-toggle="tab"><a>proof</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-graphviz" id="graphviz-515e8ce7-3d3b-4fd4-8bb5-1567e336e60d"><textarea style="display: none">digraph &quot;call graph&quot; {
-goal [label=&quot;let (_x_0 : state)\l    = many_steps\l      \{cabbage = LeftCoast; goat = LeftCoast; wolf = LeftCoast; boat = Left\}\l      l\lin\l((_x_0.cabbage = RightCoast &amp;&amp; _x_0.goat = RightCoast)\l &amp;&amp; _x_0.wolf = RightCoast)\l&amp;&amp; _x_0.boat = Right&quot;,shape=box,style=filled,color=&quot;cyan&quot;,fontname=&quot;courier&quot;,fontsize=14];
-goal -&gt; call_39 [label=&quot;calls&quot;];
-call_39 [label=&quot;many_steps\l\{cabbage = LeftCoast; goat = LeftCoast; wolf = LeftCoast; boat = Left\} l&quot;,shape=box,style=filled,color=&quot;green&quot;,fontname=&quot;courier&quot;,fontsize=14];
-call_39 -&gt; call_375 [label=&quot;calls&quot;];
-call_375 [label=&quot;many_steps\l(one_step\l \{cabbage = LeftCoast; goat = LeftCoast; wolf = LeftCoast; boat = Left\}\l (List.hd l))\l(List.tl l)&quot;,shape=box,style=filled,color=&quot;green&quot;,fontname=&quot;courier&quot;,fontsize=14];
-call_375 -&gt; call_991 [label=&quot;calls&quot;];
-call_991 [label=&quot;let (_x_0 : action list) = List.tl l in\lmany_steps\l(one_step\l (one_step\l  \{cabbage = LeftCoast; goat = LeftCoast; wolf = LeftCoast; boat = Left\}\l  (List.hd l))\l (List.hd _x_0))\l(List.tl _x_0)&quot;,shape=box,style=filled,color=&quot;green&quot;,fontname=&quot;courier&quot;,fontsize=14];
-call_991 -&gt; call_2873 [label=&quot;calls&quot;];
-call_2873 [label=&quot;let (_x_0 : action list) = List.tl l in\llet (_x_1 : action list) = List.tl _x_0 in\lmany_steps\l(one_step\l (one_step\l  (one_step\l   \{cabbage = LeftCoast; goat = LeftCoast; wolf = LeftCoast; boat = Left\}\l   (List.hd l))\l  (List.hd _x_0))\l (List.hd _x_1))\l(List.tl _x_1)&quot;,shape=box,style=filled,color=&quot;green&quot;,fontname=&quot;courier&quot;,fontsize=14];
-call_2873 -&gt; call_5377 [label=&quot;calls&quot;];
-call_5377 [label=&quot;let (_x_0 : action list) = List.tl l in\llet (_x_1 : action list) = List.tl _x_0 in\llet (_x_2 : action list) = List.tl _x_1 in\lmany_steps\l(one_step\l (one_step\l  (one_step\l   (one_step\l    \{cabbage = LeftCoast; goat = LeftCoast; wolf = LeftCoast; boat = Left\}\l    (List.hd l))\l   (List.hd _x_0))\l  (List.hd _x_1))\l (List.hd _x_2))\l(List.tl _x_2)&quot;,shape=box,style=filled,color=&quot;green&quot;,fontname=&quot;courier&quot;,fontsize=14];
-call_5377 -&gt; call_9781 [label=&quot;calls&quot;];
-call_9781 [label=&quot;let (_x_0 : action list) = List.tl l in\llet (_x_1 : action list) = List.tl _x_0 in\llet (_x_2 : action list) = List.tl _x_1 in\llet (_x_3 : action list) = List.tl _x_2 in\lmany_steps\l(one_step\l (one_step\l  (one_step\l   (one_step\l    (one_step\l     \{cabbage = LeftCoast; goat = LeftCoast; wolf = LeftCoast; boat = Left\}\l     (List.hd l))\l    (List.hd _x_0))\l   (List.hd _x_1))\l  (List.hd _x_2))\l (List.hd _x_3))\l(List.tl _x_3)&quot;,shape=box,style=filled,color=&quot;green&quot;,fontname=&quot;courier&quot;,fontsize=14];
-call_9781 -&gt; call_16573 [label=&quot;calls&quot;];
-call_16573 [label=&quot;let (_x_0 : action list) = List.tl l in\llet (_x_1 : action list) = List.tl _x_0 in\llet (_x_2 : action list) = List.tl _x_1 in\llet (_x_3 : action list) = List.tl _x_2 in\llet (_x_4 : action list) = List.tl _x_3 in\lmany_steps\l(one_step\l (one_step\l  (one_step\l   (one_step\l    (one_step\l     (one_step\l      \{cabbage = LeftCoast; goat = LeftCoast; wolf = LeftCoast; boat = Left\}\l      (List.hd l))\l     (List.hd _x_0))\l    (List.hd _x_1))\l   (List.hd _x_2))\l  (List.hd _x_3))\l (List.hd _x_4))\l(List.tl _x_4)&quot;,shape=box,style=filled,color=&quot;green&quot;,fontname=&quot;courier&quot;,fontsize=14];
-call_16573 -&gt; call_32339 [label=&quot;calls&quot;];
-call_32339 [label=&quot;let (_x_0 : action list) = List.tl l in\llet (_x_1 : action list) = List.tl _x_0 in\llet (_x_2 : action list) = List.tl _x_1 in\llet (_x_3 : action list) = List.tl _x_2 in\llet (_x_4 : action list) = List.tl _x_3 in\llet (_x_5 : action list) = List.tl _x_4 in\lmany_steps\l(one_step\l (one_step\l  (one_step\l   (one_step\l    (one_step\l     (one_step\l      (one_step\l       \{cabbage = LeftCoast; goat = LeftCoast; wolf = LeftCoast; boat = Left\}\l       (List.hd l))\l      (List.hd _x_0))\l     (List.hd _x_1))\l    (List.hd _x_2))\l   (List.hd _x_3))\l  (List.hd _x_4))\l (List.hd _x_5))\l(List.tl _x_5)&quot;,shape=box,style=filled,color=&quot;green&quot;,fontname=&quot;courier&quot;,fontsize=14];
-call_32339 -&gt; call_54508 [label=&quot;calls&quot;];
-call_54508 [label=&quot;let (_x_0 : action list) = List.tl l in\llet (_x_1 : action list) = List.tl _x_0 in\llet (_x_2 : action list) = List.tl _x_1 in\llet (_x_3 : action list) = List.tl _x_2 in\llet (_x_4 : action list) = List.tl _x_3 in\llet (_x_5 : action list) = List.tl _x_4 in\llet (_x_6 : action list) = List.tl _x_5 in\lmany_steps\l(one_step\l (one_step\l  (one_step\l   (one_step\l    (one_step\l     (one_step\l      (one_step\l       (one_step\l        \{cabbage = LeftCoast; goat = LeftCoast; wolf = LeftCoast; boat = Left\}\l        (List.hd l))\l       (List.hd _x_0))\l      (List.hd _x_1))\l     (List.hd _x_2))\l    (List.hd _x_3))\l   (List.hd _x_4))\l  (List.hd _x_5))\l (List.hd _x_6))\l(List.tl _x_6)&quot;,shape=box,style=filled,color=&quot;green&quot;,fontname=&quot;courier&quot;,fontsize=14];
-call_54508 -&gt; call_90394 [label=&quot;calls&quot;];
-call_90394 [label=&quot;let (_x_0 : action list) = List.tl l in\llet (_x_1 : action list) = List.tl _x_0 in\llet (_x_2 : action list) = List.tl _x_1 in\llet (_x_3 : action list) = List.tl _x_2 in\llet (_x_4 : action list) = List.tl _x_3 in\llet (_x_5 : action list) = List.tl _x_4 in\llet (_x_6 : action list) = List.tl _x_5 in\llet (_x_7 : action list) = List.tl _x_6 in\lmany_steps\l(one_step\l (one_step\l  (one_step\l   (one_step\l    (one_step\l     (one_step\l      (one_step\l       (one_step\l        (one_step\l         \{cabbage = LeftCoast; goat = LeftCoast; wolf = LeftCoast;\l          boat = Left\}\l         (List.hd l))\l        (List.hd _x_0))\l       (List.hd _x_1))\l      (List.hd _x_2))\l     (List.hd _x_3))\l    (List.hd _x_4))\l   (List.hd _x_5))\l  (List.hd _x_6))\l (List.hd _x_7))\l(List.tl _x_7)&quot;,shape=box,style=filled,color=&quot;green&quot;,fontname=&quot;courier&quot;,fontsize=14];
-call_90394 -&gt; call_132492 [label=&quot;calls&quot;];
-call_132492 [label=&quot;let (_x_0 : action list)\l    = List.tl\l      (List.tl (List.tl (List.tl (List.tl (List.tl (List.tl (List.tl l)))))))\lin\llet (_x_1 : action list) = List.tl _x_0 in\lmany_steps\l(one_step (one_step (one_step … …) (List.hd _x_0)) (List.hd _x_1))\l(List.tl _x_1)&quot;,shape=box,style=filled,color=&quot;green&quot;,fontname=&quot;courier&quot;,fontsize=14];
-call_132492 -&gt; call_178408 [label=&quot;calls&quot;];
-call_178408 [label=&quot;let (_x_0 : action list)\l    = List.tl\l      (List.tl (List.tl (List.tl (List.tl (List.tl (List.tl (List.tl l)))))))\lin\llet (_x_1 : action list) = List.tl _x_0 in\llet (_x_2 : action list) = List.tl _x_1 in\lmany_steps\l(one_step\l (one_step (one_step (one_step … …) (List.hd _x_0)) (List.hd _x_1))\l (List.hd _x_2))\l(List.tl _x_2)&quot;,shape=box,style=filled,color=&quot;green&quot;,fontname=&quot;courier&quot;,fontsize=14];
-call_178408 -&gt; call_7696 [label=&quot;calls&quot;];
-call_7696 [label=&quot;let (_x_0 : action list)\l    = List.tl\l      (List.tl (List.tl (List.tl (List.tl (List.tl (List.tl (List.tl l)))))))\lin\llet (_x_1 : action list) = List.tl _x_0 in\llet (_x_2 : action list) = List.tl _x_1 in\llet (_x_3 : action list) = List.tl _x_2 in\lmany_steps\l(one_step\l (one_step\l  (one_step (one_step (one_step … …) (List.hd _x_0)) (List.hd _x_1))\l  (List.hd _x_2))\l (List.hd _x_3))\l(List.tl _x_3)&quot;,shape=box,style=filled,color=&quot;green&quot;,fontname=&quot;courier&quot;,fontsize=14];
-call_7696 -&gt; call_277751 [label=&quot;calls&quot;];
-call_277751 [label=&quot;let (_x_0 : action list)\l    = List.tl\l      (List.tl (List.tl (List.tl (List.tl (List.tl (List.tl (List.tl l)))))))\lin\llet (_x_1 : action list) = List.tl _x_0 in\llet (_x_2 : action list) = List.tl _x_1 in\llet (_x_3 : action list) = List.tl _x_2 in\llet (_x_4 : action list) = List.tl _x_3 in\lmany_steps\l(one_step\l (one_step\l  (one_step\l   (one_step (one_step (one_step … …) (List.hd _x_0)) (List.hd _x_1))\l   (List.hd _x_2))\l  (List.hd _x_3))\l (List.hd _x_4))\l(List.tl _x_4)&quot;,shape=box,style=filled,color=&quot;green&quot;,fontname=&quot;courier&quot;,fontsize=14];
-call_277751 -&gt; call_2864 [label=&quot;calls&quot;];
-call_2864 [label=&quot;let (_x_0 : action list)\l    = List.tl\l      (List.tl (List.tl (List.tl (List.tl (List.tl (List.tl (List.tl l)))))))\lin\llet (_x_1 : action list) = List.tl _x_0 in\llet (_x_2 : action list) = List.tl _x_1 in\llet (_x_3 : action list) = List.tl _x_2 in\llet (_x_4 : action list) = List.tl _x_3 in\llet (_x_5 : action list) = List.tl _x_4 in\lmany_steps\l(one_step\l (one_step\l  (one_step\l   (one_step\l    (one_step (one_step (one_step … …) (List.hd _x_0)) (List.hd _x_1))\l    (List.hd _x_2))\l   (List.hd _x_3))\l  (List.hd _x_4))\l (List.hd _x_5))\l(List.tl _x_5)&quot;,shape=box,style=filled,color=&quot;green&quot;,fontname=&quot;courier&quot;,fontsize=14];
-call_2864 -&gt; call_476534 [label=&quot;calls&quot;];
-call_476534 [label=&quot;let (_x_0 : action list)\l    = List.tl\l      (List.tl (List.tl (List.tl (List.tl (List.tl (List.tl (List.tl l)))))))\lin\llet (_x_1 : action list) = List.tl _x_0 in\llet (_x_2 : action list) = List.tl _x_1 in\llet (_x_3 : action list) = List.tl _x_2 in\llet (_x_4 : action list) = List.tl _x_3 in\llet (_x_5 : action list) = List.tl _x_4 in\llet (_x_6 : action list) = List.tl _x_5 in\lmany_steps\l(one_step\l (one_step\l  (one_step\l   (one_step\l    (one_step\l     (one_step (one_step (one_step … …) (List.hd _x_0)) (List.hd _x_1))\l     (List.hd _x_2))\l    (List.hd _x_3))\l   (List.hd _x_4))\l  (List.hd _x_5))\l (List.hd _x_6))\l(List.tl _x_6)&quot;,shape=box,style=filled,color=&quot;green&quot;,fontname=&quot;courier&quot;,fontsize=14];
-call_476534 -&gt; call_648154 [label=&quot;calls&quot;];
-call_648154 [label=&quot;let (_x_0 : action list)\l    = List.tl\l      (List.tl (List.tl (List.tl (List.tl (List.tl (List.tl (List.tl l)))))))\lin\llet (_x_1 : action list) = List.tl _x_0 in\llet (_x_2 : action list) = List.tl _x_1 in\llet (_x_3 : action list) = List.tl _x_2 in\llet (_x_4 : action list) = List.tl _x_3 in\llet (_x_5 : action list) = List.tl _x_4 in\llet (_x_6 : action list) = List.tl _x_5 in\llet (_x_7 : action list) = List.tl _x_6 in\lmany_steps\l(one_step\l (one_step\l  (one_step\l   (one_step\l    (one_step\l     (one_step\l      (one_step (one_step (one_step … …) (List.hd _x_0)) (List.hd _x_1))\l      (List.hd _x_2))\l     (List.hd _x_3))\l    (List.hd _x_4))\l   (List.hd _x_5))\l  (List.hd _x_6))\l (List.hd _x_7))\l(List.tl _x_7)&quot;,shape=box,style=filled,color=&quot;green&quot;,fontname=&quot;courier&quot;,fontsize=14];
-call_648154 -&gt; call_812302 [label=&quot;calls&quot;];
-call_812302 [label=&quot;let (_x_0 : action list)\l    = List.tl\l      (List.tl (List.tl (List.tl (List.tl (List.tl (List.tl (List.tl l)))))))\lin\llet (_x_1 : action list) = List.tl _x_0 in\llet (_x_2 : action list) = List.tl _x_1 in\llet (_x_3 : action list) = List.tl _x_2 in\llet (_x_4 : action list) = List.tl _x_3 in\llet (_x_5 : action list) = List.tl _x_4 in\llet (_x_6 : action list) = List.tl _x_5 in\llet (_x_7 : action list) = List.tl _x_6 in\llet (_x_8 : action list) = List.tl _x_7 in\lmany_steps\l(one_step\l (one_step\l  (one_step\l   (one_step\l    (one_step\l     (one_step\l      (one_step\l       (one_step (one_step (one_step … …) (List.hd _x_0)) (List.hd _x_1))\l       (List.hd _x_2))\l      (List.hd _x_3))\l     (List.hd _x_4))\l    (List.hd _x_5))\l   (List.hd _x_6))\l  (List.hd _x_7))\l (List.hd _x_8))\l(List.tl _x_8)&quot;,shape=box,style=filled,color=&quot;green&quot;,fontname=&quot;courier&quot;,fontsize=14];
-call_812302 -&gt; call_1021146 [label=&quot;calls&quot;];
-call_1021146 [label=&quot;let (_x_0 : action list)\l    = List.tl\l      (List.tl\l       (List.tl\l        (List.tl\l         (List.tl\l          (List.tl\l           (List.tl\l            (List.tl (List.tl (List.tl (List.tl (List.tl (List.tl l))))))))))))\lin\llet (_x_1 : action list) = List.tl _x_0 in\llet (_x_2 : action list) = List.tl (List.tl _x_1) in\llet (_x_3 : action list) = List.tl _x_2 in\lmany_steps\l(one_step\l (one_step\l  (one_step\l   (one_step (one_step (one_step … …) (List.hd _x_0)) (List.hd _x_1)) …)\l  (List.hd _x_2))\l (List.hd _x_3))\l(List.tl _x_3)&quot;,shape=box,style=filled,color=&quot;yellow&quot;,fontname=&quot;courier&quot;,fontsize=14];
-}
-</textarea><button class="btn btn-primary">Load graph</button><div class="imandra-graphviz-loading display-none">Loading..</div><div class="imandra-graphviz-target"></div><script>
-require(['nbextensions/nbimandra/graphviz'], function (graphviz) {
-  var target = '#graphviz-515e8ce7-3d3b-4fd4-8bb5-1567e336e60d';
-  graphviz.hydrate(target);
-});
-</script></div></div><div class="tab-pane"><div class="imandra-proof-top"><div class="imandra-fold panel panel-default" id="fold-b130c71d-c9e2-4adb-9d9e-2c30b0260841"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>proof attempt</span></div></div><div class="panel-body collapse"><div class="imandra-proof"><div class="imandra-alternatives" id="alt-751aa6c3-11c9-4665-9b51-71a0d8986db8"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>summary</a></li><li class="" data-toggle="tab"><a>full</a></li><li class="" data-toggle="tab"><a>graph</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-table" id="table-cd9b564d-2d28-43eb-96d3-1c339fb13626"><table><tr><td><b>ground_instances</b></td><td>18</td></tr><tr><td><b>definitions</b></td><td>0</td></tr><tr><td><b>inductions</b></td><td>0</td></tr><tr><td><b>search_time</b></td><td><pre>35.696s</pre></td></tr><tr><td><b>details</b></td><td><div class="imandra-fold panel panel-default" id="fold-ccac69b8-baeb-460e-a56d-77e6d1074a22"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><div class="imandra-table" id="table-e13c3cfe-5aad-4b00-8d8c-7f7121a568a4"><table><tr><td><b>smt_stats</b></td><td><div class="imandra-table" id="table-14dff941-3993-427c-8d7a-4ada7fe68f33"><table><tr><td><b>num checks</b></td><td>37</td></tr><tr><td><b>arith-make-feasible</b></td><td>1</td></tr><tr><td><b>arith-max-columns</b></td><td>4</td></tr><tr><td><b>rlimit count</b></td><td>17536006</td></tr><tr><td><b>mk clause</b></td><td>41392</td></tr><tr><td><b>datatype occurs check</b></td><td>2985</td></tr><tr><td><b>restarts</b></td><td>305</td></tr><tr><td><b>mk bool var</b></td><td>109922</td></tr><tr><td><b>datatype splits</b></td><td>705432</td></tr><tr><td><b>decisions</b></td><td>173414</td></tr><tr><td><b>propagations</b></td><td>3174748</td></tr><tr><td><b>conflicts</b></td><td>39845</td></tr><tr><td><b>datatype accessor ax</b></td><td>5510</td></tr><tr><td><b>minimized lits</b></td><td>371340</td></tr><tr><td><b>datatype constructor ax</b></td><td>102474</td></tr><tr><td><b>final checks</b></td><td>71</td></tr><tr><td><b>added eqs</b></td><td>7680394</td></tr><tr><td><b>del clause</b></td><td>11671</td></tr><tr><td><b>dyn ack</b></td><td>30</td></tr><tr><td><b>memory</b></td><td>196.440000</td></tr><tr><td><b>max memory</b></td><td>196.770000</td></tr><tr><td><b>num allocs</b></td><td>15818856849.000000</td></tr></table></div></td></tr></table></div></div><script>
-require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-ccac69b8-baeb-460e-a56d-77e6d1074a22';
-  fold.hydrate(target);
-});
-</script></div></td></tr></table></div></div><div class="tab-pane"><div class="imandra-fold panel panel-default" id="fold-6c62ef39-c38e-4148-b2ac-f0c071f23b3e"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><ul><li><pre>start[35.696s]
-  let (_x_0 : state)
-      = many_steps
-        {cabbage = LeftCoast; goat = LeftCoast; wolf = LeftCoast; boat = Left}
-        :var_0:
-  in
-  _x_0.cabbage = RightCoast
-  &amp;&amp; _x_0.goat = RightCoast &amp;&amp; _x_0.wolf = RightCoast &amp;&amp; _x_0.boat = Right</pre></li><li><div><h4>simplify</h4><div class="imandra-table" id="table-e995802e-a4b6-48ba-b6c6-1426cffad8c7"><table><tr><td><b>into</b></td><td><pre>let (_x_0 : state)
-    = many_steps
-      {cabbage = LeftCoast; goat = LeftCoast; wolf = LeftCoast; boat = Left}
-      :var_0:
-in
-((_x_0.cabbage = RightCoast &amp;&amp; _x_0.goat = RightCoast)
- &amp;&amp; _x_0.wolf = RightCoast)
-&amp;&amp; _x_0.boat = Right</pre></td></tr><tr><td><b>expansions</b></td><td><pre>[]</pre></td></tr><tr><td><b>rewrite_steps</b></td><td><ul></ul></td></tr><tr><td><b>forward_chaining</b></td><td><ul></ul></td></tr></table></div></div></li><li><div>unroll<div class="imandra-table" id="table-627cd4fb-503b-4aaa-8209-65badf8273e2"><table><tr><td><b>expr</b></td><td><pre>(many_steps_70 (|rec_mk.state_2769|
-                 LeftCoast_16
-                 LeftCoast_16
-    …</pre></td></tr><tr><td><b>expansions</b></td><td><ul></ul></td></tr></table></div></div></li><li><div>unroll<div class="imandra-table" id="table-2b0dbce9-9457-4397-ab25-e6609e6eb0fa"><table><tr><td><b>expr</b></td><td><pre>(many_steps_70 (one_step_65 (|rec_mk.state_2769|
-                              LeftCoast_16
-        …</pre></td></tr><tr><td><b>expansions</b></td><td><ul></ul></td></tr></table></div></div></li><li><div>unroll<div class="imandra-table" id="table-8268f200-af02-44a0-b5e8-3eb2b89b2db4"><table><tr><td><b>expr</b></td><td><pre>(many_steps_70 (one_step_65 (one_step_65 (|rec_mk.state_2769|
-                                      …</pre></td></tr><tr><td><b>expansions</b></td><td><ul></ul></td></tr></table></div></div></li><li><div>unroll<div class="imandra-table" id="table-b002edad-d991-4e1e-8ee3-3d66b75313ad"><table><tr><td><b>expr</b></td><td><pre>(let ((a!1 (one_step_65 (one_step_65 (one_step_65 (|rec_mk.state_2769|
-                             …</pre></td></tr><tr><td><b>expansions</b></td><td><ul></ul></td></tr></table></div></div></li><li><div>unroll<div class="imandra-table" id="table-da562784-2bd2-450e-9e62-bb7c5c17d9b2"><table><tr><td><b>expr</b></td><td><pre>(let ((a!1 (one_step_65 (one_step_65 (one_step_65 (|rec_mk.state_2769|
-                             …</pre></td></tr><tr><td><b>expansions</b></td><td><ul></ul></td></tr></table></div></div></li><li><div>unroll<div class="imandra-table" id="table-00eb6494-506c-444a-ae11-2eb8981c68f1"><table><tr><td><b>expr</b></td><td><pre>(let ((a!1 (one_step_65 (one_step_65 (one_step_65 (|rec_mk.state_2769|
-                             …</pre></td></tr><tr><td><b>expansions</b></td><td><ul></ul></td></tr></table></div></div></li><li><div>unroll<div class="imandra-table" id="table-f2a6c9aa-b567-4c75-a7cb-8571894b5913"><table><tr><td><b>expr</b></td><td><pre>(let ((a!1 (one_step_65 (one_step_65 (one_step_65 (|rec_mk.state_2769|
-                             …</pre></td></tr><tr><td><b>expansions</b></td><td><ul></ul></td></tr></table></div></div></li><li><div>unroll<div class="imandra-table" id="table-661f4f0e-6869-46ef-b020-d708478bd942"><table><tr><td><b>expr</b></td><td><pre>(let ((a!1 (one_step_65 (one_step_65 (one_step_65 (|rec_mk.state_2769|
-                             …</pre></td></tr><tr><td><b>expansions</b></td><td><ul></ul></td></tr></table></div></div></li><li><div>unroll<div class="imandra-table" id="table-7a9658ce-951a-41e0-8a82-1fdb87f0d5de"><table><tr><td><b>expr</b></td><td><pre>(let ((a!1 (one_step_65 (one_step_65 (one_step_65 (|rec_mk.state_2769|
-                             …</pre></td></tr><tr><td><b>expansions</b></td><td><ul></ul></td></tr></table></div></div></li><li><div>unroll<div class="imandra-table" id="table-9e1611e9-c57b-48fe-9185-82e1543094f5"><table><tr><td><b>expr</b></td><td><pre>(let ((a!1 (one_step_65 (one_step_65 (one_step_65 (|rec_mk.state_2769|
-                             …</pre></td></tr><tr><td><b>expansions</b></td><td><ul></ul></td></tr></table></div></div></li><li><div>unroll<div class="imandra-table" id="table-0243bd04-fbdd-4e25-bbf2-e63831b65524"><table><tr><td><b>expr</b></td><td><pre>(let ((a!1 (one_step_65 (one_step_65 (one_step_65 (|rec_mk.state_2769|
-                             …</pre></td></tr><tr><td><b>expansions</b></td><td><ul></ul></td></tr></table></div></div></li><li><div>unroll<div class="imandra-table" id="table-4f2f58f6-3ba0-473f-b65a-d103f1b0277b"><table><tr><td><b>expr</b></td><td><pre>(let ((a!1 (one_step_65 (one_step_65 (one_step_65 (|rec_mk.state_2769|
-                             …</pre></td></tr><tr><td><b>expansions</b></td><td><ul></ul></td></tr></table></div></div></li><li><div>unroll<div class="imandra-table" id="table-9efed7ea-3b21-452c-a8db-4def69f41484"><table><tr><td><b>expr</b></td><td><pre>(let ((a!1 (one_step_65 (one_step_65 (one_step_65 (|rec_mk.state_2769|
-                             …</pre></td></tr><tr><td><b>expansions</b></td><td><ul></ul></td></tr></table></div></div></li><li><div>unroll<div class="imandra-table" id="table-ed7bae80-ce51-41c8-ab50-a8a4d9722dfb"><table><tr><td><b>expr</b></td><td><pre>(let ((a!1 (one_step_65 (one_step_65 (one_step_65 (|rec_mk.state_2769|
-                             …</pre></td></tr><tr><td><b>expansions</b></td><td><ul></ul></td></tr></table></div></div></li><li><div>unroll<div class="imandra-table" id="table-9445bc1c-70ea-44e7-bf78-58413a73f734"><table><tr><td><b>expr</b></td><td><pre>(let ((a!1 (one_step_65 (one_step_65 (one_step_65 (|rec_mk.state_2769|
-                             …</pre></td></tr><tr><td><b>expansions</b></td><td><ul></ul></td></tr></table></div></div></li><li><div>unroll<div class="imandra-table" id="table-a6352324-42e3-40ea-b727-375fe299ad07"><table><tr><td><b>expr</b></td><td><pre>(let ((a!1 (one_step_65 (one_step_65 (one_step_65 (|rec_mk.state_2769|
-                             …</pre></td></tr><tr><td><b>expansions</b></td><td><ul></ul></td></tr></table></div></div></li><li><div>unroll<div class="imandra-table" id="table-b2e0b390-9329-4061-8d0c-0cd08a03b422"><table><tr><td><b>expr</b></td><td><pre>(let ((a!1 (one_step_65 (one_step_65 (one_step_65 (|rec_mk.state_2769|
-                             …</pre></td></tr><tr><td><b>expansions</b></td><td><ul></ul></td></tr></table></div></div></li><li><div>unroll<div class="imandra-table" id="table-37cbb003-e5bf-405c-bf07-26aee31c4d04"><table><tr><td><b>expr</b></td><td><pre>(let ((a!1 (one_step_65 (one_step_65 (one_step_65 (|rec_mk.state_2769|
-                             …</pre></td></tr><tr><td><b>expansions</b></td><td><ul></ul></td></tr></table></div></div></li><li>Sat (Some  let (l : action list) =
-  [(Pick (Goat)); CrossRiver; (Drop (Goat)); CrossRiver; (Pick (Cabbage));
-   CrossRiver; (Drop (Cabbage)); (Pick (Goat)); CrossRiver; (Drop (Goat));
-   (Pick (Wolf)); CrossRiver; (Drop (Wolf)); CrossRiver; (Pick (Goat));
-   CrossRiver; (Drop (Goat))]
-)</li></ul></div><script>
-require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-6c62ef39-c38e-4148-b2ac-f0c071f23b3e';
-  fold.hydrate(target);
-});
-</script></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-8f9a7eb3-6641-4ae1-b55c-f84a22d9c1ac"><textarea style="display: none">digraph &quot;proof&quot; {
-p_270 [label=&quot;Start (let (_x_0 : state)\l           = many_steps\l             \{cabbage = LeftCoast; goat = LeftCoast; wolf = LeftCoast;\l              boat = Left\}\l             :var_0:\l       in\l       _x_0.cabbage = RightCoast\l       &amp;&amp; _x_0.goat = RightCoast\l          &amp;&amp; _x_0.wolf = RightCoast &amp;&amp; _x_0.boat = Right\l       :time 35.696s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
-p_270 -&gt; p_269 [label=&quot;&quot;];
-p_269 [label=&quot;Simplify (let (_x_0 : state)\l              = many_steps\l                \{cabbage = LeftCoast; goat = LeftCoast; wolf = LeftCoast;\l                 boat = Left\}\l                :var_0:\l          in\l          ((_x_0.cabbage = RightCoast &amp;&amp; _x_0.goat = RightCoast)\l           &amp;&amp; _x_0.wolf = RightCoast)\l          &amp;&amp; _x_0.boat = Right :expansions [] :rw [] :fc [])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
-p_269 -&gt; p_268 [label=&quot;&quot;];
-p_268 [label=&quot;Unroll ([many_steps\l         \{cabbage = LeftCoast; goat = LeftCoast; wolf = LeftCoast;\l          boat = Left\}\l         l],\l        [[]])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
-p_268 -&gt; p_267 [label=&quot;&quot;];
-p_267 [label=&quot;Unroll ([many_steps\l         (one_step\l          \{cabbage = LeftCoast; goat = LeftCoast; wolf = LeftCoast;\l           boat = Left\}\l          (List.hd l))\l         (List.tl l)],\l        [[]])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
-p_267 -&gt; p_266 [label=&quot;&quot;];
-p_266 [label=&quot;Unroll ([let (_x_0 : action list) = List.tl l in\l         many_steps\l         (one_step\l          (one_step\l           \{cabbage = LeftCoast; goat = LeftCoast; wolf = LeftCoast;\l            boat = Left\}\l           (List.hd l))\l          (List.hd _x_0))\l         (List.tl _x_0)],\l        [[]])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
-p_266 -&gt; p_265 [label=&quot;&quot;];
-p_265 [label=&quot;Unroll ([let (_x_0 : action list) = List.tl l in\l         let (_x_1 : action list) = List.tl _x_0 in\l         many_steps\l         (one_step\l          (one_step\l           (one_step\l            \{cabbage = LeftCoast; goat = LeftCoast; wolf = LeftCoast;\l             boat = Left\}\l            (List.hd l))\l           (List.hd _x_0))\l          (List.hd _x_1))\l         (List.tl _x_1)],\l        [[]])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
-p_265 -&gt; p_264 [label=&quot;&quot;];
-p_264 [label=&quot;Unroll ([let (_x_0 : action list) = List.tl l in\l         let (_x_1 : action list) = List.tl _x_0 in\l         let (_x_2 : action list) = List.tl _x_1 in\l         many_steps\l         (one_step\l          (one_step\l           (one_step\l            (one_step\l             \{cabbage = LeftCoast; goat = LeftCoast; wolf = LeftCoast;\l              boat = Left\}\l             (List.hd l))\l            (List.hd _x_0))\l           (List.hd _x_1))\l          (List.hd _x_2))\l         (List.tl _x_2)],\l        [[]])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
-p_264 -&gt; p_263 [label=&quot;&quot;];
-p_263 [label=&quot;Unroll ([let (_x_0 : action list) = List.tl l in\l         let (_x_1 : action list) = List.tl _x_0 in\l         let (_x_2 : action list) = List.tl _x_1 in\l         let (_x_3 : action list) = List.tl _x_2 in\l         many_steps\l         (one_step\l          (one_step\l           (one_step\l            (one_step\l             (one_step\l              \{cabbage = LeftCoast; goat = LeftCoast; wolf = LeftCoast;\l               boat = Left\}\l              (List.hd l))\l             (List.hd _x_0))\l            (List.hd _x_1))\l           (List.hd _x_2))\l          (List.hd _x_3))\l         (List.tl _x_3)],\l        [[]])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
-p_263 -&gt; p_262 [label=&quot;&quot;];
-p_262 [label=&quot;Unroll ([let (_x_0 : action list) = List.tl l in\l         let (_x_1 : action list) = List.tl _x_0 in\l         let (_x_2 : action list) = List.tl _x_1 in\l         let (_x_3 : action list) = List.tl _x_2 in\l         let (_x_4 : action list) = List.tl _x_3 in\l         many_steps\l         (one_step\l          (one_step\l           (one_step\l            (one_step\l             (one_step\l              (one_step\l               \{cabbage = LeftCoast; goat = LeftCoast; wolf = LeftCoast;\l                boat = Left\}\l               (List.hd l))\l              (List.hd _x_0))\l             (List.hd _x_1))\l            (List.hd _x_2))\l           (List.hd _x_3))\l          (List.hd _x_4))\l         (List.tl _x_4)],\l        [[]])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
-p_262 -&gt; p_261 [label=&quot;&quot;];
-p_261 [label=&quot;Unroll ([let (_x_0 : action list) = List.tl l in\l         let (_x_1 : action list) = List.tl _x_0 in\l         let (_x_2 : action list) = List.tl _x_1 in\l         let (_x_3 : action list) = List.tl _x_2 in\l         let (_x_4 : action list) = List.tl _x_3 in\l         let (_x_5 : action list) = List.tl _x_4 in\l         many_steps\l         (one_step\l          (one_step\l           (one_step\l            (one_step\l             (one_step\l              (one_step\l               (one_step\l                \{cabbage = LeftCoast; goat = LeftCoast; wolf = LeftCoast;\l                 boat = Left\}\l                (List.hd l))\l               (List.hd _x_0))\l              (List.hd _x_1))\l             (List.hd _x_2))\l            (List.hd _x_3))\l           (List.hd _x_4))\l          (List.hd _x_5))\l         (List.tl _x_5)],\l        [[]])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
-p_261 -&gt; p_260 [label=&quot;&quot;];
-p_260 [label=&quot;Unroll ([let (_x_0 : action list) = List.tl l in\l         let (_x_1 : action list) = List.tl _x_0 in\l         let (_x_2 : action list) = List.tl _x_1 in\l         let (_x_3 : action list) = List.tl _x_2 in\l         let (_x_4 : action list) = List.tl _x_3 in\l         let (_x_5 : action list) = List.tl _x_4 in\l         let (_x_6 : action list) = List.tl _x_5 in\l         many_steps\l         (one_step\l          (one_step\l           (one_step\l            (one_step\l             (one_step\l              (one_step\l               (one_step\l                (one_step\l                 \{cabbage = LeftCoast; goat = LeftCoast; wolf = LeftCoast;\l                  boat = Left\}\l                 (List.hd l))\l                (List.hd _x_0))\l               (List.hd _x_1))\l              (List.hd _x_2))\l             (List.hd _x_3))\l            (List.hd _x_4))\l           (List.hd _x_5))\l          (List.hd _x_6))\l         (List.tl _x_6)],\l        [[]])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
-p_260 -&gt; p_259 [label=&quot;&quot;];
-p_259 [label=&quot;Unroll ([let (_x_0 : action list) = List.tl l in\l         let (_x_1 : action list) = List.tl _x_0 in\l         let (_x_2 : action list) = List.tl _x_1 in\l         let (_x_3 : action list) = List.tl _x_2 in\l         let (_x_4 : action list) = List.tl _x_3 in\l         let (_x_5 : action list) = List.tl _x_4 in\l         let (_x_6 : action list) = List.tl _x_5 in\l         let (_x_7 : action list) = List.tl _x_6 in\l         many_steps\l         (one_step\l          (one_step\l           (one_step\l            (one_step\l             (one_step\l              (one_step\l               (one_step\l                (one_step\l                 (one_step\l                  \{cabbage = LeftCoast; goat = LeftCoast; wolf = LeftCoast;\l                   boat = Left\}\l                  (List.hd l))\l                 (List.hd _x_0))\l                (List.hd _x_1))\l               (List.hd _x_2))\l              (List.hd _x_3))\l             (List.hd _x_4))\l            (List.hd _x_5))\l           (List.hd _x_6))\l          (List.hd _x_7))\l         (List.tl _x_7)],\l        [[]])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
-p_259 -&gt; p_258 [label=&quot;&quot;];
-p_258 [label=&quot;Unroll ([let (_x_0 : action list)\l             = List.tl\l               (List.tl\l                (List.tl (List.tl (List.tl (List.tl (List.tl (List.tl l)))))))\l         in\l         let (_x_1 : action list) = List.tl _x_0 in\l         many_steps\l         (one_step (one_step (one_step … …) (List.hd _x_0))\l          (List.hd _x_1))\l         (List.tl _x_1)],\l        [[]])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
-p_258 -&gt; p_257 [label=&quot;&quot;];
-p_257 [label=&quot;Unroll ([let (_x_0 : action list)\l             = List.tl\l               (List.tl\l                (List.tl (List.tl (List.tl (List.tl (List.tl (List.tl l)))))))\l         in\l         let (_x_1 : action list) = List.tl _x_0 in\l         let (_x_2 : action list) = List.tl _x_1 in\l         many_steps\l         (one_step\l          (one_step (one_step (one_step … …) (List.hd _x_0))\l           (List.hd _x_1))\l          (List.hd _x_2))\l         (List.tl _x_2)],\l        [[]])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
-p_257 -&gt; p_256 [label=&quot;&quot;];
-p_256 [label=&quot;Unroll ([let (_x_0 : action list)\l             = List.tl\l               (List.tl\l                (List.tl (List.tl (List.tl (List.tl (List.tl (List.tl l)))))))\l         in\l         let (_x_1 : action list) = List.tl _x_0 in\l         let (_x_2 : action list) = List.tl _x_1 in\l         let (_x_3 : action list) = List.tl _x_2 in\l         many_steps\l         (one_step\l          (one_step\l           (one_step (one_step (one_step … …) (List.hd _x_0))\l            (List.hd _x_1))\l           (List.hd _x_2))\l          (List.hd _x_3))\l         (List.tl _x_3)],\l        [[]])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
-p_256 -&gt; p_255 [label=&quot;&quot;];
-p_255 [label=&quot;Unroll ([let (_x_0 : action list)\l             = List.tl\l               (List.tl\l                (List.tl (List.tl (List.tl (List.tl (List.tl (List.tl l)))))))\l         in\l         let (_x_1 : action list) = List.tl _x_0 in\l         let (_x_2 : action list) = List.tl _x_1 in\l         let (_x_3 : action list) = List.tl _x_2 in\l         let (_x_4 : action list) = List.tl _x_3 in\l         many_steps\l         (one_step\l          (one_step\l           (one_step\l            (one_step (one_step (one_step … …) (List.hd _x_0))\l             (List.hd _x_1))\l            (List.hd _x_2))\l           (List.hd _x_3))\l          (List.hd _x_4))\l         (List.tl _x_4)],\l        [[]])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
-p_255 -&gt; p_254 [label=&quot;&quot;];
-p_254 [label=&quot;Unroll ([let (_x_0 : action list)\l             = List.tl\l               (List.tl\l                (List.tl (List.tl (List.tl (List.tl (List.tl (List.tl l)))))))\l         in\l         let (_x_1 : action list) = List.tl _x_0 in\l         let (_x_2 : action list) = List.tl _x_1 in\l         let (_x_3 : action list) = List.tl _x_2 in\l         let (_x_4 : action list) = List.tl _x_3 in\l         let (_x_5 : action list) = List.tl _x_4 in\l         many_steps\l         (one_step\l          (one_step\l           (one_step\l            (one_step\l             (one_step (one_step (one_step … …) (List.hd _x_0))\l              (List.hd _x_1))\l             (List.hd _x_2))\l            (List.hd _x_3))\l           (List.hd _x_4))\l          (List.hd _x_5))\l         (List.tl _x_5)],\l        [[]])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
-p_254 -&gt; p_253 [label=&quot;&quot;];
-p_253 [label=&quot;Unroll ([let (_x_0 : action list)\l             = List.tl\l               (List.tl\l                (List.tl (List.tl (List.tl (List.tl (List.tl (List.tl l)))))))\l         in\l         let (_x_1 : action list) = List.tl _x_0 in\l         let (_x_2 : action list) = List.tl _x_1 in\l         let (_x_3 : action list) = List.tl _x_2 in\l         let (_x_4 : action list) = List.tl _x_3 in\l         let (_x_5 : action list) = List.tl _x_4 in\l         let (_x_6 : action list) = List.tl _x_5 in\l         many_steps\l         (one_step\l          (one_step\l           (one_step\l            (one_step\l             (one_step\l              (one_step (one_step (one_step … …) (List.hd _x_0))\l               (List.hd _x_1))\l              (List.hd _x_2))\l             (List.hd _x_3))\l            (List.hd _x_4))\l           (List.hd _x_5))\l          (List.hd _x_6))\l         (List.tl _x_6)],\l        [[]])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
-p_253 -&gt; p_252 [label=&quot;&quot;];
-p_252 [label=&quot;Unroll ([let (_x_0 : action list)\l             = List.tl\l               (List.tl\l                (List.tl (List.tl (List.tl (List.tl (List.tl (List.tl l)))))))\l         in\l         let (_x_1 : action list) = List.tl _x_0 in\l         let (_x_2 : action list) = List.tl _x_1 in\l         let (_x_3 : action list) = List.tl _x_2 in\l         let (_x_4 : action list) = List.tl _x_3 in\l         let (_x_5 : action list) = List.tl _x_4 in\l         let (_x_6 : action list) = List.tl _x_5 in\l         let (_x_7 : action list) = List.tl _x_6 in\l         many_steps\l         (one_step\l          (one_step\l           (one_step\l            (one_step\l             (one_step\l              (one_step\l               (one_step (one_step (one_step … …) (List.hd _x_0))\l                (List.hd _x_1))\l               (List.hd _x_2))\l              (List.hd _x_3))\l             (List.hd _x_4))\l            (List.hd _x_5))\l           (List.hd _x_6))\l          (List.hd _x_7))\l         (List.tl _x_7)],\l        [[]])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
-p_252 -&gt; p_251 [label=&quot;&quot;];
-p_251 [label=&quot;Unroll ([let (_x_0 : action list)\l             = List.tl\l               (List.tl\l                (List.tl (List.tl (List.tl (List.tl (List.tl (List.tl l)))))))\l         in\l         let (_x_1 : action list) = List.tl _x_0 in\l         let (_x_2 : action list) = List.tl _x_1 in\l         let (_x_3 : action list) = List.tl _x_2 in\l         let (_x_4 : action list) = List.tl _x_3 in\l         let (_x_5 : action list) = List.tl _x_4 in\l         let (_x_6 : action list) = List.tl _x_5 in\l         let (_x_7 : action list) = List.tl _x_6 in\l         let (_x_8 : action list) = List.tl _x_7 in\l         many_steps\l         (one_step\l          (one_step\l           (one_step\l            (one_step\l             (one_step\l              (one_step\l               (one_step\l                (one_step (one_step (one_step … …) (List.hd _x_0))\l                 (List.hd _x_1))\l                (List.hd _x_2))\l               (List.hd _x_3))\l              (List.hd _x_4))\l             (List.hd _x_5))\l            (List.hd _x_6))\l           (List.hd _x_7))\l          (List.hd _x_8))\l         (List.tl _x_8)],\l        [[]])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
-p_251 -&gt; p_250 [label=&quot;&quot;];
-p_250 [label=&quot;Sat (Some  let (l : action list) =\l  [(Pick (Goat)); CrossRiver; (Drop (Goat)); CrossRiver; (Pick (Cabbage));\l   CrossRiver; (Drop (Cabbage)); (Pick (Goat)); CrossRiver; (Drop (Goat));\l   (Pick (Wolf)); CrossRiver; (Drop (Wolf)); CrossRiver; (Pick (Goat));\l   CrossRiver; (Drop (Goat))]\l)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
-}
-</textarea><button class="btn btn-primary">Load graph</button><div class="imandra-graphviz-loading display-none">Loading..</div><div class="imandra-graphviz-target"></div><script>
-require(['nbextensions/nbimandra/graphviz'], function (graphviz) {
-  var target = '#graphviz-8f9a7eb3-6641-4ae1-b55c-f84a22d9c1ac';
-  graphviz.hydrate(target);
-});
-</script></div></div></div><script>
+<div class="imandra-alternatives" id="alt-8d7f305c-0b26-4d2b-a66b-fcc7924ce601"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi (2 of 2)</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-44da6ab7-69ed-4e52-af6c-34a9066845b5" class="decompose"><textarea class="display-none">{
+  &quot;regions&quot;: [
+    {
+      &quot;constraints&quot;: [ &quot;(f x) = x&quot; ],
+      &quot;region&quot;: { &quot;constraints&quot;: [ &quot;(f x) = x&quot; ], &quot;invariant&quot;: &quot;F = 1&quot; },
+      &quot;groups&quot;: [],
+      &quot;label&quot;: &quot;2&quot;,
+      &quot;weight&quot;: 1
+    },
+    {
+      &quot;constraints&quot;: [ &quot;(f x) &lt;&gt; x&quot; ],
+      &quot;region&quot;: { &quot;constraints&quot;: [ &quot;(f x) &lt;&gt; x&quot; ], &quot;invariant&quot;: &quot;F = 2&quot; },
+      &quot;groups&quot;: [],
+      &quot;label&quot;: &quot;1&quot;,
+      &quot;weight&quot;: 1
+    }
+  ]
+}</textarea><div class="decompose-foamtree"></div><div class="decompose-details"><div class="decompose-details-header">Regions details</div><div class="decompose-details-no-selection"><p>No group selected.</p><ul><li>Concrete regions are numbered</li><li>Unnumbered regions are groups whose children share a particular constraint</li><li>Click on a region to view its details</li><li>Double click on a region to zoom in on it</li><li>Shift+double click to zoom out</li><li>Hit escape to reset back to the top</li></ul></div><div class="decompose-details-selection hidden"><div><span class="decompose-details-label">Direct sub-regions: </span><span class="decompose-details-direct-sub-regions-text">-</span></div><div><span class="decompose-details-label">Contained regions: </span><span class="decompose-details-contained-regions-text">-</span></div><div class="decompose-details-section-header">Constraints</div><div class="decompose-details-constraints"><pre class="decompose-details-constraint">&lt;constraint&gt;</pre></div><div class="decompose-details-invariant"><div class="decompose-details-section-header">Invariant</div><pre class="decompose-details-invariant-text">&lt;invariant&gt;</pre></div></div></div><script>
+(function () {
+  require(['nbextensions/nbimandra/regions'], function (regions) {
+    var target = '#decompose-44da6ab7-69ed-4e52-af6c-34a9066845b5';
+    regions.hydrate(target);
+  });
+})();
+</script></div></div><div class="tab-pane"><div><div>decomp of (j x<div class="imandra-table" id="table-5c2dc345-e5b7-4c96-8c83-0065e2a300eb"><table><thead><tr><th>Reg_id</th><th>Constraints</th><th>Invariant</th></tr></thead><tr><td>1</td><td><ul><li><pre>not (f x = x)</pre></li></ul></td><td><pre>2</pre></td></tr><tr><td>0</td><td><ul><li><pre>f x = x</pre></li></ul></td><td><pre>1</pre></td></tr></table></div></div></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-751aa6c3-11c9-4665-9b51-71a0d8986db8';
+  var target = '#alt-8d7f305c-0b26-4d2b-a66b-fcc7924ce601';
   alternatives.hydrate(target);
 });
-</script></div></div></div><script>
-require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-b130c71d-c9e2-4adb-9d9e-2c30b0260841';
-  fold.hydrate(target);
-});
-</script></div></div></div></div><script>
-require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-c811be79-0b38-4712-a6f6-6cd2cd88c92f';
-  alternatives.hydrate(target);
-});
-</script></div></div></div>
+</script></div>
 
 </div>
 
@@ -1742,13 +1873,13 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html"><p>That seems to take a bit of time, because this problem is not that easy for Imandra's unrolling algorithm. Let's try <code>[@@blast]</code> to see if we can get a result faster:</p>
+<div class="text_cell_render border-box-sizing rendered_html"><p>A model satisfying the region constraints can be extracted for feasible regions</p>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="try-this-container">
-  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/Crossing%20the%20river%20safely.ipynb%23try-cell-13" target="_blank" rel="nofollow">
+  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/DecompositionIntro.ipynb%23try-cell-18" target="_blank" rel="nofollow">
     <div class="try-this">Try this!</div>
   </a>
 </div>
@@ -1756,8 +1887,7 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
 <div class="prompt input_prompt">In&nbsp;[7]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ocaml"><pre><span></span><span class="n">instance</span> <span class="o">(</span><span class="k">fun</span> <span class="n">l</span> <span class="o">-&gt;</span> <span class="n">solved</span> <span class="o">@@</span> <span class="n">many_steps</span> <span class="n">init_state</span> <span class="n">l</span><span class="o">)</span>
-<span class="o">[@@</span><span class="n">blast</span><span class="o">]</span> <span class="o">;;</span>
+<div class=" highlight hl-ocaml"><pre><span></span><span class="nn">Modular_decomp</span><span class="p">.</span><span class="o">(</span><span class="n">d</span> <span class="o">|&gt;</span> <span class="n">get_regions</span> <span class="o">|&gt;</span> <span class="nn">CCList</span><span class="p">.</span><span class="n">map</span> <span class="n">get_model</span><span class="o">);;</span>
 </pre></div>
 
 </div>
@@ -1776,8 +1906,117 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>- : action list -&gt; bool = &lt;fun&gt;
-module CX : sig val l : action list end
+<pre>- : Term.Model.t list =
+[{Imandra_surface.Term.Model.tys = []; consts = [((x : int), 1)]; funs = []};
+ {Imandra_surface.Term.Model.tys = []; consts = [((x : int), 0)]; funs = []}]
+</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html"><p>The model can be turned into a computable value by generating an extractor for the target function</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="try-this-container">
+  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/DecompositionIntro.ipynb%23try-cell-20" target="_blank" rel="nofollow">
+    <div class="try-this">Try this!</div>
+  </a>
+</div>
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[8]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ocaml"><pre><span></span><span class="nn">Extract</span><span class="p">.</span><span class="n">eval</span> <span class="o">~</span><span class="n">signature</span><span class="o">:(</span><span class="nn">Event</span><span class="p">.</span><span class="nn">DB</span><span class="p">.</span><span class="n">fun_id_of_str</span> <span class="s2">&quot;j&quot;</span><span class="o">)</span> <span class="o">~</span><span class="n">quiet</span><span class="o">:</span><span class="bp">true</span> <span class="bp">()</span><span class="o">;;</span>
+<span class="nn">Modular_decomp</span><span class="p">.</span><span class="o">(</span><span class="n">d</span> <span class="o">|&gt;</span> <span class="n">get_regions</span> <span class="o">|&gt;</span> <span class="nn">CCList</span><span class="p">.</span><span class="n">map</span> <span class="o">(</span><span class="n">get_model</span> <span class="o">%&gt;</span> <span class="nn">Mex</span><span class="p">.</span><span class="n">of_model</span><span class="o">));;</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[8]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>- : unit = ()
+- : Mex.extract_type list = [{Mex.x = 1};{Mex.x = 0}]
+</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html"><p>Regions can be manually refined with terms in order to add extra constraints (refining automatically prunes)</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="try-this-container">
+  <a href="https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/DecompositionIntro.ipynb%23try-cell-22" target="_blank" rel="nofollow">
+    <div class="try-this">Try this!</div>
+  </a>
+</div>
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[9]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ocaml"><pre><span></span><span class="k">let</span> <span class="n">d1</span> <span class="o">=</span> <span class="nn">Modular_decomp</span><span class="p">.</span><span class="o">(</span><span class="n">top</span> <span class="o">~</span><span class="n">prune</span><span class="o">:</span><span class="bp">true</span> <span class="s2">&quot;f&quot;</span> <span class="o">|&gt;</span> <span class="n">get_regions</span> <span class="o">|&gt;</span> <span class="nn">CCList</span><span class="p">.</span><span class="n">filter_map</span> <span class="o">(</span><span class="k">fun</span> <span class="n">r</span> <span class="o">-&gt;</span> <span class="n">refine</span> <span class="n">r</span> <span class="o">[</span><span class="nn">Term</span><span class="p">.</span><span class="n">false_</span><span class="o">]))</span> <span class="o">[@@</span><span class="n">program</span><span class="o">];;</span>
+
+<span class="k">let</span> <span class="n">d2</span> <span class="o">=</span> <span class="nn">Modular_decomp</span><span class="p">.</span><span class="o">(</span><span class="n">top</span> <span class="o">~</span><span class="n">prune</span><span class="o">:</span><span class="bp">true</span> <span class="s2">&quot;f&quot;</span> <span class="o">|&gt;</span> <span class="n">get_regions</span>
+                         <span class="o">|&gt;</span> <span class="nn">CCList</span><span class="p">.</span><span class="n">filter_map</span>
+                           <span class="o">(</span><span class="k">fun</span> <span class="n">r</span> <span class="o">-&gt;</span>
+                              <span class="n">refine</span> <span class="n">r</span>
+                               <span class="c">(* x = 1 *)</span>
+                                <span class="o">[</span><span class="nn">Term</span><span class="p">.</span><span class="n">eq</span> <span class="o">~</span><span class="n">ty</span><span class="o">:(</span><span class="nn">Type</span><span class="p">.</span><span class="n">int</span><span class="bp">()</span><span class="o">)</span>
+                                   <span class="o">(</span><span class="nn">Modular_region</span><span class="p">.</span><span class="n">args</span> <span class="n">r</span> <span class="o">|&gt;</span> <span class="nn">List</span><span class="p">.</span><span class="n">hd</span> <span class="o">|&gt;</span> <span class="nn">Term</span><span class="p">.</span><span class="n">var</span><span class="o">)</span>
+                                     <span class="o">(</span><span class="nn">Term</span><span class="p">.</span><span class="n">int</span> <span class="mi">1</span><span class="o">)]))</span> <span class="o">[@@</span><span class="n">program</span><span class="o">];;</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[9]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>val d1 : Top_result.modular_region list = []
+val d2 : Top_result.modular_region list =
+  [{Imandra_interactive.Modular_decomp.MR.mreg_session = 9i; mreg_id = 3i;
+    mreg_constraints = [not ((x * x) &lt; 0);x &gt; 0;x = 1];
+    mreg_invariant = x + 1; mreg_args = [(x : int)];
+    mreg_status = Imandra_interactive.Modular_decomp.MR.Unknown}]
 </pre>
 </div>
 
@@ -1790,14 +2029,39 @@ module CX : sig val l : action list end
 
 
 <div class="output_html rendered_html output_subarea ">
-<div><pre>Instance (after 72 steps, 0.495s):
-  let l =
-    let (_x_0 : action) = Pick Goat in
-    let (_x_1 : action) = Drop Goat in
-    [_x_0; CrossRiver; _x_1; CrossRiver; Pick Cabbage; CrossRiver;
-     Drop Cabbage; _x_0; CrossRiver; _x_1; Pick Wolf; CrossRiver; Drop Wolf;
-     CrossRiver; _x_0; CrossRiver; _x_1]
-</pre></div>
+<div class="imandra-alternatives" id="alt-1ddb747b-4506-4e7c-90c3-e21a5b1d1729"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi (2 of 2)</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-f3165d9c-b5e7-4882-ae91-017718257483" class="decompose"><textarea class="display-none">{
+  &quot;regions&quot;: [
+    {
+      &quot;constraints&quot;: [ &quot;x &lt;= 0&quot; ],
+      &quot;region&quot;: { &quot;constraints&quot;: [ &quot;x &lt;= 0&quot; ], &quot;invariant&quot;: &quot;F = x&quot; },
+      &quot;groups&quot;: [],
+      &quot;label&quot;: &quot;2&quot;,
+      &quot;weight&quot;: 1
+    },
+    {
+      &quot;constraints&quot;: [ &quot;(x * x) &gt;= 0&quot;, &quot;x &gt; 0&quot; ],
+      &quot;region&quot;: {
+        &quot;constraints&quot;: [ &quot;(x * x) &gt;= 0&quot;, &quot;x &gt; 0&quot; ],
+        &quot;invariant&quot;: &quot;F = x + 1&quot;
+      },
+      &quot;groups&quot;: [],
+      &quot;label&quot;: &quot;1.1&quot;,
+      &quot;weight&quot;: 1
+    }
+  ]
+}</textarea><div class="decompose-foamtree"></div><div class="decompose-details"><div class="decompose-details-header">Regions details</div><div class="decompose-details-no-selection"><p>No group selected.</p><ul><li>Concrete regions are numbered</li><li>Unnumbered regions are groups whose children share a particular constraint</li><li>Click on a region to view its details</li><li>Double click on a region to zoom in on it</li><li>Shift+double click to zoom out</li><li>Hit escape to reset back to the top</li></ul></div><div class="decompose-details-selection hidden"><div><span class="decompose-details-label">Direct sub-regions: </span><span class="decompose-details-direct-sub-regions-text">-</span></div><div><span class="decompose-details-label">Contained regions: </span><span class="decompose-details-contained-regions-text">-</span></div><div class="decompose-details-section-header">Constraints</div><div class="decompose-details-constraints"><pre class="decompose-details-constraint">&lt;constraint&gt;</pre></div><div class="decompose-details-invariant"><div class="decompose-details-section-header">Invariant</div><pre class="decompose-details-invariant-text">&lt;invariant&gt;</pre></div></div></div><script>
+(function () {
+  require(['nbextensions/nbimandra/regions'], function (regions) {
+    var target = '#decompose-f3165d9c-b5e7-4882-ae91-017718257483';
+    regions.hydrate(target);
+  });
+})();
+</script></div></div><div class="tab-pane"><div><div>decomp of (f x<div class="imandra-table" id="table-b8722229-3fdb-49bb-8f8b-f78a46676c7b"><table><thead><tr><th>Reg_id</th><th>Constraints</th><th>Invariant</th></tr></thead><tr><td>2</td><td><ul><li><pre>not (x &gt; 0)</pre></li></ul></td><td><pre>x</pre></td></tr><tr><td>1</td><td><ul><li><pre>not ((x * x) &lt; 0)</pre></li><li><pre>x &gt; 0</pre></li></ul></td><td><pre>x + 1</pre></td></tr></table></div></div></div></div></div><script>
+require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
+  var target = '#alt-1ddb747b-4506-4e7c-90c3-e21a5b1d1729';
+  alternatives.hydrate(target);
+});
+</script></div>
 
 </div>
 
@@ -1810,7 +2074,39 @@ module CX : sig val l : action list end
 
 
 <div class="output_html rendered_html output_subarea ">
-<div><div style="font-size: 1.2em; padding: 0.5em; border-top: 1px solid green; border-bottom: 1px solid green"><i class="fa fa-check-circle" style="margin-right: 0.5em; color: green"></i><span>Instance</span></div><div><div></div></div></div>
+<div class="imandra-alternatives" id="alt-2275b0e2-a234-45ef-bb69-4aae557e3202"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi (2 of 2)</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-c9915785-5a8e-47d4-9938-4ec0f97f3a6c" class="decompose"><textarea class="display-none">{
+  &quot;regions&quot;: [
+    {
+      &quot;constraints&quot;: [ &quot;x &lt;= 0&quot; ],
+      &quot;region&quot;: { &quot;constraints&quot;: [ &quot;x &lt;= 0&quot; ], &quot;invariant&quot;: &quot;F = x&quot; },
+      &quot;groups&quot;: [],
+      &quot;label&quot;: &quot;2&quot;,
+      &quot;weight&quot;: 1
+    },
+    {
+      &quot;constraints&quot;: [ &quot;(x * x) &gt;= 0&quot;, &quot;x &gt; 0&quot; ],
+      &quot;region&quot;: {
+        &quot;constraints&quot;: [ &quot;(x * x) &gt;= 0&quot;, &quot;x &gt; 0&quot; ],
+        &quot;invariant&quot;: &quot;F = x + 1&quot;
+      },
+      &quot;groups&quot;: [],
+      &quot;label&quot;: &quot;1.1&quot;,
+      &quot;weight&quot;: 1
+    }
+  ]
+}</textarea><div class="decompose-foamtree"></div><div class="decompose-details"><div class="decompose-details-header">Regions details</div><div class="decompose-details-no-selection"><p>No group selected.</p><ul><li>Concrete regions are numbered</li><li>Unnumbered regions are groups whose children share a particular constraint</li><li>Click on a region to view its details</li><li>Double click on a region to zoom in on it</li><li>Shift+double click to zoom out</li><li>Hit escape to reset back to the top</li></ul></div><div class="decompose-details-selection hidden"><div><span class="decompose-details-label">Direct sub-regions: </span><span class="decompose-details-direct-sub-regions-text">-</span></div><div><span class="decompose-details-label">Contained regions: </span><span class="decompose-details-contained-regions-text">-</span></div><div class="decompose-details-section-header">Constraints</div><div class="decompose-details-constraints"><pre class="decompose-details-constraint">&lt;constraint&gt;</pre></div><div class="decompose-details-invariant"><div class="decompose-details-section-header">Invariant</div><pre class="decompose-details-invariant-text">&lt;invariant&gt;</pre></div></div></div><script>
+(function () {
+  require(['nbextensions/nbimandra/regions'], function (regions) {
+    var target = '#decompose-c9915785-5a8e-47d4-9938-4ec0f97f3a6c';
+    regions.hydrate(target);
+  });
+})();
+</script></div></div><div class="tab-pane"><div><div>decomp of (f x<div class="imandra-table" id="table-19caddc7-e307-4725-9d35-4dc4d1e7a620"><table><thead><tr><th>Reg_id</th><th>Constraints</th><th>Invariant</th></tr></thead><tr><td>2</td><td><ul><li><pre>not (x &gt; 0)</pre></li></ul></td><td><pre>x</pre></td></tr><tr><td>1</td><td><ul><li><pre>not ((x * x) &lt; 0)</pre></li><li><pre>x &gt; 0</pre></li></ul></td><td><pre>x + 1</pre></td></tr></table></div></div></div></div></div><script>
+require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
+  var target = '#alt-2275b0e2-a234-45ef-bb69-4aae557e3202';
+  alternatives.hydrate(target);
+});
+</script></div>
 
 </div>
 
@@ -1819,14 +2115,6 @@ module CX : sig val l : action list end
 </div>
 </div>
 
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html"><p>It only took a fraction of second! 🎉</p>
-<p>Now we have a clear plan for crossing the river. How to sell the goat and cabbage is left as an exercise to the reader.</p>
-</div>
-</div>
 </div>
                     </div>
                 </article>
