@@ -522,11 +522,11 @@ verify (fun side o1 o2 o3 mkt -> pretty mkt o1 o2 o3 ==> rank_transitivity side 
 Let's define a few more custom document printers to make these (complex!) counterexamples easier to understand.
 
 ```{.imandra .input}
-(* We can generate string printers for our types automatically using `Genpp` *)
-Genpp.eval ~quiet:true ();;
+(* We can generate string printers for our types automatically using the pp plugin *)
+Imandra.add_plugin_pp ();;
 
 let doc_of_order_type o =
-  Document.s @@ Pp.pp_order_type o
+  Document.s @@ CCFormat.to_string pp_order_type o
 [@@program];;
 
 #install_doc doc_of_order_type;;
