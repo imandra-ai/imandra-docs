@@ -535,19 +535,19 @@ let doc_of_order o =
   let module D = Document in
   D.indent "order" @@ D.record [
       "id", D.bigint o.id;
-      "peg", D.s @@ Pp.pp_order_peg o.peg;
+      "peg", D.s @@ CCFormat.to_string pp_order_peg o.peg;
       "client_id", D.bigint o.client_id;
-      "order_type", D.s @@ Pp.pp_order_type o.order_type;
+      "order_type", D.s @@ CCFormat.to_string pp_order_type o.order_type;
       "qty", D.bigint o.qty;
       "min_qty", D.bigint o.min_qty;
       "leaves_qty", D.bigint o.leaves_qty;
       "price", D.s @@ Real.to_string_approx o.price;
-      "time", D.s @@ Pp.pp_time o.time;
-      "src", D.s @@ Pp.pp_order_source o.src;
-      "order_attr", D.s @@ Pp.pp_order_attr o.order_attr;
-      "capacity", D.s @@ Pp.pp_capacity o.capacity;
-      "category", D.s @@ Pp.pp_category o.category;
-      (* "cross_restrict", D.s @@ Pp.pp_cross_restrict o.cross_restrict; *)
+      "time", D.s @@ CCFormat.to_string pp_time o.time;
+      "src", D.s @@ CCFormat.to_string pp_order_source o.src;
+      "order_attr", D.s @@ CCFormat.to_string pp_order_attr o.order_attr;
+      "capacity", D.s @@ CCFormat.to_string pp_capacity o.capacity;
+      "category", D.s @@ CCFormat.to_string pp_category o.category;
+      (* "cross_restrict", D.s @@ CCFormat.to_string pp_cross_restrict o.cross_restrict; *)
       "locate_found", D.s_f "%B" o.locate_found;
       "expiry_time", D.bigint o.expiry_time;
   ]
@@ -555,7 +555,7 @@ let doc_of_order o =
 
 #install_doc doc_of_order;;
 
-let doc_of_side side = Document.s @@ Pp.pp_order_side side
+let doc_of_side side = Document.s @@ CCFormat.to_string pp_order_side side
 [@@program];;
 
 #install_doc doc_of_side;;
