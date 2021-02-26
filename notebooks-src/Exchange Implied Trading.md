@@ -1050,6 +1050,8 @@ m'.outbound_msgs
 ```{.imandra .input}
 (* Let's try to decompose the logic of 'implied_uncross_side' - we will put
    several functions in the basis to focus on the critical aspects of the logic *)
+#timeout 1000;;
+
 let d = Modular_decomp.top "implied_uncross_side"
         ~basis:["get_book_tops"; "allocate_implied_fills"; "insert_order";
         "create_fill_msgs"; "calc_implied_strat_order"] ~prune:true [@@program];;
