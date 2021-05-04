@@ -17,7 +17,7 @@ assert:
     - "<span>Refuted</span>"
     - "int = 105"
     - "Counterexample (after 0 steps"
-    - "let (x : int) = 69"
+    - "let x : int = 69"
     - "module CX : sig val x : int end"
     - "<span>termination proof</span>"
     - "<b>ground_instances</b>"
