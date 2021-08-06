@@ -20,7 +20,7 @@ assert:
     - "let x : int = 69"
     - "module CX : sig val x : Z.t end"
     - "<span>termination proof</span>"
-    - "<b>ground_instances</b>"
+    - "ground_instances"
     - "Must try induction."
   excludes:
     - "error"
