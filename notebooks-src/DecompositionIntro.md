@@ -1,4 +1,4 @@
---
+---
 title: "Decomposition"
 description: "Background to decomposition"
 kernel: imandra
