@@ -1,4 +1,4 @@
----
+--
 title: "Decomposition"
 description: "Background to decomposition"
 kernel: imandra
@@ -139,7 +139,7 @@ Modular_decomp.(d |> get_regions |> CCList.map get_model);;
 The model can be turned into a computable value by generating an extractor for the target function
 
 ```{.imandra .input}
-Extract.eval ~signature:(Event.DB.fun_id_of_str "j") ~quiet:true ();;
+Extract.eval ~signature:(Event.DB.fun_id_of_str (db()) "j") ~quiet:true ();;
 Modular_decomp.(d |> get_regions |> CCList.map (get_model %> Mex.of_model));;
 ```
 

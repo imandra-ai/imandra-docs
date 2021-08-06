@@ -418,7 +418,7 @@ The first step will create a new module for us which we'll use in the second ste
 ```{.imandra .input}
 (* Generate a model extractor module for `match_price` *)
 
-Extract.eval ~signature:(Event.DB.fun_id_of_str "match_price") ();;
+Extract.eval ~signature:(Event.DB.fun_id_of_str (db()) "match_price") ();;
 ```
 
 ```{.imandra .input}
