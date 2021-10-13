@@ -1,6 +1,6 @@
 ---
-title: "Reflection"
-description: "Reflection"
+title: "Imandra vs"
+description: "Imandra vs other systems"
 kernel: imandra
 slug: imandravs
 ---
