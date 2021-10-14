@@ -234,11 +234,15 @@ let html_of_order (o : order) =
   ; H.div (if o.o_is_implied then [H.txt "Implied"] else [])
   ]
 
+let html elt =
+  let module H = Tyxml.Html in
+  Document.html (Document.Unsafe_.html_of_string @@ CCFormat.sprintf "%a" (H.pp_elt ()) elt);;
+
 let doc_of_order (o:order) =
   let module H = Tyxml.Html in
-  Document.html (H.div [html_of_order o]);;
+  html (H.div [html_of_order o]);;
 
-#install_doc doc_of_order
+#install_doc doc_of_order;;
 
 let html_of_book ?(title="") (b: book) =
   let module H = Tyxml.Html in
@@ -258,7 +262,7 @@ let html_of_book ?(title="") (b: book) =
 
 let doc_of_book (b:book) =
   let module H = Tyxml.Html in
-  Document.html (H.div [html_of_book ~title:"M1 Mar21" b]);;
+  html (H.div [html_of_book ~title:"M1 Mar21" b]);;
 
 #install_doc doc_of_book;;
 
@@ -276,8 +280,7 @@ let html_of_market (m: market) =
     ]]
 
 let doc_of_market (m : market) =
-  let module H = Tyxml.Html in
-  Document.html (html_of_market m);;
+  html (html_of_market m);;
 
 #install_doc doc_of_market;;
 
