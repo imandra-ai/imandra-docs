@@ -33,7 +33,7 @@
         <link rel="stylesheet" href="/imandra-docs/static/nbextensions/nbimandra/styles.b466ce6f.css" type="text/css">
         <link rel="stylesheet" href="/imandra-docs/static/docs-styles.b9de737f.css" type="text/css">
         
-        <link rel="stylesheet" href="/imandra-docs/static/jekyll-styles.c96432ce.css" type="text/css">
+        <link rel="stylesheet" href="/imandra-docs/static/jekyll-styles.7b33d7b3.css" type="text/css">
         
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.css" />
 
@@ -115,7 +115,7 @@
 
         <!-- Loading mathjax macro -->
         <!-- Load mathjax -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-MML-AM_CHTML-full,Safe"> </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS_CHTML-full,Safe"> </script>
     <!-- MathJax configuration -->
     <script type="text/x-mathjax-config">
     init_mathjax = function() {
@@ -136,11 +136,6 @@
                 },
                 displayAlign: 'center',
                 CommonHTML: {
-                    linebreaks: { 
-                    automatic: true 
-                    }
-                },
-                "HTML-CSS": {
                     linebreaks: { 
                     automatic: true 
                     }
@@ -3800,7 +3795,7 @@ See https://docs.imandra.ai/imandra-docs/notebooks/proving-program-termination/
 
 
 <div class="output_html rendered_html output_subarea ">
-<div><div class="imandra-fold panel panel-default" id="fold-05c2b3dc-99c9-49fd-844e-9c041c28fe41"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>termination proof</span></div></div><div class="panel-body collapse"><div><h3>Termination proof</h3><div class="imandra-fold panel panel-default" id="fold-d6d519c9-4e1c-42f2-8cee-977b84a8de51"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>call `map f_0 (List.tl xs)` from `map f_0 xs`</span></div></div><div class="panel-body collapse">{original: map f_0 xs
+<div><div class="imandra-fold panel panel-default" id="fold-f99011b5-584c-407e-a1c3-d237190e2a54"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>termination proof</span></div></div><div class="panel-body collapse"><div><h3>Termination proof</h3><div class="imandra-fold panel panel-default" id="fold-7012d726-bbd7-40d5-aeaa-95bdb2374105"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>call `map f_0 (List.tl xs)` from `map f_0 xs`</span></div></div><div class="panel-body collapse">{original: map f_0 xs
  ----------------------------------------------------------------------------
  sub: map f_0 (List.tl xs)
  ----------------------------------------------------------------------------
@@ -3808,7 +3803,7 @@ See https://docs.imandra.ai/imandra-docs/notebooks/proving-program-termination/
  ----------------------------------------------------------------------------
  sub ordinal: Ordinal.Int (_cnt (List.tl xs))
  ----------------------------------------------------------------------------
- path: [not Is_a([], xs)]
+ path: [xs &lt;&gt; []]
  ----------------------------------------------------------------------------
  proof:
    (alternatives
@@ -3819,53 +3814,57 @@ See https://docs.imandra.ai/imandra-docs/notebooks/proving-program-termination/
       ----------------------------------------------------------------------------
       inductions: 0
       ----------------------------------------------------------------------------
-      search_time: `0.025s`
+      search_time: `0.016s`
       ----------------------------------------------------------------------------
       details:
         {smt_stats:
-           {num checks: 7
+           {num checks: 8
             ----------------------------------------------------------------------------
-            arith-make-feasible: 7
+            arith-make-feasible: 17
             ----------------------------------------------------------------------------
-            arith-max-columns: 10
+            arith-max-columns: 13
             ----------------------------------------------------------------------------
-            rlimit count: 1551
+            arith-conflicts: 1
             ----------------------------------------------------------------------------
-            arith-cheap-eqs: 1
+            rlimit count: 1979
             ----------------------------------------------------------------------------
-            mk clause: 11
+            arith-cheap-eqs: 6
+            ----------------------------------------------------------------------------
+            mk clause: 19
             ----------------------------------------------------------------------------
             datatype occurs check: 12
             ----------------------------------------------------------------------------
-            mk bool var: 36
+            mk bool var: 71
             ----------------------------------------------------------------------------
-            arith-lower: 4
+            arith-lower: 15
+            ----------------------------------------------------------------------------
+            arith-diseq: 1
             ----------------------------------------------------------------------------
             datatype splits: 1
             ----------------------------------------------------------------------------
-            decisions: 4
+            decisions: 21
             ----------------------------------------------------------------------------
-            propagations: 6
+            propagations: 20
             ----------------------------------------------------------------------------
-            arith-max-rows: 2
+            arith-max-rows: 5
             ----------------------------------------------------------------------------
-            conflicts: 3
+            conflicts: 9
             ----------------------------------------------------------------------------
-            datatype accessor ax: 7
+            datatype accessor ax: 8
             ----------------------------------------------------------------------------
-            datatype constructor ax: 5
+            datatype constructor ax: 8
             ----------------------------------------------------------------------------
-            num allocs: 644684
+            num allocs: 644655
             ----------------------------------------------------------------------------
             final checks: 4
             ----------------------------------------------------------------------------
-            added eqs: 26
+            added eqs: 58
             ----------------------------------------------------------------------------
-            del clause: 9
+            del clause: 14
             ----------------------------------------------------------------------------
-            arith eq adapter: 3
+            arith eq adapter: 13
             ----------------------------------------------------------------------------
-            arith-upper: 5
+            arith-upper: 11
             ----------------------------------------------------------------------------
             memory: 5.050000
             ----------------------------------------------------------------------------
@@ -3874,19 +3873,20 @@ See https://docs.imandra.ai/imandra-docs/notebooks/proving-program-termination/
          }
       })
     (full:
-     * ```start[0.025s]
+     * ```start[0.016s]
             let (_x_0 : int) = count.list (const 0) xs in
             let (_x_1 : ty_1 list) = List.tl xs in
             let (_x_2 : int) = count.list (const 0) _x_1 in
-            not Is_a([], xs) &amp;&amp; _x_0 &gt;= 0 &amp;&amp; _x_2 &gt;= 0
-            ==&gt; Is_a([], _x_1) || Ordinal.( &lt;&lt; ) (Ordinal.Int _x_2) (Ordinal.Int _x_0)```
+            xs &lt;&gt; [] &amp;&amp; _x_0 &gt;= 0 &amp;&amp; _x_2 &gt;= 0
+            ==&gt; not (_x_1 &lt;&gt; [])
+                || Ordinal.( &lt;&lt; ) (Ordinal.Int _x_2) (Ordinal.Int _x_0)```
      * simplify::
          {into:
             ```let (_x_0 : ty_1 list) = List.tl xs in
                let (_x_1 : int) = count.list (const 0) _x_0 in
                let (_x_2 : int) = count.list (const 0) xs in
-               (Is_a([], _x_0) || Ordinal.( &lt;&lt; ) (Ordinal.Int _x_1) (Ordinal.Int _x_2))
-               || not ((not Is_a([], xs) &amp;&amp; _x_2 &gt;= 0) &amp;&amp; _x_1 &gt;= 0)```
+               (not (_x_0 &lt;&gt; []) || Ordinal.( &lt;&lt; ) (Ordinal.Int _x_1) (Ordinal.Int _x_2))
+               || not ((xs &lt;&gt; [] &amp;&amp; _x_2 &gt;= 0) &amp;&amp; _x_1 &gt;= 0)```
           ----------------------------------------------------------------------------
           expansions: `[]`
           ----------------------------------------------------------------------------
@@ -3908,7 +3908,7 @@ See https://docs.imandra.ai/imandra-docs/notebooks/proving-program-termination/
         }
      * unroll
        {expr:
-          ```(|Ordinal.&lt;&lt;_126| (|Ordinal.Int_111|
+          ```(|Ordinal.&lt;&lt;_129| (|Ordinal.Int_114|
                                  (|`count.list { Resolved_term.spec_idx = 0;…```
         ----------------------------------------------------------------------------
         expansions: 
@@ -3916,12 +3916,12 @@ See https://docs.imandra.ai/imandra-docs/notebooks/proving-program-termination/
      * Unsat))
  }</div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-d6d519c9-4e1c-42f2-8cee-977b84a8de51';
+  var target = '#fold-7012d726-bbd7-40d5-aeaa-95bdb2374105';
   fold.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-05c2b3dc-99c9-49fd-844e-9c041c28fe41';
+  var target = '#fold-f99011b5-584c-407e-a1c3-d237190e2a54';
   fold.hydrate(target);
 });
 </script></div></div>
@@ -4066,7 +4066,7 @@ require(['nbextensions/nbimandra/fold'], function (fold) {
 
 
 <div class="output_html rendered_html output_subarea ">
-<div><div class="imandra-fold panel panel-default" id="fold-74d6e110-f911-4aa0-9eee-a55b36a3ddd7"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>termination proof</span></div></div><div class="panel-body collapse"><div><h3>Termination proof</h3><div class="imandra-fold panel panel-default" id="fold-f44fb70f-91ec-4234-90dd-cc9d736a17be"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>call `sum_lst (List.tl _x26)` from `sum_lst _x26`</span></div></div><div class="panel-body collapse">{original: sum_lst _x26
+<div><div class="imandra-fold panel panel-default" id="fold-b3a6e2c9-1fec-4db0-bd27-4b55692b9f21"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>termination proof</span></div></div><div class="panel-body collapse"><div><h3>Termination proof</h3><div class="imandra-fold panel panel-default" id="fold-7c5fb6c8-4cce-4d4f-9b44-4629c81b2103"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>call `sum_lst (List.tl _x26)` from `sum_lst _x26`</span></div></div><div class="panel-body collapse">{original: sum_lst _x26
  ----------------------------------------------------------------------------
  sub: sum_lst (List.tl _x26)
  ----------------------------------------------------------------------------
@@ -4074,7 +4074,7 @@ require(['nbextensions/nbimandra/fold'], function (fold) {
  ----------------------------------------------------------------------------
  sub ordinal: Ordinal.Int (_cnt (List.tl _x26))
  ----------------------------------------------------------------------------
- path: [not Is_a([], _x26)]
+ path: [_x26 &lt;&gt; []]
  ----------------------------------------------------------------------------
  proof:
    (alternatives
@@ -4085,77 +4085,77 @@ require(['nbextensions/nbimandra/fold'], function (fold) {
       ----------------------------------------------------------------------------
       inductions: 0
       ----------------------------------------------------------------------------
-      search_time: `0.021s`
+      search_time: `0.013s`
       ----------------------------------------------------------------------------
       details:
         {smt_stats:
            {num checks: 8
             ----------------------------------------------------------------------------
-            arith-make-feasible: 15
+            arith-make-feasible: 23
             ----------------------------------------------------------------------------
-            arith-max-columns: 17
+            arith-max-columns: 18
             ----------------------------------------------------------------------------
             arith-conflicts: 2
             ----------------------------------------------------------------------------
-            rlimit count: 3410
+            rlimit count: 4165
             ----------------------------------------------------------------------------
-            arith-cheap-eqs: 1
-            ----------------------------------------------------------------------------
-            mk clause: 18
+            mk clause: 24
             ----------------------------------------------------------------------------
             datatype occurs check: 13
             ----------------------------------------------------------------------------
-            mk bool var: 51
+            mk bool var: 75
             ----------------------------------------------------------------------------
-            arith-lower: 9
+            arith-lower: 17
+            ----------------------------------------------------------------------------
+            arith-diseq: 1
             ----------------------------------------------------------------------------
             datatype splits: 1
             ----------------------------------------------------------------------------
-            decisions: 7
+            decisions: 20
             ----------------------------------------------------------------------------
-            propagations: 11
+            propagations: 25
             ----------------------------------------------------------------------------
-            arith-max-rows: 4
+            arith-max-rows: 6
             ----------------------------------------------------------------------------
-            conflicts: 6
+            conflicts: 10
             ----------------------------------------------------------------------------
-            datatype accessor ax: 7
+            datatype accessor ax: 8
             ----------------------------------------------------------------------------
-            datatype constructor ax: 5
+            datatype constructor ax: 8
             ----------------------------------------------------------------------------
-            num allocs: 2407771
+            num allocs: 2504373
             ----------------------------------------------------------------------------
             final checks: 4
             ----------------------------------------------------------------------------
-            added eqs: 32
+            added eqs: 51
             ----------------------------------------------------------------------------
-            del clause: 11
+            del clause: 15
             ----------------------------------------------------------------------------
-            arith eq adapter: 6
+            arith eq adapter: 13
             ----------------------------------------------------------------------------
-            arith-upper: 10
+            arith-upper: 14
             ----------------------------------------------------------------------------
             memory: 5.120000
             ----------------------------------------------------------------------------
-            max memory: 5.120000
+            max memory: 5.150000
             }
          }
       })
     (full:
-     * ```start[0.021s]
+     * ```start[0.013s]
             let (_x_0 : int) = count.list mk_nat _x26 in
             let (_x_1 : int list) = List.tl _x26 in
             let (_x_2 : int) = count.list mk_nat _x_1 in
-            not Is_a([], _x26) &amp;&amp; _x_0 &gt;= 0 &amp;&amp; _x_2 &gt;= 0
-            ==&gt; Is_a([], _x_1) || Ordinal.( &lt;&lt; ) (Ordinal.Int _x_2) (Ordinal.Int _x_0)```
+            _x26 &lt;&gt; [] &amp;&amp; _x_0 &gt;= 0 &amp;&amp; _x_2 &gt;= 0
+            ==&gt; not (_x_1 &lt;&gt; [])
+                || Ordinal.( &lt;&lt; ) (Ordinal.Int _x_2) (Ordinal.Int _x_0)```
      * simplify::
          {into:
             ```let (_x_0 : int) = count.list mk_nat _x26 in
                let (_x_1 : int list) = List.tl _x26 in
                let (_x_2 : int) = count.list mk_nat _x_1 in
-               (not ((not Is_a([], _x26) &amp;&amp; _x_0 &gt;= 0) &amp;&amp; _x_2 &gt;= 0)
-                || Ordinal.( &lt;&lt; ) (Ordinal.Int _x_2) (Ordinal.Int _x_0))
-               || Is_a([], _x_1)```
+               (not ((_x26 &lt;&gt; [] &amp;&amp; _x_0 &gt;= 0) &amp;&amp; _x_2 &gt;= 0) || not (_x_1 &lt;&gt; []))
+               || Ordinal.( &lt;&lt; ) (Ordinal.Int _x_2) (Ordinal.Int _x_0)```
           ----------------------------------------------------------------------------
           expansions: `[]`
           ----------------------------------------------------------------------------
@@ -4165,21 +4165,21 @@ require(['nbextensions/nbimandra/fold'], function (fold) {
           }
      * unroll
        {expr:
-          ```(|Ordinal.&lt;&lt;_126| (|Ordinal.Int_111|
+          ```(|Ordinal.&lt;&lt;_129| (|Ordinal.Int_114|
                                  (|`count.list { Resolved_term.spec_idx = 0;…```
         ----------------------------------------------------------------------------
         expansions: 
         }
      * unroll
        {expr:
-          ```(|`count.list { Resolved_term.spec_idx = 0; spec_arg = mk_nat; spec_ty = (int -&gt; int)/626 }`_1871|
+          ```(|`count.list { Resolved_term.spec_idx = 0; spec_arg = mk_nat; spec_ty = (int -&gt; int)/626 }`_1861|
               …```
         ----------------------------------------------------------------------------
         expansions: 
         }
      * unroll
        {expr:
-          ```(|`count.list { Resolved_term.spec_idx = 0; spec_arg = mk_nat; spec_ty = (int -&gt; int)/626 }`_1871|
+          ```(|`count.list { Resolved_term.spec_idx = 0; spec_arg = mk_nat; spec_ty = (int -&gt; int)/626 }`_1861|
               …```
         ----------------------------------------------------------------------------
         expansions: 
@@ -4187,12 +4187,12 @@ require(['nbextensions/nbimandra/fold'], function (fold) {
      * Unsat))
  }</div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-f44fb70f-91ec-4234-90dd-cc9d736a17be';
+  var target = '#fold-7c5fb6c8-4cce-4d4f-9b44-4629c81b2103';
   fold.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-74d6e110-f911-4aa0-9eee-a55b36a3ddd7';
+  var target = '#fold-b3a6e2c9-1fec-4db0-bd27-4b55692b9f21';
   fold.hydrate(target);
 });
 </script></div></div>
@@ -4288,7 +4288,7 @@ require(['nbextensions/nbimandra/fold'], function (fold) {
 
 
 <div class="output_html rendered_html output_subarea ">
-<div><div class="imandra-fold panel panel-default" id="fold-02574ce7-7097-49b6-b60f-e7731b5c8abf"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>termination proof</span></div></div><div class="panel-body collapse"><div><h3>Termination proof</h3><div class="imandra-fold panel panel-default" id="fold-1f2ff073-262e-4699-946a-bda554e6f489"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>call `sum (x - 1)` from `sum x`</span></div></div><div class="panel-body collapse">{original: sum x
+<div><div class="imandra-fold panel panel-default" id="fold-8545816a-0012-4b97-9f71-445578aa0546"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>termination proof</span></div></div><div class="panel-body collapse"><div><h3>Termination proof</h3><div class="imandra-fold panel panel-default" id="fold-9903428d-8f27-422b-94d8-fb883d2e236c"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>call `sum (x - 1)` from `sum x`</span></div></div><div class="panel-body collapse">{original: sum x
  ----------------------------------------------------------------------------
  sub: sum (x - 1)
  ----------------------------------------------------------------------------
@@ -4307,7 +4307,7 @@ require(['nbextensions/nbimandra/fold'], function (fold) {
       ----------------------------------------------------------------------------
       inductions: 0
       ----------------------------------------------------------------------------
-      search_time: `0.025s`
+      search_time: `0.014s`
       ----------------------------------------------------------------------------
       details:
         {smt_stats:
@@ -4319,15 +4319,15 @@ require(['nbextensions/nbimandra/fold'], function (fold) {
             ----------------------------------------------------------------------------
             arith-conflicts: 1
             ----------------------------------------------------------------------------
-            rlimit count: 4476
+            rlimit count: 5153
             ----------------------------------------------------------------------------
-            mk clause: 5
+            mk clause: 4
             ----------------------------------------------------------------------------
             datatype occurs check: 2
             ----------------------------------------------------------------------------
             mk bool var: 17
             ----------------------------------------------------------------------------
-            arith-lower: 2
+            arith-lower: 3
             ----------------------------------------------------------------------------
             decisions: 2
             ----------------------------------------------------------------------------
@@ -4343,26 +4343,26 @@ require(['nbextensions/nbimandra/fold'], function (fold) {
             ----------------------------------------------------------------------------
             datatype accessor ax: 2
             ----------------------------------------------------------------------------
-            num allocs: 5301128
+            num allocs: 5339056
             ----------------------------------------------------------------------------
             final checks: 1
             ----------------------------------------------------------------------------
             added eqs: 6
             ----------------------------------------------------------------------------
-            del clause: 5
+            del clause: 4
             ----------------------------------------------------------------------------
             arith eq adapter: 2
             ----------------------------------------------------------------------------
-            arith-upper: 7
+            arith-upper: 6
             ----------------------------------------------------------------------------
-            memory: 5.140000
+            memory: 5.150000
             ----------------------------------------------------------------------------
-            max memory: 5.140000
+            max memory: 5.150000
             }
          }
       })
     (full:
-     * ```start[0.025s]
+     * ```start[0.014s]
             let (_x_0 : int) = if x &gt;= 0 then x else 0 in
             let (_x_1 : int) = x - 1 in
             let (_x_2 : int) = if _x_1 &gt;= 0 then _x_1 else 0 in
@@ -4370,9 +4370,10 @@ require(['nbextensions/nbimandra/fold'], function (fold) {
             ==&gt; _x_1 &lt;= 0 || Ordinal.( &lt;&lt; ) (Ordinal.Int _x_2) (Ordinal.Int _x_0)```
      * simplify::
          {into:
-            ```(x &lt;= 0 || x &lt;= 1)
-               || Ordinal.( &lt;&lt; ) (Ordinal.Int (if x &gt;= 1 then (-1) + x else 0))
-                  (Ordinal.Int (if x &gt;= 0 then x else 0))```
+            ```(x &lt;= 0
+                || Ordinal.( &lt;&lt; ) (Ordinal.Int (if x &gt;= 1 then (-1) + x else 0))
+                   (Ordinal.Int (if x &gt;= 0 then x else 0)))
+               || x &lt;= 1```
           ----------------------------------------------------------------------------
           expansions: `[]`
           ----------------------------------------------------------------------------
@@ -4382,7 +4383,7 @@ require(['nbextensions/nbimandra/fold'], function (fold) {
           }
      * unroll
        {expr:
-          ```(|Ordinal.&lt;&lt;_126| (|Ordinal.Int_111| (ite (&gt;= x_1900 1) (+ (- 1) x_1900) 0))
+          ```(|Ordinal.&lt;&lt;_129| (|Ordinal.Int_114| (ite (&gt;= x_1890 1) (+ (- 1) x_1890) 0))
                                (|Ord…```
         ----------------------------------------------------------------------------
         expansions: 
@@ -4390,12 +4391,12 @@ require(['nbextensions/nbimandra/fold'], function (fold) {
      * Unsat))
  }</div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-1f2ff073-262e-4699-946a-bda554e6f489';
+  var target = '#fold-9903428d-8f27-422b-94d8-fb883d2e236c';
   fold.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-02574ce7-7097-49b6-b60f-e7731b5c8abf';
+  var target = '#fold-8545816a-0012-4b97-9f71-445578aa0546';
   fold.hydrate(target);
 });
 </script></div></div>
@@ -4630,7 +4631,7 @@ See https://docs.imandra.ai/imandra-docs/notebooks/proving-program-termination/
 
 
 <div class="output_html rendered_html output_subarea ">
-<div><div class="imandra-fold panel panel-default" id="fold-eee10e29-56ca-4d73-825a-d78f3ffb5bde"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>termination proof</span></div></div><div class="panel-body collapse"><div><h3>Termination proof</h3><div class="imandra-fold panel panel-default" id="fold-e0efcf9b-5c6d-4ecf-9d71-bc8ccb7e16cd"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>call `size (Destruct(Node, 0, _x27))` from `size _x27`</span></div></div><div class="panel-body collapse">{original: size _x27
+<div><div class="imandra-fold panel panel-default" id="fold-ef4afcd7-8d0d-4f44-91d0-349fb572bec9"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>termination proof</span></div></div><div class="panel-body collapse"><div><h3>Termination proof</h3><div class="imandra-fold panel panel-default" id="fold-d092cc29-650f-4066-ad89-d905deadc40b"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>call `size (Destruct(Node, 0, _x27))` from `size _x27`</span></div></div><div class="panel-body collapse">{original: size _x27
  ----------------------------------------------------------------------------
  sub: size (Destruct(Node, 0, _x27))
  ----------------------------------------------------------------------------
@@ -4649,19 +4650,19 @@ See https://docs.imandra.ai/imandra-docs/notebooks/proving-program-termination/
       ----------------------------------------------------------------------------
       inductions: 0
       ----------------------------------------------------------------------------
-      search_time: `0.023s`
+      search_time: `0.014s`
       ----------------------------------------------------------------------------
       details:
         {smt_stats:
            {num checks: 8
             ----------------------------------------------------------------------------
-            arith-make-feasible: 18
+            arith-make-feasible: 19
             ----------------------------------------------------------------------------
-            arith-max-columns: 16
+            arith-max-columns: 17
             ----------------------------------------------------------------------------
             arith-conflicts: 2
             ----------------------------------------------------------------------------
-            rlimit count: 10424
+            rlimit count: 11012
             ----------------------------------------------------------------------------
             mk clause: 20
             ----------------------------------------------------------------------------
@@ -4669,7 +4670,7 @@ See https://docs.imandra.ai/imandra-docs/notebooks/proving-program-termination/
             ----------------------------------------------------------------------------
             mk bool var: 75
             ----------------------------------------------------------------------------
-            arith-lower: 14
+            arith-lower: 13
             ----------------------------------------------------------------------------
             arith-diseq: 1
             ----------------------------------------------------------------------------
@@ -4687,7 +4688,7 @@ See https://docs.imandra.ai/imandra-docs/notebooks/proving-program-termination/
             ----------------------------------------------------------------------------
             datatype constructor ax: 11
             ----------------------------------------------------------------------------
-            num allocs: 16844595
+            num allocs: 17023778
             ----------------------------------------------------------------------------
             final checks: 4
             ----------------------------------------------------------------------------
@@ -4697,7 +4698,7 @@ See https://docs.imandra.ai/imandra-docs/notebooks/proving-program-termination/
             ----------------------------------------------------------------------------
             arith eq adapter: 10
             ----------------------------------------------------------------------------
-            arith-upper: 13
+            arith-upper: 14
             ----------------------------------------------------------------------------
             memory: 7.760000
             ----------------------------------------------------------------------------
@@ -4706,7 +4707,7 @@ See https://docs.imandra.ai/imandra-docs/notebooks/proving-program-termination/
          }
       })
     (full:
-     * ```start[0.023s]
+     * ```start[0.014s]
             let (_x_0 : int) = count.tree (const 0) _x27 in
             let (_x_1 : ty_0 tree) = Destruct(Node, 0, _x27) in
             let (_x_2 : int) = count.tree (const 0) _x_1 in
@@ -4741,7 +4742,7 @@ See https://docs.imandra.ai/imandra-docs/notebooks/proving-program-termination/
         }
      * unroll
        {expr:
-          ```(|Ordinal.&lt;&lt;_126| (|Ordinal.Int_111|
+          ```(|Ordinal.&lt;&lt;_129| (|Ordinal.Int_114|
                                  (|`count.tree { Resolved_term.spec_idx = 0;…```
         ----------------------------------------------------------------------------
         expansions: 
@@ -4749,10 +4750,10 @@ See https://docs.imandra.ai/imandra-docs/notebooks/proving-program-termination/
      * Unsat))
  }</div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-e0efcf9b-5c6d-4ecf-9d71-bc8ccb7e16cd';
+  var target = '#fold-d092cc29-650f-4066-ad89-d905deadc40b';
   fold.hydrate(target);
 });
-</script></div><div class="imandra-fold panel panel-default" id="fold-8b1593f0-932d-4378-b80f-1bea28fb47f0"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>call `size (Destruct(Node, 1, _x27))` from `size _x27`</span></div></div><div class="panel-body collapse">{original: size _x27
+</script></div><div class="imandra-fold panel panel-default" id="fold-7ded721c-4a8f-4e66-bebc-848d861a29f3"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>call `size (Destruct(Node, 1, _x27))` from `size _x27`</span></div></div><div class="panel-body collapse">{original: size _x27
  ----------------------------------------------------------------------------
  sub: size (Destruct(Node, 1, _x27))
  ----------------------------------------------------------------------------
@@ -4771,41 +4772,37 @@ require(['nbextensions/nbimandra/fold'], function (fold) {
       ----------------------------------------------------------------------------
       inductions: 0
       ----------------------------------------------------------------------------
-      search_time: `0.022s`
+      search_time: `0.013s`
       ----------------------------------------------------------------------------
       details:
         {smt_stats:
            {num checks: 8
             ----------------------------------------------------------------------------
-            arith-assume-eqs: 1
+            arith-make-feasible: 18
             ----------------------------------------------------------------------------
-            arith-make-feasible: 24
-            ----------------------------------------------------------------------------
-            arith-max-columns: 18
+            arith-max-columns: 17
             ----------------------------------------------------------------------------
             arith-conflicts: 2
             ----------------------------------------------------------------------------
-            rlimit count: 8034
+            rlimit count: 8648
             ----------------------------------------------------------------------------
-            mk clause: 25
+            mk clause: 19
             ----------------------------------------------------------------------------
-            datatype occurs check: 15
+            datatype occurs check: 19
             ----------------------------------------------------------------------------
-            mk bool var: 82
+            mk bool var: 74
             ----------------------------------------------------------------------------
-            arith-lower: 13
+            arith-lower: 14
             ----------------------------------------------------------------------------
             arith-diseq: 1
             ----------------------------------------------------------------------------
             datatype splits: 3
             ----------------------------------------------------------------------------
-            decisions: 21
+            decisions: 19
             ----------------------------------------------------------------------------
-            propagations: 16
+            propagations: 15
             ----------------------------------------------------------------------------
-            interface eqs: 1
-            ----------------------------------------------------------------------------
-            arith-max-rows: 5
+            arith-max-rows: 4
             ----------------------------------------------------------------------------
             conflicts: 7
             ----------------------------------------------------------------------------
@@ -4813,26 +4810,26 @@ require(['nbextensions/nbimandra/fold'], function (fold) {
             ----------------------------------------------------------------------------
             datatype constructor ax: 11
             ----------------------------------------------------------------------------
-            num allocs: 13819193
+            num allocs: 14078593
             ----------------------------------------------------------------------------
-            final checks: 5
+            final checks: 4
             ----------------------------------------------------------------------------
-            added eqs: 62
+            added eqs: 57
             ----------------------------------------------------------------------------
-            del clause: 18
+            del clause: 12
             ----------------------------------------------------------------------------
-            arith eq adapter: 12
+            arith eq adapter: 10
             ----------------------------------------------------------------------------
-            arith-upper: 19
+            arith-upper: 13
             ----------------------------------------------------------------------------
-            memory: 5.140000
+            memory: 5.250000
             ----------------------------------------------------------------------------
-            max memory: 5.140000
+            max memory: 5.250000
             }
          }
       })
     (full:
-     * ```start[0.022s]
+     * ```start[0.013s]
             let (_x_0 : int) = count.tree (const 0) _x27 in
             let (_x_1 : ty_0 tree) = Destruct(Node, 1, _x27) in
             let (_x_2 : int) = count.tree (const 0) _x_1 in
@@ -4841,11 +4838,11 @@ require(['nbextensions/nbimandra/fold'], function (fold) {
             ==&gt; _x_3 &amp;&amp; _x_3 || Ordinal.( &lt;&lt; ) (Ordinal.Int _x_2) (Ordinal.Int _x_0)```
      * simplify::
          {into:
-            ```let (_x_0 : int) = count.tree (const 0) _x27 in
-               let (_x_1 : ty_0 tree) = Destruct(Node, 1, _x27) in
-               let (_x_2 : int) = count.tree (const 0) _x_1 in
-               (not ((not Is_a(Leaf, _x27) &amp;&amp; _x_0 &gt;= 0) &amp;&amp; _x_2 &gt;= 0) || Is_a(Leaf, _x_1))
-               || Ordinal.( &lt;&lt; ) (Ordinal.Int _x_2) (Ordinal.Int _x_0)```
+            ```let (_x_0 : ty_0 tree) = Destruct(Node, 1, _x27) in
+               let (_x_1 : int) = count.tree (const 0) _x_0 in
+               let (_x_2 : int) = count.tree (const 0) _x27 in
+               (Ordinal.( &lt;&lt; ) (Ordinal.Int _x_1) (Ordinal.Int _x_2) || Is_a(Leaf, _x_0))
+               || not ((not Is_a(Leaf, _x27) &amp;&amp; _x_2 &gt;= 0) &amp;&amp; _x_1 &gt;= 0)```
           ----------------------------------------------------------------------------
           expansions: `[]`
           ----------------------------------------------------------------------------
@@ -4855,32 +4852,32 @@ require(['nbextensions/nbimandra/fold'], function (fold) {
           }
      * unroll
        {expr:
-          ```(|Ordinal.&lt;&lt;_126| (|Ordinal.Int_111|
+          `(|`count.tree { Resolved_term.spec_idx = 0; spec_arg = (const 0); spec_ty = (ty_0 -&gt; int)/1682 }`_19…`
+        ----------------------------------------------------------------------------
+        expansions: 
+        }
+     * unroll
+       {expr:
+          `(|`count.tree { Resolved_term.spec_idx = 0; spec_arg = (const 0); spec_ty = (ty_0 -&gt; int)/1682 }`_19…`
+        ----------------------------------------------------------------------------
+        expansions: 
+        }
+     * unroll
+       {expr:
+          ```(|Ordinal.&lt;&lt;_129| (|Ordinal.Int_114|
                                  (|`count.tree { Resolved_term.spec_idx = 0;…```
-        ----------------------------------------------------------------------------
-        expansions: 
-        }
-     * unroll
-       {expr:
-          `(|`count.tree { Resolved_term.spec_idx = 0; spec_arg = (const 0); spec_ty = (ty_0 -&gt; int)/1682 }`_19…`
-        ----------------------------------------------------------------------------
-        expansions: 
-        }
-     * unroll
-       {expr:
-          `(|`count.tree { Resolved_term.spec_idx = 0; spec_arg = (const 0); spec_ty = (ty_0 -&gt; int)/1682 }`_19…`
         ----------------------------------------------------------------------------
         expansions: 
         }
      * Unsat))
  }</div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-8b1593f0-932d-4378-b80f-1bea28fb47f0';
+  var target = '#fold-7ded721c-4a8f-4e66-bebc-848d861a29f3';
   fold.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-eee10e29-56ca-4d73-825a-d78f3ffb5bde';
+  var target = '#fold-ef4afcd7-8d0d-4f44-91d0-349fb572bec9';
   fold.hydrate(target);
 });
 </script></div></div>
@@ -4943,7 +4940,7 @@ module CX : sig val x : Z.t tree end
 
 
 <div class="output_html rendered_html output_subarea ">
-<div><pre>Instance (after 9 steps, 0.029s):
+<div><pre>Instance (after 9 steps, 0.019s):
 let x : int tree =
   Node (Node (Leaf 7, Leaf 8), Node (Leaf 10, Node (Leaf 11, Leaf 9)))
 </pre></div>
@@ -4959,59 +4956,59 @@ let x : int tree =
 
 
 <div class="output_html rendered_html output_subarea ">
-<div><div style="font-size: 1.2em; padding: 0.5em; border-top: 1px solid green; border-bottom: 1px solid green"><i class="fa fa-check-circle" style="margin-right: 0.5em; color: green"></i><span>Instance</span></div><div><div class="imandra-alternatives" id="alt-e04c90d3-80ad-4b10-8a78-29ed5d31c58a"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>call graph</a></li><li class="" data-toggle="tab"><a>proof</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-graphviz" id="graphviz-71e1f294-3ab5-47db-8f62-561f88486dc2"><textarea style="display: none">digraph &quot;call graph&quot; {
+<div><div style="font-size: 1.2em; padding: 0.5em; border-top: 1px solid green; border-bottom: 1px solid green"><i class="fa fa-check-circle" style="margin-right: 0.5em; color: green"></i><span>Instance</span></div><div><div class="imandra-alternatives" id="alt-0f624926-50e5-4350-86a2-87ab9af233af"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>call graph</a></li><li class="" data-toggle="tab"><a>proof</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-graphviz" id="graphviz-4376d62c-1a0e-4ae8-a495-30fdb15746fc"><textarea style="display: none">digraph &quot;call graph&quot; {
 goal [label=&quot;size x = 5&quot;,shape=box,style=filled,color=&quot;cyan&quot;,fontname=&quot;courier&quot;,fontsize=14];
 goal -&gt; call_10 [label=&quot;calls&quot;];
 call_10 [label=&quot;size x&quot;,shape=box,style=filled,color=&quot;green&quot;,fontname=&quot;courier&quot;,fontsize=14];
 call_10 -&gt; call_60 [label=&quot;calls&quot;];
 call_10 -&gt; call_58 [label=&quot;calls&quot;];
 call_60 [label=&quot;size (Destruct(Node, 1, x))&quot;,shape=box,style=filled,color=&quot;green&quot;,fontname=&quot;courier&quot;,fontsize=14];
-call_60 -&gt; call_166 [label=&quot;calls&quot;];
 call_60 -&gt; call_164 [label=&quot;calls&quot;];
+call_60 -&gt; call_166 [label=&quot;calls&quot;];
 call_58 [label=&quot;size (Destruct(Node, 0, x))&quot;,shape=box,style=filled,color=&quot;green&quot;,fontname=&quot;courier&quot;,fontsize=14];
-call_58 -&gt; call_248 [label=&quot;calls&quot;];
 call_58 -&gt; call_246 [label=&quot;calls&quot;];
+call_58 -&gt; call_248 [label=&quot;calls&quot;];
+call_164 [label=&quot;size (Destruct(Node, 0, Destruct(Node, 1, x)))&quot;,shape=box,style=filled,color=&quot;green&quot;,fontname=&quot;courier&quot;,fontsize=14];
+call_164 -&gt; call_461 [label=&quot;calls&quot;];
+call_164 -&gt; call_463 [label=&quot;calls&quot;];
 call_166 [label=&quot;size (Destruct(Node, 1, Destruct(Node, 1, x)))&quot;,shape=box,style=filled,color=&quot;green&quot;,fontname=&quot;courier&quot;,fontsize=14];
 call_166 -&gt; call_365 [label=&quot;calls&quot;];
 call_166 -&gt; call_363 [label=&quot;calls&quot;];
-call_164 [label=&quot;size (Destruct(Node, 0, Destruct(Node, 1, x)))&quot;,shape=box,style=filled,color=&quot;green&quot;,fontname=&quot;courier&quot;,fontsize=14];
-call_164 -&gt; call_463 [label=&quot;calls&quot;];
-call_164 -&gt; call_461 [label=&quot;calls&quot;];
-call_248 [label=&quot;size (Destruct(Node, 1, Destruct(Node, 0, x)))&quot;,shape=box,style=filled,color=&quot;green&quot;,fontname=&quot;courier&quot;,fontsize=14];
-call_248 -&gt; call_571 [label=&quot;calls&quot;];
-call_248 -&gt; call_549 [label=&quot;calls&quot;];
 call_246 [label=&quot;size (Destruct(Node, 0, Destruct(Node, 0, x)))&quot;,shape=box,style=filled,color=&quot;green&quot;,fontname=&quot;courier&quot;,fontsize=14];
-call_246 -&gt; call_641 [label=&quot;calls&quot;];
 call_246 -&gt; call_675 [label=&quot;calls&quot;];
+call_246 -&gt; call_641 [label=&quot;calls&quot;];
+call_248 [label=&quot;size (Destruct(Node, 1, Destruct(Node, 0, x)))&quot;,shape=box,style=filled,color=&quot;green&quot;,fontname=&quot;courier&quot;,fontsize=14];
+call_248 -&gt; call_549 [label=&quot;calls&quot;];
+call_248 -&gt; call_571 [label=&quot;calls&quot;];
+call_461 [label=&quot;size (Destruct(Node, 0, Destruct(Node, 0, Destruct(Node, 1, x))))&quot;,shape=box,style=filled,color=&quot;yellow&quot;,fontname=&quot;courier&quot;,fontsize=14];
+call_463 [label=&quot;size (Destruct(Node, 1, Destruct(Node, 0, Destruct(Node, 1, x))))&quot;,shape=box,style=filled,color=&quot;yellow&quot;,fontname=&quot;courier&quot;,fontsize=14];
 call_365 [label=&quot;size (Destruct(Node, 1, Destruct(Node, 1, Destruct(Node, 1, x))))&quot;,shape=box,style=filled,color=&quot;green&quot;,fontname=&quot;courier&quot;,fontsize=14];
-call_365 -&gt; call_929 [label=&quot;calls&quot;];
 call_365 -&gt; call_927 [label=&quot;calls&quot;];
+call_365 -&gt; call_929 [label=&quot;calls&quot;];
 call_363 [label=&quot;size (Destruct(Node, 0, Destruct(Node, 1, Destruct(Node, 1, x))))&quot;,shape=box,style=filled,color=&quot;green&quot;,fontname=&quot;courier&quot;,fontsize=14];
 call_363 -&gt; call_1055 [label=&quot;calls&quot;];
 call_363 -&gt; call_1057 [label=&quot;calls&quot;];
-call_463 [label=&quot;size (Destruct(Node, 1, Destruct(Node, 0, Destruct(Node, 1, …))))&quot;,shape=box,style=filled,color=&quot;yellow&quot;,fontname=&quot;courier&quot;,fontsize=14];
-call_461 [label=&quot;size (Destruct(Node, 0, Destruct(Node, 0, Destruct(Node, 1, …))))&quot;,shape=box,style=filled,color=&quot;yellow&quot;,fontname=&quot;courier&quot;,fontsize=14];
-call_571 [label=&quot;size (Destruct(Node, 1, Destruct(Node, 1, Destruct(Node, 0, …))))&quot;,shape=box,style=filled,color=&quot;yellow&quot;,fontname=&quot;courier&quot;,fontsize=14];
-call_549 [label=&quot;size (Destruct(Node, 0, Destruct(Node, 1, Destruct(Node, 0, …))))&quot;,shape=box,style=filled,color=&quot;yellow&quot;,fontname=&quot;courier&quot;,fontsize=14];
-call_641 [label=&quot;size (Destruct(Node, 1, Destruct(Node, 0, Destruct(Node, 0, …))))&quot;,shape=box,style=filled,color=&quot;yellow&quot;,fontname=&quot;courier&quot;,fontsize=14];
-call_675 [label=&quot;size (Destruct(Node, 0, Destruct(Node, 0, Destruct(Node, 0, …))))&quot;,shape=box,style=filled,color=&quot;yellow&quot;,fontname=&quot;courier&quot;,fontsize=14];
-call_929 [label=&quot;size\l(Destruct(Node, 1,\l          Destruct(Node, 1, Destruct(Node, 1, Destruct(Node, 1, …)))))&quot;,shape=box,style=filled,color=&quot;yellow&quot;,fontname=&quot;courier&quot;,fontsize=14];
-call_927 [label=&quot;size\l(Destruct(Node, 0,\l          Destruct(Node, 1, Destruct(Node, 1, Destruct(Node, 1, …)))))&quot;,shape=box,style=filled,color=&quot;yellow&quot;,fontname=&quot;courier&quot;,fontsize=14];
-call_1055 [label=&quot;size\l(Destruct(Node, 0,\l          Destruct(Node, 0, Destruct(Node, 1, Destruct(Node, 1, …)))))&quot;,shape=box,style=filled,color=&quot;yellow&quot;,fontname=&quot;courier&quot;,fontsize=14];
-call_1057 [label=&quot;size\l(Destruct(Node, 1,\l          Destruct(Node, 0, Destruct(Node, 1, Destruct(Node, 1, …)))))&quot;,shape=box,style=filled,color=&quot;yellow&quot;,fontname=&quot;courier&quot;,fontsize=14];
+call_675 [label=&quot;size (Destruct(Node, 0, Destruct(Node, 0, Destruct(Node, 0, x))))&quot;,shape=box,style=filled,color=&quot;yellow&quot;,fontname=&quot;courier&quot;,fontsize=14];
+call_641 [label=&quot;size (Destruct(Node, 1, Destruct(Node, 0, Destruct(Node, 0, x))))&quot;,shape=box,style=filled,color=&quot;yellow&quot;,fontname=&quot;courier&quot;,fontsize=14];
+call_549 [label=&quot;size (Destruct(Node, 0, Destruct(Node, 1, Destruct(Node, 0, x))))&quot;,shape=box,style=filled,color=&quot;yellow&quot;,fontname=&quot;courier&quot;,fontsize=14];
+call_571 [label=&quot;size (Destruct(Node, 1, Destruct(Node, 1, Destruct(Node, 0, x))))&quot;,shape=box,style=filled,color=&quot;yellow&quot;,fontname=&quot;courier&quot;,fontsize=14];
+call_927 [label=&quot;size\l(Destruct(Node, 0, Destruct(Node, 1, Destruct(Node, 1, Destruct(Node, 1, x)))))&quot;,shape=box,style=filled,color=&quot;yellow&quot;,fontname=&quot;courier&quot;,fontsize=14];
+call_929 [label=&quot;size\l(Destruct(Node, 1, Destruct(Node, 1, Destruct(Node, 1, Destruct(Node, 1, x)))))&quot;,shape=box,style=filled,color=&quot;yellow&quot;,fontname=&quot;courier&quot;,fontsize=14];
+call_1055 [label=&quot;size\l(Destruct(Node, 0, Destruct(Node, 0, Destruct(Node, 1, Destruct(Node, 1, x)))))&quot;,shape=box,style=filled,color=&quot;yellow&quot;,fontname=&quot;courier&quot;,fontsize=14];
+call_1057 [label=&quot;size\l(Destruct(Node, 1, Destruct(Node, 0, Destruct(Node, 1, Destruct(Node, 1, x)))))&quot;,shape=box,style=filled,color=&quot;yellow&quot;,fontname=&quot;courier&quot;,fontsize=14];
 }
 </textarea><button class="btn btn-primary">Load graph</button><div class="imandra-graphviz-loading display-none">Loading..</div><div class="imandra-graphviz-target"></div><script>
 require(['nbextensions/nbimandra/graphviz'], function (graphviz) {
-  var target = '#graphviz-71e1f294-3ab5-47db-8f62-561f88486dc2';
+  var target = '#graphviz-4376d62c-1a0e-4ae8-a495-30fdb15746fc';
   graphviz.hydrate(target);
 });
-</script></div></div><div class="tab-pane"><div class="imandra-proof-top"><div class="imandra-fold panel panel-default" id="fold-17c89ed2-6cce-48db-968c-5b531e9ad261"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>proof attempt</span></div></div><div class="panel-body collapse"><div class="imandra-proof"><div class="imandra-alternatives" id="alt-62439806-500a-4670-864e-47ab5fd3ab54"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>summary</a></li><li class="" data-toggle="tab"><a>full</a></li><li class="" data-toggle="tab"><a>graph</a></li></ul><div class="tab-content"><div class="tab-pane active">{ground_instances: 9
+</script></div></div><div class="tab-pane"><div class="imandra-proof-top"><div class="imandra-fold panel panel-default" id="fold-849712b2-3c32-434d-9d88-b01dff5d88ce"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>proof attempt</span></div></div><div class="panel-body collapse"><div class="imandra-proof"><div class="imandra-alternatives" id="alt-80334ea3-9151-421a-81ea-a169241cdd52"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>summary</a></li><li class="" data-toggle="tab"><a>full</a></li><li class="" data-toggle="tab"><a>graph</a></li></ul><div class="tab-content"><div class="tab-pane active">{ground_instances: 9
  ----------------------------------------------------------------------------
  definitions: 0
  ----------------------------------------------------------------------------
  inductions: 0
  ----------------------------------------------------------------------------
- search_time: `0.029s`
+ search_time: `0.019s`
  ----------------------------------------------------------------------------
  details:
    {smt_stats:
@@ -5059,7 +5056,7 @@ require(['nbextensions/nbimandra/graphviz'], function (graphviz) {
        ----------------------------------------------------------------------------
        datatype constructor ax: 105
        ----------------------------------------------------------------------------
-       num allocs: 27684685
+       num allocs: 27946741
        ----------------------------------------------------------------------------
        final checks: 17
        ----------------------------------------------------------------------------
@@ -5071,40 +5068,38 @@ require(['nbextensions/nbimandra/graphviz'], function (graphviz) {
        ----------------------------------------------------------------------------
        arith-upper: 112
        ----------------------------------------------------------------------------
-       time: 0.001000
-       ----------------------------------------------------------------------------
        memory: 5.650000
        ----------------------------------------------------------------------------
        max memory: 7.760000
        }
     }
- }</div><div class="tab-pane"><div class="imandra-fold panel panel-default" id="fold-4ef32919-8678-447f-af1f-9f2781bf19af"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.029s] size ( :var_0: ) = 5</pre></li><li><div>unroll{expr: `(size_2031 x_59)`
+ }</div><div class="tab-pane"><div class="imandra-fold panel panel-default" id="fold-87786001-0199-4f4e-a875-72b9ae154dd0"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.019s] size ( :var_0: ) = 5</pre></li><li><div>unroll{expr: `(size_2021 x_1716)`
  ----------------------------------------------------------------------------
  expansions: 
- }</div></li><li><div>unroll{expr: `(size_2031 (|get.Node.1_2030| x_59))`
+ }</div></li><li><div>unroll{expr: `(size_2021 (|get.Node.1_2020| x_1716))`
  ----------------------------------------------------------------------------
  expansions: 
- }</div></li><li><div>unroll{expr: `(size_2031 (|get.Node.0_2029| x_59))`
+ }</div></li><li><div>unroll{expr: `(size_2021 (|get.Node.0_2019| x_1716))`
  ----------------------------------------------------------------------------
  expansions: 
- }</div></li><li><div>unroll{expr: `(size_2031 (|get.Node.1_2030| (|get.Node.1_2030| x_59)))`
+ }</div></li><li><div>unroll{expr: `(size_2021 (|get.Node.1_2020| (|get.Node.1_2020| x_1716)))`
  ----------------------------------------------------------------------------
  expansions: 
- }</div></li><li><div>unroll{expr: `(size_2031 (|get.Node.0_2029| (|get.Node.1_2030| x_59)))`
+ }</div></li><li><div>unroll{expr: `(size_2021 (|get.Node.0_2019| (|get.Node.1_2020| x_1716)))`
  ----------------------------------------------------------------------------
  expansions: 
- }</div></li><li><div>unroll{expr: `(size_2031 (|get.Node.1_2030| (|get.Node.0_2029| x_59)))`
+ }</div></li><li><div>unroll{expr: `(size_2021 (|get.Node.1_2020| (|get.Node.0_2019| x_1716)))`
  ----------------------------------------------------------------------------
  expansions: 
- }</div></li><li><div>unroll{expr: `(size_2031 (|get.Node.0_2029| (|get.Node.0_2029| x_59)))`
- ----------------------------------------------------------------------------
- expansions: 
- }</div></li><li><div>unroll{expr:
-   `(size_2031 (|get.Node.1_2030| (|get.Node.1_2030| (|get.Node.1_2030| x_59))))`
+ }</div></li><li><div>unroll{expr: `(size_2021 (|get.Node.0_2019| (|get.Node.0_2019| x_1716)))`
  ----------------------------------------------------------------------------
  expansions: 
  }</div></li><li><div>unroll{expr:
-   `(size_2031 (|get.Node.0_2029| (|get.Node.1_2030| (|get.Node.1_2030| x_59))))`
+   `(size_2021 (|get.Node.1_2020| (|get.Node.1_2020| (|get.Node.1_2020| x_1716))))`
+ ----------------------------------------------------------------------------
+ expansions: 
+ }</div></li><li><div>unroll{expr:
+   `(size_2021 (|get.Node.0_2019| (|get.Node.1_2020| (|get.Node.1_2020| x_1716))))`
  ----------------------------------------------------------------------------
  expansions: 
  }</div></li><li>Sat (Some let x : int tree =
@@ -5115,11 +5110,11 @@ require(['nbextensions/nbimandra/graphviz'], function (graphviz) {
     Node (Leaf (Z.of_nativeint (11n)), Leaf (Z.of_nativeint (9n)))))
 )</li></ul></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-4ef32919-8678-447f-af1f-9f2781bf19af';
+  var target = '#fold-87786001-0199-4f4e-a875-72b9ae154dd0';
   fold.hydrate(target);
 });
-</script></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-156a6d7f-3155-491e-b82e-8b26f601f45f"><textarea style="display: none">digraph &quot;proof&quot; {
-p_42 [label=&quot;Start (size ( :var_0: ) = 5 :time 0.029s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+</script></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-889752e0-91d7-4bad-871b-796e238bcaa1"><textarea style="display: none">digraph &quot;proof&quot; {
+p_42 [label=&quot;Start (size ( :var_0: ) = 5 :time 0.019s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_42 -&gt; p_41 [label=&quot;&quot;];
 p_41 [label=&quot;Unroll ([size x], [[]])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_41 -&gt; p_40 [label=&quot;&quot;];
@@ -5143,22 +5138,22 @@ p_32 [label=&quot;Sat (Some let x : int tree =\l  Node\l  (Node (Leaf (Z.of_nati
 }
 </textarea><button class="btn btn-primary">Load graph</button><div class="imandra-graphviz-loading display-none">Loading..</div><div class="imandra-graphviz-target"></div><script>
 require(['nbextensions/nbimandra/graphviz'], function (graphviz) {
-  var target = '#graphviz-156a6d7f-3155-491e-b82e-8b26f601f45f';
+  var target = '#graphviz-889752e0-91d7-4bad-871b-796e238bcaa1';
   graphviz.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-62439806-500a-4670-864e-47ab5fd3ab54';
+  var target = '#alt-80334ea3-9151-421a-81ea-a169241cdd52';
   alternatives.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-17c89ed2-6cce-48db-968c-5b531e9ad261';
+  var target = '#fold-849712b2-3c32-434d-9d88-b01dff5d88ce';
   fold.hydrate(target);
 });
 </script></div></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-e04c90d3-80ad-4b10-8a78-29ed5d31c58a';
+  var target = '#alt-0f624926-50e5-4350-86a2-87ab9af233af';
   alternatives.hydrate(target);
 });
 </script></div></div></div>
@@ -5261,7 +5256,7 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
 
 
 <div class="output_html rendered_html output_subarea ">
-<div><div class="imandra-fold panel panel-default" id="fold-a7124f01-e0cf-4ab3-ac3e-88d8bfeb176a"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>termination proof</span></div></div><div class="panel-body collapse"><div><h3>Termination proof</h3><div class="imandra-fold panel panel-default" id="fold-8974a429-3c86-4010-b629-5a085f1785de"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>call `sum_tree (Destruct(Node, 0, _x28))` from `sum_tree _x28`</span></div></div><div class="panel-body collapse">{original: sum_tree _x28
+<div><div class="imandra-fold panel panel-default" id="fold-5c06b459-83cd-41a0-a462-2506b732c76b"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>termination proof</span></div></div><div class="panel-body collapse"><div><h3>Termination proof</h3><div class="imandra-fold panel panel-default" id="fold-96232ed2-621c-47e5-b7b6-b50cbdcf4fd9"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>call `sum_tree (Destruct(Node, 0, _x28))` from `sum_tree _x28`</span></div></div><div class="panel-body collapse">{original: sum_tree _x28
  ----------------------------------------------------------------------------
  sub: sum_tree (Destruct(Node, 0, _x28))
  ----------------------------------------------------------------------------
@@ -5280,7 +5275,7 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
       ----------------------------------------------------------------------------
       inductions: 0
       ----------------------------------------------------------------------------
-      search_time: `0.022s`
+      search_time: `0.017s`
       ----------------------------------------------------------------------------
       details:
         {smt_stats:
@@ -5318,7 +5313,7 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
             ----------------------------------------------------------------------------
             datatype constructor ax: 11
             ----------------------------------------------------------------------------
-            num allocs: 37392608
+            num allocs: 37718295
             ----------------------------------------------------------------------------
             final checks: 4
             ----------------------------------------------------------------------------
@@ -5330,14 +5325,14 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
             ----------------------------------------------------------------------------
             arith-upper: 13
             ----------------------------------------------------------------------------
-            memory: 10.990000
+            memory: 11.000000
             ----------------------------------------------------------------------------
-            max memory: 10.990000
+            max memory: 11.000000
             }
          }
       })
     (full:
-     * ```start[0.022s]
+     * ```start[0.017s]
             let (_x_0 : int) = count.tree mk_nat _x28 in
             let (_x_1 : int tree) = Destruct(Node, 0, _x28) in
             let (_x_2 : int) = count.tree mk_nat _x_1 in
@@ -5360,21 +5355,21 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
           }
      * unroll
        {expr:
-          ```(|`count.tree { Resolved_term.spec_idx = 0; spec_arg = mk_nat; spec_ty = (int -&gt; int)/180 }`_2062|
+          ```(|`count.tree { Resolved_term.spec_idx = 0; spec_arg = mk_nat; spec_ty = (int -&gt; int)/180 }`_2051|
               …```
         ----------------------------------------------------------------------------
         expansions: 
         }
      * unroll
        {expr:
-          ```(|`count.tree { Resolved_term.spec_idx = 0; spec_arg = mk_nat; spec_ty = (int -&gt; int)/180 }`_2062|
+          ```(|`count.tree { Resolved_term.spec_idx = 0; spec_arg = mk_nat; spec_ty = (int -&gt; int)/180 }`_2051|
               …```
         ----------------------------------------------------------------------------
         expansions: 
         }
      * unroll
        {expr:
-          ```(|Ordinal.&lt;&lt;_126| (|Ordinal.Int_111|
+          ```(|Ordinal.&lt;&lt;_129| (|Ordinal.Int_114|
                                  (|`count.tree { Resolved_term.spec_idx = 0;…```
         ----------------------------------------------------------------------------
         expansions: 
@@ -5382,10 +5377,10 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
      * Unsat))
  }</div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-8974a429-3c86-4010-b629-5a085f1785de';
+  var target = '#fold-96232ed2-621c-47e5-b7b6-b50cbdcf4fd9';
   fold.hydrate(target);
 });
-</script></div><div class="imandra-fold panel panel-default" id="fold-d7772fa4-ab3e-405d-85d0-f91370c305b6"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>call `sum_tree (Destruct(Node, 1, _x28))` from `sum_tree _x28`</span></div></div><div class="panel-body collapse">{original: sum_tree _x28
+</script></div><div class="imandra-fold panel panel-default" id="fold-1f7758ab-60a6-46f5-abbc-dfc8a121c936"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>call `sum_tree (Destruct(Node, 1, _x28))` from `sum_tree _x28`</span></div></div><div class="panel-body collapse">{original: sum_tree _x28
  ----------------------------------------------------------------------------
  sub: sum_tree (Destruct(Node, 1, _x28))
  ----------------------------------------------------------------------------
@@ -5404,7 +5399,7 @@ require(['nbextensions/nbimandra/fold'], function (fold) {
       ----------------------------------------------------------------------------
       inductions: 0
       ----------------------------------------------------------------------------
-      search_time: `0.018s`
+      search_time: `0.013s`
       ----------------------------------------------------------------------------
       details:
         {smt_stats:
@@ -5442,7 +5437,7 @@ require(['nbextensions/nbimandra/fold'], function (fold) {
             ----------------------------------------------------------------------------
             datatype constructor ax: 11
             ----------------------------------------------------------------------------
-            num allocs: 32258766
+            num allocs: 32552059
             ----------------------------------------------------------------------------
             final checks: 4
             ----------------------------------------------------------------------------
@@ -5454,14 +5449,14 @@ require(['nbextensions/nbimandra/fold'], function (fold) {
             ----------------------------------------------------------------------------
             arith-upper: 13
             ----------------------------------------------------------------------------
-            memory: 8.330000
+            memory: 8.350000
             ----------------------------------------------------------------------------
-            max memory: 8.330000
+            max memory: 8.350000
             }
          }
       })
     (full:
-     * ```start[0.018s]
+     * ```start[0.013s]
             let (_x_0 : int) = count.tree mk_nat _x28 in
             let (_x_1 : int tree) = Destruct(Node, 1, _x28) in
             let (_x_2 : int) = count.tree mk_nat _x_1 in
@@ -5484,21 +5479,21 @@ require(['nbextensions/nbimandra/fold'], function (fold) {
           }
      * unroll
        {expr:
-          ```(|`count.tree { Resolved_term.spec_idx = 0; spec_arg = mk_nat; spec_ty = (int -&gt; int)/180 }`_2062|
+          ```(|`count.tree { Resolved_term.spec_idx = 0; spec_arg = mk_nat; spec_ty = (int -&gt; int)/180 }`_2051|
               …```
         ----------------------------------------------------------------------------
         expansions: 
         }
      * unroll
        {expr:
-          ```(|`count.tree { Resolved_term.spec_idx = 0; spec_arg = mk_nat; spec_ty = (int -&gt; int)/180 }`_2062|
+          ```(|`count.tree { Resolved_term.spec_idx = 0; spec_arg = mk_nat; spec_ty = (int -&gt; int)/180 }`_2051|
               …```
         ----------------------------------------------------------------------------
         expansions: 
         }
      * unroll
        {expr:
-          ```(|Ordinal.&lt;&lt;_126| (|Ordinal.Int_111|
+          ```(|Ordinal.&lt;&lt;_129| (|Ordinal.Int_114|
                                  (|`count.tree { Resolved_term.spec_idx = 0;…```
         ----------------------------------------------------------------------------
         expansions: 
@@ -5506,12 +5501,12 @@ require(['nbextensions/nbimandra/fold'], function (fold) {
      * Unsat))
  }</div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-d7772fa4-ab3e-405d-85d0-f91370c305b6';
+  var target = '#fold-1f7758ab-60a6-46f5-abbc-dfc8a121c936';
   fold.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-a7124f01-e0cf-4ab3-ac3e-88d8bfeb176a';
+  var target = '#fold-5c06b459-83cd-41a0-a462-2506b732c76b';
   fold.hydrate(target);
 });
 </script></div></div>
@@ -5593,123 +5588,123 @@ let x : int tree =
 
 
 <div class="output_html rendered_html output_subarea ">
-<div><div style="font-size: 1.2em; padding: 0.5em; border-top: 1px solid green; border-bottom: 1px solid green"><i class="fa fa-check-circle" style="margin-right: 0.5em; color: green"></i><span>Instance</span></div><div><div class="imandra-alternatives" id="alt-e33dcf37-44bf-4009-8906-b337ef9a01b8"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>call graph</a></li><li class="" data-toggle="tab"><a>proof</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-graphviz" id="graphviz-3b12a260-0721-4e4e-836c-637e48f0f52a"><textarea style="display: none">digraph &quot;call graph&quot; {
+<div><div style="font-size: 1.2em; padding: 0.5em; border-top: 1px solid green; border-bottom: 1px solid green"><i class="fa fa-check-circle" style="margin-right: 0.5em; color: green"></i><span>Instance</span></div><div><div class="imandra-alternatives" id="alt-c2524488-073a-45b1-92f0-db5cc464f385"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>call graph</a></li><li class="" data-toggle="tab"><a>proof</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-graphviz" id="graphviz-aa659634-74e0-499e-a185-86a9903d7b68"><textarea style="display: none">digraph &quot;call graph&quot; {
 goal [label=&quot;let (_x_0 : int) = size x in _x_0 \&gt;= 5 &amp;&amp; _x_0 = 3 * sum_tree x&quot;,shape=box,style=filled,color=&quot;cyan&quot;,fontname=&quot;courier&quot;,fontsize=14];
 goal -&gt; call_17 [label=&quot;calls&quot;];
 goal -&gt; call_15 [label=&quot;calls&quot;];
 call_17 [label=&quot;sum_tree x&quot;,shape=box,style=filled,color=&quot;green&quot;,fontname=&quot;courier&quot;,fontsize=14];
-call_17 -&gt; call_97 [label=&quot;calls&quot;];
 call_17 -&gt; call_95 [label=&quot;calls&quot;];
+call_17 -&gt; call_97 [label=&quot;calls&quot;];
 call_15 [label=&quot;size x&quot;,shape=box,style=filled,color=&quot;green&quot;,fontname=&quot;courier&quot;,fontsize=14];
-call_15 -&gt; call_193 [label=&quot;calls&quot;];
 call_15 -&gt; call_192 [label=&quot;calls&quot;];
-call_97 [label=&quot;sum_tree (Destruct(Node, 1, x))&quot;,shape=box,style=filled,color=&quot;green&quot;,fontname=&quot;courier&quot;,fontsize=14];
-call_97 -&gt; call_275 [label=&quot;calls&quot;];
-call_97 -&gt; call_273 [label=&quot;calls&quot;];
+call_15 -&gt; call_193 [label=&quot;calls&quot;];
 call_95 [label=&quot;sum_tree (Destruct(Node, 0, x))&quot;,shape=box,style=filled,color=&quot;green&quot;,fontname=&quot;courier&quot;,fontsize=14];
 call_95 -&gt; call_353 [label=&quot;calls&quot;];
 call_95 -&gt; call_351 [label=&quot;calls&quot;];
-call_193 [label=&quot;size (Destruct(Node, 1, x))&quot;,shape=box,style=filled,color=&quot;green&quot;,fontname=&quot;courier&quot;,fontsize=14];
-call_193 -&gt; call_433 [label=&quot;calls&quot;];
-call_193 -&gt; call_432 [label=&quot;calls&quot;];
+call_97 [label=&quot;sum_tree (Destruct(Node, 1, x))&quot;,shape=box,style=filled,color=&quot;green&quot;,fontname=&quot;courier&quot;,fontsize=14];
+call_97 -&gt; call_275 [label=&quot;calls&quot;];
+call_97 -&gt; call_273 [label=&quot;calls&quot;];
 call_192 [label=&quot;size (Destruct(Node, 0, x))&quot;,shape=box,style=filled,color=&quot;green&quot;,fontname=&quot;courier&quot;,fontsize=14];
 call_192 -&gt; call_509 [label=&quot;calls&quot;];
 call_192 -&gt; call_508 [label=&quot;calls&quot;];
+call_193 [label=&quot;size (Destruct(Node, 1, x))&quot;,shape=box,style=filled,color=&quot;green&quot;,fontname=&quot;courier&quot;,fontsize=14];
+call_193 -&gt; call_433 [label=&quot;calls&quot;];
+call_193 -&gt; call_432 [label=&quot;calls&quot;];
+call_353 [label=&quot;sum_tree (Destruct(Node, 1, Destruct(Node, 0, x)))&quot;,shape=box,style=filled,color=&quot;green&quot;,fontname=&quot;courier&quot;,fontsize=14];
+call_353 -&gt; call_830 [label=&quot;calls&quot;];
+call_353 -&gt; call_832 [label=&quot;calls&quot;];
+call_351 [label=&quot;sum_tree (Destruct(Node, 0, Destruct(Node, 0, x)))&quot;,shape=box,style=filled,color=&quot;green&quot;,fontname=&quot;courier&quot;,fontsize=14];
+call_351 -&gt; call_959 [label=&quot;calls&quot;];
+call_351 -&gt; call_961 [label=&quot;calls&quot;];
 call_275 [label=&quot;sum_tree (Destruct(Node, 1, Destruct(Node, 1, x)))&quot;,shape=box,style=filled,color=&quot;green&quot;,fontname=&quot;courier&quot;,fontsize=14];
 call_275 -&gt; call_644 [label=&quot;calls&quot;];
 call_275 -&gt; call_642 [label=&quot;calls&quot;];
 call_273 [label=&quot;sum_tree (Destruct(Node, 0, Destruct(Node, 1, x)))&quot;,shape=box,style=filled,color=&quot;green&quot;,fontname=&quot;courier&quot;,fontsize=14];
 call_273 -&gt; call_773 [label=&quot;calls&quot;];
 call_273 -&gt; call_771 [label=&quot;calls&quot;];
-call_353 [label=&quot;sum_tree (Destruct(Node, 1, Destruct(Node, 0, x)))&quot;,shape=box,style=filled,color=&quot;green&quot;,fontname=&quot;courier&quot;,fontsize=14];
-call_353 -&gt; call_832 [label=&quot;calls&quot;];
-call_353 -&gt; call_830 [label=&quot;calls&quot;];
-call_351 [label=&quot;sum_tree (Destruct(Node, 0, Destruct(Node, 0, x)))&quot;,shape=box,style=filled,color=&quot;green&quot;,fontname=&quot;courier&quot;,fontsize=14];
-call_351 -&gt; call_961 [label=&quot;calls&quot;];
-call_351 -&gt; call_959 [label=&quot;calls&quot;];
-call_433 [label=&quot;size (Destruct(Node, 1, Destruct(Node, 1, x)))&quot;,shape=box,style=filled,color=&quot;green&quot;,fontname=&quot;courier&quot;,fontsize=14];
-call_433 -&gt; call_954 [label=&quot;calls&quot;];
-call_433 -&gt; call_955 [label=&quot;calls&quot;];
-call_432 [label=&quot;size (Destruct(Node, 0, Destruct(Node, 1, x)))&quot;,shape=box,style=filled,color=&quot;green&quot;,fontname=&quot;courier&quot;,fontsize=14];
-call_432 -&gt; call_1071 [label=&quot;calls&quot;];
-call_432 -&gt; call_993 [label=&quot;calls&quot;];
 call_509 [label=&quot;size (Destruct(Node, 1, Destruct(Node, 0, x)))&quot;,shape=box,style=filled,color=&quot;green&quot;,fontname=&quot;courier&quot;,fontsize=14];
 call_509 -&gt; call_1217 [label=&quot;calls&quot;];
 call_509 -&gt; call_187 [label=&quot;calls&quot;];
 call_508 [label=&quot;size (Destruct(Node, 0, Destruct(Node, 0, x)))&quot;,shape=box,style=filled,color=&quot;green&quot;,fontname=&quot;courier&quot;,fontsize=14];
-call_508 -&gt; call_1315 [label=&quot;calls&quot;];
 call_508 -&gt; call_1314 [label=&quot;calls&quot;];
+call_508 -&gt; call_1315 [label=&quot;calls&quot;];
+call_433 [label=&quot;size (Destruct(Node, 1, Destruct(Node, 1, x)))&quot;,shape=box,style=filled,color=&quot;green&quot;,fontname=&quot;courier&quot;,fontsize=14];
+call_433 -&gt; call_955 [label=&quot;calls&quot;];
+call_433 -&gt; call_954 [label=&quot;calls&quot;];
+call_432 [label=&quot;size (Destruct(Node, 0, Destruct(Node, 1, x)))&quot;,shape=box,style=filled,color=&quot;green&quot;,fontname=&quot;courier&quot;,fontsize=14];
+call_432 -&gt; call_1071 [label=&quot;calls&quot;];
+call_432 -&gt; call_993 [label=&quot;calls&quot;];
+call_830 [label=&quot;sum_tree (Destruct(Node, 0, Destruct(Node, 1, Destruct(Node, 0, x))))&quot;,shape=box,style=filled,color=&quot;green&quot;,fontname=&quot;courier&quot;,fontsize=14];
+call_830 -&gt; call_2029 [label=&quot;calls&quot;];
+call_830 -&gt; call_2027 [label=&quot;calls&quot;];
+call_832 [label=&quot;sum_tree (Destruct(Node, 1, Destruct(Node, 1, Destruct(Node, 0, x))))&quot;,shape=box,style=filled,color=&quot;green&quot;,fontname=&quot;courier&quot;,fontsize=14];
+call_832 -&gt; call_1885 [label=&quot;calls&quot;];
+call_832 -&gt; call_1887 [label=&quot;calls&quot;];
+call_959 [label=&quot;sum_tree (Destruct(Node, 0, Destruct(Node, 0, Destruct(Node, 0, x))))&quot;,shape=box,style=filled,color=&quot;green&quot;,fontname=&quot;courier&quot;,fontsize=14];
+call_959 -&gt; call_2252 [label=&quot;calls&quot;];
+call_959 -&gt; call_2254 [label=&quot;calls&quot;];
+call_961 [label=&quot;sum_tree (Destruct(Node, 1, Destruct(Node, 0, Destruct(Node, 0, x))))&quot;,shape=box,style=filled,color=&quot;green&quot;,fontname=&quot;courier&quot;,fontsize=14];
+call_961 -&gt; call_2155 [label=&quot;calls&quot;];
+call_961 -&gt; call_2153 [label=&quot;calls&quot;];
 call_644 [label=&quot;sum_tree (Destruct(Node, 1, Destruct(Node, 1, Destruct(Node, 1, x))))&quot;,shape=box,style=filled,color=&quot;green&quot;,fontname=&quot;courier&quot;,fontsize=14];
 call_644 -&gt; call_1594 [label=&quot;calls&quot;];
 call_644 -&gt; call_1596 [label=&quot;calls&quot;];
 call_642 [label=&quot;sum_tree (Destruct(Node, 0, Destruct(Node, 1, Destruct(Node, 1, x))))&quot;,shape=box,style=filled,color=&quot;green&quot;,fontname=&quot;courier&quot;,fontsize=14];
-call_642 -&gt; call_1662 [label=&quot;calls&quot;];
 call_642 -&gt; call_1660 [label=&quot;calls&quot;];
+call_642 -&gt; call_1662 [label=&quot;calls&quot;];
 call_773 [label=&quot;sum_tree (Destruct(Node, 1, Destruct(Node, 0, Destruct(Node, 1, x))))&quot;,shape=box,style=filled,color=&quot;green&quot;,fontname=&quot;courier&quot;,fontsize=14];
 call_773 -&gt; call_1714 [label=&quot;calls&quot;];
 call_773 -&gt; call_1589 [label=&quot;calls&quot;];
 call_771 [label=&quot;sum_tree (Destruct(Node, 0, Destruct(Node, 0, Destruct(Node, 1, x))))&quot;,shape=box,style=filled,color=&quot;green&quot;,fontname=&quot;courier&quot;,fontsize=14];
 call_771 -&gt; call_1797 [label=&quot;calls&quot;];
 call_771 -&gt; call_1795 [label=&quot;calls&quot;];
-call_832 [label=&quot;sum_tree (Destruct(Node, 1, Destruct(Node, 1, Destruct(Node, 0, x))))&quot;,shape=box,style=filled,color=&quot;green&quot;,fontname=&quot;courier&quot;,fontsize=14];
-call_832 -&gt; call_1887 [label=&quot;calls&quot;];
-call_832 -&gt; call_1885 [label=&quot;calls&quot;];
-call_830 [label=&quot;sum_tree (Destruct(Node, 0, Destruct(Node, 1, Destruct(Node, 0, x))))&quot;,shape=box,style=filled,color=&quot;green&quot;,fontname=&quot;courier&quot;,fontsize=14];
-call_830 -&gt; call_2029 [label=&quot;calls&quot;];
-call_830 -&gt; call_2027 [label=&quot;calls&quot;];
-call_961 [label=&quot;sum_tree (Destruct(Node, 1, Destruct(Node, 0, Destruct(Node, 0, x))))&quot;,shape=box,style=filled,color=&quot;green&quot;,fontname=&quot;courier&quot;,fontsize=14];
-call_961 -&gt; call_2155 [label=&quot;calls&quot;];
-call_961 -&gt; call_2153 [label=&quot;calls&quot;];
-call_959 [label=&quot;sum_tree (Destruct(Node, 0, Destruct(Node, 0, Destruct(Node, 0, x))))&quot;,shape=box,style=filled,color=&quot;green&quot;,fontname=&quot;courier&quot;,fontsize=14];
-call_959 -&gt; call_2254 [label=&quot;calls&quot;];
-call_959 -&gt; call_2252 [label=&quot;calls&quot;];
-call_954 [label=&quot;size (Destruct(Node, 1, Destruct(Node, 1, Destruct(Node, 1, x))))&quot;,shape=box,style=filled,color=&quot;green&quot;,fontname=&quot;courier&quot;,fontsize=14];
-call_954 -&gt; call_2365 [label=&quot;calls&quot;];
-call_954 -&gt; call_2364 [label=&quot;calls&quot;];
+call_1217 [label=&quot;size (Destruct(Node, 1, Destruct(Node, 1, Destruct(Node, 0, …))))&quot;,shape=box,style=filled,color=&quot;yellow&quot;,fontname=&quot;courier&quot;,fontsize=14];
+call_187 [label=&quot;size (Destruct(Node, 0, Destruct(Node, 1, Destruct(Node, 0, …))))&quot;,shape=box,style=filled,color=&quot;yellow&quot;,fontname=&quot;courier&quot;,fontsize=14];
+call_1314 [label=&quot;size (Destruct(Node, 0, Destruct(Node, 0, Destruct(Node, 0, …))))&quot;,shape=box,style=filled,color=&quot;yellow&quot;,fontname=&quot;courier&quot;,fontsize=14];
+call_1315 [label=&quot;size (Destruct(Node, 1, Destruct(Node, 0, Destruct(Node, 0, x))))&quot;,shape=box,style=filled,color=&quot;yellow&quot;,fontname=&quot;courier&quot;,fontsize=14];
 call_955 [label=&quot;size (Destruct(Node, 0, Destruct(Node, 1, Destruct(Node, 1, x))))&quot;,shape=box,style=filled,color=&quot;green&quot;,fontname=&quot;courier&quot;,fontsize=14];
-call_955 -&gt; call_2151 [label=&quot;calls&quot;];
 call_955 -&gt; call_2148 [label=&quot;calls&quot;];
+call_955 -&gt; call_2151 [label=&quot;calls&quot;];
+call_954 [label=&quot;size (Destruct(Node, 1, Destruct(Node, 1, Destruct(Node, 1, x))))&quot;,shape=box,style=filled,color=&quot;green&quot;,fontname=&quot;courier&quot;,fontsize=14];
+call_954 -&gt; call_2364 [label=&quot;calls&quot;];
+call_954 -&gt; call_2365 [label=&quot;calls&quot;];
 call_1071 [label=&quot;size (Destruct(Node, 1, Destruct(Node, 0, Destruct(Node, 1, x))))&quot;,shape=box,style=filled,color=&quot;green&quot;,fontname=&quot;courier&quot;,fontsize=14];
 call_1071 -&gt; call_2608 [label=&quot;calls&quot;];
 call_1071 -&gt; call_2607 [label=&quot;calls&quot;];
 call_993 [label=&quot;size (Destruct(Node, 0, Destruct(Node, 0, Destruct(Node, 1, x))))&quot;,shape=box,style=filled,color=&quot;green&quot;,fontname=&quot;courier&quot;,fontsize=14];
 call_993 -&gt; call_2740 [label=&quot;calls&quot;];
 call_993 -&gt; call_2739 [label=&quot;calls&quot;];
-call_1217 [label=&quot;size (Destruct(Node, 1, Destruct(Node, 1, Destruct(Node, 0, x))))&quot;,shape=box,style=filled,color=&quot;yellow&quot;,fontname=&quot;courier&quot;,fontsize=14];
-call_187 [label=&quot;size (Destruct(Node, 0, Destruct(Node, 1, Destruct(Node, 0, x))))&quot;,shape=box,style=filled,color=&quot;yellow&quot;,fontname=&quot;courier&quot;,fontsize=14];
-call_1315 [label=&quot;size (Destruct(Node, 1, Destruct(Node, 0, Destruct(Node, 0, x))))&quot;,shape=box,style=filled,color=&quot;yellow&quot;,fontname=&quot;courier&quot;,fontsize=14];
-call_1314 [label=&quot;size (Destruct(Node, 0, Destruct(Node, 0, Destruct(Node, 0, x))))&quot;,shape=box,style=filled,color=&quot;yellow&quot;,fontname=&quot;courier&quot;,fontsize=14];
-call_1594 [label=&quot;sum_tree\l(Destruct(Node, 0, Destruct(Node, 1, Destruct(Node, 1, Destruct(Node, 1, x)))))&quot;,shape=box,style=filled,color=&quot;yellow&quot;,fontname=&quot;courier&quot;,fontsize=14];
-call_1596 [label=&quot;sum_tree\l(Destruct(Node, 1, Destruct(Node, 1, Destruct(Node, 1, Destruct(Node, 1, x)))))&quot;,shape=box,style=filled,color=&quot;yellow&quot;,fontname=&quot;courier&quot;,fontsize=14];
-call_1662 [label=&quot;sum_tree (Destruct(Node, 1, Destruct(Node, 0, Destruct(Node, 1, …))))&quot;,shape=box,style=filled,color=&quot;yellow&quot;,fontname=&quot;courier&quot;,fontsize=14];
+call_2029 [label=&quot;sum_tree (Destruct(Node, 1, Destruct(Node, 0, Destruct(Node, 1, …))))&quot;,shape=box,style=filled,color=&quot;yellow&quot;,fontname=&quot;courier&quot;,fontsize=14];
+call_2027 [label=&quot;sum_tree (Destruct(Node, 0, Destruct(Node, 0, Destruct(Node, 1, …))))&quot;,shape=box,style=filled,color=&quot;yellow&quot;,fontname=&quot;courier&quot;,fontsize=14];
+call_1885 [label=&quot;sum_tree\l(Destruct(Node, 0,\l          Destruct(Node, 1, Destruct(Node, 1, Destruct(Node, 0, …)))))&quot;,shape=box,style=filled,color=&quot;yellow&quot;,fontname=&quot;courier&quot;,fontsize=14];
+call_1887 [label=&quot;sum_tree (Destruct(Node, 1, Destruct(Node, 1, Destruct(Node, 1, …))))&quot;,shape=box,style=filled,color=&quot;yellow&quot;,fontname=&quot;courier&quot;,fontsize=14];
+call_2252 [label=&quot;sum_tree\l(Destruct(Node, 0,\l          Destruct(Node, 0, Destruct(Node, 0, Destruct(Node, 0, …)))))&quot;,shape=box,style=filled,color=&quot;yellow&quot;,fontname=&quot;courier&quot;,fontsize=14];
+call_2254 [label=&quot;sum_tree\l(Destruct(Node, 1, Destruct(Node, 0, Destruct(Node, 0, Destruct(Node, 0, x)))))&quot;,shape=box,style=filled,color=&quot;yellow&quot;,fontname=&quot;courier&quot;,fontsize=14];
+call_2155 [label=&quot;sum_tree\l(Destruct(Node, 1,\l          Destruct(Node, 1, Destruct(Node, 0, Destruct(Node, 0, …)))))&quot;,shape=box,style=filled,color=&quot;yellow&quot;,fontname=&quot;courier&quot;,fontsize=14];
+call_2153 [label=&quot;sum_tree\l(Destruct(Node, 0,\l          Destruct(Node, 1, Destruct(Node, 0, Destruct(Node, 0, …)))))&quot;,shape=box,style=filled,color=&quot;yellow&quot;,fontname=&quot;courier&quot;,fontsize=14];
+call_1594 [label=&quot;sum_tree (Destruct(Node, 0, Destruct(Node, 1, Destruct(Node, 1, …))))&quot;,shape=box,style=filled,color=&quot;yellow&quot;,fontname=&quot;courier&quot;,fontsize=14];
+call_1596 [label=&quot;sum_tree (Destruct(Node, 1, Destruct(Node, 1, Destruct(Node, 1, …))))&quot;,shape=box,style=filled,color=&quot;yellow&quot;,fontname=&quot;courier&quot;,fontsize=14];
 call_1660 [label=&quot;sum_tree (Destruct(Node, 0, Destruct(Node, 0, Destruct(Node, 1, …))))&quot;,shape=box,style=filled,color=&quot;yellow&quot;,fontname=&quot;courier&quot;,fontsize=14];
-call_1714 [label=&quot;sum_tree\l(Destruct(Node, 1, Destruct(Node, 1, Destruct(Node, 0, Destruct(Node, 1, x)))))&quot;,shape=box,style=filled,color=&quot;yellow&quot;,fontname=&quot;courier&quot;,fontsize=14];
+call_1662 [label=&quot;sum_tree (Destruct(Node, 1, Destruct(Node, 0, Destruct(Node, 1, …))))&quot;,shape=box,style=filled,color=&quot;yellow&quot;,fontname=&quot;courier&quot;,fontsize=14];
+call_1714 [label=&quot;sum_tree (Destruct(Node, 1, Destruct(Node, 1, Destruct(Node, 0, …))))&quot;,shape=box,style=filled,color=&quot;yellow&quot;,fontname=&quot;courier&quot;,fontsize=14];
 call_1589 [label=&quot;sum_tree (Destruct(Node, 0, Destruct(Node, 1, Destruct(Node, 0, …))))&quot;,shape=box,style=filled,color=&quot;yellow&quot;,fontname=&quot;courier&quot;,fontsize=14];
 call_1797 [label=&quot;sum_tree (Destruct(Node, 1, Destruct(Node, 0, Destruct(Node, 0, …))))&quot;,shape=box,style=filled,color=&quot;yellow&quot;,fontname=&quot;courier&quot;,fontsize=14];
-call_1795 [label=&quot;sum_tree\l(Destruct(Node, 0, Destruct(Node, 0, Destruct(Node, 0, Destruct(Node, 1, x)))))&quot;,shape=box,style=filled,color=&quot;yellow&quot;,fontname=&quot;courier&quot;,fontsize=14];
-call_1887 [label=&quot;sum_tree\l(Destruct(Node, 1, Destruct(Node, 1, Destruct(Node, 1, Destruct(Node, 0, x)))))&quot;,shape=box,style=filled,color=&quot;yellow&quot;,fontname=&quot;courier&quot;,fontsize=14];
-call_1885 [label=&quot;sum_tree\l(Destruct(Node, 0, Destruct(Node, 1, Destruct(Node, 1, Destruct(Node, 0, x)))))&quot;,shape=box,style=filled,color=&quot;yellow&quot;,fontname=&quot;courier&quot;,fontsize=14];
-call_2029 [label=&quot;sum_tree\l(Destruct(Node, 1, Destruct(Node, 0, Destruct(Node, 1, Destruct(Node, 0, x)))))&quot;,shape=box,style=filled,color=&quot;yellow&quot;,fontname=&quot;courier&quot;,fontsize=14];
-call_2027 [label=&quot;sum_tree\l(Destruct(Node, 0, Destruct(Node, 0, Destruct(Node, 1, Destruct(Node, 0, x)))))&quot;,shape=box,style=filled,color=&quot;yellow&quot;,fontname=&quot;courier&quot;,fontsize=14];
-call_2155 [label=&quot;sum_tree\l(Destruct(Node, 1, Destruct(Node, 1, Destruct(Node, 0, Destruct(Node, 0, x)))))&quot;,shape=box,style=filled,color=&quot;yellow&quot;,fontname=&quot;courier&quot;,fontsize=14];
-call_2153 [label=&quot;sum_tree\l(Destruct(Node, 0, Destruct(Node, 1, Destruct(Node, 0, Destruct(Node, 0, x)))))&quot;,shape=box,style=filled,color=&quot;yellow&quot;,fontname=&quot;courier&quot;,fontsize=14];
-call_2254 [label=&quot;sum_tree\l(Destruct(Node, 1, Destruct(Node, 0, Destruct(Node, 0, Destruct(Node, 0, x)))))&quot;,shape=box,style=filled,color=&quot;yellow&quot;,fontname=&quot;courier&quot;,fontsize=14];
-call_2252 [label=&quot;sum_tree\l(Destruct(Node, 0, Destruct(Node, 0, Destruct(Node, 0, Destruct(Node, 0, x)))))&quot;,shape=box,style=filled,color=&quot;yellow&quot;,fontname=&quot;courier&quot;,fontsize=14];
-call_2365 [label=&quot;size\l(Destruct(Node, 1, Destruct(Node, 1, Destruct(Node, 1, Destruct(Node, 1, x)))))&quot;,shape=box,style=filled,color=&quot;yellow&quot;,fontname=&quot;courier&quot;,fontsize=14];
-call_2364 [label=&quot;size (Destruct(Node, 0, Destruct(Node, 1, Destruct(Node, 1, …))))&quot;,shape=box,style=filled,color=&quot;yellow&quot;,fontname=&quot;courier&quot;,fontsize=14];
+call_1795 [label=&quot;sum_tree (Destruct(Node, 0, Destruct(Node, 0, Destruct(Node, 0, …))))&quot;,shape=box,style=filled,color=&quot;yellow&quot;,fontname=&quot;courier&quot;,fontsize=14];
+call_2148 [label=&quot;size (Destruct(Node, 0, Destruct(Node, 0, Destruct(Node, 1, …))))&quot;,shape=box,style=filled,color=&quot;yellow&quot;,fontname=&quot;courier&quot;,fontsize=14];
 call_2151 [label=&quot;size (Destruct(Node, 1, Destruct(Node, 0, Destruct(Node, 1, …))))&quot;,shape=box,style=filled,color=&quot;yellow&quot;,fontname=&quot;courier&quot;,fontsize=14];
-call_2148 [label=&quot;size\l(Destruct(Node, 0, Destruct(Node, 0, Destruct(Node, 1, Destruct(Node, 1, x)))))&quot;,shape=box,style=filled,color=&quot;yellow&quot;,fontname=&quot;courier&quot;,fontsize=14];
+call_2364 [label=&quot;size (Destruct(Node, 0, Destruct(Node, 1, Destruct(Node, 1, …))))&quot;,shape=box,style=filled,color=&quot;yellow&quot;,fontname=&quot;courier&quot;,fontsize=14];
+call_2365 [label=&quot;size (Destruct(Node, 1, Destruct(Node, 1, Destruct(Node, 1, …))))&quot;,shape=box,style=filled,color=&quot;yellow&quot;,fontname=&quot;courier&quot;,fontsize=14];
 call_2608 [label=&quot;size (Destruct(Node, 1, Destruct(Node, 1, Destruct(Node, 0, …))))&quot;,shape=box,style=filled,color=&quot;yellow&quot;,fontname=&quot;courier&quot;,fontsize=14];
 call_2607 [label=&quot;size (Destruct(Node, 0, Destruct(Node, 1, Destruct(Node, 0, …))))&quot;,shape=box,style=filled,color=&quot;yellow&quot;,fontname=&quot;courier&quot;,fontsize=14];
-call_2740 [label=&quot;size\l(Destruct(Node, 1, Destruct(Node, 0, Destruct(Node, 0, Destruct(Node, 1, x)))))&quot;,shape=box,style=filled,color=&quot;yellow&quot;,fontname=&quot;courier&quot;,fontsize=14];
+call_2740 [label=&quot;size (Destruct(Node, 1, Destruct(Node, 0, Destruct(Node, 0, …))))&quot;,shape=box,style=filled,color=&quot;yellow&quot;,fontname=&quot;courier&quot;,fontsize=14];
 call_2739 [label=&quot;size (Destruct(Node, 0, Destruct(Node, 0, Destruct(Node, 0, …))))&quot;,shape=box,style=filled,color=&quot;yellow&quot;,fontname=&quot;courier&quot;,fontsize=14];
 }
 </textarea><button class="btn btn-primary">Load graph</button><div class="imandra-graphviz-loading display-none">Loading..</div><div class="imandra-graphviz-target"></div><script>
 require(['nbextensions/nbimandra/graphviz'], function (graphviz) {
-  var target = '#graphviz-3b12a260-0721-4e4e-836c-637e48f0f52a';
+  var target = '#graphviz-aa659634-74e0-499e-a185-86a9903d7b68';
   graphviz.hydrate(target);
 });
-</script></div></div><div class="tab-pane"><div class="imandra-proof-top"><div class="imandra-fold panel panel-default" id="fold-4d9b6098-2828-4b3b-951e-cc60de628892"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>proof attempt</span></div></div><div class="panel-body collapse"><div class="imandra-proof"><div class="imandra-alternatives" id="alt-60449226-18dc-4f08-8ead-6ade89cdeb85"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>summary</a></li><li class="" data-toggle="tab"><a>full</a></li><li class="" data-toggle="tab"><a>graph</a></li></ul><div class="tab-content"><div class="tab-pane active">{ground_instances: 26
+</script></div></div><div class="tab-pane"><div class="imandra-proof-top"><div class="imandra-fold panel panel-default" id="fold-75858161-00f4-413d-9a90-31dbb1d4bd07"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>proof attempt</span></div></div><div class="panel-body collapse"><div class="imandra-proof"><div class="imandra-alternatives" id="alt-4d8df6df-6732-40b4-a16d-14132bb78a57"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>summary</a></li><li class="" data-toggle="tab"><a>full</a></li><li class="" data-toggle="tab"><a>graph</a></li></ul><div class="tab-content"><div class="tab-pane active">{ground_instances: 26
  ----------------------------------------------------------------------------
  definitions: 0
  ----------------------------------------------------------------------------
@@ -5755,7 +5750,7 @@ require(['nbextensions/nbimandra/graphviz'], function (graphviz) {
        ----------------------------------------------------------------------------
        arith-gomory-cuts: 2
        ----------------------------------------------------------------------------
-       num allocs: 55877071
+       num allocs: 56856600
        ----------------------------------------------------------------------------
        final checks: 95
        ----------------------------------------------------------------------------
@@ -5797,101 +5792,109 @@ require(['nbextensions/nbimandra/graphviz'], function (graphviz) {
        ----------------------------------------------------------------------------
        time: 0.001000
        ----------------------------------------------------------------------------
-       memory: 9.460000
+       memory: 9.470000
        ----------------------------------------------------------------------------
-       max memory: 10.990000
+       max memory: 11.000000
        }
     }
- }</div><div class="tab-pane"><div class="imandra-fold panel panel-default" id="fold-76a8e7e4-119e-417d-be4a-418a2dd37676"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.055s]
+ }</div><div class="tab-pane"><div class="imandra-fold panel panel-default" id="fold-325eba46-7e50-4723-80a0-4a2048b1ddb8"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.055s]
   let (_x_0 : int) = size ( :var_0: ) in
-  _x_0 &gt;= 5 &amp;&amp; _x_0 = 3 * sum_tree ( :var_0: )</pre></li><li><div>unroll{expr: `(sum_tree_61 x_69)`
+  _x_0 &gt;= 5 &amp;&amp; _x_0 = 3 * sum_tree ( :var_0: )</pre></li><li><div>unroll{expr: `(sum_tree_1718 x_1726)`
  ----------------------------------------------------------------------------
  expansions: 
- }</div></li><li><div>unroll{expr: `(size_2131 x_69)`
+ }</div></li><li><div>unroll{expr: `(size_2120 x_1726)`
  ----------------------------------------------------------------------------
  expansions: 
- }</div></li><li><div>unroll{expr: `(sum_tree_61 (|get.Node.1_2130| x_69))`
+ }</div></li><li><div>unroll{expr: `(sum_tree_1718 (|get.Node.1_2119| x_1726))`
  ----------------------------------------------------------------------------
  expansions: 
- }</div></li><li><div>unroll{expr: `(sum_tree_61 (|get.Node.0_2129| x_69))`
+ }</div></li><li><div>unroll{expr: `(sum_tree_1718 (|get.Node.0_2118| x_1726))`
  ----------------------------------------------------------------------------
  expansions: 
- }</div></li><li><div>unroll{expr: `(size_2131 (|get.Node.1_2130| x_69))`
+ }</div></li><li><div>unroll{expr: `(size_2120 (|get.Node.1_2119| x_1726))`
  ----------------------------------------------------------------------------
  expansions: 
- }</div></li><li><div>unroll{expr: `(size_2131 (|get.Node.0_2129| x_69))`
+ }</div></li><li><div>unroll{expr: `(size_2120 (|get.Node.0_2118| x_1726))`
  ----------------------------------------------------------------------------
  expansions: 
- }</div></li><li><div>unroll{expr: `(sum_tree_61 (|get.Node.1_2130| (|get.Node.1_2130| x_69)))`
+ }</div></li><li><div>unroll{expr: `(sum_tree_1718 (|get.Node.1_2119| (|get.Node.1_2119| x_1726)))`
  ----------------------------------------------------------------------------
  expansions: 
- }</div></li><li><div>unroll{expr: `(sum_tree_61 (|get.Node.0_2129| (|get.Node.1_2130| x_69)))`
+ }</div></li><li><div>unroll{expr: `(sum_tree_1718 (|get.Node.0_2118| (|get.Node.1_2119| x_1726)))`
  ----------------------------------------------------------------------------
  expansions: 
- }</div></li><li><div>unroll{expr: `(sum_tree_61 (|get.Node.1_2130| (|get.Node.0_2129| x_69)))`
+ }</div></li><li><div>unroll{expr: `(sum_tree_1718 (|get.Node.1_2119| (|get.Node.0_2118| x_1726)))`
  ----------------------------------------------------------------------------
  expansions: 
- }</div></li><li><div>unroll{expr: `(sum_tree_61 (|get.Node.0_2129| (|get.Node.0_2129| x_69)))`
+ }</div></li><li><div>unroll{expr: `(sum_tree_1718 (|get.Node.0_2118| (|get.Node.0_2118| x_1726)))`
  ----------------------------------------------------------------------------
  expansions: 
- }</div></li><li><div>unroll{expr: `(size_2131 (|get.Node.1_2130| (|get.Node.1_2130| x_69)))`
+ }</div></li><li><div>unroll{expr: `(size_2120 (|get.Node.1_2119| (|get.Node.1_2119| x_1726)))`
  ----------------------------------------------------------------------------
  expansions: 
- }</div></li><li><div>unroll{expr: `(size_2131 (|get.Node.0_2129| (|get.Node.1_2130| x_69)))`
+ }</div></li><li><div>unroll{expr: `(size_2120 (|get.Node.0_2118| (|get.Node.1_2119| x_1726)))`
  ----------------------------------------------------------------------------
  expansions: 
- }</div></li><li><div>unroll{expr: `(size_2131 (|get.Node.1_2130| (|get.Node.0_2129| x_69)))`
+ }</div></li><li><div>unroll{expr: `(size_2120 (|get.Node.1_2119| (|get.Node.0_2118| x_1726)))`
  ----------------------------------------------------------------------------
  expansions: 
- }</div></li><li><div>unroll{expr: `(size_2131 (|get.Node.0_2129| (|get.Node.0_2129| x_69)))`
- ----------------------------------------------------------------------------
- expansions: 
- }</div></li><li><div>unroll{expr:
-   `(sum_tree_61 (|get.Node.1_2130| (|get.Node.1_2130| (|get.Node.1_2130| x_69))))`
+ }</div></li><li><div>unroll{expr: `(size_2120 (|get.Node.0_2118| (|get.Node.0_2118| x_1726)))`
  ----------------------------------------------------------------------------
  expansions: 
  }</div></li><li><div>unroll{expr:
-   `(sum_tree_61 (|get.Node.0_2129| (|get.Node.1_2130| (|get.Node.1_2130| x_69))))`
+   ```(sum_tree_1718 (|get.Node.1_2119|
+                       (|get.Node.1_2119| (|get.Node.1_2119| x_1726))))```
  ----------------------------------------------------------------------------
  expansions: 
  }</div></li><li><div>unroll{expr:
-   `(sum_tree_61 (|get.Node.1_2130| (|get.Node.0_2129| (|get.Node.1_2130| x_69))))`
+   ```(sum_tree_1718 (|get.Node.0_2118|
+                       (|get.Node.1_2119| (|get.Node.1_2119| x_1726))))```
  ----------------------------------------------------------------------------
  expansions: 
  }</div></li><li><div>unroll{expr:
-   `(sum_tree_61 (|get.Node.0_2129| (|get.Node.0_2129| (|get.Node.1_2130| x_69))))`
+   ```(sum_tree_1718 (|get.Node.1_2119|
+                       (|get.Node.0_2118| (|get.Node.1_2119| x_1726))))```
  ----------------------------------------------------------------------------
  expansions: 
  }</div></li><li><div>unroll{expr:
-   `(sum_tree_61 (|get.Node.1_2130| (|get.Node.1_2130| (|get.Node.0_2129| x_69))))`
+   ```(sum_tree_1718 (|get.Node.0_2118|
+                       (|get.Node.0_2118| (|get.Node.1_2119| x_1726))))```
  ----------------------------------------------------------------------------
  expansions: 
  }</div></li><li><div>unroll{expr:
-   `(sum_tree_61 (|get.Node.0_2129| (|get.Node.1_2130| (|get.Node.0_2129| x_69))))`
+   ```(sum_tree_1718 (|get.Node.1_2119|
+                       (|get.Node.1_2119| (|get.Node.0_2118| x_1726))))```
  ----------------------------------------------------------------------------
  expansions: 
  }</div></li><li><div>unroll{expr:
-   `(sum_tree_61 (|get.Node.1_2130| (|get.Node.0_2129| (|get.Node.0_2129| x_69))))`
+   ```(sum_tree_1718 (|get.Node.0_2118|
+                       (|get.Node.1_2119| (|get.Node.0_2118| x_1726))))```
  ----------------------------------------------------------------------------
  expansions: 
  }</div></li><li><div>unroll{expr:
-   `(sum_tree_61 (|get.Node.0_2129| (|get.Node.0_2129| (|get.Node.0_2129| x_69))))`
+   ```(sum_tree_1718 (|get.Node.1_2119|
+                       (|get.Node.0_2118| (|get.Node.0_2118| x_1726))))```
  ----------------------------------------------------------------------------
  expansions: 
  }</div></li><li><div>unroll{expr:
-   `(size_2131 (|get.Node.1_2130| (|get.Node.1_2130| (|get.Node.1_2130| x_69))))`
+   ```(sum_tree_1718 (|get.Node.0_2118|
+                       (|get.Node.0_2118| (|get.Node.0_2118| x_1726))))```
  ----------------------------------------------------------------------------
  expansions: 
  }</div></li><li><div>unroll{expr:
-   `(size_2131 (|get.Node.0_2129| (|get.Node.1_2130| (|get.Node.1_2130| x_69))))`
+   `(size_2120 (|get.Node.1_2119| (|get.Node.1_2119| (|get.Node.1_2119| x_1726))))`
  ----------------------------------------------------------------------------
  expansions: 
  }</div></li><li><div>unroll{expr:
-   `(size_2131 (|get.Node.1_2130| (|get.Node.0_2129| (|get.Node.1_2130| x_69))))`
+   `(size_2120 (|get.Node.0_2118| (|get.Node.1_2119| (|get.Node.1_2119| x_1726))))`
  ----------------------------------------------------------------------------
  expansions: 
  }</div></li><li><div>unroll{expr:
-   `(size_2131 (|get.Node.0_2129| (|get.Node.0_2129| (|get.Node.1_2130| x_69))))`
+   `(size_2120 (|get.Node.1_2119| (|get.Node.0_2118| (|get.Node.1_2119| x_1726))))`
+ ----------------------------------------------------------------------------
+ expansions: 
+ }</div></li><li><div>unroll{expr:
+   `(size_2120 (|get.Node.0_2118| (|get.Node.0_2118| (|get.Node.1_2119| x_1726))))`
  ----------------------------------------------------------------------------
  expansions: 
  }</div></li><li>Sat (Some let x : int tree =
@@ -5902,10 +5905,10 @@ require(['nbextensions/nbimandra/graphviz'], function (graphviz) {
     Node (Leaf (Z.of_nativeint (107403n)), Leaf (Z.of_nativeint (-12386n)))))
 )</li></ul></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-76a8e7e4-119e-417d-be4a-418a2dd37676';
+  var target = '#fold-325eba46-7e50-4723-80a0-4a2048b1ddb8';
   fold.hydrate(target);
 });
-</script></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-51727370-62e9-492a-a1b4-079aebeccf4c"><textarea style="display: none">digraph &quot;proof&quot; {
+</script></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-fb8bdbaa-eed3-49dc-b12d-a956f25f4c20"><textarea style="display: none">digraph &quot;proof&quot; {
 p_82 [label=&quot;Start (let (_x_0 : int) = size ( :var_0: ) in\l       _x_0 \&gt;= 5 &amp;&amp; _x_0 = 3 * sum_tree ( :var_0: ) :time 0.055s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_82 -&gt; p_81 [label=&quot;&quot;];
 p_81 [label=&quot;Unroll ([sum_tree x], [[]])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
@@ -5964,22 +5967,22 @@ p_55 [label=&quot;Sat (Some let x : int tree =\l  Node\l  (Node (Leaf (Z.of_nati
 }
 </textarea><button class="btn btn-primary">Load graph</button><div class="imandra-graphviz-loading display-none">Loading..</div><div class="imandra-graphviz-target"></div><script>
 require(['nbextensions/nbimandra/graphviz'], function (graphviz) {
-  var target = '#graphviz-51727370-62e9-492a-a1b4-079aebeccf4c';
+  var target = '#graphviz-fb8bdbaa-eed3-49dc-b12d-a956f25f4c20';
   graphviz.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-60449226-18dc-4f08-8ead-6ade89cdeb85';
+  var target = '#alt-4d8df6df-6732-40b4-a16d-14132bb78a57';
   alternatives.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-4d9b6098-2828-4b3b-951e-cc60de628892';
+  var target = '#fold-75858161-00f4-413d-9a90-31dbb1d4bd07';
   fold.hydrate(target);
 });
 </script></div></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-e33dcf37-44bf-4009-8906-b337ef9a01b8';
+  var target = '#alt-c2524488-073a-45b1-92f0-db5cc464f385';
   alternatives.hydrate(target);
 });
 </script></div></div></div>
@@ -6150,7 +6153,7 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
 
 
 <div class="output_html rendered_html output_subarea ">
-<div><div class="imandra-fold panel panel-default" id="fold-be50f5b9-f22e-4cda-a4a1-51836f17af0d"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>termination proof</span></div></div><div class="panel-body collapse"><div><h3>Termination proof</h3><div class="imandra-fold panel panel-default" id="fold-6bb39ca3-e575-49cb-b8eb-6c7af75dd8df"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>call `ack (m - 1) 1` from `ack m n`</span></div></div><div class="panel-body collapse">{original: ack m n
+<div><div class="imandra-fold panel panel-default" id="fold-42106e46-aa35-484c-b66f-608b4407cf47"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>termination proof</span></div></div><div class="panel-body collapse"><div><h3>Termination proof</h3><div class="imandra-fold panel panel-default" id="fold-e9b05b05-72d2-4e48-8731-9be172307614"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>call `ack (m - 1) 1` from `ack m n`</span></div></div><div class="panel-body collapse">{original: ack m n
  ----------------------------------------------------------------------------
  sub: ack (m - 1) 1
  ----------------------------------------------------------------------------
@@ -6171,25 +6174,25 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
       ----------------------------------------------------------------------------
       inductions: 0
       ----------------------------------------------------------------------------
-      search_time: `0.019s`
+      search_time: `0.015s`
       ----------------------------------------------------------------------------
       details:
         {smt_stats:
-           {num checks: 11
+           {num checks: 12
             ----------------------------------------------------------------------------
-            arith-make-feasible: 20
+            arith-make-feasible: 21
             ----------------------------------------------------------------------------
             arith-max-columns: 20
             ----------------------------------------------------------------------------
-            rlimit count: 54100
+            rlimit count: 54340
             ----------------------------------------------------------------------------
             arith-cheap-eqs: 7
             ----------------------------------------------------------------------------
-            mk clause: 50
+            mk clause: 52
             ----------------------------------------------------------------------------
             datatype occurs check: 59
             ----------------------------------------------------------------------------
-            mk bool var: 119
+            mk bool var: 129
             ----------------------------------------------------------------------------
             arith-lower: 19
             ----------------------------------------------------------------------------
@@ -6197,31 +6200,31 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
             ----------------------------------------------------------------------------
             datatype splits: 4
             ----------------------------------------------------------------------------
-            decisions: 39
+            decisions: 53
             ----------------------------------------------------------------------------
             arith-propagations: 12
             ----------------------------------------------------------------------------
-            propagations: 30
+            propagations: 49
             ----------------------------------------------------------------------------
             arith-bound-propagations-cheap: 12
             ----------------------------------------------------------------------------
             arith-max-rows: 7
             ----------------------------------------------------------------------------
-            conflicts: 11
+            conflicts: 13
             ----------------------------------------------------------------------------
-            datatype accessor ax: 20
+            datatype accessor ax: 21
             ----------------------------------------------------------------------------
             arith-bound-propagations-lp: 1
             ----------------------------------------------------------------------------
-            datatype constructor ax: 9
+            datatype constructor ax: 10
             ----------------------------------------------------------------------------
-            num allocs: 100169660
+            num allocs: 101297516
             ----------------------------------------------------------------------------
             final checks: 8
             ----------------------------------------------------------------------------
-            added eqs: 116
+            added eqs: 134
             ----------------------------------------------------------------------------
-            del clause: 26
+            del clause: 25
             ----------------------------------------------------------------------------
             arith eq adapter: 13
             ----------------------------------------------------------------------------
@@ -6234,7 +6237,7 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
          }
       })
     (full:
-     * ```start[0.019s]
+     * ```start[0.015s]
             let (_x_0 : int) = m - 1 in
             let (_x_1 : bool) = 1 &lt;= 0 in
             let (_x_2 : bool) = not (_x_0 &lt;= 0) in
@@ -6246,8 +6249,8 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
                      &amp;&amp; (if _x_0 &gt;= 0 then _x_0 else 0) &gt;= 0
                         &amp;&amp; (if 1 &gt;= 0 then 1 else 0) &gt;= 0
             ==&gt; not (_x_1 &amp;&amp; _x_2) &amp;&amp; _x_3 &amp;&amp; _x_3
-                || Ordinal.( &lt;&lt; ) (if Is_a([], …) then … else …)
-                   (if Is_a([], …) then … else …)```
+                || Ordinal.( &lt;&lt; ) (if … &lt;&gt; [] then … else …)
+                   (if … &lt;&gt; [] then … else …)```
      * simplify::
          {into:
             ```let (_x_0 : Ordinal.t) = Ordinal.Int 1 in
@@ -6265,49 +6268,49 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
           }
      * unroll
        {expr:
-          ```(|Ordinal.shift_205|
-               (|Ordinal.Int_111| (ite (&gt;= m_2195 0) m_2195 0))
-               (|Ordinal.Int_111| 1))```
+          ```(|Ordinal.shift_208|
+               (|Ordinal.Int_114| (ite (&gt;= m_2189 0) m_2189 0))
+               (|Ordinal.Int_114| 1))```
         ----------------------------------------------------------------------------
         expansions: 
         }
      * unroll
        {expr:
-          ```(let ((a!1 (|Ordinal.shift_205|
-                          (|Ordinal.Int_111| (ite (&gt;= m_2195 0) m_2195 0))
+          ```(let ((a!1 (|Ordinal.shift_208|
+                          (|Ordinal.Int_114| (ite (&gt;= m_2189 0) m_2189 0))
                    …```
         ----------------------------------------------------------------------------
         expansions: 
         }
      * unroll
        {expr:
-          ```(|Ordinal.shift_205|
-               (|Ordinal.Int_111| (ite (&gt;= m_2195 1) (+ (- 1) m_2195) 0))
+          ```(|Ordinal.shift_208|
+               (|Ordinal.Int_114| (ite (&gt;= m_2189 1) (+ (- 1) m_2189) 0))
                (|Ordinal.Int_11…```
         ----------------------------------------------------------------------------
         expansions: 
         }
      * unroll
        {expr:
-          ```(let ((a!1 (|Ordinal.shift_205|
-                          (|Ordinal.Int_111| (ite (&gt;= m_2195 1) (+ (- 1) m_2195) …```
+          ```(let ((a!1 (|Ordinal.shift_208|
+                          (|Ordinal.Int_114| (ite (&gt;= m_2189 1) (+ (- 1) m_2189) …```
         ----------------------------------------------------------------------------
         expansions: 
         }
      * unroll
        {expr:
-          ```(let ((a!1 (|Ordinal.shift_205|
-                          (|Ordinal.Int_111| (ite (&gt;= m_2195 1) (+ (- 1) m_2195) …```
+          ```(let ((a!1 (|Ordinal.shift_208|
+                          (|Ordinal.Int_114| (ite (&gt;= m_2189 1) (+ (- 1) m_2189) …```
         ----------------------------------------------------------------------------
         expansions: 
         }
      * Unsat))
  }</div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-6bb39ca3-e575-49cb-b8eb-6c7af75dd8df';
+  var target = '#fold-e9b05b05-72d2-4e48-8731-9be172307614';
   fold.hydrate(target);
 });
-</script></div><div class="imandra-fold panel panel-default" id="fold-032f1cc9-cbbb-41fd-91a1-a2029720b4af"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>call `ack (m - 1) (ack m (n - 1))` from `ack m n`</span></div></div><div class="panel-body collapse">{original: ack m n
+</script></div><div class="imandra-fold panel panel-default" id="fold-1658bb18-77b6-4296-811e-03313ba7c451"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>call `ack (m - 1) (ack m (n - 1))` from `ack m n`</span></div></div><div class="panel-body collapse">{original: ack m n
  ----------------------------------------------------------------------------
  sub: ack (m - 1) (ack m (n - 1))
  ----------------------------------------------------------------------------
@@ -6337,35 +6340,35 @@ require(['nbextensions/nbimandra/fold'], function (fold) {
             ----------------------------------------------------------------------------
             arith-assume-eqs: 1
             ----------------------------------------------------------------------------
-            arith-make-feasible: 19
+            arith-make-feasible: 21
             ----------------------------------------------------------------------------
             arith-max-columns: 24
             ----------------------------------------------------------------------------
-            rlimit count: 48999
+            rlimit count: 49044
             ----------------------------------------------------------------------------
-            arith-cheap-eqs: 2
+            arith-cheap-eqs: 1
             ----------------------------------------------------------------------------
-            mk clause: 76
+            mk clause: 85
             ----------------------------------------------------------------------------
             datatype occurs check: 78
             ----------------------------------------------------------------------------
-            mk bool var: 124
+            mk bool var: 129
             ----------------------------------------------------------------------------
             arith-lower: 7
             ----------------------------------------------------------------------------
-            arith-diseq: 11
+            arith-diseq: 18
             ----------------------------------------------------------------------------
             datatype splits: 4
             ----------------------------------------------------------------------------
-            decisions: 48
+            decisions: 47
             ----------------------------------------------------------------------------
-            arith-propagations: 15
+            arith-propagations: 17
             ----------------------------------------------------------------------------
-            propagations: 62
+            propagations: 74
             ----------------------------------------------------------------------------
             interface eqs: 1
             ----------------------------------------------------------------------------
-            arith-bound-propagations-cheap: 15
+            arith-bound-propagations-cheap: 17
             ----------------------------------------------------------------------------
             arith-max-rows: 9
             ----------------------------------------------------------------------------
@@ -6373,21 +6376,21 @@ require(['nbextensions/nbimandra/fold'], function (fold) {
             ----------------------------------------------------------------------------
             datatype accessor ax: 21
             ----------------------------------------------------------------------------
-            arith-bound-propagations-lp: 1
+            arith-bound-propagations-lp: 2
             ----------------------------------------------------------------------------
             datatype constructor ax: 9
             ----------------------------------------------------------------------------
-            num allocs: 90488314
+            num allocs: 91583040
             ----------------------------------------------------------------------------
             final checks: 9
             ----------------------------------------------------------------------------
-            added eqs: 98
+            added eqs: 105
             ----------------------------------------------------------------------------
-            del clause: 31
+            del clause: 38
             ----------------------------------------------------------------------------
-            arith eq adapter: 11
+            arith eq adapter: 14
             ----------------------------------------------------------------------------
-            arith-upper: 30
+            arith-upper: 32
             ----------------------------------------------------------------------------
             memory: 14.910000
             ----------------------------------------------------------------------------
@@ -6409,8 +6412,8 @@ require(['nbextensions/nbimandra/fold'], function (fold) {
                      &amp;&amp; (if _x_0 &gt;= 0 then _x_0 else 0) &gt;= 0
                         &amp;&amp; (if _x_1 &gt;= 0 then _x_1 else 0) &gt;= 0
             ==&gt; not (_x_2 &amp;&amp; _x_3) &amp;&amp; _x_4 &amp;&amp; _x_4
-                || Ordinal.( &lt;&lt; ) (if Is_a([], …) then … else …)
-                   (if Is_a([], …) then … else …)```
+                || Ordinal.( &lt;&lt; ) (if … &lt;&gt; [] then … else …)
+                   (if … &lt;&gt; [] then … else …)```
      * simplify::
          {into:
             ```let (_x_0 : int) = ack m ((-1) + n) in
@@ -6433,49 +6436,49 @@ require(['nbextensions/nbimandra/fold'], function (fold) {
           }
      * unroll
        {expr:
-          ```(|Ordinal.shift_205|
-               (|Ordinal.Int_111| (ite (&gt;= m_2195 0) m_2195 0))
-               (|Ordinal.Int_111| 1))```
+          ```(|Ordinal.shift_208|
+               (|Ordinal.Int_114| (ite (&gt;= m_2189 0) m_2189 0))
+               (|Ordinal.Int_114| 1))```
         ----------------------------------------------------------------------------
         expansions: 
         }
      * unroll
        {expr:
-          ```(let ((a!1 (|Ordinal.shift_205|
-                          (|Ordinal.Int_111| (ite (&gt;= m_2195 0) m_2195 0))
+          ```(let ((a!1 (|Ordinal.shift_208|
+                          (|Ordinal.Int_114| (ite (&gt;= m_2189 0) m_2189 0))
                    …```
         ----------------------------------------------------------------------------
         expansions: 
         }
      * unroll
        {expr:
-          ```(|Ordinal.shift_205|
-               (|Ordinal.Int_111| (ite (&gt;= m_2195 1) (+ (- 1) m_2195) 0))
+          ```(|Ordinal.shift_208|
+               (|Ordinal.Int_114| (ite (&gt;= m_2189 1) (+ (- 1) m_2189) 0))
                (|Ordinal.Int_11…```
         ----------------------------------------------------------------------------
         expansions: 
         }
      * unroll
        {expr:
-          ```(let ((a!1 (|Ordinal.shift_205|
-                          (|Ordinal.Int_111| (ite (&gt;= m_2195 1) (+ (- 1) m_2195) …```
+          ```(let ((a!1 (|Ordinal.shift_208|
+                          (|Ordinal.Int_114| (ite (&gt;= m_2189 1) (+ (- 1) m_2189) …```
         ----------------------------------------------------------------------------
         expansions: 
         }
      * unroll
        {expr:
-          ```(let ((a!1 (|Ordinal.shift_205|
-                          (|Ordinal.Int_111| (ite (&gt;= m_2195 1) (+ (- 1) m_2195) …```
+          ```(let ((a!1 (|Ordinal.shift_208|
+                          (|Ordinal.Int_114| (ite (&gt;= m_2189 1) (+ (- 1) m_2189) …```
         ----------------------------------------------------------------------------
         expansions: 
         }
      * Unsat))
  }</div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-032f1cc9-cbbb-41fd-91a1-a2029720b4af';
+  var target = '#fold-1658bb18-77b6-4296-811e-03313ba7c451';
   fold.hydrate(target);
 });
-</script></div><div class="imandra-fold panel panel-default" id="fold-8cfce028-7f80-4174-9399-d88c9d609475"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>call `ack m (n - 1)` from `ack m n`</span></div></div><div class="panel-body collapse">{original: ack m n
+</script></div><div class="imandra-fold panel panel-default" id="fold-7a23b922-7eed-4466-a28d-92009df751f7"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>call `ack m (n - 1)` from `ack m n`</span></div></div><div class="panel-body collapse">{original: ack m n
  ----------------------------------------------------------------------------
  sub: ack m (n - 1)
  ----------------------------------------------------------------------------
@@ -6496,7 +6499,7 @@ require(['nbextensions/nbimandra/fold'], function (fold) {
       ----------------------------------------------------------------------------
       inductions: 0
       ----------------------------------------------------------------------------
-      search_time: `0.022s`
+      search_time: `0.021s`
       ----------------------------------------------------------------------------
       details:
         {smt_stats:
@@ -6508,7 +6511,7 @@ require(['nbextensions/nbimandra/fold'], function (fold) {
             ----------------------------------------------------------------------------
             arith-max-columns: 34
             ----------------------------------------------------------------------------
-            rlimit count: 43296
+            rlimit count: 43284
             ----------------------------------------------------------------------------
             arith-cheap-eqs: 9
             ----------------------------------------------------------------------------
@@ -6544,7 +6547,7 @@ require(['nbextensions/nbimandra/fold'], function (fold) {
             ----------------------------------------------------------------------------
             datatype constructor ax: 20
             ----------------------------------------------------------------------------
-            num allocs: 71867976
+            num allocs: 72918372
             ----------------------------------------------------------------------------
             final checks: 14
             ----------------------------------------------------------------------------
@@ -6563,7 +6566,7 @@ require(['nbextensions/nbimandra/fold'], function (fold) {
          }
       })
     (full:
-     * ```start[0.022s]
+     * ```start[0.021s]
             let (_x_0 : bool) = not (m &lt;= 0) in
             let (_x_1 : bool) = (if m &gt;= 0 then m else 0) &gt;= 0 in
             let (_x_2 : int) = n - 1 in
@@ -6575,8 +6578,8 @@ require(['nbextensions/nbimandra/fold'], function (fold) {
                   &amp;&amp; (if n &gt;= 0 then n else 0) &gt;= 0
                      &amp;&amp; _x_1 &amp;&amp; (if _x_2 &gt;= 0 then _x_2 else 0) &gt;= 0
             ==&gt; not (_x_3 &amp;&amp; _x_0) &amp;&amp; _x_4 &amp;&amp; _x_4
-                || Ordinal.( &lt;&lt; ) (if Is_a([], …) then … else …)
-                   (if Is_a([], …) then … else …)```
+                || Ordinal.( &lt;&lt; ) (if … &lt;&gt; [] then … else …)
+                   (if … &lt;&gt; [] then … else …)```
      * simplify::
          {into:
             ```let (_x_0 : bool) = n &lt;= 1 in
@@ -6598,56 +6601,56 @@ require(['nbextensions/nbimandra/fold'], function (fold) {
           }
      * unroll
        {expr:
-          ```(let ((a!1 (|Ordinal.shift_205|
-                          (|Ordinal.Int_111| (ite (&gt;= m_2195 0) m_2195 0))
+          ```(let ((a!1 (|Ordinal.shift_208|
+                          (|Ordinal.Int_114| (ite (&gt;= m_2189 0) m_2189 0))
                    …```
         ----------------------------------------------------------------------------
         expansions: 
         }
      * unroll
        {expr:
-          ```(|Ordinal.shift_205|
-               (|Ordinal.Int_111| (ite (&gt;= m_2195 0) m_2195 0))
-               (|Ordinal.Int_111| 1))```
+          ```(|Ordinal.shift_208|
+               (|Ordinal.Int_114| (ite (&gt;= m_2189 0) m_2189 0))
+               (|Ordinal.Int_114| 1))```
         ----------------------------------------------------------------------------
         expansions: 
         }
      * unroll
        {expr:
-          ```(let ((a!1 (|Ordinal.shift_205|
-                          (|Ordinal.Int_111| (ite (&gt;= m_2195 0) m_2195 0))
+          ```(let ((a!1 (|Ordinal.shift_208|
+                          (|Ordinal.Int_114| (ite (&gt;= m_2189 0) m_2189 0))
                    …```
         ----------------------------------------------------------------------------
         expansions: 
         }
      * unroll
        {expr:
-          ```(let ((a!1 (|Ordinal.shift_205|
-                          (|Ordinal.Int_111| (ite (&gt;= m_2195 0) m_2195 0))
+          ```(let ((a!1 (|Ordinal.shift_208|
+                          (|Ordinal.Int_114| (ite (&gt;= m_2189 0) m_2189 0))
                    …```
         ----------------------------------------------------------------------------
         expansions: 
         }
      * unroll
        {expr:
-          ```(let ((a!1 (|Ordinal.shift_205|
-                          (|Ordinal.Int_111| (ite (&gt;= m_2195 0) m_2195 0))
+          ```(let ((a!1 (|Ordinal.shift_208|
+                          (|Ordinal.Int_114| (ite (&gt;= m_2189 0) m_2189 0))
                    …```
         ----------------------------------------------------------------------------
         expansions: 
         }
      * unroll
        {expr:
-          ```(let ((a!1 (|Ordinal.shift_205|
-                          (|Ordinal.Int_111| (ite (&gt;= m_2195 0) m_2195 0))
+          ```(let ((a!1 (|Ordinal.shift_208|
+                          (|Ordinal.Int_114| (ite (&gt;= m_2189 0) m_2189 0))
                    …```
         ----------------------------------------------------------------------------
         expansions: 
         }
      * unroll
        {expr:
-          ```(let ((a!1 (|Ordinal.shift_205|
-                          (|Ordinal.Int_111| (ite (&gt;= m_2195 0) m_2195 0))
+          ```(let ((a!1 (|Ordinal.shift_208|
+                          (|Ordinal.Int_114| (ite (&gt;= m_2189 0) m_2189 0))
                    …```
         ----------------------------------------------------------------------------
         expansions: 
@@ -6655,12 +6658,12 @@ require(['nbextensions/nbimandra/fold'], function (fold) {
      * Unsat))
  }</div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-8cfce028-7f80-4174-9399-d88c9d609475';
+  var target = '#fold-7a23b922-7eed-4466-a28d-92009df751f7';
   fold.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-be50f5b9-f22e-4cda-a4a1-51836f17af0d';
+  var target = '#fold-42106e46-aa35-484c-b66f-608b4407cf47';
   fold.hydrate(target);
 });
 </script></div></div>
@@ -6731,7 +6734,7 @@ require(['nbextensions/nbimandra/fold'], function (fold) {
 
 
 <div class="output_html rendered_html output_subarea ">
-<div><div class="imandra-fold panel panel-default" id="fold-7d17fc1d-62f8-4c9f-a297-dd6eff5eb625"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>termination proof</span></div></div><div class="panel-body collapse"><div><h3>Termination proof</h3><div class="imandra-fold panel panel-default" id="fold-438fa6a5-2f33-47b5-84d1-95faba011536"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>call `ack (m - 1) 1` from `ack m n`</span></div></div><div class="panel-body collapse">{original: ack m n
+<div><div class="imandra-fold panel panel-default" id="fold-9b5aa9fe-276b-4e6e-8c09-917b58c02d45"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>termination proof</span></div></div><div class="panel-body collapse"><div><h3>Termination proof</h3><div class="imandra-fold panel panel-default" id="fold-753ee7bf-8ae7-4bd5-a1a0-e5b06770ebe4"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>call `ack (m - 1) 1` from `ack m n`</span></div></div><div class="panel-body collapse">{original: ack m n
  ----------------------------------------------------------------------------
  sub: ack (m - 1) 1
  ----------------------------------------------------------------------------
@@ -6752,25 +6755,25 @@ require(['nbextensions/nbimandra/fold'], function (fold) {
       ----------------------------------------------------------------------------
       inductions: 0
       ----------------------------------------------------------------------------
-      search_time: `0.019s`
+      search_time: `0.015s`
       ----------------------------------------------------------------------------
       details:
         {smt_stats:
-           {num checks: 11
+           {num checks: 12
             ----------------------------------------------------------------------------
-            arith-make-feasible: 20
+            arith-make-feasible: 21
             ----------------------------------------------------------------------------
             arith-max-columns: 20
             ----------------------------------------------------------------------------
-            rlimit count: 54100
+            rlimit count: 54340
             ----------------------------------------------------------------------------
             arith-cheap-eqs: 7
             ----------------------------------------------------------------------------
-            mk clause: 50
+            mk clause: 52
             ----------------------------------------------------------------------------
             datatype occurs check: 59
             ----------------------------------------------------------------------------
-            mk bool var: 119
+            mk bool var: 129
             ----------------------------------------------------------------------------
             arith-lower: 19
             ----------------------------------------------------------------------------
@@ -6778,31 +6781,31 @@ require(['nbextensions/nbimandra/fold'], function (fold) {
             ----------------------------------------------------------------------------
             datatype splits: 4
             ----------------------------------------------------------------------------
-            decisions: 39
+            decisions: 53
             ----------------------------------------------------------------------------
             arith-propagations: 12
             ----------------------------------------------------------------------------
-            propagations: 30
+            propagations: 49
             ----------------------------------------------------------------------------
             arith-bound-propagations-cheap: 12
             ----------------------------------------------------------------------------
             arith-max-rows: 7
             ----------------------------------------------------------------------------
-            conflicts: 11
+            conflicts: 13
             ----------------------------------------------------------------------------
-            datatype accessor ax: 20
+            datatype accessor ax: 21
             ----------------------------------------------------------------------------
             arith-bound-propagations-lp: 1
             ----------------------------------------------------------------------------
-            datatype constructor ax: 9
+            datatype constructor ax: 10
             ----------------------------------------------------------------------------
-            num allocs: 100169660
+            num allocs: 101297516
             ----------------------------------------------------------------------------
             final checks: 8
             ----------------------------------------------------------------------------
-            added eqs: 116
+            added eqs: 134
             ----------------------------------------------------------------------------
-            del clause: 26
+            del clause: 25
             ----------------------------------------------------------------------------
             arith eq adapter: 13
             ----------------------------------------------------------------------------
@@ -6815,7 +6818,7 @@ require(['nbextensions/nbimandra/fold'], function (fold) {
          }
       })
     (full:
-     * ```start[0.019s]
+     * ```start[0.015s]
             let (_x_0 : int) = m - 1 in
             let (_x_1 : bool) = 1 &lt;= 0 in
             let (_x_2 : bool) = not (_x_0 &lt;= 0) in
@@ -6827,8 +6830,8 @@ require(['nbextensions/nbimandra/fold'], function (fold) {
                      &amp;&amp; (if _x_0 &gt;= 0 then _x_0 else 0) &gt;= 0
                         &amp;&amp; (if 1 &gt;= 0 then 1 else 0) &gt;= 0
             ==&gt; not (_x_1 &amp;&amp; _x_2) &amp;&amp; _x_3 &amp;&amp; _x_3
-                || Ordinal.( &lt;&lt; ) (if Is_a([], …) then … else …)
-                   (if Is_a([], …) then … else …)```
+                || Ordinal.( &lt;&lt; ) (if … &lt;&gt; [] then … else …)
+                   (if … &lt;&gt; [] then … else …)```
      * simplify::
          {into:
             ```let (_x_0 : Ordinal.t) = Ordinal.Int 1 in
@@ -6846,49 +6849,49 @@ require(['nbextensions/nbimandra/fold'], function (fold) {
           }
      * unroll
        {expr:
-          ```(|Ordinal.shift_205|
-               (|Ordinal.Int_111| (ite (&gt;= m_2195 0) m_2195 0))
-               (|Ordinal.Int_111| 1))```
+          ```(|Ordinal.shift_208|
+               (|Ordinal.Int_114| (ite (&gt;= m_2189 0) m_2189 0))
+               (|Ordinal.Int_114| 1))```
         ----------------------------------------------------------------------------
         expansions: 
         }
      * unroll
        {expr:
-          ```(let ((a!1 (|Ordinal.shift_205|
-                          (|Ordinal.Int_111| (ite (&gt;= m_2195 0) m_2195 0))
+          ```(let ((a!1 (|Ordinal.shift_208|
+                          (|Ordinal.Int_114| (ite (&gt;= m_2189 0) m_2189 0))
                    …```
         ----------------------------------------------------------------------------
         expansions: 
         }
      * unroll
        {expr:
-          ```(|Ordinal.shift_205|
-               (|Ordinal.Int_111| (ite (&gt;= m_2195 1) (+ (- 1) m_2195) 0))
+          ```(|Ordinal.shift_208|
+               (|Ordinal.Int_114| (ite (&gt;= m_2189 1) (+ (- 1) m_2189) 0))
                (|Ordinal.Int_11…```
         ----------------------------------------------------------------------------
         expansions: 
         }
      * unroll
        {expr:
-          ```(let ((a!1 (|Ordinal.shift_205|
-                          (|Ordinal.Int_111| (ite (&gt;= m_2195 1) (+ (- 1) m_2195) …```
+          ```(let ((a!1 (|Ordinal.shift_208|
+                          (|Ordinal.Int_114| (ite (&gt;= m_2189 1) (+ (- 1) m_2189) …```
         ----------------------------------------------------------------------------
         expansions: 
         }
      * unroll
        {expr:
-          ```(let ((a!1 (|Ordinal.shift_205|
-                          (|Ordinal.Int_111| (ite (&gt;= m_2195 1) (+ (- 1) m_2195) …```
+          ```(let ((a!1 (|Ordinal.shift_208|
+                          (|Ordinal.Int_114| (ite (&gt;= m_2189 1) (+ (- 1) m_2189) …```
         ----------------------------------------------------------------------------
         expansions: 
         }
      * Unsat))
  }</div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-438fa6a5-2f33-47b5-84d1-95faba011536';
+  var target = '#fold-753ee7bf-8ae7-4bd5-a1a0-e5b06770ebe4';
   fold.hydrate(target);
 });
-</script></div><div class="imandra-fold panel panel-default" id="fold-38aca35b-21b1-40fc-b236-74ca1d0861c0"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>call `ack (m - 1) (ack m (n - 1))` from `ack m n`</span></div></div><div class="panel-body collapse">{original: ack m n
+</script></div><div class="imandra-fold panel panel-default" id="fold-013b3c6c-6b85-46d8-aa0f-b377b6721d02"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>call `ack (m - 1) (ack m (n - 1))` from `ack m n`</span></div></div><div class="panel-body collapse">{original: ack m n
  ----------------------------------------------------------------------------
  sub: ack (m - 1) (ack m (n - 1))
  ----------------------------------------------------------------------------
@@ -6918,35 +6921,35 @@ require(['nbextensions/nbimandra/fold'], function (fold) {
             ----------------------------------------------------------------------------
             arith-assume-eqs: 1
             ----------------------------------------------------------------------------
-            arith-make-feasible: 19
+            arith-make-feasible: 21
             ----------------------------------------------------------------------------
             arith-max-columns: 24
             ----------------------------------------------------------------------------
-            rlimit count: 48999
+            rlimit count: 49044
             ----------------------------------------------------------------------------
-            arith-cheap-eqs: 2
+            arith-cheap-eqs: 1
             ----------------------------------------------------------------------------
-            mk clause: 76
+            mk clause: 85
             ----------------------------------------------------------------------------
             datatype occurs check: 78
             ----------------------------------------------------------------------------
-            mk bool var: 124
+            mk bool var: 129
             ----------------------------------------------------------------------------
             arith-lower: 7
             ----------------------------------------------------------------------------
-            arith-diseq: 11
+            arith-diseq: 18
             ----------------------------------------------------------------------------
             datatype splits: 4
             ----------------------------------------------------------------------------
-            decisions: 48
+            decisions: 47
             ----------------------------------------------------------------------------
-            arith-propagations: 15
+            arith-propagations: 17
             ----------------------------------------------------------------------------
-            propagations: 62
+            propagations: 74
             ----------------------------------------------------------------------------
             interface eqs: 1
             ----------------------------------------------------------------------------
-            arith-bound-propagations-cheap: 15
+            arith-bound-propagations-cheap: 17
             ----------------------------------------------------------------------------
             arith-max-rows: 9
             ----------------------------------------------------------------------------
@@ -6954,21 +6957,21 @@ require(['nbextensions/nbimandra/fold'], function (fold) {
             ----------------------------------------------------------------------------
             datatype accessor ax: 21
             ----------------------------------------------------------------------------
-            arith-bound-propagations-lp: 1
+            arith-bound-propagations-lp: 2
             ----------------------------------------------------------------------------
             datatype constructor ax: 9
             ----------------------------------------------------------------------------
-            num allocs: 90488314
+            num allocs: 91583040
             ----------------------------------------------------------------------------
             final checks: 9
             ----------------------------------------------------------------------------
-            added eqs: 98
+            added eqs: 105
             ----------------------------------------------------------------------------
-            del clause: 31
+            del clause: 38
             ----------------------------------------------------------------------------
-            arith eq adapter: 11
+            arith eq adapter: 14
             ----------------------------------------------------------------------------
-            arith-upper: 30
+            arith-upper: 32
             ----------------------------------------------------------------------------
             memory: 14.910000
             ----------------------------------------------------------------------------
@@ -6990,8 +6993,8 @@ require(['nbextensions/nbimandra/fold'], function (fold) {
                      &amp;&amp; (if _x_0 &gt;= 0 then _x_0 else 0) &gt;= 0
                         &amp;&amp; (if _x_1 &gt;= 0 then _x_1 else 0) &gt;= 0
             ==&gt; not (_x_2 &amp;&amp; _x_3) &amp;&amp; _x_4 &amp;&amp; _x_4
-                || Ordinal.( &lt;&lt; ) (if Is_a([], …) then … else …)
-                   (if Is_a([], …) then … else …)```
+                || Ordinal.( &lt;&lt; ) (if … &lt;&gt; [] then … else …)
+                   (if … &lt;&gt; [] then … else …)```
      * simplify::
          {into:
             ```let (_x_0 : int) = ack m ((-1) + n) in
@@ -7014,49 +7017,49 @@ require(['nbextensions/nbimandra/fold'], function (fold) {
           }
      * unroll
        {expr:
-          ```(|Ordinal.shift_205|
-               (|Ordinal.Int_111| (ite (&gt;= m_2195 0) m_2195 0))
-               (|Ordinal.Int_111| 1))```
+          ```(|Ordinal.shift_208|
+               (|Ordinal.Int_114| (ite (&gt;= m_2189 0) m_2189 0))
+               (|Ordinal.Int_114| 1))```
         ----------------------------------------------------------------------------
         expansions: 
         }
      * unroll
        {expr:
-          ```(let ((a!1 (|Ordinal.shift_205|
-                          (|Ordinal.Int_111| (ite (&gt;= m_2195 0) m_2195 0))
+          ```(let ((a!1 (|Ordinal.shift_208|
+                          (|Ordinal.Int_114| (ite (&gt;= m_2189 0) m_2189 0))
                    …```
         ----------------------------------------------------------------------------
         expansions: 
         }
      * unroll
        {expr:
-          ```(|Ordinal.shift_205|
-               (|Ordinal.Int_111| (ite (&gt;= m_2195 1) (+ (- 1) m_2195) 0))
+          ```(|Ordinal.shift_208|
+               (|Ordinal.Int_114| (ite (&gt;= m_2189 1) (+ (- 1) m_2189) 0))
                (|Ordinal.Int_11…```
         ----------------------------------------------------------------------------
         expansions: 
         }
      * unroll
        {expr:
-          ```(let ((a!1 (|Ordinal.shift_205|
-                          (|Ordinal.Int_111| (ite (&gt;= m_2195 1) (+ (- 1) m_2195) …```
+          ```(let ((a!1 (|Ordinal.shift_208|
+                          (|Ordinal.Int_114| (ite (&gt;= m_2189 1) (+ (- 1) m_2189) …```
         ----------------------------------------------------------------------------
         expansions: 
         }
      * unroll
        {expr:
-          ```(let ((a!1 (|Ordinal.shift_205|
-                          (|Ordinal.Int_111| (ite (&gt;= m_2195 1) (+ (- 1) m_2195) …```
+          ```(let ((a!1 (|Ordinal.shift_208|
+                          (|Ordinal.Int_114| (ite (&gt;= m_2189 1) (+ (- 1) m_2189) …```
         ----------------------------------------------------------------------------
         expansions: 
         }
      * Unsat))
  }</div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-38aca35b-21b1-40fc-b236-74ca1d0861c0';
+  var target = '#fold-013b3c6c-6b85-46d8-aa0f-b377b6721d02';
   fold.hydrate(target);
 });
-</script></div><div class="imandra-fold panel panel-default" id="fold-127faa10-8a28-4aa3-b70f-45bc8956ad45"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>call `ack m (n - 1)` from `ack m n`</span></div></div><div class="panel-body collapse">{original: ack m n
+</script></div><div class="imandra-fold panel panel-default" id="fold-a64e20b1-b33c-4142-a9eb-0a8342e04bcd"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>call `ack m (n - 1)` from `ack m n`</span></div></div><div class="panel-body collapse">{original: ack m n
  ----------------------------------------------------------------------------
  sub: ack m (n - 1)
  ----------------------------------------------------------------------------
@@ -7077,7 +7080,7 @@ require(['nbextensions/nbimandra/fold'], function (fold) {
       ----------------------------------------------------------------------------
       inductions: 0
       ----------------------------------------------------------------------------
-      search_time: `0.022s`
+      search_time: `0.021s`
       ----------------------------------------------------------------------------
       details:
         {smt_stats:
@@ -7089,7 +7092,7 @@ require(['nbextensions/nbimandra/fold'], function (fold) {
             ----------------------------------------------------------------------------
             arith-max-columns: 34
             ----------------------------------------------------------------------------
-            rlimit count: 43296
+            rlimit count: 43284
             ----------------------------------------------------------------------------
             arith-cheap-eqs: 9
             ----------------------------------------------------------------------------
@@ -7125,7 +7128,7 @@ require(['nbextensions/nbimandra/fold'], function (fold) {
             ----------------------------------------------------------------------------
             datatype constructor ax: 20
             ----------------------------------------------------------------------------
-            num allocs: 71867976
+            num allocs: 72918372
             ----------------------------------------------------------------------------
             final checks: 14
             ----------------------------------------------------------------------------
@@ -7144,7 +7147,7 @@ require(['nbextensions/nbimandra/fold'], function (fold) {
          }
       })
     (full:
-     * ```start[0.022s]
+     * ```start[0.021s]
             let (_x_0 : bool) = not (m &lt;= 0) in
             let (_x_1 : bool) = (if m &gt;= 0 then m else 0) &gt;= 0 in
             let (_x_2 : int) = n - 1 in
@@ -7156,8 +7159,8 @@ require(['nbextensions/nbimandra/fold'], function (fold) {
                   &amp;&amp; (if n &gt;= 0 then n else 0) &gt;= 0
                      &amp;&amp; _x_1 &amp;&amp; (if _x_2 &gt;= 0 then _x_2 else 0) &gt;= 0
             ==&gt; not (_x_3 &amp;&amp; _x_0) &amp;&amp; _x_4 &amp;&amp; _x_4
-                || Ordinal.( &lt;&lt; ) (if Is_a([], …) then … else …)
-                   (if Is_a([], …) then … else …)```
+                || Ordinal.( &lt;&lt; ) (if … &lt;&gt; [] then … else …)
+                   (if … &lt;&gt; [] then … else …)```
      * simplify::
          {into:
             ```let (_x_0 : bool) = n &lt;= 1 in
@@ -7179,56 +7182,56 @@ require(['nbextensions/nbimandra/fold'], function (fold) {
           }
      * unroll
        {expr:
-          ```(let ((a!1 (|Ordinal.shift_205|
-                          (|Ordinal.Int_111| (ite (&gt;= m_2195 0) m_2195 0))
+          ```(let ((a!1 (|Ordinal.shift_208|
+                          (|Ordinal.Int_114| (ite (&gt;= m_2189 0) m_2189 0))
                    …```
         ----------------------------------------------------------------------------
         expansions: 
         }
      * unroll
        {expr:
-          ```(|Ordinal.shift_205|
-               (|Ordinal.Int_111| (ite (&gt;= m_2195 0) m_2195 0))
-               (|Ordinal.Int_111| 1))```
+          ```(|Ordinal.shift_208|
+               (|Ordinal.Int_114| (ite (&gt;= m_2189 0) m_2189 0))
+               (|Ordinal.Int_114| 1))```
         ----------------------------------------------------------------------------
         expansions: 
         }
      * unroll
        {expr:
-          ```(let ((a!1 (|Ordinal.shift_205|
-                          (|Ordinal.Int_111| (ite (&gt;= m_2195 0) m_2195 0))
+          ```(let ((a!1 (|Ordinal.shift_208|
+                          (|Ordinal.Int_114| (ite (&gt;= m_2189 0) m_2189 0))
                    …```
         ----------------------------------------------------------------------------
         expansions: 
         }
      * unroll
        {expr:
-          ```(let ((a!1 (|Ordinal.shift_205|
-                          (|Ordinal.Int_111| (ite (&gt;= m_2195 0) m_2195 0))
+          ```(let ((a!1 (|Ordinal.shift_208|
+                          (|Ordinal.Int_114| (ite (&gt;= m_2189 0) m_2189 0))
                    …```
         ----------------------------------------------------------------------------
         expansions: 
         }
      * unroll
        {expr:
-          ```(let ((a!1 (|Ordinal.shift_205|
-                          (|Ordinal.Int_111| (ite (&gt;= m_2195 0) m_2195 0))
+          ```(let ((a!1 (|Ordinal.shift_208|
+                          (|Ordinal.Int_114| (ite (&gt;= m_2189 0) m_2189 0))
                    …```
         ----------------------------------------------------------------------------
         expansions: 
         }
      * unroll
        {expr:
-          ```(let ((a!1 (|Ordinal.shift_205|
-                          (|Ordinal.Int_111| (ite (&gt;= m_2195 0) m_2195 0))
+          ```(let ((a!1 (|Ordinal.shift_208|
+                          (|Ordinal.Int_114| (ite (&gt;= m_2189 0) m_2189 0))
                    …```
         ----------------------------------------------------------------------------
         expansions: 
         }
      * unroll
        {expr:
-          ```(let ((a!1 (|Ordinal.shift_205|
-                          (|Ordinal.Int_111| (ite (&gt;= m_2195 0) m_2195 0))
+          ```(let ((a!1 (|Ordinal.shift_208|
+                          (|Ordinal.Int_114| (ite (&gt;= m_2189 0) m_2189 0))
                    …```
         ----------------------------------------------------------------------------
         expansions: 
@@ -7236,12 +7239,12 @@ require(['nbextensions/nbimandra/fold'], function (fold) {
      * Unsat))
  }</div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-127faa10-8a28-4aa3-b70f-45bc8956ad45';
+  var target = '#fold-a64e20b1-b33c-4142-a9eb-0a8342e04bcd';
   fold.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-7d17fc1d-62f8-4c9f-a297-dd6eff5eb625';
+  var target = '#fold-9b5aa9fe-276b-4e6e-8c09-917b58c02d45';
   fold.hydrate(target);
 });
 </script></div></div>
@@ -7715,7 +7718,7 @@ See https://docs.imandra.ai/imandra-docs/notebooks/proving-program-termination/
 
 
 <div class="output_html rendered_html output_subarea ">
-<div><div class="imandra-fold panel panel-default" id="fold-44852414-7baa-4ad9-8330-338dc0fe3dc5"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>termination proof</span></div></div><div class="panel-body collapse"><div><h3>Termination proof</h3><div class="imandra-fold panel panel-default" id="fold-028f211c-ebb9-4b68-a7f3-d7ba39139760"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>call `left_pad c n (c :: xs)` from `left_pad c n xs`</span></div></div><div class="panel-body collapse">{original: left_pad c n xs
+<div><div class="imandra-fold panel panel-default" id="fold-34f91e05-7419-4eb1-a1eb-61c6211fc321"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>termination proof</span></div></div><div class="panel-body collapse"><div><h3>Termination proof</h3><div class="imandra-fold panel panel-default" id="fold-4e055b8f-d195-4bbf-865d-e812372d8836"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>call `left_pad c n (c :: xs)` from `left_pad c n xs`</span></div></div><div class="panel-body collapse">{original: left_pad c n xs
  ----------------------------------------------------------------------------
  sub: left_pad c n (c :: xs)
  ----------------------------------------------------------------------------
@@ -7734,7 +7737,7 @@ See https://docs.imandra.ai/imandra-docs/notebooks/proving-program-termination/
       ----------------------------------------------------------------------------
       inductions: 0
       ----------------------------------------------------------------------------
-      search_time: `0.021s`
+      search_time: `0.014s`
       ----------------------------------------------------------------------------
       details:
         {smt_stats:
@@ -7742,53 +7745,53 @@ See https://docs.imandra.ai/imandra-docs/notebooks/proving-program-termination/
             ----------------------------------------------------------------------------
             arith-assume-eqs: 2
             ----------------------------------------------------------------------------
-            arith-make-feasible: 14
+            arith-make-feasible: 11
             ----------------------------------------------------------------------------
             arith-max-columns: 19
             ----------------------------------------------------------------------------
-            arith-conflicts: 1
+            rlimit count: 58794
             ----------------------------------------------------------------------------
-            rlimit count: 58553
+            arith-cheap-eqs: 2
             ----------------------------------------------------------------------------
-            arith-cheap-eqs: 6
+            mk clause: 22
             ----------------------------------------------------------------------------
-            mk clause: 19
+            datatype occurs check: 19
             ----------------------------------------------------------------------------
-            datatype occurs check: 13
+            mk bool var: 51
             ----------------------------------------------------------------------------
-            mk bool var: 47
+            arith-lower: 8
             ----------------------------------------------------------------------------
-            arith-lower: 10
+            datatype splits: 3
             ----------------------------------------------------------------------------
-            datatype splits: 1
-            ----------------------------------------------------------------------------
-            decisions: 15
+            decisions: 12
             ----------------------------------------------------------------------------
             arith-propagations: 2
             ----------------------------------------------------------------------------
-            propagations: 10
+            propagations: 9
             ----------------------------------------------------------------------------
             interface eqs: 2
             ----------------------------------------------------------------------------
             arith-bound-propagations-cheap: 2
             ----------------------------------------------------------------------------
-            arith-max-rows: 8
+            arith-max-rows: 9
             ----------------------------------------------------------------------------
             conflicts: 4
             ----------------------------------------------------------------------------
-            datatype accessor ax: 6
+            datatype accessor ax: 7
             ----------------------------------------------------------------------------
-            datatype constructor ax: 3
+            arith-bound-propagations-lp: 2
             ----------------------------------------------------------------------------
-            num allocs: 132328770
+            datatype constructor ax: 4
             ----------------------------------------------------------------------------
-            final checks: 6
+            num allocs: 133573013
+            ----------------------------------------------------------------------------
+            final checks: 8
             ----------------------------------------------------------------------------
             added eqs: 30
             ----------------------------------------------------------------------------
-            del clause: 16
+            del clause: 13
             ----------------------------------------------------------------------------
-            arith eq adapter: 7
+            arith eq adapter: 6
             ----------------------------------------------------------------------------
             arith-upper: 10
             ----------------------------------------------------------------------------
@@ -7799,7 +7802,7 @@ See https://docs.imandra.ai/imandra-docs/notebooks/proving-program-termination/
          }
       })
     (full:
-     * ```start[0.021s]
+     * ```start[0.014s]
             let (_x_0 : int) = List.length xs in
             let (_x_1 : int) = n - _x_0 in
             let (_x_2 : int) = if _x_1 &gt;= 0 then _x_1 else 0 in
@@ -7811,12 +7814,12 @@ See https://docs.imandra.ai/imandra-docs/notebooks/proving-program-termination/
      * simplify::
          {into:
             ```let (_x_0 : int) = List.length (c :: xs) in
-               let (_x_1 : int) = n + (-1) * _x_0 in
-               let (_x_2 : int) = List.length xs in
-               let (_x_3 : int) = n + (-1) * _x_2 in
-               (Ordinal.( &lt;&lt; ) (Ordinal.Int (if _x_1 &gt;= 0 then _x_1 else 0))
-                (Ordinal.Int (if _x_3 &gt;= 0 then _x_3 else 0)) || _x_0 &gt;= n)
-               || _x_2 &gt;= n```
+               let (_x_1 : int) = List.length xs in
+               let (_x_2 : int) = n + (-1) * _x_0 in
+               let (_x_3 : int) = n + (-1) * _x_1 in
+               (_x_0 &gt;= n || _x_1 &gt;= n)
+               || Ordinal.( &lt;&lt; ) (Ordinal.Int (if _x_2 &gt;= 0 then _x_2 else 0))
+                  (Ordinal.Int (if _x_3 &gt;= 0 then _x_3 else 0))```
           ----------------------------------------------------------------------------
           expansions: `[]`
           ----------------------------------------------------------------------------
@@ -7825,31 +7828,31 @@ See https://docs.imandra.ai/imandra-docs/notebooks/proving-program-termination/
           forward_chaining: 
           }
      * unroll
-       {expr: `(|List.length_2426| xs_2432)`
-        ----------------------------------------------------------------------------
-        expansions: 
-        }
-     * unroll
-       {expr: `(|List.length_2426| (|::_3| c_2430 xs_2432))`
-        ----------------------------------------------------------------------------
-        expansions: 
-        }
-     * unroll
        {expr:
-          ```(let ((a!1 (+ n_2431 (* (- 1) (|List.length_2426| (|::_3| c_2430 xs_2432)))))
-                   (a!2 (&gt;= (+ n_24…```
+          ```(let ((a!1 (+ n_2425 (* (- 1) (|List.length_2420| (|::| c_2424 xs_2426)))))
+                   (a!2 (&gt;= (+ n_2425…```
+        ----------------------------------------------------------------------------
+        expansions: 
+        }
+     * unroll
+       {expr: `(|List.length_2420| xs_2426)`
+        ----------------------------------------------------------------------------
+        expansions: 
+        }
+     * unroll
+       {expr: `(|List.length_2420| (|::| c_2424 xs_2426))`
         ----------------------------------------------------------------------------
         expansions: 
         }
      * Unsat))
  }</div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-028f211c-ebb9-4b68-a7f3-d7ba39139760';
+  var target = '#fold-4e055b8f-d195-4bbf-865d-e812372d8836';
   fold.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-44852414-7baa-4ad9-8330-338dc0fe3dc5';
+  var target = '#fold-34f91e05-7419-4eb1-a1eb-61c6211fc321';
   fold.hydrate(target);
 });
 </script></div></div>
@@ -7961,9 +7964,9 @@ require(['nbextensions/nbimandra/fold'], function (fold) {
        }
     ----------------------------------------------------------------------------
     hashes:
-      {left_pad: Kc6PetzyaD74Jxy0gG4O89qlJV+9E1v2+DGkaEnSMO8
+      {left_pad: S/7H3ZMPs/Dehh83pRSzwT1kHhSKLXeNEvY9Mp5fYD0
        ----------------------------------------------------------------------------
-       measure_fun.left_pad: 0pzxpoAdYrYTWnuF/mwwl2yrYY6+p1fw5OX8uGgWTKs
+       measure_fun.left_pad: tyeoCG9HH8R8TZEIsLe+stgYM/uD2oVwSuRiy9+Qfgk
        }
     }
  }</div></div>

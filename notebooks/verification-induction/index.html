@@ -33,7 +33,7 @@
         <link rel="stylesheet" href="/imandra-docs/static/nbextensions/nbimandra/styles.b466ce6f.css" type="text/css">
         <link rel="stylesheet" href="/imandra-docs/static/docs-styles.b9de737f.css" type="text/css">
         
-        <link rel="stylesheet" href="/imandra-docs/static/jekyll-styles.c96432ce.css" type="text/css">
+        <link rel="stylesheet" href="/imandra-docs/static/jekyll-styles.7b33d7b3.css" type="text/css">
         
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.css" />
 
@@ -115,7 +115,7 @@
 
         <!-- Loading mathjax macro -->
         <!-- Load mathjax -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-MML-AM_CHTML-full,Safe"> </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS_CHTML-full,Safe"> </script>
     <!-- MathJax configuration -->
     <script type="text/x-mathjax-config">
     init_mathjax = function() {
@@ -136,11 +136,6 @@
                 },
                 displayAlign: 'center',
                 CommonHTML: {
-                    linebreaks: { 
-                    automatic: true 
-                    }
-                },
-                "HTML-CSS": {
                     linebreaks: { 
                     automatic: true 
                     }
@@ -3754,7 +3749,7 @@ algebraic datatypes such as lists and trees.</p>
 
 
 <div class="output_html rendered_html output_subarea ">
-<div><div class="imandra-fold panel panel-default" id="fold-7307990d-08f5-483f-b78f-6f2af6da5b1d"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>termination proof</span></div></div><div class="panel-body collapse"><div><h3>Termination proof</h3><div class="imandra-fold panel panel-default" id="fold-b9ca3dac-5663-4000-91fc-e3e80f2eb4d4"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>call `repeat c (n - 1)` from `repeat c n`</span></div></div><div class="panel-body collapse">{original: repeat c n
+<div><div class="imandra-fold panel panel-default" id="fold-25581dc3-8f01-4ff4-8a06-c5b10c7e258b"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>termination proof</span></div></div><div class="panel-body collapse"><div><h3>Termination proof</h3><div class="imandra-fold panel panel-default" id="fold-331ac317-8205-4801-aa86-7803a1658311"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>call `repeat c (n - 1)` from `repeat c n`</span></div></div><div class="panel-body collapse">{original: repeat c n
  ----------------------------------------------------------------------------
  sub: repeat c (n - 1)
  ----------------------------------------------------------------------------
@@ -3773,7 +3768,7 @@ algebraic datatypes such as lists and trees.</p>
       ----------------------------------------------------------------------------
       inductions: 0
       ----------------------------------------------------------------------------
-      search_time: `0.013s`
+      search_time: `0.014s`
       ----------------------------------------------------------------------------
       details:
         {smt_stats:
@@ -3809,7 +3804,7 @@ algebraic datatypes such as lists and trees.</p>
             ----------------------------------------------------------------------------
             datatype accessor ax: 2
             ----------------------------------------------------------------------------
-            num allocs: 642045
+            num allocs: 641960
             ----------------------------------------------------------------------------
             final checks: 1
             ----------------------------------------------------------------------------
@@ -3828,7 +3823,7 @@ algebraic datatypes such as lists and trees.</p>
          }
       })
     (full:
-     * ```start[0.013s]
+     * ```start[0.014s]
             let (_x_0 : int) = if n &gt;= 0 then n else 0 in
             let (_x_1 : int) = n - 1 in
             let (_x_2 : int) = if _x_1 &gt;= 0 then _x_1 else 0 in
@@ -3848,7 +3843,7 @@ algebraic datatypes such as lists and trees.</p>
           }
      * unroll
        {expr:
-          ```(|Ordinal.&lt;&lt;_126| (|Ordinal.Int_111| (ite (&gt;= n_1807 1) (+ (- 1) n_1807) 0))
+          ```(|Ordinal.&lt;&lt;_129| (|Ordinal.Int_114| (ite (&gt;= n_1797 1) (+ (- 1) n_1797) 0))
                                (|Ord…```
         ----------------------------------------------------------------------------
         expansions: 
@@ -3856,12 +3851,12 @@ algebraic datatypes such as lists and trees.</p>
      * Unsat))
  }</div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-b9ca3dac-5663-4000-91fc-e3e80f2eb4d4';
+  var target = '#fold-331ac317-8205-4801-aa86-7803a1658311';
   fold.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-7307990d-08f5-483f-b78f-6f2af6da5b1d';
+  var target = '#fold-25581dc3-8f01-4ff4-8a06-c5b10c7e258b';
   fold.hydrate(target);
 });
 </script></div></div>
@@ -3952,22 +3947,21 @@ We shall induct according to a scheme derived from <span class="ansi-blue-intens
 
 <span class="ansi-cyan-intense-fg ansi-bold">Induction scheme</span>:
 
- (Is_a([], x) ==&gt; φ x y z)
- &amp;&amp; (not Is_a([], x) &amp;&amp; φ (List.tl x) y z ==&gt; φ x y z).
+ (not (x &lt;&gt; []) ==&gt; φ x y z) &amp;&amp; (x &lt;&gt; [] &amp;&amp; φ (List.tl x) y z ==&gt; φ x y z).
 
 2 nontautological subgoals.
 
 <span class="ansi-white-intense-fg ansi-bold">Subgoal 1.2</span>:
 
- H0. Is_a([], x)
 |---------------------------------------------------------------------------
- List.append x (List.append y z) = List.append (List.append x y) z
+ C0. x &lt;&gt; []
+ C1. List.append x (List.append y z) = List.append (List.append x y) z
 
 But simplification reduces this to true, using the definition of <span class="ansi-blue-intense-fg ansi-bold">List.append</span>.
 
 <span class="ansi-white-intense-fg ansi-bold">Subgoal 1.1</span>:
 
- H0. not Is_a([], x)
+ H0. x &lt;&gt; []
  H1. List.append (List.tl x) (List.append y z) =
      List.append (List.append (List.tl x) y) z
 |---------------------------------------------------------------------------
@@ -3991,19 +3985,19 @@ But simplification reduces this to true, using the definition of <span class="an
 
 
 <div class="output_html rendered_html output_subarea ">
-<div><div style="font-size: 1.2em; padding: 0.5em; border-top: 1px solid green; border-bottom: 1px solid green"><i class="fa fa-check-circle" style="margin-right: 0.5em; color: green"></i><span>Proved</span></div><div><div class="imandra-proof-top"><div class="imandra-fold panel panel-default" id="fold-e611f15d-f256-421d-8b16-de7f492b91fa"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>proof</span></div></div><div class="panel-body collapse"><div class="imandra-proof"><div class="imandra-alternatives" id="alt-8c13b65a-3471-426c-8ef6-938aa2b3a14a"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>summary</a></li><li class="" data-toggle="tab"><a>full</a></li><li class="" data-toggle="tab"><a>graph</a></li></ul><div class="tab-content"><div class="tab-pane active">{ground_instances: 0
+<div><div style="font-size: 1.2em; padding: 0.5em; border-top: 1px solid green; border-bottom: 1px solid green"><i class="fa fa-check-circle" style="margin-right: 0.5em; color: green"></i><span>Proved</span></div><div><div class="imandra-proof-top"><div class="imandra-fold panel panel-default" id="fold-3b320793-3230-48db-a95a-5aac53053698"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>proof</span></div></div><div class="panel-body collapse"><div class="imandra-proof"><div class="imandra-alternatives" id="alt-90b64aea-a0de-4917-be15-999a27cd505b"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>summary</a></li><li class="" data-toggle="tab"><a>full</a></li><li class="" data-toggle="tab"><a>graph</a></li></ul><div class="tab-content"><div class="tab-pane active">{ground_instances: 0
  ----------------------------------------------------------------------------
  definitions: 5
  ----------------------------------------------------------------------------
  inductions: 1
  ----------------------------------------------------------------------------
- search_time: `0.083s`
- }</div><div class="tab-pane"><div class="imandra-fold panel panel-default" id="fold-fcbaec27-48db-4823-b034-f938cf72476d"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.083s, &quot;Goal&quot;]
+ search_time: `0.082s`
+ }</div><div class="tab-pane"><div class="imandra-fold panel panel-default" id="fold-6acdf8e4-8a98-4b7d-b7dc-4b903b643a64"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.082s, &quot;Goal&quot;]
   List.append ( :var_0: ) (List.append ( :var_1: ) ( :var_2: )) =
-  List.append (List.append ( :var_0: ) ( :var_1: )) ( :var_2: )</pre></li><li><div><h4>subproof</h4><div class="imandra-fold panel panel-default" id="fold-c87421f6-b97e-463c-bb28-ece2e9043aef"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>List.append x (List.append y z) = List.append (List.append x y) z</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.083s, &quot;1&quot;]
+  List.append (List.append ( :var_0: ) ( :var_1: )) ( :var_2: )</pre></li><li><div><h4>subproof</h4><div class="imandra-fold panel panel-default" id="fold-eb9e821f-5f08-4619-a4cc-96d0f9f52161"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>List.append x (List.append y z) = List.append (List.append x y) z</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.082s, &quot;1&quot;]
   List.append x (List.append y z) = List.append (List.append x y) z</pre></li><li><pre>induction on (functional ?)
-:scheme (Is_a([], x) ==&gt; φ x y z)
-        &amp;&amp; (not Is_a([], x) &amp;&amp; φ (List.tl x) y z ==&gt; φ x y z)</pre></li><li><div><pre>Split (let (_x_0 : bool) = not Is_a([], x) in
+:scheme (not (x &lt;&gt; []) ==&gt; φ x y z)
+        &amp;&amp; (x &lt;&gt; [] &amp;&amp; φ (List.tl x) y z ==&gt; φ x y z)</pre></li><li><div><pre>Split (let (_x_0 : bool) = x &lt;&gt; [] in
        let (_x_1 : sko_ty_0 list) = List.append y z in
        let (_x_2 : bool)
            = List.append x _x_1 = List.append (List.append x y) z
@@ -4014,23 +4008,23 @@ But simplification reduces this to true, using the definition of <span class="an
            (_x_0
             &amp;&amp; List.append _x_3 _x_1 = List.append (List.append _x_3 y) z)
            || _x_2)
-       :cases [not Is_a([], x)
+       :cases [x &lt;&gt; []
                || List.append x (List.append y z) =
                   List.append (List.append x y) z;
                let (_x_0 : sko_ty_0 list) = List.tl x in
                let (_x_1 : sko_ty_0 list) = List.append y z in
-               (Is_a([], x)
+               (not (x &lt;&gt; [])
                 || not
                    (List.append _x_0 _x_1 =
                     List.append (List.append _x_0 y) z))
-               || List.append x _x_1 = List.append (List.append x y) z])</pre><ul><li><div><h5>subproof</h5><div class="imandra-fold panel panel-default" id="fold-9142a530-696e-4664-914b-c7f82777717e"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>let (_x_0 : sko_ty_0 list) = List.tl x in
+               || List.append x _x_1 = List.append (List.append x y) z])</pre><ul><li><div><h5>subproof</h5><div class="imandra-fold panel panel-default" id="fold-0446f89a-0f7e-49cf-aa12-b90f80961502"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>let (_x_0 : sko_ty_0 list) = List.tl x in
 let (_x_1 : sko_ty_0 list) = List.append y z in
-(Is_a([], x)
+(not (x &lt;&gt; [])
  || not (List.append _x_0 _x_1 = List.append (List.append _x_0 y) z))
-|| List.append x _x_1 = List.append (List.append x y) z</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.033s, &quot;1.1&quot;]
+|| List.append x _x_1 = List.append (List.append x y) z</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.044s, &quot;1.1&quot;]
   let (_x_0 : sko_ty_0 list) = List.tl x in
   let (_x_1 : sko_ty_0 list) = List.append y z in
-  (Is_a([], x)
+  (not (x &lt;&gt; [])
    || not (List.append _x_0 _x_1 = List.append (List.append _x_0 y) z))
   || List.append x _x_1 = List.append (List.append x y) z</pre></li><li><div><h6>simplify</h6>{into: `true`
  ----------------------------------------------------------------------------
@@ -4041,12 +4035,11 @@ let (_x_1 : sko_ty_0 list) = List.append y z in
  forward_chaining: 
  }</div></li></ul></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-9142a530-696e-4664-914b-c7f82777717e';
+  var target = '#fold-0446f89a-0f7e-49cf-aa12-b90f80961502';
   fold.hydrate(target);
 });
-</script></div></div></li><li><div><h5>subproof</h5><div class="imandra-fold panel panel-default" id="fold-59eed347-65f0-4337-92c6-66615b01146b"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>not Is_a([], x)
-|| List.append x (List.append y z) = List.append (List.append x y) z</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.033s, &quot;1.2&quot;]
-  not Is_a([], x)
+</script></div></div></li><li><div><h5>subproof</h5><div class="imandra-fold panel panel-default" id="fold-cf1966dd-6b90-43c0-a711-e08a09f468b9"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>x &lt;&gt; [] || List.append x (List.append y z) = List.append (List.append x y) z</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.044s, &quot;1.2&quot;]
+  x &lt;&gt; []
   || List.append x (List.append y z) = List.append (List.append x y) z</pre></li><li><div><h6>simplify</h6>{into: `true`
  ----------------------------------------------------------------------------
  expansions: `[List.append, List.append]`
@@ -4056,40 +4049,40 @@ require(['nbextensions/nbimandra/fold'], function (fold) {
  forward_chaining: 
  }</div></li></ul></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-59eed347-65f0-4337-92c6-66615b01146b';
+  var target = '#fold-cf1966dd-6b90-43c0-a711-e08a09f468b9';
   fold.hydrate(target);
 });
 </script></div></div></li></ul></div></li></ul></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-c87421f6-b97e-463c-bb28-ece2e9043aef';
+  var target = '#fold-eb9e821f-5f08-4619-a4cc-96d0f9f52161';
   fold.hydrate(target);
 });
 </script></div></div></li></ul></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-fcbaec27-48db-4823-b034-f938cf72476d';
+  var target = '#fold-6acdf8e4-8a98-4b7d-b7dc-4b903b643a64';
   fold.hydrate(target);
 });
-</script></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-5a0de505-f632-477e-9aeb-2331e751cb77"><textarea style="display: none">digraph &quot;proof&quot; {
-p_23 [label=&quot;Start (List.append ( :var_0: ) (List.append ( :var_1: ) ( :var_2: )) =\l       List.append (List.append ( :var_0: ) ( :var_1: )) ( :var_2: )\l       :name \&quot;Goal\&quot; :time 0.083s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+</script></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-108ed63f-4289-4d9d-a621-6d12b96f2ff4"><textarea style="display: none">digraph &quot;proof&quot; {
+p_23 [label=&quot;Start (List.append ( :var_0: ) (List.append ( :var_1: ) ( :var_2: )) =\l       List.append (List.append ( :var_0: ) ( :var_1: )) ( :var_2: )\l       :name \&quot;Goal\&quot; :time 0.082s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_23 -&gt; p_21 [label=&quot;&quot;];
 subgraph cluster_22 {
   color=blue;
-p_21 [label=&quot;Start (List.append x (List.append y z) = List.append (List.append x y) z\l       :name \&quot;1\&quot; :time 0.083s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+p_21 [label=&quot;Start (List.append x (List.append y z) = List.append (List.append x y) z\l       :name \&quot;1\&quot; :time 0.082s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_21 -&gt; p_20 [label=&quot;&quot;];
-p_20 [label=&quot;Induct ((functional ?),\l        :scheme (Is_a([], x) ==\&gt; φ x y z)\l                &amp;&amp; (not Is_a([], x) &amp;&amp; φ (List.tl x) y z ==\&gt; φ x y z))&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+p_20 [label=&quot;Induct ((functional ?),\l        :scheme (not (x \&lt;\&gt; []) ==\&gt; φ x y z)\l                &amp;&amp; (x \&lt;\&gt; [] &amp;&amp; φ (List.tl x) y z ==\&gt; φ x y z))&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_20 -&gt; p_19 [label=&quot;&quot;];
-p_19 [label=&quot;Split (let (_x_0 : bool) = not Is_a([], x) in\l       let (_x_1 : sko_ty_0 list) = List.append y z in\l       let (_x_2 : bool)\l           = List.append x _x_1 = List.append (List.append x y) z\l       in\l       let (_x_3 : sko_ty_0 list) = List.tl x in\l       (_x_0 \|\| _x_2)\l       &amp;&amp; (not\l           (_x_0\l            &amp;&amp; List.append _x_3 _x_1 = List.append (List.append _x_3 y) z)\l           \|\| _x_2)\l       :cases [not Is_a([], x)\l               \|\| List.append x (List.append y z) =\l                  List.append (List.append x y) z;\l               let (_x_0 : sko_ty_0 list) = List.tl x in\l               let (_x_1 : sko_ty_0 list) = List.append y z in\l               (Is_a([], x)\l                \|\| not\l                   (List.append _x_0 _x_1 =\l                    List.append (List.append _x_0 y) z))\l               \|\| List.append x _x_1 = List.append (List.append x y) z])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+p_19 [label=&quot;Split (let (_x_0 : bool) = x \&lt;\&gt; [] in\l       let (_x_1 : sko_ty_0 list) = List.append y z in\l       let (_x_2 : bool)\l           = List.append x _x_1 = List.append (List.append x y) z\l       in\l       let (_x_3 : sko_ty_0 list) = List.tl x in\l       (_x_0 \|\| _x_2)\l       &amp;&amp; (not\l           (_x_0\l            &amp;&amp; List.append _x_3 _x_1 = List.append (List.append _x_3 y) z)\l           \|\| _x_2)\l       :cases [x \&lt;\&gt; []\l               \|\| List.append x (List.append y z) =\l                  List.append (List.append x y) z;\l               let (_x_0 : sko_ty_0 list) = List.tl x in\l               let (_x_1 : sko_ty_0 list) = List.append y z in\l               (not (x \&lt;\&gt; [])\l                \|\| not\l                   (List.append _x_0 _x_1 =\l                    List.append (List.append _x_0 y) z))\l               \|\| List.append x _x_1 = List.append (List.append x y) z])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_19 -&gt; p_14 [label=&quot;&quot;];
 subgraph cluster_15 {
   color=blue;
-p_14 [label=&quot;Start (let (_x_0 : sko_ty_0 list) = List.tl x in\l       let (_x_1 : sko_ty_0 list) = List.append y z in\l       (Is_a([], x)\l        \|\| not (List.append _x_0 _x_1 = List.append (List.append _x_0 y) z))\l       \|\| List.append x _x_1 = List.append (List.append x y) z :name \&quot;1.1\&quot;\l       :time 0.033s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+p_14 [label=&quot;Start (let (_x_0 : sko_ty_0 list) = List.tl x in\l       let (_x_1 : sko_ty_0 list) = List.append y z in\l       (not (x \&lt;\&gt; [])\l        \|\| not (List.append _x_0 _x_1 = List.append (List.append _x_0 y) z))\l       \|\| List.append x _x_1 = List.append (List.append x y) z :name \&quot;1.1\&quot;\l       :time 0.044s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_14 -&gt; p_13 [label=&quot;&quot;];
 p_13 [label=&quot;Simplify (true :expansions [List.append; List.append; List.append] :rw []\l          :fc [])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 }
 p_19 -&gt; p_17 [label=&quot;&quot;];
 subgraph cluster_18 {
   color=blue;
-p_17 [label=&quot;Start (not Is_a([], x)\l       \|\| List.append x (List.append y z) = List.append (List.append x y) z\l       :name \&quot;1.2\&quot; :time 0.033s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+p_17 [label=&quot;Start (x \&lt;\&gt; []\l       \|\| List.append x (List.append y z) = List.append (List.append x y) z\l       :name \&quot;1.2\&quot; :time 0.044s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_17 -&gt; p_16 [label=&quot;&quot;];
 p_16 [label=&quot;Simplify (true :expansions [List.append; List.append] :rw [] :fc [])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 }
@@ -4097,17 +4090,17 @@ p_16 [label=&quot;Simplify (true :expansions [List.append; List.append] :rw [] :
 }
 </textarea><button class="btn btn-primary">Load graph</button><div class="imandra-graphviz-loading display-none">Loading..</div><div class="imandra-graphviz-target"></div><script>
 require(['nbextensions/nbimandra/graphviz'], function (graphviz) {
-  var target = '#graphviz-5a0de505-f632-477e-9aeb-2331e751cb77';
+  var target = '#graphviz-108ed63f-4289-4d9d-a621-6d12b96f2ff4';
   graphviz.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-8c13b65a-3471-426c-8ef6-938aa2b3a14a';
+  var target = '#alt-90b64aea-a0de-4917-be15-999a27cd505b';
   alternatives.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-e611f15d-f256-421d-8b16-de7f492b91fa';
+  var target = '#fold-3b320793-3230-48db-a95a-5aac53053698';
   fold.hydrate(target);
 });
 </script></div></div></div></div>
@@ -4174,22 +4167,22 @@ We shall induct according to a scheme derived from <span class="ansi-blue-intens
 
 <span class="ansi-cyan-intense-fg ansi-bold">Induction scheme</span>:
 
- (Is_a([], x) ==&gt; φ x y) &amp;&amp; (not Is_a([], x) &amp;&amp; φ (List.tl x) y ==&gt; φ x y).
+ (not (x &lt;&gt; []) ==&gt; φ x y) &amp;&amp; (x &lt;&gt; [] &amp;&amp; φ (List.tl x) y ==&gt; φ x y).
 
 2 nontautological subgoals.
 
 <span class="ansi-white-intense-fg ansi-bold">Subgoal 1.2</span>:
 
- H0. Is_a([], x)
 |---------------------------------------------------------------------------
- List.rev (List.append x y) = List.append (List.rev y) (List.rev x)
+ C0. x &lt;&gt; []
+ C1. List.rev (List.append x y) = List.append (List.rev y) (List.rev x)
 
 But simplification reduces this to true, using the definitions of <span class="ansi-blue-intense-fg ansi-bold">List.append
 </span>and<span class="ansi-blue-intense-fg ansi-bold"> List.rev</span>, and the rewrite rule <span class="ansi-magenta-intense-fg ansi-bold">List.append_to_nil</span>.
 
 <span class="ansi-white-intense-fg ansi-bold">Subgoal 1.1</span>:
 
- H0. not Is_a([], x)
+ H0. x &lt;&gt; []
  H1. List.rev (List.append (List.tl x) y) =
      List.append (List.rev y) (List.rev (List.tl x))
 |---------------------------------------------------------------------------
@@ -4199,13 +4192,12 @@ This simplifies, using the definitions of <span class="ansi-blue-intense-fg ansi
 
 <span class="ansi-white-intense-fg ansi-bold">Subgoal 1.1&#39;</span>:
 
- H0. List.rev (List.append (List.tl x) y) =
+ H0. x &lt;&gt; []
+ H1. List.rev (List.append (List.tl x) y) =
      List.append (List.rev y) (List.rev (List.tl x))
 |---------------------------------------------------------------------------
- C0. Is_a([], x)
- C1. List.append (List.rev (List.append (List.tl x) y)) [List.hd x] =
-     List.append (List.rev y)
-     (List.append (List.rev (List.tl x)) [List.hd x])
+ List.append (List.rev (List.append (List.tl x) y)) [List.hd x] =
+ List.append (List.rev y) (List.append (List.rev (List.tl x)) [List.hd x])
 
 But simplification reduces this to true, using the rewrite rule <span class="ansi-magenta-intense-fg ansi-bold">assoc_append</span>.
 
@@ -4228,19 +4220,19 @@ But simplification reduces this to true, using the rewrite rule <span class="ans
 
 
 <div class="output_html rendered_html output_subarea ">
-<div><div style="font-size: 1.2em; padding: 0.5em; border-top: 1px solid green; border-bottom: 1px solid green"><i class="fa fa-check-circle" style="margin-right: 0.5em; color: green"></i><span>Proved</span></div><div><div class="imandra-proof-top"><div class="imandra-fold panel panel-default" id="fold-7dbf186f-e4db-4b95-aba3-a1ccfe02fd38"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>proof</span></div></div><div class="panel-body collapse"><div class="imandra-proof"><div class="imandra-alternatives" id="alt-58de8b91-f091-494d-b0d0-f6e92c705c0c"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>summary</a></li><li class="" data-toggle="tab"><a>full</a></li><li class="" data-toggle="tab"><a>graph</a></li></ul><div class="tab-content"><div class="tab-pane active">{ground_instances: 0
+<div><div style="font-size: 1.2em; padding: 0.5em; border-top: 1px solid green; border-bottom: 1px solid green"><i class="fa fa-check-circle" style="margin-right: 0.5em; color: green"></i><span>Proved</span></div><div><div class="imandra-proof-top"><div class="imandra-fold panel panel-default" id="fold-4efad945-934c-40de-a1c6-22df0bbcd47a"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>proof</span></div></div><div class="panel-body collapse"><div class="imandra-proof"><div class="imandra-alternatives" id="alt-d86f5407-a550-45bc-a465-6dc309b65105"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>summary</a></li><li class="" data-toggle="tab"><a>full</a></li><li class="" data-toggle="tab"><a>graph</a></li></ul><div class="tab-content"><div class="tab-pane active">{ground_instances: 0
  ----------------------------------------------------------------------------
  definitions: 6
  ----------------------------------------------------------------------------
  inductions: 1
  ----------------------------------------------------------------------------
- search_time: `0.364s`
- }</div><div class="tab-pane"><div class="imandra-fold panel panel-default" id="fold-ef4c2493-3797-4f81-947c-40b91392d607"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.364s, &quot;Goal&quot;]
+ search_time: `0.158s`
+ }</div><div class="tab-pane"><div class="imandra-fold panel panel-default" id="fold-a36f37a3-f3ff-4596-b6bd-2f6e52b70545"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.158s, &quot;Goal&quot;]
   List.rev (List.append ( :var_0: ) ( :var_1: )) =
-  List.append (List.rev ( :var_1: )) (List.rev ( :var_0: ))</pre></li><li><div><h4>subproof</h4><div class="imandra-fold panel panel-default" id="fold-dbfb6e1a-63d8-41fe-b9d2-8e0f1043e54c"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>List.rev (List.append x y) = List.append (List.rev y) (List.rev x)</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.363s, &quot;1&quot;]
+  List.append (List.rev ( :var_1: )) (List.rev ( :var_0: ))</pre></li><li><div><h4>subproof</h4><div class="imandra-fold panel panel-default" id="fold-2313ffd4-b68e-4189-a3e3-3f9b81002174"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>List.rev (List.append x y) = List.append (List.rev y) (List.rev x)</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.158s, &quot;1&quot;]
   List.rev (List.append x y) = List.append (List.rev y) (List.rev x)</pre></li><li><pre>induction on (functional ?)
-:scheme (Is_a([], x) ==&gt; φ x y)
-        &amp;&amp; (not Is_a([], x) &amp;&amp; φ (List.tl x) y ==&gt; φ x y)</pre></li><li><div><pre>Split (let (_x_0 : bool) = not Is_a([], x) in
+:scheme (not (x &lt;&gt; []) ==&gt; φ x y)
+        &amp;&amp; (x &lt;&gt; [] &amp;&amp; φ (List.tl x) y ==&gt; φ x y)</pre></li><li><div><pre>Split (let (_x_0 : bool) = x &lt;&gt; [] in
        let (_x_1 : sko_ty_0 list) = List.rev y in
        let (_x_2 : bool)
            = List.rev (List.append x y) = List.append _x_1 (List.rev x)
@@ -4252,23 +4244,23 @@ But simplification reduces this to true, using the rewrite rule <span class="ans
             &amp;&amp; List.rev (List.append _x_3 y) =
                List.append _x_1 (List.rev _x_3))
            || _x_2)
-       :cases [not Is_a([], x)
+       :cases [x &lt;&gt; []
                || List.rev (List.append x y) =
                   List.append (List.rev y) (List.rev x);
                let (_x_0 : sko_ty_0 list) = List.tl x in
                let (_x_1 : sko_ty_0 list) = List.rev y in
-               (Is_a([], x)
+               (not (x &lt;&gt; [])
                 || not
                    (List.rev (List.append _x_0 y) =
                     List.append _x_1 (List.rev _x_0)))
-               || List.rev (List.append x y) = List.append _x_1 (List.rev x)])</pre><ul><li><div><h5>subproof</h5><div class="imandra-fold panel panel-default" id="fold-baf9e28a-2dd6-4ba6-a2da-a2cbe8a57935"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>let (_x_0 : sko_ty_0 list) = List.tl x in
+               || List.rev (List.append x y) = List.append _x_1 (List.rev x)])</pre><ul><li><div><h5>subproof</h5><div class="imandra-fold panel panel-default" id="fold-dd9a583b-fde5-4d77-8a77-3accc7fbf828"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>let (_x_0 : sko_ty_0 list) = List.tl x in
 let (_x_1 : sko_ty_0 list) = List.rev y in
-(Is_a([], x)
+(not (x &lt;&gt; [])
  || not (List.rev (List.append _x_0 y) = List.append _x_1 (List.rev _x_0)))
-|| List.rev (List.append x y) = List.append _x_1 (List.rev x)</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.291s, &quot;1.1&quot;]
+|| List.rev (List.append x y) = List.append _x_1 (List.rev x)</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.117s, &quot;1.1&quot;]
   let (_x_0 : sko_ty_0 list) = List.tl x in
   let (_x_1 : sko_ty_0 list) = List.rev y in
-  (Is_a([], x)
+  (not (x &lt;&gt; [])
    || not (List.rev (List.append _x_0 y) = List.append _x_1 (List.rev _x_0)))
   || List.rev (List.append x y) = List.append _x_1 (List.rev x)</pre></li><li><div><h6>simplify</h6>{into:
    ```let (_x_0 : sko_ty_0 list) = List.tl x in
@@ -4276,7 +4268,7 @@ let (_x_1 : sko_ty_0 list) = List.rev y in
       let (_x_2 : sko_ty_0 list) = List.rev y in
       let (_x_3 : sko_ty_0 list) = List.rev _x_0 in
       let (_x_4 : sko_ty_0 list) = [List.hd x] in
-      (Is_a([], x) || not (_x_1 = List.append _x_2 _x_3))
+      (not (x &lt;&gt; []) || not (_x_1 = List.append _x_2 _x_3))
       || List.append _x_1 _x_4 = List.append _x_2 (List.append _x_3 _x_4)```
  ----------------------------------------------------------------------------
  expansions: `[List.rev, List.rev, List.append]`
@@ -4293,12 +4285,11 @@ let (_x_1 : sko_ty_0 list) = List.rev y in
  forward_chaining: 
  }</div></li></ul></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-baf9e28a-2dd6-4ba6-a2da-a2cbe8a57935';
+  var target = '#fold-dd9a583b-fde5-4d77-8a77-3accc7fbf828';
   fold.hydrate(target);
 });
-</script></div></div></li><li><div><h5>subproof</h5><div class="imandra-fold panel panel-default" id="fold-b470bc58-b16a-4919-9bf6-cfadaec4a07f"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>not Is_a([], x)
-|| List.rev (List.append x y) = List.append (List.rev y) (List.rev x)</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.291s, &quot;1.2&quot;]
-  not Is_a([], x)
+</script></div></div></li><li><div><h5>subproof</h5><div class="imandra-fold panel panel-default" id="fold-e4a47673-8c22-4c9f-bad5-9fa7c4b09bd0"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>x &lt;&gt; [] || List.rev (List.append x y) = List.append (List.rev y) (List.rev x)</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.117s, &quot;1.2&quot;]
+  x &lt;&gt; []
   || List.rev (List.append x y) = List.append (List.rev y) (List.rev x)</pre></li><li><div><h6>simplify</h6>{into: `true`
  ----------------------------------------------------------------------------
  expansions: `[List.append, List.rev, List.append]`
@@ -4308,42 +4299,42 @@ require(['nbextensions/nbimandra/fold'], function (fold) {
  forward_chaining: 
  }</div></li></ul></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-b470bc58-b16a-4919-9bf6-cfadaec4a07f';
+  var target = '#fold-e4a47673-8c22-4c9f-bad5-9fa7c4b09bd0';
   fold.hydrate(target);
 });
 </script></div></div></li></ul></div></li></ul></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-dbfb6e1a-63d8-41fe-b9d2-8e0f1043e54c';
+  var target = '#fold-2313ffd4-b68e-4189-a3e3-3f9b81002174';
   fold.hydrate(target);
 });
 </script></div></div></li></ul></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-ef4c2493-3797-4f81-947c-40b91392d607';
+  var target = '#fold-a36f37a3-f3ff-4596-b6bd-2f6e52b70545';
   fold.hydrate(target);
 });
-</script></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-390c741e-ae90-459f-a270-8f5cb2120ad0"><textarea style="display: none">digraph &quot;proof&quot; {
-p_44 [label=&quot;Start (List.rev (List.append ( :var_0: ) ( :var_1: )) =\l       List.append (List.rev ( :var_1: )) (List.rev ( :var_0: )) :name \&quot;Goal\&quot;\l       :time 0.364s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+</script></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-7a85c474-bcb3-4e84-b153-a90e972d437a"><textarea style="display: none">digraph &quot;proof&quot; {
+p_44 [label=&quot;Start (List.rev (List.append ( :var_0: ) ( :var_1: )) =\l       List.append (List.rev ( :var_1: )) (List.rev ( :var_0: )) :name \&quot;Goal\&quot;\l       :time 0.158s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_44 -&gt; p_42 [label=&quot;&quot;];
 subgraph cluster_43 {
   color=blue;
-p_42 [label=&quot;Start (List.rev (List.append x y) = List.append (List.rev y) (List.rev x)\l       :name \&quot;1\&quot; :time 0.363s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+p_42 [label=&quot;Start (List.rev (List.append x y) = List.append (List.rev y) (List.rev x)\l       :name \&quot;1\&quot; :time 0.158s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_42 -&gt; p_41 [label=&quot;&quot;];
-p_41 [label=&quot;Induct ((functional ?),\l        :scheme (Is_a([], x) ==\&gt; φ x y)\l                &amp;&amp; (not Is_a([], x) &amp;&amp; φ (List.tl x) y ==\&gt; φ x y))&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+p_41 [label=&quot;Induct ((functional ?),\l        :scheme (not (x \&lt;\&gt; []) ==\&gt; φ x y)\l                &amp;&amp; (x \&lt;\&gt; [] &amp;&amp; φ (List.tl x) y ==\&gt; φ x y))&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_41 -&gt; p_40 [label=&quot;&quot;];
-p_40 [label=&quot;Split (let (_x_0 : bool) = not Is_a([], x) in\l       let (_x_1 : sko_ty_0 list) = List.rev y in\l       let (_x_2 : bool)\l           = List.rev (List.append x y) = List.append _x_1 (List.rev x)\l       in\l       let (_x_3 : sko_ty_0 list) = List.tl x in\l       (_x_0 \|\| _x_2)\l       &amp;&amp; (not\l           (_x_0\l            &amp;&amp; List.rev (List.append _x_3 y) =\l               List.append _x_1 (List.rev _x_3))\l           \|\| _x_2)\l       :cases [not Is_a([], x)\l               \|\| List.rev (List.append x y) =\l                  List.append (List.rev y) (List.rev x);\l               let (_x_0 : sko_ty_0 list) = List.tl x in\l               let (_x_1 : sko_ty_0 list) = List.rev y in\l               (Is_a([], x)\l                \|\| not\l                   (List.rev (List.append _x_0 y) =\l                    List.append _x_1 (List.rev _x_0)))\l               \|\| List.rev (List.append x y) = List.append _x_1 (List.rev x)])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+p_40 [label=&quot;Split (let (_x_0 : bool) = x \&lt;\&gt; [] in\l       let (_x_1 : sko_ty_0 list) = List.rev y in\l       let (_x_2 : bool)\l           = List.rev (List.append x y) = List.append _x_1 (List.rev x)\l       in\l       let (_x_3 : sko_ty_0 list) = List.tl x in\l       (_x_0 \|\| _x_2)\l       &amp;&amp; (not\l           (_x_0\l            &amp;&amp; List.rev (List.append _x_3 y) =\l               List.append _x_1 (List.rev _x_3))\l           \|\| _x_2)\l       :cases [x \&lt;\&gt; []\l               \|\| List.rev (List.append x y) =\l                  List.append (List.rev y) (List.rev x);\l               let (_x_0 : sko_ty_0 list) = List.tl x in\l               let (_x_1 : sko_ty_0 list) = List.rev y in\l               (not (x \&lt;\&gt; [])\l                \|\| not\l                   (List.rev (List.append _x_0 y) =\l                    List.append _x_1 (List.rev _x_0)))\l               \|\| List.rev (List.append x y) = List.append _x_1 (List.rev x)])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_40 -&gt; p_35 [label=&quot;&quot;];
 subgraph cluster_36 {
   color=blue;
-p_35 [label=&quot;Start (let (_x_0 : sko_ty_0 list) = List.tl x in\l       let (_x_1 : sko_ty_0 list) = List.rev y in\l       (Is_a([], x)\l        \|\| not\l           (List.rev (List.append _x_0 y) = List.append _x_1 (List.rev _x_0)))\l       \|\| List.rev (List.append x y) = List.append _x_1 (List.rev x)\l       :name \&quot;1.1\&quot; :time 0.291s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+p_35 [label=&quot;Start (let (_x_0 : sko_ty_0 list) = List.tl x in\l       let (_x_1 : sko_ty_0 list) = List.rev y in\l       (not (x \&lt;\&gt; [])\l        \|\| not\l           (List.rev (List.append _x_0 y) = List.append _x_1 (List.rev _x_0)))\l       \|\| List.rev (List.append x y) = List.append _x_1 (List.rev x)\l       :name \&quot;1.1\&quot; :time 0.117s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_35 -&gt; p_34 [label=&quot;&quot;];
-p_34 [label=&quot;Simplify (let (_x_0 : sko_ty_0 list) = List.tl x in\l          let (_x_1 : sko_ty_0 list) = List.rev (List.append _x_0 y) in\l          let (_x_2 : sko_ty_0 list) = List.rev y in\l          let (_x_3 : sko_ty_0 list) = List.rev _x_0 in\l          let (_x_4 : sko_ty_0 list) = [List.hd x] in\l          (Is_a([], x) \|\| not (_x_1 = List.append _x_2 _x_3))\l          \|\| List.append _x_1 _x_4 = List.append _x_2 (List.append _x_3 _x_4)\l          :expansions [List.rev; List.rev; List.append] :rw [] :fc [])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+p_34 [label=&quot;Simplify (let (_x_0 : sko_ty_0 list) = List.tl x in\l          let (_x_1 : sko_ty_0 list) = List.rev (List.append _x_0 y) in\l          let (_x_2 : sko_ty_0 list) = List.rev y in\l          let (_x_3 : sko_ty_0 list) = List.rev _x_0 in\l          let (_x_4 : sko_ty_0 list) = [List.hd x] in\l          (not (x \&lt;\&gt; []) \|\| not (_x_1 = List.append _x_2 _x_3))\l          \|\| List.append _x_1 _x_4 = List.append _x_2 (List.append _x_3 _x_4)\l          :expansions [List.rev; List.rev; List.append] :rw [] :fc [])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_34 -&gt; p_33 [label=&quot;&quot;];
 p_33 [label=&quot;Simplify (true :expansions [] :rw [assoc_append] :fc [])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 }
 p_40 -&gt; p_38 [label=&quot;&quot;];
 subgraph cluster_39 {
   color=blue;
-p_38 [label=&quot;Start (not Is_a([], x)\l       \|\| List.rev (List.append x y) = List.append (List.rev y) (List.rev x)\l       :name \&quot;1.2\&quot; :time 0.291s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+p_38 [label=&quot;Start (x \&lt;\&gt; []\l       \|\| List.rev (List.append x y) = List.append (List.rev y) (List.rev x)\l       :name \&quot;1.2\&quot; :time 0.117s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_38 -&gt; p_37 [label=&quot;&quot;];
 p_37 [label=&quot;Simplify (true :expansions [List.append; List.rev; List.append]\l          :rw [List.append_to_nil] :fc [])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 }
@@ -4351,17 +4342,17 @@ p_37 [label=&quot;Simplify (true :expansions [List.append; List.rev; List.append
 }
 </textarea><button class="btn btn-primary">Load graph</button><div class="imandra-graphviz-loading display-none">Loading..</div><div class="imandra-graphviz-target"></div><script>
 require(['nbextensions/nbimandra/graphviz'], function (graphviz) {
-  var target = '#graphviz-390c741e-ae90-459f-a270-8f5cb2120ad0';
+  var target = '#graphviz-7a85c474-bcb3-4e84-b153-a90e972d437a';
   graphviz.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-58de8b91-f091-494d-b0d0-f6e92c705c0c';
+  var target = '#alt-d86f5407-a550-45bc-a465-6dc309b65105';
   alternatives.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-7dbf186f-e4db-4b95-aba3-a1ccfe02fd38';
+  var target = '#fold-4efad945-934c-40de-a1c6-22df0bbcd47a';
   fold.hydrate(target);
 });
 </script></div></div></div></div>
@@ -4430,8 +4421,7 @@ We shall induct according to a scheme derived from <span class="ansi-blue-intens
 
 <span class="ansi-cyan-intense-fg ansi-bold">Induction scheme</span>:
 
- (Is_a([], lst) ==&gt; φ lst)
- &amp;&amp; (not Is_a([], lst) &amp;&amp; φ (List.tl lst) ==&gt; φ lst).
+ (not (lst &lt;&gt; []) ==&gt; φ lst) &amp;&amp; (lst &lt;&gt; [] &amp;&amp; φ (List.tl lst) ==&gt; φ lst).
 
 2 nontautological subgoals.
 
@@ -4439,9 +4429,8 @@ We shall induct according to a scheme derived from <span class="ansi-blue-intens
 
  H0. List.for_all (fun x -&gt; x &gt; 0) lst
  H1. List.fold_right ( + ) 1 lst &lt;= 0
- H2. Is_a([], lst)
 |---------------------------------------------------------------------------
- false
+ lst &lt;&gt; []
 
 But simplification reduces this to true, using the definition of
 <span class="ansi-blue-intense-fg ansi-bold">List.fold_right</span>.
@@ -4450,7 +4439,7 @@ But simplification reduces this to true, using the definition of
 
  H0. List.for_all (fun x -&gt; x &gt; 0) lst
  H1. List.fold_right ( + ) 1 lst &lt;= 0
- H2. not Is_a([], lst)
+ H2. lst &lt;&gt; []
  H3. not (List.for_all (fun x -&gt; x &gt; 0) (List.tl lst))
      || not (List.fold_right ( + ) 1 (List.tl lst) &lt;= 0)
 |---------------------------------------------------------------------------
@@ -4476,52 +4465,50 @@ But simplification reduces this to true, using the definitions of
 
 
 <div class="output_html rendered_html output_subarea ">
-<div><div style="font-size: 1.2em; padding: 0.5em; border-top: 1px solid green; border-bottom: 1px solid green"><i class="fa fa-check-circle" style="margin-right: 0.5em; color: green"></i><span>Proved</span></div><div><div class="imandra-proof-top"><div class="imandra-fold panel panel-default" id="fold-2a080dc1-99c3-4ca4-a82c-db54fc1b38ab"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>proof</span></div></div><div class="panel-body collapse"><div class="imandra-proof"><div class="imandra-alternatives" id="alt-f0733535-f3fa-4b6e-b0fe-ef59bdda7b69"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>summary</a></li><li class="" data-toggle="tab"><a>full</a></li><li class="" data-toggle="tab"><a>graph</a></li></ul><div class="tab-content"><div class="tab-pane active">{ground_instances: 0
+<div><div style="font-size: 1.2em; padding: 0.5em; border-top: 1px solid green; border-bottom: 1px solid green"><i class="fa fa-check-circle" style="margin-right: 0.5em; color: green"></i><span>Proved</span></div><div><div class="imandra-proof-top"><div class="imandra-fold panel panel-default" id="fold-8d18548e-7c03-47e6-8a24-d73ced0c82ec"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>proof</span></div></div><div class="panel-body collapse"><div class="imandra-proof"><div class="imandra-alternatives" id="alt-e74e7b97-8120-4919-a542-1e073d4a5a5d"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>summary</a></li><li class="" data-toggle="tab"><a>full</a></li><li class="" data-toggle="tab"><a>graph</a></li></ul><div class="tab-content"><div class="tab-pane active">{ground_instances: 0
  ----------------------------------------------------------------------------
  definitions: 5
  ----------------------------------------------------------------------------
  inductions: 1
  ----------------------------------------------------------------------------
- search_time: `0.160s`
- }</div><div class="tab-pane"><div class="imandra-fold panel panel-default" id="fold-ebf972db-6c0a-44c9-96c5-908b4dd220c6"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.160s, &quot;Goal&quot;]
+ search_time: `0.166s`
+ }</div><div class="tab-pane"><div class="imandra-fold panel panel-default" id="fold-05fa9144-fd76-4a8d-ade0-065a8d161641"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.166s, &quot;Goal&quot;]
   List.for_all (fun x -&gt; x &gt; 0) ( :var_0: )
-  ==&gt; List.fold_right ( + ) 1 ( :var_0: ) &gt; 0</pre></li><li><div><h4>subproof</h4><div class="imandra-fold panel panel-default" id="fold-d7dd050f-7bc2-4076-bcef-ee3ce8ab388f"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>not (List.for_all (fun x -&gt; x &gt; 0) lst)
-|| not (List.fold_right ( + ) 1 lst &lt;= 0)</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.159s, &quot;1&quot;]
+  ==&gt; List.fold_right ( + ) 1 ( :var_0: ) &gt; 0</pre></li><li><div><h4>subproof</h4><div class="imandra-fold panel panel-default" id="fold-0e15a32a-ec25-4fe8-b030-ff095f7a6fbd"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>not (List.for_all (fun x -&gt; x &gt; 0) lst)
+|| not (List.fold_right ( + ) 1 lst &lt;= 0)</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.166s, &quot;1&quot;]
   not (List.for_all (fun x -&gt; x &gt; 0) lst)
   || not (List.fold_right ( + ) 1 lst &lt;= 0)</pre></li><li><pre>induction on (functional ?)
-:scheme (Is_a([], lst) ==&gt; φ lst)
-        &amp;&amp; (not Is_a([], lst) &amp;&amp; φ (List.tl lst) ==&gt; φ lst)</pre></li><li><div><pre>Split (let (_x_0 : bool)
-           = not (List.for_all (fun x -&gt; x &gt; 0) lst)
-             || not (List.fold_right ( + ) 1 lst &lt;= 0)
-       in
-       let (_x_1 : bool) = not Is_a([], lst) in
-       let (_x_2 : int list) = List.tl lst in
-       (_x_0 || _x_1)
-       &amp;&amp; (_x_0
+:scheme (not (lst &lt;&gt; []) ==&gt; φ lst)
+        &amp;&amp; (lst &lt;&gt; [] &amp;&amp; φ (List.tl lst) ==&gt; φ lst)</pre></li><li><div><pre>Split (let (_x_0 : bool) = lst &lt;&gt; [] in
+       let (_x_1 : bool) = not (List.for_all (fun x -&gt; x &gt; 0) lst) in
+       let (_x_2 : bool) = not (List.fold_right ( + ) 1 lst &lt;= 0) in
+       let (_x_3 : int list) = List.tl lst in
+       ((_x_0 || _x_1) || _x_2)
+       &amp;&amp; ((_x_1 || _x_2)
            || not
-              (_x_1
-               &amp;&amp; (not (List.for_all (fun x -&gt; x &gt; 0) _x_2)
-                   || not (List.fold_right ( + ) 1 _x_2 &lt;= 0))))
+              (_x_0
+               &amp;&amp; (not (List.for_all (fun x -&gt; x &gt; 0) _x_3)
+                   || not (List.fold_right ( + ) 1 _x_3 &lt;= 0))))
        :cases [(not (List.for_all (fun x -&gt; x &gt; 0) lst)
                 || not (List.fold_right ( + ) 1 lst &lt;= 0))
-               || not Is_a([], lst);
+               || lst &lt;&gt; [];
                let (_x_0 : int list) = List.tl lst in
                ((not (List.for_all (fun x -&gt; x &gt; 0) lst)
                  || not (List.fold_right ( + ) 1 lst &lt;= 0))
-                || Is_a([], lst))
+                || not (lst &lt;&gt; []))
                || not
                   (not (List.for_all (fun x -&gt; x &gt; 0) _x_0)
-                   || not (List.fold_right ( + ) 1 _x_0 &lt;= 0))])</pre><ul><li><div><h5>subproof</h5><div class="imandra-fold panel panel-default" id="fold-ccd63026-16cb-4ff6-b53c-dd2bcce7c08b"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>let (_x_0 : int list) = List.tl lst in
+                   || not (List.fold_right ( + ) 1 _x_0 &lt;= 0))])</pre><ul><li><div><h5>subproof</h5><div class="imandra-fold panel panel-default" id="fold-6d9e4019-a73d-45fb-9b39-03e8a07aaea0"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>let (_x_0 : int list) = List.tl lst in
 ((not (List.for_all (fun x -&gt; x &gt; 0) lst)
   || not (List.fold_right ( + ) 1 lst &lt;= 0))
- || Is_a([], lst))
+ || not (lst &lt;&gt; []))
 || not
    (not (List.for_all (fun x -&gt; x &gt; 0) _x_0)
-    || not (List.fold_right ( + ) 1 _x_0 &lt;= 0))</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.099s, &quot;1.1&quot;]
+    || not (List.fold_right ( + ) 1 _x_0 &lt;= 0))</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.107s, &quot;1.1&quot;]
   let (_x_0 : int list) = List.tl lst in
   ((not (List.for_all (fun x -&gt; x &gt; 0) lst)
     || not (List.fold_right ( + ) 1 lst &lt;= 0))
-   || Is_a([], lst))
+   || not (lst &lt;&gt; []))
   || not
      (not (List.for_all (fun x -&gt; x &gt; 0) _x_0)
       || not (List.fold_right ( + ) 1 _x_0 &lt;= 0))</pre></li><li><div><h6>simplify</h6>{into: `true`
@@ -4533,15 +4520,15 @@ But simplification reduces this to true, using the definitions of
  forward_chaining: 
  }</div></li></ul></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-ccd63026-16cb-4ff6-b53c-dd2bcce7c08b';
+  var target = '#fold-6d9e4019-a73d-45fb-9b39-03e8a07aaea0';
   fold.hydrate(target);
 });
-</script></div></div></li><li><div><h5>subproof</h5><div class="imandra-fold panel panel-default" id="fold-ed9cb3b3-2ff1-40f0-a1c0-468e7ea2a77b"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>(not (List.for_all (fun x -&gt; x &gt; 0) lst)
+</script></div></div></li><li><div><h5>subproof</h5><div class="imandra-fold panel panel-default" id="fold-12c0d7f2-6ff4-496d-ac7e-7e0c8d8ca564"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>(not (List.for_all (fun x -&gt; x &gt; 0) lst)
  || not (List.fold_right ( + ) 1 lst &lt;= 0))
-|| not Is_a([], lst)</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.099s, &quot;1.2&quot;]
+|| lst &lt;&gt; []</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.107s, &quot;1.2&quot;]
   (not (List.for_all (fun x -&gt; x &gt; 0) lst)
    || not (List.fold_right ( + ) 1 lst &lt;= 0))
-  || not Is_a([], lst)</pre></li><li><div><h6>simplify</h6>{into: `true`
+  || lst &lt;&gt; []</pre></li><li><div><h6>simplify</h6>{into: `true`
  ----------------------------------------------------------------------------
  expansions: `List.fold_right`
  ----------------------------------------------------------------------------
@@ -4550,40 +4537,40 @@ require(['nbextensions/nbimandra/fold'], function (fold) {
  forward_chaining: 
  }</div></li></ul></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-ed9cb3b3-2ff1-40f0-a1c0-468e7ea2a77b';
+  var target = '#fold-12c0d7f2-6ff4-496d-ac7e-7e0c8d8ca564';
   fold.hydrate(target);
 });
 </script></div></div></li></ul></div></li></ul></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-d7dd050f-7bc2-4076-bcef-ee3ce8ab388f';
+  var target = '#fold-0e15a32a-ec25-4fe8-b030-ff095f7a6fbd';
   fold.hydrate(target);
 });
 </script></div></div></li></ul></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-ebf972db-6c0a-44c9-96c5-908b4dd220c6';
+  var target = '#fold-05fa9144-fd76-4a8d-ade0-065a8d161641';
   fold.hydrate(target);
 });
-</script></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-092201ca-76f6-4a2d-9502-fc69cb6837e4"><textarea style="display: none">digraph &quot;proof&quot; {
-p_64 [label=&quot;Start (List.for_all (fun x -\&gt; x \&gt; 0) ( :var_0: )\l       ==\&gt; List.fold_right ( + ) 1 ( :var_0: ) \&gt; 0 :name \&quot;Goal\&quot; :time 0.160s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+</script></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-bdd71855-2b0b-4d32-8ccf-60e5da328017"><textarea style="display: none">digraph &quot;proof&quot; {
+p_64 [label=&quot;Start (List.for_all (fun x -\&gt; x \&gt; 0) ( :var_0: )\l       ==\&gt; List.fold_right ( + ) 1 ( :var_0: ) \&gt; 0 :name \&quot;Goal\&quot; :time 0.166s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_64 -&gt; p_62 [label=&quot;&quot;];
 subgraph cluster_63 {
   color=blue;
-p_62 [label=&quot;Start (not (List.for_all (fun x -\&gt; x \&gt; 0) lst)\l       \|\| not (List.fold_right ( + ) 1 lst \&lt;= 0) :name \&quot;1\&quot; :time 0.159s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+p_62 [label=&quot;Start (not (List.for_all (fun x -\&gt; x \&gt; 0) lst)\l       \|\| not (List.fold_right ( + ) 1 lst \&lt;= 0) :name \&quot;1\&quot; :time 0.166s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_62 -&gt; p_61 [label=&quot;&quot;];
-p_61 [label=&quot;Induct ((functional ?),\l        :scheme (Is_a([], lst) ==\&gt; φ lst)\l                &amp;&amp; (not Is_a([], lst) &amp;&amp; φ (List.tl lst) ==\&gt; φ lst))&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+p_61 [label=&quot;Induct ((functional ?),\l        :scheme (not (lst \&lt;\&gt; []) ==\&gt; φ lst)\l                &amp;&amp; (lst \&lt;\&gt; [] &amp;&amp; φ (List.tl lst) ==\&gt; φ lst))&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_61 -&gt; p_60 [label=&quot;&quot;];
-p_60 [label=&quot;Split (let (_x_0 : bool)\l           = not (List.for_all (fun x -\&gt; x \&gt; 0) lst)\l             \|\| not (List.fold_right ( + ) 1 lst \&lt;= 0)\l       in\l       let (_x_1 : bool) = not Is_a([], lst) in\l       let (_x_2 : int list) = List.tl lst in\l       (_x_0 \|\| _x_1)\l       &amp;&amp; (_x_0\l           \|\| not\l              (_x_1\l               &amp;&amp; (not (List.for_all (fun x -\&gt; x \&gt; 0) _x_2)\l                   \|\| not (List.fold_right ( + ) 1 _x_2 \&lt;= 0))))\l       :cases [(not (List.for_all (fun x -\&gt; x \&gt; 0) lst)\l                \|\| not (List.fold_right ( + ) 1 lst \&lt;= 0))\l               \|\| not Is_a([], lst);\l               let (_x_0 : int list) = List.tl lst in\l               ((not (List.for_all (fun x -\&gt; x \&gt; 0) lst)\l                 \|\| not (List.fold_right ( + ) 1 lst \&lt;= 0))\l                \|\| Is_a([], lst))\l               \|\| not\l                  (not (List.for_all (fun x -\&gt; x \&gt; 0) _x_0)\l                   \|\| not (List.fold_right ( + ) 1 _x_0 \&lt;= 0))])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+p_60 [label=&quot;Split (let (_x_0 : bool) = lst \&lt;\&gt; [] in\l       let (_x_1 : bool) = not (List.for_all (fun x -\&gt; x \&gt; 0) lst) in\l       let (_x_2 : bool) = not (List.fold_right ( + ) 1 lst \&lt;= 0) in\l       let (_x_3 : int list) = List.tl lst in\l       ((_x_0 \|\| _x_1) \|\| _x_2)\l       &amp;&amp; ((_x_1 \|\| _x_2)\l           \|\| not\l              (_x_0\l               &amp;&amp; (not (List.for_all (fun x -\&gt; x \&gt; 0) _x_3)\l                   \|\| not (List.fold_right ( + ) 1 _x_3 \&lt;= 0))))\l       :cases [(not (List.for_all (fun x -\&gt; x \&gt; 0) lst)\l                \|\| not (List.fold_right ( + ) 1 lst \&lt;= 0))\l               \|\| lst \&lt;\&gt; [];\l               let (_x_0 : int list) = List.tl lst in\l               ((not (List.for_all (fun x -\&gt; x \&gt; 0) lst)\l                 \|\| not (List.fold_right ( + ) 1 lst \&lt;= 0))\l                \|\| not (lst \&lt;\&gt; []))\l               \|\| not\l                  (not (List.for_all (fun x -\&gt; x \&gt; 0) _x_0)\l                   \|\| not (List.fold_right ( + ) 1 _x_0 \&lt;= 0))])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_60 -&gt; p_55 [label=&quot;&quot;];
 subgraph cluster_56 {
   color=blue;
-p_55 [label=&quot;Start (let (_x_0 : int list) = List.tl lst in\l       ((not (List.for_all (fun x -\&gt; x \&gt; 0) lst)\l         \|\| not (List.fold_right ( + ) 1 lst \&lt;= 0))\l        \|\| Is_a([], lst))\l       \|\| not\l          (not (List.for_all (fun x -\&gt; x \&gt; 0) _x_0)\l           \|\| not (List.fold_right ( + ) 1 _x_0 \&lt;= 0))\l       :name \&quot;1.1\&quot; :time 0.099s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+p_55 [label=&quot;Start (let (_x_0 : int list) = List.tl lst in\l       ((not (List.for_all (fun x -\&gt; x \&gt; 0) lst)\l         \|\| not (List.fold_right ( + ) 1 lst \&lt;= 0))\l        \|\| not (lst \&lt;\&gt; []))\l       \|\| not\l          (not (List.for_all (fun x -\&gt; x \&gt; 0) _x_0)\l           \|\| not (List.fold_right ( + ) 1 _x_0 \&lt;= 0))\l       :name \&quot;1.1\&quot; :time 0.107s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_55 -&gt; p_54 [label=&quot;&quot;];
 p_54 [label=&quot;Simplify (true\l          :expansions [List.for_all;\l                       List.fold_right;\l                       List.for_all;\l                       List.fold_right]\l          :rw [] :fc [])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 }
 p_60 -&gt; p_58 [label=&quot;&quot;];
 subgraph cluster_59 {
   color=blue;
-p_58 [label=&quot;Start ((not (List.for_all (fun x -\&gt; x \&gt; 0) lst)\l        \|\| not (List.fold_right ( + ) 1 lst \&lt;= 0))\l       \|\| not Is_a([], lst) :name \&quot;1.2\&quot; :time 0.099s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+p_58 [label=&quot;Start ((not (List.for_all (fun x -\&gt; x \&gt; 0) lst)\l        \|\| not (List.fold_right ( + ) 1 lst \&lt;= 0))\l       \|\| lst \&lt;\&gt; [] :name \&quot;1.2\&quot; :time 0.107s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_58 -&gt; p_57 [label=&quot;&quot;];
 p_57 [label=&quot;Simplify (true :expansions [List.fold_right] :rw [] :fc [])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 }
@@ -4591,17 +4578,17 @@ p_57 [label=&quot;Simplify (true :expansions [List.fold_right] :rw [] :fc [])&qu
 }
 </textarea><button class="btn btn-primary">Load graph</button><div class="imandra-graphviz-loading display-none">Loading..</div><div class="imandra-graphviz-target"></div><script>
 require(['nbextensions/nbimandra/graphviz'], function (graphviz) {
-  var target = '#graphviz-092201ca-76f6-4a2d-9502-fc69cb6837e4';
+  var target = '#graphviz-bdd71855-2b0b-4d32-8ccf-60e5da328017';
   graphviz.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-f0733535-f3fa-4b6e-b0fe-ef59bdda7b69';
+  var target = '#alt-e74e7b97-8120-4919-a542-1e073d4a5a5d';
   alternatives.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-2a080dc1-99c3-4ca4-a82c-db54fc1b38ab';
+  var target = '#fold-8d18548e-7c03-47e6-8a24-d73ced0c82ec';
   fold.hydrate(target);
 });
 </script></div></div></div></div>
@@ -4727,16 +4714,16 @@ But simplification reduces this to true, using the definitions of <span class="a
 
 
 <div class="output_html rendered_html output_subarea ">
-<div><div style="font-size: 1.2em; padding: 0.5em; border-top: 1px solid green; border-bottom: 1px solid green"><i class="fa fa-check-circle" style="margin-right: 0.5em; color: green"></i><span>Proved</span></div><div><div class="imandra-proof-top"><div class="imandra-fold panel panel-default" id="fold-4b476b1f-f00e-46c5-9ae2-809b8e9d8c64"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>proof</span></div></div><div class="panel-body collapse"><div class="imandra-proof"><div class="imandra-alternatives" id="alt-b3b1d273-f1be-432e-8385-a6f18d469135"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>summary</a></li><li class="" data-toggle="tab"><a>full</a></li><li class="" data-toggle="tab"><a>graph</a></li></ul><div class="tab-content"><div class="tab-pane active">{ground_instances: 0
+<div><div style="font-size: 1.2em; padding: 0.5em; border-top: 1px solid green; border-bottom: 1px solid green"><i class="fa fa-check-circle" style="margin-right: 0.5em; color: green"></i><span>Proved</span></div><div><div class="imandra-proof-top"><div class="imandra-fold panel panel-default" id="fold-7072dc63-389b-4372-b886-f09ef6bac68a"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>proof</span></div></div><div class="panel-body collapse"><div class="imandra-proof"><div class="imandra-alternatives" id="alt-d8a97ec5-6dd9-484c-802e-0e98dd8ce6a5"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>summary</a></li><li class="" data-toggle="tab"><a>full</a></li><li class="" data-toggle="tab"><a>graph</a></li></ul><div class="tab-content"><div class="tab-pane active">{ground_instances: 0
  ----------------------------------------------------------------------------
  definitions: 4
  ----------------------------------------------------------------------------
  inductions: 1
  ----------------------------------------------------------------------------
- search_time: `0.111s`
- }</div><div class="tab-pane"><div class="imandra-fold panel panel-default" id="fold-07efbf70-4464-4f24-97e7-303b617fe136"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.111s, &quot;Goal&quot;]
+ search_time: `0.137s`
+ }</div><div class="tab-pane"><div class="imandra-fold panel panel-default" id="fold-b744d3ee-d29c-4b4f-b535-00d896edd6f7"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.137s, &quot;Goal&quot;]
   ( :var_0: ) &gt;= 0
-  ==&gt; List.length (repeat ( :var_1: ) ( :var_0: )) = ( :var_0: )</pre></li><li><div><h4>subproof</h4><div class="imandra-fold panel panel-default" id="fold-d64387f0-fd88-4c2f-b388-c74be69f3128"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>not (n &gt;= 0) || List.length (repeat c n) = n</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.111s, &quot;1&quot;] not (n &gt;= 0) || List.length (repeat c n) = n</pre></li><li><pre>induction on (functional ?)
+  ==&gt; List.length (repeat ( :var_1: ) ( :var_0: )) = ( :var_0: )</pre></li><li><div><h4>subproof</h4><div class="imandra-fold panel panel-default" id="fold-7b6fd534-f80e-40a3-bf35-d07bb7a00dfe"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>not (n &gt;= 0) || List.length (repeat c n) = n</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.136s, &quot;1&quot;] not (n &gt;= 0) || List.length (repeat c n) = n</pre></li><li><pre>induction on (functional ?)
 :scheme (n &lt;= 0 ==&gt; φ c n) &amp;&amp; (not (n &lt;= 0) &amp;&amp; φ c (n - 1) ==&gt; φ c n)</pre></li><li><div><pre>Split (let (_x_0 : bool) = not (n &gt;= 0) || List.length (repeat c n) = n in
        let (_x_1 : bool) = not (n &lt;= 0) in
        let (_x_2 : int) = (-1) + n in
@@ -4748,10 +4735,10 @@ But simplification reduces this to true, using the definitions of <span class="a
                let (_x_0 : int) = (-1) + n in
                ((not (n &gt;= 0) || n &lt;= 0)
                 || not (n &gt;= 1 ==&gt; List.length (repeat c _x_0) = _x_0))
-               || List.length (repeat c n) = n])</pre><ul><li><div><h5>subproof</h5><div class="imandra-fold panel panel-default" id="fold-77d9fe67-1ffd-47dc-80b4-d229682c1e89"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>let (_x_0 : int) = (-1) + n in
+               || List.length (repeat c n) = n])</pre><ul><li><div><h5>subproof</h5><div class="imandra-fold panel panel-default" id="fold-7f8a37eb-b558-41b2-93f2-8c6eada73b4e"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>let (_x_0 : int) = (-1) + n in
 ((not (n &gt;= 0) || n &lt;= 0)
  || not (n &gt;= 1 ==&gt; List.length (repeat c _x_0) = _x_0))
-|| List.length (repeat c n) = n</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.054s, &quot;1.1&quot;]
+|| List.length (repeat c n) = n</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.056s, &quot;1.1&quot;]
   let (_x_0 : int) = (-1) + n in
   ((not (n &gt;= 0) || n &lt;= 0)
    || not (n &gt;= 1 ==&gt; List.length (repeat c _x_0) = _x_0))
@@ -4768,10 +4755,10 @@ But simplification reduces this to true, using the definitions of <span class="a
    - `List.len_nonnegative`
  }</div></li></ul></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-77d9fe67-1ffd-47dc-80b4-d229682c1e89';
+  var target = '#fold-7f8a37eb-b558-41b2-93f2-8c6eada73b4e';
   fold.hydrate(target);
 });
-</script></div></div></li><li><div><h5>subproof</h5><div class="imandra-fold panel panel-default" id="fold-4827d91d-7738-485e-8bba-b4cf60acf367"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>(not (n &gt;= 0) || not (n &lt;= 0)) || List.length (repeat c n) = n</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.054s, &quot;1.2&quot;]
+</script></div></div></li><li><div><h5>subproof</h5><div class="imandra-fold panel panel-default" id="fold-bf2af2d6-fe2e-4a4d-af96-3a4c8d2c9c19"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>(not (n &gt;= 0) || not (n &lt;= 0)) || List.length (repeat c n) = n</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.056s, &quot;1.2&quot;]
   (not (n &gt;= 0) || not (n &lt;= 0)) || List.length (repeat c n) = n</pre></li><li><div><h6>simplify</h6>{into: `true`
  ----------------------------------------------------------------------------
  expansions: `[List.length, repeat]`
@@ -4782,25 +4769,25 @@ require(['nbextensions/nbimandra/fold'], function (fold) {
                    - `List.len_nonnegative`
  }</div></li></ul></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-4827d91d-7738-485e-8bba-b4cf60acf367';
+  var target = '#fold-bf2af2d6-fe2e-4a4d-af96-3a4c8d2c9c19';
   fold.hydrate(target);
 });
 </script></div></div></li></ul></div></li></ul></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-d64387f0-fd88-4c2f-b388-c74be69f3128';
+  var target = '#fold-7b6fd534-f80e-40a3-bf35-d07bb7a00dfe';
   fold.hydrate(target);
 });
 </script></div></div></li></ul></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-07efbf70-4464-4f24-97e7-303b617fe136';
+  var target = '#fold-b744d3ee-d29c-4b4f-b535-00d896edd6f7';
   fold.hydrate(target);
 });
-</script></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-a1eba97f-d11d-432e-8587-316e8e0e2a64"><textarea style="display: none">digraph &quot;proof&quot; {
-p_84 [label=&quot;Start (( :var_0: ) \&gt;= 0\l       ==\&gt; List.length (repeat ( :var_1: ) ( :var_0: )) = ( :var_0: )\l       :name \&quot;Goal\&quot; :time 0.111s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+</script></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-9b131a0e-67e1-45b9-85e3-32782fdbad75"><textarea style="display: none">digraph &quot;proof&quot; {
+p_84 [label=&quot;Start (( :var_0: ) \&gt;= 0\l       ==\&gt; List.length (repeat ( :var_1: ) ( :var_0: )) = ( :var_0: )\l       :name \&quot;Goal\&quot; :time 0.137s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_84 -&gt; p_82 [label=&quot;&quot;];
 subgraph cluster_83 {
   color=blue;
-p_82 [label=&quot;Start (not (n \&gt;= 0) \|\| List.length (repeat c n) = n :name \&quot;1\&quot; :time 0.111s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+p_82 [label=&quot;Start (not (n \&gt;= 0) \|\| List.length (repeat c n) = n :name \&quot;1\&quot; :time 0.136s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_82 -&gt; p_81 [label=&quot;&quot;];
 p_81 [label=&quot;Induct ((functional ?),\l        :scheme (n \&lt;= 0 ==\&gt; φ c n)\l                &amp;&amp; (not (n \&lt;= 0) &amp;&amp; φ c (n - 1) ==\&gt; φ c n))&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_81 -&gt; p_80 [label=&quot;&quot;];
@@ -4808,14 +4795,14 @@ p_80 [label=&quot;Split (let (_x_0 : bool) = not (n \&gt;= 0) \|\| List.length (
 p_80 -&gt; p_75 [label=&quot;&quot;];
 subgraph cluster_76 {
   color=blue;
-p_75 [label=&quot;Start (let (_x_0 : int) = (-1) + n in\l       ((not (n \&gt;= 0) \|\| n \&lt;= 0)\l        \|\| not (n \&gt;= 1 ==\&gt; List.length (repeat c _x_0) = _x_0))\l       \|\| List.length (repeat c n) = n :name \&quot;1.1\&quot; :time 0.054s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+p_75 [label=&quot;Start (let (_x_0 : int) = (-1) + n in\l       ((not (n \&gt;= 0) \|\| n \&lt;= 0)\l        \|\| not (n \&gt;= 1 ==\&gt; List.length (repeat c _x_0) = _x_0))\l       \|\| List.length (repeat c n) = n :name \&quot;1.1\&quot; :time 0.056s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_75 -&gt; p_74 [label=&quot;&quot;];
 p_74 [label=&quot;Simplify (true :expansions [List.length; repeat] :rw []\l          :fc [List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 }
 p_80 -&gt; p_78 [label=&quot;&quot;];
 subgraph cluster_79 {
   color=blue;
-p_78 [label=&quot;Start ((not (n \&gt;= 0) \|\| not (n \&lt;= 0)) \|\| List.length (repeat c n) = n\l       :name \&quot;1.2\&quot; :time 0.054s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+p_78 [label=&quot;Start ((not (n \&gt;= 0) \|\| not (n \&lt;= 0)) \|\| List.length (repeat c n) = n\l       :name \&quot;1.2\&quot; :time 0.056s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_78 -&gt; p_77 [label=&quot;&quot;];
 p_77 [label=&quot;Simplify (true :expansions [List.length; repeat] :rw []\l          :fc [List.len_nonnegative; List.len_nonnegative])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 }
@@ -4823,17 +4810,17 @@ p_77 [label=&quot;Simplify (true :expansions [List.length; repeat] :rw []\l     
 }
 </textarea><button class="btn btn-primary">Load graph</button><div class="imandra-graphviz-loading display-none">Loading..</div><div class="imandra-graphviz-target"></div><script>
 require(['nbextensions/nbimandra/graphviz'], function (graphviz) {
-  var target = '#graphviz-a1eba97f-d11d-432e-8587-316e8e0e2a64';
+  var target = '#graphviz-9b131a0e-67e1-45b9-85e3-32782fdbad75';
   graphviz.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-b3b1d273-f1be-432e-8385-a6f18d469135';
+  var target = '#alt-d8a97ec5-6dd9-484c-802e-0e98dd8ce6a5';
   alternatives.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-4b476b1f-f00e-46c5-9ae2-809b8e9d8c64';
+  var target = '#fold-7072dc63-389b-4372-b886-f09ef6bac68a';
   fold.hydrate(target);
 });
 </script></div></div></div></div>
@@ -4914,7 +4901,7 @@ val induct_scheme : Z.t -&gt; bool = &lt;fun&gt;
 
 
 <div class="output_html rendered_html output_subarea ">
-<div><div class="imandra-fold panel panel-default" id="fold-6779f8da-30dc-4683-a93e-08759201a7bb"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>termination proof</span></div></div><div class="panel-body collapse"><div><h3>Termination proof</h3><div class="imandra-fold panel panel-default" id="fold-24f27bfb-fe25-4152-acab-30ee027935b6"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>call `sum (n - 1)` from `sum n`</span></div></div><div class="panel-body collapse">{original: sum n
+<div><div class="imandra-fold panel panel-default" id="fold-5f158e1f-0b54-4b94-b531-f5c2b451aacc"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>termination proof</span></div></div><div class="panel-body collapse"><div><h3>Termination proof</h3><div class="imandra-fold panel panel-default" id="fold-18d44383-381c-4bb3-9f85-8e43782b74ba"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>call `sum (n - 1)` from `sum n`</span></div></div><div class="panel-body collapse">{original: sum n
  ----------------------------------------------------------------------------
  sub: sum (n - 1)
  ----------------------------------------------------------------------------
@@ -4933,7 +4920,7 @@ val induct_scheme : Z.t -&gt; bool = &lt;fun&gt;
       ----------------------------------------------------------------------------
       inductions: 0
       ----------------------------------------------------------------------------
-      search_time: `0.014s`
+      search_time: `0.013s`
       ----------------------------------------------------------------------------
       details:
         {smt_stats:
@@ -4945,7 +4932,7 @@ val induct_scheme : Z.t -&gt; bool = &lt;fun&gt;
             ----------------------------------------------------------------------------
             arith-conflicts: 1
             ----------------------------------------------------------------------------
-            rlimit count: 13600
+            rlimit count: 13322
             ----------------------------------------------------------------------------
             mk clause: 4
             ----------------------------------------------------------------------------
@@ -4969,7 +4956,7 @@ val induct_scheme : Z.t -&gt; bool = &lt;fun&gt;
             ----------------------------------------------------------------------------
             datatype accessor ax: 2
             ----------------------------------------------------------------------------
-            num allocs: 607308291
+            num allocs: 559553628
             ----------------------------------------------------------------------------
             final checks: 1
             ----------------------------------------------------------------------------
@@ -4979,14 +4966,14 @@ val induct_scheme : Z.t -&gt; bool = &lt;fun&gt;
             ----------------------------------------------------------------------------
             arith-upper: 7
             ----------------------------------------------------------------------------
-            memory: 25.620000
+            memory: 22.560000
             ----------------------------------------------------------------------------
-            max memory: 40.800000
+            max memory: 40.180000
             }
          }
       })
     (full:
-     * ```start[0.014s]
+     * ```start[0.013s]
             let (_x_0 : int) = if n &gt;= 0 then n else 0 in
             let (_x_1 : int) = n - 1 in
             let (_x_2 : int) = if _x_1 &gt;= 0 then _x_1 else 0 in
@@ -5007,7 +4994,7 @@ val induct_scheme : Z.t -&gt; bool = &lt;fun&gt;
           }
      * unroll
        {expr:
-          ```(|Ordinal.&lt;&lt;_126| (|Ordinal.Int_111| (ite (&gt;= n_2247 1) (+ (- 1) n_2247) 0))
+          ```(|Ordinal.&lt;&lt;_129| (|Ordinal.Int_114| (ite (&gt;= n_2232 1) (+ (- 1) n_2232) 0))
                                (|Ord…```
         ----------------------------------------------------------------------------
         expansions: 
@@ -5015,12 +5002,12 @@ val induct_scheme : Z.t -&gt; bool = &lt;fun&gt;
      * Unsat))
  }</div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-24f27bfb-fe25-4152-acab-30ee027935b6';
+  var target = '#fold-18d44383-381c-4bb3-9f85-8e43782b74ba';
   fold.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-6779f8da-30dc-4683-a93e-08759201a7bb';
+  var target = '#fold-5f158e1f-0b54-4b94-b531-f5c2b451aacc';
   fold.hydrate(target);
 });
 </script></div></div>
@@ -5036,7 +5023,7 @@ require(['nbextensions/nbimandra/fold'], function (fold) {
 
 
 <div class="output_html rendered_html output_subarea ">
-<div><div class="imandra-fold panel panel-default" id="fold-e3c01c1d-2316-46b7-ba4f-78a3237b4f1b"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>termination proof</span></div></div><div class="panel-body collapse"><div><h3>Termination proof</h3><div class="imandra-fold panel panel-default" id="fold-52ca33da-3892-434c-9f8f-4a6bbed2a76a"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>call `induct_scheme (n - 1)` from `induct_scheme n`</span></div></div><div class="panel-body collapse">{original: induct_scheme n
+<div><div class="imandra-fold panel panel-default" id="fold-01be0903-7a60-4420-ad75-8e8193677cc8"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>termination proof</span></div></div><div class="panel-body collapse"><div><h3>Termination proof</h3><div class="imandra-fold panel panel-default" id="fold-518866da-c6d2-41a4-985a-177b903167db"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>call `induct_scheme (n - 1)` from `induct_scheme n`</span></div></div><div class="panel-body collapse">{original: induct_scheme n
  ----------------------------------------------------------------------------
  sub: induct_scheme (n - 1)
  ----------------------------------------------------------------------------
@@ -5067,9 +5054,9 @@ require(['nbextensions/nbimandra/fold'], function (fold) {
             ----------------------------------------------------------------------------
             arith-conflicts: 1
             ----------------------------------------------------------------------------
-            rlimit count: 14762
+            rlimit count: 14428
             ----------------------------------------------------------------------------
-            mk clause: 8
+            mk clause: 7
             ----------------------------------------------------------------------------
             datatype occurs check: 2
             ----------------------------------------------------------------------------
@@ -5077,7 +5064,7 @@ require(['nbextensions/nbimandra/fold'], function (fold) {
             ----------------------------------------------------------------------------
             arith-lower: 3
             ----------------------------------------------------------------------------
-            arith-diseq: 5
+            arith-diseq: 4
             ----------------------------------------------------------------------------
             decisions: 2
             ----------------------------------------------------------------------------
@@ -5093,7 +5080,7 @@ require(['nbextensions/nbimandra/fold'], function (fold) {
             ----------------------------------------------------------------------------
             datatype accessor ax: 2
             ----------------------------------------------------------------------------
-            num allocs: 642380528
+            num allocs: 593501105
             ----------------------------------------------------------------------------
             final checks: 1
             ----------------------------------------------------------------------------
@@ -5103,9 +5090,9 @@ require(['nbextensions/nbimandra/fold'], function (fold) {
             ----------------------------------------------------------------------------
             arith-upper: 8
             ----------------------------------------------------------------------------
-            memory: 25.640000
+            memory: 22.580000
             ----------------------------------------------------------------------------
-            max memory: 40.800000
+            max memory: 40.180000
             }
          }
       })
@@ -5119,9 +5106,9 @@ require(['nbextensions/nbimandra/fold'], function (fold) {
                 || Ordinal.( &lt;&lt; ) (Ordinal.Int _x_2) (Ordinal.Int _x_0)```
      * simplify::
          {into:
-            ```(not (not (n = 1) &amp;&amp; not (n &lt;= 0)) || not (not (n = 2) &amp;&amp; not (n &lt;= 1)))
-               || Ordinal.( &lt;&lt; ) (Ordinal.Int (if n &gt;= 1 then (-1) + n else 0))
-                  (Ordinal.Int (if n &gt;= 0 then n else 0))```
+            ```(Ordinal.( &lt;&lt; ) (Ordinal.Int (if n &gt;= 1 then (-1) + n else 0))
+                (Ordinal.Int (if n &gt;= 0 then n else 0)) || not (not (n = 2) &amp;&amp; not (n &lt;= 1)))
+               || not (not (n = 1) &amp;&amp; not (n &lt;= 0))```
           ----------------------------------------------------------------------------
           expansions: `[]`
           ----------------------------------------------------------------------------
@@ -5131,7 +5118,7 @@ require(['nbextensions/nbimandra/fold'], function (fold) {
           }
      * unroll
        {expr:
-          ```(|Ordinal.&lt;&lt;_126| (|Ordinal.Int_111| (ite (&gt;= n_2273 1) (+ (- 1) n_2273) 0))
+          ```(|Ordinal.&lt;&lt;_129| (|Ordinal.Int_114| (ite (&gt;= n_2258 1) (+ (- 1) n_2258) 0))
                                (|Ord…```
         ----------------------------------------------------------------------------
         expansions: 
@@ -5139,12 +5126,12 @@ require(['nbextensions/nbimandra/fold'], function (fold) {
      * Unsat))
  }</div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-52ca33da-3892-434c-9f8f-4a6bbed2a76a';
+  var target = '#fold-518866da-c6d2-41a4-985a-177b903167db';
   fold.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-e3c01c1d-2316-46b7-ba4f-78a3237b4f1b';
+  var target = '#fold-01be0903-7a60-4420-ad75-8e8193677cc8';
   fold.hydrate(target);
 });
 </script></div></div>
@@ -5259,16 +5246,16 @@ But simplification reduces this to true, using the definition of <span class="an
 
 
 <div class="output_html rendered_html output_subarea ">
-<div><div style="font-size: 1.2em; padding: 0.5em; border-top: 1px solid green; border-bottom: 1px solid green"><i class="fa fa-check-circle" style="margin-right: 0.5em; color: green"></i><span>Proved</span></div><div><div class="imandra-proof-top"><div class="imandra-fold panel panel-default" id="fold-cdc4389b-56f9-4c2e-a548-5ac5349ada27"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>proof</span></div></div><div class="panel-body collapse"><div class="imandra-proof"><div class="imandra-alternatives" id="alt-98abdf95-348f-443b-9f22-22bab3f9ca60"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>summary</a></li><li class="" data-toggle="tab"><a>full</a></li><li class="" data-toggle="tab"><a>graph</a></li></ul><div class="tab-content"><div class="tab-pane active">{ground_instances: 0
+<div><div style="font-size: 1.2em; padding: 0.5em; border-top: 1px solid green; border-bottom: 1px solid green"><i class="fa fa-check-circle" style="margin-right: 0.5em; color: green"></i><span>Proved</span></div><div><div class="imandra-proof-top"><div class="imandra-fold panel panel-default" id="fold-92953434-d89e-45a4-9fe7-b41b2f1e763e"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>proof</span></div></div><div class="panel-body collapse"><div class="imandra-proof"><div class="imandra-alternatives" id="alt-88f827d2-3dc4-4c22-b6ae-766b851d3977"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>summary</a></li><li class="" data-toggle="tab"><a>full</a></li><li class="" data-toggle="tab"><a>graph</a></li></ul><div class="tab-content"><div class="tab-pane active">{ground_instances: 0
  ----------------------------------------------------------------------------
  definitions: 4
  ----------------------------------------------------------------------------
  inductions: 1
  ----------------------------------------------------------------------------
- search_time: `0.112s`
- }</div><div class="tab-pane"><div class="imandra-fold panel panel-default" id="fold-47f11e66-a3b7-4b0e-b01b-8795cea1b821"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.112s, &quot;Goal&quot;]
+ search_time: `0.128s`
+ }</div><div class="tab-pane"><div class="imandra-fold panel panel-default" id="fold-00e34b8e-90e2-4919-9b2e-1e464e033f58"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.128s, &quot;Goal&quot;]
   ( :var_0: ) &gt;= 0
-  ==&gt; sum ( :var_0: ) = (( :var_0: ) * (( :var_0: ) + 1)) / 2</pre></li><li><div><h4>subproof</h4><div class="imandra-fold panel panel-default" id="fold-fcec61af-8a34-4a19-b3d7-b799e56ff579"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>not (n &gt;= 0) || sum n = (n * (1 + n)) / 2</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.112s, &quot;1&quot;] not (n &gt;= 0) || sum n = (n * (1 + n)) / 2</pre></li><li><pre>induction on (functional induct_scheme)
+  ==&gt; sum ( :var_0: ) = (( :var_0: ) * (( :var_0: ) + 1)) / 2</pre></li><li><div><h4>subproof</h4><div class="imandra-fold panel panel-default" id="fold-180673e8-c11d-4b27-b128-264fd2be20fd"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>not (n &gt;= 0) || sum n = (n * (1 + n)) / 2</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.128s, &quot;1&quot;] not (n &gt;= 0) || sum n = (n * (1 + n)) / 2</pre></li><li><pre>induction on (functional induct_scheme)
 :scheme (not (not (n = 1) &amp;&amp; not (n &lt;= 0)) ==&gt; φ n)
         &amp;&amp; (not (n &lt;= 0) &amp;&amp; not (n = 1) &amp;&amp; φ (n - 1) ==&gt; φ n)</pre></li><li><div><pre>Split (let (_x_0 : bool) = not (n = 1) in
        let (_x_1 : bool) = not (n &lt;= 0) in
@@ -5284,10 +5271,10 @@ But simplification reduces this to true, using the definition of <span class="an
                let (_x_0 : int) = (-1) + n in
                (((not (n &gt;= 0) || n &lt;= 0) || n = 1)
                 || not (n &gt;= 1 ==&gt; sum _x_0 = (n * _x_0) / 2))
-               || sum n = (n * (1 + n)) / 2])</pre><ul><li><div><h5>subproof</h5><div class="imandra-fold panel panel-default" id="fold-f6ab363c-5686-4453-8f58-80a311adddc0"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>let (_x_0 : int) = (-1) + n in
+               || sum n = (n * (1 + n)) / 2])</pre><ul><li><div><h5>subproof</h5><div class="imandra-fold panel panel-default" id="fold-5c75de11-e138-4d89-818f-05806be871b6"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>let (_x_0 : int) = (-1) + n in
 (((not (n &gt;= 0) || n &lt;= 0) || n = 1)
  || not (n &gt;= 1 ==&gt; sum _x_0 = (n * _x_0) / 2))
-|| sum n = (n * (1 + n)) / 2</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.111s, &quot;1&quot;]
+|| sum n = (n * (1 + n)) / 2</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.127s, &quot;1&quot;]
   let (_x_0 : int) = (-1) + n in
   (((not (n &gt;= 0) || n &lt;= 0) || n = 1)
    || not (n &gt;= 1 ==&gt; sum _x_0 = (n * _x_0) / 2))
@@ -5300,10 +5287,10 @@ But simplification reduces this to true, using the definition of <span class="an
  forward_chaining: 
  }</div></li></ul></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-f6ab363c-5686-4453-8f58-80a311adddc0';
+  var target = '#fold-5c75de11-e138-4d89-818f-05806be871b6';
   fold.hydrate(target);
 });
-</script></div></div></li><li><div><h5>subproof</h5><div class="imandra-fold panel panel-default" id="fold-f29d191f-6bf8-46c9-af06-4c5e2f168ff0"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>(not (n &gt;= 0) || not (n = 1) &amp;&amp; not (n &lt;= 0)) || sum n = (n * (1 + n)) / 2</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.111s, &quot;2&quot;]
+</script></div></div></li><li><div><h5>subproof</h5><div class="imandra-fold panel panel-default" id="fold-03547e70-4e82-4ecb-9c4e-df597f034ab5"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>(not (n &gt;= 0) || not (n = 1) &amp;&amp; not (n &lt;= 0)) || sum n = (n * (1 + n)) / 2</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.127s, &quot;2&quot;]
   (not (n &gt;= 0) || not (n = 1) &amp;&amp; not (n &lt;= 0)) || sum n = (n * (1 + n)) / 2</pre></li><li><div><div><h6>simplify</h6>{into:
    ```let (_x_0 : bool) = n = 1 in
       let (_x_1 : bool) = sum n = (n * (1 + n)) / 2 in
@@ -5316,25 +5303,25 @@ require(['nbextensions/nbimandra/fold'], function (fold) {
  forward_chaining: 
  }</div><ul><li><pre>Subproof</pre></li><li><pre>Subproof</pre></li></ul></div></li></ul></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-f29d191f-6bf8-46c9-af06-4c5e2f168ff0';
+  var target = '#fold-03547e70-4e82-4ecb-9c4e-df597f034ab5';
   fold.hydrate(target);
 });
 </script></div></div></li></ul></div></li></ul></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-fcec61af-8a34-4a19-b3d7-b799e56ff579';
+  var target = '#fold-180673e8-c11d-4b27-b128-264fd2be20fd';
   fold.hydrate(target);
 });
 </script></div></div></li></ul></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-47f11e66-a3b7-4b0e-b01b-8795cea1b821';
+  var target = '#fold-00e34b8e-90e2-4919-9b2e-1e464e033f58';
   fold.hydrate(target);
 });
-</script></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-20d7b973-c72b-4775-882e-8867e5278246"><textarea style="display: none">digraph &quot;proof&quot; {
-p_109 [label=&quot;Start (( :var_0: ) \&gt;= 0\l       ==\&gt; sum ( :var_0: ) = (( :var_0: ) * (( :var_0: ) + 1)) / 2\l       :name \&quot;Goal\&quot; :time 0.112s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+</script></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-dd1782b3-4b91-462d-91ac-b27a0e79834e"><textarea style="display: none">digraph &quot;proof&quot; {
+p_109 [label=&quot;Start (( :var_0: ) \&gt;= 0\l       ==\&gt; sum ( :var_0: ) = (( :var_0: ) * (( :var_0: ) + 1)) / 2\l       :name \&quot;Goal\&quot; :time 0.128s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_109 -&gt; p_107 [label=&quot;&quot;];
 subgraph cluster_108 {
   color=blue;
-p_107 [label=&quot;Start (not (n \&gt;= 0) \|\| sum n = (n * (1 + n)) / 2 :name \&quot;1\&quot; :time 0.112s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+p_107 [label=&quot;Start (not (n \&gt;= 0) \|\| sum n = (n * (1 + n)) / 2 :name \&quot;1\&quot; :time 0.128s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_107 -&gt; p_106 [label=&quot;&quot;];
 p_106 [label=&quot;Induct ((functional induct_scheme),\l        :scheme (not (not (n = 1) &amp;&amp; not (n \&lt;= 0)) ==\&gt; φ n)\l                &amp;&amp; (not (n \&lt;= 0) &amp;&amp; not (n = 1) &amp;&amp; φ (n - 1) ==\&gt; φ n))&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_106 -&gt; p_105 [label=&quot;&quot;];
@@ -5342,27 +5329,27 @@ p_105 [label=&quot;Split (let (_x_0 : bool) = not (n = 1) in\l       let (_x_1 :
 p_105 -&gt; p_94 [label=&quot;&quot;];
 subgraph cluster_95 {
   color=blue;
-p_94 [label=&quot;Start (let (_x_0 : int) = (-1) + n in\l       (((not (n \&gt;= 0) \|\| n \&lt;= 0) \|\| n = 1)\l        \|\| not (n \&gt;= 1 ==\&gt; sum _x_0 = (n * _x_0) / 2))\l       \|\| sum n = (n * (1 + n)) / 2 :name \&quot;1\&quot; :time 0.111s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+p_94 [label=&quot;Start (let (_x_0 : int) = (-1) + n in\l       (((not (n \&gt;= 0) \|\| n \&lt;= 0) \|\| n = 1)\l        \|\| not (n \&gt;= 1 ==\&gt; sum _x_0 = (n * _x_0) / 2))\l       \|\| sum n = (n * (1 + n)) / 2 :name \&quot;1\&quot; :time 0.127s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_94 -&gt; p_93 [label=&quot;&quot;];
 p_93 [label=&quot;Simplify (true :expansions [sum] :rw [] :fc [])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 }
 p_105 -&gt; p_103 [label=&quot;&quot;];
 subgraph cluster_104 {
   color=blue;
-p_103 [label=&quot;Start ((not (n \&gt;= 0) \|\| not (n = 1) &amp;&amp; not (n \&lt;= 0))\l       \|\| sum n = (n * (1 + n)) / 2 :name \&quot;2\&quot; :time 0.111s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+p_103 [label=&quot;Start ((not (n \&gt;= 0) \|\| not (n = 1) &amp;&amp; not (n \&lt;= 0))\l       \|\| sum n = (n * (1 + n)) / 2 :name \&quot;2\&quot; :time 0.127s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_103 -&gt; p_102 [label=&quot;&quot;];
 p_102 [label=&quot;Simplify (let (_x_0 : bool) = n = 1 in\l          let (_x_1 : bool) = sum n = (n * (1 + n)) / 2 in\l          (not _x_0 \|\| _x_1)\l          &amp;&amp; (((_x_0 \|\| not (n \&lt;= 0)) \|\| not (n \&gt;= 0)) \|\| _x_1)\l          :expansions [] :rw [] :fc [])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_102 -&gt; p_97 [label=&quot;&quot;];
 subgraph cluster_98 {
   color=blue;
-p_97 [label=&quot;Start (((n = 1 \|\| not (n \&lt;= 0)) \|\| not (n \&gt;= 0)) \|\| sum n = (n * (1 + n)) / 2\l       :name \&quot;2.1\&quot; :time 0.047s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+p_97 [label=&quot;Start (((n = 1 \|\| not (n \&lt;= 0)) \|\| not (n \&gt;= 0)) \|\| sum n = (n * (1 + n)) / 2\l       :name \&quot;2.1\&quot; :time 0.049s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_97 -&gt; p_96 [label=&quot;&quot;];
 p_96 [label=&quot;Simplify (true :expansions [sum] :rw [] :fc [])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 }
 p_102 -&gt; p_100 [label=&quot;&quot;];
 subgraph cluster_101 {
   color=blue;
-p_100 [label=&quot;Start (not (n = 1) \|\| sum n = (n * (1 + n)) / 2 :name \&quot;2.2\&quot; :time 0.047s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+p_100 [label=&quot;Start (not (n = 1) \|\| sum n = (n * (1 + n)) / 2 :name \&quot;2.2\&quot; :time 0.049s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_100 -&gt; p_99 [label=&quot;&quot;];
 p_99 [label=&quot;Simplify (true :expansions [sum; sum] :rw [] :fc [])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 }
@@ -5371,17 +5358,17 @@ p_99 [label=&quot;Simplify (true :expansions [sum; sum] :rw [] :fc [])&quot;,sha
 }
 </textarea><button class="btn btn-primary">Load graph</button><div class="imandra-graphviz-loading display-none">Loading..</div><div class="imandra-graphviz-target"></div><script>
 require(['nbextensions/nbimandra/graphviz'], function (graphviz) {
-  var target = '#graphviz-20d7b973-c72b-4775-882e-8867e5278246';
+  var target = '#graphviz-dd1782b3-4b91-462d-91ac-b27a0e79834e';
   graphviz.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-98abdf95-348f-443b-9f22-22bab3f9ca60';
+  var target = '#alt-88f827d2-3dc4-4c22-b6ae-766b851d3977';
   alternatives.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-cdc4389b-56f9-4c2e-a548-5ac5349ada27';
+  var target = '#fold-92953434-d89e-45a4-9fe7-b41b2f1e763e';
   fold.hydrate(target);
 });
 </script></div></div></div></div>
@@ -5496,7 +5483,7 @@ them by structural induction.</p>
 
 
 <div class="output_html rendered_html output_subarea ">
-<div><div class="imandra-fold panel panel-default" id="fold-c09ce86c-b0a5-4a61-b3b4-4355c9b825a1"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>termination proof</span></div></div><div class="panel-body collapse"><div><h3>Termination proof</h3><div class="imandra-fold panel panel-default" id="fold-a2142cba-03d9-49fe-aff7-32147dbda638"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>call `size (Destruct(Node, 1, x))` from `size x`</span></div></div><div class="panel-body collapse">{original: size x
+<div><div class="imandra-fold panel panel-default" id="fold-02d3d27a-c7f6-463c-9a58-44b6ce89c537"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>termination proof</span></div></div><div class="panel-body collapse"><div><h3>Termination proof</h3><div class="imandra-fold panel panel-default" id="fold-17503e59-b85b-4a26-afe5-7d4fc12db012"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>call `size (Destruct(Node, 1, x))` from `size x`</span></div></div><div class="panel-body collapse">{original: size x
  ----------------------------------------------------------------------------
  sub: size (Destruct(Node, 1, x))
  ----------------------------------------------------------------------------
@@ -5515,39 +5502,43 @@ them by structural induction.</p>
       ----------------------------------------------------------------------------
       inductions: 0
       ----------------------------------------------------------------------------
-      search_time: `0.029s`
+      search_time: `0.019s`
       ----------------------------------------------------------------------------
       details:
         {smt_stats:
            {num checks: 8
             ----------------------------------------------------------------------------
-            arith-make-feasible: 17
+            arith-assume-eqs: 1
+            ----------------------------------------------------------------------------
+            arith-make-feasible: 19
             ----------------------------------------------------------------------------
             arith-max-columns: 17
             ----------------------------------------------------------------------------
             arith-conflicts: 2
             ----------------------------------------------------------------------------
-            rlimit count: 10667
+            rlimit count: 10599
             ----------------------------------------------------------------------------
             arith-gcd-calls: 1
             ----------------------------------------------------------------------------
-            mk clause: 19
+            mk clause: 23
             ----------------------------------------------------------------------------
             datatype occurs check: 27
             ----------------------------------------------------------------------------
-            mk bool var: 71
+            mk bool var: 74
             ----------------------------------------------------------------------------
             arith-lower: 9
             ----------------------------------------------------------------------------
             datatype splits: 9
             ----------------------------------------------------------------------------
-            decisions: 13
+            decisions: 15
             ----------------------------------------------------------------------------
-            propagations: 11
+            propagations: 12
             ----------------------------------------------------------------------------
             arith-patches: 1
             ----------------------------------------------------------------------------
-            arith-max-rows: 5
+            interface eqs: 1
+            ----------------------------------------------------------------------------
+            arith-max-rows: 6
             ----------------------------------------------------------------------------
             conflicts: 6
             ----------------------------------------------------------------------------
@@ -5555,28 +5546,26 @@ them by structural induction.</p>
             ----------------------------------------------------------------------------
             datatype constructor ax: 11
             ----------------------------------------------------------------------------
-            num allocs: 1052374715
+            num allocs: 978115280
             ----------------------------------------------------------------------------
-            final checks: 6
+            final checks: 7
             ----------------------------------------------------------------------------
-            added eqs: 52
+            added eqs: 53
             ----------------------------------------------------------------------------
-            del clause: 5
+            del clause: 9
             ----------------------------------------------------------------------------
-            arith eq adapter: 7
+            arith eq adapter: 8
             ----------------------------------------------------------------------------
-            arith-upper: 12
+            arith-upper: 14
             ----------------------------------------------------------------------------
-            time: 0.002000
+            memory: 25.480000
             ----------------------------------------------------------------------------
-            memory: 28.610000
-            ----------------------------------------------------------------------------
-            max memory: 44.770000
+            max memory: 40.180000
             }
          }
       })
     (full:
-     * ```start[0.029s]
+     * ```start[0.019s]
             let (_x_0 : int) = count.tree (const 0) x in
             let (_x_1 : ty_0 tree) = Destruct(Node, 1, x) in
             let (_x_2 : int) = count.tree (const 0) _x_1 in
@@ -5599,30 +5588,30 @@ them by structural induction.</p>
           }
      * unroll
        {expr:
-          ```(|Ordinal.&lt;&lt;_126| (|Ordinal.Int_111|
+          ```(|Ordinal.&lt;&lt;_129| (|Ordinal.Int_114|
                                  (|`count.tree { Resolved_term.spec_idx = 0;…```
         ----------------------------------------------------------------------------
         expansions: 
         }
      * unroll
        {expr:
-          `(|`count.tree { Resolved_term.spec_idx = 0; spec_arg = (const 0); spec_ty = (ty_0 -&gt; int)/476 }`_239…`
+          `(|`count.tree { Resolved_term.spec_idx = 0; spec_arg = (const 0); spec_ty = (ty_0 -&gt; int)/476 }`_238…`
         ----------------------------------------------------------------------------
         expansions: 
         }
      * unroll
        {expr:
-          `(|`count.tree { Resolved_term.spec_idx = 0; spec_arg = (const 0); spec_ty = (ty_0 -&gt; int)/476 }`_239…`
+          `(|`count.tree { Resolved_term.spec_idx = 0; spec_arg = (const 0); spec_ty = (ty_0 -&gt; int)/476 }`_238…`
         ----------------------------------------------------------------------------
         expansions: 
         }
      * Unsat))
  }</div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-a2142cba-03d9-49fe-aff7-32147dbda638';
+  var target = '#fold-17503e59-b85b-4a26-afe5-7d4fc12db012';
   fold.hydrate(target);
 });
-</script></div><div class="imandra-fold panel panel-default" id="fold-3f38fa48-aefe-4dd4-8ad8-50b20bb290b2"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>call `size (Destruct(Node, 2, x))` from `size x`</span></div></div><div class="panel-body collapse">{original: size x
+</script></div><div class="imandra-fold panel panel-default" id="fold-a8b1222d-fa53-45c0-8de8-59268f7195be"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>call `size (Destruct(Node, 2, x))` from `size x`</span></div></div><div class="panel-body collapse">{original: size x
  ----------------------------------------------------------------------------
  sub: size (Destruct(Node, 2, x))
  ----------------------------------------------------------------------------
@@ -5641,7 +5630,7 @@ require(['nbextensions/nbimandra/fold'], function (fold) {
       ----------------------------------------------------------------------------
       inductions: 0
       ----------------------------------------------------------------------------
-      search_time: `0.023s`
+      search_time: `0.016s`
       ----------------------------------------------------------------------------
       details:
         {smt_stats:
@@ -5653,7 +5642,7 @@ require(['nbextensions/nbimandra/fold'], function (fold) {
             ----------------------------------------------------------------------------
             arith-conflicts: 2
             ----------------------------------------------------------------------------
-            rlimit count: 8365
+            rlimit count: 8329
             ----------------------------------------------------------------------------
             mk clause: 22
             ----------------------------------------------------------------------------
@@ -5661,7 +5650,7 @@ require(['nbextensions/nbimandra/fold'], function (fold) {
             ----------------------------------------------------------------------------
             mk bool var: 76
             ----------------------------------------------------------------------------
-            arith-lower: 12
+            arith-lower: 11
             ----------------------------------------------------------------------------
             datatype splits: 9
             ----------------------------------------------------------------------------
@@ -5677,7 +5666,7 @@ require(['nbextensions/nbimandra/fold'], function (fold) {
             ----------------------------------------------------------------------------
             datatype constructor ax: 11
             ----------------------------------------------------------------------------
-            num allocs: 1029537600
+            num allocs: 956206147
             ----------------------------------------------------------------------------
             final checks: 6
             ----------------------------------------------------------------------------
@@ -5687,16 +5676,16 @@ require(['nbextensions/nbimandra/fold'], function (fold) {
             ----------------------------------------------------------------------------
             arith eq adapter: 10
             ----------------------------------------------------------------------------
-            arith-upper: 17
+            arith-upper: 18
             ----------------------------------------------------------------------------
-            memory: 26.000000
+            memory: 22.880000
             ----------------------------------------------------------------------------
-            max memory: 44.770000
+            max memory: 40.180000
             }
          }
       })
     (full:
-     * ```start[0.023s]
+     * ```start[0.016s]
             let (_x_0 : int) = count.tree (const 0) x in
             let (_x_1 : ty_0 tree) = Destruct(Node, 2, x) in
             let (_x_2 : int) = count.tree (const 0) _x_1 in
@@ -5708,9 +5697,8 @@ require(['nbextensions/nbimandra/fold'], function (fold) {
             ```let (_x_0 : ty_0 tree) = Destruct(Node, 2, x) in
                let (_x_1 : int) = count.tree (const 0) _x_0 in
                let (_x_2 : int) = count.tree (const 0) x in
-               (Ordinal.( &lt;&lt; ) (Ordinal.Int _x_1) (Ordinal.Int _x_2)
-                || not ((Is_a(Node, x) &amp;&amp; _x_2 &gt;= 0) &amp;&amp; _x_1 &gt;= 0))
-               || not Is_a(Node, _x_0)```
+               (Ordinal.( &lt;&lt; ) (Ordinal.Int _x_1) (Ordinal.Int _x_2) || not Is_a(Node, _x_0))
+               || not ((Is_a(Node, x) &amp;&amp; _x_2 &gt;= 0) &amp;&amp; _x_1 &gt;= 0)```
           ----------------------------------------------------------------------------
           expansions: `[]`
           ----------------------------------------------------------------------------
@@ -5720,19 +5708,19 @@ require(['nbextensions/nbimandra/fold'], function (fold) {
           }
      * unroll
        {expr:
-          `(|`count.tree { Resolved_term.spec_idx = 0; spec_arg = (const 0); spec_ty = (ty_0 -&gt; int)/476 }`_239…`
+          `(|`count.tree { Resolved_term.spec_idx = 0; spec_arg = (const 0); spec_ty = (ty_0 -&gt; int)/476 }`_238…`
         ----------------------------------------------------------------------------
         expansions: 
         }
      * unroll
        {expr:
-          `(|`count.tree { Resolved_term.spec_idx = 0; spec_arg = (const 0); spec_ty = (ty_0 -&gt; int)/476 }`_239…`
+          `(|`count.tree { Resolved_term.spec_idx = 0; spec_arg = (const 0); spec_ty = (ty_0 -&gt; int)/476 }`_238…`
         ----------------------------------------------------------------------------
         expansions: 
         }
      * unroll
        {expr:
-          ```(|Ordinal.&lt;&lt;_126| (|Ordinal.Int_111|
+          ```(|Ordinal.&lt;&lt;_129| (|Ordinal.Int_114|
                                  (|`count.tree { Resolved_term.spec_idx = 0;…```
         ----------------------------------------------------------------------------
         expansions: 
@@ -5740,12 +5728,12 @@ require(['nbextensions/nbimandra/fold'], function (fold) {
      * Unsat))
  }</div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-3f38fa48-aefe-4dd4-8ad8-50b20bb290b2';
+  var target = '#fold-a8b1222d-fa53-45c0-8de8-59268f7195be';
   fold.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-c09ce86c-b0a5-4a61-b3b4-4355c9b825a1';
+  var target = '#fold-02d3d27a-c7f6-463c-9a58-44b6ce89c537';
   fold.hydrate(target);
 });
 </script></div></div>
@@ -5836,14 +5824,14 @@ But simplification reduces this to true, using the definition of <span class="an
 
 
 <div class="output_html rendered_html output_subarea ">
-<div><div style="font-size: 1.2em; padding: 0.5em; border-top: 1px solid green; border-bottom: 1px solid green"><i class="fa fa-check-circle" style="margin-right: 0.5em; color: green"></i><span>Proved</span></div><div><div class="imandra-proof-top"><div class="imandra-fold panel panel-default" id="fold-b64c090a-b3ad-4324-9f0e-85e95d14c73b"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>proof</span></div></div><div class="panel-body collapse"><div class="imandra-proof"><div class="imandra-alternatives" id="alt-e59c2c93-14c0-4205-8f09-f1fec938fd34"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>summary</a></li><li class="" data-toggle="tab"><a>full</a></li><li class="" data-toggle="tab"><a>graph</a></li></ul><div class="tab-content"><div class="tab-pane active">{ground_instances: 0
+<div><div style="font-size: 1.2em; padding: 0.5em; border-top: 1px solid green; border-bottom: 1px solid green"><i class="fa fa-check-circle" style="margin-right: 0.5em; color: green"></i><span>Proved</span></div><div><div class="imandra-proof-top"><div class="imandra-fold panel panel-default" id="fold-a08c7e78-9df6-4443-b07d-6c1585bdcd03"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>proof</span></div></div><div class="panel-body collapse"><div class="imandra-proof"><div class="imandra-alternatives" id="alt-87cdbeb7-4a41-4789-ad68-d4888a54a1cb"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>summary</a></li><li class="" data-toggle="tab"><a>full</a></li><li class="" data-toggle="tab"><a>graph</a></li></ul><div class="tab-content"><div class="tab-pane active">{ground_instances: 0
  ----------------------------------------------------------------------------
  definitions: 2
  ----------------------------------------------------------------------------
  inductions: 1
  ----------------------------------------------------------------------------
- search_time: `0.036s`
- }</div><div class="tab-pane"><div class="imandra-fold panel panel-default" id="fold-038b7545-8da8-42d6-b217-8c3719c3dd7f"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.036s, &quot;Goal&quot;] size ( :var_0: ) &gt; 0</pre></li><li><div><h4>subproof</h4><div class="imandra-fold panel panel-default" id="fold-ec739905-7de6-4983-a5e5-1edc02f1e9e1"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>not (size x &lt;= 0)</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.036s, &quot;1&quot;] not (size x &lt;= 0)</pre></li><li><pre>induction on (structural+ x)
+ search_time: `0.045s`
+ }</div><div class="tab-pane"><div class="imandra-fold panel panel-default" id="fold-0c4dd345-4d3b-4170-845c-5acd8341ab5f"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.045s, &quot;Goal&quot;] size ( :var_0: ) &gt; 0</pre></li><li><div><h4>subproof</h4><div class="imandra-fold panel panel-default" id="fold-b6194cdb-d56f-4db7-baf9-db59c3108ad2"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>not (size x &lt;= 0)</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.045s, &quot;1&quot;] not (size x &lt;= 0)</pre></li><li><pre>induction on (structural+ x)
 :scheme φ Leaf
         &amp;&amp; (Is_a(Node, x)
             &amp;&amp; φ (Destruct(Node, 1, x)) &amp;&amp; φ (Destruct(Node, 2, x))
@@ -5855,8 +5843,8 @@ But simplification reduces this to true, using the definition of <span class="an
        :cases [not (size Leaf &lt;= 0);
                ((not (size x &lt;= 0) || not Is_a(Node, x))
                 || size (Destruct(Node, 1, x)) &lt;= 0)
-               || size (Destruct(Node, 2, x)) &lt;= 0])</pre><ul><li><div><h5>subproof</h5><div class="imandra-fold panel panel-default" id="fold-85adc45a-151c-4dd6-a0ae-3f227d790738"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>((not (size x &lt;= 0) || not Is_a(Node, x)) || size (Destruct(Node, 1, x)) &lt;= 0)
-|| size (Destruct(Node, 2, x)) &lt;= 0</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.036s, &quot;1&quot;]
+               || size (Destruct(Node, 2, x)) &lt;= 0])</pre><ul><li><div><h5>subproof</h5><div class="imandra-fold panel panel-default" id="fold-5ee69ce4-87ae-496b-a400-fafa462e870c"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>((not (size x &lt;= 0) || not Is_a(Node, x)) || size (Destruct(Node, 1, x)) &lt;= 0)
+|| size (Destruct(Node, 2, x)) &lt;= 0</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.045s, &quot;1&quot;]
   ((not (size x &lt;= 0) || not Is_a(Node, x))
    || size (Destruct(Node, 1, x)) &lt;= 0)
   || size (Destruct(Node, 2, x)) &lt;= 0</pre></li><li><div><h6>simplify</h6>{into: `true`
@@ -5868,10 +5856,10 @@ But simplification reduces this to true, using the definition of <span class="an
  forward_chaining: 
  }</div></li></ul></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-85adc45a-151c-4dd6-a0ae-3f227d790738';
+  var target = '#fold-5ee69ce4-87ae-496b-a400-fafa462e870c';
   fold.hydrate(target);
 });
-</script></div></div></li><li><div><h5>subproof</h5><div class="imandra-fold panel panel-default" id="fold-2df5d8ad-ab42-41f0-b282-16af1da30e9a"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>not (size Leaf &lt;= 0)</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.036s, &quot;2&quot;] not (size Leaf &lt;= 0)</pre></li><li><div><h6>simplify</h6>{into: `true`
+</script></div></div></li><li><div><h5>subproof</h5><div class="imandra-fold panel panel-default" id="fold-51e07e72-e2a2-487c-9d8c-1405123434ac"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>not (size Leaf &lt;= 0)</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.045s, &quot;2&quot;] not (size Leaf &lt;= 0)</pre></li><li><div><h6>simplify</h6>{into: `true`
  ----------------------------------------------------------------------------
  expansions: `size`
  ----------------------------------------------------------------------------
@@ -5880,25 +5868,25 @@ require(['nbextensions/nbimandra/fold'], function (fold) {
  forward_chaining: 
  }</div></li></ul></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-2df5d8ad-ab42-41f0-b282-16af1da30e9a';
+  var target = '#fold-51e07e72-e2a2-487c-9d8c-1405123434ac';
   fold.hydrate(target);
 });
 </script></div></div></li></ul></div></li></ul></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-ec739905-7de6-4983-a5e5-1edc02f1e9e1';
+  var target = '#fold-b6194cdb-d56f-4db7-baf9-db59c3108ad2';
   fold.hydrate(target);
 });
 </script></div></div></li></ul></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-038b7545-8da8-42d6-b217-8c3719c3dd7f';
+  var target = '#fold-0c4dd345-4d3b-4170-845c-5acd8341ab5f';
   fold.hydrate(target);
 });
-</script></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-f4d70c0c-7acb-45f1-9f7b-2339aeae97f4"><textarea style="display: none">digraph &quot;proof&quot; {
-p_132 [label=&quot;Start (size ( :var_0: ) \&gt; 0 :name \&quot;Goal\&quot; :time 0.036s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+</script></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-7780e5fa-22b1-4e0d-b9dd-806eb9a5cd31"><textarea style="display: none">digraph &quot;proof&quot; {
+p_132 [label=&quot;Start (size ( :var_0: ) \&gt; 0 :name \&quot;Goal\&quot; :time 0.045s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_132 -&gt; p_130 [label=&quot;&quot;];
 subgraph cluster_131 {
   color=blue;
-p_130 [label=&quot;Start (not (size x \&lt;= 0) :name \&quot;1\&quot; :time 0.036s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+p_130 [label=&quot;Start (not (size x \&lt;= 0) :name \&quot;1\&quot; :time 0.045s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_130 -&gt; p_129 [label=&quot;&quot;];
 p_129 [label=&quot;Induct ((structural+ x),\l        :scheme φ Leaf\l                &amp;&amp; (Is_a(Node, x)\l                    &amp;&amp; φ (Destruct(Node, 1, x)) &amp;&amp; φ (Destruct(Node, 2, x))\l                    ==\&gt; φ x))&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_129 -&gt; p_128 [label=&quot;&quot;];
@@ -5906,14 +5894,14 @@ p_128 [label=&quot;Split (not (size Leaf \&lt;= 0)\l       &amp;&amp; (not (size
 p_128 -&gt; p_123 [label=&quot;&quot;];
 subgraph cluster_124 {
   color=blue;
-p_123 [label=&quot;Start (((not (size x \&lt;= 0) \|\| not Is_a(Node, x))\l        \|\| size (Destruct(Node, 1, x)) \&lt;= 0)\l       \|\| size (Destruct(Node, 2, x)) \&lt;= 0 :name \&quot;1\&quot; :time 0.036s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+p_123 [label=&quot;Start (((not (size x \&lt;= 0) \|\| not Is_a(Node, x))\l        \|\| size (Destruct(Node, 1, x)) \&lt;= 0)\l       \|\| size (Destruct(Node, 2, x)) \&lt;= 0 :name \&quot;1\&quot; :time 0.045s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_123 -&gt; p_122 [label=&quot;&quot;];
 p_122 [label=&quot;Simplify (true :expansions [size] :rw [] :fc [])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 }
 p_128 -&gt; p_126 [label=&quot;&quot;];
 subgraph cluster_127 {
   color=blue;
-p_126 [label=&quot;Start (not (size Leaf \&lt;= 0) :name \&quot;2\&quot; :time 0.036s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+p_126 [label=&quot;Start (not (size Leaf \&lt;= 0) :name \&quot;2\&quot; :time 0.045s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_126 -&gt; p_125 [label=&quot;&quot;];
 p_125 [label=&quot;Simplify (true :expansions [size] :rw [] :fc [])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 }
@@ -5921,17 +5909,17 @@ p_125 [label=&quot;Simplify (true :expansions [size] :rw [] :fc [])&quot;,shape=
 }
 </textarea><button class="btn btn-primary">Load graph</button><div class="imandra-graphviz-loading display-none">Loading..</div><div class="imandra-graphviz-target"></div><script>
 require(['nbextensions/nbimandra/graphviz'], function (graphviz) {
-  var target = '#graphviz-f4d70c0c-7acb-45f1-9f7b-2339aeae97f4';
+  var target = '#graphviz-7780e5fa-22b1-4e0d-b9dd-806eb9a5cd31';
   graphviz.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-e59c2c93-14c0-4205-8f09-f1fec938fd34';
+  var target = '#alt-87cdbeb7-4a41-4789-ad68-d4888a54a1cb';
   alternatives.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-b64c090a-b3ad-4324-9f0e-85e95d14c73b';
+  var target = '#fold-a08c7e78-9df6-4443-b07d-6c1585bdcd03';
   fold.hydrate(target);
 });
 </script></div></div></div></div>
@@ -6008,7 +5996,7 @@ steps are mixed. Let's assume one needs to do induction on <code>x, y</code>:</p
 
 
 <div class="output_html rendered_html output_subarea ">
-<div><div class="imandra-fold panel panel-default" id="fold-f1a85e6b-8561-49a7-a0a1-6fb0c9d17e3a"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>termination proof</span></div></div><div class="panel-body collapse"><div><h3>Termination proof</h3><div class="imandra-fold panel panel-default" id="fold-a05f20d6-a614-44a7-82d9-e55afa1be81c"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>call `interleave_strict (List.tl x) (List.tl y)` from `interleave_strict x y`</span></div></div><div class="panel-body collapse">{original: interleave_strict x y
+<div><div class="imandra-fold panel panel-default" id="fold-5ce5820b-e8c6-4b4c-afe8-464705d397c9"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>termination proof</span></div></div><div class="panel-body collapse"><div><h3>Termination proof</h3><div class="imandra-fold panel panel-default" id="fold-6a003d22-b741-484f-b535-c260a29e2100"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>call `interleave_strict (List.tl x) (List.tl y)` from `interleave_strict x y`</span></div></div><div class="panel-body collapse">{original: interleave_strict x y
  ----------------------------------------------------------------------------
  sub: interleave_strict (List.tl x) (List.tl y)
  ----------------------------------------------------------------------------
@@ -6016,7 +6004,7 @@ steps are mixed. Let's assume one needs to do induction on <code>x, y</code>:</p
  ----------------------------------------------------------------------------
  sub ordinal: Ordinal.Int (_cnt (List.tl x))
  ----------------------------------------------------------------------------
- path: [not Is_a([], y) &amp;&amp; not Is_a([], x)]
+ path: [y &lt;&gt; [] &amp;&amp; x &lt;&gt; []]
  ----------------------------------------------------------------------------
  proof:
    (alternatives
@@ -6027,74 +6015,82 @@ steps are mixed. Let's assume one needs to do induction on <code>x, y</code>:</p
       ----------------------------------------------------------------------------
       inductions: 0
       ----------------------------------------------------------------------------
-      search_time: `0.013s`
+      search_time: `0.014s`
       ----------------------------------------------------------------------------
       details:
         {smt_stats:
-           {num checks: 7
+           {num checks: 8
             ----------------------------------------------------------------------------
-            arith-make-feasible: 8
+            arith-make-feasible: 18
             ----------------------------------------------------------------------------
-            arith-max-columns: 11
+            arith-max-columns: 13
             ----------------------------------------------------------------------------
-            rlimit count: 3377
+            arith-conflicts: 1
             ----------------------------------------------------------------------------
-            mk clause: 10
+            rlimit count: 3670
             ----------------------------------------------------------------------------
-            datatype occurs check: 33
+            arith-cheap-eqs: 6
             ----------------------------------------------------------------------------
-            mk bool var: 56
+            mk clause: 19
             ----------------------------------------------------------------------------
-            arith-lower: 2
+            datatype occurs check: 44
+            ----------------------------------------------------------------------------
+            mk bool var: 92
+            ----------------------------------------------------------------------------
+            arith-lower: 14
+            ----------------------------------------------------------------------------
+            arith-diseq: 1
             ----------------------------------------------------------------------------
             datatype splits: 6
             ----------------------------------------------------------------------------
-            decisions: 7
+            decisions: 19
             ----------------------------------------------------------------------------
-            propagations: 4
+            propagations: 26
             ----------------------------------------------------------------------------
-            arith-max-rows: 3
+            arith-max-rows: 5
             ----------------------------------------------------------------------------
-            conflicts: 4
+            conflicts: 10
             ----------------------------------------------------------------------------
-            datatype accessor ax: 9
+            datatype accessor ax: 13
             ----------------------------------------------------------------------------
-            datatype constructor ax: 10
+            minimized lits: 2
             ----------------------------------------------------------------------------
-            num allocs: 1230028421
+            datatype constructor ax: 15
+            ----------------------------------------------------------------------------
+            num allocs: 1148808727
             ----------------------------------------------------------------------------
             final checks: 6
             ----------------------------------------------------------------------------
-            added eqs: 44
+            added eqs: 78
             ----------------------------------------------------------------------------
-            del clause: 1
+            del clause: 11
             ----------------------------------------------------------------------------
-            arith eq adapter: 3
+            arith eq adapter: 13
             ----------------------------------------------------------------------------
-            arith-upper: 6
+            arith-upper: 11
             ----------------------------------------------------------------------------
-            memory: 26.270000
+            memory: 23.140000
             ----------------------------------------------------------------------------
-            max memory: 44.770000
+            max memory: 40.180000
             }
          }
       })
     (full:
-     * ```start[0.013s]
+     * ```start[0.014s]
             let (_x_0 : int) = count.list (const 0) x in
             let (_x_1 : ty_0 list) = List.tl x in
             let (_x_2 : int) = count.list (const 0) _x_1 in
-            not Is_a([], y) &amp;&amp; not Is_a([], x) &amp;&amp; _x_0 &gt;= 0 &amp;&amp; _x_2 &gt;= 0
-            ==&gt; not (not Is_a([], List.tl y) &amp;&amp; not Is_a([], _x_1))
+            y &lt;&gt; [] &amp;&amp; x &lt;&gt; [] &amp;&amp; _x_0 &gt;= 0 &amp;&amp; _x_2 &gt;= 0
+            ==&gt; not ((List.tl y) &lt;&gt; [] &amp;&amp; _x_1 &lt;&gt; [])
                 || Ordinal.( &lt;&lt; ) (Ordinal.Int _x_2) (Ordinal.Int _x_0)```
      * simplify::
          {into:
-            ```let (_x_0 : int) = count.list (const 0) x in
-               let (_x_1 : ty_0 list) = List.tl x in
-               let (_x_2 : int) = count.list (const 0) _x_1 in
-               (not (((not Is_a([], y) &amp;&amp; not Is_a([], x)) &amp;&amp; _x_0 &gt;= 0) &amp;&amp; _x_2 &gt;= 0)
-                || not (not Is_a([], List.tl y) &amp;&amp; not Is_a([], _x_1)))
-               || Ordinal.( &lt;&lt; ) (Ordinal.Int _x_2) (Ordinal.Int _x_0)```
+            ```let (_x_0 : ty_0 list) = List.tl x in
+               let (_x_1 : int) = count.list (const 0) x in
+               let (_x_2 : int) = count.list (const 0) _x_0 in
+               (not ((List.tl y) &lt;&gt; [] &amp;&amp; _x_0 &lt;&gt; [])
+                || not (((y &lt;&gt; [] &amp;&amp; x &lt;&gt; []) &amp;&amp; _x_1 &gt;= 0) &amp;&amp; _x_2 &gt;= 0))
+               || Ordinal.( &lt;&lt; ) (Ordinal.Int _x_2) (Ordinal.Int _x_1)```
           ----------------------------------------------------------------------------
           expansions: `[]`
           ----------------------------------------------------------------------------
@@ -6104,32 +6100,32 @@ steps are mixed. Let's assume one needs to do induction on <code>x, y</code>:</p
           }
      * unroll
        {expr:
-          ```(|Ordinal.&lt;&lt;_126| (|Ordinal.Int_111|
+          ```(|Ordinal.&lt;&lt;_129| (|Ordinal.Int_114|
                                  (|`count.list { Resolved_term.spec_idx = 0;…```
         ----------------------------------------------------------------------------
         expansions: 
         }
      * unroll
        {expr:
-          `(|`count.list { Resolved_term.spec_idx = 0; spec_arg = (const 0); spec_ty = (ty_0 -&gt; int)/765 }`_253…`
+          `(|`count.list { Resolved_term.spec_idx = 0; spec_arg = (const 0); spec_ty = (ty_0 -&gt; int)/765 }`_251…`
         ----------------------------------------------------------------------------
         expansions: 
         }
      * unroll
        {expr:
-          `(|`count.list { Resolved_term.spec_idx = 0; spec_arg = (const 0); spec_ty = (ty_0 -&gt; int)/765 }`_253…`
+          `(|`count.list { Resolved_term.spec_idx = 0; spec_arg = (const 0); spec_ty = (ty_0 -&gt; int)/765 }`_251…`
         ----------------------------------------------------------------------------
         expansions: 
         }
      * Unsat))
  }</div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-a05f20d6-a614-44a7-82d9-e55afa1be81c';
+  var target = '#fold-6a003d22-b741-484f-b535-c260a29e2100';
   fold.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-f1a85e6b-8561-49a7-a0a1-6fb0c9d17e3a';
+  var target = '#fold-5ce5820b-e8c6-4b4c-afe8-464705d397c9';
   fold.hydrate(target);
 });
 </script></div></div>
@@ -6254,16 +6250,16 @@ But simplification reduces this to true, using the definition of <span class="an
 
 
 <div class="output_html rendered_html output_subarea ">
-<div><div style="font-size: 1.2em; padding: 0.5em; border-top: 1px solid green; border-bottom: 1px solid green"><i class="fa fa-check-circle" style="margin-right: 0.5em; color: green"></i><span>Proved</span></div><div><div class="imandra-proof-top"><div class="imandra-fold panel panel-default" id="fold-3e19f140-9248-4dba-993d-39e4a8d5485c"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>proof</span></div></div><div class="panel-body collapse"><div class="imandra-proof"><div class="imandra-alternatives" id="alt-93106f6b-12df-4a7e-9cdf-08c450cad741"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>summary</a></li><li class="" data-toggle="tab"><a>full</a></li><li class="" data-toggle="tab"><a>graph</a></li></ul><div class="tab-content"><div class="tab-pane active">{ground_instances: 0
+<div><div style="font-size: 1.2em; padding: 0.5em; border-top: 1px solid green; border-bottom: 1px solid green"><i class="fa fa-check-circle" style="margin-right: 0.5em; color: green"></i><span>Proved</span></div><div><div class="imandra-proof-top"><div class="imandra-fold panel panel-default" id="fold-77e4c46e-0460-4d7e-b012-c941a0bbc237"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>proof</span></div></div><div class="panel-body collapse"><div class="imandra-proof"><div class="imandra-alternatives" id="alt-63201cd6-56ba-4eed-b5e6-2688d244c79e"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>summary</a></li><li class="" data-toggle="tab"><a>full</a></li><li class="" data-toggle="tab"><a>graph</a></li></ul><div class="tab-content"><div class="tab-pane active">{ground_instances: 0
  ----------------------------------------------------------------------------
  definitions: 11
  ----------------------------------------------------------------------------
  inductions: 1
  ----------------------------------------------------------------------------
- search_time: `0.122s`
- }</div><div class="tab-pane"><div class="imandra-fold panel panel-default" id="fold-23172166-4b5d-499d-a4fe-400f33fb1b4b"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.122s, &quot;Goal&quot;]
+ search_time: `0.117s`
+ }</div><div class="tab-pane"><div class="imandra-fold panel panel-default" id="fold-18d3e25f-6076-479a-b8a7-d2227133d0eb"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.117s, &quot;Goal&quot;]
   List.length (interleave_strict ( :var_0: ) ( :var_1: )) &lt;=
-  (List.length ( :var_0: ) + List.length ( :var_1: ))</pre></li><li><div><h4>subproof</h4><div class="imandra-fold panel panel-default" id="fold-9e424a64-de4a-4abd-b127-0a49b65f009c"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>List.length (interleave_strict x y) &lt;= (List.length x + List.length y)</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.122s, &quot;1&quot;]
+  (List.length ( :var_0: ) + List.length ( :var_1: ))</pre></li><li><div><h4>subproof</h4><div class="imandra-fold panel panel-default" id="fold-803a2591-0315-4acd-8a2a-73cd72c60a15"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>List.length (interleave_strict x y) &lt;= (List.length x + List.length y)</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.117s, &quot;1&quot;]
   List.length (interleave_strict x y) &lt;= (List.length x + List.length y)</pre></li><li><pre>induction on (structural+ x, y)
 :scheme φ x []
         &amp;&amp; φ [] y
@@ -6290,13 +6286,13 @@ But simplification reduces this to true, using the definition of <span class="an
                    (List.length (interleave_strict _x_0 _x_1) &lt;=
                     (List.length _x_0 + List.length _x_1)))
                || List.length (interleave_strict x y) &lt;=
-                  (List.length x + List.length y)])</pre><ul><li><div><h5>subproof</h5><div class="imandra-fold panel panel-default" id="fold-adb75bf4-77c5-4560-abdd-85c6ba876dbf"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>let (_x_0 : sko_ty_0 list) = List.tl x in
+                  (List.length x + List.length y)])</pre><ul><li><div><h5>subproof</h5><div class="imandra-fold panel panel-default" id="fold-0313f883-b7a1-41e5-b155-061a628fb367"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>let (_x_0 : sko_ty_0 list) = List.tl x in
 let (_x_1 : sko_ty_0 list) = List.tl y in
 ((not (y &lt;&gt; []) || not (x &lt;&gt; []))
  || not
     (List.length (interleave_strict _x_0 _x_1) &lt;=
      (List.length _x_0 + List.length _x_1)))
-|| List.length (interleave_strict x y) &lt;= (List.length x + List.length y)</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.121s, &quot;1&quot;]
+|| List.length (interleave_strict x y) &lt;= (List.length x + List.length y)</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.116s, &quot;1&quot;]
   let (_x_0 : sko_ty_0 list) = List.tl x in
   let (_x_1 : sko_ty_0 list) = List.tl y in
   ((not (y &lt;&gt; []) || not (x &lt;&gt; []))
@@ -6355,10 +6351,10 @@ let (_x_1 : sko_ty_0 list) = List.tl y in
    - `List.len_nonnegative`
  }</div></li></ul></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-adb75bf4-77c5-4560-abdd-85c6ba876dbf';
+  var target = '#fold-0313f883-b7a1-41e5-b155-061a628fb367';
   fold.hydrate(target);
 });
-</script></div></div></li><li><div><h5>subproof</h5><div class="imandra-fold panel panel-default" id="fold-e333303f-82fb-4e87-87ad-eae3fc1f64a3"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>List.length (interleave_strict [] y) &lt;= (List.length [] + List.length y)</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.121s, &quot;2&quot;]
+</script></div></div></li><li><div><h5>subproof</h5><div class="imandra-fold panel panel-default" id="fold-ea06f3af-d069-408f-b54f-0d03e6d512dc"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>List.length (interleave_strict [] y) &lt;= (List.length [] + List.length y)</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.116s, &quot;2&quot;]
   List.length (interleave_strict [] y) &lt;= (List.length [] + List.length y)</pre></li><li><div><h6>simplify</h6>{into: `true`
  ----------------------------------------------------------------------------
  expansions: `[List.length, List.length, interleave_strict]`
@@ -6371,10 +6367,10 @@ require(['nbextensions/nbimandra/fold'], function (fold) {
    - `List.len_nonnegative`
  }</div></li></ul></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-e333303f-82fb-4e87-87ad-eae3fc1f64a3';
+  var target = '#fold-ea06f3af-d069-408f-b54f-0d03e6d512dc';
   fold.hydrate(target);
 });
-</script></div></div></li><li><div><h5>subproof</h5><div class="imandra-fold panel panel-default" id="fold-c03e4aa2-a4f5-4290-b691-4b0f13d252a0"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>List.length (interleave_strict x []) &lt;= (List.length x + List.length [])</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.121s, &quot;3&quot;]
+</script></div></div></li><li><div><h5>subproof</h5><div class="imandra-fold panel panel-default" id="fold-cec92bcb-21c1-4209-81a1-00a6de5762bd"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>List.length (interleave_strict x []) &lt;= (List.length x + List.length [])</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.116s, &quot;3&quot;]
   List.length (interleave_strict x []) &lt;= (List.length x + List.length [])</pre></li><li><div><h6>simplify</h6>{into: `true`
  ----------------------------------------------------------------------------
  expansions: `[List.length, List.length, interleave_strict]`
@@ -6387,25 +6383,25 @@ require(['nbextensions/nbimandra/fold'], function (fold) {
    - `List.len_nonnegative`
  }</div></li></ul></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-c03e4aa2-a4f5-4290-b691-4b0f13d252a0';
+  var target = '#fold-cec92bcb-21c1-4209-81a1-00a6de5762bd';
   fold.hydrate(target);
 });
 </script></div></div></li></ul></div></li></ul></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-9e424a64-de4a-4abd-b127-0a49b65f009c';
+  var target = '#fold-803a2591-0315-4acd-8a2a-73cd72c60a15';
   fold.hydrate(target);
 });
 </script></div></div></li></ul></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-23172166-4b5d-499d-a4fe-400f33fb1b4b';
+  var target = '#fold-18d3e25f-6076-479a-b8a7-d2227133d0eb';
   fold.hydrate(target);
 });
-</script></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-03a354a5-8fe1-4d64-8beb-0ba59e98ff6b"><textarea style="display: none">digraph &quot;proof&quot; {
-p_153 [label=&quot;Start (List.length (interleave_strict ( :var_0: ) ( :var_1: )) \&lt;=\l       (List.length ( :var_0: ) + List.length ( :var_1: )) :name \&quot;Goal\&quot;\l       :time 0.122s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+</script></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-d3a6edd3-eb79-498d-bf13-551b413ff55b"><textarea style="display: none">digraph &quot;proof&quot; {
+p_153 [label=&quot;Start (List.length (interleave_strict ( :var_0: ) ( :var_1: )) \&lt;=\l       (List.length ( :var_0: ) + List.length ( :var_1: )) :name \&quot;Goal\&quot;\l       :time 0.117s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_153 -&gt; p_151 [label=&quot;&quot;];
 subgraph cluster_152 {
   color=blue;
-p_151 [label=&quot;Start (List.length (interleave_strict x y) \&lt;= (List.length x + List.length y)\l       :name \&quot;1\&quot; :time 0.122s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+p_151 [label=&quot;Start (List.length (interleave_strict x y) \&lt;= (List.length x + List.length y)\l       :name \&quot;1\&quot; :time 0.117s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_151 -&gt; p_150 [label=&quot;&quot;];
 p_150 [label=&quot;Induct ((structural+ x, y),\l        :scheme φ x []\l                &amp;&amp; φ [] y\l                   &amp;&amp; (y \&lt;\&gt; [] &amp;&amp; x \&lt;\&gt; [] &amp;&amp; φ (List.tl x) (List.tl y)\l                       ==\&gt; φ x y))&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_150 -&gt; p_149 [label=&quot;&quot;];
@@ -6413,7 +6409,7 @@ p_149 [label=&quot;Split (let (_x_0 : int) = List.length x in\l       let (_x_1 
 p_149 -&gt; p_141 [label=&quot;&quot;];
 subgraph cluster_142 {
   color=blue;
-p_141 [label=&quot;Start (let (_x_0 : sko_ty_0 list) = List.tl x in\l       let (_x_1 : sko_ty_0 list) = List.tl y in\l       ((not (y \&lt;\&gt; []) \|\| not (x \&lt;\&gt; []))\l        \|\| not\l           (List.length (interleave_strict _x_0 _x_1) \&lt;=\l            (List.length _x_0 + List.length _x_1)))\l       \|\| List.length (interleave_strict x y) \&lt;=\l          (List.length x + List.length y)\l       :name \&quot;1\&quot; :time 0.121s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+p_141 [label=&quot;Start (let (_x_0 : sko_ty_0 list) = List.tl x in\l       let (_x_1 : sko_ty_0 list) = List.tl y in\l       ((not (y \&lt;\&gt; []) \|\| not (x \&lt;\&gt; []))\l        \|\| not\l           (List.length (interleave_strict _x_0 _x_1) \&lt;=\l            (List.length _x_0 + List.length _x_1)))\l       \|\| List.length (interleave_strict x y) \&lt;=\l          (List.length x + List.length y)\l       :name \&quot;1\&quot; :time 0.116s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_141 -&gt; p_140 [label=&quot;&quot;];
 p_140 [label=&quot;Simplify (let (_x_0 : sko_ty_0 list) = List.tl x in\l          let (_x_1 : sko_ty_0 list) = List.tl y in\l          let (_x_2 : sko_ty_0 list) = interleave_strict _x_0 _x_1 in\l          let (_x_3 : int) = List.length _x_0 in\l          let (_x_4 : int) = List.length _x_1 in\l          ((not (y \&lt;\&gt; []) \|\| not (x \&lt;\&gt; []))\l           \|\| not (List.length _x_2 \&lt;= (_x_3 + _x_4)))\l          \|\| List.length ((List.hd y) :: _x_2) \&lt;= (1 + _x_3 + _x_4)\l          :expansions [List.length;\l                       List.length;\l                       List.length;\l                       interleave_strict]\l          :rw []\l          :fc [List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_140 -&gt; p_139 [label=&quot;&quot;];
@@ -6422,14 +6418,14 @@ p_139 [label=&quot;Simplify (true :expansions [List.length] :rw []\l          :f
 p_149 -&gt; p_144 [label=&quot;&quot;];
 subgraph cluster_145 {
   color=blue;
-p_144 [label=&quot;Start (List.length (interleave_strict [] y) \&lt;=\l       (List.length [] + List.length y) :name \&quot;2\&quot; :time 0.121s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+p_144 [label=&quot;Start (List.length (interleave_strict [] y) \&lt;=\l       (List.length [] + List.length y) :name \&quot;2\&quot; :time 0.116s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_144 -&gt; p_143 [label=&quot;&quot;];
 p_143 [label=&quot;Simplify (true :expansions [List.length; List.length; interleave_strict]\l          :rw []\l          :fc [List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 }
 p_149 -&gt; p_147 [label=&quot;&quot;];
 subgraph cluster_148 {
   color=blue;
-p_147 [label=&quot;Start (List.length (interleave_strict x []) \&lt;=\l       (List.length x + List.length []) :name \&quot;3\&quot; :time 0.121s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+p_147 [label=&quot;Start (List.length (interleave_strict x []) \&lt;=\l       (List.length x + List.length []) :name \&quot;3\&quot; :time 0.116s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_147 -&gt; p_146 [label=&quot;&quot;];
 p_146 [label=&quot;Simplify (true :expansions [List.length; List.length; interleave_strict]\l          :rw []\l          :fc [List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 }
@@ -6437,17 +6433,17 @@ p_146 [label=&quot;Simplify (true :expansions [List.length; List.length; interle
 }
 </textarea><button class="btn btn-primary">Load graph</button><div class="imandra-graphviz-loading display-none">Loading..</div><div class="imandra-graphviz-target"></div><script>
 require(['nbextensions/nbimandra/graphviz'], function (graphviz) {
-  var target = '#graphviz-03a354a5-8fe1-4d64-8beb-0ba59e98ff6b';
+  var target = '#graphviz-d3a6edd3-eb79-498d-bf13-551b413ff55b';
   graphviz.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-93106f6b-12df-4a7e-9cdf-08c450cad741';
+  var target = '#alt-63201cd6-56ba-4eed-b5e6-2688d244c79e';
   alternatives.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-3e19f140-9248-4dba-993d-39e4a8d5485c';
+  var target = '#fold-77e4c46e-0460-4d7e-b012-c941a0bbc237';
   fold.hydrate(target);
 });
 </script></div></div></div></div>
@@ -6579,16 +6575,16 @@ But simplification reduces this to true, using the definition of <span class="an
 
 
 <div class="output_html rendered_html output_subarea ">
-<div><div style="font-size: 1.2em; padding: 0.5em; border-top: 1px solid green; border-bottom: 1px solid green"><i class="fa fa-check-circle" style="margin-right: 0.5em; color: green"></i><span>Proved</span></div><div><div class="imandra-proof-top"><div class="imandra-fold panel panel-default" id="fold-91f9538c-b571-4cbf-825b-e6358a88076c"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>proof</span></div></div><div class="panel-body collapse"><div class="imandra-proof"><div class="imandra-alternatives" id="alt-cec3da63-5406-4f0d-9160-2a23b7479dd2"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>summary</a></li><li class="" data-toggle="tab"><a>full</a></li><li class="" data-toggle="tab"><a>graph</a></li></ul><div class="tab-content"><div class="tab-pane active">{ground_instances: 0
+<div><div style="font-size: 1.2em; padding: 0.5em; border-top: 1px solid green; border-bottom: 1px solid green"><i class="fa fa-check-circle" style="margin-right: 0.5em; color: green"></i><span>Proved</span></div><div><div class="imandra-proof-top"><div class="imandra-fold panel panel-default" id="fold-deb1a0e2-7276-4807-b0fe-ea75c260b030"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>proof</span></div></div><div class="panel-body collapse"><div class="imandra-proof"><div class="imandra-alternatives" id="alt-23ce6c73-f186-453c-ad42-8ea273449587"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>summary</a></li><li class="" data-toggle="tab"><a>full</a></li><li class="" data-toggle="tab"><a>graph</a></li></ul><div class="tab-content"><div class="tab-pane active">{ground_instances: 0
  ----------------------------------------------------------------------------
  definitions: 16
  ----------------------------------------------------------------------------
  inductions: 1
  ----------------------------------------------------------------------------
- search_time: `0.121s`
- }</div><div class="tab-pane"><div class="imandra-fold panel panel-default" id="fold-78be9f96-f959-4314-bb39-4b7e77e93b07"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.121s, &quot;Goal&quot;]
+ search_time: `0.201s`
+ }</div><div class="tab-pane"><div class="imandra-fold panel panel-default" id="fold-2c806f4e-ff98-4bbd-9d7c-502ee1aea80d"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.201s, &quot;Goal&quot;]
   List.length (interleave_strict ( :var_0: ) ( :var_1: )) &lt;=
-  (List.length ( :var_0: ) + List.length ( :var_1: ))</pre></li><li><div><h4>subproof</h4><div class="imandra-fold panel panel-default" id="fold-538373b7-7dfb-449a-907c-265563efb3bd"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>List.length (interleave_strict x y) &lt;= (List.length x + List.length y)</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.121s, &quot;1&quot;]
+  (List.length ( :var_0: ) + List.length ( :var_1: ))</pre></li><li><div><h4>subproof</h4><div class="imandra-fold panel panel-default" id="fold-3d23fb04-0e04-4a5b-9c32-882d71743130"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>List.length (interleave_strict x y) &lt;= (List.length x + List.length y)</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.201s, &quot;1&quot;]
   List.length (interleave_strict x y) &lt;= (List.length x + List.length y)</pre></li><li><pre>induction on (structural* x, y)
 :scheme φ [] []
         &amp;&amp; (y &lt;&gt; [] &amp;&amp; φ [] (List.tl y) ==&gt; φ [] y)
@@ -6638,13 +6634,13 @@ But simplification reduces this to true, using the definition of <span class="an
                    (List.length (interleave_strict _x_0 _x_1) &lt;=
                     (List.length _x_0 + List.length _x_1)))
                || List.length (interleave_strict x y) &lt;=
-                  (List.length x + List.length y)])</pre><ul><li><div><h5>subproof</h5><div class="imandra-fold panel panel-default" id="fold-bb822650-4c8d-4a77-97bc-9efe80c775a6"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>let (_x_0 : sko_ty_0 list) = List.tl x in
+                  (List.length x + List.length y)])</pre><ul><li><div><h5>subproof</h5><div class="imandra-fold panel panel-default" id="fold-1cf11651-ac5f-4cd0-90e1-e03f75c9449d"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>let (_x_0 : sko_ty_0 list) = List.tl x in
 let (_x_1 : sko_ty_0 list) = List.tl y in
 ((not (y &lt;&gt; []) || not (x &lt;&gt; []))
  || not
     (List.length (interleave_strict _x_0 _x_1) &lt;=
      (List.length _x_0 + List.length _x_1)))
-|| List.length (interleave_strict x y) &lt;= (List.length x + List.length y)</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.120s, &quot;1&quot;]
+|| List.length (interleave_strict x y) &lt;= (List.length x + List.length y)</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.199s, &quot;1&quot;]
   let (_x_0 : sko_ty_0 list) = List.tl x in
   let (_x_1 : sko_ty_0 list) = List.tl y in
   ((not (y &lt;&gt; []) || not (x &lt;&gt; []))
@@ -6703,15 +6699,15 @@ let (_x_1 : sko_ty_0 list) = List.tl y in
    - `List.len_nonnegative`
  }</div></li></ul></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-bb822650-4c8d-4a77-97bc-9efe80c775a6';
+  var target = '#fold-1cf11651-ac5f-4cd0-90e1-e03f75c9449d';
   fold.hydrate(target);
 });
-</script></div></div></li><li><div><h5>subproof</h5><div class="imandra-fold panel panel-default" id="fold-df7f3aec-c937-46d5-96cd-ba0cdfec4c60"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>let (_x_0 : sko_ty_0 list) = List.tl x in
+</script></div></div></li><li><div><h5>subproof</h5><div class="imandra-fold panel panel-default" id="fold-f1367552-e7e0-4f1e-84ee-8ae265919923"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>let (_x_0 : sko_ty_0 list) = List.tl x in
 let (_x_1 : int) = List.length [] in
 (not (x &lt;&gt; [])
  || not
     (List.length (interleave_strict _x_0 []) &lt;= (List.length _x_0 + _x_1)))
-|| List.length (interleave_strict x []) &lt;= (List.length x + _x_1)</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.120s, &quot;2&quot;]
+|| List.length (interleave_strict x []) &lt;= (List.length x + _x_1)</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.200s, &quot;2&quot;]
   let (_x_0 : sko_ty_0 list) = List.tl x in
   let (_x_1 : int) = List.length [] in
   (not (x &lt;&gt; [])
@@ -6731,15 +6727,15 @@ let (_x_1 : int) = List.length [] in
    - `List.len_nonnegative`
  }</div></li></ul></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-df7f3aec-c937-46d5-96cd-ba0cdfec4c60';
+  var target = '#fold-f1367552-e7e0-4f1e-84ee-8ae265919923';
   fold.hydrate(target);
 });
-</script></div></div></li><li><div><h5>subproof</h5><div class="imandra-fold panel panel-default" id="fold-50278dd8-2c05-4762-adbe-bac3e6646d20"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>let (_x_0 : sko_ty_0 list) = List.tl y in
+</script></div></div></li><li><div><h5>subproof</h5><div class="imandra-fold panel panel-default" id="fold-3fe80da9-3e96-4e4f-a884-02b44aa814d3"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>let (_x_0 : sko_ty_0 list) = List.tl y in
 let (_x_1 : int) = List.length [] in
 (not (y &lt;&gt; [])
  || not
     (List.length (interleave_strict [] _x_0) &lt;= (_x_1 + List.length _x_0)))
-|| List.length (interleave_strict [] y) &lt;= (_x_1 + List.length y)</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.120s, &quot;3&quot;]
+|| List.length (interleave_strict [] y) &lt;= (_x_1 + List.length y)</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.200s, &quot;3&quot;]
   let (_x_0 : sko_ty_0 list) = List.tl y in
   let (_x_1 : int) = List.length [] in
   (not (y &lt;&gt; [])
@@ -6759,10 +6755,10 @@ let (_x_1 : int) = List.length [] in
    - `List.len_nonnegative`
  }</div></li></ul></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-50278dd8-2c05-4762-adbe-bac3e6646d20';
+  var target = '#fold-3fe80da9-3e96-4e4f-a884-02b44aa814d3';
   fold.hydrate(target);
 });
-</script></div></div></li><li><div><h5>subproof</h5><div class="imandra-fold panel panel-default" id="fold-3c64a01a-85b4-4612-b230-3b8fbf5ad2ce"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>List.length (interleave_strict [] []) &lt;= (2 * List.length [])</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.120s, &quot;4&quot;]
+</script></div></div></li><li><div><h5>subproof</h5><div class="imandra-fold panel panel-default" id="fold-35167b1a-dfe3-44f6-856d-4fb92f51eb1b"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>List.length (interleave_strict [] []) &lt;= (2 * List.length [])</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.200s, &quot;4&quot;]
   List.length (interleave_strict [] []) &lt;= (2 * List.length [])</pre></li><li><div><h6>simplify</h6>{into: `true`
  ----------------------------------------------------------------------------
  expansions: `[List.length, List.length, interleave_strict]`
@@ -6773,25 +6769,25 @@ require(['nbextensions/nbimandra/fold'], function (fold) {
                    - `List.len_nonnegative`
  }</div></li></ul></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-3c64a01a-85b4-4612-b230-3b8fbf5ad2ce';
+  var target = '#fold-35167b1a-dfe3-44f6-856d-4fb92f51eb1b';
   fold.hydrate(target);
 });
 </script></div></div></li></ul></div></li></ul></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-538373b7-7dfb-449a-907c-265563efb3bd';
+  var target = '#fold-3d23fb04-0e04-4a5b-9c32-882d71743130';
   fold.hydrate(target);
 });
 </script></div></div></li></ul></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-78be9f96-f959-4314-bb39-4b7e77e93b07';
+  var target = '#fold-2c806f4e-ff98-4bbd-9d7c-502ee1aea80d';
   fold.hydrate(target);
 });
-</script></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-14451a7b-a97a-4af3-b649-778d564a2457"><textarea style="display: none">digraph &quot;proof&quot; {
-p_171 [label=&quot;Start (List.length (interleave_strict ( :var_0: ) ( :var_1: )) \&lt;=\l       (List.length ( :var_0: ) + List.length ( :var_1: )) :name \&quot;Goal\&quot;\l       :time 0.121s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+</script></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-e11c388b-11f7-45e6-9991-b55def54792b"><textarea style="display: none">digraph &quot;proof&quot; {
+p_171 [label=&quot;Start (List.length (interleave_strict ( :var_0: ) ( :var_1: )) \&lt;=\l       (List.length ( :var_0: ) + List.length ( :var_1: )) :name \&quot;Goal\&quot;\l       :time 0.201s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_171 -&gt; p_169 [label=&quot;&quot;];
 subgraph cluster_170 {
   color=blue;
-p_169 [label=&quot;Start (List.length (interleave_strict x y) \&lt;= (List.length x + List.length y)\l       :name \&quot;1\&quot; :time 0.121s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+p_169 [label=&quot;Start (List.length (interleave_strict x y) \&lt;= (List.length x + List.length y)\l       :name \&quot;1\&quot; :time 0.201s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_169 -&gt; p_168 [label=&quot;&quot;];
 p_168 [label=&quot;Induct ((structural* x, y),\l        :scheme φ [] []\l                &amp;&amp; (y \&lt;\&gt; [] &amp;&amp; φ [] (List.tl y) ==\&gt; φ [] y)\l                   &amp;&amp; (x \&lt;\&gt; [] &amp;&amp; φ (List.tl x) [] ==\&gt; φ x [])\l                      &amp;&amp; (y \&lt;\&gt; [] &amp;&amp; x \&lt;\&gt; [] &amp;&amp; φ (List.tl x) (List.tl y)\l                          ==\&gt; φ x y))&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_168 -&gt; p_167 [label=&quot;&quot;];
@@ -6799,7 +6795,7 @@ p_167 [label=&quot;Split (let (_x_0 : int) = List.length [] in\l       let (_x_1
 p_167 -&gt; p_156 [label=&quot;&quot;];
 subgraph cluster_157 {
   color=blue;
-p_156 [label=&quot;Start (let (_x_0 : sko_ty_0 list) = List.tl x in\l       let (_x_1 : sko_ty_0 list) = List.tl y in\l       ((not (y \&lt;\&gt; []) \|\| not (x \&lt;\&gt; []))\l        \|\| not\l           (List.length (interleave_strict _x_0 _x_1) \&lt;=\l            (List.length _x_0 + List.length _x_1)))\l       \|\| List.length (interleave_strict x y) \&lt;=\l          (List.length x + List.length y)\l       :name \&quot;1\&quot; :time 0.120s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+p_156 [label=&quot;Start (let (_x_0 : sko_ty_0 list) = List.tl x in\l       let (_x_1 : sko_ty_0 list) = List.tl y in\l       ((not (y \&lt;\&gt; []) \|\| not (x \&lt;\&gt; []))\l        \|\| not\l           (List.length (interleave_strict _x_0 _x_1) \&lt;=\l            (List.length _x_0 + List.length _x_1)))\l       \|\| List.length (interleave_strict x y) \&lt;=\l          (List.length x + List.length y)\l       :name \&quot;1\&quot; :time 0.199s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_156 -&gt; p_155 [label=&quot;&quot;];
 p_155 [label=&quot;Simplify (let (_x_0 : sko_ty_0 list) = List.tl x in\l          let (_x_1 : sko_ty_0 list) = List.tl y in\l          let (_x_2 : sko_ty_0 list) = interleave_strict _x_0 _x_1 in\l          let (_x_3 : int) = List.length _x_0 in\l          let (_x_4 : int) = List.length _x_1 in\l          ((not (y \&lt;\&gt; []) \|\| not (x \&lt;\&gt; []))\l           \|\| not (List.length _x_2 \&lt;= (_x_3 + _x_4)))\l          \|\| List.length ((List.hd y) :: _x_2) \&lt;= (1 + _x_3 + _x_4)\l          :expansions [List.length;\l                       List.length;\l                       List.length;\l                       interleave_strict]\l          :rw []\l          :fc [List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_155 -&gt; p_154 [label=&quot;&quot;];
@@ -6808,21 +6804,21 @@ p_154 [label=&quot;Simplify (true :expansions [List.length] :rw []\l          :f
 p_167 -&gt; p_159 [label=&quot;&quot;];
 subgraph cluster_160 {
   color=blue;
-p_159 [label=&quot;Start (let (_x_0 : sko_ty_0 list) = List.tl x in\l       let (_x_1 : int) = List.length [] in\l       (not (x \&lt;\&gt; [])\l        \|\| not\l           (List.length (interleave_strict _x_0 []) \&lt;=\l            (List.length _x_0 + _x_1)))\l       \|\| List.length (interleave_strict x []) \&lt;= (List.length x + _x_1)\l       :name \&quot;2\&quot; :time 0.120s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+p_159 [label=&quot;Start (let (_x_0 : sko_ty_0 list) = List.tl x in\l       let (_x_1 : int) = List.length [] in\l       (not (x \&lt;\&gt; [])\l        \|\| not\l           (List.length (interleave_strict _x_0 []) \&lt;=\l            (List.length _x_0 + _x_1)))\l       \|\| List.length (interleave_strict x []) \&lt;= (List.length x + _x_1)\l       :name \&quot;2\&quot; :time 0.200s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_159 -&gt; p_158 [label=&quot;&quot;];
 p_158 [label=&quot;Simplify (true\l          :expansions [List.length;\l                       List.length;\l                       List.length;\l                       interleave_strict]\l          :rw []\l          :fc [List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 }
 p_167 -&gt; p_162 [label=&quot;&quot;];
 subgraph cluster_163 {
   color=blue;
-p_162 [label=&quot;Start (let (_x_0 : sko_ty_0 list) = List.tl y in\l       let (_x_1 : int) = List.length [] in\l       (not (y \&lt;\&gt; [])\l        \|\| not\l           (List.length (interleave_strict [] _x_0) \&lt;=\l            (_x_1 + List.length _x_0)))\l       \|\| List.length (interleave_strict [] y) \&lt;= (_x_1 + List.length y)\l       :name \&quot;3\&quot; :time 0.120s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+p_162 [label=&quot;Start (let (_x_0 : sko_ty_0 list) = List.tl y in\l       let (_x_1 : int) = List.length [] in\l       (not (y \&lt;\&gt; [])\l        \|\| not\l           (List.length (interleave_strict [] _x_0) \&lt;=\l            (_x_1 + List.length _x_0)))\l       \|\| List.length (interleave_strict [] y) \&lt;= (_x_1 + List.length y)\l       :name \&quot;3\&quot; :time 0.200s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_162 -&gt; p_161 [label=&quot;&quot;];
 p_161 [label=&quot;Simplify (true\l          :expansions [List.length;\l                       List.length;\l                       List.length;\l                       interleave_strict]\l          :rw []\l          :fc [List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative;\l               List.len_nonnegative])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 }
 p_167 -&gt; p_165 [label=&quot;&quot;];
 subgraph cluster_166 {
   color=blue;
-p_165 [label=&quot;Start (List.length (interleave_strict [] []) \&lt;= (2 * List.length [])\l       :name \&quot;4\&quot; :time 0.120s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+p_165 [label=&quot;Start (List.length (interleave_strict [] []) \&lt;= (2 * List.length [])\l       :name \&quot;4\&quot; :time 0.200s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_165 -&gt; p_164 [label=&quot;&quot;];
 p_164 [label=&quot;Simplify (true :expansions [List.length; List.length; interleave_strict]\l          :rw [] :fc [List.len_nonnegative; List.len_nonnegative])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 }
@@ -6830,17 +6826,17 @@ p_164 [label=&quot;Simplify (true :expansions [List.length; List.length; interle
 }
 </textarea><button class="btn btn-primary">Load graph</button><div class="imandra-graphviz-loading display-none">Loading..</div><div class="imandra-graphviz-target"></div><script>
 require(['nbextensions/nbimandra/graphviz'], function (graphviz) {
-  var target = '#graphviz-14451a7b-a97a-4af3-b649-778d564a2457';
+  var target = '#graphviz-e11c388b-11f7-45e6-9991-b55def54792b';
   graphviz.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-cec3da63-5406-4f0d-9160-2a23b7479dd2';
+  var target = '#alt-23ce6c73-f186-453c-ad42-8ea273449587';
   alternatives.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-91f9538c-b571-4cbf-825b-e6358a88076c';
+  var target = '#fold-deb1a0e2-7276-4807-b0fe-ea75c260b030';
   fold.hydrate(target);
 });
 </script></div></div></div></div>

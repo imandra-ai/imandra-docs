@@ -33,7 +33,7 @@
         <link rel="stylesheet" href="/imandra-docs/static/nbextensions/nbimandra/styles.b466ce6f.css" type="text/css">
         <link rel="stylesheet" href="/imandra-docs/static/docs-styles.b9de737f.css" type="text/css">
         
-        <link rel="stylesheet" href="/imandra-docs/static/jekyll-styles.c96432ce.css" type="text/css">
+        <link rel="stylesheet" href="/imandra-docs/static/jekyll-styles.7b33d7b3.css" type="text/css">
         
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.css" />
 
@@ -115,7 +115,7 @@
 
         <!-- Loading mathjax macro -->
         <!-- Load mathjax -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-MML-AM_CHTML-full,Safe"> </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS_CHTML-full,Safe"> </script>
     <!-- MathJax configuration -->
     <script type="text/x-mathjax-config">
     init_mathjax = function() {
@@ -136,11 +136,6 @@
                 },
                 displayAlign: 'center',
                 CommonHTML: {
-                    linebreaks: { 
-                    automatic: true 
-                    }
-                },
-                "HTML-CSS": {
                     linebreaks: { 
                     automatic: true 
                     }
@@ -3951,7 +3946,7 @@ val solved : state -&gt; bool = &lt;fun&gt;
 
 
 <div class="output_html rendered_html output_subarea ">
-<div><div class="imandra-fold panel panel-default" id="fold-17754078-1a92-45e9-adb0-b63f14e3540f"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>termination proof</span></div></div><div class="panel-body collapse"><div><h3>Termination proof</h3><div class="imandra-fold panel panel-default" id="fold-aa27e358-4dd6-4762-8eff-e231d06d5ea2"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>call `many_steps (one_step s (List.hd acts)) (List.tl acts)` from `many_steps s acts`</span></div></div><div class="panel-body collapse">{original: many_steps s acts
+<div><div class="imandra-fold panel panel-default" id="fold-35451c30-dbd2-44a4-b1c6-8ddfda765877"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>termination proof</span></div></div><div class="panel-body collapse"><div><h3>Termination proof</h3><div class="imandra-fold panel panel-default" id="fold-240786bb-81ea-472f-a8e7-816097b0c4f8"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>call `many_steps (one_step s (List.hd acts)) (List.tl acts)` from `many_steps s acts`</span></div></div><div class="panel-body collapse">{original: many_steps s acts
  ----------------------------------------------------------------------------
  sub: many_steps (one_step s (List.hd acts)) (List.tl acts)
  ----------------------------------------------------------------------------
@@ -3959,7 +3954,7 @@ val solved : state -&gt; bool = &lt;fun&gt;
  ----------------------------------------------------------------------------
  sub ordinal: Ordinal.Int (_cnt (List.tl acts))
  ----------------------------------------------------------------------------
- path: [not Is_a([], acts)]
+ path: [acts &lt;&gt; []]
  ----------------------------------------------------------------------------
  proof:
    (alternatives
@@ -3970,53 +3965,55 @@ val solved : state -&gt; bool = &lt;fun&gt;
       ----------------------------------------------------------------------------
       inductions: 0
       ----------------------------------------------------------------------------
-      search_time: `0.029s`
+      search_time: `0.016s`
       ----------------------------------------------------------------------------
       details:
         {smt_stats:
            {num checks: 8
             ----------------------------------------------------------------------------
-            arith-make-feasible: 22
+            arith-make-feasible: 18
             ----------------------------------------------------------------------------
-            arith-max-columns: 14
+            arith-max-columns: 16
             ----------------------------------------------------------------------------
             arith-conflicts: 1
             ----------------------------------------------------------------------------
-            rlimit count: 2933
+            rlimit count: 2816
             ----------------------------------------------------------------------------
-            mk clause: 39
+            mk clause: 38
             ----------------------------------------------------------------------------
-            datatype occurs check: 23
+            datatype occurs check: 27
             ----------------------------------------------------------------------------
-            mk bool var: 140
+            mk bool var: 148
             ----------------------------------------------------------------------------
-            arith-lower: 16
+            arith-lower: 12
             ----------------------------------------------------------------------------
-            datatype splits: 27
+            datatype splits: 25
             ----------------------------------------------------------------------------
-            decisions: 49
+            decisions: 50
             ----------------------------------------------------------------------------
-            propagations: 50
+            propagations: 48
             ----------------------------------------------------------------------------
-            arith-max-rows: 3
+            arith-max-rows: 5
             ----------------------------------------------------------------------------
-            conflicts: 14
+            conflicts: 18
             ----------------------------------------------------------------------------
-            datatype accessor ax: 23
+            datatype accessor ax: 22
             ----------------------------------------------------------------------------
-            datatype constructor ax: 50
+            minimized lits: 1
             ----------------------------------------------------------------------------
-            num allocs: 678792
+            datatype constructor ax: 46
+            ----------------------------------------------------------------------------
+            num allocs: 678909
             ----------------------------------------------------------------------------
             final checks: 6
             ----------------------------------------------------------------------------
-            added eqs: 207
+            added eqs: 180
             ----------------------------------------------------------------------------
-            del clause: 20
+            del clause: 19
             ----------------------------------------------------------------------------
-            arith eq adapter: 16
+            arith eq adapter: 15
             ----------------------------------------------------------------------------
-            arith-upper: 19
+            arith-upper: 15
             ----------------------------------------------------------------------------
             memory: 5.150000
             ----------------------------------------------------------------------------
@@ -4025,19 +4022,20 @@ val solved : state -&gt; bool = &lt;fun&gt;
          }
       })
     (full:
-     * ```start[0.029s]
+     * ```start[0.016s]
             let (_x_0 : int) = count.list count.action acts in
             let (_x_1 : action list) = List.tl acts in
             let (_x_2 : int) = count.list count.action _x_1 in
-            not Is_a([], acts) &amp;&amp; _x_0 &gt;= 0 &amp;&amp; _x_2 &gt;= 0
-            ==&gt; Is_a([], _x_1) || Ordinal.( &lt;&lt; ) (Ordinal.Int _x_2) (Ordinal.Int _x_0)```
+            acts &lt;&gt; [] &amp;&amp; _x_0 &gt;= 0 &amp;&amp; _x_2 &gt;= 0
+            ==&gt; not (_x_1 &lt;&gt; [])
+                || Ordinal.( &lt;&lt; ) (Ordinal.Int _x_2) (Ordinal.Int _x_0)```
      * simplify::
          {into:
             ```let (_x_0 : action list) = List.tl acts in
                let (_x_1 : int) = count.list count.action _x_0 in
                let (_x_2 : int) = count.list count.action acts in
-               (Is_a([], _x_0) || Ordinal.( &lt;&lt; ) (Ordinal.Int _x_1) (Ordinal.Int _x_2))
-               || not ((not Is_a([], acts) &amp;&amp; _x_2 &gt;= 0) &amp;&amp; _x_1 &gt;= 0)```
+               (not (_x_0 &lt;&gt; []) || Ordinal.( &lt;&lt; ) (Ordinal.Int _x_1) (Ordinal.Int _x_2))
+               || not ((acts &lt;&gt; [] &amp;&amp; _x_2 &gt;= 0) &amp;&amp; _x_1 &gt;= 0)```
           ----------------------------------------------------------------------------
           expansions: `[]`
           ----------------------------------------------------------------------------
@@ -4059,7 +4057,7 @@ val solved : state -&gt; bool = &lt;fun&gt;
         }
      * unroll
        {expr:
-          ```(|Ordinal.&lt;&lt;_126| (|Ordinal.Int_111|
+          ```(|Ordinal.&lt;&lt;_129| (|Ordinal.Int_114|
                                  (|`count.list { Resolved_term.spec_idx = 0;…```
         ----------------------------------------------------------------------------
         expansions: 
@@ -4067,12 +4065,12 @@ val solved : state -&gt; bool = &lt;fun&gt;
      * Unsat))
  }</div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-aa27e358-4dd6-4762-8eff-e231d06d5ea2';
+  var target = '#fold-240786bb-81ea-472f-a8e7-816097b0c4f8';
   fold.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-17754078-1a92-45e9-adb0-b63f14e3540f';
+  var target = '#fold-35451c30-dbd2-44a4-b1c6-8ddfda765877';
   fold.hydrate(target);
 });
 </script></div></div>
@@ -4183,12 +4181,12 @@ module CX : sig val l : action list end
 
 
 <div class="output_html rendered_html output_subarea ">
-<div><pre>Instance (after 18 steps, 35.825s):
+<div><pre>Instance (after 18 steps, 29.623s):
 let l : action list =
   let (_x_0 : action) = Pick Goat in
   let (_x_1 : action) = Drop Goat in
-  [_x_0; CrossRiver; _x_1; CrossRiver; Pick Wolf; CrossRiver; Drop Wolf;
-   _x_0; CrossRiver; _x_1; Pick Cabbage; CrossRiver; Drop Cabbage;
+  [_x_0; CrossRiver; _x_1; CrossRiver; Pick Cabbage; CrossRiver;
+   Drop Cabbage; _x_0; CrossRiver; _x_1; Pick Wolf; CrossRiver; Drop Wolf;
    CrossRiver; _x_0; CrossRiver; _x_1]
 </pre></div>
 
@@ -4203,59 +4201,59 @@ let l : action list =
 
 
 <div class="output_html rendered_html output_subarea ">
-<div><div style="font-size: 1.2em; padding: 0.5em; border-top: 1px solid green; border-bottom: 1px solid green"><i class="fa fa-check-circle" style="margin-right: 0.5em; color: green"></i><span>Instance</span></div><div><div class="imandra-alternatives" id="alt-92057f60-a8d1-45cd-a5b4-0e67bcb1b5b9"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>call graph</a></li><li class="" data-toggle="tab"><a>proof</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-graphviz" id="graphviz-c48600d8-c1a7-41a4-a1e7-8956828a9b3b"><textarea style="display: none">digraph &quot;call graph&quot; {
+<div><div style="font-size: 1.2em; padding: 0.5em; border-top: 1px solid green; border-bottom: 1px solid green"><i class="fa fa-check-circle" style="margin-right: 0.5em; color: green"></i><span>Instance</span></div><div><div class="imandra-alternatives" id="alt-8ec44136-95a3-466b-9f58-489c9bf5f744"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>call graph</a></li><li class="" data-toggle="tab"><a>proof</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-graphviz" id="graphviz-c1f213b2-5bea-44c2-8ed8-d5a48515063a"><textarea style="display: none">digraph &quot;call graph&quot; {
 goal [label=&quot;let (_x_0 : state)\l    = many_steps\l      \{cabbage = LeftCoast; goat = LeftCoast; wolf = LeftCoast; boat = Left\}\l      l\lin\l((_x_0.cabbage = RightCoast &amp;&amp; _x_0.goat = RightCoast)\l &amp;&amp; _x_0.wolf = RightCoast)\l&amp;&amp; _x_0.boat = Right&quot;,shape=box,style=filled,color=&quot;cyan&quot;,fontname=&quot;courier&quot;,fontsize=14];
 goal -&gt; call_39 [label=&quot;calls&quot;];
 call_39 [label=&quot;many_steps\l\{cabbage = LeftCoast; goat = LeftCoast; wolf = LeftCoast; boat = Left\} l&quot;,shape=box,style=filled,color=&quot;green&quot;,fontname=&quot;courier&quot;,fontsize=14];
 call_39 -&gt; call_363 [label=&quot;calls&quot;];
 call_363 [label=&quot;many_steps\l(one_step\l \{cabbage = LeftCoast; goat = LeftCoast; wolf = LeftCoast; boat = Left\}\l (List.hd l))\l(List.tl l)&quot;,shape=box,style=filled,color=&quot;green&quot;,fontname=&quot;courier&quot;,fontsize=14];
-call_363 -&gt; call_1338 [label=&quot;calls&quot;];
-call_1338 [label=&quot;let (_x_0 : action list) = List.tl l in\lmany_steps\l(one_step\l (one_step\l  \{cabbage = LeftCoast; goat = LeftCoast; wolf = LeftCoast; boat = Left\}\l  (List.hd l))\l (List.hd _x_0))\l(List.tl _x_0)&quot;,shape=box,style=filled,color=&quot;green&quot;,fontname=&quot;courier&quot;,fontsize=14];
-call_1338 -&gt; call_2685 [label=&quot;calls&quot;];
-call_2685 [label=&quot;let (_x_0 : action list) = List.tl l in\llet (_x_1 : action list) = List.tl _x_0 in\lmany_steps\l(one_step\l (one_step\l  (one_step\l   \{cabbage = LeftCoast; goat = LeftCoast; wolf = LeftCoast; boat = Left\}\l   (List.hd l))\l  (List.hd _x_0))\l (List.hd _x_1))\l(List.tl _x_1)&quot;,shape=box,style=filled,color=&quot;green&quot;,fontname=&quot;courier&quot;,fontsize=14];
-call_2685 -&gt; call_5686 [label=&quot;calls&quot;];
-call_5686 [label=&quot;let (_x_0 : action list) = List.tl l in\llet (_x_1 : action list) = List.tl _x_0 in\llet (_x_2 : action list) = List.tl _x_1 in\lmany_steps\l(one_step\l (one_step\l  (one_step\l   (one_step\l    \{cabbage = LeftCoast; goat = LeftCoast; wolf = LeftCoast; boat = Left\}\l    (List.hd l))\l   (List.hd _x_0))\l  (List.hd _x_1))\l (List.hd _x_2))\l(List.tl _x_2)&quot;,shape=box,style=filled,color=&quot;green&quot;,fontname=&quot;courier&quot;,fontsize=14];
-call_5686 -&gt; call_9682 [label=&quot;calls&quot;];
-call_9682 [label=&quot;let (_x_0 : action list) = List.tl l in\llet (_x_1 : action list) = List.tl _x_0 in\llet (_x_2 : action list) = List.tl _x_1 in\llet (_x_3 : action list) = List.tl _x_2 in\lmany_steps\l(one_step\l (one_step\l  (one_step\l   (one_step\l    (one_step\l     \{cabbage = LeftCoast; goat = LeftCoast; wolf = LeftCoast; boat = Left\}\l     (List.hd l))\l    (List.hd _x_0))\l   (List.hd _x_1))\l  (List.hd _x_2))\l (List.hd _x_3))\l(List.tl _x_3)&quot;,shape=box,style=filled,color=&quot;green&quot;,fontname=&quot;courier&quot;,fontsize=14];
-call_9682 -&gt; call_10459 [label=&quot;calls&quot;];
-call_10459 [label=&quot;let (_x_0 : action list) = List.tl l in\llet (_x_1 : action list) = List.tl _x_0 in\llet (_x_2 : action list) = List.tl _x_1 in\llet (_x_3 : action list) = List.tl _x_2 in\llet (_x_4 : action list) = List.tl _x_3 in\lmany_steps\l(one_step\l (one_step\l  (one_step\l   (one_step\l    (one_step\l     (one_step\l      \{cabbage = LeftCoast; goat = LeftCoast; wolf = LeftCoast; boat = Left\}\l      (List.hd l))\l     (List.hd _x_0))\l    (List.hd _x_1))\l   (List.hd _x_2))\l  (List.hd _x_3))\l (List.hd _x_4))\l(List.tl _x_4)&quot;,shape=box,style=filled,color=&quot;green&quot;,fontname=&quot;courier&quot;,fontsize=14];
-call_10459 -&gt; call_38681 [label=&quot;calls&quot;];
-call_38681 [label=&quot;let (_x_0 : action list) = List.tl l in\llet (_x_1 : action list) = List.tl _x_0 in\llet (_x_2 : action list) = List.tl _x_1 in\llet (_x_3 : action list) = List.tl _x_2 in\llet (_x_4 : action list) = List.tl _x_3 in\llet (_x_5 : action list) = List.tl _x_4 in\lmany_steps\l(one_step\l (one_step\l  (one_step\l   (one_step\l    (one_step\l     (one_step\l      (one_step\l       \{cabbage = LeftCoast; goat = LeftCoast; wolf = LeftCoast; boat = Left\}\l       (List.hd l))\l      (List.hd _x_0))\l     (List.hd _x_1))\l    (List.hd _x_2))\l   (List.hd _x_3))\l  (List.hd _x_4))\l (List.hd _x_5))\l(List.tl _x_5)&quot;,shape=box,style=filled,color=&quot;green&quot;,fontname=&quot;courier&quot;,fontsize=14];
-call_38681 -&gt; call_67881 [label=&quot;calls&quot;];
-call_67881 [label=&quot;let (_x_0 : action list)\l    = List.tl (List.tl (List.tl (List.tl (List.tl (List.tl l)))))\lin\llet (_x_1 : action list) = List.tl _x_0 in\lmany_steps\l(one_step (one_step (one_step … …) (List.hd _x_0)) (List.hd _x_1))\l(List.tl _x_1)&quot;,shape=box,style=filled,color=&quot;green&quot;,fontname=&quot;courier&quot;,fontsize=14];
-call_67881 -&gt; call_109672 [label=&quot;calls&quot;];
-call_109672 [label=&quot;let (_x_0 : action list)\l    = List.tl (List.tl (List.tl (List.tl (List.tl (List.tl l)))))\lin\llet (_x_1 : action list) = List.tl _x_0 in\llet (_x_2 : action list) = List.tl _x_1 in\lmany_steps\l(one_step\l (one_step (one_step (one_step … …) (List.hd _x_0)) (List.hd _x_1))\l (List.hd _x_2))\l(List.tl _x_2)&quot;,shape=box,style=filled,color=&quot;green&quot;,fontname=&quot;courier&quot;,fontsize=14];
-call_109672 -&gt; call_227220 [label=&quot;calls&quot;];
-call_227220 [label=&quot;let (_x_0 : action list)\l    = List.tl (List.tl (List.tl (List.tl (List.tl (List.tl l)))))\lin\llet (_x_1 : action list) = List.tl _x_0 in\llet (_x_2 : action list) = List.tl _x_1 in\llet (_x_3 : action list) = List.tl _x_2 in\lmany_steps\l(one_step\l (one_step\l  (one_step (one_step (one_step … …) (List.hd _x_0)) (List.hd _x_1))\l  (List.hd _x_2))\l (List.hd _x_3))\l(List.tl _x_3)&quot;,shape=box,style=filled,color=&quot;green&quot;,fontname=&quot;courier&quot;,fontsize=14];
-call_227220 -&gt; call_366731 [label=&quot;calls&quot;];
-call_366731 [label=&quot;let (_x_0 : action list)\l    = List.tl (List.tl (List.tl (List.tl (List.tl (List.tl l)))))\lin\llet (_x_1 : action list) = List.tl _x_0 in\llet (_x_2 : action list) = List.tl _x_1 in\llet (_x_3 : action list) = List.tl _x_2 in\llet (_x_4 : action list) = List.tl _x_3 in\lmany_steps\l(one_step\l (one_step\l  (one_step\l   (one_step (one_step (one_step … …) (List.hd _x_0)) (List.hd _x_1))\l   (List.hd _x_2))\l  (List.hd _x_3))\l (List.hd _x_4))\l(List.tl _x_4)&quot;,shape=box,style=filled,color=&quot;green&quot;,fontname=&quot;courier&quot;,fontsize=14];
-call_366731 -&gt; call_471065 [label=&quot;calls&quot;];
-call_471065 [label=&quot;let (_x_0 : action list)\l    = List.tl (List.tl (List.tl (List.tl (List.tl (List.tl l)))))\lin\llet (_x_1 : action list) = List.tl _x_0 in\llet (_x_2 : action list) = List.tl _x_1 in\llet (_x_3 : action list) = List.tl _x_2 in\llet (_x_4 : action list) = List.tl _x_3 in\llet (_x_5 : action list) = List.tl _x_4 in\lmany_steps\l(one_step\l (one_step\l  (one_step\l   (one_step\l    (one_step (one_step (one_step … …) (List.hd _x_0)) (List.hd _x_1))\l    (List.hd _x_2))\l   (List.hd _x_3))\l  (List.hd _x_4))\l (List.hd _x_5))\l(List.tl _x_5)&quot;,shape=box,style=filled,color=&quot;green&quot;,fontname=&quot;courier&quot;,fontsize=14];
-call_471065 -&gt; call_5679 [label=&quot;calls&quot;];
-call_5679 [label=&quot;let (_x_0 : action list)\l    = List.tl (List.tl (List.tl (List.tl (List.tl (List.tl l)))))\lin\llet (_x_1 : action list) = List.tl _x_0 in\llet (_x_2 : action list) = List.tl _x_1 in\llet (_x_3 : action list) = List.tl _x_2 in\llet (_x_4 : action list) = List.tl _x_3 in\llet (_x_5 : action list) = List.tl _x_4 in\llet (_x_6 : action list) = List.tl _x_5 in\lmany_steps\l(one_step\l (one_step\l  (one_step\l   (one_step\l    (one_step\l     (one_step (one_step (one_step … …) (List.hd _x_0)) (List.hd _x_1))\l     (List.hd _x_2))\l    (List.hd _x_3))\l   (List.hd _x_4))\l  (List.hd _x_5))\l (List.hd _x_6))\l(List.tl _x_6)&quot;,shape=box,style=filled,color=&quot;green&quot;,fontname=&quot;courier&quot;,fontsize=14];
-call_5679 -&gt; call_783275 [label=&quot;calls&quot;];
-call_783275 [label=&quot;let (_x_0 : action list)\l    = List.tl (List.tl (List.tl (List.tl (List.tl (List.tl l)))))\lin\llet (_x_1 : action list) = List.tl _x_0 in\llet (_x_2 : action list) = List.tl _x_1 in\llet (_x_3 : action list) = List.tl _x_2 in\llet (_x_4 : action list) = List.tl _x_3 in\llet (_x_5 : action list) = List.tl _x_4 in\llet (_x_6 : action list) = List.tl _x_5 in\llet (_x_7 : action list) = List.tl _x_6 in\lmany_steps\l(one_step\l (one_step\l  (one_step\l   (one_step\l    (one_step\l     (one_step\l      (one_step (one_step (one_step … …) (List.hd _x_0)) (List.hd _x_1))\l      (List.hd _x_2))\l     (List.hd _x_3))\l    (List.hd _x_4))\l   (List.hd _x_5))\l  (List.hd _x_6))\l (List.hd _x_7))\l(List.tl _x_7)&quot;,shape=box,style=filled,color=&quot;green&quot;,fontname=&quot;courier&quot;,fontsize=14];
-call_783275 -&gt; call_18877 [label=&quot;calls&quot;];
-call_18877 [label=&quot;let (_x_0 : action list)\l    = List.tl (List.tl (List.tl (List.tl (List.tl (List.tl l)))))\lin\llet (_x_1 : action list) = List.tl _x_0 in\llet (_x_2 : action list) = List.tl _x_1 in\llet (_x_3 : action list) = List.tl _x_2 in\llet (_x_4 : action list) = List.tl _x_3 in\llet (_x_5 : action list) = List.tl _x_4 in\llet (_x_6 : action list) = List.tl _x_5 in\llet (_x_7 : action list) = List.tl _x_6 in\llet (_x_8 : action list) = List.tl _x_7 in\lmany_steps\l(one_step\l (one_step\l  (one_step\l   (one_step\l    (one_step\l     (one_step\l      (one_step\l       (one_step (one_step (one_step … …) (List.hd _x_0)) (List.hd _x_1))\l       (List.hd _x_2))\l      (List.hd _x_3))\l     (List.hd _x_4))\l    (List.hd _x_5))\l   (List.hd _x_6))\l  (List.hd _x_7))\l (List.hd _x_8))\l(List.tl _x_8)&quot;,shape=box,style=filled,color=&quot;green&quot;,fontname=&quot;courier&quot;,fontsize=14];
-call_18877 -&gt; call_808011 [label=&quot;calls&quot;];
-call_808011 [label=&quot;let (_x_0 : action list)\l    = List.tl (List.tl (List.tl (List.tl (List.tl (List.tl l)))))\lin\llet (_x_1 : action list) = List.tl _x_0 in\llet (_x_2 : action list) = List.tl _x_1 in\llet (_x_3 : action list) = List.tl _x_2 in\llet (_x_4 : action list) = List.tl _x_3 in\llet (_x_5 : action list) = List.tl _x_4 in\llet (_x_6 : action list) = List.tl _x_5 in\llet (_x_7 : action list) = List.tl _x_6 in\llet (_x_8 : action list) = List.tl _x_7 in\llet (_x_9 : action list) = List.tl _x_8 in\lmany_steps\l(one_step\l (one_step\l  (one_step\l   (one_step\l    (one_step\l     (one_step\l      (one_step\l       (one_step\l        (one_step (one_step (one_step … …) (List.hd _x_0)) (List.hd _x_1))\l        (List.hd _x_2))\l       (List.hd _x_3))\l      (List.hd _x_4))\l     (List.hd _x_5))\l    (List.hd _x_6))\l   (List.hd _x_7))\l  (List.hd _x_8))\l (List.hd _x_9))\l(List.tl _x_9)&quot;,shape=box,style=filled,color=&quot;green&quot;,fontname=&quot;courier&quot;,fontsize=14];
-call_808011 -&gt; call_1163981 [label=&quot;calls&quot;];
-call_1163981 [label=&quot;let (_x_0 : action list)\l    = List.tl\l      (List.tl\l       (List.tl\l        (List.tl\l         (List.tl\l          (List.tl\l           (List.tl\l            (List.tl\l             (List.tl\l              (List.tl (List.tl (List.tl (List.tl (List.tl (List.tl l))))))))))))))\lin\llet (_x_1 : action list) = List.tl _x_0 in\lmany_steps\l(one_step (one_step (one_step … …) (List.hd _x_0)) (List.hd _x_1))\l(List.tl _x_1)&quot;,shape=box,style=filled,color=&quot;green&quot;,fontname=&quot;courier&quot;,fontsize=14];
-call_1163981 -&gt; call_808022 [label=&quot;calls&quot;];
-call_808022 [label=&quot;let (_x_0 : action list)\l    = List.tl\l      (List.tl\l       (List.tl\l        (List.tl\l         (List.tl\l          (List.tl\l           (List.tl\l            (List.tl\l             (List.tl\l              (List.tl\l               (List.tl (List.tl (List.tl (List.tl (List.tl (List.tl l)))))))))))))))\lin\llet (_x_1 : action list) = List.tl _x_0 in\lmany_steps\l(one_step (one_step (one_step … …) (List.hd _x_0)) (List.hd _x_1))\l(List.tl _x_1)&quot;,shape=box,style=filled,color=&quot;yellow&quot;,fontname=&quot;courier&quot;,fontsize=14];
+call_363 -&gt; call_926 [label=&quot;calls&quot;];
+call_926 [label=&quot;let (_x_0 : action list) = List.tl l in\lmany_steps\l(one_step\l (one_step\l  \{cabbage = LeftCoast; goat = LeftCoast; wolf = LeftCoast; boat = Left\}\l  (List.hd l))\l (List.hd _x_0))\l(List.tl _x_0)&quot;,shape=box,style=filled,color=&quot;green&quot;,fontname=&quot;courier&quot;,fontsize=14];
+call_926 -&gt; call_2764 [label=&quot;calls&quot;];
+call_2764 [label=&quot;let (_x_0 : action list) = List.tl l in\llet (_x_1 : action list) = List.tl _x_0 in\lmany_steps\l(one_step\l (one_step\l  (one_step\l   \{cabbage = LeftCoast; goat = LeftCoast; wolf = LeftCoast; boat = Left\}\l   (List.hd l))\l  (List.hd _x_0))\l (List.hd _x_1))\l(List.tl _x_1)&quot;,shape=box,style=filled,color=&quot;green&quot;,fontname=&quot;courier&quot;,fontsize=14];
+call_2764 -&gt; call_5420 [label=&quot;calls&quot;];
+call_5420 [label=&quot;let (_x_0 : action list) = List.tl l in\llet (_x_1 : action list) = List.tl _x_0 in\llet (_x_2 : action list) = List.tl _x_1 in\lmany_steps\l(one_step\l (one_step\l  (one_step\l   (one_step\l    \{cabbage = LeftCoast; goat = LeftCoast; wolf = LeftCoast; boat = Left\}\l    (List.hd l))\l   (List.hd _x_0))\l  (List.hd _x_1))\l (List.hd _x_2))\l(List.tl _x_2)&quot;,shape=box,style=filled,color=&quot;green&quot;,fontname=&quot;courier&quot;,fontsize=14];
+call_5420 -&gt; call_12334 [label=&quot;calls&quot;];
+call_12334 [label=&quot;let (_x_0 : action list) = List.tl l in\llet (_x_1 : action list) = List.tl _x_0 in\llet (_x_2 : action list) = List.tl _x_1 in\llet (_x_3 : action list) = List.tl _x_2 in\lmany_steps\l(one_step\l (one_step\l  (one_step\l   (one_step\l    (one_step\l     \{cabbage = LeftCoast; goat = LeftCoast; wolf = LeftCoast; boat = Left\}\l     (List.hd l))\l    (List.hd _x_0))\l   (List.hd _x_1))\l  (List.hd _x_2))\l (List.hd _x_3))\l(List.tl _x_3)&quot;,shape=box,style=filled,color=&quot;green&quot;,fontname=&quot;courier&quot;,fontsize=14];
+call_12334 -&gt; call_22843 [label=&quot;calls&quot;];
+call_22843 [label=&quot;let (_x_0 : action list) = List.tl l in\llet (_x_1 : action list) = List.tl _x_0 in\llet (_x_2 : action list) = List.tl _x_1 in\llet (_x_3 : action list) = List.tl _x_2 in\llet (_x_4 : action list) = List.tl _x_3 in\lmany_steps\l(one_step\l (one_step\l  (one_step\l   (one_step\l    (one_step\l     (one_step\l      \{cabbage = LeftCoast; goat = LeftCoast; wolf = LeftCoast; boat = Left\}\l      (List.hd l))\l     (List.hd _x_0))\l    (List.hd _x_1))\l   (List.hd _x_2))\l  (List.hd _x_3))\l (List.hd _x_4))\l(List.tl _x_4)&quot;,shape=box,style=filled,color=&quot;green&quot;,fontname=&quot;courier&quot;,fontsize=14];
+call_22843 -&gt; call_38739 [label=&quot;calls&quot;];
+call_38739 [label=&quot;let (_x_0 : action list) = List.tl l in\llet (_x_1 : action list) = List.tl _x_0 in\llet (_x_2 : action list) = List.tl _x_1 in\llet (_x_3 : action list) = List.tl _x_2 in\llet (_x_4 : action list) = List.tl _x_3 in\llet (_x_5 : action list) = List.tl _x_4 in\lmany_steps\l(one_step\l (one_step\l  (one_step\l   (one_step\l    (one_step\l     (one_step\l      (one_step\l       \{cabbage = LeftCoast; goat = LeftCoast; wolf = LeftCoast; boat = Left\}\l       (List.hd l))\l      (List.hd _x_0))\l     (List.hd _x_1))\l    (List.hd _x_2))\l   (List.hd _x_3))\l  (List.hd _x_4))\l (List.hd _x_5))\l(List.tl _x_5)&quot;,shape=box,style=filled,color=&quot;green&quot;,fontname=&quot;courier&quot;,fontsize=14];
+call_38739 -&gt; call_66591 [label=&quot;calls&quot;];
+call_66591 [label=&quot;let (_x_0 : action list)\l    = List.tl (List.tl (List.tl (List.tl (List.tl (List.tl l)))))\lin\llet (_x_1 : action list) = List.tl _x_0 in\lmany_steps\l(one_step (one_step (one_step … …) (List.hd _x_0)) (List.hd _x_1))\l(List.tl _x_1)&quot;,shape=box,style=filled,color=&quot;green&quot;,fontname=&quot;courier&quot;,fontsize=14];
+call_66591 -&gt; call_100915 [label=&quot;calls&quot;];
+call_100915 [label=&quot;let (_x_0 : action list)\l    = List.tl (List.tl (List.tl (List.tl (List.tl (List.tl l)))))\lin\llet (_x_1 : action list) = List.tl _x_0 in\llet (_x_2 : action list) = List.tl _x_1 in\lmany_steps\l(one_step\l (one_step (one_step (one_step … …) (List.hd _x_0)) (List.hd _x_1))\l (List.hd _x_2))\l(List.tl _x_2)&quot;,shape=box,style=filled,color=&quot;green&quot;,fontname=&quot;courier&quot;,fontsize=14];
+call_100915 -&gt; call_160185 [label=&quot;calls&quot;];
+call_160185 [label=&quot;let (_x_0 : action list)\l    = List.tl (List.tl (List.tl (List.tl (List.tl (List.tl l)))))\lin\llet (_x_1 : action list) = List.tl _x_0 in\llet (_x_2 : action list) = List.tl _x_1 in\llet (_x_3 : action list) = List.tl _x_2 in\lmany_steps\l(one_step\l (one_step\l  (one_step (one_step (one_step … …) (List.hd _x_0)) (List.hd _x_1))\l  (List.hd _x_2))\l (List.hd _x_3))\l(List.tl _x_3)&quot;,shape=box,style=filled,color=&quot;green&quot;,fontname=&quot;courier&quot;,fontsize=14];
+call_160185 -&gt; call_8850 [label=&quot;calls&quot;];
+call_8850 [label=&quot;let (_x_0 : action list)\l    = List.tl (List.tl (List.tl (List.tl (List.tl (List.tl l)))))\lin\llet (_x_1 : action list) = List.tl _x_0 in\llet (_x_2 : action list) = List.tl _x_1 in\llet (_x_3 : action list) = List.tl _x_2 in\llet (_x_4 : action list) = List.tl _x_3 in\lmany_steps\l(one_step\l (one_step\l  (one_step\l   (one_step (one_step (one_step … …) (List.hd _x_0)) (List.hd _x_1))\l   (List.hd _x_2))\l  (List.hd _x_3))\l (List.hd _x_4))\l(List.tl _x_4)&quot;,shape=box,style=filled,color=&quot;green&quot;,fontname=&quot;courier&quot;,fontsize=14];
+call_8850 -&gt; call_342016 [label=&quot;calls&quot;];
+call_342016 [label=&quot;let (_x_0 : action list)\l    = List.tl (List.tl (List.tl (List.tl (List.tl (List.tl l)))))\lin\llet (_x_1 : action list) = List.tl _x_0 in\llet (_x_2 : action list) = List.tl _x_1 in\llet (_x_3 : action list) = List.tl _x_2 in\llet (_x_4 : action list) = List.tl _x_3 in\llet (_x_5 : action list) = List.tl _x_4 in\lmany_steps\l(one_step\l (one_step\l  (one_step\l   (one_step\l    (one_step (one_step (one_step … …) (List.hd _x_0)) (List.hd _x_1))\l    (List.hd _x_2))\l   (List.hd _x_3))\l  (List.hd _x_4))\l (List.hd _x_5))\l(List.tl _x_5)&quot;,shape=box,style=filled,color=&quot;green&quot;,fontname=&quot;courier&quot;,fontsize=14];
+call_342016 -&gt; call_66586 [label=&quot;calls&quot;];
+call_66586 [label=&quot;let (_x_0 : action list)\l    = List.tl (List.tl (List.tl (List.tl (List.tl (List.tl l)))))\lin\llet (_x_1 : action list) = List.tl _x_0 in\llet (_x_2 : action list) = List.tl _x_1 in\llet (_x_3 : action list) = List.tl _x_2 in\llet (_x_4 : action list) = List.tl _x_3 in\llet (_x_5 : action list) = List.tl _x_4 in\llet (_x_6 : action list) = List.tl _x_5 in\lmany_steps\l(one_step\l (one_step\l  (one_step\l   (one_step\l    (one_step\l     (one_step (one_step (one_step … …) (List.hd _x_0)) (List.hd _x_1))\l     (List.hd _x_2))\l    (List.hd _x_3))\l   (List.hd _x_4))\l  (List.hd _x_5))\l (List.hd _x_6))\l(List.tl _x_6)&quot;,shape=box,style=filled,color=&quot;green&quot;,fontname=&quot;courier&quot;,fontsize=14];
+call_66586 -&gt; call_550830 [label=&quot;calls&quot;];
+call_550830 [label=&quot;let (_x_0 : action list)\l    = List.tl (List.tl (List.tl (List.tl (List.tl (List.tl l)))))\lin\llet (_x_1 : action list) = List.tl _x_0 in\llet (_x_2 : action list) = List.tl _x_1 in\llet (_x_3 : action list) = List.tl _x_2 in\llet (_x_4 : action list) = List.tl _x_3 in\llet (_x_5 : action list) = List.tl _x_4 in\llet (_x_6 : action list) = List.tl _x_5 in\llet (_x_7 : action list) = List.tl _x_6 in\lmany_steps\l(one_step\l (one_step\l  (one_step\l   (one_step\l    (one_step\l     (one_step\l      (one_step (one_step (one_step … …) (List.hd _x_0)) (List.hd _x_1))\l      (List.hd _x_2))\l     (List.hd _x_3))\l    (List.hd _x_4))\l   (List.hd _x_5))\l  (List.hd _x_6))\l (List.hd _x_7))\l(List.tl _x_7)&quot;,shape=box,style=filled,color=&quot;green&quot;,fontname=&quot;courier&quot;,fontsize=14];
+call_550830 -&gt; call_449703 [label=&quot;calls&quot;];
+call_449703 [label=&quot;let (_x_0 : action list)\l    = List.tl (List.tl (List.tl (List.tl (List.tl (List.tl l)))))\lin\llet (_x_1 : action list) = List.tl _x_0 in\llet (_x_2 : action list) = List.tl _x_1 in\llet (_x_3 : action list) = List.tl _x_2 in\llet (_x_4 : action list) = List.tl _x_3 in\llet (_x_5 : action list) = List.tl _x_4 in\llet (_x_6 : action list) = List.tl _x_5 in\llet (_x_7 : action list) = List.tl _x_6 in\llet (_x_8 : action list) = List.tl _x_7 in\lmany_steps\l(one_step\l (one_step\l  (one_step\l   (one_step\l    (one_step\l     (one_step\l      (one_step\l       (one_step (one_step (one_step … …) (List.hd _x_0)) (List.hd _x_1))\l       (List.hd _x_2))\l      (List.hd _x_3))\l     (List.hd _x_4))\l    (List.hd _x_5))\l   (List.hd _x_6))\l  (List.hd _x_7))\l (List.hd _x_8))\l(List.tl _x_8)&quot;,shape=box,style=filled,color=&quot;green&quot;,fontname=&quot;courier&quot;,fontsize=14];
+call_449703 -&gt; call_813916 [label=&quot;calls&quot;];
+call_813916 [label=&quot;let (_x_0 : action list)\l    = List.tl (List.tl (List.tl (List.tl (List.tl (List.tl l)))))\lin\llet (_x_1 : action list) = List.tl _x_0 in\llet (_x_2 : action list) = List.tl _x_1 in\llet (_x_3 : action list) = List.tl _x_2 in\llet (_x_4 : action list) = List.tl _x_3 in\llet (_x_5 : action list) = List.tl _x_4 in\llet (_x_6 : action list) = List.tl _x_5 in\llet (_x_7 : action list) = List.tl _x_6 in\llet (_x_8 : action list) = List.tl _x_7 in\llet (_x_9 : action list) = List.tl _x_8 in\lmany_steps\l(one_step\l (one_step\l  (one_step\l   (one_step\l    (one_step\l     (one_step\l      (one_step\l       (one_step\l        (one_step (one_step (one_step … …) (List.hd _x_0)) (List.hd _x_1))\l        (List.hd _x_2))\l       (List.hd _x_3))\l      (List.hd _x_4))\l     (List.hd _x_5))\l    (List.hd _x_6))\l   (List.hd _x_7))\l  (List.hd _x_8))\l (List.hd _x_9))\l(List.tl _x_9)&quot;,shape=box,style=filled,color=&quot;green&quot;,fontname=&quot;courier&quot;,fontsize=14];
+call_813916 -&gt; call_1034580 [label=&quot;calls&quot;];
+call_1034580 [label=&quot;let (_x_0 : action list)\l    = List.tl\l      (List.tl\l       (List.tl\l        (List.tl\l         (List.tl\l          (List.tl\l           (List.tl\l            (List.tl\l             (List.tl\l              (List.tl (List.tl (List.tl (List.tl (List.tl (List.tl l))))))))))))))\lin\llet (_x_1 : action list) = List.tl _x_0 in\lmany_steps\l(one_step (one_step (one_step … …) (List.hd _x_0)) (List.hd _x_1))\l(List.tl _x_1)&quot;,shape=box,style=filled,color=&quot;green&quot;,fontname=&quot;courier&quot;,fontsize=14];
+call_1034580 -&gt; call_1345522 [label=&quot;calls&quot;];
+call_1345522 [label=&quot;let (_x_0 : action list)\l    = List.tl\l      (List.tl\l       (List.tl\l        (List.tl\l         (List.tl\l          (List.tl\l           (List.tl\l            (List.tl\l             (List.tl (List.tl (List.tl (List.tl (List.tl (List.tl l)))))))))))))\lin\llet (_x_1 : action list) = List.tl _x_0 in\llet (_x_2 : action list) = List.tl (List.tl _x_1) in\lmany_steps\l(one_step\l (one_step\l  (one_step (one_step (one_step … …) (List.hd _x_0)) (List.hd _x_1)) …)\l (List.hd _x_2))\l(List.tl _x_2)&quot;,shape=box,style=filled,color=&quot;yellow&quot;,fontname=&quot;courier&quot;,fontsize=14];
 }
 </textarea><button class="btn btn-primary">Load graph</button><div class="imandra-graphviz-loading display-none">Loading..</div><div class="imandra-graphviz-target"></div><script>
 require(['nbextensions/nbimandra/graphviz'], function (graphviz) {
-  var target = '#graphviz-c48600d8-c1a7-41a4-a1e7-8956828a9b3b';
+  var target = '#graphviz-c1f213b2-5bea-44c2-8ed8-d5a48515063a';
   graphviz.hydrate(target);
 });
-</script></div></div><div class="tab-pane"><div class="imandra-proof-top"><div class="imandra-fold panel panel-default" id="fold-4bf2a640-18ba-436f-9b27-a1f21ea009e4"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>proof attempt</span></div></div><div class="panel-body collapse"><div class="imandra-proof"><div class="imandra-alternatives" id="alt-78eb7fa0-90b3-406f-9f64-eee5cb4c01b5"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>summary</a></li><li class="" data-toggle="tab"><a>full</a></li><li class="" data-toggle="tab"><a>graph</a></li></ul><div class="tab-content"><div class="tab-pane active">{ground_instances: 18
+</script></div></div><div class="tab-pane"><div class="imandra-proof-top"><div class="imandra-fold panel panel-default" id="fold-4ef6e709-7f2d-4d1f-8276-b767b6f2362a"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>proof attempt</span></div></div><div class="panel-body collapse"><div class="imandra-proof"><div class="imandra-alternatives" id="alt-29335346-92fd-4a2e-8a3a-f664d21fff1f"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>summary</a></li><li class="" data-toggle="tab"><a>full</a></li><li class="" data-toggle="tab"><a>graph</a></li></ul><div class="tab-content"><div class="tab-pane active">{ground_instances: 18
  ----------------------------------------------------------------------------
  definitions: 0
  ----------------------------------------------------------------------------
  inductions: 0
  ----------------------------------------------------------------------------
- search_time: `35.825s`
+ search_time: `29.623s`
  ----------------------------------------------------------------------------
  details:
    {smt_stats:
@@ -4265,48 +4263,48 @@ require(['nbextensions/nbimandra/graphviz'], function (graphviz) {
        ----------------------------------------------------------------------------
        arith-max-columns: 4
        ----------------------------------------------------------------------------
-       rlimit count: 27260703
+       rlimit count: 28148050
        ----------------------------------------------------------------------------
-       mk clause: 55618
+       mk clause: 52314
        ----------------------------------------------------------------------------
-       datatype occurs check: 1167
+       datatype occurs check: 1156
        ----------------------------------------------------------------------------
-       restarts: 342
+       restarts: 339
        ----------------------------------------------------------------------------
-       mk bool var: 819191
+       mk bool var: 825484
        ----------------------------------------------------------------------------
-       datatype splits: 1217025
+       datatype splits: 1289737
        ----------------------------------------------------------------------------
-       decisions: 196146
+       decisions: 204719
        ----------------------------------------------------------------------------
-       propagations: 5051888
+       propagations: 4825390
        ----------------------------------------------------------------------------
-       conflicts: 54112
+       conflicts: 50889
        ----------------------------------------------------------------------------
-       datatype accessor ax: 8868
+       datatype accessor ax: 4483
        ----------------------------------------------------------------------------
-       minimized lits: 632565
+       minimized lits: 456159
        ----------------------------------------------------------------------------
-       datatype constructor ax: 973226
+       datatype constructor ax: 1025751
        ----------------------------------------------------------------------------
        final checks: 36
        ----------------------------------------------------------------------------
-       added eqs: 12762022
+       added eqs: 13174996
        ----------------------------------------------------------------------------
-       del clause: 39627
+       del clause: 28407
        ----------------------------------------------------------------------------
-       dyn ack: 21
+       dyn ack: 29
        ----------------------------------------------------------------------------
-       time: 4.500000
+       time: 4.379000
        ----------------------------------------------------------------------------
-       memory: 214.500000
+       memory: 223.120000
        ----------------------------------------------------------------------------
-       max memory: 216.260000
+       max memory: 225.970000
        ----------------------------------------------------------------------------
-       num allocs: 70423810689.000000
+       num allocs: 17983572419.000000
        }
     }
- }</div><div class="tab-pane"><div class="imandra-fold panel panel-default" id="fold-72b7a663-2feb-4854-abd3-d1b901bd8473"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><ul><li><pre>start[35.825s]
+ }</div><div class="tab-pane"><div class="imandra-fold panel panel-default" id="fold-c443ccdc-78c4-4096-aa67-107db9297a20"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><ul><li><pre>start[29.623s]
   let (_x_0 : state)
       = many_steps
         {cabbage = LeftCoast; goat = LeftCoast; wolf = LeftCoast; boat = Left}
@@ -4329,111 +4327,109 @@ require(['nbextensions/nbimandra/graphviz'], function (graphviz) {
  ----------------------------------------------------------------------------
  forward_chaining: 
  }</div></li><li><div>unroll{expr:
-   ```(many_steps_88 (|rec_mk.state_1873|
-                       LeftCoast_16
-                       LeftCoast_16
-          …```
+   ```(many_steps_1745 (|rec_mk.state_1863|
+                         LeftCoast_1673
+                         LeftCoast…```
  ----------------------------------------------------------------------------
  expansions: 
  }</div></li><li><div>unroll{expr:
-   ```(many_steps_88 (one_step_83 (|rec_mk.state_1873|
-                                    LeftCoast_16
-              …```
+   ```(many_steps_1745 (one_step_1740 (|rec_mk.state_1863|
+                                        LeftCoast_167…```
  ----------------------------------------------------------------------------
  expansions: 
  }</div></li><li><div>unroll{expr:
-   ```(many_steps_88 (one_step_83 (one_step_83 (|rec_mk.state_1873|
-                                            …```
+   ```(many_steps_1745 (one_step_1740 (one_step_1740 (|rec_mk.state_1863|
+                                      …```
  ----------------------------------------------------------------------------
  expansions: 
  }</div></li><li><div>unroll{expr:
-   ```(let ((a!1 (one_step_83 (one_step_83 (one_step_83 (|rec_mk.state_1873|
-                                   …```
+   ```(let ((a!1 (one_step_1740 (one_step_1740 (one_step_1740 (|rec_mk.state_1863|
+                             …```
  ----------------------------------------------------------------------------
  expansions: 
  }</div></li><li><div>unroll{expr:
-   ```(let ((a!1 (one_step_83 (one_step_83 (one_step_83 (|rec_mk.state_1873|
-                                   …```
+   ```(let ((a!1 (one_step_1740 (one_step_1740 (one_step_1740 (|rec_mk.state_1863|
+                             …```
  ----------------------------------------------------------------------------
  expansions: 
  }</div></li><li><div>unroll{expr:
-   ```(let ((a!1 (one_step_83 (one_step_83 (one_step_83 (|rec_mk.state_1873|
-                                   …```
+   ```(let ((a!1 (one_step_1740 (one_step_1740 (one_step_1740 (|rec_mk.state_1863|
+                             …```
  ----------------------------------------------------------------------------
  expansions: 
  }</div></li><li><div>unroll{expr:
-   ```(let ((a!1 (one_step_83 (one_step_83 (one_step_83 (|rec_mk.state_1873|
-                                   …```
+   ```(let ((a!1 (one_step_1740 (one_step_1740 (one_step_1740 (|rec_mk.state_1863|
+                             …```
  ----------------------------------------------------------------------------
  expansions: 
  }</div></li><li><div>unroll{expr:
-   ```(let ((a!1 (one_step_83 (one_step_83 (one_step_83 (|rec_mk.state_1873|
-                                   …```
+   ```(let ((a!1 (one_step_1740 (one_step_1740 (one_step_1740 (|rec_mk.state_1863|
+                             …```
  ----------------------------------------------------------------------------
  expansions: 
  }</div></li><li><div>unroll{expr:
-   ```(let ((a!1 (one_step_83 (one_step_83 (one_step_83 (|rec_mk.state_1873|
-                                   …```
+   ```(let ((a!1 (one_step_1740 (one_step_1740 (one_step_1740 (|rec_mk.state_1863|
+                             …```
  ----------------------------------------------------------------------------
  expansions: 
  }</div></li><li><div>unroll{expr:
-   ```(let ((a!1 (one_step_83 (one_step_83 (one_step_83 (|rec_mk.state_1873|
-                                   …```
+   ```(let ((a!1 (one_step_1740 (one_step_1740 (one_step_1740 (|rec_mk.state_1863|
+                             …```
  ----------------------------------------------------------------------------
  expansions: 
  }</div></li><li><div>unroll{expr:
-   ```(let ((a!1 (one_step_83 (one_step_83 (one_step_83 (|rec_mk.state_1873|
-                                   …```
+   ```(let ((a!1 (one_step_1740 (one_step_1740 (one_step_1740 (|rec_mk.state_1863|
+                             …```
  ----------------------------------------------------------------------------
  expansions: 
  }</div></li><li><div>unroll{expr:
-   ```(let ((a!1 (one_step_83 (one_step_83 (one_step_83 (|rec_mk.state_1873|
-                                   …```
+   ```(let ((a!1 (one_step_1740 (one_step_1740 (one_step_1740 (|rec_mk.state_1863|
+                             …```
  ----------------------------------------------------------------------------
  expansions: 
  }</div></li><li><div>unroll{expr:
-   ```(let ((a!1 (one_step_83 (one_step_83 (one_step_83 (|rec_mk.state_1873|
-                                   …```
+   ```(let ((a!1 (one_step_1740 (one_step_1740 (one_step_1740 (|rec_mk.state_1863|
+                             …```
  ----------------------------------------------------------------------------
  expansions: 
  }</div></li><li><div>unroll{expr:
-   ```(let ((a!1 (one_step_83 (one_step_83 (one_step_83 (|rec_mk.state_1873|
-                                   …```
+   ```(let ((a!1 (one_step_1740 (one_step_1740 (one_step_1740 (|rec_mk.state_1863|
+                             …```
  ----------------------------------------------------------------------------
  expansions: 
  }</div></li><li><div>unroll{expr:
-   ```(let ((a!1 (one_step_83 (one_step_83 (one_step_83 (|rec_mk.state_1873|
-                                   …```
+   ```(let ((a!1 (one_step_1740 (one_step_1740 (one_step_1740 (|rec_mk.state_1863|
+                             …```
  ----------------------------------------------------------------------------
  expansions: 
  }</div></li><li><div>unroll{expr:
-   ```(let ((a!1 (one_step_83 (one_step_83 (one_step_83 (|rec_mk.state_1873|
-                                   …```
+   ```(let ((a!1 (one_step_1740 (one_step_1740 (one_step_1740 (|rec_mk.state_1863|
+                             …```
  ----------------------------------------------------------------------------
  expansions: 
  }</div></li><li><div>unroll{expr:
-   ```(let ((a!1 (one_step_83 (one_step_83 (one_step_83 (|rec_mk.state_1873|
-                                   …```
+   ```(let ((a!1 (one_step_1740 (one_step_1740 (one_step_1740 (|rec_mk.state_1863|
+                             …```
  ----------------------------------------------------------------------------
  expansions: 
  }</div></li><li><div>unroll{expr:
-   ```(let ((a!1 (one_step_83 (one_step_83 (one_step_83 (|rec_mk.state_1873|
-                                   …```
+   ```(let ((a!1 (one_step_1740 (one_step_1740 (one_step_1740 (|rec_mk.state_1863|
+                             …```
  ----------------------------------------------------------------------------
  expansions: 
  }</div></li><li>Sat (Some let l : action list =
   let (_x_0 : action) = Pick Goat in
   let (_x_1 : action) = Drop Goat in
-  [_x_0; CrossRiver; _x_1; CrossRiver; Pick Wolf; CrossRiver; Drop Wolf;
-   _x_0; CrossRiver; _x_1; Pick Cabbage; CrossRiver; Drop Cabbage;
+  [_x_0; CrossRiver; _x_1; CrossRiver; Pick Cabbage; CrossRiver;
+   Drop Cabbage; _x_0; CrossRiver; _x_1; Pick Wolf; CrossRiver; Drop Wolf;
    CrossRiver; _x_0; CrossRiver; _x_1]
 )</li></ul></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-72b7a663-2feb-4854-abd3-d1b901bd8473';
+  var target = '#fold-c443ccdc-78c4-4096-aa67-107db9297a20';
   fold.hydrate(target);
 });
-</script></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-2c3e7d70-288c-4a3c-82b8-7f7b9a52d34d"><textarea style="display: none">digraph &quot;proof&quot; {
-p_26 [label=&quot;Start (let (_x_0 : state)\l           = many_steps\l             \{cabbage = LeftCoast; goat = LeftCoast; wolf = LeftCoast;\l              boat = Left\}\l             ( :var_0: )\l       in\l       _x_0.cabbage = RightCoast\l       &amp;&amp; _x_0.goat = RightCoast\l          &amp;&amp; _x_0.wolf = RightCoast &amp;&amp; _x_0.boat = Right\l       :time 35.825s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+</script></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-2c9c9edf-19a2-4858-923c-6b222164cbb3"><textarea style="display: none">digraph &quot;proof&quot; {
+p_26 [label=&quot;Start (let (_x_0 : state)\l           = many_steps\l             \{cabbage = LeftCoast; goat = LeftCoast; wolf = LeftCoast;\l              boat = Left\}\l             ( :var_0: )\l       in\l       _x_0.cabbage = RightCoast\l       &amp;&amp; _x_0.goat = RightCoast\l          &amp;&amp; _x_0.wolf = RightCoast &amp;&amp; _x_0.boat = Right\l       :time 29.623s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_26 -&gt; p_25 [label=&quot;&quot;];
 p_25 [label=&quot;Simplify (let (_x_0 : state)\l              = many_steps\l                \{cabbage = LeftCoast; goat = LeftCoast; wolf = LeftCoast;\l                 boat = Left\}\l                ( :var_0: )\l          in\l          ((_x_0.cabbage = RightCoast &amp;&amp; _x_0.goat = RightCoast)\l           &amp;&amp; _x_0.wolf = RightCoast)\l          &amp;&amp; _x_0.boat = Right :expansions [] :rw [] :fc [])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_25 -&gt; p_24 [label=&quot;&quot;];
@@ -4473,26 +4469,26 @@ p_8 [label=&quot;Unroll ([let (_x_0 : action list)\l             = List.tl (List
 p_8 -&gt; p_7 [label=&quot;&quot;];
 p_7 [label=&quot;Unroll ([let (_x_0 : action list)\l             = List.tl\l               (List.tl\l                (List.tl\l                 (List.tl\l                  (List.tl\l                   (List.tl\l                    (List.tl\l                     (List.tl\l                      (List.tl\l                       (List.tl\l                        (List.tl (List.tl (List.tl (List.tl (List.tl l))))))))))))))\l         in\l         let (_x_1 : action list) = List.tl _x_0 in\l         many_steps\l         (one_step (one_step (one_step … …) (List.hd _x_0))\l          (List.hd _x_1))\l         (List.tl _x_1)],\l        [[]])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_7 -&gt; p_6 [label=&quot;&quot;];
-p_6 [label=&quot;Sat (Some let l : action list =\l  let (_x_0 : action) = Pick Goat in\l  let (_x_1 : action) = Drop Goat in\l  [_x_0; CrossRiver; _x_1; CrossRiver; Pick Wolf; CrossRiver; Drop Wolf;\l   _x_0; CrossRiver; _x_1; Pick Cabbage; CrossRiver; Drop Cabbage;\l   CrossRiver; _x_0; CrossRiver; _x_1]\l)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+p_6 [label=&quot;Sat (Some let l : action list =\l  let (_x_0 : action) = Pick Goat in\l  let (_x_1 : action) = Drop Goat in\l  [_x_0; CrossRiver; _x_1; CrossRiver; Pick Cabbage; CrossRiver;\l   Drop Cabbage; _x_0; CrossRiver; _x_1; Pick Wolf; CrossRiver; Drop Wolf;\l   CrossRiver; _x_0; CrossRiver; _x_1]\l)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 }
 </textarea><button class="btn btn-primary">Load graph</button><div class="imandra-graphviz-loading display-none">Loading..</div><div class="imandra-graphviz-target"></div><script>
 require(['nbextensions/nbimandra/graphviz'], function (graphviz) {
-  var target = '#graphviz-2c3e7d70-288c-4a3c-82b8-7f7b9a52d34d';
+  var target = '#graphviz-2c9c9edf-19a2-4858-923c-6b222164cbb3';
   graphviz.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-78eb7fa0-90b3-406f-9f64-eee5cb4c01b5';
+  var target = '#alt-29335346-92fd-4a2e-8a3a-f664d21fff1f';
   alternatives.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-4bf2a640-18ba-436f-9b27-a1f21ea009e4';
+  var target = '#fold-4ef6e709-7f2d-4d1f-8276-b767b6f2362a';
   fold.hydrate(target);
 });
 </script></div></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-92057f60-a8d1-45cd-a5b4-0e67bcb1b5b9';
+  var target = '#alt-8ec44136-95a3-466b-9f58-489c9bf5f744';
   alternatives.hydrate(target);
 });
 </script></div></div></div>
@@ -4556,7 +4552,7 @@ module CX : sig val l : action list end
 
 
 <div class="output_html rendered_html output_subarea ">
-<div><pre>Instance (after 72 steps, 0.171s):
+<div><pre>Instance (after 72 steps, 0.138s):
 let l : action list =
   let (_x_0 : action) = Pick Goat in
   let (_x_1 : action) = Drop Goat in

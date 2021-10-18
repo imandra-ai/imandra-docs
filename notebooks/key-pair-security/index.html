@@ -33,7 +33,7 @@
         <link rel="stylesheet" href="/imandra-docs/static/nbextensions/nbimandra/styles.b466ce6f.css" type="text/css">
         <link rel="stylesheet" href="/imandra-docs/static/docs-styles.b9de737f.css" type="text/css">
         
-        <link rel="stylesheet" href="/imandra-docs/static/jekyll-styles.c96432ce.css" type="text/css">
+        <link rel="stylesheet" href="/imandra-docs/static/jekyll-styles.7b33d7b3.css" type="text/css">
         
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.css" />
 
@@ -115,7 +115,7 @@
 
         <!-- Loading mathjax macro -->
         <!-- Load mathjax -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-MML-AM_CHTML-full,Safe"> </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS_CHTML-full,Safe"> </script>
     <!-- MathJax configuration -->
     <script type="text/x-mathjax-config">
     init_mathjax = function() {
@@ -136,11 +136,6 @@
                 },
                 displayAlign: 'center',
                 CommonHTML: {
-                    linebreaks: { 
-                    automatic: true 
-                    }
-                },
-                "HTML-CSS": {
                     linebreaks: { 
                     automatic: true 
                     }
@@ -4103,7 +4098,7 @@ val init : state =
 
 
 <div class="output_html rendered_html output_subarea ">
-<div><div class="imandra-fold panel panel-default" id="fold-17e50ec6-b247-464c-8907-0a30326ec275"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>termination proof</span></div></div><div class="panel-body collapse"><div><h3>Termination proof</h3><div class="imandra-fold panel panel-default" id="fold-d2ea34f7-96eb-450d-b70e-41fa62ee8705"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>call `graph_inner (List.tl xs)` from `graph_inner xs`</span></div></div><div class="panel-body collapse">{original: graph_inner xs
+<div><div class="imandra-fold panel panel-default" id="fold-ae83bfc5-16fa-4fe4-852f-abe8a39be59b"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>termination proof</span></div></div><div class="panel-body collapse"><div><h3>Termination proof</h3><div class="imandra-fold panel panel-default" id="fold-0db81405-e02c-4ffc-9284-b54ab9134060"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>call `graph_inner (List.tl xs)` from `graph_inner xs`</span></div></div><div class="panel-body collapse">{original: graph_inner xs
  ----------------------------------------------------------------------------
  sub: graph_inner (List.tl xs)
  ----------------------------------------------------------------------------
@@ -4111,7 +4106,7 @@ val init : state =
  ----------------------------------------------------------------------------
  sub ordinal: Ordinal.Int (_cnt (List.tl xs))
  ----------------------------------------------------------------------------
- path: [not Is_a([], xs)]
+ path: [xs &lt;&gt; []]
  ----------------------------------------------------------------------------
  proof:
    (alternatives
@@ -4122,84 +4117,85 @@ val init : state =
       ----------------------------------------------------------------------------
       inductions: 0
       ----------------------------------------------------------------------------
-      search_time: `0.026s`
+      search_time: `0.020s`
       ----------------------------------------------------------------------------
       details:
         {smt_stats:
            {num checks: 8
             ----------------------------------------------------------------------------
-            arith-make-feasible: 47
+            arith-make-feasible: 35
             ----------------------------------------------------------------------------
-            arith-max-columns: 39
+            arith-max-columns: 41
             ----------------------------------------------------------------------------
-            arith-conflicts: 4
+            arith-conflicts: 5
             ----------------------------------------------------------------------------
-            rlimit count: 9170
+            rlimit count: 9556
             ----------------------------------------------------------------------------
-            arith-cheap-eqs: 1
+            mk clause: 156
             ----------------------------------------------------------------------------
-            mk clause: 159
+            datatype occurs check: 38
             ----------------------------------------------------------------------------
-            datatype occurs check: 29
+            mk bool var: 860
             ----------------------------------------------------------------------------
-            mk bool var: 773
+            arith-lower: 37
             ----------------------------------------------------------------------------
-            arith-lower: 48
+            arith-diseq: 5
             ----------------------------------------------------------------------------
-            arith-diseq: 11
+            datatype splits: 187
             ----------------------------------------------------------------------------
-            datatype splits: 162
+            decisions: 223
             ----------------------------------------------------------------------------
-            decisions: 199
+            arith-propagations: 4
             ----------------------------------------------------------------------------
-            arith-propagations: 7
+            propagations: 279
             ----------------------------------------------------------------------------
-            propagations: 267
+            arith-bound-propagations-cheap: 4
             ----------------------------------------------------------------------------
-            arith-bound-propagations-cheap: 7
+            arith-max-rows: 18
             ----------------------------------------------------------------------------
-            arith-max-rows: 16
+            conflicts: 21
             ----------------------------------------------------------------------------
-            conflicts: 16
+            datatype accessor ax: 92
             ----------------------------------------------------------------------------
-            datatype accessor ax: 87
+            arith-bound-propagations-lp: 2
             ----------------------------------------------------------------------------
-            datatype constructor ax: 295
+            datatype constructor ax: 368
             ----------------------------------------------------------------------------
-            num allocs: 787625
+            num allocs: 824239
             ----------------------------------------------------------------------------
-            final checks: 5
+            final checks: 6
             ----------------------------------------------------------------------------
-            added eqs: 1157
+            added eqs: 1367
             ----------------------------------------------------------------------------
-            del clause: 80
+            del clause: 35
             ----------------------------------------------------------------------------
-            arith eq adapter: 47
+            arith eq adapter: 39
             ----------------------------------------------------------------------------
-            arith-upper: 52
+            arith-upper: 44
             ----------------------------------------------------------------------------
             time: 0.001000
             ----------------------------------------------------------------------------
-            memory: 5.500000
+            memory: 5.590000
             ----------------------------------------------------------------------------
-            max memory: 5.500000
+            max memory: 5.590000
             }
          }
       })
     (full:
-     * ```start[0.026s]
+     * ```start[0.020s]
             let (_x_0 : int) = count.list count.action xs in
             let (_x_1 : action list) = List.tl xs in
             let (_x_2 : int) = count.list count.action _x_1 in
-            not Is_a([], xs) &amp;&amp; _x_0 &gt;= 0 &amp;&amp; _x_2 &gt;= 0
-            ==&gt; Is_a([], _x_1) || Ordinal.( &lt;&lt; ) (Ordinal.Int _x_2) (Ordinal.Int _x_0)```
+            xs &lt;&gt; [] &amp;&amp; _x_0 &gt;= 0 &amp;&amp; _x_2 &gt;= 0
+            ==&gt; not (_x_1 &lt;&gt; [])
+                || Ordinal.( &lt;&lt; ) (Ordinal.Int _x_2) (Ordinal.Int _x_0)```
      * simplify::
          {into:
             ```let (_x_0 : action list) = List.tl xs in
                let (_x_1 : int) = count.list count.action _x_0 in
                let (_x_2 : int) = count.list count.action xs in
-               (Is_a([], _x_0) || Ordinal.( &lt;&lt; ) (Ordinal.Int _x_1) (Ordinal.Int _x_2))
-               || not ((not Is_a([], xs) &amp;&amp; _x_2 &gt;= 0) &amp;&amp; _x_1 &gt;= 0)```
+               (not (_x_0 &lt;&gt; []) || Ordinal.( &lt;&lt; ) (Ordinal.Int _x_1) (Ordinal.Int _x_2))
+               || not ((xs &lt;&gt; [] &amp;&amp; _x_2 &gt;= 0) &amp;&amp; _x_1 &gt;= 0)```
           ----------------------------------------------------------------------------
           expansions: `[]`
           ----------------------------------------------------------------------------
@@ -4221,7 +4217,7 @@ val init : state =
         }
      * unroll
        {expr:
-          ```(|Ordinal.&lt;&lt;_126| (|Ordinal.Int_111|
+          ```(|Ordinal.&lt;&lt;_129| (|Ordinal.Int_114|
                                  (|`count.list { Resolved_term.spec_idx = 0;…```
         ----------------------------------------------------------------------------
         expansions: 
@@ -4229,12 +4225,12 @@ val init : state =
      * Unsat))
  }</div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-d2ea34f7-96eb-450d-b70e-41fa62ee8705';
+  var target = '#fold-0db81405-e02c-4ffc-9284-b54ab9134060';
   fold.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-17e50ec6-b247-464c-8907-0a30326ec275';
+  var target = '#fold-ae83bfc5-16fa-4fe4-852f-abe8a39be59b';
   fold.hydrate(target);
 });
 </script></div></div>
@@ -4354,7 +4350,7 @@ module CX :
 
 
 <div class="output_html rendered_html output_subarea ">
-<div><pre>Counterexample (after 66 steps, 0.078s):
+<div><pre>Counterexample (after 66 steps, 0.317s):
 let x1 : person = Alice
 let x2 : person = Mallory
 let m : int = 0
@@ -4392,7 +4388,7 @@ let xs : action list =
 
 
 <div class="output_html rendered_html output_subarea ">
-<div><div class="imandra-graphviz" id="graphviz-1fb2a8ef-5139-49c4-a401-ed5fdf5974f0"><textarea style="display: none">digraph G {
+<div><div class="imandra-graphviz" id="graphviz-552d49cb-3716-4e82-bdba-a4e3acb036da"><textarea style="display: none">digraph G {
 Alice [color=blue];
 Mallory [color=red];
 Bob [color=green];
@@ -4406,7 +4402,7 @@ Bob-&gt;Alice[label=&quot;Alice&quot;,color=black];
 }
 </textarea><button class="btn btn-primary">Load graph</button><div class="imandra-graphviz-loading display-none">Loading..</div><div class="imandra-graphviz-target"></div><script>
 require(['nbextensions/nbimandra/graphviz'], function (graphviz) {
-  var target = '#graphviz-1fb2a8ef-5139-49c4-a401-ed5fdf5974f0';
+  var target = '#graphviz-552d49cb-3716-4e82-bdba-a4e3acb036da';
   graphviz.hydrate(target);
 });
 </script></div></div>
@@ -4487,7 +4483,7 @@ module CX :
 
 
 <div class="output_html rendered_html output_subarea ">
-<div><pre>Counterexample (after 93 steps, 0.188s):
+<div><pre>Counterexample (after 93 steps, 0.166s):
 let x1 : person = Mallory
 let x2 : person = Bob
 let x3 : person = Alice
@@ -4529,7 +4525,7 @@ let xs : action list =
 
 
 <div class="output_html rendered_html output_subarea ">
-<div><div class="imandra-graphviz" id="graphviz-21ad18ea-2c72-41c9-8388-da2a94b481b7"><textarea style="display: none">digraph G {
+<div><div class="imandra-graphviz" id="graphviz-b343edf4-02e2-4c37-83b7-4b71b09607e7"><textarea style="display: none">digraph G {
 Alice [color=blue];
 Mallory [color=red];
 Bob [color=green];
@@ -4545,7 +4541,7 @@ Bob-&gt;Alice[label=&quot;Alice&quot;,color=black];
 }
 </textarea><button class="btn btn-primary">Load graph</button><div class="imandra-graphviz-loading display-none">Loading..</div><div class="imandra-graphviz-target"></div><script>
 require(['nbextensions/nbimandra/graphviz'], function (graphviz) {
-  var target = '#graphviz-21ad18ea-2c72-41c9-8388-da2a94b481b7';
+  var target = '#graphviz-b343edf4-02e2-4c37-83b7-4b71b09607e7';
   graphviz.hydrate(target);
 });
 </script></div></div>
