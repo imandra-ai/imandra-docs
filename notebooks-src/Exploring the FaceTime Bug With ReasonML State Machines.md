@@ -228,7 +228,7 @@ We simulate actions run in a react-like reducer using a `fold` (`fold` and `redu
 
 ```{.imandra .input}
 let initial_state = { status: Idle, callIncomingFrom: None, peopleInCall: [] };
-verify upto:50 call_with_people_in_is_active_property(update_v2, initial_state);
+verify upto:50 (actions => call_with_people_in_is_active_property(update_v2, initial_state, actions));
 ```
 
 The sequence of actions with a single `AddPerson` item already contradicts our property, which immediately shows us our issue and gives us an example to help out:
@@ -240,7 +240,7 @@ update_v2(initial_state, AddPerson(4));
 Let's try running the same property on our original update function, from before we added the new `AddPerson` action:
 
 ```{.imandra .input}
-verify upto:50 call_with_people_in_is_active_property(update, initial_state);
+verify upto:50 (actions => call_with_people_in_is_active_property(update, initial_state, actions));
 ```
 
 This reveals another case we hadn't considered! We don't handle the `CallIncomingFrom` action from the `CallActive` state - it drops us straight out of `CallActive` back into `CallIncoming` while leaving people in the call, which might not be what we want.
@@ -277,15 +277,15 @@ let good_update = (state: state, action: action_v2): state =>
 Next, let's check it with our general property:
 
 ```{.imandra .input}
-verify upto:50 call_with_people_in_is_active_property(good_update, initial_state);
+verify upto:20 (actions => call_with_people_in_is_active_property(good_update, initial_state, actions));
 ```
 
-Imandra's standard unrolling verification method can't find any issues up to our fairly high bound of 50 here. Although it hasn't totally proved things for us, this is a good indicator that we're on the right lines as it can't find any counterexamples. It's pretty hard for us to prove things completely in this case using this method, due to the nature of our property - as the list of actions is arbitrary and our state machine contains cycles, there are valid sequences of actions that are infinite, for example `[CallIncoming(1), CallAccepted, EndCall, CallIncoming(1), CallAccepted, EndCall, ...]`.
+Imandra's standard unrolling verification method can't find any issues up to our bound of 20 here. Although it hasn't totally proved things for us, this is a good indicator that we're on the right lines as it can't find any counterexamples. It's pretty hard for us to prove things completely in this case using this method, due to the nature of our property - as the list of actions is arbitrary and our state machine contains cycles, there are valid sequences of actions that are infinite, for example `[CallIncoming(1), CallAccepted, EndCall, CallIncoming(1), CallAccepted, EndCall, ...]`.
 
 If we want to increase our level of confidence even further, we can spend a bit longer to get a complete proof. In this case we can try Imandra's `[@auto]` method, which performs a proof by induction for all possible inputs:
 
 ```{.imandra .input}
-[@auto] verify call_with_people_in_is_active_property(good_update, initial_state);
+[@auto] verify (actions => call_with_people_in_is_active_property(good_update, initial_state, actions));
 ```
 
 We run into a limit here due to our use of `fold_left`. A common trick when using induction is to switch to using `fold_right` instead, which is easier to induct on (this also means the actions list is 'reduced' in reverse order, but that doesn't make a difference here):
@@ -302,7 +302,7 @@ let call_with_people_in_is_active_property_fold_right = (update_fn, initial_stat
 ```
 
 ```{.imandra .input}
-[@auto] verify(call_with_people_in_is_active_property_fold_right(good_update, initial_state));
+[@auto] verify(actions => call_with_people_in_is_active_property_fold_right(good_update, initial_state, actions));
 ```
 
 Fully proved! For larger functions going into Imandra's more advanced features will require more expertise, and may or may not be worth it over the guarantees that the basic unrolling method gives us. Whether the cost makes sense will depend on what you're working on.
