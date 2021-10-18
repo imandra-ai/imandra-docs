@@ -78,17 +78,31 @@ For example, we can define a simple table-based document printer for our `mkt_da
 We use the `[@@program]` attribute on our pretty-printer definition, to tell Imandra to only define this function in `#program` mode (not in `#logic` mode, i.e., not within our formal logic). Arbitrary OCaml functions can be defined in `#program` mode, the basis for much custom Imandra interfaces and proof automation:
 
 ```{.imandra .input}
+#program;;
+#require "tyxml";;
+
+let html elt =
+  let module H = Tyxml.Html in
+  Document.html (Document.Unsafe_.html_of_string @@ CCFormat.sprintf "%a" (H.pp_elt ()) elt);;
+
+let html_of_mkt_data (m : mkt_data) =
+  let module H = Tyxml.Html in
+  H.table
+  [ H.tr [ H.td [H.txt "nbb"]; H.td [H.txt (Real.to_string_approx m.nbb)] ]
+  ; H.tr [ H.td [H.txt "nbo"]; H.td [H.txt (Real.to_string_approx m.nbo)] ]
+  ; H.tr [ H.td [H.txt "l_up"]; H.td [H.txt (Real.to_string_approx m.l_up)] ]
+  ; H.tr [ H.td [H.txt "l_down"]; H.td [H.txt (Real.to_string_approx m.l_down)] ]
+  ];;
+
 let doc_of_mkt_data m =
   let module D = Document in
-  D.indent "mkt_data" @@ D.record [
-           "nbb", D.s @@ Real.to_string_approx m.nbb;
-           "nbo", D.s @@ Real.to_string_approx m.nbo;
-           "l_up", D.s @@ Real.to_string_approx m.l_up;
-           "l_down", D.s @@ Real.to_string_approx m.l_down;
-  ]
+  let module H = Tyxml.Html in
+  D.indent "mkt_data" @@ (html (html_of_mkt_data m))
 [@@program]
 
-#install_doc doc_of_mkt_data
+#install_doc doc_of_mkt_data;;
+
+#logic;;
 ```
 
 If we view the same `mkt_data` value as above, we'll now see it rendered with our custom pretty-printer:
@@ -525,32 +539,26 @@ Let's define a few more custom document printers to make these (complex!) counte
 (* We can generate string printers for our types automatically using the pp plugin *)
 Imandra.add_plugin_pp ();;
 
-let doc_of_order_type o =
-  Document.s @@ CCFormat.to_string pp_order_type o
-[@@program];;
-
-#install_doc doc_of_order_type;;
-
 let doc_of_order o =
   let module D = Document in
-  D.indent "order" @@ D.record [
-      "id", D.bigint o.id;
-      "peg", D.s @@ CCFormat.to_string pp_order_peg o.peg;
-      "client_id", D.bigint o.client_id;
-      "order_type", D.s @@ CCFormat.to_string pp_order_type o.order_type;
-      "qty", D.bigint o.qty;
-      "min_qty", D.bigint o.min_qty;
-      "leaves_qty", D.bigint o.leaves_qty;
-      "price", D.s @@ Real.to_string_approx o.price;
-      "time", D.s @@ CCFormat.to_string pp_time o.time;
-      "src", D.s @@ CCFormat.to_string pp_order_source o.src;
-      "order_attr", D.s @@ CCFormat.to_string pp_order_attr o.order_attr;
-      "capacity", D.s @@ CCFormat.to_string pp_capacity o.capacity;
-      "category", D.s @@ CCFormat.to_string pp_category o.category;
-      (* "cross_restrict", D.s @@ CCFormat.to_string pp_cross_restrict o.cross_restrict; *)
-      "locate_found", D.s_f "%B" o.locate_found;
-      "expiry_time", D.bigint o.expiry_time;
-  ]
+  let module H = Tyxml.Html in
+  D.indent "order" @@ html (H.table
+      [ H.tr [ H.td [ H.txt "id"]; H.td [ H.txt (Z.to_string o.id)]]
+      ; H.tr [ H.td [ H.txt "peg"]; H.td [ H.txt ( CCFormat.to_string pp_order_peg o.peg)]]
+      ; H.tr [ H.td [ H.txt "client_id"]; H.td [ H.txt (Z.to_string o.client_id)]]
+      ; H.tr [ H.td [ H.txt "order_type"]; H.td [ H.txt ( CCFormat.to_string pp_order_type o.order_type)]]
+      ; H.tr [ H.td [ H.txt "qty"]; H.td [ H.txt (Z.to_string o.qty)]]
+      ; H.tr [ H.td [ H.txt "min_qty"]; H.td [ H.txt (Z.to_string o.min_qty)]]
+      ; H.tr [ H.td [ H.txt "leaves_qty"]; H.td [ H.txt (Z.to_string o.leaves_qty)]]
+      ; H.tr [ H.td [ H.txt "price"]; H.td [ H.txt ( Real.to_string_approx o.price)]]
+      ; H.tr [ H.td [ H.txt "time"]; H.td [ H.txt ( CCFormat.to_string pp_time o.time)]]
+      ; H.tr [ H.td [ H.txt "src"]; H.td [ H.txt ( CCFormat.to_string pp_order_source o.src)]]
+      ; H.tr [ H.td [ H.txt "order_attr"]; H.td [ H.txt ( CCFormat.to_string pp_order_attr o.order_attr)]]
+      ; H.tr [ H.td [ H.txt "capacity"]; H.td [ H.txt ( CCFormat.to_string pp_capacity o.capacity)]]
+      ; H.tr [ H.td [ H.txt "category"]; H.td [ H.txt ( CCFormat.to_string pp_category o.category)]]
+      ; H.tr [ H.td [ H.txt "locate_found"]; H.td [ H.txt (CCFormat.sprintf "%B" o.locate_found)]]
+      ; H.tr [ H.td [ H.txt "expiry_time"]; H.td [ H.txt (Z.to_string o.expiry_time)]]
+      ])
 [@@program];;
 
 #install_doc doc_of_order;;
@@ -560,19 +568,9 @@ let doc_of_side side = Document.s @@ CCFormat.to_string pp_order_side side
 
 #install_doc doc_of_side;;
 
-let doc_of_mkt mkt =
-  let module D = Document in
-  D.indent "mkt" @@ D.record [
-      "nbb", D.s @@ Real.to_string_approx mkt.nbb;
-      "nbo", D.s @@ Real.to_string_approx mkt.nbo;
-      "l_up", D.s @@ Real.to_string_approx mkt.l_up;
-      "l_down", D.s @@ Real.to_string_approx mkt.l_down;
-  ]
-[@@program];;
-
 let pp_rank (side, o1, o2, o3, mkt) =
   Document.(tbl ~headers:["side";"order1";"order2";"order3";"mkt"]
-    @@ [[doc_of_side side; doc_of_order o1; doc_of_order o2; doc_of_order o3; doc_of_mkt mkt]])
+    @@ [[doc_of_side side; doc_of_order o1; doc_of_order o2; doc_of_order o3; doc_of_mkt_data mkt]])
  [@@program];;
 
 #install_doc pp_rank
