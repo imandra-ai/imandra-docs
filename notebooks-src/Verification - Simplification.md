@@ -11,6 +11,7 @@ key-phrases:
   - generalization
   - elimination
   - permutative
+expected-error-report: { "errors": 2, "exceptions": 0 }
 ---
 # Simplification
 

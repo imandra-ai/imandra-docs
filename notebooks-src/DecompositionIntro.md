@@ -10,6 +10,7 @@ key-phrases:
   - uninterpreted function
   - state space enumeration
   - region of behaviour
+expected-error-report: { "errors": 1, "exceptions": 0 }
 ---
 
 # Region Decomposition

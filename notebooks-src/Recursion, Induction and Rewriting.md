@@ -9,6 +9,7 @@ key-phrases:
   - rewriting
   - rewrite rules
 difficulty: advanced
+expected-error-report: { "errors": 3, "exceptions": 0 }
 ---
 
 # Recursion, Induction and Rewriting

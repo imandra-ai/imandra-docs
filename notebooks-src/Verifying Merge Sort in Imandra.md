@@ -4,6 +4,7 @@ description: "Merge sort is a widely used efficient general purpose sorting algo
 kernel: imandra
 slug: verifying-merge-sort
 difficulty: advanced
+expected-error-report: { "errors": 2, "exceptions": 0 }
 ---
 
 # Verifying Merge Sort in Imandra

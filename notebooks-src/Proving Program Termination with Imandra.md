@@ -11,6 +11,7 @@ key-phrases:
   - ordinals
   - left pad
   - consistency
+expected-error-report: { "errors": 3, "exceptions": 0 }
 ---
 
 # Proving Program Termination
@@ -47,14 +48,14 @@ With this function admitted, we could then use its defining equation `f x = f x 
 
 ```ocaml
 f x       = f x + 1
-f x - f x = f x + 1 - f x  
+f x - f x = f x + 1 - f x
 0         = 1
 ```
 
 
 This inconsistency arises because, actually, such a function `f` cannot "exist"!
 
-You may be wondering: Why does consistency matter? 
+You may be wondering: Why does consistency matter?
 
 ## Soundness, Consistency and Conservative Extensions
 
@@ -67,13 +68,13 @@ Imandra's _definitional principle_ is designed to ensure this consistency, by en
 There are two main rules Imandra enforces for ensuring consistency:
  - Every defined type must be well-founded.
  - Every defined function must be total (i.e., terminating on all possible inputs).
- 
+
 In this notebook, we'll focus on the latter: proving program termination!
 
 
 ## Termination ensures existence
 
-Thankfully, a deep theorem of mathematical logic tells us that admitting terminating (also known as _total_) functions cannot lead us to inconsistency.  
+Thankfully, a deep theorem of mathematical logic tells us that admitting terminating (also known as _total_) functions cannot lead us to inconsistency.
 
 To admit a new function into Imandra's logic, Imandra must be able to prove that it always terminates. For most common patterns of recursion, Imandra is able to prove termination automatically. For others, users may need to give Imandra help in the form of _hints_ and _measures_.
 
@@ -98,7 +99,7 @@ sum_lst [1;2;3]
 ```
 
 ```{.imandra .input}
-let rec sum x = 
+let rec sum x =
  if x <= 0 then 0
  else x + sum(x-1)
 ```
@@ -114,7 +115,7 @@ sum 100
 Out of curiosity, let's see what would happen if we made a mistake in our definition of `sum` above, by, e.g., using `x = 0` as our test instead of `x <= 0`:
 
 ```{.imandra .input}
-let rec sum_oops x = 
+let rec sum_oops x =
  if x = 0 then 0
  else x + sum_oops (x-1)
 ```
@@ -196,7 +197,7 @@ let rec ack m n =
   else ack (m-1) (ack m (n-1))
 ```
 
-Imandra tells us that it's unable to prove termination in the particular path that goes from `ack m n` to `ack m (n-1)`. Imandra further tells us that it tried to prove termination in this case using a _measured subset_ of the arguments of `ack` containing only `m`. 
+Imandra tells us that it's unable to prove termination in the particular path that goes from `ack m n` to `ack m (n-1)`. Imandra further tells us that it tried to prove termination in this case using a _measured subset_ of the arguments of `ack` containing only `m`.
 
 Why does `ack` terminate, and how can we explain this to Imandra?
 
@@ -222,7 +223,7 @@ Success! You may enjoy walking through Imandra's termination proof presented in 
 
 # Measures and Ordinals
 
-If a lexicographic ordering isn't sufficient to prove termination for your function, you may need to construct a custom _measure function_. 
+If a lexicographic ordering isn't sufficient to prove termination for your function, you may need to construct a custom _measure function_.
 
 A measure function is _ordinal valued_, meaning it returns a value of type `Ordinal.t`.
 
