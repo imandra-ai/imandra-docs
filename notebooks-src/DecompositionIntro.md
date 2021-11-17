@@ -10,7 +10,6 @@ key-phrases:
   - uninterpreted function
   - state space enumeration
   - region of behaviour
-expected-error-report: { "errors": 1, "exceptions": 0 }
 ---
 
 # Region Decomposition
@@ -121,7 +120,7 @@ let i (x : int list) = if (x = List.rev @@ List.rev x) then 1 else 2;;
 
 let d = Modular_decomp.top ~prune:true "i" [@@program];;
 
-d |> Modular_decomp.get_regions |> CCList.map (fun r -> r, Modular_region.(string_of_status @@ status r));;
+d |> Modular_decomp.get_regions |> CCList.map (fun r -> r, Modular_region.(show_status @@ status r));;
 ```
 
 Recursive functions are not expanded, nor functions belonging to the "basis" (but pruning can still unroll them when solving for feasibility)
