@@ -11,6 +11,7 @@ key-phrases:
   - interactive development
   - document printers
 difficulty: beginner
+expected-error-report: { "errors": 1, "exceptions": 0 }
 ---
 
 # Tic Tac Toe with ReasonML

@@ -4,6 +4,7 @@ description: "In this notebook, we'll design and verify a simple autonomous vehi
 kernel: imandra
 slug: simple-vehicle-controller
 difficulty: beginner
+expected-error-report: { "errors": 1, "exceptions": 0 }
 ---
 
 # Verifying a simple autonomous vehicle controller in Imandra

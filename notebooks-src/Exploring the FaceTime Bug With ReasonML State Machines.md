@@ -11,6 +11,7 @@ key-phrases:
   - interactive development
   - state machines
 difficulty: beginner
+expected-error-report: { "errors": 1, "exceptions": 0 }
 ---
 
 # Exploring The Apple FaceTime Bug with ReasonML State Machines

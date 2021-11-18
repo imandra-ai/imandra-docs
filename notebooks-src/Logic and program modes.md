@@ -6,6 +6,7 @@ slug: logic-and-program-modes
 key-phrases:
   - logic mode
   - program mode
+expected-error-report: { "errors": 3, "exceptions": 0 }
 ---
 
 # Logic and Program modes
