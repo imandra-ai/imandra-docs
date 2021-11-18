@@ -29,7 +29,7 @@ The installer will:
 - Check for the presence of the opam package manager
 - If not present it will install version 2 for the current user
 - If present it will upgrade the current installation to version 2, if necessary
-- Setup an OCaml 4.08.1 environment for Imandra
+- Setup an OCaml 4.12.1 environment for Imandra
 - Download, setup and install Imandra into its OCaml environment in `/usr/local/var/imandra/` (documentation for Imandra modules can be found in `_opam/doc/index.html`)
 - Install system-level binaries for the Imandra repl and its utilities
 
