@@ -310,7 +310,7 @@ Let's see a quick example of how this works in practice:
 Caml.List.mapi (fun i region ->
   let gs = "region_" ^ (string_of_int i) in (* Imandra_util.Util.gensym () *)
   let term = Term.and_l @@ Modular_region.constraints region in
-  let body = Region_term_synth.synthesize ~default:Term.Syn.False term in
+  let body = Region_term_synth.synthesize ~default:Term.Syn.(mk ~loc:Iloc.none False) term in
   let args = Modular_region.args region |> List.map Var.name |> String.concat " " in
   let func = Printf.sprintf "let %s %s = %s" gs args body in
   System.eval func;
