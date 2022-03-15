@@ -27,11 +27,13 @@ _build:
 
 docker-build-docs: _build
 	@echo "$(IMANDRA_TOKEN)" > _build/login_token
+	@echo "core-europe-west1" > _build/zone
 	docker pull $(IMANDRA_DOCS_BUILDER)
 	docker run --rm \
     -v `pwd`:/mnt/src \
     -v `pwd`/_build:/mnt/dst \
     -v `pwd`/_build/login_token:/home/jovyan/.imandra-dev/login_token \
+    -v `pwd`/_build/zone:/home/jovyan/.imandra-dev/zone \
     -e SITE_PATH=$(SITE_PATH) \
     -e LAUNCH_URL=$(LAUNCH_URL) \
     -e PARALLELISM="3" \
