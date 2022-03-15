@@ -2,7 +2,7 @@ BRANCH_NAME ?= $(shell git branch --show-current)
 COMMIT_SHA ?= $(shell git rev-parse HEAD)
 IMANDRA_DOCS_BUILDER ?= eu.gcr.io/imandra-dev/imandra-docs-builder:latest
 IMANDRA_TOKEN ?= $(shell cat ~/.keybase-repos/imandra-dev-keys/try-imandra-notebook/ci@aestheticintegration.com--imandra-token)
-LAUNCH_URL ?= https://try.imandra.ai/launch/?next=/h/user-redirect/notebooks/
+LAUNCH_URL ?= https://try.imandra.ai/launch/?next=/notebooks/
 NOTEBOOKS_GCS_BUCKET ?= imandra-notebook-assets
 SITE_PATH ?= imandra-docs
 
