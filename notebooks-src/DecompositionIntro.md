@@ -120,7 +120,7 @@ let i (x : int list) = if (x = List.rev @@ List.rev x) then 1 else 2;;
 
 let d = Modular_decomp.top ~prune:true "i" [@@program];;
 
-d |> Modular_decomp.get_regions |> CCList.map (fun r -> r, Modular_region.(show_status @@ status r));;
+d |> Modular_decomp.get_concrete_regions |> CCList.map (fun r -> r, Modular_region.(show_status @@ status r));;
 ```
 
 Recursive functions are not expanded, nor functions belonging to the "basis" (but pruning can still unroll them when solving for feasibility)
@@ -148,12 +148,14 @@ Regions can be manually refined with terms in order to add extra constraints (re
 ```{.imandra .input}
 let d1 = Modular_decomp.(top ~prune:true "f" |> get_regions |> CCList.filter_map (fun r -> refine r [Term.false_])) [@@program];;
 
-let d2 = Modular_decomp.(top ~prune:true "f" |> get_regions
-                         |> CCList.filter_map
-                           (fun r ->
-                              refine r
-                               (* x = 1 *)
-                                [Term.eq ~ty:(Type.int())
-                                   (Modular_region.args r |> List.hd |> Term.var)
-                                     (Term.int 1)])) [@@program];;
+let d2 = Modular_decomp.(
+    let d = top ~prune:true "f" in
+    let arg = Remote_ref.get_shared_block d |> Modular_decomposition.args |> List.hd |> Term.var in
+    d
+    |> get_regions
+    |> CCList.filter_map
+         (fun r ->
+           refine r
+                  (* x = 1 *)
+                  [Term.eq ~ty:(Type.int()) arg (Term.int 1)])) [@@program];;
 ```
