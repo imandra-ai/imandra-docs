@@ -302,7 +302,9 @@ To *decompose* the state-space of `match_price`, we'll use `Modular_decomp.top` 
 
 ```{.imandra .input}
 #program;;
-let d = Modular_decomp.(top ~prune:true "match_price" |> get_concrete);;
+let d = Modular_decomp.(top ~prune:true "match_price");;
+
+Modular_decomp.get_concrete d;;
 ```
 
 
@@ -359,7 +361,7 @@ let regions_doc d =
 
 
 ```{.imandra .input}
-d
+Modular_decomp.get_concrete d;;
 ```
 
 
