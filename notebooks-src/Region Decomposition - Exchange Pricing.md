@@ -405,7 +405,7 @@ let side_condition2 (ob : order_book) (ref_price : real) =
 ;;
 
 #program;;
-Modular_decomp.top ~assuming:"side_condition2" "match_price"
+Modular_decomp.(top ~assuming:"side_condition2" "match_price" |> get_concrete)
 ```
 
 ## Generating instances
@@ -424,7 +424,7 @@ Extract.eval ~signature:(Event.DB.fun_id_of_str (db()) "match_price") ();;
 ```{.imandra .input}
 (* Let's now extract test cases from each region *)
 
-Modular_decomposition.get_concrete_regions
+Modular_decomposition.get_regions
 |> CCList.map (fun r -> |> Modular_decomp.get_model |> Mex.of_model)
 ```
 
