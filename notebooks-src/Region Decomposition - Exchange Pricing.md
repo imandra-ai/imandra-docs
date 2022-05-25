@@ -351,7 +351,7 @@ let pp_cs ?inv cs =
  |> PPrinter.pp ~refine:Refiner.refine ?inv
  |> List.map (CCFormat.to_string (PPrinter.Printer.print ()))
 
-let regions_doc (d : Modular_decomposition.t) =
+let regions_doc d =
  Jupyter_imandra.Decompose_render.regions_doc ~pp_cs d;;
 
 #install_doc regions_doc;;
@@ -424,8 +424,8 @@ Extract.eval ~signature:(Event.DB.fun_id_of_str (db()) "match_price") ();;
 ```{.imandra .input}
 (* Let's now extract test cases from each region *)
 
-Modular_decomposition.get_regions
-|> CCList.map (fun r -> |> Modular_decomp.get_model |> Mex.of_model)
+Modular_decomp.get_regions d
+|> CCList.map (fun r -> r |> Modular_decomp.get_model |> Mex.of_model)
 ```
 
 If you have any questions, please don't hestitate to reach out to us via [email](mailto:contact@imandra.ai) or on our [Discord server](https://discord.gg/rf78N7h).
