@@ -33,7 +33,7 @@
         <link rel="stylesheet" href="/imandra-docs/static/nbextensions/nbimandra/styles.b466ce6f.css" type="text/css">
         <link rel="stylesheet" href="/imandra-docs/static/docs-styles.b9de737f.css" type="text/css">
         
-        <link rel="stylesheet" href="/imandra-docs/static/jekyll-styles.7b33d7b3.css" type="text/css">
+        <link rel="stylesheet" href="/imandra-docs/static/jekyll-styles.edee8b74.css" type="text/css">
         
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.css" />
 
@@ -136,12 +136,12 @@
                 },
                 displayAlign: 'center',
                 CommonHTML: {
-                    linebreaks: { 
-                    automatic: true 
+                    linebreaks: {
+                    automatic: true
                     }
                 }
             });
-        
+
             MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
         }
     }
@@ -3947,7 +3947,7 @@ val apple_dist : unit -&gt; apple = &lt;fun&gt;
 
 <span class="k">let</span> <span class="n">d</span> <span class="o">=</span> <span class="nn">Modular_decomp</span><span class="p">.</span><span class="n">top</span> <span class="o">~</span><span class="n">prune</span><span class="o">:</span><span class="bp">true</span> <span class="s2">&quot;price&quot;</span> <span class="o">[@@</span><span class="n">program</span><span class="o">];;</span>
 
-<span class="k">let</span> <span class="n">regions</span> <span class="o">=</span> <span class="nn">Modular_decomp</span><span class="p">.</span><span class="n">get_regions</span> <span class="n">d</span> <span class="o">[@@</span><span class="n">program</span><span class="o">];;</span>
+<span class="k">let</span> <span class="n">regions</span> <span class="o">=</span> <span class="nn">Modular_decomp</span><span class="p">.</span><span class="n">get_concrete_regions</span> <span class="n">d</span> <span class="o">[@@</span><span class="n">program</span><span class="o">];;</span>
 </pre></div>
 
 </div>
@@ -3967,42 +3967,40 @@ val apple_dist : unit -&gt; apple = &lt;fun&gt;
 
 <div class="output_text output_subarea output_execute_result">
 <pre>val price : apple -&gt; real = &lt;fun&gt;
-val d : Top_result.modular_decomposition =
-  (decomp (price apple
-   :regions (&lt;reg 0&gt;, &lt;reg 1&gt;, &lt;reg 2&gt;, &lt;reg 3&gt;, &lt;reg 4&gt;, &lt;reg 5&gt;))
+val d : Modular_decomp_intf.decomp_ref = &lt;abstr&gt;
 val regions : Top_result.modular_region list =
   [{Constraints:
-      [not (apple.kind = Granny_Smith) &amp;&amp;
-       not (apple.kind = Braeburn) &amp;&amp;
-       not (apple.days_old &gt;= 5)]
-    Invariant
-      3/10 *. apple.mass};
-   {Constraints:
-      [apple.kind = Granny_Smith &amp;&amp;
-       not (apple.kind = Braeburn) &amp;&amp;
-       not (apple.days_old &gt;= 5)]
-    Invariant
-      7/20 *. apple.mass};
-   {Constraints:
-      [apple.kind = Braeburn &amp;&amp; not (apple.days_old &gt;= 5)]
-    Invariant
-      2/5 *. apple.mass};
-   {Constraints:
-      [not (apple.kind = Granny_Smith) &amp;&amp;
-       not (apple.kind = Braeburn) &amp;&amp;
-       apple.days_old &gt;= 5]
-    Invariant
-      (3/10 *. apple.mass) /. 2};
+      [apple.kind = Braeburn &amp;&amp; apple.days_old &gt;= 5]
+    Invariant:
+      (2/5 *. apple.mass) /. 2};
    {Constraints:
       [apple.kind = Granny_Smith &amp;&amp;
        not (apple.kind = Braeburn) &amp;&amp;
        apple.days_old &gt;= 5]
-    Invariant
+    Invariant:
       (7/20 *. apple.mass) /. 2};
    {Constraints:
-      [apple.kind = Braeburn &amp;&amp; apple.days_old &gt;= 5]
-    Invariant
-      (2/5 *. apple.mass) /. 2}]
+      [not (apple.kind = Granny_Smith) &amp;&amp;
+       not (apple.kind = Braeburn) &amp;&amp;
+       apple.days_old &gt;= 5]
+    Invariant:
+      (3/10 *. apple.mass) /. 2};
+   {Constraints:
+      [apple.kind = Braeburn &amp;&amp; not (apple.days_old &gt;= 5)]
+    Invariant:
+      2/5 *. apple.mass};
+   {Constraints:
+      [apple.kind = Granny_Smith &amp;&amp;
+       not (apple.kind = Braeburn) &amp;&amp;
+       not (apple.days_old &gt;= 5)]
+    Invariant:
+      7/20 *. apple.mass};
+   {Constraints:
+      [not (apple.kind = Granny_Smith) &amp;&amp;
+       not (apple.kind = Braeburn) &amp;&amp;
+       not (apple.days_old &gt;= 5)]
+    Invariant:
+      3/10 *. apple.mass}]
 </pre>
 </div>
 
@@ -4015,7 +4013,7 @@ val regions : Top_result.modular_region list =
 
 
 <div class="output_html rendered_html output_subarea ">
-<div class="imandra-alternatives" id="alt-40546a5b-b97f-41b9-aefc-07cdc6ac438d"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi (6 of 6)</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-1fa01105-8484-4ca1-8f89-d13a6fb13c2d" class="decompose"><textarea class="display-none">{
+<div class="imandra-alternatives" id="alt-e83f3755-79aa-44f5-884d-ed3870f5e148"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi (6 of 6)</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-880f82c2-db6e-4d4e-ad74-fb93ad17ae72" class="decompose"><textarea class="display-none">{
   &quot;regions&quot;: [
     {
       &quot;constraints&quot;: [ &quot;apple.days_old &gt;= 5&quot; ],
@@ -4113,13 +4111,13 @@ val regions : Top_result.modular_region list =
 }</textarea><div class="decompose-foamtree"></div><div class="decompose-details"><div class="decompose-details-header">Regions details</div><div class="decompose-details-no-selection"><p>No group selected.</p><ul><li>Concrete regions are numbered</li><li>Unnumbered regions are groups whose children share a particular constraint</li><li>Click on a region to view its details</li><li>Double click on a region to zoom in on it</li><li>Shift+double click to zoom out</li><li>Hit escape to reset back to the top</li></ul></div><div class="decompose-details-selection hidden"><div><span class="decompose-details-label">Direct sub-regions: </span><span class="decompose-details-direct-sub-regions-text">-</span></div><div><span class="decompose-details-label">Contained regions: </span><span class="decompose-details-contained-regions-text">-</span></div><div class="decompose-details-section-header">Constraints</div><div class="decompose-details-constraints"><pre class="decompose-details-constraint">&lt;constraint&gt;</pre></div><div class="decompose-details-invariant"><div class="decompose-details-section-header">Invariant</div><pre class="decompose-details-invariant-text">&lt;invariant&gt;</pre></div></div></div><script>
 (function () {
   require(['nbextensions/nbimandra/regions'], function (regions) {
-    var target = '#decompose-1fa01105-8484-4ca1-8f89-d13a6fb13c2d';
+    var target = '#decompose-880f82c2-db6e-4d4e-ad74-fb93ad17ae72';
     regions.hydrate(target);
   });
 })();
-</script></div></div><div class="tab-pane"><div><div>decomp of (price apple<div class="imandra-table" id="table-5f4d2be6-c500-48f1-98f0-639e86d9efc0"><table><thead><tr><th>Reg_id</th><th>Constraints</th><th>Invariant</th></tr></thead><tr><td>5</td><td><ul><li><pre>not (apple.kind = Granny_Smith)</pre></li><li><pre>not (apple.kind = Braeburn)</pre></li><li><pre>not (apple.days_old &gt;= 5)</pre></li></ul></td><td><pre>3/10 *. apple.mass</pre></td></tr><tr><td>4</td><td><ul><li><pre>apple.kind = Granny_Smith</pre></li><li><pre>not (apple.kind = Braeburn)</pre></li><li><pre>not (apple.days_old &gt;= 5)</pre></li></ul></td><td><pre>7/20 *. apple.mass</pre></td></tr><tr><td>3</td><td><ul><li><pre>apple.kind = Braeburn</pre></li><li><pre>not (apple.days_old &gt;= 5)</pre></li></ul></td><td><pre>2/5 *. apple.mass</pre></td></tr><tr><td>2</td><td><ul><li><pre>not (apple.kind = Granny_Smith)</pre></li><li><pre>not (apple.kind = Braeburn)</pre></li><li><pre>apple.days_old &gt;= 5</pre></li></ul></td><td><pre>(3/10 *. apple.mass) /. 2</pre></td></tr><tr><td>1</td><td><ul><li><pre>apple.kind = Granny_Smith</pre></li><li><pre>not (apple.kind = Braeburn)</pre></li><li><pre>apple.days_old &gt;= 5</pre></li></ul></td><td><pre>(7/20 *. apple.mass) /. 2</pre></td></tr><tr><td>0</td><td><ul><li><pre>apple.kind = Braeburn</pre></li><li><pre>apple.days_old &gt;= 5</pre></li></ul></td><td><pre>(2/5 *. apple.mass) /. 2</pre></td></tr></table></div></div></div></div></div><script>
+</script></div></div><div class="tab-pane"><div><div>decomp of (price apple<div class="imandra-table" id="table-535bd0ce-37c8-41d2-a52b-d9867b8dcee9"><table><thead><tr><th>Reg_id</th><th>Constraints</th><th>Invariant</th></tr></thead><tr><td>5</td><td><ul><li><pre>not (apple.kind = Granny_Smith)</pre></li><li><pre>not (apple.kind = Braeburn)</pre></li><li><pre>not (apple.days_old &gt;= 5)</pre></li></ul></td><td><pre>3/10 *. apple.mass</pre></td></tr><tr><td>4</td><td><ul><li><pre>apple.kind = Granny_Smith</pre></li><li><pre>not (apple.kind = Braeburn)</pre></li><li><pre>not (apple.days_old &gt;= 5)</pre></li></ul></td><td><pre>7/20 *. apple.mass</pre></td></tr><tr><td>3</td><td><ul><li><pre>apple.kind = Braeburn</pre></li><li><pre>not (apple.days_old &gt;= 5)</pre></li></ul></td><td><pre>2/5 *. apple.mass</pre></td></tr><tr><td>2</td><td><ul><li><pre>not (apple.kind = Granny_Smith)</pre></li><li><pre>not (apple.kind = Braeburn)</pre></li><li><pre>apple.days_old &gt;= 5</pre></li></ul></td><td><pre>(3/10 *. apple.mass) /. 2</pre></td></tr><tr><td>1</td><td><ul><li><pre>apple.kind = Granny_Smith</pre></li><li><pre>not (apple.kind = Braeburn)</pre></li><li><pre>apple.days_old &gt;= 5</pre></li></ul></td><td><pre>(7/20 *. apple.mass) /. 2</pre></td></tr><tr><td>0</td><td><ul><li><pre>apple.kind = Braeburn</pre></li><li><pre>apple.days_old &gt;= 5</pre></li></ul></td><td><pre>(2/5 *. apple.mass) /. 2</pre></td></tr></table></div></div></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-40546a5b-b97f-41b9-aefc-07cdc6ac438d';
+  var target = '#alt-e83f3755-79aa-44f5-884d-ed3870f5e148';
   alternatives.hydrate(target);
 });
 </script></div>
@@ -4294,15 +4292,6 @@ val apple_probs_S : (int, float * Top_result.modular_region) Hashtbl.t =
 <div class="output_text output_subarea output_execute_result">
 <pre>Region Probabilities---[region]---
 Index: 2
-Probability: 0.2234
-Constraints:
-  [ apple.kind = Braeburn
-  ; apple.days_old &lt; 5 ]
-Invariant:
-  F = apple.mass * 2/5
- -------------
----[region]---
-Index: 3
 Probability: 0.0134
 Constraints:
   [ apple.kind = Red_Delicious
@@ -4311,25 +4300,16 @@ Invariant:
   F = (apple.mass * 3/10) / 2
  -------------
 ---[region]---
-Index: 5
-Probability: 0.0244
+Index: 3
+Probability: 0.2234
 Constraints:
   [ apple.kind = Braeburn
-  ; apple.days_old &gt;= 5 ]
+  ; apple.days_old &lt; 5 ]
 Invariant:
-  F = (apple.mass * 2/5) / 2
+  F = apple.mass * 2/5
  -------------
 ---[region]---
-Index: 4
-Probability: 0.0592
-Constraints:
-  [ apple.kind = Granny_Smith
-  ; apple.days_old &gt;= 5 ]
-Invariant:
-  F = (apple.mass * 7/20) / 2
- -------------
----[region]---
-Index: 0
+Index: 5
 Probability: 0.1360
 Constraints:
   [ apple.kind = Red_Delicious
@@ -4338,13 +4318,31 @@ Invariant:
   F = apple.mass * 3/10
  -------------
 ---[region]---
-Index: 1
+Index: 4
 Probability: 0.5436
 Constraints:
   [ apple.kind = Granny_Smith
   ; apple.days_old &lt; 5 ]
 Invariant:
   F = apple.mass * 7/20
+ -------------
+---[region]---
+Index: 0
+Probability: 0.0244
+Constraints:
+  [ apple.kind = Braeburn
+  ; apple.days_old &gt;= 5 ]
+Invariant:
+  F = (apple.mass * 2/5) / 2
+ -------------
+---[region]---
+Index: 1
+Probability: 0.0592
+Constraints:
+  [ apple.kind = Granny_Smith
+  ; apple.days_old &gt;= 5 ]
+Invariant:
+  F = (apple.mass * 7/20) / 2
  -------------
 
 - : unit = ()

@@ -33,7 +33,7 @@
         <link rel="stylesheet" href="/imandra-docs/static/nbextensions/nbimandra/styles.b466ce6f.css" type="text/css">
         <link rel="stylesheet" href="/imandra-docs/static/docs-styles.b9de737f.css" type="text/css">
         
-        <link rel="stylesheet" href="/imandra-docs/static/jekyll-styles.7b33d7b3.css" type="text/css">
+        <link rel="stylesheet" href="/imandra-docs/static/jekyll-styles.edee8b74.css" type="text/css">
         
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.css" />
 
@@ -136,12 +136,12 @@
                 },
                 displayAlign: 'center',
                 CommonHTML: {
-                    linebreaks: { 
-                    automatic: true 
+                    linebreaks: {
+                    automatic: true
                     }
                 }
             });
-        
+
             MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
         }
     }
@@ -3811,8 +3811,10 @@ An additional constraint which is not enforciable by the OCaml type system but i
   <span class="k">type</span> <span class="n">t</span> <span class="o">=</span> <span class="nc">Add</span> <span class="o">|</span> <span class="nc">AddInt</span> <span class="o">|</span> <span class="nc">Sub</span> <span class="o">|</span> <span class="nc">Reset</span> <span class="o">|</span> <span class="nc">Any</span>
   <span class="k">type</span> <span class="n">c</span> <span class="o">=</span> <span class="nn">SM</span><span class="p">.</span><span class="n">event</span>
 
+  <span class="k">type</span> <span class="n">state</span> <span class="o">=</span> <span class="nn">SM</span><span class="p">.</span><span class="n">state</span>
+
   <span class="c">(* mapping function from a symbolic state machine event to a concrete event *)</span>
-  <span class="k">let</span> <span class="n">concrete</span> <span class="n">t</span> <span class="n">c</span> <span class="o">=</span> <span class="k">match</span> <span class="n">t</span><span class="o">,</span><span class="n">c</span> <span class="k">with</span>
+  <span class="k">let</span> <span class="n">concrete</span> <span class="n">t</span> <span class="n">c</span> <span class="o">_</span> <span class="o">=</span> <span class="k">match</span> <span class="n">t</span><span class="o">,</span><span class="n">c</span> <span class="k">with</span>
     <span class="o">|</span> <span class="nc">Any</span><span class="o">,</span> <span class="o">_</span> <span class="o">-&gt;</span> <span class="bp">true</span>
     <span class="o">|</span> <span class="nc">Add</span><span class="o">,</span> <span class="nn">SM</span><span class="p">.</span><span class="nc">Add</span> <span class="o">_</span> <span class="o">-&gt;</span> <span class="bp">true</span>
     <span class="o">|</span> <span class="nc">AddInt</span><span class="o">,</span> <span class="nn">SM</span><span class="p">.</span><span class="nc">Add</span><span class="o">(</span><span class="nn">SM</span><span class="p">.</span><span class="nc">Int</span> <span class="o">_)</span> <span class="o">-&gt;</span> <span class="bp">true</span>
@@ -3842,7 +3844,8 @@ An additional constraint which is not enforciable by the OCaml type system but i
   sig
     type t = Add | AddInt | Sub | Reset | Any
     type c = TPL.c
-    val concrete : t -&gt; c -&gt; bool
+    type state = TPL.state
+    val concrete : t -&gt; c -&gt; &#39;a -&gt; bool
   end
 </pre>
 </div>
@@ -3950,21 +3953,17 @@ An additional constraint which is not enforciable by the OCaml type system but i
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>val root_YVdORVRINTFUdjByRTU5T0xqeFJCYjVuMnl6QUdNVXp0bVNrQmdPR3Urcw_val :
-  SM.state = 0
-- : unit = ()
-- : unit = ()
-val root_YVdORVRINTFUdjByRTU5T0xqeFJCYjVuMnl6QUdNVXp0bVNrQmdPR3Urcw :
-  TPL.c list -&gt; SM.state = &lt;fun&gt;
+<pre>val root_YVdORVRINTFUdjByRTU5T0xqeFJCYjVuMnl6QUdNVXp0bVNrQmdPR3Utcw :
+  TPL.c list -&gt; TPL.state = &lt;fun&gt;
 module IDF :
   sig
-    type shape = IDF.shape = Tree | DAG | DG
+    type shape = IDF.shape = Tree
     type pol = IDF.pol = Valid | Invalid | No | Custom of string
     module DSM :
       sig
         module State_machine :
           sig
-            type state = SM.state
+            type state = TPL.state
             type event = TPL.c
             val init_state : state
             val step : event -&gt; state -&gt; state
@@ -3972,18 +3971,17 @@ module IDF :
           end
         module Template :
           sig
+            type state = State_machine.state
             type t = TPL.t
             type c = State_machine.event
-            val concrete : t -&gt; c -&gt; bool
+            val concrete : t -&gt; c -&gt; state -&gt; bool
           end
         val module_name : string
       end
-    val pp_state : SM.state -&gt; string
+    val pp_state : TPL.state -&gt; string
     type target = TPL.t list
     type node = IDF.node
-    type node_dir = IDF.node_dir = Fwd of node | Bwd of node | Root of node
-    type path = node_dir list
-    val node : node_dir -&gt; node
+    type path = node list
     module G :
       sig
         type t = IDF.G.t
@@ -4054,13 +4052,20 @@ module IDF :
         val output_graph : t -&gt; file:string -&gt; unit
       end
     module Mex : sig val of_model : Top_result.model -&gt; TPL.c list end
+    type region_id = int
+    val id : node -&gt; region_id
     val paths : ?from:node -&gt; G.t -&gt; path list
-    val region : node -&gt; Top_result.modular_region
-    val expanded_region_ids : node -&gt; (int * int) list option
-    val applied_expander_fns : node -&gt; string list option
+    val region : node -&gt; Top_result.modular_region_ref
+    val expanded_region_ids : node -&gt; Util.Int_set.t
+    val applied_expander_fns : node -&gt; Util.Str_set.t list
     val sample : node -&gt; TPL.c list option
     val model : node -&gt; Top_result.model option
-    type region_expander = string option * string list list * string option
+    type region_expander =
+      IDF.region_expander = {
+      valid_fn : string option;
+      field_projections : string list list;
+      expand_when : string option;
+    }
     type target_step =
       IDF.target_step = {
       event : TPL.t;
@@ -4070,38 +4075,39 @@ module IDF :
     val target_steps : node -&gt; target_step list list
     type replay_sample =
       IDF.replay_sample = {
-      state_before : SM.state;
+      state_before : TPL.state;
       event : TPL.c;
-      state_after : SM.state;
+      state_after : TPL.state;
     }
     val replay_events : TPL.c list -&gt; replay_sample list
     val replay : node -&gt; replay_sample list option
     type runner = IDF.runner
     val create :
       ?basis:string list -&gt;
-      ?expanding:string list -&gt; ?assuming:string -&gt; unit -&gt; runner
+      ?expanding:string list -&gt;
+      ?assuming:string -&gt;
+      ?rule_specs:string list -&gt;
+      ?get_model_config:Pconfig.op list -&gt; unit -&gt; runner
     val add :
       runner:runner -&gt;
-      g:G.t -&gt;
       ?as_:shape -&gt;
       ?prune_asm:bool -&gt;
       ?valid_pol:pol list -&gt;
       ?region_expander:region_expander list -&gt;
-      ?minimize:string list list -&gt; target -&gt; unit
-    val run :
-      ?prune_config_ops:Imandra_util.Pconfig.op list -&gt;
-      runner -&gt; unit -&gt; unit
+      ?minimize:string list list -&gt; ?shrink_heavy:bool -&gt; target -&gt; unit
+    val run : runner -&gt; G.t
     val decompose :
-      g:G.t -&gt;
       ?as_:shape -&gt;
       ?prune_asm:bool -&gt;
-      ?prune_config_ops:Pconfig.op list -&gt;
       ?basis:string list -&gt;
       ?expanding:string list -&gt;
       ?assuming:string -&gt;
+      ?rule_specs:string list -&gt;
       ?valid_pol:pol list -&gt;
       ?region_expander:region_expander list -&gt;
-      ?minimize:string list list -&gt; target -&gt; unit -&gt; unit
+      ?minimize:string list list -&gt;
+      ?shrink_heavy:bool -&gt;
+      ?get_model_config:Pconfig.op list -&gt; target -&gt; G.t
   end
 </pre>
 </div>
@@ -4129,8 +4135,7 @@ module IDF :
 <div class="prompt input_prompt">In&nbsp;[6]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ocaml"><pre><span></span><span class="k">let</span> <span class="n">g</span> <span class="o">=</span> <span class="nn">IDF</span><span class="p">.</span><span class="nn">G</span><span class="p">.</span><span class="n">create</span> <span class="bp">()</span><span class="o">;;</span>
-<span class="nn">IDF</span><span class="p">.</span><span class="n">decompose</span> <span class="o">~</span><span class="n">g</span> <span class="nn">TPL</span><span class="p">.</span><span class="o">[</span><span class="nc">Any</span><span class="o">;</span><span class="nc">AddInt</span><span class="o">]</span> <span class="bp">()</span>
+<div class=" highlight hl-ocaml"><pre><span></span><span class="k">let</span> <span class="n">g</span> <span class="o">=</span> <span class="nn">IDF</span><span class="p">.</span><span class="n">decompose</span> <span class="nn">TPL</span><span class="p">.</span><span class="o">[</span><span class="nc">Any</span><span class="o">;</span><span class="nc">AddInt</span><span class="o">]</span>
 </pre></div>
 
 </div>
@@ -4149,16 +4154,15 @@ module IDF :
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>val g : IDF.G.t = &lt;abstr&gt;
-val guard_YVdORVRINTFUdjByRTU5T0xqeFJCYjVuMnl6QUdNVXp0bVNrQmdPR3Urcw_VFBMLkFueTpWYWxpZA_true :
+<pre>val guard__YVdORVRINTFUdjByRTU5T0xqeFJCYjVuMnl6QUdNVXp0bVNrQmdPR3Utcw_VFBMLkFueTpWYWxpZA_true :
   TPL.c list -&gt; bool = &lt;fun&gt;
-val target_YVdORVRINTFUdjByRTU5T0xqeFJCYjVuMnl6QUdNVXp0bVNrQmdPR3Urcw_VFBMLkFueTpWYWxpZA_true :
-  TPL.c list -&gt; SM.state = &lt;fun&gt;
-val guard_YVdORVRINTFUdjByRTU5T0xqeFJCYjVuMnl6QUdNVXp0bVNrQmdPR3Urcw_VFBMLkFueTpWYWxpZCxUUEwuQW55OlZhbGlkVFBMLkFkZEludDpWYWxpZA_true :
+val target__YVdORVRINTFUdjByRTU5T0xqeFJCYjVuMnl6QUdNVXp0bVNrQmdPR3Utcw_VFBMLkFueTpWYWxpZA_true :
+  TPL.c list -&gt; TPL.state = &lt;fun&gt;
+val guard__YVdORVRINTFUdjByRTU5T0xqeFJCYjVuMnl6QUdNVXp0bVNrQmdPR3Utcw_VFBMLkFueTpWYWxpZCxUUEwuQW55OlZhbGlkVFBMLkFkZEludDpWYWxpZA_true :
   TPL.c list -&gt; bool = &lt;fun&gt;
-val target_YVdORVRINTFUdjByRTU5T0xqeFJCYjVuMnl6QUdNVXp0bVNrQmdPR3Urcw_VFBMLkFueTpWYWxpZCxUUEwuQW55OlZhbGlkVFBMLkFkZEludDpWYWxpZA_true :
-  TPL.c list -&gt; SM.state = &lt;fun&gt;
-- : unit = ()
+val target__YVdORVRINTFUdjByRTU5T0xqeFJCYjVuMnl6QUdNVXp0bVNrQmdPR3Utcw_VFBMLkFueTpWYWxpZCxUUEwuQW55OlZhbGlkVFBMLkFkZEludDpWYWxpZA_true :
+  TPL.c list -&gt; TPL.state = &lt;fun&gt;
+val g : IDF.G.t = &lt;abstr&gt;
 </pre>
 </div>
 
@@ -4203,7 +4207,7 @@ val target_YVdORVRINTFUdjByRTU5T0xqeFJCYjVuMnl6QUdNVXp0bVNrQmdPR3Urcw_VFBMLkFueT
 <div class="prompt input_prompt">In&nbsp;[7]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ocaml"><pre><span></span><span class="k">let</span> <span class="n">first_path</span> <span class="o">=</span> <span class="nn">IDF</span><span class="p">.</span><span class="n">paths</span> <span class="n">g</span> <span class="o">|&gt;</span> <span class="nn">List</span><span class="p">.</span><span class="n">hd</span> <span class="o">|&gt;</span> <span class="nn">CCList</span><span class="p">.</span><span class="n">map</span> <span class="nn">IDF</span><span class="p">.</span><span class="n">node</span><span class="o">;;</span>
+<div class=" highlight hl-ocaml"><pre><span></span><span class="k">let</span> <span class="n">first_path</span> <span class="o">=</span> <span class="nn">IDF</span><span class="p">.</span><span class="n">paths</span> <span class="n">g</span> <span class="o">|&gt;</span> <span class="nn">List</span><span class="p">.</span><span class="n">hd</span><span class="o">;;</span>
 <span class="k">let</span> <span class="n">full_node</span> <span class="o">=</span> <span class="n">first_path</span> <span class="o">|&gt;</span> <span class="nn">CCList</span><span class="p">.</span><span class="n">rev</span> <span class="o">|&gt;</span> <span class="nn">CCList</span><span class="p">.</span><span class="n">hd</span>
 </pre></div>
 
@@ -4223,7 +4227,7 @@ val target_YVdORVRINTFUdjByRTU5T0xqeFJCYjVuMnl6QUdNVXp0bVNrQmdPR3Urcw_VFBMLkFueT
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>val first_path : IDF.node list = [&lt;abstr&gt;;&lt;abstr&gt;;&lt;abstr&gt;]
+<pre>val first_path : IDF.path = [&lt;abstr&gt;;&lt;abstr&gt;;&lt;abstr&gt;]
 val full_node : IDF.node = &lt;abstr&gt;
 </pre>
 </div>
@@ -4275,8 +4279,8 @@ val full_node : IDF.node = &lt;abstr&gt;
 <div class="output_text output_subarea output_execute_result">
 <pre>val samples : TPL.c list option =
   Some
-   [Decomp.State_machine.Reset;
-    Decomp.State_machine.Add (Decomp.State_machine.Int 51)]
+   [Decomp.State_machine.Add (Decomp.State_machine.Int 51);
+    Decomp.State_machine.Add (Decomp.State_machine.Int 1)]
 </pre>
 </div>
 
@@ -4326,11 +4330,12 @@ val full_node : IDF.node = &lt;abstr&gt;
 <div class="output_text output_subarea output_execute_result">
 <pre>val replayed_node : IDF.replay_sample list option =
   Some
-   [{IDF.state_before = 0; event = Decomp.State_machine.Reset;
-     state_after = 0};
-    {IDF.state_before = 0;
+   [{IDF.state_before = 0;
      event = Decomp.State_machine.Add (Decomp.State_machine.Int 51);
-     state_after = 51}]
+     state_after = 51};
+    {IDF.state_before = 51;
+     event = Decomp.State_machine.Add (Decomp.State_machine.Int 1);
+     state_after = 52}]
 </pre>
 </div>
 
@@ -4361,7 +4366,7 @@ val full_node : IDF.node = &lt;abstr&gt;
     <div class="input_area">
 <div class=" highlight hl-ocaml"><pre><span></span><span class="o">#</span><span class="n">install_printer</span> <span class="nn">Imandra_tools</span><span class="p">.</span><span class="nn">Region_pp</span><span class="p">.</span><span class="n">print</span><span class="o">;;</span>
 
-<span class="k">let</span> <span class="n">regions</span> <span class="o">=</span> <span class="nn">List</span><span class="p">.</span><span class="n">map</span> <span class="nn">IDF</span><span class="p">.</span><span class="n">region</span> <span class="n">first_path</span>
+<span class="k">let</span> <span class="n">regions</span> <span class="o">=</span> <span class="nn">List</span><span class="p">.</span><span class="n">map</span> <span class="o">(</span><span class="nn">IDF</span><span class="p">.</span><span class="n">region</span> <span class="o">%&gt;</span> <span class="nn">Remote_ref</span><span class="p">.</span><span class="n">get_shared_block</span><span class="o">)</span> <span class="n">first_path</span>
 </pre></div>
 
 </div>
@@ -4389,20 +4394,30 @@ val full_node : IDF.node = &lt;abstr&gt;
     -------------;
    ---[region]---
    Constraints:
-     [ (List.hd e) = SM.Reset ]
+     [ Destruct(SM.Add, 0, (List.hd e)) is SM.Int
+     ; (List.hd e) is SM.Add
+     ; 50 &lt; Destruct(SM.Int, 0, Destruct(SM.Add, 0, (List.hd e))) &lt;= 9000
+     ; Destruct(SM.Int, 0, Destruct(SM.Add, 0, (List.hd e))) &lt;&gt; 0 ]
    Invariant:
-     F = 0
+     F = Destruct(SM.Int, 0, Destruct(SM.Add, 0, (List.hd e)))
     -------------;
    ---[region]---
    Constraints:
-     [ (List.hd (List.tl e)) is SM.Add
+     [ Destruct(SM.Add, 0, (List.hd e)) is SM.Int
+     ; (List.hd e) is SM.Add
      ; Destruct(SM.Add, 0, (List.hd (List.tl e))) is SM.Int
-     ; (List.hd e) = SM.Reset
-     ; 50 &lt;
-       Destruct(SM.Int, 0, Destruct(SM.Add, 0, (List.hd (List.tl e)))) &lt;=
-       9000 ]
+     ; (List.hd (List.tl e)) is SM.Add
+     ; Destruct(SM.Int, 0, Destruct(SM.Add, 0, (List.hd (List.tl e)))) &gt; 0
+     ; 50 &lt; Destruct(SM.Int, 0, Destruct(SM.Add, 0, (List.hd e))) &lt;= 9000
+     ; Destruct(SM.Int, 0, Destruct(SM.Add, 0, (List.hd e))) &lt;&gt; 0
+     ; (Destruct(SM.Int, 0, Destruct(SM.Add, 0, (List.hd (List.tl e)))) +
+          Destruct(SM.Int, 0, Destruct(SM.Add, 0, (List.hd e))))
+         &lt;= 9000
+     ; Destruct(SM.Int, 0, Destruct(SM.Add, 0, (List.hd e))) &lt;&gt; 1337 ]
    Invariant:
-     F = Destruct(SM.Int, 0, Destruct(SM.Add, 0, (List.hd (List.tl e))))
+     F =
+     Destruct(SM.Int, 0, Destruct(SM.Add, 0, (List.hd e))) +
+       Destruct(SM.Int, 0, Destruct(SM.Add, 0, (List.hd (List.tl e))))
     -------------]
 </pre>
 </div>
