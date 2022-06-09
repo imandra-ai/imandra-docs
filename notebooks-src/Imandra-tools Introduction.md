@@ -122,8 +122,8 @@ module Decomp = struct
   module Template = struct
     type t = Add | Sub | Reset | Any
     type c = State_machine.event
-
-    let concrete c t = match c, t with
+    type state = State_machine.state
+    let concrete c t _state = match c, t with
         | Add, Model.Add _ -> true
         | Sub, Model.Sub _ -> true
         | Reset, Model.Reset -> true
@@ -143,15 +143,14 @@ We can use the `IDF` module to start decomposing any sequences of events, let's 
 
 module IDF = Idf.Make(Decomp);;
 
-let g = IDF.G.create ();;
-IDF.decompose ~g (Decomp.Template.[Any;Add;Any]) ();;
+let g = IDF.decompose (Decomp.Template.[Any;Add;Any]);;
 ```
 
 Since `IDF` generates a decomposition graph, we need to first create an empty graph via `IDF.G.create`, we can then list all the paths of the decomposition graph from the initial state to the final state:
 
 ```{.imandra .input}
 let paths = IDF.paths g
-let first_path = List.hd paths |> CCList.map IDF.node
+let first_path = List.hd paths
 ```
 
 This output is not very useful, but we can ask `Idf` to play out a sample execution of that path:
@@ -163,7 +162,7 @@ IDF.replay (first_path |> CCList.last_opt |> CCOpt.get_exn)
 Or we can ask `Idf` to let us inspect the regions for that path (each region in the list will correspond to the constraints and invariant of the model up to each event in the template):
 
 ```{.imandra .input}
-let first_path_regions = List.map IDF.region first_path
+let first_path_regions = List.map (IDF.region %> Remote_ref.get_shared_block) first_path
 ```
 
 For a full description of the `Idf` API and capabilities, check out the [Iterative Decomposition Framework](Iterative%20Decomposition%20Framework.md) page.
@@ -203,7 +202,9 @@ let f (x : int Set.t) y z =
 
 let d = Modular_decomp.top "f";;
 
-let rs = Modular_decomposition.to_region_list d |> CCList.map (fun (i, _) -> Modular_decomp.get_region d i);;
+Modular_decomp.get_concrete d;;
+
+let rs = Modular_decomp.get_concrete_regions d;;
 
 ```
 
@@ -414,7 +415,7 @@ Now we have all these components we can find the regions of `f`, create a model 
 ```{.imandra .input}
 let d = Modular_decomp.top ~prune:true "f'" [@@program];;
 
-let regions = Modular_decomp.get_regions d [@@program];;
+let regions = Modular_decomp.get_concrete_regions d [@@program];;
 
 module Example = Distribution.From_Sampler (struct type domain = dom let dist = distribution end) [@@program];;
 
