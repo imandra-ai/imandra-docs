@@ -102,7 +102,7 @@ let price apple =
 
 let d = Modular_decomp.top ~prune:true "price" [@@program];;
 
-let regions = Modular_decomp.get_regions d [@@program];;
+let regions = Modular_decomp.get_concrete_regions d [@@program];;
 
 ```
 
