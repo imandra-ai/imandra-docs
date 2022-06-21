@@ -305,7 +305,7 @@ let pp_cs ?inv cs =
  |> PPrinter.pp ~refine:Refiner.refine ?inv
  |> List.map (CCFormat.to_string (PPrinter.Printer.print ()))
 
-let regions_doc (d : Modular_decomposition.t) =
+let regions_doc d =
  Jupyter_imandra.Decompose_render.regions_doc ~pp_cs d;;
 
 #install_doc regions_doc;;

@@ -87,8 +87,10 @@ module TPL = struct
   type t = Add | AddInt | Sub | Reset | Any
   type c = SM.event
 
+  type state = SM.state
+
   (* mapping function from a symbolic state machine event to a concrete event *)
-  let concrete t c = match t,c with
+  let concrete t c _ = match t,c with
     | Any, _ -> true
     | Add, SM.Add _ -> true
     | AddInt, SM.Add(SM.Int _) -> true
@@ -123,8 +125,7 @@ module IDF = Imandra_tools.Idf.Make(Decomp)
 
 We are now ready to decompose a `SM` state machine under a particular `TPL.t` template
 ```{.imandra .input}
-let g = IDF.G.create ();;
-IDF.decompose ~g TPL.[Any;AddInt] ()
+let g = IDF.decompose TPL.[Any;AddInt]
 ```
 
 We've invoked `IDF.decompose` over a template of `[Any;AddInt]`, which means we'll try to symbolically decompose the state space of a state machine after the following steps (`_` is used to indicate a symbolic value):
@@ -139,7 +140,7 @@ SM.
 In order to consume concrete paths, we must extract them from the decomposition graph `g`:
 
 ```{.imandra .input}
-let first_path = IDF.paths g |> List.hd |> CCList.map IDF.node;;
+let first_path = IDF.paths g |> List.hd;;
 let full_node = first_path |> CCList.rev |> CCList.hd
 ```
 
@@ -160,7 +161,7 @@ let replayed_node = IDF.replay full_node
 ```{.imandra .input}
 #install_printer Imandra_tools.Region_pp.print;;
 
-let regions = List.map IDF.region first_path
+let regions = List.map (IDF.region %> Remote_ref.get_shared_block) first_path
 ```
 
 It is to be noted that the each symbolic event in those constraints is represented as the `nth` element of the list `e`, thus the first `Any` event will be `List.hd e`, the second `AddInt` will be `List.hd (List.tl e)`, and since we've asked `IDF` to decompose a path of _exactly_ two events, there will be no third or more events, and thus we can find a constraint to that effect: `List.tl (List.tl e) = []`.
