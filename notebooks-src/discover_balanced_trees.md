@@ -45,7 +45,7 @@ let lhs_split n = n/2;;
 let rhs_split n = n - lhs_split n;;
 ```
 
-What are some properties that hold of these functions?  We should ask Discover to suggest some things.  We invoke Discover with the events database `db` and pass it a list of the string function names we would like Discover to investigate.  
+What are some properties that hold of these functions?  We should ask Discover to suggest some things.  We invoke Discover with the events database `db` and pass it a list of the string function names we would like Discover to investigate.
 
 ```{.imandra .input}
 discover db ~iterations:2i ["+";"lhs_split";"rhs_split"];;
@@ -81,14 +81,14 @@ let rec nodes tree =
   | Branch {left; right; _} -> 1 + (nodes left) + (nodes right);;
 ```
 
-In our function `cbal`, we always return `Empty` if `n < 0`.  This suggests that we will want to have a predicate capturing the interesting case where the input to `cbal` is nonnegative, and a predicate for the zero or negative case.  
+In our function `cbal`, we always return `Empty` if `n < 0`.  This suggests that we will want to have a predicate capturing the interesting case where the input to `cbal` is nonnegative, and a predicate for the zero or negative case.
 
 ```{.imandra .input}
 let nonnegative x = x >= 0;;
 let leq_zero x = x <= 0;;
 ```
 
-Now that we have the functions `nodes` and `cbal`, we should ask Discover to find some properties that may hold.  Since `cbal` is only really interesting if the input is nonnegative, we invoke Discover with the labeled argument `~condition` set to the string literal `"nonnegative"`.  This string argument lets Discover know to always instantiate a fixed variable with values satisfying the predicate we just defined.  We specify `nodes` and `cbal` for investigation. 
+Now that we have the functions `nodes` and `cbal`, we should ask Discover to find some properties that may hold.  Since `cbal` is only really interesting if the input is nonnegative, we invoke Discover with the labeled argument `~condition` set to the string literal `"nonnegative"`.  This string argument lets Discover know to always instantiate a fixed variable with values satisfying the predicate we just defined.  We specify `nodes` and `cbal` for investigation.
 
 ```{.imandra .input}
 discover db ~condition:"nonnegative" ["nodes";"cbal"];;
@@ -97,7 +97,7 @@ discover db ~condition:"nonnegative" ["nodes";"cbal"];;
 Great, Discover suggests that the balanced binary trees produced by `cbal` have the correct number of nodes!  It's often helpful to tweak the lemmas suggested by Discover.  In this case we'll replace the predicate condition with its body. Let's have Imandra prove it.
 
 ```{.imandra .input}
-lemma discover__0 x0 = x0 >= 0 ==> (nodes (cbal x0)) = x0   [@@auto] [@@rewrite] [@@elim];;
+lemma discover__0 x0 = x0 >= 0 ==> (nodes (cbal x0)) = x0   [@@auto];;
 ```
 
 What about the zero or negative case?
@@ -133,15 +133,7 @@ discover db ["is_balanced";"cbal";"true"];;
 Discover suggests that every tree produced by `cbal` is balanced.  We can prove this too!
 
 ```{.imandra .input}
-lemma discover_cbal_balanced_0 x0 = x0 >= 0 ==> (is_balanced (cbal x0)) [@@induct functional cbal];;
+lemma discover_cbal_balanced_0 x0 = x0 >= 0 ==> (is_balanced (cbal x0)) [@@auto];;
 ```
 
 In this demonstration we used Discover to suggest conjectures and lemmas used in the verification of some properties of balanced binary trees.  We also showed examples of using conditions with Discover and some basic pointers on its use.
-
-```{.imandra .input}
-theorem rev_rev x = List.rev (List.rev x) = x [@@auto]
-```
-
-```{.imandra .input}
-
-```
