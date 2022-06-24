@@ -161,7 +161,7 @@ let replayed_node = IDF.replay full_node
 ```{.imandra .input}
 #install_printer Imandra_tools.Region_pp.print;;
 
-let regions = List.map (IDF.region %> Remote_ref.get_shared_block) first_path
+let regions = List.map (fun n -> Remote_ref.get_shared_block (IDF.region n)) first_path
 ```
 
 It is to be noted that the each symbolic event in those constraints is represented as the `nth` element of the list `e`, thus the first `Any` event will be `List.hd e`, the second `AddInt` will be `List.hd (List.tl e)`, and since we've asked `IDF` to decompose a path of _exactly_ two events, there will be no third or more events, and thus we can find a constraint to that effect: `List.tl (List.tl e) = []`.
