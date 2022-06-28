@@ -162,7 +162,7 @@ IDF.replay (first_path |> CCList.last_opt |> CCOpt.get_exn)
 Or we can ask `Idf` to let us inspect the regions for that path (each region in the list will correspond to the constraints and invariant of the model up to each event in the template):
 
 ```{.imandra .input}
-let first_path_regions = List.map (IDF.region %> Remote_ref.get_shared_block) first_path
+let first_path_regions = List.map (fun n -> Remote_ref.get_shared_block (IDF.region n)) first_path
 ```
 
 For a full description of the `Idf` API and capabilities, check out the [Iterative Decomposition Framework](Iterative%20Decomposition%20Framework.md) page.
