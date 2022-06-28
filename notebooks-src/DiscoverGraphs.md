@@ -81,49 +81,22 @@ verify (fun g1 g2 ->  is_graph (g1 :: g2) && List.for_all (is_graph2 (all_nodes 
 ```
 
 ```{.imandra .input}
+let rec is_path1 path_remaining g = 
+    match path_remaining with
+    | [] -> true
+    | [x] -> if graph_mem x g then true else false
+    | x :: xs ->
+    (
+        let next = List.hd xs in
+        if not (graph_mem x g) then false else
+        match neighbors x g with
+        | [] -> false
+        | neighbs -> if List.mem next neighbs then is_path1 xs g else false
+    );;
+
 let is_path (p : path) (g : graph) =
     if List.is_empty p then false else
-    let rec aux path_remaining g =
-        match path_remaining with
-        | [] -> true
-        | [x] -> if graph_mem x g then true else false
-        | x :: xs ->
-        (
-            let next = List.hd xs in
-            if not (graph_mem x g) then false else
-            match neighbors x g with
-            | [] -> false
-            | neighbs -> if List.mem next neighbs then aux xs g else false
-        ) in
-    aux p g;;
-
-let rec last l =
-    match l with
-    | [] -> None
-    | _ :: [x] -> Some x
-    | x :: xs -> last xs;;
-
-let path_from_to p a b g =
-    is_path p g && List.hd p = a && last p = Some b;;
-
-```
-
-```{.imandra .input}
-let is_path (p : path) (g : graph) =
-    if List.is_empty p then false else
-    let rec aux path_remaining g =
-        match path_remaining with
-        | [] -> true
-        | [x] -> if graph_mem x g then true else false
-        | x :: xs ->
-        (
-            let next = List.hd xs in
-            if not (graph_mem x g) then false else
-            match neighbors x g with
-            | [] -> false
-            | neighbs -> if List.mem next neighbs then aux xs g else false
-        ) in
-    aux p g;;
+    is_path1 p g
 
 let rec last l =
     match l with
@@ -252,21 +225,12 @@ let find_path a b g =
     find_next_step (neighbors a g) [a] b g;;
 ```
 
-```{.imandra .input}
-exception No_path;;
-
-let rec find_next_step2 (nbs : node list) (stack : path) (b : node) (g : graph) =
-    if List.mem b nbs then (List.rev (b :: stack)) else
-    match nbs with
-    | [] -> raise No_path
-    | x :: xs ->
-        if List.mem x stack then find_next_step2 xs stack b g else
-        try find_next_step2 (neighbors x g) (x :: stack) b g 
-        with No_path -> find_next_step2 xs stack b g
-        [@@measure find_next_step_measure g stack nbs] [@@auto];;
-```
-
 Now that we have the `find_path` function, we'd like to verify that it behaves correctly.  This first lemma ensures that we are getting the correct single path when finding a path from an element to itself.
+
+```{.imandra .input}
+lemma find_path_start a b g x y = 
+    (find_path a b g = Some (x :: y)) [@trigger] ==> x = a [@@auto] [@@fc] [@@gen];;
+```
 
 ```{.imandra .input}
 lemma singleton_path_is_path a g =
@@ -277,11 +241,9 @@ lemma singleton_path_is_path a g =
 ```
 
 ```{.imandra .input}
-lemma path_found_implies_mem a b g =
-    is_graph g ==>
-    match find_path a b g with
-    | Some _ -> graph_mem a g && graph_mem b g
-    | None -> true [@@auto] [@@fc];;
+lemma path_found_implies_mem a b g x =
+    is_graph g && (find_path a b g = Some x) [@trigger] ==>
+    graph_mem a g && graph_mem b g [@@auto] [@@gen] [@@fc];;
 ```
 
 ```{.imandra .input}
@@ -345,13 +307,51 @@ lemma path_nonempty a b g x =
 ```
 
 ```{.imandra .input}
+lemma fns_onestep_fc g1 g2 b x =
+    is_graph (g1 :: g2) && graph_mem b g2 &&
+    find_next_step (edges_of g1) [key_of g1] b (g1 :: g2) = Some x ==>
+    is_path x (g1 :: g2) [@@auto];;
+```
+
+```{.imandra .input}
+verify (fun g1 g2 -> List.for_all (is_graph2 (all_nodes (g1 :: g2))) g2 ==> 
+                     List.for_all (is_graph2 (all_nodes g2)) g2);;
+```
+
+```{.imandra .input}
+lemma path_lem_start a b g x y =
+    ((find_next_step (neighbors a g) [a] b g) = Some (x :: y)) [@trigger] ==>
+    x = a [@@auto] [@@fc] [@@gen];;
+```
+
+```{.imandra .input}
+lemma path_lem a b g x y z = 
+    (find_next_step (neighbors a g) [a] b g = Some (x :: (y :: z))) [@trigger] ==>
+    List.mem y (neighbors x g) [@@auto] [@@gen] [@@fc];;
+```
+
+```{.imandra .input}
+verify (fun a b g path x y z ->
+ (find_next_step (neighbors a g) [a] b g = Some (x :: (y :: z))) [@trigger] ==>
+ List.mem y (neighbors x g));;
+```
+
+```{.imandra .input}
+lemma fns_onestep2_fc g a b x =
+    is_graph g &&
+    find_next_step (neighbors a g) [a] b g = Some x ==>
+    is_path x g [@@auto];;
+```
+
+```{.imandra .input}
+#max_induct 1;;
 lemma find_path_is_path a b g =
     graph_mem a g && is_graph g ==>
     let res = find_path a b g in
     match res with
     | Some x -> is_path x g 
     | _ -> true [@@induct structural g] [@@disable is_graph] [@@disable graph_mem] [@@disable neighbors]
-        [@@disable no_duplicates] [@@disable all_nodes];;
+        [@@disable no_duplicates] [@@disable all_nodes] [@@disable find_path];;
 ```
 
 ```{.imandra .input}
