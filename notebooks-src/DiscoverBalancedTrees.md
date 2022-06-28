@@ -1,3 +1,13 @@
+---
+title: "Using Imandra Discover"
+description: "A quick tour through Imandra discover"
+kernel: imandra
+slug: imandra-discover
+key-phrases:
+  - imandra-discover
+  - binary-trees
+---
+
 # Using Imandra Discover
 
 Imandra Discover is a tool for theory exploration and producing conjectures.  Sometimes, it is not entirely clear what lemmas are necessary for a proof to succeed, or what the properties of a program are.  Discover intends to help with this problem, giving the user potential properties to be proved and themselves used as lemmas.
