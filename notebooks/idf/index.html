@@ -4056,6 +4056,7 @@ module IDF :
     val id : node -&gt; region_id
     val paths : ?from:node -&gt; G.t -&gt; path list
     val region : node -&gt; Top_result.modular_region_ref
+    val concrete_region : node -&gt; Top_result.modular_region
     val expanded_region_ids : node -&gt; Util.Int_set.t
     val applied_expander_fns : node -&gt; Util.Str_set.t list
     val sample : node -&gt; TPL.c list option
@@ -4366,7 +4367,7 @@ val full_node : IDF.node = &lt;abstr&gt;
     <div class="input_area">
 <div class=" highlight hl-ocaml"><pre><span></span><span class="o">#</span><span class="n">install_printer</span> <span class="nn">Imandra_tools</span><span class="p">.</span><span class="nn">Region_pp</span><span class="p">.</span><span class="n">print</span><span class="o">;;</span>
 
-<span class="k">let</span> <span class="n">regions</span> <span class="o">=</span> <span class="nn">List</span><span class="p">.</span><span class="n">map</span> <span class="o">(</span><span class="nn">IDF</span><span class="p">.</span><span class="n">region</span> <span class="o">%&gt;</span> <span class="nn">Remote_ref</span><span class="p">.</span><span class="n">get_shared_block</span><span class="o">)</span> <span class="n">first_path</span>
+<span class="k">let</span> <span class="n">regions</span> <span class="o">=</span> <span class="nn">List</span><span class="p">.</span><span class="n">map</span> <span class="o">(</span><span class="k">fun</span> <span class="n">n</span> <span class="o">-&gt;</span> <span class="nn">Remote_ref</span><span class="p">.</span><span class="n">get_shared_block</span> <span class="o">(</span><span class="nn">IDF</span><span class="p">.</span><span class="n">region</span> <span class="n">n</span><span class="o">))</span> <span class="n">first_path</span>
 </pre></div>
 
 </div>

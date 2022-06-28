@@ -3959,9 +3959,7 @@ val mid_point : mkt_data -&gt; real = &lt;fun&gt;
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>/usr/local/var/imandra/_opam/lib/re: added to search path
-/usr/local/var/imandra/_opam/lib/re/re.cma: loaded
-/usr/local/var/imandra/_opam/lib/uutf: added to search path
+<pre>/usr/local/var/imandra/_opam/lib/uutf: added to search path
 /usr/local/var/imandra/_opam/lib/uutf/uutf.cma: loaded
 /usr/local/var/imandra/_opam/lib/tyxml/functor: added to search path
 /usr/local/var/imandra/_opam/lib/tyxml/functor/tyxml_f.cma: loaded
@@ -5001,16 +4999,16 @@ module CX :
 
 
 <div class="output_html rendered_html output_subarea ">
-<div><pre>Counterexample (after 0 steps, 0.033s):
-let side : order_side = BUY
+<div><pre>Counterexample (after 0 steps, 0.038s):
+let side : order_side = SELL
 let o1 : order =
-  {id = 1; peg = MID; client_id = 2; order_type = PEGGED; qty = 5;
-   min_qty = 6; leaves_qty = 8367; price = (-1); time = 1797; src = 3;
+  {id = 1; peg = MID; client_id = 2; order_type = LIMIT; qty = 3;
+   min_qty = 4; leaves_qty = 1798; price = 3/2; time = 8856; src = 6;
    order_attr = RESIDENT; capacity = Principal; category = C_ONE;
    cross_restrict =
    {cr_self_cross = false; cr_ubs_principal = false;
     cr_round_lot_only = false; cr_no_locked_nbbo = false;
-    cr_pegged_mid_point_mode = 4; cr_enable_conditionals = false;
+    cr_pegged_mid_point_mode = 5; cr_enable_conditionals = false;
     cr_min_qty = false;
     cr_cat_elig =
     {c_one_elig = false; c_two_elig = false; c_three_elig = false;
@@ -5018,7 +5016,7 @@ let o1 : order =
    locate_found = false; expiry_time = 7}
 let o2 : order =
   {id = 17; peg = NEAR; client_id = 18; order_type = PEGGED_CI; qty = 19;
-   min_qty = 20; leaves_qty = 8366; price = 0; time = 1797; src = 21;
+   min_qty = 20; leaves_qty = 1797; price = 3/2; time = 8856; src = 21;
    order_attr = RESIDENT; capacity = Principal; category = C_ONE;
    cross_restrict =
    {cr_self_cross = false; cr_ubs_principal = false;
@@ -5030,19 +5028,19 @@ let o2 : order =
      c_four_elig = false}};
    locate_found = false; expiry_time = 22}
 let o3 : order =
-  {id = 8; peg = MID; client_id = 9; order_type = PEGGED_CI; qty = 10;
-   min_qty = 11; leaves_qty = 8365; price = (-2438); time = 1796; src = 12;
+  {id = 10; peg = NEAR; client_id = 11; order_type = PEGGED_CI; qty = 8;
+   min_qty = 12; leaves_qty = 1796; price = 1/2; time = 8855; src = 13;
    order_attr = RESIDENT; capacity = Principal; category = C_ONE;
    cross_restrict =
    {cr_self_cross = false; cr_ubs_principal = false;
     cr_round_lot_only = false; cr_no_locked_nbbo = false;
-    cr_pegged_mid_point_mode = 14; cr_enable_conditionals = false;
+    cr_pegged_mid_point_mode = 9; cr_enable_conditionals = false;
     cr_min_qty = false;
     cr_cat_elig =
     {c_one_elig = false; c_two_elig = false; c_three_elig = false;
      c_four_elig = false}};
-   locate_found = false; expiry_time = 13}
-let mkt : mkt_data = {nbb = 2; nbo = (-2); l_up = 1; l_down = 3}
+   locate_found = false; expiry_time = 14}
+let mkt : mkt_data = {nbb = (-3/2); nbo = 3/2; l_up = 2; l_down = 4}
 </pre></div>
 
 </div>
@@ -5056,229 +5054,206 @@ let mkt : mkt_data = {nbb = 2; nbo = (-2); l_up = 1; l_down = 3}
 
 
 <div class="output_html rendered_html output_subarea ">
-<div><div style="font-size: 1.2em; padding: 0.5em; border-top: 1px dashed #D84315; border-bottom: 1px dashed #D84315"><i class="fa fa-times-circle-o" style="margin-right: 0.5em; color: #D84315"></i><span>Refuted</span></div><div><div class="imandra-alternatives" id="alt-8c0187e0-d23c-44e0-8fb7-1a3e595fda35"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>call graph</a></li><li class="" data-toggle="tab"><a>proof</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-graphviz" id="graphviz-a9a1dc4b-d3d5-404e-8742-a309c9566f82"><textarea style="display: none">digraph &quot;call graph&quot; {
+<div><div style="font-size: 1.2em; padding: 0.5em; border-top: 1px dashed #D84315; border-bottom: 1px dashed #D84315"><i class="fa fa-times-circle-o" style="margin-right: 0.5em; color: #D84315"></i><span>Refuted</span></div><div><div class="imandra-alternatives" id="alt-9c95287d-9fae-45a0-a2d9-678bda6cf409"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>call graph</a></li><li class="" data-toggle="tab"><a>proof</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-graphviz" id="graphviz-e6c28b3b-c038-4513-8a8d-e4c701415760"><textarea style="display: none">digraph &quot;call graph&quot; {
 goal [label=&quot;let (_x_0 : order_type) = o1.order_type in\llet (_x_1 : bool) = _x_0 = MARKET in\llet (_x_2 : bool) = side = BUY in\llet (_x_3 : bool) = _x_0 = LIMIT in\llet (_x_4 : order_type) = o3.order_type in\llet (_x_5 : bool) = _x_4 = MARKET in\llet (_x_6 : bool) = _x_4 = LIMIT in\llet (_x_7 : int)\l    = if (if _x_3 then if _x_2 then … else …\l          else if _x_1 then … else …)\l         =\l         (if _x_6 then if _x_2 then … else …\l          else if _x_5 then … else …)\l      then 0 else (-1)\lin\llet (_x_8 : bool) = _x_4 = PEGGED_CI in\llet (_x_9 : bool) = _x_4 = PEGGED \|\| _x_8 in\llet (_x_10 : real) = if _x_2 then … else … in\llet (_x_11 : bool) = 0 \&lt;=. o3.price in\llet (_x_12 : bool) = _x_0 = PEGGED_CI in\llet (_x_13 : bool) = _x_0 = PEGGED \|\| _x_12 in\llet (_x_14 : bool) = 0 \&lt;=. o1.price in\llet (_x_15 : int)\l    = if _x_2\l      then\l        if (if _x_3\l            then\l              if _x_2 then if _x_14 then … else …\l              else if _x_14 then … else …\l            else if _x_1 then _x_10 else if _x_13 then … else …)\l           \&lt;=.\l           (if _x_6\l            then\l              if _x_2 then if _x_11 then … else …\l              else if _x_11 then … else …\l            else if _x_5 then _x_10 else if _x_9 then … else …)\l        then _x_7 else 1\l      else\l      if (if _x_6\l          then\l            if _x_2 then if _x_11 then … else …\l            else if _x_11 then … else …\l          else if _x_5 then _x_10 else if _x_9 then … else …)\l         \&lt;=.\l         (if _x_3\l          then\l            if _x_2 then if _x_14 then … else …\l            else if _x_14 then … else …\l          else if _x_1 then _x_10 else if _x_13 then … else …)\l      then _x_7 else 1\lin\llet (_x_16 : int) = o3.time in\llet (_x_17 : int) = o1.time in\llet (_x_18 : bool) = _x_16 \&lt;= _x_17 in\llet (_x_19 : bool) = _x_12 \|\| _x_0 = LIMIT_CI in\llet (_x_20 : bool) = not _x_19 in\llet (_x_21 : bool) = _x_8 \|\| _x_4 = LIMIT_CI in\llet (_x_22 : bool) = not _x_21 in\llet (_x_23 : int) = o1.leaves_qty in\llet (_x_24 : int) = o3.leaves_qty in\llet (_x_25 : bool) = not (_x_23 \&lt;= _x_24) in\llet (_x_26 : order_type) = o2.order_type in\llet (_x_27 : bool) = _x_26 = MARKET in\llet (_x_28 : bool) = _x_26 = LIMIT in\llet (_x_29 : int)\l    = if (if _x_3 then if _x_2 then … else …\l          else if _x_1 then … else …)\l         =\l         (if _x_28 then if _x_2 then … else …\l          else if _x_27 then … else …)\l      then 0 else (-1)\lin\llet (_x_30 : bool) = _x_26 = PEGGED_CI in\llet (_x_31 : bool) = _x_26 = PEGGED \|\| _x_30 in\llet (_x_32 : bool) = 0 \&lt;=. o2.price in\llet (_x_33 : int)\l    = if _x_2\l      then\l        if (if _x_3\l            then\l              if _x_2 then if _x_14 then … else …\l              else if _x_14 then … else …\l            else if _x_1 then _x_10 else if _x_13 then … else …)\l           \&lt;=.\l           (if _x_28\l            then\l              if _x_2 then if _x_32 then … else …\l              else if _x_32 then … else …\l            else if _x_27 then _x_10 else if _x_31 then … else …)\l        then _x_29 else 1\l      else\l      if (if _x_28\l          then\l            if _x_2 then if _x_32 then … else …\l            else if _x_32 then … else …\l          else if _x_27 then _x_10 else if _x_31 then … else …)\l         \&lt;=.\l         (if _x_3\l          then\l            if _x_2 then if _x_14 then … else …\l            else if _x_14 then … else …\l          else if _x_1 then _x_10 else if _x_13 then … else …)\l      then _x_29 else 1\lin\llet (_x_34 : int) = o2.time in\llet (_x_35 : bool) = _x_34 \&lt;= _x_17 in\llet (_x_36 : bool) = _x_30 \|\| _x_26 = LIMIT_CI in\llet (_x_37 : bool) = not _x_36 in\llet (_x_38 : int) = o2.leaves_qty in\llet (_x_39 : bool) = not (_x_23 \&lt;= _x_38) in\llet (_x_40 : int)\l    = if (if _x_28 then if _x_2 then … else …\l          else if _x_27 then … else …)\l         =\l         (if _x_6 then if _x_2 then … else …\l          else if _x_5 then … else …)\l      then 0 else (-1)\lin\llet (_x_41 : int)\l    = if _x_2\l      then\l        if (if _x_28\l            then\l              if _x_2 then if _x_32 then … else …\l              else if _x_32 then … else …\l            else if _x_27 then _x_10 else if _x_31 then … else …)\l           \&lt;=.\l           (if _x_6\l            then\l              if _x_2 then if _x_11 then … else …\l              else if _x_11 then … else …\l            else if _x_5 then _x_10 else if _x_9 then … else …)\l        then _x_40 else 1\l      else\l      if (if _x_6\l          then\l            if _x_2 then if _x_11 then … else …\l            else if _x_11 then … else …\l          else if _x_5 then _x_10 else if _x_9 then … else …)\l         \&lt;=.\l         (if _x_28\l          then\l            if _x_2 then if _x_32 then … else …\l            else if _x_32 then … else …\l          else if _x_27 then _x_10 else if _x_31 then … else …)\l      then _x_40 else 1\lin\llet (_x_42 : bool) = _x_16 \&lt;= _x_34 in\llet (_x_43 : bool) = not (_x_38 \&lt;= _x_24) in\lnot\l((_x_15 = 1\l  \|\| not (_x_15 = (-1))\l     &amp;&amp; (if _x_19 &amp;&amp; _x_21 then _x_25\l         else\l           (not _x_18\l            \|\| not (_x_18 &amp;&amp; not (_x_17 = _x_16))\l               &amp;&amp; (_x_20 \|\| not (_x_19 &amp;&amp; _x_22) &amp;&amp; _x_25))))\l \|\| not\l    ((_x_33 = 1\l      \|\| not (_x_33 = (-1))\l         &amp;&amp; (if _x_19 &amp;&amp; _x_36 then _x_39\l             else\l               (not _x_35\l                \|\| not (_x_35 &amp;&amp; not (_x_17 = _x_34))\l                   &amp;&amp; (_x_20 \|\| not (_x_19 &amp;&amp; _x_37) &amp;&amp; _x_39))))\l     &amp;&amp; (_x_41 = 1\l         \|\| not (_x_41 = (-1))\l            &amp;&amp; (if _x_36 &amp;&amp; _x_21 then _x_43\l                else\l                  (not _x_42\l                   \|\| not (_x_42 &amp;&amp; not (_x_34 = _x_16))\l                      &amp;&amp; (_x_37 \|\| not (_x_36 &amp;&amp; _x_22) &amp;&amp; _x_43))))))&quot;,shape=box,style=filled,color=&quot;cyan&quot;,fontname=&quot;courier&quot;,fontsize=14];
 }
 </textarea><button class="btn btn-primary">Load graph</button><div class="imandra-graphviz-loading display-none">Loading..</div><div class="imandra-graphviz-target"></div><script>
 require(['nbextensions/nbimandra/graphviz'], function (graphviz) {
-  var target = '#graphviz-a9a1dc4b-d3d5-404e-8742-a309c9566f82';
+  var target = '#graphviz-e6c28b3b-c038-4513-8a8d-e4c701415760';
   graphviz.hydrate(target);
 });
-</script></div></div><div class="tab-pane"><div class="imandra-proof-top"><div class="imandra-fold panel panel-default" id="fold-891de08a-09b8-4129-87c0-0a63dd04f262"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>proof attempt</span></div></div><div class="panel-body collapse"><div class="imandra-proof"><div class="imandra-alternatives" id="alt-8a3eac27-65bc-4585-b370-22a6cac2bab4"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>summary</a></li><li class="" data-toggle="tab"><a>full</a></li><li class="" data-toggle="tab"><a>graph</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-table" id="table-6d912f7d-f5c3-40ed-9bd0-a6e83999724c"><table><tr><td>ground_instances:</td><td>0</td></tr><tr><td>definitions:</td><td>0</td></tr><tr><td>inductions:</td><td>0</td></tr><tr><td>search_time:</td><td><pre>0.033s</pre></td></tr><tr><td>details:</td><td><div class="imandra-fold panel panel-default" id="fold-34cdde56-e040-4092-ab87-a7bc75a30728"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><div class="imandra-table" id="table-cdea15a0-3716-4384-bfee-10e9588f0a26"><table><tr><td>smt_stats:</td><td><div class="imandra-table" id="table-7ffda297-54fc-477b-89a7-cc61a52f07ee"><table><tr><td>arith offset eqs:</td><td>21</td></tr><tr><td>num checks:</td><td>1</td></tr><tr><td>arith assert lower:</td><td>82</td></tr><tr><td>arith tableau max rows:</td><td>30</td></tr><tr><td>arith tableau max columns:</td><td>53</td></tr><tr><td>arith pivots:</td><td>25</td></tr><tr><td>rlimit count:</td><td>61289</td></tr><tr><td>mk clause:</td><td>699</td></tr><tr><td>datatype occurs check:</td><td>12</td></tr><tr><td>mk bool var:</td><td>819</td></tr><tr><td>arith assert upper:</td><td>84</td></tr><tr><td>datatype splits:</td><td>35</td></tr><tr><td>decisions:</td><td>817</td></tr><tr><td>arith row summations:</td><td>208</td></tr><tr><td>arith bound prop:</td><td>25</td></tr><tr><td>propagations:</td><td>1196</td></tr><tr><td>interface eqs:</td><td>1</td></tr><tr><td>conflicts:</td><td>29</td></tr><tr><td>arith fixed eqs:</td><td>28</td></tr><tr><td>arith assume eqs:</td><td>1</td></tr><tr><td>datatype accessor ax:</td><td>58</td></tr><tr><td>minimized lits:</td><td>20</td></tr><tr><td>arith conflicts:</td><td>5</td></tr><tr><td>arith num rows:</td><td>30</td></tr><tr><td>arith assert diseq:</td><td>119</td></tr><tr><td>datatype constructor ax:</td><td>151</td></tr><tr><td>num allocs:</td><td>1962840</td></tr><tr><td>final checks:</td><td>2</td></tr><tr><td>added eqs:</td><td>1450</td></tr><tr><td>del clause:</td><td>198</td></tr><tr><td>arith eq adapter:</td><td>65</td></tr><tr><td>time:</td><td>0.018000</td></tr><tr><td>memory:</td><td>5.830000</td></tr><tr><td>max memory:</td><td>6.830000</td></tr></table></div></td></tr></table></div></div><script>
+</script></div></div><div class="tab-pane"><div class="imandra-proof-top"><div class="imandra-fold panel panel-default" id="fold-c3a61d06-ee26-4441-a39d-5cb1f6a8bb09"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>proof attempt</span></div></div><div class="panel-body collapse"><div class="imandra-proof"><div class="imandra-alternatives" id="alt-933fc5f8-925b-47cc-96db-8492c26da7bf"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>summary</a></li><li class="" data-toggle="tab"><a>full</a></li><li class="" data-toggle="tab"><a>graph</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-table" id="table-55aed518-bc8a-4075-97b8-b14d5c177569"><table><tr><td>ground_instances:</td><td>0</td></tr><tr><td>definitions:</td><td>0</td></tr><tr><td>inductions:</td><td>0</td></tr><tr><td>search_time:</td><td><pre>0.038s</pre></td></tr><tr><td>details:</td><td><div class="imandra-fold panel panel-default" id="fold-659848cf-f4d8-4eff-83bb-1139f1cc604d"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><div class="imandra-table" id="table-59d33bd8-db74-4364-912a-4fa998daaba6"><table><tr><td>smt_stats:</td><td><div class="imandra-table" id="table-6dab4f79-d444-48f9-a3c9-655ad9042e2d"><table><tr><td>arith offset eqs:</td><td>169</td></tr><tr><td>num checks:</td><td>1</td></tr><tr><td>arith assert lower:</td><td>244</td></tr><tr><td>arith tableau max rows:</td><td>37</td></tr><tr><td>arith tableau max columns:</td><td>59</td></tr><tr><td>arith pivots:</td><td>58</td></tr><tr><td>rlimit count:</td><td>82932</td></tr><tr><td>mk clause:</td><td>869</td></tr><tr><td>datatype occurs check:</td><td>14</td></tr><tr><td>mk bool var:</td><td>1148</td></tr><tr><td>arith assert upper:</td><td>269</td></tr><tr><td>datatype splits:</td><td>50</td></tr><tr><td>decisions:</td><td>1707</td></tr><tr><td>arith row summations:</td><td>611</td></tr><tr><td>arith bound prop:</td><td>47</td></tr><tr><td>propagations:</td><td>2602</td></tr><tr><td>interface eqs:</td><td>1</td></tr><tr><td>conflicts:</td><td>72</td></tr><tr><td>arith fixed eqs:</td><td>57</td></tr><tr><td>arith assume eqs:</td><td>1</td></tr><tr><td>datatype accessor ax:</td><td>88</td></tr><tr><td>minimized lits:</td><td>40</td></tr><tr><td>arith conflicts:</td><td>11</td></tr><tr><td>arith num rows:</td><td>37</td></tr><tr><td>arith assert diseq:</td><td>275</td></tr><tr><td>datatype constructor ax:</td><td>305</td></tr><tr><td>num allocs:</td><td>2214405</td></tr><tr><td>final checks:</td><td>2</td></tr><tr><td>added eqs:</td><td>3437</td></tr><tr><td>del clause:</td><td>298</td></tr><tr><td>arith eq adapter:</td><td>140</td></tr><tr><td>time:</td><td>0.023000</td></tr><tr><td>memory:</td><td>6.020000</td></tr><tr><td>max memory:</td><td>7.140000</td></tr></table></div></td></tr></table></div></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-34cdde56-e040-4092-ab87-a7bc75a30728';
+  var target = '#fold-659848cf-f4d8-4eff-83bb-1139f1cc604d';
   fold.hydrate(target);
 });
-</script></div></td></tr></table></div></div><div class="tab-pane"><div class="imandra-fold panel panel-default" id="fold-3cd4c64a-a06b-407c-8020-8d6e6dacb094"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.033s]
-  let (_x_0 : order) = ….1 in
-  let (_x_1 : order_type) = _x_0.order_type in
-  let (_x_2 : order_type) = ….order_type in
-  let (_x_3 : order_type) = ….1.order_type in
-  let (_x_4 : bool) = _x_3 = MARKET in
-  let (_x_5 : bool) = ….0 = BUY in
-  let (_x_6 : bool) = _x_3 = LIMIT in
-  let (_x_7 : bool) = _x_2 = MARKET in
-  let (_x_8 : bool) = … = BUY in
-  let (_x_9 : bool) = _x_2 = LIMIT in
-  let (_x_10 : int)
-      = if (if _x_6 then if _x_5 then … else …
-            else if _x_4 then … else …)
+</script></div></td></tr></table></div></div><div class="tab-pane"><div class="imandra-fold panel panel-default" id="fold-b502a68d-ae9c-4322-aeb6-937b8b034f20"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.038s]
+  let (_x_0 : order_type) = ….order_type in
+  let (_x_1 : order_type) = ….order_type in
+  let (_x_2 : bool) = _x_0 = MARKET in
+  let (_x_3 : bool) = ( :var_0: ) = BUY in
+  let (_x_4 : bool) = _x_0 = LIMIT in
+  let (_x_5 : bool) = _x_1 = MARKET in
+  let (_x_6 : bool) = _x_1 = LIMIT in
+  let (_x_7 : int)
+      = if (if _x_4 then if _x_3 then … else …
+            else if _x_2 then … else …)
            =
-           (if _x_9 then if _x_8 then … else …
-            else if _x_7 then … else …)
+           (if _x_6 then if _x_3 then … else …
+            else if _x_5 then … else …)
         then 0 else (-1)
   in
+  let (_x_8 : bool) = _x_0 = PEGGED in
+  let (_x_9 : real) = if _x_3 then … else … in
+  let (_x_10 : bool) = ….1 &lt;. 0 in
   let (_x_11 : bool) = ….1 &lt;. 0 in
-  let (_x_12 : bool) = ….1 &lt;. 0 in
-  let (_x_13 : bool) = ( :var_0: ) = BUY in
-  let (_x_14 : order_type) = ….order_type in
-  let (_x_15 : bool) = _x_14 = LIMIT in
+  let (_x_12 : bool) = _x_1 = PEGGED in
+  let (_x_13 : real) = if _x_3 then … else … in
+  let (_x_14 : bool) = ….1 &lt;. 0 in
+  let (_x_15 : bool) = ….1 &lt;. 0 in
   let (_x_16 : int)
-      = if (if _x_15
+      = if _x_3
+        then
+          if (if _x_4
+              then
+                if _x_3 then if _x_11 then … else …
+                else if _x_10 then … else …
+              else if _x_2 then _x_9 else if _x_8 then … else …)
+             &gt;.
+             (if _x_6
+              then
+                if _x_3 then if _x_15 then … else …
+                else if _x_14 then … else …
+              else if _x_5 then _x_13 else if _x_12 then … else …)
+          then 1 else _x_7
+        else
+        if (if _x_4
             then
-              if _x_13 then if _x_12 then … else …
-              else if _x_11 then … else …
-            else
-            if _x_4 then if _x_5 then … else …
-            else if _x_3 = PEGGED then … else …)
+              if _x_3 then if _x_11 then … else …
+              else if _x_10 then … else …
+            else if _x_2 then _x_9 else if _x_8 then … else …)
            &lt;.
-           (if _x_9
+           (if _x_6
             then
-              if _x_8 then if ….1 &lt;. 0 then … else …
-              else if ….1 &lt;. 0 then … else …
-            else
-            if _x_7 then if _x_8 then … else …
-            else if _x_2 = PEGGED then … else …)
-        then 1 else _x_10
+              if _x_3 then if _x_15 then … else …
+              else if _x_14 then … else …
+            else if _x_5 then _x_13 else if _x_12 then … else …)
+        then 1 else _x_7
   in
-  let (_x_17 : bool) = _x_14 = MARKET in
-  let (_x_18 : order_type) = ….order_type in
-  let (_x_19 : bool) = _x_18 = MARKET in
-  let (_x_20 : bool) = _x_18 = LIMIT in
-  let (_x_21 : order_type) = ….order_type in
-  let (_x_22 : order_type) = ….order_type in
-  let (_x_23 : bool) = _x_21 = MARKET in
-  let (_x_24 : bool) = _x_21 = LIMIT in
-  let (_x_25 : bool) = _x_22 = MARKET in
-  let (_x_26 : bool) = _x_22 = LIMIT in
+  let (_x_17 : order_type) = ( :var_2: ).order_type in
+  let (_x_18 : order_type) = ( :var_4: ).order_type in
+  let (_x_19 : order_type) = ….1.order_type in
+  let (_x_20 : bool) = _x_19 = MARKET in
+  let (_x_21 : bool) = ….0 = BUY in
+  let (_x_22 : bool) = _x_19 = LIMIT in
+  let (_x_23 : order_type) = ….1.order_type in
+  let (_x_24 : bool) = _x_23 = MARKET in
+  let (_x_25 : bool) = ….0 = BUY in
+  let (_x_26 : bool) = _x_23 = LIMIT in
   let (_x_27 : int)
-      = if (if _x_24 then if _x_13 then … else …
-            else if _x_23 then … else …)
+      = if (if _x_22 then if _x_21 then … else …
+            else if _x_20 then … else …)
            =
-           (if _x_26 then if _x_13 then … else …
-            else if _x_25 then … else …)
+           (if _x_26 then if _x_25 then … else …
+            else if _x_24 then … else …)
         then 0 else (-1)
   in
-  let (_x_28 : bool) = _x_21 = PEGGED in
-  let (_x_29 : real) = if _x_13 then … else … in
+  let (_x_28 : bool) = _x_23 = PEGGED in
+  let (_x_29 : real) = if _x_25 then … else … in
   let (_x_30 : bool) = ….1 &lt;. 0 in
   let (_x_31 : bool) = ….1 &lt;. 0 in
-  let (_x_32 : bool) = _x_22 = PEGGED in
-  let (_x_33 : real) = if _x_13 then … else … in
-  let (_x_34 : bool) = ….1 &lt;. 0 in
-  let (_x_35 : bool) = ….1 &lt;. 0 in
-  let (_x_36 : int)
-      = if _x_13
+  let (_x_32 : order_type) = ….order_type in
+  let (_x_33 : int)
+      = if _x_3
         then
-          if (if _x_24
+          if (if _x_32 = LIMIT
               then
-                if _x_13 then if _x_31 then … else …
-                else if _x_30 then … else …
-              else if _x_23 then _x_29 else if _x_28 then … else …)
+                if _x_3 then if ….1 &lt;. 0 then … else …
+                else if ….1 &lt;. 0 then … else …
+              else
+              if _x_32 = MARKET then if _x_3 then … else …
+              else if _x_32 = PEGGED then … else …)
              &gt;.
-             (if _x_26
+             (if ….order_type = LIMIT
               then
-                if _x_13 then if _x_35 then … else …
-                else if _x_34 then … else …
-              else if _x_25 then _x_33 else if _x_32 then … else …)
+                if _x_3 then if _x_31 then … else …
+                else if _x_30 then … else …
+              else if _x_24 then _x_29 else if _x_28 then … else …)
           then 1 else _x_27
         else
-        if (if _x_24
+        if (if _x_22
             then
-              if _x_13 then if _x_31 then … else …
-              else if _x_30 then … else …
-            else if _x_23 then _x_29 else if _x_28 then … else …)
+              if _x_21 then if ….1 &lt;. 0 then … else …
+              else if ….1 &lt;. 0 then … else …
+            else
+            if _x_20 then if _x_21 then … else …
+            else if _x_19 = PEGGED then … else …)
            &lt;.
            (if _x_26
             then
-              if _x_13 then if _x_35 then … else …
-              else if _x_34 then … else …
-            else if _x_25 then _x_33 else if _x_32 then … else …)
+              if _x_25 then if _x_31 then … else …
+              else if _x_30 then … else …
+            else if _x_24 then _x_29 else if _x_28 then … else …)
         then 1 else _x_27
   in
-  let (_x_37 : order_type) = ….order_type in
-  let (_x_38 : order_type) = ….order_type in
-  let (_x_39 : bool) = _x_37 = MARKET in
-  let (_x_40 : bool) = _x_37 = LIMIT in
-  let (_x_41 : bool) = _x_38 = MARKET in
-  let (_x_42 : bool) = _x_38 = LIMIT in
-  let (_x_43 : int)
-      = if (if _x_40 then if _x_13 then … else …
-            else if _x_39 then … else …)
+  let (_x_34 : order_type) = ….order_type in
+  let (_x_35 : order_type) = ….order_type in
+  let (_x_36 : bool) = _x_34 = MARKET in
+  let (_x_37 : bool) = _x_34 = LIMIT in
+  let (_x_38 : bool) = _x_35 = MARKET in
+  let (_x_39 : bool) = _x_35 = LIMIT in
+  let (_x_40 : int)
+      = if (if _x_37 then if _x_3 then … else …
+            else if _x_36 then … else …)
            =
-           (if _x_42 then if _x_13 then … else …
-            else if _x_41 then … else …)
+           (if _x_39 then if _x_3 then … else …
+            else if _x_38 then … else …)
         then 0 else (-1)
   in
-  let (_x_44 : bool) = _x_37 = PEGGED in
-  let (_x_45 : real) = if _x_13 then … else … in
-  let (_x_46 : bool) = ….1 &lt;. 0 in
+  let (_x_41 : bool) = _x_34 = PEGGED in
+  let (_x_42 : real) = if _x_3 then … else … in
+  let (_x_43 : bool) = ….1 &lt;. 0 in
+  let (_x_44 : bool) = ….1 &lt;. 0 in
+  let (_x_45 : bool) = _x_35 = PEGGED in
+  let (_x_46 : real) = if _x_3 then … else … in
   let (_x_47 : bool) = ….1 &lt;. 0 in
-  let (_x_48 : bool) = _x_38 = PEGGED in
-  let (_x_49 : real) = if _x_13 then … else … in
-  let (_x_50 : bool) = ….1 &lt;. 0 in
-  let (_x_51 : bool) = ….1 &lt;. 0 in
-  let (_x_52 : int)
-      = if _x_13
+  let (_x_48 : bool) = ….1 &lt;. 0 in
+  let (_x_49 : int)
+      = if _x_3
         then
-          if (if _x_40
+          if (if _x_37
               then
-                if _x_13 then if _x_47 then … else …
-                else if _x_46 then … else …
-              else if _x_39 then _x_45 else if _x_44 then … else …)
+                if _x_3 then if _x_44 then … else …
+                else if _x_43 then … else …
+              else if _x_36 then _x_42 else if _x_41 then … else …)
              &gt;.
-             (if _x_42
+             (if _x_39
               then
-                if _x_13 then if _x_51 then … else …
-                else if _x_50 then … else …
-              else if _x_41 then _x_49 else if _x_48 then … else …)
-          then 1 else _x_43
+                if _x_3 then if _x_48 then … else …
+                else if _x_47 then … else …
+              else if _x_38 then _x_46 else if _x_45 then … else …)
+          then 1 else _x_40
         else
-        if (if _x_40
+        if (if _x_37
             then
-              if _x_13 then if _x_47 then … else …
-              else if _x_46 then … else …
-            else if _x_39 then _x_45 else if _x_44 then … else …)
+              if _x_3 then if _x_44 then … else …
+              else if _x_43 then … else …
+            else if _x_36 then _x_42 else if _x_41 then … else …)
            &lt;.
-           (if _x_42
+           (if _x_39
             then
-              if _x_13 then if _x_51 then … else …
-              else if _x_50 then … else …
-            else if _x_41 then _x_49 else if _x_48 then … else …)
-        then 1 else _x_43
+              if _x_3 then if _x_48 then … else …
+              else if _x_47 then … else …
+            else if _x_38 then _x_46 else if _x_45 then … else …)
+        then 1 else _x_40
   in
-  (if (if _x_13
-       then
-         if (if _x_15
-             then
-               if _x_13 then if _x_12 then … else …
-               else if _x_11 then … else …
-             else
-             if _x_17 then if _x_13 then … else …
-             else if _x_14 = PEGGED then … else …)
-            &gt;.
-            (if _x_20
-             then
-               if _x_13 then if ….1 &lt;. 0 then … else …
-               else if ….1 &lt;. 0 then … else …
-             else
-             if _x_19 then if _x_13 then … else …
-             else if _x_18 = PEGGED then … else …)
-         then 1
-         else
-         if (if _x_15 then if _x_13 then … else …
-             else if _x_17 then … else …)
-            =
-            (if _x_20 then if _x_13 then … else …
-             else if _x_19 then … else …)
-         then 0 else (-1)
-       else _x_16)
-      = 1
-   then true
+  (if _x_16 = 1 then true
    else
-   if (if _x_8
-       then
-         if (if _x_6 then if _x_5 then … else …
-             else if _x_4 then … else …)
-            &gt;.
-            (if _x_9 then if _x_8 then … else …
-             else if _x_7 then … else …)
-         then 1 else _x_10
-       else _x_16)
-      = (-1)
-   then false
+   if _x_16 = (-1) then false
    else
-   if (_x_1 = PEGGED_CI || _x_1 = LIMIT_CI)
-      &amp;&amp; (_x_2 = PEGGED_CI || _x_2 = LIMIT_CI)
-   then _x_0.leaves_qty &gt; ….leaves_qty
-   else if (if _x_0.time &lt; ….time then 1 else …) = 1 then true else …)
-  &amp;&amp; (if _x_36 = 1 then true
+   if (_x_0 = PEGGED_CI || _x_0 = LIMIT_CI)
+      &amp;&amp; (_x_1 = PEGGED_CI || _x_1 = LIMIT_CI)
+   then ….leaves_qty &gt; ….leaves_qty
+   else if (if ….time &lt; ….time then 1 else …) = 1 then true else …)
+  &amp;&amp; (if _x_33 = 1 then true
       else
-      if _x_36 = (-1) then false
+      if _x_33 = (-1) then false
       else
-      if (_x_21 = PEGGED_CI || _x_21 = LIMIT_CI)
-         &amp;&amp; (_x_22 = PEGGED_CI || _x_22 = LIMIT_CI)
-      then ….leaves_qty &gt; ….leaves_qty
-      else if (if ….time &lt; ….time then 1 else …) = 1 then true else …)
-  ==&gt; (if _x_52 = 1 then true
+      if (_x_17 = PEGGED_CI || _x_17 = LIMIT_CI)
+         &amp;&amp; (_x_18 = PEGGED_CI || _x_18 = LIMIT_CI)
+      then ( :var_2: ).leaves_qty &gt; ( :var_4: ).leaves_qty
+      else
+      if (if ( :var_2: ).time &lt; ( :var_4: ).time then 1 else …) = 1
+      then true else …)
+  ==&gt; (if _x_49 = 1 then true
        else
-       if _x_52 = (-1) then false
+       if _x_49 = (-1) then false
        else
-       if (_x_37 = PEGGED_CI || _x_37 = LIMIT_CI)
-          &amp;&amp; (_x_38 = PEGGED_CI || _x_38 = LIMIT_CI)
+       if (_x_34 = PEGGED_CI || _x_34 = LIMIT_CI)
+          &amp;&amp; (_x_35 = PEGGED_CI || _x_35 = LIMIT_CI)
        then ….leaves_qty &gt; ….leaves_qty
        else
-       if (if ….time &lt; ….time then 1 else …) = 1 then true else …)</pre></li><li><div><h4>simplify</h4><div class="imandra-table" id="table-8c40f24f-b79e-4d07-abb5-aa7f5212f26c"><table><tr><td>into:</td><td><pre>let (_x_0 : order_type) = ( :var_1: ).order_type in
+       if (if ….time &lt; ….time then 1 else …) = 1 then true else …)</pre></li><li><div><h4>simplify</h4><div class="imandra-table" id="table-34cabddf-6d8c-4ae1-9b6f-eb62e80ab923"><table><tr><td>into:</td><td><pre>let (_x_0 : order_type) = ( :var_1: ).order_type in
 let (_x_1 : bool) = _x_0 = MARKET in
 let (_x_2 : bool) = ( :var_0: ) = BUY in
 let (_x_3 : bool) = _x_0 = LIMIT in
@@ -5361,7 +5336,7 @@ let (_x_34 : int)
             then
               if _x_2 then if _x_14 then … else …
               else if _x_14 then … else …
-            else if _x_1 then _x_10 else if _x_13 then … else …)
+            else if _x_1 then _x_32 else if _x_13 then … else …)
            &lt;=.
            (if _x_28
             then
@@ -5449,18 +5424,18 @@ let (_x_44 : bool) = not (_x_39 &lt;= _x_24) in
                else
                  (not _x_43
                   || not (_x_43 &amp;&amp; not (_x_35 = _x_16))
-                     &amp;&amp; (_x_38 || not (_x_37 &amp;&amp; _x_22) &amp;&amp; _x_44)))))</pre></td></tr><tr><td>expansions:</td><td><pre>[]</pre></td></tr><tr><td>rewrite_steps:</td><td><ul></ul></td></tr><tr><td>forward_chaining:</td><td><ul></ul></td></tr></table></div></div></li><li>Sat (Some let side : order_side = BUY
+                     &amp;&amp; (_x_38 || not (_x_37 &amp;&amp; _x_22) &amp;&amp; _x_44)))))</pre></td></tr><tr><td>expansions:</td><td><pre>[]</pre></td></tr><tr><td>rewrite_steps:</td><td><ul></ul></td></tr><tr><td>forward_chaining:</td><td><ul></ul></td></tr></table></div></div></li><li>Sat (Some let side : order_side = SELL
 let o1 : order =
   {id = (Z.of_nativeint (1n)); peg = MID; client_id = (Z.of_nativeint (2n));
-   order_type = PEGGED; qty = (Z.of_nativeint (5n));
-   min_qty = (Z.of_nativeint (6n)); leaves_qty = (Z.of_nativeint (8367n));
-   price = (Q.of_nativeint (-1n)); time = (Z.of_nativeint (1797n));
-   src = (Z.of_nativeint (3n)); order_attr = RESIDENT; capacity = Principal;
+   order_type = LIMIT; qty = (Z.of_nativeint (3n));
+   min_qty = (Z.of_nativeint (4n)); leaves_qty = (Z.of_nativeint (1798n));
+   price = (Q.of_string &quot;3/2&quot;); time = (Z.of_nativeint (8856n));
+   src = (Z.of_nativeint (6n)); order_attr = RESIDENT; capacity = Principal;
    category = C_ONE;
    cross_restrict =
    {cr_self_cross = false; cr_ubs_principal = false;
     cr_round_lot_only = false; cr_no_locked_nbbo = false;
-    cr_pegged_mid_point_mode = (Z.of_nativeint (4n));
+    cr_pegged_mid_point_mode = (Z.of_nativeint (5n));
     cr_enable_conditionals = false; cr_min_qty = false;
     cr_cat_elig =
     {c_one_elig = false; c_two_elig = false; c_three_elig = false;
@@ -5470,8 +5445,8 @@ let o2 : order =
   {id = (Z.of_nativeint (17n)); peg = NEAR;
    client_id = (Z.of_nativeint (18n)); order_type = PEGGED_CI;
    qty = (Z.of_nativeint (19n)); min_qty = (Z.of_nativeint (20n));
-   leaves_qty = (Z.of_nativeint (8366n)); price = (Q.of_nativeint (0n));
-   time = (Z.of_nativeint (1797n)); src = (Z.of_nativeint (21n));
+   leaves_qty = (Z.of_nativeint (1797n)); price = (Q.of_string &quot;3/2&quot;);
+   time = (Z.of_nativeint (8856n)); src = (Z.of_nativeint (21n));
    order_attr = RESIDENT; capacity = Principal; category = C_ONE;
    cross_restrict =
    {cr_self_cross = false; cr_ubs_principal = false;
@@ -5483,54 +5458,54 @@ let o2 : order =
      c_four_elig = false}};
    locate_found = false; expiry_time = (Z.of_nativeint (22n))}
 let o3 : order =
-  {id = (Z.of_nativeint (8n)); peg = MID; client_id = (Z.of_nativeint (9n));
-   order_type = PEGGED_CI; qty = (Z.of_nativeint (10n));
-   min_qty = (Z.of_nativeint (11n)); leaves_qty = (Z.of_nativeint (8365n));
-   price = (Q.of_nativeint (-2438n)); time = (Z.of_nativeint (1796n));
-   src = (Z.of_nativeint (12n)); order_attr = RESIDENT; capacity = Principal;
-   category = C_ONE;
+  {id = (Z.of_nativeint (10n)); peg = NEAR;
+   client_id = (Z.of_nativeint (11n)); order_type = PEGGED_CI;
+   qty = (Z.of_nativeint (8n)); min_qty = (Z.of_nativeint (12n));
+   leaves_qty = (Z.of_nativeint (1796n)); price = (Q.of_string &quot;1/2&quot;);
+   time = (Z.of_nativeint (8855n)); src = (Z.of_nativeint (13n));
+   order_attr = RESIDENT; capacity = Principal; category = C_ONE;
    cross_restrict =
    {cr_self_cross = false; cr_ubs_principal = false;
     cr_round_lot_only = false; cr_no_locked_nbbo = false;
-    cr_pegged_mid_point_mode = (Z.of_nativeint (14n));
+    cr_pegged_mid_point_mode = (Z.of_nativeint (9n));
     cr_enable_conditionals = false; cr_min_qty = false;
     cr_cat_elig =
     {c_one_elig = false; c_two_elig = false; c_three_elig = false;
      c_four_elig = false}};
-   locate_found = false; expiry_time = (Z.of_nativeint (13n))}
+   locate_found = false; expiry_time = (Z.of_nativeint (14n))}
 let mkt : mkt_data =
-  {nbb = (Q.of_nativeint (2n)); nbo = (Q.of_nativeint (-2n));
-   l_up = (Q.of_nativeint (1n)); l_down = (Q.of_nativeint (3n))}
+  {nbb = (Q.of_string &quot;-3/2&quot;); nbo = (Q.of_string &quot;3/2&quot;);
+   l_up = (Q.of_nativeint (2n)); l_down = (Q.of_nativeint (4n))}
 )</li></ul></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-3cd4c64a-a06b-407c-8020-8d6e6dacb094';
+  var target = '#fold-b502a68d-ae9c-4322-aeb6-937b8b034f20';
   fold.hydrate(target);
 });
-</script></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-8db7c68f-1611-4506-98e9-433bf6087f42"><textarea style="display: none">digraph &quot;proof&quot; {
-p_2 [label=&quot;Start (let (_x_0 : order) = ….1 in\l       let (_x_1 : order_type) = _x_0.order_type in\l       let (_x_2 : order_type) = ….order_type in\l       let (_x_3 : order_type) = ….1.order_type in\l       let (_x_4 : bool) = _x_3 = MARKET in\l       let (_x_5 : bool) = ….0 = BUY in\l       let (_x_6 : bool) = _x_3 = LIMIT in\l       let (_x_7 : bool) = _x_2 = MARKET in\l       let (_x_8 : bool) = … = BUY in\l       let (_x_9 : bool) = _x_2 = LIMIT in\l       let (_x_10 : int)\l           = if (if _x_6 then if _x_5 then … else …\l                 else if _x_4 then … else …)\l                =\l                (if _x_9 then if _x_8 then … else …\l                 else if _x_7 then … else …)\l             then 0 else (-1)\l       in\l       let (_x_11 : bool) = ….1 \&lt;. 0 in\l       let (_x_12 : bool) = ….1 \&lt;. 0 in\l       let (_x_13 : bool) = ( :var_0: ) = BUY in\l       let (_x_14 : order_type) = ….order_type in\l       let (_x_15 : bool) = _x_14 = LIMIT in\l       let (_x_16 : int)\l           = if (if _x_15\l                 then\l                   if _x_13 then if _x_12 then … else …\l                   else if _x_11 then … else …\l                 else\l                 if _x_4 then if _x_5 then … else …\l                 else if _x_3 = PEGGED then … else …)\l                \&lt;.\l                (if _x_9\l                 then\l                   if _x_8 then if ….1 \&lt;. 0 then … else …\l                   else if ….1 \&lt;. 0 then … else …\l                 else\l                 if _x_7 then if _x_8 then … else …\l                 else if _x_2 = PEGGED then … else …)\l             then 1 else _x_10\l       in\l       let (_x_17 : bool) = _x_14 = MARKET in\l       let (_x_18 : order_type) = ….order_type in\l       let (_x_19 : bool) = _x_18 = MARKET in\l       let (_x_20 : bool) = _x_18 = LIMIT in\l       let (_x_21 : order_type) = ….order_type in\l       let (_x_22 : order_type) = ….order_type in\l       let (_x_23 : bool) = _x_21 = MARKET in\l       let (_x_24 : bool) = _x_21 = LIMIT in\l       let (_x_25 : bool) = _x_22 = MARKET in\l       let (_x_26 : bool) = _x_22 = LIMIT in\l       let (_x_27 : int)\l           = if (if _x_24 then if _x_13 then … else …\l                 else if _x_23 then … else …)\l                =\l                (if _x_26 then if _x_13 then … else …\l                 else if _x_25 then … else …)\l             then 0 else (-1)\l       in\l       let (_x_28 : bool) = _x_21 = PEGGED in\l       let (_x_29 : real) = if _x_13 then … else … in\l       let (_x_30 : bool) = ….1 \&lt;. 0 in\l       let (_x_31 : bool) = ….1 \&lt;. 0 in\l       let (_x_32 : bool) = _x_22 = PEGGED in\l       let (_x_33 : real) = if _x_13 then … else … in\l       let (_x_34 : bool) = ….1 \&lt;. 0 in\l       let (_x_35 : bool) = ….1 \&lt;. 0 in\l       let (_x_36 : int)\l           = if _x_13\l             then\l               if (if _x_24\l                   then\l                     if _x_13 then if _x_31 then … else …\l                     else if _x_30 then … else …\l                   else if _x_23 then _x_29 else if _x_28 then … else …)\l                  \&gt;.\l                  (if _x_26\l                   then\l                     if _x_13 then if _x_35 then … else …\l                     else if _x_34 then … else …\l                   else if _x_25 then _x_33 else if _x_32 then … else …)\l               then 1 else _x_27\l             else\l             if (if _x_24\l                 then\l                   if _x_13 then if _x_31 then … else …\l                   else if _x_30 then … else …\l                 else if _x_23 then _x_29 else if _x_28 then … else …)\l                \&lt;.\l                (if _x_26\l                 then\l                   if _x_13 then if _x_35 then … else …\l                   else if _x_34 then … else …\l                 else if _x_25 then _x_33 else if _x_32 then … else …)\l             then 1 else _x_27\l       in\l       let (_x_37 : order_type) = ….order_type in\l       let (_x_38 : order_type) = ….order_type in\l       let (_x_39 : bool) = _x_37 = MARKET in\l       let (_x_40 : bool) = _x_37 = LIMIT in\l       let (_x_41 : bool) = _x_38 = MARKET in\l       let (_x_42 : bool) = _x_38 = LIMIT in\l       let (_x_43 : int)\l           = if (if _x_40 then if _x_13 then … else …\l                 else if _x_39 then … else …)\l                =\l                (if _x_42 then if _x_13 then … else …\l                 else if _x_41 then … else …)\l             then 0 else (-1)\l       in\l       let (_x_44 : bool) = _x_37 = PEGGED in\l       let (_x_45 : real) = if _x_13 then … else … in\l       let (_x_46 : bool) = ….1 \&lt;. 0 in\l       let (_x_47 : bool) = ….1 \&lt;. 0 in\l       let (_x_48 : bool) = _x_38 = PEGGED in\l       let (_x_49 : real) = if _x_13 then … else … in\l       let (_x_50 : bool) = ….1 \&lt;. 0 in\l       let (_x_51 : bool) = ….1 \&lt;. 0 in\l       let (_x_52 : int)\l           = if _x_13\l             then\l               if (if _x_40\l                   then\l                     if _x_13 then if _x_47 then … else …\l                     else if _x_46 then … else …\l                   else if _x_39 then _x_45 else if _x_44 then … else …)\l                  \&gt;.\l                  (if _x_42\l                   then\l                     if _x_13 then if _x_51 then … else …\l                     else if _x_50 then … else …\l                   else if _x_41 then _x_49 else if _x_48 then … else …)\l               then 1 else _x_43\l             else\l             if (if _x_40\l                 then\l                   if _x_13 then if _x_47 then … else …\l                   else if _x_46 then … else …\l                 else if _x_39 then _x_45 else if _x_44 then … else …)\l                \&lt;.\l                (if _x_42\l                 then\l                   if _x_13 then if _x_51 then … else …\l                   else if _x_50 then … else …\l                 else if _x_41 then _x_49 else if _x_48 then … else …)\l             then 1 else _x_43\l       in\l       (if (if _x_13\l            then\l              if (if _x_15\l                  then\l                    if _x_13 then if _x_12 then … else …\l                    else if _x_11 then … else …\l                  else\l                  if _x_17 then if _x_13 then … else …\l                  else if _x_14 = PEGGED then … else …)\l                 \&gt;.\l                 (if _x_20\l                  then\l                    if _x_13 then if ….1 \&lt;. 0 then … else …\l                    else if ….1 \&lt;. 0 then … else …\l                  else\l                  if _x_19 then if _x_13 then … else …\l                  else if _x_18 = PEGGED then … else …)\l              then 1\l              else\l              if (if _x_15 then if _x_13 then … else …\l                  else if _x_17 then … else …)\l                 =\l                 (if _x_20 then if _x_13 then … else …\l                  else if _x_19 then … else …)\l              then 0 else (-1)\l            else _x_16)\l           = 1\l        then true\l        else\l        if (if _x_8\l            then\l              if (if _x_6 then if _x_5 then … else …\l                  else if _x_4 then … else …)\l                 \&gt;.\l                 (if _x_9 then if _x_8 then … else …\l                  else if _x_7 then … else …)\l              then 1 else _x_10\l            else _x_16)\l           = (-1)\l        then false\l        else\l        if (_x_1 = PEGGED_CI \|\| _x_1 = LIMIT_CI)\l           &amp;&amp; (_x_2 = PEGGED_CI \|\| _x_2 = LIMIT_CI)\l        then _x_0.leaves_qty \&gt; ….leaves_qty\l        else\l        if (if _x_0.time \&lt; ….time then 1 else …) = 1 then true else …)\l       &amp;&amp; (if _x_36 = 1 then true\l           else\l           if _x_36 = (-1) then false\l           else\l           if (_x_21 = PEGGED_CI \|\| _x_21 = LIMIT_CI)\l              &amp;&amp; (_x_22 = PEGGED_CI \|\| _x_22 = LIMIT_CI)\l           then ….leaves_qty \&gt; ….leaves_qty\l           else\l           if (if ….time \&lt; ….time then 1 else …) = 1 then true else …)\l       ==\&gt; (if _x_52 = 1 then true\l            else\l            if _x_52 = (-1) then false\l            else\l            if (_x_37 = PEGGED_CI \|\| _x_37 = LIMIT_CI)\l               &amp;&amp; (_x_38 = PEGGED_CI \|\| _x_38 = LIMIT_CI)\l            then ….leaves_qty \&gt; ….leaves_qty\l            else\l            if (if ….time \&lt; ….time then 1 else …) = 1 then true\l            else …)\l       :time 0.033s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+</script></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-acafcd54-5f5f-4a1c-8365-20c5264a5f6d"><textarea style="display: none">digraph &quot;proof&quot; {
+p_2 [label=&quot;Start (let (_x_0 : order_type) = ….order_type in\l       let (_x_1 : order_type) = ….order_type in\l       let (_x_2 : bool) = _x_0 = MARKET in\l       let (_x_3 : bool) = ( :var_0: ) = BUY in\l       let (_x_4 : bool) = _x_0 = LIMIT in\l       let (_x_5 : bool) = _x_1 = MARKET in\l       let (_x_6 : bool) = _x_1 = LIMIT in\l       let (_x_7 : int)\l           = if (if _x_4 then if _x_3 then … else …\l                 else if _x_2 then … else …)\l                =\l                (if _x_6 then if _x_3 then … else …\l                 else if _x_5 then … else …)\l             then 0 else (-1)\l       in\l       let (_x_8 : bool) = _x_0 = PEGGED in\l       let (_x_9 : real) = if _x_3 then … else … in\l       let (_x_10 : bool) = ….1 \&lt;. 0 in\l       let (_x_11 : bool) = ….1 \&lt;. 0 in\l       let (_x_12 : bool) = _x_1 = PEGGED in\l       let (_x_13 : real) = if _x_3 then … else … in\l       let (_x_14 : bool) = ….1 \&lt;. 0 in\l       let (_x_15 : bool) = ….1 \&lt;. 0 in\l       let (_x_16 : int)\l           = if _x_3\l             then\l               if (if _x_4\l                   then\l                     if _x_3 then if _x_11 then … else …\l                     else if _x_10 then … else …\l                   else if _x_2 then _x_9 else if _x_8 then … else …)\l                  \&gt;.\l                  (if _x_6\l                   then\l                     if _x_3 then if _x_15 then … else …\l                     else if _x_14 then … else …\l                   else if _x_5 then _x_13 else if _x_12 then … else …)\l               then 1 else _x_7\l             else\l             if (if _x_4\l                 then\l                   if _x_3 then if _x_11 then … else …\l                   else if _x_10 then … else …\l                 else if _x_2 then _x_9 else if _x_8 then … else …)\l                \&lt;.\l                (if _x_6\l                 then\l                   if _x_3 then if _x_15 then … else …\l                   else if _x_14 then … else …\l                 else if _x_5 then _x_13 else if _x_12 then … else …)\l             then 1 else _x_7\l       in\l       let (_x_17 : order_type) = ( :var_2: ).order_type in\l       let (_x_18 : order_type) = ( :var_4: ).order_type in\l       let (_x_19 : order_type) = ….1.order_type in\l       let (_x_20 : bool) = _x_19 = MARKET in\l       let (_x_21 : bool) = ….0 = BUY in\l       let (_x_22 : bool) = _x_19 = LIMIT in\l       let (_x_23 : order_type) = ….1.order_type in\l       let (_x_24 : bool) = _x_23 = MARKET in\l       let (_x_25 : bool) = ….0 = BUY in\l       let (_x_26 : bool) = _x_23 = LIMIT in\l       let (_x_27 : int)\l           = if (if _x_22 then if _x_21 then … else …\l                 else if _x_20 then … else …)\l                =\l                (if _x_26 then if _x_25 then … else …\l                 else if _x_24 then … else …)\l             then 0 else (-1)\l       in\l       let (_x_28 : bool) = _x_23 = PEGGED in\l       let (_x_29 : real) = if _x_25 then … else … in\l       let (_x_30 : bool) = ….1 \&lt;. 0 in\l       let (_x_31 : bool) = ….1 \&lt;. 0 in\l       let (_x_32 : order_type) = ….order_type in\l       let (_x_33 : int)\l           = if _x_3\l             then\l               if (if _x_32 = LIMIT\l                   then\l                     if _x_3 then if ….1 \&lt;. 0 then … else …\l                     else if ….1 \&lt;. 0 then … else …\l                   else\l                   if _x_32 = MARKET then if _x_3 then … else …\l                   else if _x_32 = PEGGED then … else …)\l                  \&gt;.\l                  (if ….order_type = LIMIT\l                   then\l                     if _x_3 then if _x_31 then … else …\l                     else if _x_30 then … else …\l                   else if _x_24 then _x_29 else if _x_28 then … else …)\l               then 1 else _x_27\l             else\l             if (if _x_22\l                 then\l                   if _x_21 then if ….1 \&lt;. 0 then … else …\l                   else if ….1 \&lt;. 0 then … else …\l                 else\l                 if _x_20 then if _x_21 then … else …\l                 else if _x_19 = PEGGED then … else …)\l                \&lt;.\l                (if _x_26\l                 then\l                   if _x_25 then if _x_31 then … else …\l                   else if _x_30 then … else …\l                 else if _x_24 then _x_29 else if _x_28 then … else …)\l             then 1 else _x_27\l       in\l       let (_x_34 : order_type) = ….order_type in\l       let (_x_35 : order_type) = ….order_type in\l       let (_x_36 : bool) = _x_34 = MARKET in\l       let (_x_37 : bool) = _x_34 = LIMIT in\l       let (_x_38 : bool) = _x_35 = MARKET in\l       let (_x_39 : bool) = _x_35 = LIMIT in\l       let (_x_40 : int)\l           = if (if _x_37 then if _x_3 then … else …\l                 else if _x_36 then … else …)\l                =\l                (if _x_39 then if _x_3 then … else …\l                 else if _x_38 then … else …)\l             then 0 else (-1)\l       in\l       let (_x_41 : bool) = _x_34 = PEGGED in\l       let (_x_42 : real) = if _x_3 then … else … in\l       let (_x_43 : bool) = ….1 \&lt;. 0 in\l       let (_x_44 : bool) = ….1 \&lt;. 0 in\l       let (_x_45 : bool) = _x_35 = PEGGED in\l       let (_x_46 : real) = if _x_3 then … else … in\l       let (_x_47 : bool) = ….1 \&lt;. 0 in\l       let (_x_48 : bool) = ….1 \&lt;. 0 in\l       let (_x_49 : int)\l           = if _x_3\l             then\l               if (if _x_37\l                   then\l                     if _x_3 then if _x_44 then … else …\l                     else if _x_43 then … else …\l                   else if _x_36 then _x_42 else if _x_41 then … else …)\l                  \&gt;.\l                  (if _x_39\l                   then\l                     if _x_3 then if _x_48 then … else …\l                     else if _x_47 then … else …\l                   else if _x_38 then _x_46 else if _x_45 then … else …)\l               then 1 else _x_40\l             else\l             if (if _x_37\l                 then\l                   if _x_3 then if _x_44 then … else …\l                   else if _x_43 then … else …\l                 else if _x_36 then _x_42 else if _x_41 then … else …)\l                \&lt;.\l                (if _x_39\l                 then\l                   if _x_3 then if _x_48 then … else …\l                   else if _x_47 then … else …\l                 else if _x_38 then _x_46 else if _x_45 then … else …)\l             then 1 else _x_40\l       in\l       (if _x_16 = 1 then true\l        else\l        if _x_16 = (-1) then false\l        else\l        if (_x_0 = PEGGED_CI \|\| _x_0 = LIMIT_CI)\l           &amp;&amp; (_x_1 = PEGGED_CI \|\| _x_1 = LIMIT_CI)\l        then ….leaves_qty \&gt; ….leaves_qty\l        else\l        if (if ….time \&lt; ….time then 1 else …) = 1 then true else …)\l       &amp;&amp; (if _x_33 = 1 then true\l           else\l           if _x_33 = (-1) then false\l           else\l           if (_x_17 = PEGGED_CI \|\| _x_17 = LIMIT_CI)\l              &amp;&amp; (_x_18 = PEGGED_CI \|\| _x_18 = LIMIT_CI)\l           then ( :var_2: ).leaves_qty \&gt; ( :var_4: ).leaves_qty\l           else\l           if (if ( :var_2: ).time \&lt; ( :var_4: ).time then 1 else …) = 1\l           then true else …)\l       ==\&gt; (if _x_49 = 1 then true\l            else\l            if _x_49 = (-1) then false\l            else\l            if (_x_34 = PEGGED_CI \|\| _x_34 = LIMIT_CI)\l               &amp;&amp; (_x_35 = PEGGED_CI \|\| _x_35 = LIMIT_CI)\l            then ….leaves_qty \&gt; ….leaves_qty\l            else\l            if (if ….time \&lt; ….time then 1 else …) = 1 then true\l            else …)\l       :time 0.038s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_2 -&gt; p_1 [label=&quot;&quot;];
-p_1 [label=&quot;Simplify (let (_x_0 : order_type) = ( :var_1: ).order_type in\l          let (_x_1 : bool) = _x_0 = MARKET in\l          let (_x_2 : bool) = ( :var_0: ) = BUY in\l          let (_x_3 : bool) = _x_0 = LIMIT in\l          let (_x_4 : order_type) = ( :var_4: ).order_type in\l          let (_x_5 : bool) = _x_4 = MARKET in\l          let (_x_6 : bool) = _x_4 = LIMIT in\l          let (_x_7 : int)\l              = if (if _x_3 then if _x_2 then … else …\l                    else if _x_1 then … else …)\l                   =\l                   (if _x_6 then if _x_2 then … else …\l                    else if _x_5 then … else …)\l                then 0 else (-1)\l          in\l          let (_x_8 : bool) = _x_4 = PEGGED_CI in\l          let (_x_9 : bool) = _x_4 = PEGGED \|\| _x_8 in\l          let (_x_10 : real) = if _x_2 then … else … in\l          let (_x_11 : bool) = 0 \&lt;=. ( :var_4: ).price in\l          let (_x_12 : bool) = _x_0 = PEGGED_CI in\l          let (_x_13 : bool) = _x_0 = PEGGED \|\| _x_12 in\l          let (_x_14 : bool) = 0 \&lt;=. ( :var_1: ).price in\l          let (_x_15 : int)\l              = if _x_2\l                then\l                  if (if _x_3\l                      then\l                        if _x_2 then if _x_14 then … else …\l                        else if _x_14 then … else …\l                      else if _x_1 then _x_10 else if _x_13 then … else …)\l                     \&lt;=.\l                     (if _x_6\l                      then\l                        if _x_2 then if _x_11 then … else …\l                        else if _x_11 then … else …\l                      else if _x_5 then _x_10 else if _x_9 then … else …)\l                  then _x_7 else 1\l                else\l                if (if _x_6\l                    then\l                      if _x_2 then if _x_11 then … else …\l                      else if _x_11 then … else …\l                    else if _x_5 then _x_10 else if _x_9 then … else …)\l                   \&lt;=.\l                   (if _x_3\l                    then\l                      if _x_2 then if _x_14 then … else …\l                      else if _x_14 then … else …\l                    else if _x_1 then _x_10 else if _x_13 then … else …)\l                then _x_7 else 1\l          in\l          let (_x_16 : int) = ( :var_4: ).time in\l          let (_x_17 : int) = ( :var_1: ).time in\l          let (_x_18 : bool) = _x_16 \&lt;= _x_17 in\l          let (_x_19 : bool) = _x_12 \|\| _x_0 = LIMIT_CI in\l          let (_x_20 : bool) = not _x_19 in\l          let (_x_21 : bool) = _x_8 \|\| _x_4 = LIMIT_CI in\l          let (_x_22 : bool) = not _x_21 in\l          let (_x_23 : int) = ( :var_1: ).leaves_qty in\l          let (_x_24 : int) = ( :var_4: ).leaves_qty in\l          let (_x_25 : bool) = not (_x_23 \&lt;= _x_24) in\l          let (_x_26 : order_type) = ( :var_2: ).order_type in\l          let (_x_27 : bool) = _x_26 = MARKET in\l          let (_x_28 : bool) = _x_26 = LIMIT in\l          let (_x_29 : int)\l              = if (if _x_3 then if _x_2 then … else …\l                    else if _x_1 then … else …)\l                   =\l                   (if _x_28 then if _x_2 then … else …\l                    else if _x_27 then … else …)\l                then 0 else (-1)\l          in\l          let (_x_30 : bool) = _x_26 = PEGGED_CI in\l          let (_x_31 : bool) = _x_26 = PEGGED \|\| _x_30 in\l          let (_x_32 : real) = if _x_2 then … else … in\l          let (_x_33 : bool) = 0 \&lt;=. ( :var_2: ).price in\l          let (_x_34 : int)\l              = if _x_2\l                then\l                  if (if _x_3\l                      then\l                        if _x_2 then if _x_14 then … else …\l                        else if _x_14 then … else …\l                      else if _x_1 then _x_10 else if _x_13 then … else …)\l                     \&lt;=.\l                     (if _x_28\l                      then\l                        if _x_2 then if _x_33 then … else …\l                        else if _x_33 then … else …\l                      else\l                      if _x_27 then _x_32 else if _x_31 then … else …)\l                  then _x_29 else 1\l                else\l                if (if _x_28\l                    then\l                      if _x_2 then if _x_33 then … else …\l                      else if _x_33 then … else …\l                    else if _x_27 then _x_32 else if _x_31 then … else …)\l                   \&lt;=.\l                   (if _x_3\l                    then\l                      if _x_2 then if _x_14 then … else …\l                      else if _x_14 then … else …\l                    else if _x_1 then _x_32 else if _x_13 then … else …)\l                then _x_29 else 1\l          in\l          let (_x_35 : int) = ( :var_2: ).time in\l          let (_x_36 : bool) = _x_35 \&lt;= _x_17 in\l          let (_x_37 : bool) = _x_30 \|\| _x_26 = LIMIT_CI in\l          let (_x_38 : bool) = not _x_37 in\l          let (_x_39 : int) = ( :var_2: ).leaves_qty in\l          let (_x_40 : bool) = not (_x_23 \&lt;= _x_39) in\l          let (_x_41 : int)\l              = if (if _x_28 then if _x_2 then … else …\l                    else if _x_27 then … else …)\l                   =\l                   (if _x_6 then if _x_2 then … else …\l                    else if _x_5 then … else …)\l                then 0 else (-1)\l          in\l          let (_x_42 : int)\l              = if _x_2\l                then\l                  if (if _x_28\l                      then\l                        if _x_2 then if _x_33 then … else …\l                        else if _x_33 then … else …\l                      else\l                      if _x_27 then _x_32 else if _x_31 then … else …)\l                     \&lt;=.\l                     (if _x_6\l                      then\l                        if _x_2 then if _x_11 then … else …\l                        else if _x_11 then … else …\l                      else if _x_5 then _x_32 else if _x_9 then … else …)\l                  then _x_41 else 1\l                else\l                if (if _x_6\l                    then\l                      if _x_2 then if _x_11 then … else …\l                      else if _x_11 then … else …\l                    else if _x_5 then _x_32 else if _x_9 then … else …)\l                   \&lt;=.\l                   (if _x_28\l                    then\l                      if _x_2 then if _x_33 then … else …\l                      else if _x_33 then … else …\l                    else if _x_27 then _x_32 else if _x_31 then … else …)\l                then _x_41 else 1\l          in\l          let (_x_43 : bool) = _x_16 \&lt;= _x_35 in\l          let (_x_44 : bool) = not (_x_39 \&lt;= _x_24) in\l          (_x_15 = 1\l           \|\| not (_x_15 = (-1))\l              &amp;&amp; (if _x_19 &amp;&amp; _x_21 then _x_25\l                  else\l                    (not _x_18\l                     \|\| not (_x_18 &amp;&amp; not (_x_17 = _x_16))\l                        &amp;&amp; (_x_20 \|\| not (_x_19 &amp;&amp; _x_22) &amp;&amp; _x_25))))\l          \|\| not\l             ((_x_34 = 1\l               \|\| not (_x_34 = (-1))\l                  &amp;&amp; (if _x_19 &amp;&amp; _x_37 then _x_40\l                      else\l                        (not _x_36\l                         \|\| not (_x_36 &amp;&amp; not (_x_17 = _x_35))\l                            &amp;&amp; (_x_20 \|\| not (_x_19 &amp;&amp; _x_38) &amp;&amp; _x_40))))\l              &amp;&amp; (_x_42 = 1\l                  \|\| not (_x_42 = (-1))\l                     &amp;&amp; (if _x_37 &amp;&amp; _x_21 then _x_44\l                         else\l                           (not _x_43\l                            \|\| not (_x_43 &amp;&amp; not (_x_35 = _x_16))\l                               &amp;&amp; (_x_38 \|\| not (_x_37 &amp;&amp; _x_22) &amp;&amp; _x_44)))))\l          :expansions [] :rw [] :fc [])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+p_1 [label=&quot;Simplify (let (_x_0 : order_type) = ( :var_1: ).order_type in\l          let (_x_1 : bool) = _x_0 = MARKET in\l          let (_x_2 : bool) = ( :var_0: ) = BUY in\l          let (_x_3 : bool) = _x_0 = LIMIT in\l          let (_x_4 : order_type) = ( :var_4: ).order_type in\l          let (_x_5 : bool) = _x_4 = MARKET in\l          let (_x_6 : bool) = _x_4 = LIMIT in\l          let (_x_7 : int)\l              = if (if _x_3 then if _x_2 then … else …\l                    else if _x_1 then … else …)\l                   =\l                   (if _x_6 then if _x_2 then … else …\l                    else if _x_5 then … else …)\l                then 0 else (-1)\l          in\l          let (_x_8 : bool) = _x_4 = PEGGED_CI in\l          let (_x_9 : bool) = _x_4 = PEGGED \|\| _x_8 in\l          let (_x_10 : real) = if _x_2 then … else … in\l          let (_x_11 : bool) = 0 \&lt;=. ( :var_4: ).price in\l          let (_x_12 : bool) = _x_0 = PEGGED_CI in\l          let (_x_13 : bool) = _x_0 = PEGGED \|\| _x_12 in\l          let (_x_14 : bool) = 0 \&lt;=. ( :var_1: ).price in\l          let (_x_15 : int)\l              = if _x_2\l                then\l                  if (if _x_3\l                      then\l                        if _x_2 then if _x_14 then … else …\l                        else if _x_14 then … else …\l                      else if _x_1 then _x_10 else if _x_13 then … else …)\l                     \&lt;=.\l                     (if _x_6\l                      then\l                        if _x_2 then if _x_11 then … else …\l                        else if _x_11 then … else …\l                      else if _x_5 then _x_10 else if _x_9 then … else …)\l                  then _x_7 else 1\l                else\l                if (if _x_6\l                    then\l                      if _x_2 then if _x_11 then … else …\l                      else if _x_11 then … else …\l                    else if _x_5 then _x_10 else if _x_9 then … else …)\l                   \&lt;=.\l                   (if _x_3\l                    then\l                      if _x_2 then if _x_14 then … else …\l                      else if _x_14 then … else …\l                    else if _x_1 then _x_10 else if _x_13 then … else …)\l                then _x_7 else 1\l          in\l          let (_x_16 : int) = ( :var_4: ).time in\l          let (_x_17 : int) = ( :var_1: ).time in\l          let (_x_18 : bool) = _x_16 \&lt;= _x_17 in\l          let (_x_19 : bool) = _x_12 \|\| _x_0 = LIMIT_CI in\l          let (_x_20 : bool) = not _x_19 in\l          let (_x_21 : bool) = _x_8 \|\| _x_4 = LIMIT_CI in\l          let (_x_22 : bool) = not _x_21 in\l          let (_x_23 : int) = ( :var_1: ).leaves_qty in\l          let (_x_24 : int) = ( :var_4: ).leaves_qty in\l          let (_x_25 : bool) = not (_x_23 \&lt;= _x_24) in\l          let (_x_26 : order_type) = ( :var_2: ).order_type in\l          let (_x_27 : bool) = _x_26 = MARKET in\l          let (_x_28 : bool) = _x_26 = LIMIT in\l          let (_x_29 : int)\l              = if (if _x_3 then if _x_2 then … else …\l                    else if _x_1 then … else …)\l                   =\l                   (if _x_28 then if _x_2 then … else …\l                    else if _x_27 then … else …)\l                then 0 else (-1)\l          in\l          let (_x_30 : bool) = _x_26 = PEGGED_CI in\l          let (_x_31 : bool) = _x_26 = PEGGED \|\| _x_30 in\l          let (_x_32 : real) = if _x_2 then … else … in\l          let (_x_33 : bool) = 0 \&lt;=. ( :var_2: ).price in\l          let (_x_34 : int)\l              = if _x_2\l                then\l                  if (if _x_3\l                      then\l                        if _x_2 then if _x_14 then … else …\l                        else if _x_14 then … else …\l                      else if _x_1 then _x_32 else if _x_13 then … else …)\l                     \&lt;=.\l                     (if _x_28\l                      then\l                        if _x_2 then if _x_33 then … else …\l                        else if _x_33 then … else …\l                      else\l                      if _x_27 then _x_32 else if _x_31 then … else …)\l                  then _x_29 else 1\l                else\l                if (if _x_28\l                    then\l                      if _x_2 then if _x_33 then … else …\l                      else if _x_33 then … else …\l                    else if _x_27 then _x_32 else if _x_31 then … else …)\l                   \&lt;=.\l                   (if _x_3\l                    then\l                      if _x_2 then if _x_14 then … else …\l                      else if _x_14 then … else …\l                    else if _x_1 then _x_32 else if _x_13 then … else …)\l                then _x_29 else 1\l          in\l          let (_x_35 : int) = ( :var_2: ).time in\l          let (_x_36 : bool) = _x_35 \&lt;= _x_17 in\l          let (_x_37 : bool) = _x_30 \|\| _x_26 = LIMIT_CI in\l          let (_x_38 : bool) = not _x_37 in\l          let (_x_39 : int) = ( :var_2: ).leaves_qty in\l          let (_x_40 : bool) = not (_x_23 \&lt;= _x_39) in\l          let (_x_41 : int)\l              = if (if _x_28 then if _x_2 then … else …\l                    else if _x_27 then … else …)\l                   =\l                   (if _x_6 then if _x_2 then … else …\l                    else if _x_5 then … else …)\l                then 0 else (-1)\l          in\l          let (_x_42 : int)\l              = if _x_2\l                then\l                  if (if _x_28\l                      then\l                        if _x_2 then if _x_33 then … else …\l                        else if _x_33 then … else …\l                      else\l                      if _x_27 then _x_32 else if _x_31 then … else …)\l                     \&lt;=.\l                     (if _x_6\l                      then\l                        if _x_2 then if _x_11 then … else …\l                        else if _x_11 then … else …\l                      else if _x_5 then _x_32 else if _x_9 then … else …)\l                  then _x_41 else 1\l                else\l                if (if _x_6\l                    then\l                      if _x_2 then if _x_11 then … else …\l                      else if _x_11 then … else …\l                    else if _x_5 then _x_32 else if _x_9 then … else …)\l                   \&lt;=.\l                   (if _x_28\l                    then\l                      if _x_2 then if _x_33 then … else …\l                      else if _x_33 then … else …\l                    else if _x_27 then _x_32 else if _x_31 then … else …)\l                then _x_41 else 1\l          in\l          let (_x_43 : bool) = _x_16 \&lt;= _x_35 in\l          let (_x_44 : bool) = not (_x_39 \&lt;= _x_24) in\l          (_x_15 = 1\l           \|\| not (_x_15 = (-1))\l              &amp;&amp; (if _x_19 &amp;&amp; _x_21 then _x_25\l                  else\l                    (not _x_18\l                     \|\| not (_x_18 &amp;&amp; not (_x_17 = _x_16))\l                        &amp;&amp; (_x_20 \|\| not (_x_19 &amp;&amp; _x_22) &amp;&amp; _x_25))))\l          \|\| not\l             ((_x_34 = 1\l               \|\| not (_x_34 = (-1))\l                  &amp;&amp; (if _x_19 &amp;&amp; _x_37 then _x_40\l                      else\l                        (not _x_36\l                         \|\| not (_x_36 &amp;&amp; not (_x_17 = _x_35))\l                            &amp;&amp; (_x_20 \|\| not (_x_19 &amp;&amp; _x_38) &amp;&amp; _x_40))))\l              &amp;&amp; (_x_42 = 1\l                  \|\| not (_x_42 = (-1))\l                     &amp;&amp; (if _x_37 &amp;&amp; _x_21 then _x_44\l                         else\l                           (not _x_43\l                            \|\| not (_x_43 &amp;&amp; not (_x_35 = _x_16))\l                               &amp;&amp; (_x_38 \|\| not (_x_37 &amp;&amp; _x_22) &amp;&amp; _x_44)))))\l          :expansions [] :rw [] :fc [])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_1 -&gt; p_0 [label=&quot;&quot;];
-p_0 [label=&quot;Sat (Some let side : order_side = BUY\llet o1 : order =\l  \{id = (Z.of_nativeint (1n)); peg = MID; client_id = (Z.of_nativeint (2n));\l   order_type = PEGGED; qty = (Z.of_nativeint (5n));\l   min_qty = (Z.of_nativeint (6n)); leaves_qty = (Z.of_nativeint (8367n));\l   price = (Q.of_nativeint (-1n)); time = (Z.of_nativeint (1797n));\l   src = (Z.of_nativeint (3n)); order_attr = RESIDENT; capacity = Principal;\l   category = C_ONE;\l   cross_restrict =\l   \{cr_self_cross = false; cr_ubs_principal = false;\l    cr_round_lot_only = false; cr_no_locked_nbbo = false;\l    cr_pegged_mid_point_mode = (Z.of_nativeint (4n));\l    cr_enable_conditionals = false; cr_min_qty = false;\l    cr_cat_elig =\l    \{c_one_elig = false; c_two_elig = false; c_three_elig = false;\l     c_four_elig = false\}\};\l   locate_found = false; expiry_time = (Z.of_nativeint (7n))\}\llet o2 : order =\l  \{id = (Z.of_nativeint (17n)); peg = NEAR;\l   client_id = (Z.of_nativeint (18n)); order_type = PEGGED_CI;\l   qty = (Z.of_nativeint (19n)); min_qty = (Z.of_nativeint (20n));\l   leaves_qty = (Z.of_nativeint (8366n)); price = (Q.of_nativeint (0n));\l   time = (Z.of_nativeint (1797n)); src = (Z.of_nativeint (21n));\l   order_attr = RESIDENT; capacity = Principal; category = C_ONE;\l   cross_restrict =\l   \{cr_self_cross = false; cr_ubs_principal = false;\l    cr_round_lot_only = false; cr_no_locked_nbbo = false;\l    cr_pegged_mid_point_mode = (Z.of_nativeint (16n));\l    cr_enable_conditionals = false; cr_min_qty = false;\l    cr_cat_elig =\l    \{c_one_elig = false; c_two_elig = false; c_three_elig = false;\l     c_four_elig = false\}\};\l   locate_found = false; expiry_time = (Z.of_nativeint (22n))\}\llet o3 : order =\l  \{id = (Z.of_nativeint (8n)); peg = MID; client_id = (Z.of_nativeint (9n));\l   order_type = PEGGED_CI; qty = (Z.of_nativeint (10n));\l   min_qty = (Z.of_nativeint (11n)); leaves_qty = (Z.of_nativeint (8365n));\l   price = (Q.of_nativeint (-2438n)); time = (Z.of_nativeint (1796n));\l   src = (Z.of_nativeint (12n)); order_attr = RESIDENT; capacity = Principal;\l   category = C_ONE;\l   cross_restrict =\l   \{cr_self_cross = false; cr_ubs_principal = false;\l    cr_round_lot_only = false; cr_no_locked_nbbo = false;\l    cr_pegged_mid_point_mode = (Z.of_nativeint (14n));\l    cr_enable_conditionals = false; cr_min_qty = false;\l    cr_cat_elig =\l    \{c_one_elig = false; c_two_elig = false; c_three_elig = false;\l     c_four_elig = false\}\};\l   locate_found = false; expiry_time = (Z.of_nativeint (13n))\}\llet mkt : mkt_data =\l  \{nbb = (Q.of_nativeint (2n)); nbo = (Q.of_nativeint (-2n));\l   l_up = (Q.of_nativeint (1n)); l_down = (Q.of_nativeint (3n))\}\l)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+p_0 [label=&quot;Sat (Some let side : order_side = SELL\llet o1 : order =\l  \{id = (Z.of_nativeint (1n)); peg = MID; client_id = (Z.of_nativeint (2n));\l   order_type = LIMIT; qty = (Z.of_nativeint (3n));\l   min_qty = (Z.of_nativeint (4n)); leaves_qty = (Z.of_nativeint (1798n));\l   price = (Q.of_string \&quot;3/2\&quot;); time = (Z.of_nativeint (8856n));\l   src = (Z.of_nativeint (6n)); order_attr = RESIDENT; capacity = Principal;\l   category = C_ONE;\l   cross_restrict =\l   \{cr_self_cross = false; cr_ubs_principal = false;\l    cr_round_lot_only = false; cr_no_locked_nbbo = false;\l    cr_pegged_mid_point_mode = (Z.of_nativeint (5n));\l    cr_enable_conditionals = false; cr_min_qty = false;\l    cr_cat_elig =\l    \{c_one_elig = false; c_two_elig = false; c_three_elig = false;\l     c_four_elig = false\}\};\l   locate_found = false; expiry_time = (Z.of_nativeint (7n))\}\llet o2 : order =\l  \{id = (Z.of_nativeint (17n)); peg = NEAR;\l   client_id = (Z.of_nativeint (18n)); order_type = PEGGED_CI;\l   qty = (Z.of_nativeint (19n)); min_qty = (Z.of_nativeint (20n));\l   leaves_qty = (Z.of_nativeint (1797n)); price = (Q.of_string \&quot;3/2\&quot;);\l   time = (Z.of_nativeint (8856n)); src = (Z.of_nativeint (21n));\l   order_attr = RESIDENT; capacity = Principal; category = C_ONE;\l   cross_restrict =\l   \{cr_self_cross = false; cr_ubs_principal = false;\l    cr_round_lot_only = false; cr_no_locked_nbbo = false;\l    cr_pegged_mid_point_mode = (Z.of_nativeint (16n));\l    cr_enable_conditionals = false; cr_min_qty = false;\l    cr_cat_elig =\l    \{c_one_elig = false; c_two_elig = false; c_three_elig = false;\l     c_four_elig = false\}\};\l   locate_found = false; expiry_time = (Z.of_nativeint (22n))\}\llet o3 : order =\l  \{id = (Z.of_nativeint (10n)); peg = NEAR;\l   client_id = (Z.of_nativeint (11n)); order_type = PEGGED_CI;\l   qty = (Z.of_nativeint (8n)); min_qty = (Z.of_nativeint (12n));\l   leaves_qty = (Z.of_nativeint (1796n)); price = (Q.of_string \&quot;1/2\&quot;);\l   time = (Z.of_nativeint (8855n)); src = (Z.of_nativeint (13n));\l   order_attr = RESIDENT; capacity = Principal; category = C_ONE;\l   cross_restrict =\l   \{cr_self_cross = false; cr_ubs_principal = false;\l    cr_round_lot_only = false; cr_no_locked_nbbo = false;\l    cr_pegged_mid_point_mode = (Z.of_nativeint (9n));\l    cr_enable_conditionals = false; cr_min_qty = false;\l    cr_cat_elig =\l    \{c_one_elig = false; c_two_elig = false; c_three_elig = false;\l     c_four_elig = false\}\};\l   locate_found = false; expiry_time = (Z.of_nativeint (14n))\}\llet mkt : mkt_data =\l  \{nbb = (Q.of_string \&quot;-3/2\&quot;); nbo = (Q.of_string \&quot;3/2\&quot;);\l   l_up = (Q.of_nativeint (2n)); l_down = (Q.of_nativeint (4n))\}\l)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 }
 </textarea><button class="btn btn-primary">Load graph</button><div class="imandra-graphviz-loading display-none">Loading..</div><div class="imandra-graphviz-target"></div><script>
 require(['nbextensions/nbimandra/graphviz'], function (graphviz) {
-  var target = '#graphviz-8db7c68f-1611-4506-98e9-433bf6087f42';
+  var target = '#graphviz-acafcd54-5f5f-4a1c-8365-20c5264a5f6d';
   graphviz.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-8a3eac27-65bc-4585-b370-22a6cac2bab4';
+  var target = '#alt-933fc5f8-925b-47cc-96db-8492c26da7bf';
   alternatives.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-891de08a-09b8-4129-87c0-0a63dd04f262';
+  var target = '#fold-c3a61d06-ee26-4441-a39d-5cb1f6a8bb09';
   fold.hydrate(target);
 });
 </script></div></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-8c0187e0-d23c-44e0-8fb7-1a3e595fda35';
+  var target = '#alt-9c95287d-9fae-45a0-a2d9-678bda6cf409';
   alternatives.hydrate(target);
 });
 </script></div></div></div>
@@ -5580,13 +5555,13 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
 
 <div class="output_text output_subarea output_execute_result">
 <pre>- : order =
-{id = 1; peg = MID; client_id = 2; order_type = PEGGED; qty = 5; min_qty = 6;
- leaves_qty = 8367; price = -1; time = 1797; src = 3; order_attr = RESIDENT;
+{id = 1; peg = MID; client_id = 2; order_type = LIMIT; qty = 3; min_qty = 4;
+ leaves_qty = 1798; price = 3/2; time = 8856; src = 6; order_attr = RESIDENT;
  capacity = Principal; category = C_ONE;
  cross_restrict =
   {cr_self_cross = false; cr_ubs_principal = false;
    cr_round_lot_only = false; cr_no_locked_nbbo = false;
-   cr_pegged_mid_point_mode = 4; cr_enable_conditionals = false;
+   cr_pegged_mid_point_mode = 5; cr_enable_conditionals = false;
    cr_min_qty = false;
    cr_cat_elig =
     {c_one_elig = false; c_two_elig = false; c_three_elig = false;
@@ -5840,11 +5815,11 @@ module CX :
 
 
 <div class="output_html rendered_html output_subarea ">
-<div><pre>Counterexample (after 0 steps, 0.030s):
+<div><pre>Counterexample (after 0 steps, 0.028s):
 let side : order_side = BUY
 let o1 : order =
-  {id = 9; peg = NEAR; client_id = 12; order_type = PEGGED; qty = 1797;
-   min_qty = 13; leaves_qty = 2; price = 5; time = 8856; src = 14;
+  {id = 9; peg = NO_PEG; client_id = 10; order_type = LIMIT; qty = 7720;
+   min_qty = 12; leaves_qty = 1; price = 1; time = 1; src = 13;
    order_attr = RESIDENT; capacity = Principal; category = C_ONE;
    cross_restrict =
    {cr_self_cross = false; cr_ubs_principal = false;
@@ -5854,10 +5829,10 @@ let o1 : order =
     cr_cat_elig =
     {c_one_elig = false; c_two_elig = false; c_three_elig = false;
      c_four_elig = false}};
-   locate_found = false; expiry_time = 10}
+   locate_found = false; expiry_time = 14}
 let o2 : order =
-  {id = 18; peg = NEAR; client_id = 19; order_type = PEGGED_CI; qty = 8366;
-   min_qty = 20; leaves_qty = 1; price = 2440; time = 8856; src = 21;
+  {id = 18; peg = FAR; client_id = 19; order_type = PEGGED_CI; qty = 1237;
+   min_qty = 20; leaves_qty = 1; price = 1; time = 2; src = 21;
    order_attr = RESIDENT; capacity = Principal; category = C_ONE;
    cross_restrict =
    {cr_self_cross = false; cr_ubs_principal = false;
@@ -5869,19 +5844,19 @@ let o2 : order =
      c_four_elig = false}};
    locate_found = false; expiry_time = 22}
 let o3 : order =
-  {id = 3; peg = NEAR; client_id = 6; order_type = LIMIT_CI; qty = 2283;
-   min_qty = 7; leaves_qty = 0; price = 2; time = 8855; src = 8;
+  {id = 3; peg = NEAR; client_id = 4; order_type = LIMIT_CI; qty = 2438;
+   min_qty = 5; leaves_qty = 0; price = 1; time = 0; src = 6;
    order_attr = RESIDENT; capacity = Principal; category = C_ONE;
    cross_restrict =
    {cr_self_cross = false; cr_ubs_principal = false;
     cr_round_lot_only = false; cr_no_locked_nbbo = false;
-    cr_pegged_mid_point_mode = 5; cr_enable_conditionals = false;
+    cr_pegged_mid_point_mode = 8; cr_enable_conditionals = false;
     cr_min_qty = false;
     cr_cat_elig =
     {c_one_elig = false; c_two_elig = false; c_three_elig = false;
      c_four_elig = false}};
-   locate_found = false; expiry_time = 4}
-let mkt : mkt_data = {nbb = 2; nbo = 4; l_up = 454; l_down = 1}
+   locate_found = false; expiry_time = 7}
+let mkt : mkt_data = {nbb = 8857; nbo = 8858; l_up = 8859; l_down = 8856}
 </pre></div>
 
 </div>
@@ -5895,20 +5870,20 @@ let mkt : mkt_data = {nbb = 2; nbo = 4; l_up = 454; l_down = 1}
 
 
 <div class="output_html rendered_html output_subarea ">
-<div><div style="font-size: 1.2em; padding: 0.5em; border-top: 1px dashed #D84315; border-bottom: 1px dashed #D84315"><i class="fa fa-times-circle-o" style="margin-right: 0.5em; color: #D84315"></i><span>Refuted</span></div><div><div class="imandra-alternatives" id="alt-e59c7db9-cc47-4853-8a7a-db54440bab4c"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>call graph</a></li><li class="" data-toggle="tab"><a>proof</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-graphviz" id="graphviz-a8ad428a-607a-4e96-b673-8dd79836509c"><textarea style="display: none">digraph &quot;call graph&quot; {
-goal [label=&quot;let (_x_0 : order_type) = o1.order_type in\llet (_x_1 : bool) = _x_0 = MARKET in\llet (_x_2 : bool) = side = BUY in\llet (_x_3 : bool) = _x_0 = LIMIT in\llet (_x_4 : order_type) = o3.order_type in\llet (_x_5 : bool) = _x_4 = MARKET in\llet (_x_6 : bool) = _x_4 = LIMIT in\llet (_x_7 : int)\l    = if (if _x_3 then if _x_2 then … else …\l          else if _x_1 then … else …)\l         =\l         (if _x_6 then if _x_2 then … else …\l          else if _x_5 then … else …)\l      then 0 else (-1)\lin\llet (_x_8 : bool) = _x_4 = PEGGED_CI in\llet (_x_9 : bool) = _x_4 = PEGGED \|\| _x_8 in\llet (_x_10 : real) = if _x_2 then … else … in\llet (_x_11 : real) = o3.price in\llet (_x_12 : bool) = 0 \&lt;=. _x_11 in\llet (_x_13 : bool) = _x_0 = PEGGED_CI in\llet (_x_14 : bool) = _x_0 = PEGGED \|\| _x_13 in\llet (_x_15 : real) = o1.price in\llet (_x_16 : bool) = 0 \&lt;=. _x_15 in\llet (_x_17 : int)\l    = if _x_2\l      then\l        if (if _x_3\l            then\l              if _x_2 then if _x_16 then … else …\l              else if _x_16 then … else …\l            else if _x_1 then _x_10 else if _x_14 then … else …)\l           \&lt;=.\l           (if _x_6\l            then\l              if _x_2 then if _x_12 then … else …\l              else if _x_12 then … else …\l            else if _x_5 then _x_10 else if _x_9 then … else …)\l        then _x_7 else 1\l      else\l      if (if _x_6\l          then\l            if _x_2 then if _x_12 then … else …\l            else if _x_12 then … else …\l          else if _x_5 then _x_10 else if _x_9 then … else …)\l         \&lt;=.\l         (if _x_3\l          then\l            if _x_2 then if _x_16 then … else …\l            else if _x_16 then … else …\l          else if _x_1 then _x_10 else if _x_14 then … else …)\l      then _x_7 else 1\lin\llet (_x_18 : int) = o3.time in\llet (_x_19 : int) = o1.time in\llet (_x_20 : bool) = _x_18 \&lt;= _x_19 in\llet (_x_21 : bool) = _x_13 \|\| _x_0 = LIMIT_CI in\llet (_x_22 : bool) = not _x_21 in\llet (_x_23 : bool) = _x_8 \|\| _x_4 = LIMIT_CI in\llet (_x_24 : bool) = not _x_23 in\llet (_x_25 : int) = o1.leaves_qty in\llet (_x_26 : int) = o3.leaves_qty in\llet (_x_27 : bool) = not (_x_25 \&lt;= _x_26) in\llet (_x_28 : order_type) = o2.order_type in\llet (_x_29 : bool) = _x_28 = MARKET in\llet (_x_30 : bool) = _x_28 = LIMIT in\llet (_x_31 : int)\l    = if (if _x_3 then if _x_2 then … else …\l          else if _x_1 then … else …)\l         =\l         (if _x_30 then if _x_2 then … else …\l          else if _x_29 then … else …)\l      then 0 else (-1)\lin\llet (_x_32 : bool) = _x_28 = PEGGED_CI in\llet (_x_33 : bool) = _x_28 = PEGGED \|\| _x_32 in\llet (_x_34 : real) = o2.price in\llet (_x_35 : bool) = 0 \&lt;=. _x_34 in\llet (_x_36 : int)\l    = if _x_2\l      then\l        if (if _x_3\l            then\l              if _x_2 then if _x_16 then … else …\l              else if _x_16 then … else …\l            else if _x_1 then _x_10 else if _x_14 then … else …)\l           \&lt;=.\l           (if _x_30\l            then\l              if _x_2 then if _x_35 then … else …\l              else if _x_35 then … else …\l            else if _x_29 then _x_10 else if _x_33 then … else …)\l        then _x_31 else 1\l      else\l      if (if _x_30\l          then\l            if _x_2 then if _x_35 then … else …\l            else if _x_35 then … else …\l          else if _x_29 then _x_10 else if _x_33 then … else …)\l         \&lt;=.\l         (if _x_3\l          then\l            if _x_2 then if _x_16 then … else …\l            else if _x_16 then … else …\l          else if _x_1 then _x_10 else if _x_14 then … else …)\l      then _x_31 else 1\lin\llet (_x_37 : int) = o2.time in\llet (_x_38 : bool) = _x_37 \&lt;= _x_19 in\llet (_x_39 : bool) = _x_32 \|\| _x_28 = LIMIT_CI in\llet (_x_40 : bool) = not _x_39 in\llet (_x_41 : int) = o2.leaves_qty in\llet (_x_42 : bool) = not (_x_25 \&lt;= _x_41) in\llet (_x_43 : int)\l    = if (if _x_30 then if _x_2 then … else …\l          else if _x_29 then … else …)\l         =\l         (if _x_6 then if _x_2 then … else …\l          else if _x_5 then … else …)\l      then 0 else (-1)\lin\llet (_x_44 : int)\l    = if _x_2\l      then\l        if (if _x_30\l            then\l              if _x_2 then if _x_35 then … else …\l              else if _x_35 then … else …\l            else if _x_29 then _x_10 else if _x_33 then … else …)\l           \&lt;=.\l           (if _x_6\l            then\l              if _x_2 then if _x_12 then … else …\l              else if _x_12 then … else …\l            else if _x_5 then _x_10 else if _x_9 then … else …)\l        then _x_43 else 1\l      else\l      if (if _x_6\l          then\l            if _x_2 then if _x_12 then … else …\l            else if _x_12 then … else …\l          else if _x_5 then _x_10 else if _x_9 then … else …)\l         \&lt;=.\l         (if _x_30\l          then\l            if _x_2 then if _x_35 then … else …\l            else if _x_35 then … else …\l          else if _x_29 then _x_10 else if _x_33 then … else …)\l      then _x_43 else 1\lin\llet (_x_45 : bool) = _x_18 \&lt;= _x_37 in\llet (_x_46 : bool) = not (_x_41 \&lt;= _x_26) in\llet (_x_47 : int) = o1.qty in\llet (_x_48 : int) = o2.qty in\llet (_x_49 : int) = o3.qty in\llet (_x_50 : real) = mkt.l_down in\lnot\l(((_x_17 = 1\l   \|\| not (_x_17 = (-1))\l      &amp;&amp; (if _x_21 &amp;&amp; _x_23 then _x_27\l          else\l            (not _x_20\l             \|\| not (_x_20 &amp;&amp; not (_x_19 = _x_18))\l                &amp;&amp; (_x_22 \|\| not (_x_21 &amp;&amp; _x_24) &amp;&amp; _x_27))))\l  \|\| not\l     ((_x_36 = 1\l       \|\| not (_x_36 = (-1))\l          &amp;&amp; (if _x_21 &amp;&amp; _x_39 then _x_42\l              else\l                (not _x_38\l                 \|\| not (_x_38 &amp;&amp; not (_x_19 = _x_37))\l                    &amp;&amp; (_x_22 \|\| not (_x_21 &amp;&amp; _x_40) &amp;&amp; _x_42))))\l      &amp;&amp; (_x_44 = 1\l          \|\| not (_x_44 = (-1))\l             &amp;&amp; (if _x_39 &amp;&amp; _x_23 then _x_46\l                 else\l                   (not _x_45\l                    \|\| not (_x_45 &amp;&amp; not (_x_37 = _x_18))\l                       &amp;&amp; (_x_40 \|\| not (_x_39 &amp;&amp; _x_24) &amp;&amp; _x_46))))))\l \|\| not\l    ((((((((((((((((((_x_25 \&lt;= _x_47 &amp;&amp; _x_41 \&lt;= _x_48) &amp;&amp; _x_26 \&lt;= _x_49)\l                    &amp;&amp; _x_19 \&gt;= 0)\l                   &amp;&amp; _x_37 \&gt;= 0)\l                  &amp;&amp; _x_18 \&gt;= 0)\l                 &amp;&amp; not (_x_15 \&lt;=. 0))\l                &amp;&amp; not (_x_34 \&lt;=. 0))\l               &amp;&amp; not (_x_11 \&lt;=. 0))\l              &amp;&amp; not (_x_47 \&lt;= 0))\l             &amp;&amp; not (_x_48 \&lt;= 0))\l            &amp;&amp; not (_x_49 \&lt;= 0))\l           &amp;&amp; _x_25 \&gt;= 0)\l          &amp;&amp; _x_41 \&gt;= 0)\l         &amp;&amp; _x_26 \&gt;= 0)\l        &amp;&amp; not (_x_50 \&lt;=. 0))\l       &amp;&amp; not (… \&lt;=. _x_50))\l      &amp;&amp; not (… \&lt;=. …))\l     &amp;&amp; not (mkt.l_up \&lt;=. mkt.nbo)))&quot;,shape=box,style=filled,color=&quot;cyan&quot;,fontname=&quot;courier&quot;,fontsize=14];
+<div><div style="font-size: 1.2em; padding: 0.5em; border-top: 1px dashed #D84315; border-bottom: 1px dashed #D84315"><i class="fa fa-times-circle-o" style="margin-right: 0.5em; color: #D84315"></i><span>Refuted</span></div><div><div class="imandra-alternatives" id="alt-6fcbb685-f9d7-499e-8ba0-71ce31727022"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>call graph</a></li><li class="" data-toggle="tab"><a>proof</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-graphviz" id="graphviz-362bb875-8e06-40d9-b5f5-1e05d9e9f34f"><textarea style="display: none">digraph &quot;call graph&quot; {
+goal [label=&quot;let (_x_0 : order_type) = o1.order_type in\llet (_x_1 : bool) = _x_0 = MARKET in\llet (_x_2 : bool) = side = BUY in\llet (_x_3 : bool) = _x_0 = LIMIT in\llet (_x_4 : order_type) = o3.order_type in\llet (_x_5 : bool) = _x_4 = MARKET in\llet (_x_6 : bool) = _x_4 = LIMIT in\llet (_x_7 : int)\l    = if (if _x_3 then if _x_2 then … else …\l          else if _x_1 then … else …)\l         =\l         (if _x_6 then if _x_2 then … else …\l          else if _x_5 then … else …)\l      then 0 else (-1)\lin\llet (_x_8 : bool) = _x_4 = PEGGED_CI in\llet (_x_9 : bool) = _x_4 = PEGGED \|\| _x_8 in\llet (_x_10 : real) = if _x_2 then … else … in\llet (_x_11 : real) = o3.price in\llet (_x_12 : bool) = 0 \&lt;=. _x_11 in\llet (_x_13 : bool) = _x_0 = PEGGED_CI in\llet (_x_14 : bool) = _x_0 = PEGGED \|\| _x_13 in\llet (_x_15 : real) = o1.price in\llet (_x_16 : bool) = 0 \&lt;=. _x_15 in\llet (_x_17 : int)\l    = if _x_2\l      then\l        if (if _x_3\l            then\l              if _x_2 then if _x_16 then … else …\l              else if _x_16 then … else …\l            else if _x_1 then _x_10 else if _x_14 then … else …)\l           \&lt;=.\l           (if _x_6\l            then\l              if _x_2 then if _x_12 then … else …\l              else if _x_12 then … else …\l            else if _x_5 then _x_10 else if _x_9 then … else …)\l        then _x_7 else 1\l      else\l      if (if _x_6\l          then\l            if _x_2 then if _x_12 then … else …\l            else if _x_12 then … else …\l          else if _x_5 then _x_10 else if _x_9 then … else …)\l         \&lt;=.\l         (if _x_3\l          then\l            if _x_2 then if _x_16 then … else …\l            else if _x_16 then … else …\l          else if _x_1 then _x_10 else if _x_14 then … else …)\l      then _x_7 else 1\lin\llet (_x_18 : int) = o3.time in\llet (_x_19 : int) = o1.time in\llet (_x_20 : bool) = _x_18 \&lt;= _x_19 in\llet (_x_21 : bool) = _x_13 \|\| _x_0 = LIMIT_CI in\llet (_x_22 : bool) = not _x_21 in\llet (_x_23 : bool) = _x_8 \|\| _x_4 = LIMIT_CI in\llet (_x_24 : bool) = not _x_23 in\llet (_x_25 : int) = o1.leaves_qty in\llet (_x_26 : int) = o3.leaves_qty in\llet (_x_27 : bool) = not (_x_25 \&lt;= _x_26) in\llet (_x_28 : order_type) = o2.order_type in\llet (_x_29 : bool) = _x_28 = MARKET in\llet (_x_30 : bool) = _x_28 = LIMIT in\llet (_x_31 : int)\l    = if (if _x_3 then if _x_2 then … else …\l          else if _x_1 then … else …)\l         =\l         (if _x_30 then if _x_2 then … else …\l          else if _x_29 then … else …)\l      then 0 else (-1)\lin\llet (_x_32 : bool) = _x_28 = PEGGED_CI in\llet (_x_33 : bool) = _x_28 = PEGGED \|\| _x_32 in\llet (_x_34 : real) = o2.price in\llet (_x_35 : bool) = 0 \&lt;=. _x_34 in\llet (_x_36 : int)\l    = if _x_2\l      then\l        if (if _x_3\l            then\l              if _x_2 then if _x_16 then … else …\l              else if _x_16 then … else …\l            else if _x_1 then _x_10 else if _x_14 then … else …)\l           \&lt;=.\l           (if _x_30\l            then\l              if _x_2 then if _x_35 then … else …\l              else if _x_35 then … else …\l            else if _x_29 then _x_10 else if _x_33 then … else …)\l        then _x_31 else 1\l      else\l      if (if _x_30\l          then\l            if _x_2 then if _x_35 then … else …\l            else if _x_35 then … else …\l          else if _x_29 then _x_10 else if _x_33 then … else …)\l         \&lt;=.\l         (if _x_3\l          then\l            if _x_2 then if _x_16 then … else …\l            else if _x_16 then … else …\l          else if _x_1 then _x_10 else if _x_14 then … else …)\l      then _x_31 else 1\lin\llet (_x_37 : int) = o2.time in\llet (_x_38 : bool) = _x_37 \&lt;= _x_19 in\llet (_x_39 : bool) = _x_32 \|\| _x_28 = LIMIT_CI in\llet (_x_40 : bool) = not _x_39 in\llet (_x_41 : int) = o2.leaves_qty in\llet (_x_42 : bool) = not (_x_25 \&lt;= _x_41) in\llet (_x_43 : int)\l    = if (if _x_30 then if _x_2 then … else …\l          else if _x_29 then … else …)\l         =\l         (if _x_6 then if _x_2 then … else …\l          else if _x_5 then … else …)\l      then 0 else (-1)\lin\llet (_x_44 : int)\l    = if _x_2\l      then\l        if (if _x_30\l            then\l              if _x_2 then if _x_35 then … else …\l              else if _x_35 then … else …\l            else if _x_29 then _x_10 else if _x_33 then … else …)\l           \&lt;=.\l           (if _x_6\l            then\l              if _x_2 then if _x_12 then … else …\l              else if _x_12 then … else …\l            else if _x_5 then _x_10 else if _x_9 then … else …)\l        then _x_43 else 1\l      else\l      if (if _x_6\l          then\l            if _x_2 then if _x_12 then … else …\l            else if _x_12 then … else …\l          else if _x_5 then _x_10 else if _x_9 then … else …)\l         \&lt;=.\l         (if _x_30\l          then\l            if _x_2 then if _x_35 then … else …\l            else if _x_35 then … else …\l          else if _x_29 then _x_10 else if _x_33 then … else …)\l      then _x_43 else 1\lin\llet (_x_45 : bool) = _x_18 \&lt;= _x_37 in\llet (_x_46 : bool) = not (_x_41 \&lt;= _x_26) in\llet (_x_47 : int) = o1.qty in\llet (_x_48 : int) = o2.qty in\llet (_x_49 : int) = o3.qty in\llet (_x_50 : real) = mkt.l_down in\lnot\l(((_x_17 = 1\l   \|\| not (_x_17 = (-1))\l      &amp;&amp; (if _x_21 &amp;&amp; _x_23 then _x_27\l          else\l            (not _x_20\l             \|\| not (_x_20 &amp;&amp; not (_x_19 = _x_18))\l                &amp;&amp; (_x_22 \|\| not (_x_21 &amp;&amp; _x_24) &amp;&amp; _x_27))))\l  \|\| not\l     ((_x_36 = 1\l       \|\| not (_x_36 = (-1))\l          &amp;&amp; (if _x_21 &amp;&amp; _x_39 then _x_42\l              else\l                (not _x_38\l                 \|\| not (_x_38 &amp;&amp; not (_x_19 = _x_37))\l                    &amp;&amp; (_x_22 \|\| not (_x_21 &amp;&amp; _x_40) &amp;&amp; _x_42))))\l      &amp;&amp; (_x_44 = 1\l          \|\| not (_x_44 = (-1))\l             &amp;&amp; (if _x_39 &amp;&amp; _x_23 then _x_46\l                 else\l                   (not _x_45\l                    \|\| not (_x_45 &amp;&amp; not (_x_37 = _x_18))\l                       &amp;&amp; (_x_40 \|\| not (_x_39 &amp;&amp; _x_24) &amp;&amp; _x_46))))))\l \|\| not\l    ((((((((((((((((((_x_25 \&lt;= _x_47 &amp;&amp; _x_41 \&lt;= _x_48) &amp;&amp; _x_26 \&lt;= _x_49)\l                    &amp;&amp; _x_19 \&gt;= 0)\l                   &amp;&amp; _x_37 \&gt;= 0)\l                  &amp;&amp; _x_18 \&gt;= 0)\l                 &amp;&amp; not (_x_15 \&lt;=. 0))\l                &amp;&amp; not (_x_34 \&lt;=. 0))\l               &amp;&amp; not (_x_11 \&lt;=. 0))\l              &amp;&amp; not (_x_47 \&lt;= 0))\l             &amp;&amp; not (_x_48 \&lt;= 0))\l            &amp;&amp; not (_x_49 \&lt;= 0))\l           &amp;&amp; _x_25 \&gt;= 0)\l          &amp;&amp; _x_41 \&gt;= 0)\l         &amp;&amp; _x_26 \&gt;= 0)\l        &amp;&amp; not (_x_50 \&lt;=. 0))\l       &amp;&amp; not (… \&lt;=. _x_50))\l      &amp;&amp; not (… \&lt;=. …))\l     &amp;&amp; not (mkt.l_up \&lt;=. …)))&quot;,shape=box,style=filled,color=&quot;cyan&quot;,fontname=&quot;courier&quot;,fontsize=14];
 }
 </textarea><button class="btn btn-primary">Load graph</button><div class="imandra-graphviz-loading display-none">Loading..</div><div class="imandra-graphviz-target"></div><script>
 require(['nbextensions/nbimandra/graphviz'], function (graphviz) {
-  var target = '#graphviz-a8ad428a-607a-4e96-b673-8dd79836509c';
+  var target = '#graphviz-362bb875-8e06-40d9-b5f5-1e05d9e9f34f';
   graphviz.hydrate(target);
 });
-</script></div></div><div class="tab-pane"><div class="imandra-proof-top"><div class="imandra-fold panel panel-default" id="fold-fe6a7cf0-98e3-452f-85e8-0f02215a7c4b"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>proof attempt</span></div></div><div class="panel-body collapse"><div class="imandra-proof"><div class="imandra-alternatives" id="alt-d16fa328-5169-4c76-8d32-36fa4a2b5d07"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>summary</a></li><li class="" data-toggle="tab"><a>full</a></li><li class="" data-toggle="tab"><a>graph</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-table" id="table-d1280d71-a599-439f-a530-7917f9d1d937"><table><tr><td>ground_instances:</td><td>0</td></tr><tr><td>definitions:</td><td>0</td></tr><tr><td>inductions:</td><td>0</td></tr><tr><td>search_time:</td><td><pre>0.030s</pre></td></tr><tr><td>details:</td><td><div class="imandra-fold panel panel-default" id="fold-9685fcdb-3f5f-4c9b-8e3b-ba2a17942029"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><div class="imandra-table" id="table-7964d926-d874-4b85-be45-0d0ab1faa3d4"><table><tr><td>smt_stats:</td><td><div class="imandra-table" id="table-364b54ba-412b-44bb-9724-bc1ca4ce830d"><table><tr><td>arith offset eqs:</td><td>7</td></tr><tr><td>num checks:</td><td>1</td></tr><tr><td>arith assert lower:</td><td>109</td></tr><tr><td>arith tableau max rows:</td><td>37</td></tr><tr><td>arith tableau max columns:</td><td>65</td></tr><tr><td>arith pivots:</td><td>32</td></tr><tr><td>rlimit count:</td><td>65417</td></tr><tr><td>mk clause:</td><td>647</td></tr><tr><td>datatype occurs check:</td><td>26</td></tr><tr><td>mk bool var:</td><td>780</td></tr><tr><td>arith assert upper:</td><td>43</td></tr><tr><td>datatype splits:</td><td>35</td></tr><tr><td>decisions:</td><td>1044</td></tr><tr><td>arith row summations:</td><td>196</td></tr><tr><td>arith bound prop:</td><td>20</td></tr><tr><td>propagations:</td><td>1144</td></tr><tr><td>interface eqs:</td><td>2</td></tr><tr><td>conflicts:</td><td>40</td></tr><tr><td>arith fixed eqs:</td><td>22</td></tr><tr><td>arith assume eqs:</td><td>2</td></tr><tr><td>datatype accessor ax:</td><td>56</td></tr><tr><td>minimized lits:</td><td>8</td></tr><tr><td>arith conflicts:</td><td>6</td></tr><tr><td>arith num rows:</td><td>37</td></tr><tr><td>arith assert diseq:</td><td>76</td></tr><tr><td>datatype constructor ax:</td><td>145</td></tr><tr><td>num allocs:</td><td>8680057</td></tr><tr><td>final checks:</td><td>3</td></tr><tr><td>added eqs:</td><td>1797</td></tr><tr><td>del clause:</td><td>174</td></tr><tr><td>arith eq adapter:</td><td>50</td></tr><tr><td>time:</td><td>0.017000</td></tr><tr><td>memory:</td><td>6.600000</td></tr><tr><td>max memory:</td><td>7.670000</td></tr></table></div></td></tr></table></div></div><script>
+</script></div></div><div class="tab-pane"><div class="imandra-proof-top"><div class="imandra-fold panel panel-default" id="fold-8caaca84-158c-48e3-b89e-8cc0712565ce"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>proof attempt</span></div></div><div class="panel-body collapse"><div class="imandra-proof"><div class="imandra-alternatives" id="alt-caa6d334-e3a8-4009-a67f-c375efae5bb6"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>summary</a></li><li class="" data-toggle="tab"><a>full</a></li><li class="" data-toggle="tab"><a>graph</a></li></ul><div class="tab-content"><div class="tab-pane active"><div class="imandra-table" id="table-4a4fbfe0-5126-48c3-b664-4a279ebeff9b"><table><tr><td>ground_instances:</td><td>0</td></tr><tr><td>definitions:</td><td>0</td></tr><tr><td>inductions:</td><td>0</td></tr><tr><td>search_time:</td><td><pre>0.028s</pre></td></tr><tr><td>details:</td><td><div class="imandra-fold panel panel-default" id="fold-a1c3ece1-65d6-4f70-8462-8a8c1c88bd1e"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><div class="imandra-table" id="table-3bb673c3-ff12-432d-b418-e836f5600610"><table><tr><td>smt_stats:</td><td><div class="imandra-table" id="table-79b72519-5643-45ac-967c-96640617b2e9"><table><tr><td>arith offset eqs:</td><td>48</td></tr><tr><td>num checks:</td><td>1</td></tr><tr><td>arith assert lower:</td><td>168</td></tr><tr><td>arith tableau max rows:</td><td>37</td></tr><tr><td>arith tableau max columns:</td><td>64</td></tr><tr><td>arith pivots:</td><td>25</td></tr><tr><td>rlimit count:</td><td>78746</td></tr><tr><td>mk clause:</td><td>716</td></tr><tr><td>datatype occurs check:</td><td>36</td></tr><tr><td>mk bool var:</td><td>1076</td></tr><tr><td>arith assert upper:</td><td>173</td></tr><tr><td>datatype splits:</td><td>74</td></tr><tr><td>decisions:</td><td>2150</td></tr><tr><td>arith row summations:</td><td>166</td></tr><tr><td>arith bound prop:</td><td>1</td></tr><tr><td>propagations:</td><td>1906</td></tr><tr><td>interface eqs:</td><td>3</td></tr><tr><td>conflicts:</td><td>35</td></tr><tr><td>arith fixed eqs:</td><td>39</td></tr><tr><td>arith assume eqs:</td><td>3</td></tr><tr><td>datatype accessor ax:</td><td>72</td></tr><tr><td>minimized lits:</td><td>3</td></tr><tr><td>arith conflicts:</td><td>4</td></tr><tr><td>arith num rows:</td><td>37</td></tr><tr><td>arith assert diseq:</td><td>173</td></tr><tr><td>datatype constructor ax:</td><td>310</td></tr><tr><td>num allocs:</td><td>9560054</td></tr><tr><td>final checks:</td><td>4</td></tr><tr><td>added eqs:</td><td>2980</td></tr><tr><td>del clause:</td><td>263</td></tr><tr><td>arith eq adapter:</td><td>83</td></tr><tr><td>time:</td><td>0.016000</td></tr><tr><td>memory:</td><td>6.830000</td></tr><tr><td>max memory:</td><td>7.880000</td></tr></table></div></td></tr></table></div></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-9685fcdb-3f5f-4c9b-8e3b-ba2a17942029';
+  var target = '#fold-a1c3ece1-65d6-4f70-8462-8a8c1c88bd1e';
   fold.hydrate(target);
 });
-</script></div></td></tr></table></div></div><div class="tab-pane"><div class="imandra-fold panel panel-default" id="fold-6f0056ed-8995-46ba-929f-780ef11114bc"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.030s]
+</script></div></td></tr></table></div></div><div class="tab-pane"><div class="imandra-fold panel panel-default" id="fold-12faa94c-f41d-49c1-82b5-e1b3a60e756c"><div class="panel-heading"><div><i class="fa fa-chevron-down hidden"></i><i class="fa fa-chevron-right"></i><span>Expand</span></div></div><div class="panel-body collapse"><ul><li><pre>start[0.028s]
   let (_x_0 : int) = ( :var_0: ).leaves_qty in
   let (_x_1 : int) = ( :var_0: ).qty in
   let (_x_2 : int) = ( :var_1: ).leaves_qty in
@@ -6118,7 +6093,7 @@ require(['nbextensions/nbimandra/fold'], function (fold) {
               &amp;&amp; (_x_43 = PEGGED_CI || _x_43 = LIMIT_CI)
            then ….leaves_qty &gt; ….leaves_qty
            else
-           if (if ….time &lt; ….time then 1 else …) = 1 then true else …)</pre></li><li><div><h4>simplify</h4><div class="imandra-table" id="table-f0ea0a85-bd7f-4321-8bfd-89d0c7925f6f"><table><tr><td>into:</td><td><pre>let (_x_0 : order_type) = ( :var_0: ).order_type in
+           if (if ….time &lt; ….time then 1 else …) = 1 then true else …)</pre></li><li><div><h4>simplify</h4><div class="imandra-table" id="table-902dbed7-bda6-4068-935f-bc38e44805a9"><table><tr><td>into:</td><td><pre>let (_x_0 : order_type) = ( :var_0: ).order_type in
 let (_x_1 : bool) = _x_0 = MARKET in
 let (_x_2 : bool) = ( :var_4: ) = BUY in
 let (_x_3 : bool) = _x_0 = LIMIT in
@@ -6317,11 +6292,11 @@ let (_x_52 : real) = ( :var_3: ).nbo in
      &amp;&amp; not (_x_52 &lt;=. _x_51))
     &amp;&amp; not (( :var_3: ).l_up &lt;=. _x_52))</pre></td></tr><tr><td>expansions:</td><td><pre>[]</pre></td></tr><tr><td>rewrite_steps:</td><td><ul></ul></td></tr><tr><td>forward_chaining:</td><td><ul></ul></td></tr></table></div></div></li><li>Sat (Some let side : order_side = BUY
 let o1 : order =
-  {id = (Z.of_nativeint (9n)); peg = NEAR;
-   client_id = (Z.of_nativeint (12n)); order_type = PEGGED;
-   qty = (Z.of_nativeint (1797n)); min_qty = (Z.of_nativeint (13n));
-   leaves_qty = (Z.of_nativeint (2n)); price = (Q.of_nativeint (5n));
-   time = (Z.of_nativeint (8856n)); src = (Z.of_nativeint (14n));
+  {id = (Z.of_nativeint (9n)); peg = NO_PEG;
+   client_id = (Z.of_nativeint (10n)); order_type = LIMIT;
+   qty = (Z.of_nativeint (7720n)); min_qty = (Z.of_nativeint (12n));
+   leaves_qty = (Z.of_nativeint (1n)); price = (Q.of_nativeint (1n));
+   time = (Z.of_nativeint (1n)); src = (Z.of_nativeint (13n));
    order_attr = RESIDENT; capacity = Principal; category = C_ONE;
    cross_restrict =
    {cr_self_cross = false; cr_ubs_principal = false;
@@ -6331,13 +6306,13 @@ let o1 : order =
     cr_cat_elig =
     {c_one_elig = false; c_two_elig = false; c_three_elig = false;
      c_four_elig = false}};
-   locate_found = false; expiry_time = (Z.of_nativeint (10n))}
+   locate_found = false; expiry_time = (Z.of_nativeint (14n))}
 let o2 : order =
-  {id = (Z.of_nativeint (18n)); peg = NEAR;
+  {id = (Z.of_nativeint (18n)); peg = FAR;
    client_id = (Z.of_nativeint (19n)); order_type = PEGGED_CI;
-   qty = (Z.of_nativeint (8366n)); min_qty = (Z.of_nativeint (20n));
-   leaves_qty = (Z.of_nativeint (1n)); price = (Q.of_nativeint (2440n));
-   time = (Z.of_nativeint (8856n)); src = (Z.of_nativeint (21n));
+   qty = (Z.of_nativeint (1237n)); min_qty = (Z.of_nativeint (20n));
+   leaves_qty = (Z.of_nativeint (1n)); price = (Q.of_nativeint (1n));
+   time = (Z.of_nativeint (2n)); src = (Z.of_nativeint (21n));
    order_attr = RESIDENT; capacity = Principal; category = C_ONE;
    cross_restrict =
    {cr_self_cross = false; cr_ubs_principal = false;
@@ -6349,54 +6324,54 @@ let o2 : order =
      c_four_elig = false}};
    locate_found = false; expiry_time = (Z.of_nativeint (22n))}
 let o3 : order =
-  {id = (Z.of_nativeint (3n)); peg = NEAR; client_id = (Z.of_nativeint (6n));
-   order_type = LIMIT_CI; qty = (Z.of_nativeint (2283n));
-   min_qty = (Z.of_nativeint (7n)); leaves_qty = (Z.of_nativeint (0n));
-   price = (Q.of_nativeint (2n)); time = (Z.of_nativeint (8855n));
-   src = (Z.of_nativeint (8n)); order_attr = RESIDENT; capacity = Principal;
+  {id = (Z.of_nativeint (3n)); peg = NEAR; client_id = (Z.of_nativeint (4n));
+   order_type = LIMIT_CI; qty = (Z.of_nativeint (2438n));
+   min_qty = (Z.of_nativeint (5n)); leaves_qty = (Z.of_nativeint (0n));
+   price = (Q.of_nativeint (1n)); time = (Z.of_nativeint (0n));
+   src = (Z.of_nativeint (6n)); order_attr = RESIDENT; capacity = Principal;
    category = C_ONE;
    cross_restrict =
    {cr_self_cross = false; cr_ubs_principal = false;
     cr_round_lot_only = false; cr_no_locked_nbbo = false;
-    cr_pegged_mid_point_mode = (Z.of_nativeint (5n));
+    cr_pegged_mid_point_mode = (Z.of_nativeint (8n));
     cr_enable_conditionals = false; cr_min_qty = false;
     cr_cat_elig =
     {c_one_elig = false; c_two_elig = false; c_three_elig = false;
      c_four_elig = false}};
-   locate_found = false; expiry_time = (Z.of_nativeint (4n))}
+   locate_found = false; expiry_time = (Z.of_nativeint (7n))}
 let mkt : mkt_data =
-  {nbb = (Q.of_nativeint (2n)); nbo = (Q.of_nativeint (4n));
-   l_up = (Q.of_nativeint (454n)); l_down = (Q.of_nativeint (1n))}
+  {nbb = (Q.of_nativeint (8857n)); nbo = (Q.of_nativeint (8858n));
+   l_up = (Q.of_nativeint (8859n)); l_down = (Q.of_nativeint (8856n))}
 )</li></ul></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-6f0056ed-8995-46ba-929f-780ef11114bc';
+  var target = '#fold-12faa94c-f41d-49c1-82b5-e1b3a60e756c';
   fold.hydrate(target);
 });
-</script></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-78c45714-19bc-4cac-9dab-212ea0bc5db8"><textarea style="display: none">digraph &quot;proof&quot; {
-p_5 [label=&quot;Start (let (_x_0 : int) = ( :var_0: ).leaves_qty in\l       let (_x_1 : int) = ( :var_0: ).qty in\l       let (_x_2 : int) = ( :var_1: ).leaves_qty in\l       let (_x_3 : int) = ( :var_1: ).qty in\l       let (_x_4 : int) = ( :var_2: ).leaves_qty in\l       let (_x_5 : int) = ( :var_2: ).qty in\l       let (_x_6 : real) = ( :var_3: ).l_down in\l       let (_x_7 : real) = ( :var_3: ).nbb in\l       let (_x_8 : real) = ( :var_3: ).nbo in\l       let (_x_9 : order_type) = ….order_type in\l       let (_x_10 : order_type) = ….order_type in\l       let (_x_11 : bool) = _x_9 = MARKET in\l       let (_x_12 : bool) = ( :var_4: ) = BUY in\l       let (_x_13 : bool) = _x_9 = LIMIT in\l       let (_x_14 : bool) = _x_10 = MARKET in\l       let (_x_15 : bool) = _x_10 = LIMIT in\l       let (_x_16 : int)\l           = if (if _x_13 then if _x_12 then … else …\l                 else if _x_11 then … else …)\l                =\l                (if _x_15 then if _x_12 then … else …\l                 else if _x_14 then … else …)\l             then 0 else (-1)\l       in\l       let (_x_17 : bool) = _x_9 = PEGGED in\l       let (_x_18 : real) = if _x_12 then … else … in\l       let (_x_19 : bool) = ….1 \&lt;. 0 in\l       let (_x_20 : bool) = ….1 \&lt;. 0 in\l       let (_x_21 : bool) = _x_10 = PEGGED in\l       let (_x_22 : real) = if _x_12 then … else … in\l       let (_x_23 : bool) = ….1 \&lt;. 0 in\l       let (_x_24 : bool) = ….1 \&lt;. 0 in\l       let (_x_25 : int)\l           = if _x_12\l             then\l               if (if _x_13\l                   then\l                     if _x_12 then if _x_20 then … else …\l                     else if _x_19 then … else …\l                   else if _x_11 then _x_18 else if _x_17 then … else …)\l                  \&gt;.\l                  (if _x_15\l                   then\l                     if _x_12 then if _x_24 then … else …\l                     else if _x_23 then … else …\l                   else if _x_14 then _x_22 else if _x_21 then … else …)\l               then 1 else _x_16\l             else\l             if (if _x_13\l                 then\l                   if _x_12 then if _x_20 then … else …\l                   else if _x_19 then … else …\l                 else if _x_11 then _x_18 else if _x_17 then … else …)\l                \&lt;.\l                (if _x_15\l                 then\l                   if _x_12 then if _x_24 then … else …\l                   else if _x_23 then … else …\l                 else if _x_14 then _x_22 else if _x_21 then … else …)\l             then 1 else _x_16\l       in\l       let (_x_26 : order_type) = ….order_type in\l       let (_x_27 : order_type) = ….order_type in\l       let (_x_28 : bool) = _x_26 = MARKET in\l       let (_x_29 : bool) = _x_26 = LIMIT in\l       let (_x_30 : bool) = _x_27 = MARKET in\l       let (_x_31 : bool) = _x_27 = LIMIT in\l       let (_x_32 : int)\l           = if (if _x_29 then if _x_12 then … else …\l                 else if _x_28 then … else …)\l                =\l                (if _x_31 then if _x_12 then … else …\l                 else if _x_30 then … else …)\l             then 0 else (-1)\l       in\l       let (_x_33 : bool) = _x_26 = PEGGED in\l       let (_x_34 : real) = if _x_12 then … else … in\l       let (_x_35 : bool) = ….1 \&lt;. 0 in\l       let (_x_36 : bool) = ….1 \&lt;. 0 in\l       let (_x_37 : bool) = _x_27 = PEGGED in\l       let (_x_38 : real) = if _x_12 then … else … in\l       let (_x_39 : bool) = ….1 \&lt;. 0 in\l       let (_x_40 : bool) = ….1 \&lt;. 0 in\l       let (_x_41 : int)\l           = if _x_12\l             then\l               if (if _x_29\l                   then\l                     if _x_12 then if _x_36 then … else …\l                     else if _x_35 then … else …\l                   else if _x_28 then _x_34 else if _x_33 then … else …)\l                  \&gt;.\l                  (if _x_31\l                   then\l                     if _x_12 then if _x_40 then … else …\l                     else if _x_39 then … else …\l                   else if _x_30 then _x_38 else if _x_37 then … else …)\l               then 1 else _x_32\l             else\l             if (if _x_29\l                 then\l                   if _x_12 then if _x_36 then … else …\l                   else if _x_35 then … else …\l                 else if _x_28 then _x_34 else if _x_33 then … else …)\l                \&lt;.\l                (if _x_31\l                 then\l                   if _x_12 then if _x_40 then … else …\l                   else if _x_39 then … else …\l                 else if _x_30 then _x_38 else if _x_37 then … else …)\l             then 1 else _x_32\l       in\l       let (_x_42 : order_type) = ….order_type in\l       let (_x_43 : order_type) = ….order_type in\l       let (_x_44 : bool) = _x_42 = MARKET in\l       let (_x_45 : bool) = _x_42 = LIMIT in\l       let (_x_46 : bool) = _x_43 = MARKET in\l       let (_x_47 : bool) = _x_43 = LIMIT in\l       let (_x_48 : int)\l           = if (if _x_45 then if _x_12 then … else …\l                 else if _x_44 then … else …)\l                =\l                (if _x_47 then if _x_12 then … else …\l                 else if _x_46 then … else …)\l             then 0 else (-1)\l       in\l       let (_x_49 : bool) = _x_42 = PEGGED in\l       let (_x_50 : real) = if _x_12 then … else … in\l       let (_x_51 : bool) = ….1 \&lt;. 0 in\l       let (_x_52 : bool) = ….1 \&lt;. 0 in\l       let (_x_53 : bool) = _x_43 = PEGGED in\l       let (_x_54 : real) = if _x_12 then … else … in\l       let (_x_55 : bool) = ….1 \&lt;. 0 in\l       let (_x_56 : bool) = ….1 \&lt;. 0 in\l       let (_x_57 : int)\l           = if _x_12\l             then\l               if (if _x_45\l                   then\l                     if _x_12 then if _x_52 then … else …\l                     else if _x_51 then … else …\l                   else if _x_44 then _x_50 else if _x_49 then … else …)\l                  \&gt;.\l                  (if _x_47\l                   then\l                     if _x_12 then if _x_56 then … else …\l                     else if _x_55 then … else …\l                   else if _x_46 then _x_54 else if _x_53 then … else …)\l               then 1 else _x_48\l             else\l             if (if _x_45\l                 then\l                   if _x_12 then if _x_52 then … else …\l                   else if _x_51 then … else …\l                 else if _x_44 then _x_50 else if _x_49 then … else …)\l                \&lt;.\l                (if _x_47\l                 then\l                   if _x_12 then if _x_56 then … else …\l                   else if _x_55 then … else …\l                 else if _x_46 then _x_54 else if _x_53 then … else …)\l             then 1 else _x_48\l       in\l       _x_0 \&lt;= _x_1\l       &amp;&amp; _x_2 \&lt;= _x_3\l          &amp;&amp; _x_4 \&lt;= _x_5\l             &amp;&amp; ( :var_0: ).time \&gt;= 0\l                &amp;&amp; ( :var_1: ).time \&gt;= 0\l                   &amp;&amp; ( :var_2: ).time \&gt;= 0\l                      &amp;&amp; ( :var_0: ).price \&gt;. 0\l                         &amp;&amp; ( :var_1: ).price \&gt;. 0\l                            &amp;&amp; ( :var_2: ).price \&gt;. 0\l                               &amp;&amp; _x_1 \&gt; 0\l                                  &amp;&amp; _x_3 \&gt; 0\l                                     &amp;&amp; _x_5 \&gt; 0\l                                        &amp;&amp; _x_0 \&gt;= 0\l                                           &amp;&amp; _x_2 \&gt;= 0\l                                              &amp;&amp; _x_4 \&gt;= 0\l                                                 &amp;&amp; _x_6 \&gt;. 0\l                                                    &amp;&amp; _x_7 \&gt;. _x_6\l                                                       &amp;&amp; _x_8 \&gt;. _x_7\l                                                          &amp;&amp; ( :var_3: ).l_up\l                                                             \&gt;. _x_8\l       ==\&gt; (if _x_25 = 1 then true\l            else\l            if _x_25 = (-1) then false\l            else\l            if (_x_9 = PEGGED_CI \|\| _x_9 = LIMIT_CI)\l               &amp;&amp; (_x_10 = PEGGED_CI \|\| _x_10 = LIMIT_CI)\l            then ….leaves_qty \&gt; ….leaves_qty\l            else\l            if (if ….time \&lt; ….time then 1 else …) = 1 then true\l            else …)\l           &amp;&amp; (if _x_41 = 1 then true\l               else\l               if _x_41 = (-1) then false\l               else\l               if (_x_26 = PEGGED_CI \|\| _x_26 = LIMIT_CI)\l                  &amp;&amp; (_x_27 = PEGGED_CI \|\| _x_27 = LIMIT_CI)\l               then ….leaves_qty \&gt; ….leaves_qty\l               else\l               if (if ….time \&lt; ….time then 1 else …) = 1 then true\l               else …)\l           ==\&gt; (if _x_57 = 1 then true\l                else\l                if _x_57 = (-1) then false\l                else\l                if (_x_42 = PEGGED_CI \|\| _x_42 = LIMIT_CI)\l                   &amp;&amp; (_x_43 = PEGGED_CI \|\| _x_43 = LIMIT_CI)\l                then ….leaves_qty \&gt; ….leaves_qty\l                else\l                if (if ….time \&lt; ….time then 1 else …) = 1 then true\l                else …)\l       :time 0.030s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+</script></div></div><div class="tab-pane"><div class="imandra-graphviz" id="graphviz-72655013-c6b0-4267-a74c-26bf49b93291"><textarea style="display: none">digraph &quot;proof&quot; {
+p_5 [label=&quot;Start (let (_x_0 : int) = ( :var_0: ).leaves_qty in\l       let (_x_1 : int) = ( :var_0: ).qty in\l       let (_x_2 : int) = ( :var_1: ).leaves_qty in\l       let (_x_3 : int) = ( :var_1: ).qty in\l       let (_x_4 : int) = ( :var_2: ).leaves_qty in\l       let (_x_5 : int) = ( :var_2: ).qty in\l       let (_x_6 : real) = ( :var_3: ).l_down in\l       let (_x_7 : real) = ( :var_3: ).nbb in\l       let (_x_8 : real) = ( :var_3: ).nbo in\l       let (_x_9 : order_type) = ….order_type in\l       let (_x_10 : order_type) = ….order_type in\l       let (_x_11 : bool) = _x_9 = MARKET in\l       let (_x_12 : bool) = ( :var_4: ) = BUY in\l       let (_x_13 : bool) = _x_9 = LIMIT in\l       let (_x_14 : bool) = _x_10 = MARKET in\l       let (_x_15 : bool) = _x_10 = LIMIT in\l       let (_x_16 : int)\l           = if (if _x_13 then if _x_12 then … else …\l                 else if _x_11 then … else …)\l                =\l                (if _x_15 then if _x_12 then … else …\l                 else if _x_14 then … else …)\l             then 0 else (-1)\l       in\l       let (_x_17 : bool) = _x_9 = PEGGED in\l       let (_x_18 : real) = if _x_12 then … else … in\l       let (_x_19 : bool) = ….1 \&lt;. 0 in\l       let (_x_20 : bool) = ….1 \&lt;. 0 in\l       let (_x_21 : bool) = _x_10 = PEGGED in\l       let (_x_22 : real) = if _x_12 then … else … in\l       let (_x_23 : bool) = ….1 \&lt;. 0 in\l       let (_x_24 : bool) = ….1 \&lt;. 0 in\l       let (_x_25 : int)\l           = if _x_12\l             then\l               if (if _x_13\l                   then\l                     if _x_12 then if _x_20 then … else …\l                     else if _x_19 then … else …\l                   else if _x_11 then _x_18 else if _x_17 then … else …)\l                  \&gt;.\l                  (if _x_15\l                   then\l                     if _x_12 then if _x_24 then … else …\l                     else if _x_23 then … else …\l                   else if _x_14 then _x_22 else if _x_21 then … else …)\l               then 1 else _x_16\l             else\l             if (if _x_13\l                 then\l                   if _x_12 then if _x_20 then … else …\l                   else if _x_19 then … else …\l                 else if _x_11 then _x_18 else if _x_17 then … else …)\l                \&lt;.\l                (if _x_15\l                 then\l                   if _x_12 then if _x_24 then … else …\l                   else if _x_23 then … else …\l                 else if _x_14 then _x_22 else if _x_21 then … else …)\l             then 1 else _x_16\l       in\l       let (_x_26 : order_type) = ….order_type in\l       let (_x_27 : order_type) = ….order_type in\l       let (_x_28 : bool) = _x_26 = MARKET in\l       let (_x_29 : bool) = _x_26 = LIMIT in\l       let (_x_30 : bool) = _x_27 = MARKET in\l       let (_x_31 : bool) = _x_27 = LIMIT in\l       let (_x_32 : int)\l           = if (if _x_29 then if _x_12 then … else …\l                 else if _x_28 then … else …)\l                =\l                (if _x_31 then if _x_12 then … else …\l                 else if _x_30 then … else …)\l             then 0 else (-1)\l       in\l       let (_x_33 : bool) = _x_26 = PEGGED in\l       let (_x_34 : real) = if _x_12 then … else … in\l       let (_x_35 : bool) = ….1 \&lt;. 0 in\l       let (_x_36 : bool) = ….1 \&lt;. 0 in\l       let (_x_37 : bool) = _x_27 = PEGGED in\l       let (_x_38 : real) = if _x_12 then … else … in\l       let (_x_39 : bool) = ….1 \&lt;. 0 in\l       let (_x_40 : bool) = ….1 \&lt;. 0 in\l       let (_x_41 : int)\l           = if _x_12\l             then\l               if (if _x_29\l                   then\l                     if _x_12 then if _x_36 then … else …\l                     else if _x_35 then … else …\l                   else if _x_28 then _x_34 else if _x_33 then … else …)\l                  \&gt;.\l                  (if _x_31\l                   then\l                     if _x_12 then if _x_40 then … else …\l                     else if _x_39 then … else …\l                   else if _x_30 then _x_38 else if _x_37 then … else …)\l               then 1 else _x_32\l             else\l             if (if _x_29\l                 then\l                   if _x_12 then if _x_36 then … else …\l                   else if _x_35 then … else …\l                 else if _x_28 then _x_34 else if _x_33 then … else …)\l                \&lt;.\l                (if _x_31\l                 then\l                   if _x_12 then if _x_40 then … else …\l                   else if _x_39 then … else …\l                 else if _x_30 then _x_38 else if _x_37 then … else …)\l             then 1 else _x_32\l       in\l       let (_x_42 : order_type) = ….order_type in\l       let (_x_43 : order_type) = ….order_type in\l       let (_x_44 : bool) = _x_42 = MARKET in\l       let (_x_45 : bool) = _x_42 = LIMIT in\l       let (_x_46 : bool) = _x_43 = MARKET in\l       let (_x_47 : bool) = _x_43 = LIMIT in\l       let (_x_48 : int)\l           = if (if _x_45 then if _x_12 then … else …\l                 else if _x_44 then … else …)\l                =\l                (if _x_47 then if _x_12 then … else …\l                 else if _x_46 then … else …)\l             then 0 else (-1)\l       in\l       let (_x_49 : bool) = _x_42 = PEGGED in\l       let (_x_50 : real) = if _x_12 then … else … in\l       let (_x_51 : bool) = ….1 \&lt;. 0 in\l       let (_x_52 : bool) = ….1 \&lt;. 0 in\l       let (_x_53 : bool) = _x_43 = PEGGED in\l       let (_x_54 : real) = if _x_12 then … else … in\l       let (_x_55 : bool) = ….1 \&lt;. 0 in\l       let (_x_56 : bool) = ….1 \&lt;. 0 in\l       let (_x_57 : int)\l           = if _x_12\l             then\l               if (if _x_45\l                   then\l                     if _x_12 then if _x_52 then … else …\l                     else if _x_51 then … else …\l                   else if _x_44 then _x_50 else if _x_49 then … else …)\l                  \&gt;.\l                  (if _x_47\l                   then\l                     if _x_12 then if _x_56 then … else …\l                     else if _x_55 then … else …\l                   else if _x_46 then _x_54 else if _x_53 then … else …)\l               then 1 else _x_48\l             else\l             if (if _x_45\l                 then\l                   if _x_12 then if _x_52 then … else …\l                   else if _x_51 then … else …\l                 else if _x_44 then _x_50 else if _x_49 then … else …)\l                \&lt;.\l                (if _x_47\l                 then\l                   if _x_12 then if _x_56 then … else …\l                   else if _x_55 then … else …\l                 else if _x_46 then _x_54 else if _x_53 then … else …)\l             then 1 else _x_48\l       in\l       _x_0 \&lt;= _x_1\l       &amp;&amp; _x_2 \&lt;= _x_3\l          &amp;&amp; _x_4 \&lt;= _x_5\l             &amp;&amp; ( :var_0: ).time \&gt;= 0\l                &amp;&amp; ( :var_1: ).time \&gt;= 0\l                   &amp;&amp; ( :var_2: ).time \&gt;= 0\l                      &amp;&amp; ( :var_0: ).price \&gt;. 0\l                         &amp;&amp; ( :var_1: ).price \&gt;. 0\l                            &amp;&amp; ( :var_2: ).price \&gt;. 0\l                               &amp;&amp; _x_1 \&gt; 0\l                                  &amp;&amp; _x_3 \&gt; 0\l                                     &amp;&amp; _x_5 \&gt; 0\l                                        &amp;&amp; _x_0 \&gt;= 0\l                                           &amp;&amp; _x_2 \&gt;= 0\l                                              &amp;&amp; _x_4 \&gt;= 0\l                                                 &amp;&amp; _x_6 \&gt;. 0\l                                                    &amp;&amp; _x_7 \&gt;. _x_6\l                                                       &amp;&amp; _x_8 \&gt;. _x_7\l                                                          &amp;&amp; ( :var_3: ).l_up\l                                                             \&gt;. _x_8\l       ==\&gt; (if _x_25 = 1 then true\l            else\l            if _x_25 = (-1) then false\l            else\l            if (_x_9 = PEGGED_CI \|\| _x_9 = LIMIT_CI)\l               &amp;&amp; (_x_10 = PEGGED_CI \|\| _x_10 = LIMIT_CI)\l            then ….leaves_qty \&gt; ….leaves_qty\l            else\l            if (if ….time \&lt; ….time then 1 else …) = 1 then true\l            else …)\l           &amp;&amp; (if _x_41 = 1 then true\l               else\l               if _x_41 = (-1) then false\l               else\l               if (_x_26 = PEGGED_CI \|\| _x_26 = LIMIT_CI)\l                  &amp;&amp; (_x_27 = PEGGED_CI \|\| _x_27 = LIMIT_CI)\l               then ….leaves_qty \&gt; ….leaves_qty\l               else\l               if (if ….time \&lt; ….time then 1 else …) = 1 then true\l               else …)\l           ==\&gt; (if _x_57 = 1 then true\l                else\l                if _x_57 = (-1) then false\l                else\l                if (_x_42 = PEGGED_CI \|\| _x_42 = LIMIT_CI)\l                   &amp;&amp; (_x_43 = PEGGED_CI \|\| _x_43 = LIMIT_CI)\l                then ….leaves_qty \&gt; ….leaves_qty\l                else\l                if (if ….time \&lt; ….time then 1 else …) = 1 then true\l                else …)\l       :time 0.028s)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_5 -&gt; p_4 [label=&quot;&quot;];
 p_4 [label=&quot;Simplify (let (_x_0 : order_type) = ( :var_0: ).order_type in\l          let (_x_1 : bool) = _x_0 = MARKET in\l          let (_x_2 : bool) = ( :var_4: ) = BUY in\l          let (_x_3 : bool) = _x_0 = LIMIT in\l          let (_x_4 : order_type) = ( :var_2: ).order_type in\l          let (_x_5 : bool) = _x_4 = MARKET in\l          let (_x_6 : bool) = _x_4 = LIMIT in\l          let (_x_7 : int)\l              = if (if _x_3 then if _x_2 then … else …\l                    else if _x_1 then … else …)\l                   =\l                   (if _x_6 then if _x_2 then … else …\l                    else if _x_5 then … else …)\l                then 0 else (-1)\l          in\l          let (_x_8 : bool) = _x_4 = PEGGED_CI in\l          let (_x_9 : bool) = _x_4 = PEGGED \|\| _x_8 in\l          let (_x_10 : real) = if _x_2 then … else … in\l          let (_x_11 : real) = ( :var_2: ).price in\l          let (_x_12 : bool) = 0 \&lt;=. _x_11 in\l          let (_x_13 : bool) = _x_0 = PEGGED_CI in\l          let (_x_14 : bool) = _x_0 = PEGGED \|\| _x_13 in\l          let (_x_15 : real) = ( :var_0: ).price in\l          let (_x_16 : bool) = 0 \&lt;=. _x_15 in\l          let (_x_17 : int)\l              = if _x_2\l                then\l                  if (if _x_3\l                      then\l                        if _x_2 then if _x_16 then … else …\l                        else if _x_16 then … else …\l                      else if _x_1 then _x_10 else if _x_14 then … else …)\l                     \&lt;=.\l                     (if _x_6\l                      then\l                        if _x_2 then if _x_12 then … else …\l                        else if _x_12 then … else …\l                      else if _x_5 then _x_10 else if _x_9 then … else …)\l                  then _x_7 else 1\l                else\l                if (if _x_6\l                    then\l                      if _x_2 then if _x_12 then … else …\l                      else if _x_12 then … else …\l                    else if _x_5 then _x_10 else if _x_9 then … else …)\l                   \&lt;=.\l                   (if _x_3\l                    then\l                      if _x_2 then if _x_16 then … else …\l                      else if _x_16 then … else …\l                    else if _x_1 then _x_10 else if _x_14 then … else …)\l                then _x_7 else 1\l          in\l          let (_x_18 : int) = ( :var_2: ).time in\l          let (_x_19 : int) = ( :var_0: ).time in\l          let (_x_20 : bool) = _x_18 \&lt;= _x_19 in\l          let (_x_21 : bool) = _x_13 \|\| _x_0 = LIMIT_CI in\l          let (_x_22 : bool) = not _x_21 in\l          let (_x_23 : bool) = _x_8 \|\| _x_4 = LIMIT_CI in\l          let (_x_24 : bool) = not _x_23 in\l          let (_x_25 : int) = ( :var_0: ).leaves_qty in\l          let (_x_26 : int) = ( :var_2: ).leaves_qty in\l          let (_x_27 : bool) = not (_x_25 \&lt;= _x_26) in\l          let (_x_28 : order_type) = ( :var_1: ).order_type in\l          let (_x_29 : bool) = _x_28 = MARKET in\l          let (_x_30 : bool) = _x_28 = LIMIT in\l          let (_x_31 : int)\l              = if (if _x_3 then if _x_2 then … else …\l                    else if _x_1 then … else …)\l                   =\l                   (if _x_30 then if _x_2 then … else …\l                    else if _x_29 then … else …)\l                then 0 else (-1)\l          in\l          let (_x_32 : bool) = _x_28 = PEGGED_CI in\l          let (_x_33 : bool) = _x_28 = PEGGED \|\| _x_32 in\l          let (_x_34 : real) = ( :var_1: ).price in\l          let (_x_35 : bool) = 0 \&lt;=. _x_34 in\l          let (_x_36 : int)\l              = if _x_2\l                then\l                  if (if _x_3\l                      then\l                        if _x_2 then if _x_16 then … else …\l                        else if _x_16 then … else …\l                      else if _x_1 then _x_10 else if _x_14 then … else …)\l                     \&lt;=.\l                     (if _x_30\l                      then\l                        if _x_2 then if _x_35 then … else …\l                        else if _x_35 then … else …\l                      else\l                      if _x_29 then _x_10 else if _x_33 then … else …)\l                  then _x_31 else 1\l                else\l                if (if _x_30\l                    then\l                      if _x_2 then if _x_35 then … else …\l                      else if _x_35 then … else …\l                    else if _x_29 then _x_10 else if _x_33 then … else …)\l                   \&lt;=.\l                   (if _x_3\l                    then\l                      if _x_2 then if _x_16 then … else …\l                      else if _x_16 then … else …\l                    else if _x_1 then _x_10 else if _x_14 then … else …)\l                then _x_31 else 1\l          in\l          let (_x_37 : int) = ( :var_1: ).time in\l          let (_x_38 : bool) = _x_37 \&lt;= _x_19 in\l          let (_x_39 : bool) = _x_32 \|\| _x_28 = LIMIT_CI in\l          let (_x_40 : bool) = not _x_39 in\l          let (_x_41 : int) = ( :var_1: ).leaves_qty in\l          let (_x_42 : bool) = not (_x_25 \&lt;= _x_41) in\l          let (_x_43 : int)\l              = if (if _x_30 then if _x_2 then … else …\l                    else if _x_29 then … else …)\l                   =\l                   (if _x_6 then if _x_2 then … else …\l                    else if _x_5 then … else …)\l                then 0 else (-1)\l          in\l          let (_x_44 : int)\l              = if _x_2\l                then\l                  if (if _x_30\l                      then\l                        if _x_2 then if _x_35 then … else …\l                        else if _x_35 then … else …\l                      else\l                      if _x_29 then _x_10 else if _x_33 then … else …)\l                     \&lt;=.\l                     (if _x_6\l                      then\l                        if _x_2 then if _x_12 then … else …\l                        else if _x_12 then … else …\l                      else if _x_5 then _x_10 else if _x_9 then … else …)\l                  then _x_43 else 1\l                else\l                if (if _x_6\l                    then\l                      if _x_2 then if _x_12 then … else …\l                      else if _x_12 then … else …\l                    else if _x_5 then _x_10 else if _x_9 then … else …)\l                   \&lt;=.\l                   (if _x_30\l                    then\l                      if _x_2 then if _x_35 then … else …\l                      else if _x_35 then … else …\l                    else if _x_29 then _x_10 else if _x_33 then … else …)\l                then _x_43 else 1\l          in\l          let (_x_45 : bool) = _x_18 \&lt;= _x_37 in\l          let (_x_46 : bool) = not (_x_41 \&lt;= _x_26) in\l          let (_x_47 : int) = ( :var_0: ).qty in\l          let (_x_48 : int) = ( :var_1: ).qty in\l          let (_x_49 : int) = ( :var_2: ).qty in\l          let (_x_50 : real) = ( :var_3: ).l_down in\l          let (_x_51 : real) = ( :var_3: ).nbb in\l          let (_x_52 : real) = ( :var_3: ).nbo in\l          ((_x_17 = 1\l            \|\| not (_x_17 = (-1))\l               &amp;&amp; (if _x_21 &amp;&amp; _x_23 then _x_27\l                   else\l                     (not _x_20\l                      \|\| not (_x_20 &amp;&amp; not (_x_19 = _x_18))\l                         &amp;&amp; (_x_22 \|\| not (_x_21 &amp;&amp; _x_24) &amp;&amp; _x_27))))\l           \|\| not\l              ((_x_36 = 1\l                \|\| not (_x_36 = (-1))\l                   &amp;&amp; (if _x_21 &amp;&amp; _x_39 then _x_42\l                       else\l                         (not _x_38\l                          \|\| not (_x_38 &amp;&amp; not (_x_19 = _x_37))\l                             &amp;&amp; (_x_22 \|\| not (_x_21 &amp;&amp; _x_40) &amp;&amp; _x_42))))\l               &amp;&amp; (_x_44 = 1\l                   \|\| not (_x_44 = (-1))\l                      &amp;&amp; (if _x_39 &amp;&amp; _x_23 then _x_46\l                          else\l                            (not _x_45\l                             \|\| not (_x_45 &amp;&amp; not (_x_37 = _x_18))\l                                &amp;&amp; (_x_40 \|\| not (_x_39 &amp;&amp; _x_24) &amp;&amp; _x_46))))))\l          \|\| not\l             ((((((((((((((((((_x_25 \&lt;= _x_47 &amp;&amp; _x_41 \&lt;= _x_48)\l                              &amp;&amp; _x_26 \&lt;= _x_49)\l                             &amp;&amp; _x_19 \&gt;= 0)\l                            &amp;&amp; _x_37 \&gt;= 0)\l                           &amp;&amp; _x_18 \&gt;= 0)\l                          &amp;&amp; not (_x_15 \&lt;=. 0))\l                         &amp;&amp; not (_x_34 \&lt;=. 0))\l                        &amp;&amp; not (_x_11 \&lt;=. 0))\l                       &amp;&amp; not (_x_47 \&lt;= 0))\l                      &amp;&amp; not (_x_48 \&lt;= 0))\l                     &amp;&amp; not (_x_49 \&lt;= 0))\l                    &amp;&amp; _x_25 \&gt;= 0)\l                   &amp;&amp; _x_41 \&gt;= 0)\l                  &amp;&amp; _x_26 \&gt;= 0)\l                 &amp;&amp; not (_x_50 \&lt;=. 0))\l                &amp;&amp; not (_x_51 \&lt;=. _x_50))\l               &amp;&amp; not (_x_52 \&lt;=. _x_51))\l              &amp;&amp; not (( :var_3: ).l_up \&lt;=. _x_52))\l          :expansions [] :rw [] :fc [])&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 p_4 -&gt; p_3 [label=&quot;&quot;];
-p_3 [label=&quot;Sat (Some let side : order_side = BUY\llet o1 : order =\l  \{id = (Z.of_nativeint (9n)); peg = NEAR;\l   client_id = (Z.of_nativeint (12n)); order_type = PEGGED;\l   qty = (Z.of_nativeint (1797n)); min_qty = (Z.of_nativeint (13n));\l   leaves_qty = (Z.of_nativeint (2n)); price = (Q.of_nativeint (5n));\l   time = (Z.of_nativeint (8856n)); src = (Z.of_nativeint (14n));\l   order_attr = RESIDENT; capacity = Principal; category = C_ONE;\l   cross_restrict =\l   \{cr_self_cross = false; cr_ubs_principal = false;\l    cr_round_lot_only = false; cr_no_locked_nbbo = false;\l    cr_pegged_mid_point_mode = (Z.of_nativeint (11n));\l    cr_enable_conditionals = false; cr_min_qty = false;\l    cr_cat_elig =\l    \{c_one_elig = false; c_two_elig = false; c_three_elig = false;\l     c_four_elig = false\}\};\l   locate_found = false; expiry_time = (Z.of_nativeint (10n))\}\llet o2 : order =\l  \{id = (Z.of_nativeint (18n)); peg = NEAR;\l   client_id = (Z.of_nativeint (19n)); order_type = PEGGED_CI;\l   qty = (Z.of_nativeint (8366n)); min_qty = (Z.of_nativeint (20n));\l   leaves_qty = (Z.of_nativeint (1n)); price = (Q.of_nativeint (2440n));\l   time = (Z.of_nativeint (8856n)); src = (Z.of_nativeint (21n));\l   order_attr = RESIDENT; capacity = Principal; category = C_ONE;\l   cross_restrict =\l   \{cr_self_cross = false; cr_ubs_principal = false;\l    cr_round_lot_only = false; cr_no_locked_nbbo = false;\l    cr_pegged_mid_point_mode = (Z.of_nativeint (17n));\l    cr_enable_conditionals = false; cr_min_qty = false;\l    cr_cat_elig =\l    \{c_one_elig = false; c_two_elig = false; c_three_elig = false;\l     c_four_elig = false\}\};\l   locate_found = false; expiry_time = (Z.of_nativeint (22n))\}\llet o3 : order =\l  \{id = (Z.of_nativeint (3n)); peg = NEAR; client_id = (Z.of_nativeint (6n));\l   order_type = LIMIT_CI; qty = (Z.of_nativeint (2283n));\l   min_qty = (Z.of_nativeint (7n)); leaves_qty = (Z.of_nativeint (0n));\l   price = (Q.of_nativeint (2n)); time = (Z.of_nativeint (8855n));\l   src = (Z.of_nativeint (8n)); order_attr = RESIDENT; capacity = Principal;\l   category = C_ONE;\l   cross_restrict =\l   \{cr_self_cross = false; cr_ubs_principal = false;\l    cr_round_lot_only = false; cr_no_locked_nbbo = false;\l    cr_pegged_mid_point_mode = (Z.of_nativeint (5n));\l    cr_enable_conditionals = false; cr_min_qty = false;\l    cr_cat_elig =\l    \{c_one_elig = false; c_two_elig = false; c_three_elig = false;\l     c_four_elig = false\}\};\l   locate_found = false; expiry_time = (Z.of_nativeint (4n))\}\llet mkt : mkt_data =\l  \{nbb = (Q.of_nativeint (2n)); nbo = (Q.of_nativeint (4n));\l   l_up = (Q.of_nativeint (454n)); l_down = (Q.of_nativeint (1n))\}\l)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
+p_3 [label=&quot;Sat (Some let side : order_side = BUY\llet o1 : order =\l  \{id = (Z.of_nativeint (9n)); peg = NO_PEG;\l   client_id = (Z.of_nativeint (10n)); order_type = LIMIT;\l   qty = (Z.of_nativeint (7720n)); min_qty = (Z.of_nativeint (12n));\l   leaves_qty = (Z.of_nativeint (1n)); price = (Q.of_nativeint (1n));\l   time = (Z.of_nativeint (1n)); src = (Z.of_nativeint (13n));\l   order_attr = RESIDENT; capacity = Principal; category = C_ONE;\l   cross_restrict =\l   \{cr_self_cross = false; cr_ubs_principal = false;\l    cr_round_lot_only = false; cr_no_locked_nbbo = false;\l    cr_pegged_mid_point_mode = (Z.of_nativeint (11n));\l    cr_enable_conditionals = false; cr_min_qty = false;\l    cr_cat_elig =\l    \{c_one_elig = false; c_two_elig = false; c_three_elig = false;\l     c_four_elig = false\}\};\l   locate_found = false; expiry_time = (Z.of_nativeint (14n))\}\llet o2 : order =\l  \{id = (Z.of_nativeint (18n)); peg = FAR;\l   client_id = (Z.of_nativeint (19n)); order_type = PEGGED_CI;\l   qty = (Z.of_nativeint (1237n)); min_qty = (Z.of_nativeint (20n));\l   leaves_qty = (Z.of_nativeint (1n)); price = (Q.of_nativeint (1n));\l   time = (Z.of_nativeint (2n)); src = (Z.of_nativeint (21n));\l   order_attr = RESIDENT; capacity = Principal; category = C_ONE;\l   cross_restrict =\l   \{cr_self_cross = false; cr_ubs_principal = false;\l    cr_round_lot_only = false; cr_no_locked_nbbo = false;\l    cr_pegged_mid_point_mode = (Z.of_nativeint (17n));\l    cr_enable_conditionals = false; cr_min_qty = false;\l    cr_cat_elig =\l    \{c_one_elig = false; c_two_elig = false; c_three_elig = false;\l     c_four_elig = false\}\};\l   locate_found = false; expiry_time = (Z.of_nativeint (22n))\}\llet o3 : order =\l  \{id = (Z.of_nativeint (3n)); peg = NEAR; client_id = (Z.of_nativeint (4n));\l   order_type = LIMIT_CI; qty = (Z.of_nativeint (2438n));\l   min_qty = (Z.of_nativeint (5n)); leaves_qty = (Z.of_nativeint (0n));\l   price = (Q.of_nativeint (1n)); time = (Z.of_nativeint (0n));\l   src = (Z.of_nativeint (6n)); order_attr = RESIDENT; capacity = Principal;\l   category = C_ONE;\l   cross_restrict =\l   \{cr_self_cross = false; cr_ubs_principal = false;\l    cr_round_lot_only = false; cr_no_locked_nbbo = false;\l    cr_pegged_mid_point_mode = (Z.of_nativeint (8n));\l    cr_enable_conditionals = false; cr_min_qty = false;\l    cr_cat_elig =\l    \{c_one_elig = false; c_two_elig = false; c_three_elig = false;\l     c_four_elig = false\}\};\l   locate_found = false; expiry_time = (Z.of_nativeint (7n))\}\llet mkt : mkt_data =\l  \{nbb = (Q.of_nativeint (8857n)); nbo = (Q.of_nativeint (8858n));\l   l_up = (Q.of_nativeint (8859n)); l_down = (Q.of_nativeint (8856n))\}\l)&quot;,shape=box,style=filled,fontname=&quot;courier&quot;,fontsize=14];
 }
 </textarea><button class="btn btn-primary">Load graph</button><div class="imandra-graphviz-loading display-none">Loading..</div><div class="imandra-graphviz-target"></div><script>
 require(['nbextensions/nbimandra/graphviz'], function (graphviz) {
-  var target = '#graphviz-78c45714-19bc-4cac-9dab-212ea0bc5db8';
+  var target = '#graphviz-72655013-c6b0-4267-a74c-26bf49b93291';
   graphviz.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-d16fa328-5169-4c76-8d32-36fa4a2b5d07';
+  var target = '#alt-caa6d334-e3a8-4009-a67f-c375efae5bb6';
   alternatives.hydrate(target);
 });
 </script></div></div></div><script>
 require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#fold-fe6a7cf0-98e3-452f-85e8-0f02215a7c4b';
+  var target = '#fold-8caaca84-158c-48e3-b89e-8cc0712565ce';
   fold.hydrate(target);
 });
 </script></div></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-e59c7db9-cc47-4853-8a7a-db54440bab4c';
+  var target = '#alt-6fcbb685-f9d7-499e-8ba0-71ce31727022';
   alternatives.hydrate(target);
 });
 </script></div></div></div>
@@ -6545,7 +6520,7 @@ val pp_rank : order_side * order * order * order * mkt_data -&gt; Document.t =
 
 
 <div class="output_html rendered_html output_subarea ">
-<div><div class="imandra-table" id="table-ea1e5e7e-e6d9-4a5d-aa7e-e7f0e9d28346"><table><thead><tr><th>side</th><th>order1</th><th>order2</th><th>order3</th><th>mkt</th></tr></thead><tr><td>BUY</td><td><div><h5>order</h5><div><table><tr><td>id</td><td>9</td></tr><tr><td>peg</td><td>NEAR</td></tr><tr><td>client_id</td><td>12</td></tr><tr><td>order_type</td><td>PEGGED</td></tr><tr><td>qty</td><td>1797</td></tr><tr><td>min_qty</td><td>13</td></tr><tr><td>leaves_qty</td><td>2</td></tr><tr><td>price</td><td>5.</td></tr><tr><td>time</td><td>8856</td></tr><tr><td>src</td><td>14</td></tr><tr><td>order_attr</td><td>RESIDENT</td></tr><tr><td>capacity</td><td>Principal</td></tr><tr><td>category</td><td>C_ONE</td></tr><tr><td>locate_found</td><td>false</td></tr><tr><td>expiry_time</td><td>10</td></tr></table></div></div></td><td><div><h5>order</h5><div><table><tr><td>id</td><td>18</td></tr><tr><td>peg</td><td>NEAR</td></tr><tr><td>client_id</td><td>19</td></tr><tr><td>order_type</td><td>PEGGED_CI</td></tr><tr><td>qty</td><td>8366</td></tr><tr><td>min_qty</td><td>20</td></tr><tr><td>leaves_qty</td><td>1</td></tr><tr><td>price</td><td>2440.</td></tr><tr><td>time</td><td>8856</td></tr><tr><td>src</td><td>21</td></tr><tr><td>order_attr</td><td>RESIDENT</td></tr><tr><td>capacity</td><td>Principal</td></tr><tr><td>category</td><td>C_ONE</td></tr><tr><td>locate_found</td><td>false</td></tr><tr><td>expiry_time</td><td>22</td></tr></table></div></div></td><td><div><h5>order</h5><div><table><tr><td>id</td><td>3</td></tr><tr><td>peg</td><td>NEAR</td></tr><tr><td>client_id</td><td>6</td></tr><tr><td>order_type</td><td>LIMIT_CI</td></tr><tr><td>qty</td><td>2283</td></tr><tr><td>min_qty</td><td>7</td></tr><tr><td>leaves_qty</td><td>0</td></tr><tr><td>price</td><td>2.</td></tr><tr><td>time</td><td>8855</td></tr><tr><td>src</td><td>8</td></tr><tr><td>order_attr</td><td>RESIDENT</td></tr><tr><td>capacity</td><td>Principal</td></tr><tr><td>category</td><td>C_ONE</td></tr><tr><td>locate_found</td><td>false</td></tr><tr><td>expiry_time</td><td>4</td></tr></table></div></div></td><td><div><h5>mkt_data</h5><div><table><tr><td>nbb</td><td>2.</td></tr><tr><td>nbo</td><td>4.</td></tr><tr><td>l_up</td><td>454.</td></tr><tr><td>l_down</td><td>1.</td></tr></table></div></div></td></tr></table></div></div>
+<div><div class="imandra-table" id="table-4514920d-2c16-48bb-89c2-effabaae8b63"><table><thead><tr><th>side</th><th>order1</th><th>order2</th><th>order3</th><th>mkt</th></tr></thead><tr><td>BUY</td><td><div><h5>order</h5><div><table><tr><td>id</td><td>9</td></tr><tr><td>peg</td><td>NO_PEG</td></tr><tr><td>client_id</td><td>10</td></tr><tr><td>order_type</td><td>LIMIT</td></tr><tr><td>qty</td><td>7720</td></tr><tr><td>min_qty</td><td>12</td></tr><tr><td>leaves_qty</td><td>1</td></tr><tr><td>price</td><td>1.</td></tr><tr><td>time</td><td>1</td></tr><tr><td>src</td><td>13</td></tr><tr><td>order_attr</td><td>RESIDENT</td></tr><tr><td>capacity</td><td>Principal</td></tr><tr><td>category</td><td>C_ONE</td></tr><tr><td>locate_found</td><td>false</td></tr><tr><td>expiry_time</td><td>14</td></tr></table></div></div></td><td><div><h5>order</h5><div><table><tr><td>id</td><td>18</td></tr><tr><td>peg</td><td>FAR</td></tr><tr><td>client_id</td><td>19</td></tr><tr><td>order_type</td><td>PEGGED_CI</td></tr><tr><td>qty</td><td>1237</td></tr><tr><td>min_qty</td><td>20</td></tr><tr><td>leaves_qty</td><td>1</td></tr><tr><td>price</td><td>1.</td></tr><tr><td>time</td><td>2</td></tr><tr><td>src</td><td>21</td></tr><tr><td>order_attr</td><td>RESIDENT</td></tr><tr><td>capacity</td><td>Principal</td></tr><tr><td>category</td><td>C_ONE</td></tr><tr><td>locate_found</td><td>false</td></tr><tr><td>expiry_time</td><td>22</td></tr></table></div></div></td><td><div><h5>order</h5><div><table><tr><td>id</td><td>3</td></tr><tr><td>peg</td><td>NEAR</td></tr><tr><td>client_id</td><td>4</td></tr><tr><td>order_type</td><td>LIMIT_CI</td></tr><tr><td>qty</td><td>2438</td></tr><tr><td>min_qty</td><td>5</td></tr><tr><td>leaves_qty</td><td>0</td></tr><tr><td>price</td><td>1.</td></tr><tr><td>time</td><td>0</td></tr><tr><td>src</td><td>6</td></tr><tr><td>order_attr</td><td>RESIDENT</td></tr><tr><td>capacity</td><td>Principal</td></tr><tr><td>category</td><td>C_ONE</td></tr><tr><td>locate_found</td><td>false</td></tr><tr><td>expiry_time</td><td>7</td></tr></table></div></div></td><td><div><h5>mkt_data</h5><div><table><tr><td>nbb</td><td>8857.</td></tr><tr><td>nbo</td><td>8858.</td></tr><tr><td>l_up</td><td>8859.</td></tr><tr><td>l_down</td><td>8856.</td></tr></table></div></div></td></tr></table></div></div>
 
 </div>
 
