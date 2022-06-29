@@ -16,6 +16,14 @@ let all_nodes (g: graph) : node list =
     List.map (fun (x : node_with_edges) -> fst x) g;;
 
 let graph_mem (x : node) (g : graph) = List.mem x (all_nodes g);;
+
+let get_node_with_edges n g =
+    List.find (fun x -> fst x = n) g;;
+```
+
+```{.imandra .input}
+lemma graph_mem_all_nodes x g = 
+    (graph_mem x g) [@trigger] ==> List.mem x (all_nodes g) [@@auto] [@@gen] [@@fc];;
 ```
 
 ```{.imandra .input}
@@ -43,6 +51,12 @@ let rec subset l1 l2 =
     match l1 with
     | [] -> true
     | x :: xs -> if not (List.mem x l2) then false else subset xs l2;;
+```
+
+```{.imandra .input}
+verify (fun n g ->
+graph_mem (key_of n) g && subset (edges_of n) (all_nodes g) && is_graph g 
+==> neighbors (key_of n) g = edges_of n);;
 ```
 
 Subset lemmas
@@ -204,7 +218,9 @@ This is the important function we needed all of the lemmas for
 
 ```{.imandra .input}
 let rec find_next_step (nbs : node list) (stack : path) (b : node) (g : graph) =
-    if List.mem b nbs then Some (List.rev (b :: stack)) else
+    if not (is_graph g) then None else
+    if not (subset nbs (all_nodes g)) then None else
+    if List.mem b nbs then Some (b :: stack) else
     match nbs with
     | [] -> None
     | x :: xs ->
@@ -217,10 +233,32 @@ let rec find_next_step (nbs : node list) (stack : path) (b : node) (g : graph) =
 ```
 
 ```{.imandra .input}
+let rec find_next_step2 (nbs : (node_with_edges) list) 
+                        (stack : node_with_edges list) 
+                        (b : node_with_edges) 
+                        (g : graph) =
+    if List.mem b nbs then Some (b :: stack) else
+    match nbs with
+    | [] -> None
+    | x :: xs ->
+        if List.mem x stack then find_next_step2 xs stack b g else
+        let neighboring_pairs = L in
+        let temp = find_next_step2 (neighbors x g) (x :: stack) b g in
+        match temp with
+        | None -> find_next_step2 xs stack b g
+        | Some _ -> temp
+        [@@measure find_next_step_measure g stack nbs] [@@auto];;
+```
+
+```{.imandra .input}
+lemma fns_empty_list nbs stack b = subset nbs (all_nodes []) ==> 
+    find_next_step nbs stack b [] = None [@@auto] [@@rw];;
+```
+
+```{.imandra .input}
 let find_path a b g =
     if not (graph_mem a g) then None else
     if not (graph_mem b g) then None else
-    if not (is_graph g) then None else
     if a = b then Some [a] else
     find_next_step (neighbors a g) [a] b g;;
 ```
@@ -228,8 +266,28 @@ let find_path a b g =
 Now that we have the `find_path` function, we'd like to verify that it behaves correctly.  This first lemma ensures that we are getting the correct single path when finding a path from an element to itself.
 
 ```{.imandra .input}
+lemma find_next_start nbs stack b g x = 
+    (find_next_step nbs stack b g = Some x) ==> 
+    List.hd x = b [@@auto];;
+```
+
+```{.imandra .input}
+let res = find_next_step [1] [0; 5] 1 [(1,[])];;
+verify ( fun nbs stack b g x y z -> 
+    subset nbs (all_nodes g) &&
+    (find_next_step nbs stack b g = Some (x :: (y :: z))) ==> 
+    List.mem x (neighbors y g));;
+```
+
+```{.imandra .input}
+lemma find_next_mem nbs stack b g x y z = 
+    (find_next_step nbs stack b g = Some (x :: (y :: z))) ==> 
+    List.mem x (neighbors y g) [@@auto];;
+```
+
+```{.imandra .input}
 lemma find_path_start a b g x y = 
-    (find_path a b g = Some (x :: y)) [@trigger] ==> x = a [@@auto] [@@fc] [@@gen];;
+    (find_path a b g = Some (x :: y)) [@trigger] ==> x = b [@@auto] [@@fc] [@@gen];;
 ```
 
 ```{.imandra .input}
@@ -280,13 +338,6 @@ lemma is_graph_cons_not_mem g1 g2 =
 ```
 
 ```{.imandra .input}
-verify ~upto:200 (fun a b g ->
-    match find_path a b g with
-    | Some x -> x <> []
-    | None -> true);;
-```
-
-```{.imandra .input}
 lemma find_next_step_nonempty nbs stack b g =
     (find_next_step nbs stack b g = Some []) = false [@@auto] [@@rw];;
 ```
@@ -298,7 +349,7 @@ lemma find_next_step_nonempty_true nbs stack b g =
 
 ```{.imandra .input}
 lemma find_next_step_nonempty_gen nbs stack b g x =
-    (find_next_step nbs stack b g) [@trigger] = Some x ==> x <> [] [@@auto] [@@gen] [@@fc];;
+    ((find_next_step nbs stack b g) = Some x) [@trigger] ==> x <> [] [@@auto] [@@gen] [@@fc];;
 ```
 
 ```{.imandra .input}
@@ -319,9 +370,11 @@ verify (fun g1 g2 -> List.for_all (is_graph2 (all_nodes (g1 :: g2))) g2 ==>
 ```
 
 ```{.imandra .input}
-lemma path_lem_start a b g x y =
-    ((find_next_step (neighbors a g) [a] b g) = Some (x :: y)) [@trigger] ==>
-    x = a [@@auto] [@@fc] [@@gen];;
+#max_induct 1;;
+lemma path_lem_start a b p nbs g x y =
+    is_graph g ==> 
+    ((find_next_step nbs p b g) = Some (x :: y)) [@trigger] ==>
+    x = List.hd p [@@auto] [@@fc] [@@gen];;
 ```
 
 ```{.imandra .input}
@@ -352,8 +405,4 @@ lemma find_path_is_path a b g =
     | Some x -> is_path x g 
     | _ -> true [@@induct structural g] [@@disable is_graph] [@@disable graph_mem] [@@disable neighbors]
         [@@disable no_duplicates] [@@disable all_nodes] [@@disable find_path];;
-```
-
-```{.imandra .input}
-
 ```
