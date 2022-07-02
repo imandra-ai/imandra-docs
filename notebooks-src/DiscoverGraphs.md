@@ -239,19 +239,69 @@ lemma find_next_step_nonempty nbs p b g x =
 ```
 
 ```{.imandra .input}
-verify (fun nbs path a b g x y z ->
+lemma neighbors_nonempty_some nbs stack a b g x =
+    is_graph g &&
     nbs = neighbors a g &&
-    path = [a] &&
-    find_next_step nbs path b g = Some (x :: (y :: z))
+    stack = [a] &&
+    find_next_step nbs stack b g = Some x ==>
+    neighbors a g <> []
+[@@auto] [@@fc];;
+```
+
+```{.imandra .input}
+verify (fun nbs stack a b g x ->
+    is_graph g &&
+    nbs = neighbors a g &&
+    stack = [a] &&
+    find_next_step nbs stack b g = Some x ==>
+    graph_mem a g
+);;
+```
+
+```{.imandra .input}
+lemma fns_start_mem nbs stack a b g x =
+    is_graph g &&
+    nbs = neighbors a g &&
+    stack = [a] &&
+    find_next_step nbs stack b g = Some x ==>
+    graph_mem a g [@@auto] [@@fc];;
+```
+
+```{.imandra .input}
+verify (fun nbs stack a b g x ->
+    is_graph g &&
+    nbs = neighbors a g &&
+    stack = [a] &&
+    find_next_step nbs stack b g = Some x ==>
+    List.for_all (fun el -> List.mem el (all_nodes g)) x);;
+```
+
+```{.imandra .input}
+lemma fns_mem nbs stack a b g x = 
+    is_graph g &&
+    nbs = neighbors a g &&
+    stack = [a] &&
+    find_next_step nbs stack b g = Some x ==>
+    List.for_all (fun el -> graph_mem el g) x 
+    [@@induct functional find_next_step] 
+    [@@disable graph_mem] 
+    [@@fc];;
+```
+
+```{.imandra .input}
+verify (fun nbs stack a b g x y z ->
+    nbs = neighbors a g &&
+    stack = [a] &&
+    find_next_step nbs stack b g = Some (x :: (y :: z))
     ==> List.mem y (neighbors x g));;
 ```
 
 ```{.imandra .input}
-lemma find_next_step_nbs nbs path a b g x y z = 
+lemma find_next_step_nbs nbs stack a b g x y z = 
     nbs = neighbors a g &&
-    path = [a] &&
-    find_next_step nbs path b g = Some (x :: (y :: z))
-    ==> List.mem x (neighbors y g) [@@induct functional find_next_step];;
+    stack = [a] &&
+    find_next_step nbs stack b g = Some (x :: (y :: z))
+    ==> List.mem y (neighbors x g) [@@induct functional find_next_step];;
 ```
 
 ```{.imandra .input}
