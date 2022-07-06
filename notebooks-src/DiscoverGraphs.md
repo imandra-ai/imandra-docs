@@ -22,25 +22,35 @@ let get_node_with_edges n g =
 ```
 
 ```{.imandra .input}
+lemma list_cons_mem x l = 
+    List.mem x (x :: l) [@@auto];;
+```
+
+```{.imandra .input}
 lemma graph_mem_all_nodes x g = 
     (graph_mem x g) [@trigger] ==> List.mem x (all_nodes g) [@@auto] [@@gen] [@@fc];;
 ```
 
 ```{.imandra .input}
-#require "imandra-discover-bridge";;
-open Imandra_discover_bridge.User_level;;
-```
 
-```{.imandra .input}
 let rec neighbors (n : node) (g : graph) =
     match g with
     | [] -> []
     | x :: xs ->
         if n = fst x then snd x else
+        neighbors n xs;; 
+
+(*     
+let rec neighbors (n : node) (g : graph) =
+    match g with
+    | [] -> None
+    | x :: xs ->
+        if n = fst x then Some (snd x) else
         neighbors n xs;;
+*)
 
 lemma neighbors_gen n g =
-    (neighbors n g) [@trigger] <> [] ==> graph_mem n g [@@gen] [@@auto];;
+    (neighbors n g) [@trigger] <> [] ==> graph_mem n g [@@gen] [@@fc] [@@auto];;
 
 let rec no_duplicates l =
     match l with
@@ -54,9 +64,8 @@ let rec subset l1 l2 =
 ```
 
 ```{.imandra .input}
-verify (fun n g ->
-graph_mem (key_of n) g && subset (edges_of n) (all_nodes g) && is_graph g 
-==> neighbors (key_of n) g = edges_of n);;
+lemma graph_mem_some x g =
+    (graph_mem x g) [@trigger] ==> get_node_with_edges x g <> None [@@auto] [@@fc];;
 ```
 
 Subset lemmas
@@ -78,19 +87,100 @@ lemma subset_trans l1 l2 l3 = subset l1 l2 && subset l2 l3 ==> subset l1 l3 [@@a
 ```
 
 ```{.imandra .input}
-let is_graph2 all_nodes (node,edges) =
-    List.mem node all_nodes &&
-    subset edges all_nodes &&
-    no_duplicates edges;;
+let is_graph2 g x =
+    List.mem (key_of x) (all_nodes g) &&
+    subset (edges_of x) (all_nodes g) &&
+    no_duplicates (edges_of x);;
     
 let is_graph (g : graph) =
     if g = [] then true else
     let all_nodes = all_nodes g in
     no_duplicates all_nodes &&
-    List.for_all (is_graph2 all_nodes) g;;
+    List.for_all (is_graph2 g) g;;
+```
+
+```{.imandra .input}
+verify (fun x g -> 
+    is_graph g &&
+    List.mem x g ==>
+    neighbors (key_of x) g = edges_of x);;
+```
+
+```{.imandra .input}
+lemma edges_key_relation x g = 
+    is_graph g &&
+    List.mem x g ==>
+    neighbors (key_of x) g = edges_of x [@@induct functional neighbors] [@@rw];;
+```
+
+```{.imandra .input}
+lemma forall p x l =
+    List.for_all p l && List.mem x l ==> p x [@@auto] [@@fc];;
+```
+
+```{.imandra .input}
+lemma for_all_lemma g x =
+    (List.for_all (is_graph2 g) g &&
+    List.mem x g) [@trigger] ==> is_graph2 g x [@@auto] [@@simp] [@@fc];;
+```
+
+```{.imandra .input}
+    lemma isglem g x =
+    (is_graph g && List.mem x g) [@trigger] ==>
+    is_graph2 g x [@@auto] [@@fc];;
+```
+
+```{.imandra .input}
+verify ~upto:200 (fun x y g ->
+    is_graph g &&
+    List.mem x g &&
+    List.mem y (edges_of x) ==> graph_mem y g
+);;
+```
+
+```{.imandra .input}
+lemma graph_property x y g = 
+    is_graph g &&
+    List.mem x g &&
+    List.mem y (edges_of x) ==> graph_mem y g [@@auto] [@@apply isglem g x] [@@disable is_graph] [@@fc];;
+```
+
+```{.imandra .input}
+verify ~upto:500 (fun x y g ->
+    is_graph g &&
+    List.mem y (neighbors x g) ==> graph_mem y g);;
+```
+
+```{.imandra .input}
+lemma neighbor_mem_graph0 x y g edges =
+    is_graph g &&
+    List.mem (x,edges) g &&
+    List.mem y edges ==> graph_mem y g 
+    [@@auto] [@@disable graph_mem] [@@fc];;
+```
+
+```{.imandra .input}
+lemma neighbor_mem_graph x y g =
+    is_graph g &&
+    graph_mem x g &&
+    List.mem y (neighbors x g) ==> graph_mem y g 
+    [@@auto] [@@disable graph_mem] [@@apply neighbor_mem_graph0 x y g (neighbors x g)] [@@fc];;
+```
+
+```{.imandra .input}
+#require "imandra-discover-bridge";;
+
+
+    let funlist = ["true";"neighbors";"no_duplicates";"graph_mem";"List.mem"]
     
-verify (fun g1 g2 ->  is_graph (g1 :: g2) && List.for_all (is_graph2 (all_nodes (g1 :: g2))) g2  ==>
-        List.for_all (is_graph2 (all_nodes g2)) g2);;
+    let condition x y g = is_graph g && List.mem y (neighbors x g)
+    
+    let dresult = Imandra_discover_bridge.User_level.discover 
+        ~imandra_instances:5i
+        ~rewrite_terms:false
+        ~condition:"condition"
+        ~rewrite_schemas:false
+         db funlist [@@program]
 
 ```
 
@@ -104,8 +194,8 @@ let rec is_path1 path_remaining g =
         let next = List.hd xs in
         if not (graph_mem x g) then false else
         match neighbors x g with
-        | [] -> false
-        | neighbs -> if List.mem next neighbs then is_path1 xs g else false
+        | None -> false
+        | Some neighbs -> if List.mem next neighbs then is_path1 xs g else false
     );;
 
 let is_path (p : path) (g : graph) =
@@ -133,7 +223,6 @@ Little lemmas
 lemma gcons x y g = graph_mem x g ==> graph_mem x (cons_graphs y g) [@@auto];;
 
 lemma mem_false x = not (List.mem x []) [@@rw] [@@auto];;
-
 ```
 
 Termination measure for finding next step
@@ -268,7 +357,25 @@ lemma fns_start_mem nbs stack a b g x =
 ```
 
 ```{.imandra .input}
-verify (fun nbs stack a b g x ->
+verify ~upto:200 (fun nbs stack a b g x ->
+    is_graph g &&
+    nbs = neighbors a g &&
+    stack = [a] &&
+    find_next_step nbs stack b g = Some x ==>
+    graph_mem b g);;
+```
+
+```{.imandra .input}
+lemma fns_end_mem nbs stack a b g x =
+    is_graph g &&
+    nbs = neighbors a g &&
+    stack = [a] &&
+    find_next_step nbs stack b g = Some x ==>
+    graph_mem b g [@@induct functional find_next_step] [@@fc];;
+```
+
+```{.imandra .input}
+verify ~upto:200 (fun nbs stack a b g x ->
     is_graph g &&
     nbs = neighbors a g &&
     stack = [a] &&
@@ -302,8 +409,4 @@ lemma find_next_step_nbs nbs stack a b g x y z =
     stack = [a] &&
     find_next_step nbs stack b g = Some (x :: (y :: z))
     ==> List.mem y (neighbors x g) [@@induct functional find_next_step];;
-```
-
-```{.imandra .input}
-
 ```
