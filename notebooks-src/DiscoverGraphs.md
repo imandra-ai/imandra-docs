@@ -48,9 +48,10 @@ let rec neighbors (n : node) (g : graph) =
         if n = fst x then Some (snd x) else
         neighbors n xs;;
 *)
-
+(*
 lemma neighbors_gen n g =
     (neighbors n g) [@trigger] <> [] ==> graph_mem n g [@@gen] [@@fc] [@@auto];;
+*)
 
 let rec no_duplicates l =
     match l with
@@ -65,7 +66,7 @@ let rec subset l1 l2 =
 
 ```{.imandra .input}
 lemma graph_mem_some x g =
-    (graph_mem x g) [@trigger] ==> get_node_with_edges x g <> None [@@auto] [@@fc];;
+    (graph_mem x g) [@trigger] ==> Option.is_some (get_node_with_edges x g) [@@auto] [@@fc];;
 ```
 
 Subset lemmas
@@ -77,26 +78,42 @@ lemma subset_sing x y l1 = subset x l1 ==> subset x (y :: l1) [@@fc] [@@auto];;
 
 lemma subset_id x0 = subset x0 x0 [@@auto];;
 
-lemma sing_mem x x1 x2 = List.mem x x1 && subset x1 x2 ==> List.mem x x2 [@@auto] [@@fc];;
+lemma sing_mem x x1 x2 = (List.mem x x1 && subset x1 x2) [@trigger] ==> List.mem x x2 [@@auto] [@@fc];;
 
 lemma subset_cons_sing2 x l = subset l (x @ l) [@@induct structural x] [@@apply subset_id l];;
 
 lemma subset_cons_sing3 x l = subset l (x :: l) [@@auto] [@@apply subset_cons_sing2 [x] l];;
-
+(*
 lemma subset_trans l1 l2 l3 = subset l1 l2 && subset l2 l3 ==> subset l1 l3 [@@auto] [@@fc];;
+*)
 ```
 
 ```{.imandra .input}
+(*
 let is_graph2 g x =
     List.mem (key_of x) (all_nodes g) &&
     subset (edges_of x) (all_nodes g) &&
     no_duplicates (edges_of x);;
-    
+*)
+(*
 let is_graph (g : graph) =
     if g = [] then true else
     let all_nodes = all_nodes g in
     no_duplicates all_nodes &&
     List.for_all (is_graph2 g) g;;
+*)
+
+let is_graph2 g x =
+    let nbs = neighbors x g in
+    graph_mem x g &&
+    subset nbs (all_nodes g) &&
+    no_duplicates nbs;;
+    
+let is_graph (g : graph) =
+    if g = [] then true else
+    let all_nodes = all_nodes g in
+    no_duplicates all_nodes &&
+    List.for_all (is_graph2 g) all_nodes;;
 ```
 
 ```{.imandra .input}
@@ -107,27 +124,20 @@ verify (fun x g ->
 ```
 
 ```{.imandra .input}
-lemma edges_key_relation x g = 
-    is_graph g &&
-    List.mem x g ==>
-    neighbors (key_of x) g = edges_of x [@@induct functional neighbors] [@@rw];;
-```
-
-```{.imandra .input}
 lemma forall p x l =
     List.for_all p l && List.mem x l ==> p x [@@auto] [@@fc];;
 ```
 
 ```{.imandra .input}
 lemma for_all_lemma g x =
-    (List.for_all (is_graph2 g) g &&
-    List.mem x g) [@trigger] ==> is_graph2 g x [@@auto] [@@simp] [@@fc];;
+    (List.for_all (is_graph2 g) (all_nodes g) &&
+     graph_mem x g) [@trigger] ==> is_graph2 g x [@@auto] [@@simp] [@@fc];;
 ```
 
 ```{.imandra .input}
-    lemma isglem g x =
-    (is_graph g && List.mem x g) [@trigger] ==>
-    is_graph2 g x [@@auto] [@@fc];;
+lemma isgraph2_neighbors_fc x g =
+    (is_graph g && graph_mem x g) [@trigger] ==>
+    subset (neighbors x g) (all_nodes g) [@@auto] [@@fc];;
 ```
 
 ```{.imandra .input}
@@ -139,24 +149,9 @@ verify ~upto:200 (fun x y g ->
 ```
 
 ```{.imandra .input}
-lemma graph_property x y g = 
-    is_graph g &&
-    List.mem x g &&
-    List.mem y (edges_of x) ==> graph_mem y g [@@auto] [@@apply isglem g x] [@@disable is_graph] [@@fc];;
-```
-
-```{.imandra .input}
 verify ~upto:500 (fun x y g ->
     is_graph g &&
     List.mem y (neighbors x g) ==> graph_mem y g);;
-```
-
-```{.imandra .input}
-lemma neighbor_mem_graph0 x y g edges =
-    is_graph g &&
-    List.mem (x,edges) g &&
-    List.mem y edges ==> graph_mem y g 
-    [@@auto] [@@disable graph_mem] [@@fc];;
 ```
 
 ```{.imandra .input}
@@ -164,7 +159,10 @@ lemma neighbor_mem_graph x y g =
     is_graph g &&
     graph_mem x g &&
     List.mem y (neighbors x g) ==> graph_mem y g 
-    [@@auto] [@@disable graph_mem] [@@apply neighbor_mem_graph0 x y g (neighbors x g)] [@@fc];;
+    [@@auto] 
+    [@@apply isgraph2_neighbors_fc x g] 
+    [@@apply sing_mem y (neighbors x g) (List.map key_of g)] 
+    [@@fc];;
 ```
 
 ```{.imandra .input}
@@ -193,9 +191,8 @@ let rec is_path1 path_remaining g =
     (
         let next = List.hd xs in
         if not (graph_mem x g) then false else
-        match neighbors x g with
-        | None -> false
-        | Some neighbs -> if List.mem next neighbs then is_path1 xs g else false
+        if List.mem next (neighbors x g) then is_path1 xs g else 
+        false
     );;
 
 let is_path (p : path) (g : graph) =
@@ -325,16 +322,6 @@ let find_path a b g =
 ```{.imandra .input}
 lemma find_next_step_nonempty nbs p b g x = 
     (find_next_step nbs p b g = Some x) [@trigger] ==> x <> [] [@@auto] [@@fc];;
-```
-
-```{.imandra .input}
-lemma neighbors_nonempty_some nbs stack a b g x =
-    is_graph g &&
-    nbs = neighbors a g &&
-    stack = [a] &&
-    find_next_step nbs stack b g = Some x ==>
-    neighbors a g <> []
-[@@auto] [@@fc];;
 ```
 
 ```{.imandra .input}
