@@ -300,7 +300,17 @@ lemma adm_lemma4 g x stack acc = count_non_members1 g stack (acc+1) <= count_non
                                  List.mem x stack [@@auto] [@@fc];;
 ```
 
+```{.imandra .input}
+lemma adm_lemma5 g x stack acc = count_non_members1 g stack (acc+1) = count_non_members1 g (x :: stack) acc ==>
+                                 List.mem x stack [@@auto] [@@fc];;
+```
+
 This is the important function we needed all of the lemmas for
+
+```{.imandra .input}
+lemma neighbors_gen n g =
+    (neighbors n g) [@trigger] <> [] ==> graph_mem n g [@@gen] [@@auto];;
+```
 
 ```{.imandra .input}
 let rec find_next_step (nbs : node list) (stack : path) (b : node) (g : graph) =
@@ -374,6 +384,7 @@ verify ~upto:200 (fun nbs stack a b g x ->
 lemma fns_mem nbs stack a b g x = 
     is_graph g &&
     nbs = neighbors a g &&
+    graph_mem a g &&
     stack = [a] &&
     find_next_step nbs stack b g = Some x ==>
     List.for_all (fun el -> graph_mem el g) x 
@@ -396,4 +407,13 @@ lemma find_next_step_nbs nbs stack a b g x y z =
     stack = [a] &&
     find_next_step nbs stack b g = Some (x :: (y :: z))
     ==> List.mem y (neighbors x g) [@@induct functional find_next_step];;
+```
+
+```{.imandra .input}
+lemma find_path_is_path a b g x = 
+    find_path a b g = Some x ==> is_path x g [@@induct structural x];;
+```
+
+```{.imandra .input}
+
 ```
