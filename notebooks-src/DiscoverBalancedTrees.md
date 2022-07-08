@@ -14,7 +14,7 @@ Imandra Discover is a tool for theory exploration and producing conjectures.  So
 
 ## Balanced Binary Trees
 
-In this example, we will define a type of binary trees, and a function that creates a balanced binary tree of a given number of nodes.  Balanced binary trees are trees where the subtrees to the left and right of the root have either the same number of nodes, or differ by one.  We will then demonstrate how to use Discover for the discovery of properties of these functions.  
+In this example, we will define a type of binary trees, and a function that creates a balanced binary tree of a given number of nodes.  Balanced binary trees are trees where the subtrees to the left and right of the root have either the same number of nodes, or differ by one.  We will then demonstrate how to use Discover for the discovery of properties of these functions.
 
 # Demonstration
 
@@ -34,15 +34,16 @@ It is common to restrict induction used by Imandra using `#max_induct`.
 
 ```{.imandra .input}
 #max_induct 1;;
+#induct_unroll 20;;
 ```
 
-This is our type of binary trees.  The content of the binary trees is immaterial.  
+This is our type of binary trees.  The content of the binary trees is immaterial.
 
 Keep in mind that Discover instantiates polymorphic types with `int`.  This means that if this was a polymorphic binary tree whose values were of `'a`, Discover would replace the type variable `'a` with `int`.  If Discover gives you unexpected output or seems to lack things that it should have, take a look at the signature used by Discover.  You can specify the types of your functions to prevent this.
 
 ```{.imandra .input}
-type bt = | Empty 
-          | Branch of 
+type bt = | Empty
+          | Branch of
             {value : int;
              left : bt;
              right : bt;};;
