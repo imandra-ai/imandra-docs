@@ -11,7 +11,7 @@ key-phrases:
   - ordinals
   - left pad
   - consistency
-expected-error-report: { "errors": 3, "exceptions": 0 }
+expected-error-report: { "errors": 4, "exceptions": 0 }
 ---
 
 # Proving Program Termination
