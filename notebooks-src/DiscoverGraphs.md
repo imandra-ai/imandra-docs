@@ -27,11 +27,6 @@ lemma list_cons_mem x l =
 ```
 
 ```{.imandra .input}
-lemma graph_mem_all_nodes x g = 
-    (graph_mem x g) [@trigger] ==> List.mem x (all_nodes g) [@@auto] [@@gen] [@@fc];;
-```
-
-```{.imandra .input}
 
 let rec neighbors (n : node) (g : graph) =
     match g with
@@ -155,10 +150,14 @@ verify ~upto:500 (fun x y g ->
 ```
 
 ```{.imandra .input}
+lemma neighbor_mem_graph_nonempty x y g =
+    (List.mem y (neighbors x g)) [@trigger] ==> graph_mem x g [@@auto] [@@fc];;
+```
+
+```{.imandra .input}
 lemma neighbor_mem_graph x y g =
     is_graph g &&
-    graph_mem x g &&
-    List.mem y (neighbors x g) ==> graph_mem y g 
+    (List.mem y (neighbors x g)) [@trigger] ==> graph_mem y g && graph_mem x g
     [@@auto] 
     [@@apply isgraph2_neighbors_fc x g] 
     [@@apply sing_mem y (neighbors x g) (List.map key_of g)] 
@@ -219,7 +218,7 @@ Little lemmas
 ```{.imandra .input}
 lemma gcons x y g = graph_mem x g ==> graph_mem x (cons_graphs y g) [@@auto];;
 
-lemma mem_false x = not (List.mem x []) [@@rw] [@@auto];;
+lemma mem_false x = not (List.mem x []) [@@auto];;
 ```
 
 Termination measure for finding next step
@@ -345,12 +344,85 @@ verify (fun nbs stack a b g x ->
 ```
 
 ```{.imandra .input}
-lemma fns_start_mem nbs stack a b g x =
+let rec path_induction g x =
+    match x with 
+    | [] -> true
+    | [a] -> graph_mem a g
+    | a :: (b :: c) ->
+        graph_mem a g && List.mem b (neighbors a g) && path_induction g (b :: c);;
+```
+
+```{.imandra .input}
+lemma not_graph_mem_none nbs stack a b g =
+    is_graph g &&
+    nbs = neighbors a g &&
+    stack = [a] &&
+    not (graph_mem a g) ==>
+    find_next_step nbs stack b g = None [@@auto] [@@fc];;
+```
+
+```{.imandra .input}
+verify  ~upto:200 (fun nbs stack a b g ->
+    is_graph g &&
+    nbs = neighbors a g &&
+    stack = [a] &&
+    not (graph_mem b g) ==>
+    find_next_step nbs stack b g = None);;
+```
+
+```{.imandra .input}
+lemma not_graph_mem_end_none nbs stack a b g =
+    is_graph g &&
+    nbs = neighbors a g &&
+    stack = [a] &&
+    not (graph_mem b g) ==>
+    find_next_step nbs stack b g = None [@@auto] [@@fc];;
+```
+
+```{.imandra .input}
+lemma fns_mem_a nbs stack a b g x =
     is_graph g &&
     nbs = neighbors a g &&
     stack = [a] &&
     find_next_step nbs stack b g = Some x ==>
-    graph_mem a g [@@auto] [@@fc];;
+    graph_mem a g 
+    [@@induct functional path_induction] 
+    [@@apply not_graph_mem_none nbs stack a b g]
+    [@@fc];;
+```
+
+```{.imandra .input}
+verify ~upto:200 (fun nbs stack a b g x ->
+    is_graph g &&
+    nbs = neighbors a g &&
+    stack = [a] &&
+    find_next_step nbs stack b g = Some x
+    ==> List.hd x = a);;
+```
+
+```{.imandra .input}
+lemma fns_start_arbitrary nbs stack a b g x =
+    is_graph g &&
+    nbs = neighbors a g &&
+    stack = [a] &&
+    find_next_step nbs stack b g = Some x
+    ==> List.hd x = a
+    [@@simp]
+    [@@induct functional find_next_step] 
+    [@@apply not_graph_mem_none nbs stack a b g]
+    [@@fc];;
+```
+
+```{.imandra .input}
+lemma fns_mem nbs stack a b g x y =
+    is_graph g &&
+    nbs = neighbors a g &&
+    stack = [a] &&
+    find_next_step nbs stack b g = Some x && 
+    List.mem y x ==>
+    graph_mem y g 
+    [@@induct functional path_induction]
+    [@@fc];;
 ```
 
 ```{.imandra .input}
@@ -368,28 +440,11 @@ lemma fns_end_mem nbs stack a b g x =
     nbs = neighbors a g &&
     stack = [a] &&
     find_next_step nbs stack b g = Some x ==>
-    graph_mem b g [@@induct functional find_next_step] [@@fc];;
-```
-
-```{.imandra .input}
-verify ~upto:200 (fun nbs stack a b g x ->
-    is_graph g &&
-    nbs = neighbors a g &&
-    stack = [a] &&
-    find_next_step nbs stack b g = Some x ==>
-    List.for_all (fun el -> List.mem el (all_nodes g)) x);;
-```
-
-```{.imandra .input}
-lemma fns_mem nbs stack a b g x = 
-    is_graph g &&
-    nbs = neighbors a g &&
-    graph_mem a g &&
-    stack = [a] &&
-    find_next_step nbs stack b g = Some x ==>
-    List.for_all (fun el -> graph_mem el g) x 
-    [@@induct functional find_next_step] 
-    [@@disable graph_mem] 
+    graph_mem b g 
+    [@@induct functional path_induction] 
+    [@@simp]
+    [@@disable graph_mem]
+    [@@apply neighbor_mem_graph a b g]
     [@@fc];;
 ```
 
@@ -406,12 +461,13 @@ lemma find_next_step_nbs nbs stack a b g x y z =
     nbs = neighbors a g &&
     stack = [a] &&
     find_next_step nbs stack b g = Some (x :: (y :: z))
-    ==> List.mem y (neighbors x g) [@@induct functional find_next_step];;
+    ==> List.mem y (neighbors x g) [@@auto];;
 ```
 
 ```{.imandra .input}
-lemma find_path_is_path a b g x = 
-    find_path a b g = Some x ==> is_path x g [@@induct structural x];;
+lemma find_path_is_path a b g x =
+    is_graph g &&
+    find_path a b g = Some x ==> is_path x g [@@induct functional path_induction];;
 ```
 
 ```{.imandra .input}
