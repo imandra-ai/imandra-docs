@@ -220,9 +220,7 @@ Let's use the extension mechanisms of `Region_pp` to achieve just that:
 open Region_pp_intf
 
 module Custom = struct
-
-  type t =
-    | Set of t node_ list
+  type 'ty c = Set of ('ty, 'ty c) node_ list
 
   let map f = function
     | Set els -> Set (List.map f els)
@@ -230,51 +228,95 @@ module Custom = struct
   let compare compare one two =
     match one, two with
     | Set s_one, Set s_two ->
-       if List.length s_one = List.length s_two &&
-            CCList.for_all (fun el -> (List.exists (fun x -> compare el x = Equivalent) s_two)) s_one then
-         Equivalent
-       else
-         UnComparable
+      if
+        List.length s_one = List.length s_two
+        && CCList.for_all
+             (fun el -> List.exists (fun x -> compare el x = Equivalent) s_two)
+             s_one
+      then
+        Equivalent
+      else
+        UnComparable
 
   let print p ~focus out = function
-    | Set s -> CCFormat.(fprintf out "@[<hv>{ %a@ }@]" (list ~sep:(return "@ ; ") p)) s
+    | Set s ->
+      CCFormat.(fprintf out "@[<hv>{ %a@ }@]" (list ~sep:(return "@ ; ") p)) s
 end
 
-module PPrinter = Region_pp.Make(Custom)
-
+module PPrinter =
+  Region_pp.Make
+    (Custom)
+    (Region_pp_intf.Type_conv.Make (Region_pp_intf.Type_conv.String_type))
 open Custom
 open PPrinter
 
-let rec refine_ = function
-  | Funcall (Var "Map.add'", _) as ks when is_proper_set ks ->
-     Custom (Set (gather_keys ks))
+let to_curried_types : PPrinter.ty -> PPrinter.ty list =
+ fun t -> CCString.split ~by:"->" t |> CCList.map CCString.trim
 
-  | Funcall (Var "Map.add'", [m; k; Boolean true]) ->
-     Funcall (Var "Set.add", [m; k])
+let from_curried_types : PPrinter.ty list -> PPrinter.ty =
+  CCString.concat " -> "
 
+let get_input_types : PPrinter.ty list -> ty list =
+ fun t -> CCList.take (CCList.length t - 1) t
+
+let rec refine_ n =
+  let union_to_subset ty =
+    let types_of_union_input = to_curried_types ty |> get_input_types in
+    let subset_type = types_of_union_input @ [ bool_type () ] in
+    from_curried_types subset_type
+  in
+  match view n with
+  | Funcall ({ view = Var "Map.add'"; _ }, _) when is_proper_set n ->
+    mk ~ty:n.ty (Custom (Set (gather_keys n)))
+  | Funcall ({ view = Var "Map.add'"; ty }, [ m; k; { view = Boolean true; _ } ])
+    ->
+    mk ~ty:n.ty (Funcall (mk ~ty (Var "Set.add"), [ m; k ]))
     (* verify (fun x y -> Set.union x y = y ==> Set.subset x y)  *)
+  | Eq ({ view = Funcall ({ view = Var "Set.union"; ty }, [ x; y ]); _ }, z)
+    when Comparator.(is_eq (compare y z)) ->
+    let ty = union_to_subset ty in
+    mk ~ty:n.ty
+      (Eq
+         ( mk ~ty:n.ty (Funcall (mk ~ty (Var "Set.subset"), [ x; y ])),
+           mk ~ty:n.ty (Boolean true) ))
+  | Neq ({ view = Funcall ({ view = Var "Set.union"; ty }, [ x; y ]); _ }, z)
+    when Comparator.(is_eq (compare y z)) ->
+    let ty = union_to_subset ty in
+    mk ~ty:n.ty
+      (Eq
+         ( mk ~ty:n.ty (Funcall (mk ~ty (Var "Set.subset"), [ x; y ])),
+           mk ~ty:n.ty (Boolean false) ))
+  | Eq (z, { view = Funcall ({ view = Var "Set.union"; ty }, [ x; y ]); _ })
+    when Comparator.(is_eq (compare y z)) ->
+    let ty = union_to_subset ty in
+    mk ~ty:n.ty
+      (Eq
+         ( mk ~ty:n.ty (Funcall (mk ~ty (Var "Set.subset"), [ x; y ])),
+           mk ~ty:n.ty (Boolean true) ))
+  | Neq (z, { view = Funcall ({ view = Var "Set.union"; ty }, [ x; y ]); _ })
+    when Comparator.(is_eq (compare y z)) ->
+    mk ~ty:n.ty
+      (Eq
+         ( mk ~ty:n.ty (Funcall (mk ~ty (Var "Set.subset"), [ x; y ])),
+           mk ~ty:n.ty (Boolean false) ))
+  | _ -> n
 
-  | Eq (Funcall (Var "Set.union", [x;y]), z) when Comparator.(is_eq (compare y z)) ->
-     Eq (Funcall (Var "Set.subset", [x;y]), Boolean true)
-
-  | Neq (Funcall (Var "Set.union", [x;y]), z) when Comparator.(is_eq (compare y z)) ->
-     Eq (Funcall (Var "Set.subset", [x;y]), Boolean false)
-
-  | Eq (z, Funcall (Var "Set.union", [x;y])) when Comparator.(is_eq (compare y z)) ->
-     Eq (Funcall (Var "Set.subset", [x;y]), Boolean true)
-
-  | Neq (z, Funcall (Var "Set.union", [x;y])) when Comparator.(is_eq (compare y z)) ->
-     Eq (Funcall (Var "Set.subset", [x;y]), Boolean false)
-
-  | x -> x
-
-and gather_keys = function
-  | Funcall (Var "Map.add'", [m; k; Boolean true]) -> k::gather_keys m
-  | Funcall (Var "Map.const", [Boolean false]) -> []
-  | x -> failwith (Printf.sprintf "Unexpected set value: %s" (PPrinter.Printer.to_string x))
+and gather_keys n =
+  match view n with
+  | Funcall ({ view = Var "Map.add'"; _ }, [ m; k; { view = Boolean true; _ } ])
+    ->
+    k :: gather_keys m
+  | Funcall ({ view = Var "Map.const"; _ }, [ { view = Boolean false; _ } ]) ->
+    []
+  | _ ->
+    failwith
+      (Printf.sprintf "Unexpected set value: %s" (PPrinter.Printer.to_string n))
 
 and is_proper_set x =
-  try ignore(gather_keys x); true with _ -> false
+  try
+    ignore (gather_keys x);
+    true
+  with _ -> false
 
 let refine ast = XF.walk_fix refine_ ast |> CCList.return
 
