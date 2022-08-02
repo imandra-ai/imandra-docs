@@ -33,7 +33,6 @@ Full description of this methodology is outside the scope of this notebook, but 
 ## Order type definitions
 Our first step is to define type for orders:
 
-
 ```{.imandra .input}
 type order_type = Market | Limit | Quote
 
@@ -48,7 +47,6 @@ type order = {
 
 There are instances when we would not be able to determine a fill price (e.g. when the book is empty). To account for this, we'll make `fill_price` type support both cases.
 
-
 ```{.imandra .input}
 (* There are instances when the fill price may not be calculated at all. *)
 type fill_price =
@@ -62,7 +60,6 @@ type order_book = {
 }
 ```
 
-
 ## Auxiliary functions
 
 We'll  define some helper functions which we'll use later on. The trading guide specifies that price of a fill may be influenced by the best and second best orders in the book (symmetrically buys and sells).
@@ -70,7 +67,6 @@ We'll  define some helper functions which we'll use later on. The trading guide 
 ![Order book](https://storage.googleapis.com/imandra-notebook-assets/exchange_pricing_venue.png)
 
 *Please note: the notion of 'best' orders in the code below is with respect to an order ranking criteria which is omitted in this notebook for brevity. We assume that the orders are already sorted with respect to this criteria. So, the 'best' buy order is the first order in the list. Sorting of order books is an interesting topic in itself - in 2015 we won (1st place out of more than 620 companies) the UBS Future of Finance FinTech Challenge where we demonstrated that the ranking criteria used in UBS ATS (as it was described in the SEC filing) was not transitive, leading to potentially significant violation of regulatory directives and "best-ex" rules. For more information, please read our [whitepaper](https://www.imandra.ai/case-study-2015-sec-fine-against-ubs-ats).*
-
 
 ```{.imandra .input}
 (* Determine whether order 1 or 2 is older. *)
@@ -108,7 +104,6 @@ Now that we have defined all of the necessary types and auxiliary functions, it'
 - `ref_price` - reference price of the exchange. This refers to the last *stable* fill price that the exchange traded on. The exact definition is more nuanced, but for our purpose - just think of it a form of an 'anchor' that's used to determine fill prices when an order book doesn't contain enough information.
 
 Here's the main function for our exercise:
-
 
 ```{.imandra .input}
 let match_price (ob : order_book) (ref_price : real) =
@@ -232,7 +227,6 @@ let match_price (ob : order_book) (ref_price : real) =
 
 Now that we've defined `match_price`, let's try it out. We'll start by declaring 4 instances of different orders for us to experiment with later:
 
-
 ```{.imandra .input}
 let order1 = {
  order_id = 1;
@@ -270,16 +264,13 @@ let order4 = {
 
 We'll now evaluate `match_price` with these new orders. Notice that we'll define `order_book` value inline when we call the function.
 
-
 ```{.imandra .input}
 match_price {buys=[order1]; sells=[order2]} 123.45
 ```
 
-
 ```{.imandra .input}
 match_price {buys=[order1]; sells=[order2;order3]} 123.45
 ```
-
 
 ```{.imandra .input}
 match_price {buys=[order1]; sells=[order2;order3]} 123.45
@@ -299,7 +290,6 @@ This is what *Region Decomposition* is designed to do.
 
 To *decompose* the state-space of `match_price`, we'll use `Modular_decomp.top` command. Notice that while our types and the actual code was entered in Imandra's `logic` mode, we'll now switch to `program` mode. The results of decomposition will be reflected into `program` mode so we may use the full power of OCaml language to utilise the results.
 
-
 ```{.imandra .input}
 #program;;
 let d = Modular_decomp.(top ~prune:true "match_price");;
@@ -318,7 +308,6 @@ Let's try to render the results in something closer to English. For example, a r
 
 The following code will use Imandra-tools to condense the region constraints and make them more "readable":
 
-
 ```{.imandra .input}
 #program;;
 
@@ -328,17 +317,18 @@ module PPrinter = Region_pp.PPrinter;;
 
 module Refiner = struct
  open PPrinter
+ open Region_pp_intf
 
  (* This function will be used to traverse the regions' data (constraints and invariants) and convert them to humanly readable text *)
- let walk (x : node) : node = match x with
-  | Funcall (Var "List.hd", [FieldOf (_, "buys", _)]) -> Var "First buy order"
-  | Funcall (Var "List.hd", [FieldOf (_, "sells", _)]) -> Var "First sell order"
-  | Funcall (Var "List.hd", [Funcall (Var "List.tl", [FieldOf (_, "buys", _)])]) -> Var "Second buy order"
-  | Funcall (Var "List.hd", [Funcall (Var "List.tl", [FieldOf (_, "sells", _)])]) -> Var "Second sell order"
-  | Is (t, ty, FieldOf (_, "order_type", x)) -> Is (t, ty, x)
+ let walk (x : node) : node = match view x with
+  | Funcall ({view = Var "List.hd";_}, [{view = FieldOf (_, "buys", _);_}]) -> mk ~ty:x.ty (Var "First buy order")
+  | Funcall ({view = Var "List.hd";_}, [{view = FieldOf (_, "sells", _);_}]) -> mk ~ty:x.ty (Var "First sell order")
+  | Funcall ({view = Var "List.hd";_}, [{view = Funcall ({view = Var "List.tl";_}, [{view = FieldOf (_, "buys", _);_}]);_}]) -> mk ~ty:x.ty (Var "Second buy order")
+  | Funcall ({view = Var "List.hd";_}, [{view = Funcall ({view = Var "List.tl";_}, [{view = FieldOf (_, "sells", _);_}]);_}]) -> mk ~ty:x.ty (Var "Second sell order")
+  | Is (t, ty, {view = FieldOf (_, "order_type", x);_}) -> mk ~ty:x.ty (Is (t, ty, x))
   | FieldOf (Record, (("order_id" | "order_qty" | "order_price" | "order_time") as field), x)
-    -> FieldOf(Human, field, x)
-  | x -> x
+    -> mk ~ty:x.ty (FieldOf(Human, field, x))
+  | _ -> x
 
  let refine node =
   XF.walk_fix walk node
@@ -356,11 +346,9 @@ let regions_doc d =
 #install_doc regions_doc;;
 ```
 
-
 ```{.imandra .input}
 Modular_decomp.get_concrete d;;
 ```
-
 
 Now we see the same regions, but constraints and invariants refined and translated into English-like prose. Notice that references to the OCaml function `List.hd` have been replaced by `First Buy Order`, just as we've wanted.
 
@@ -368,7 +356,6 @@ Now we see the same regions, but constraints and invariants refined and translat
 ## Adding constraints (side conditions)
 
 The regions Imandra has thus far produced describe the full state-space of `match_price.` But what if we would like to focus on its specific subset? Can we, somehow, 'slice' the state-space? Absolutely, you can do this by adding a 'side-condition', a function that takes the same arguments as `match_price` and returns a boolean value. Imandra will constrain the state-space of `match_price` such that the side condition is `true`. This is quite a powerful mechanism which we'll illustrate with two examples: one case where we simply constrain the *inputs* into `match_price` and another where we constrain the *output* of `match_price`:
-
 
 ```{.imandra .input}
 (* Side condition function must be defined in logic mode just like the original `match_price` function. *)
@@ -387,11 +374,9 @@ let side_condition (ob : order_book) (ref_price : real)  =
 Modular_decomp.(top ~assuming:"side_condition" "match_price" |> get_concrete);;
 ```
 
-
 All of the newly generated regions now contain the constraints that there's at least a single order on both sides of the book and that both of those orders are `Market`.
 
 Let us now constrain the behaviour to only that which produces a `Known _` type of fill price. Notice that now we will constrain the output of `match_price`. *(OCaml-specific note: we use `_` as a symbolic placeholder to indicate that we're not fixing it to be something specific)*
-
 
 ```{.imandra .input}
 (* Again, we need to switch back to logic mode so the engine translates the definition into axiomatic representation. *)
@@ -412,7 +397,6 @@ Modular_decomp.(top ~assuming:"side_condition2" "match_price" |> get_concrete)
 In our last step, we'll ask Imandra to synthesize concrete examples for each of the regions it generates. We'll generate just one for each region, but the interface is generic so you can request as many as you'd like. Moreover, since these values are valid OCaml (or ReasonML), you can directly compute with them or convert into whatever format you'd like (e.g. as FIX messages).
 
 The first step will create a new module for us which we'll use in the second step to query for sample points.
-
 
 ```{.imandra .input}
 (* Generate a model extractor module for `match_price` *)

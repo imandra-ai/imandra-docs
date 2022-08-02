@@ -201,15 +201,16 @@ module Custom = struct
 end
 
 
-module PPrinter = Region_pp.Make(Custom);;
+module PPrinter = Region_pp.Make  (Region_pp_intf.Type_conv.Make (Region_pp_intf.Type_conv.String_type)) (Custom);;
 
 module Refiner = struct
 
   open PPrinter
+  open Region_pp_intf
   exception Ignore
 
   let refine_invariant (intersection_s : (string * node) list) : node list=
-    match List.assoc "c" intersection_s, List.assoc "l" intersection_s with
+    match view (List.assoc "c" intersection_s), view (List.assoc "l" intersection_s) with
     | Some Struct("car_state", car_state_s), Some Struct ("light_state", light_state_s) ->
        begin
          match List.assoc "car_drive_state" car_state_s,
@@ -217,36 +218,38 @@ module Refiner = struct
                List.assoc "blinking" light_state_s,
                List.assoc "light_state" light_state_s
          with
-         | Some (Obj (state, [])), Some speed, Some blinking, Some light_state ->
-            let speed : node = Eq (Var "car_speed", speed) in
-            let blinking : node = Eq (Var "blinking", blinking) in
-            let light_state : node = Eq (Var "light_state", light_state) in
+         | Some {view = (Obj (state, []));ty=obj_ty}, Some {view = speed;ty = speed_ty}, Some {view = blinking; ty = blinking_ty}, Some {view = light_state; ty = light_state_ty} ->
+            let speed : node = mk ~ty:speed_ty (Eq (Var "car_speed", speed)) in
+            let blinking : node = mk ~ty:blinkng_ty (Eq (Var "blinking", blinking)) in
+            let light_state : node = mk ~ty:light_state_ty (Eq (Var "light_state", light_state)) in
             begin match state with
-            | "Accelerating" -> [Custom (DriveState Accelerating); speed; blinking; light_state]
-            | "Steady" -> [Custom (DriveState Steady); speed; blinking; light_state]
-            | "Braking" -> [Custom (DriveState Braking); speed; blinking; light_state]
+            | "Accelerating" -> [mk ~ty:obj_ty (Custom (DriveState Accelerating)); speed; blinking; light_state]
+            | "Steady" -> [mk ~ty:obj_ty (Custom (DriveState Steady)); speed; blinking; light_state]
+            | "Braking" -> [mk ~ty:obj_ty (Custom (DriveState Braking)); speed; blinking; light_state]
             | _ -> raise Ignore
             end
          | _ -> raise Ignore
        end
     | _, _ -> raise Ignore
 
-  let walk (x : node) : node = match x with
-
-    | FieldOf (Record, "current_time", FieldOf (Record, "l", Var "i")) -> Var "Current time"
-    | FieldOf (Record, l, FieldOf (Record, "l", Var "i")) -> Var l
-    | FieldOf (Record, c, FieldOf (Record, "c", Var "i")) -> Var c
-
-    | Is (x, _, Var "car_drive_state") ->
+  let walk (x : node) : node = 
+    let r_x = match view x with
+    | FieldOf (Record, "current_time", FieldOf (Record, "l", Var "i")) -> 
+      Var "Current time"
+    | FieldOf (Record, l, {view = FieldOf (Record, "l", Var "i");_}) -> 
+      Var l
+    | FieldOf (Record, c, {view = FieldOf (Record, "c", Var "i");_}) -> 
+      Var c
+    | Is (x, _, {view = Var "car_drive_state";_}) ->
        begin match x with
-       | "Accelerating" -> Custom (DriveState Accelerating)
-       | "Steady" -> Custom (DriveState Steady)
-       | "Braking" -> Custom (DriveState Braking)
+       | "Accelerating" -> mk ~ty (Custom (DriveState Accelerating))
+       | "Steady" -> mk ~ty (Custom (DriveState Steady))
+       | "Braking" -> mk Custom (DriveState Braking)
        | _ -> raise Ignore
        end
 
-    | Eq (Var "light_state", Obj (x, [])) ->
-       Is (x, [], Var "light_state")
+    | Eq ({view = Var "light_state";ty}, {Obj (x, []);_}) ->
+       Is (x, [], mk ~ty (Var "light_state"))
 
     | Is (x, _, Var "light_state") ->
        begin match x with
@@ -288,13 +291,14 @@ module Refiner = struct
       -> Custom (CurrentSpeedEnough true)
 
     | x -> x
+    in mk ~ty:x.ty r_x
 
   let rec refine (node : node) =
     try
-      match node with
+      match view node with
       | Eq (Var "F", Struct ("intersection", intersection))
         -> refine_invariant intersection |> List.flat_map refine
-      | node ->
+      | _ ->
          [XF.walk_fix walk node]
     with Ignore ->
       []
