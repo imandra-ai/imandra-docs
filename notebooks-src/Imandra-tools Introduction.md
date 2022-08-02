@@ -220,7 +220,10 @@ Let's use the extension mechanisms of `Region_pp` to achieve just that:
 open Region_pp_intf
 
 module Custom = struct
-  type 'ty c = Set of ('ty, 'ty c) node_ list
+
+  type ty = string
+
+  type c = Set of (ty, c) node_ list
 
   let map f = function
     | Set els -> Set (List.map f els)
@@ -245,8 +248,8 @@ end
 
 module PPrinter =
   Region_pp.Make
-    (Custom)
     (Region_pp_intf.Type_conv.Make (Region_pp_intf.Type_conv.String_type))
+    (Custom)
 open Custom
 open PPrinter
 
@@ -257,7 +260,8 @@ let from_curried_types : PPrinter.ty list -> PPrinter.ty =
   CCString.concat " -> "
 
 let get_input_types : PPrinter.ty list -> ty list =
- fun t -> CCList.take (CCList.length t - 1) t
+  let open Caml in
+  fun t -> CCList.take (CCList.length t - 1i) t
 
 let rec refine_ n =
   let union_to_subset ty =
