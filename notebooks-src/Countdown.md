@@ -35,7 +35,9 @@ operation(Num1,Num2,minus(Num1,Num2,Out),Out) :- Out is Num1 - Num2,\+ Out < 1.
 operation(Num1,Num2,divides(Num1,Num2,Out),Out) :- \+ Num2 = 0,\+ Num2 = 1,Out is Num1/Num2,0 is Num1 mod Num2.
 ```
 
+
 We can write this in imandra and reason about the functions:
+
 ```{.imandra .input}
 module R = struct
 
@@ -159,7 +161,7 @@ let valid_choice op nums =
 let choose (nums:int list) (op:op_choice) (resta:int list) (restb:int list) (ans:int) : bool = 
   valid_choice op nums && 
   choose_and_rest op.one nums resta &&
-  choose_and_rest op.two nums restb && 
+  choose_and_rest op.two resta restb && 
   calc op = ans 
 ;;
 
@@ -175,29 +177,38 @@ let rec apply_choices (choices:op_choice list) (nums:int list) (target:int) : bo
       apply_choices t ((calc op)::restb) target
 ;;
 ```
+
 Let's use it to find a solution to a simple problem:
+
 ```{.imandra .input}
 instance (fun cs -> apply_choices cs [2;3;4;5] 17);; 
 ```
+
 We can use trace to see the operations performed here:
+
 ```{.imandra .input}
 #trace apply_choice;;
 apply_choices CX.cs [2;3;4;5] 17;;
 ```
+
 Also we can verify some properties - for example that reversing the numbers chosen has no effect on the result:
+
 ```{.imandra .input}
 #untrace apply_choice;;
 verify (fun x y nums target -> apply_choices x nums target ==> apply_choices x (List.rev nums) target);; 
 ```
+
 or that if you find a set of operations which find a solution, adding any new operations does not affect this result:
+
 ```{.imandra .input}
 verify (fun x y nums target -> apply_choices x nums target ==> apply_choices (x@y) nums target);; 
 ```
+
 or we can prove that if you subtract one from each of the answers this does not maintain the result:
+
 ```{.imandra .input}
 verify (fun x y nums target -> apply_choices x nums target ==> apply_choices x (List.map (fun x -> x-1)  nums) target);; 
 ```
-
 
 It is possible also to use imandra in a more substantial way, to solve the same problem using an evaluator:
 
