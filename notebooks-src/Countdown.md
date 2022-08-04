@@ -276,10 +276,7 @@ let rec eval (nums:int list) (target:int) (choices:op_choice list) =
 
 which we can then use to solve the infamous problem of obtaining 952 from 25, 50, 75, 100, 3 and 6:
 
-```{.imandra .input}
-eval [25;50;75;100;3;6] 952 [];;
+```
+ eval [25;50;75;100;3;6] 952 [];; 
 ```
 
-```{.imandra .input}
-
-```
