@@ -120,82 +120,82 @@ type op =
   | Plus
   | Times
   | Divides
-  | Minus
+  | Minus;;
 
-type op_choice =
-  {
-    op: op
-    ; one: int
-    ; two: int
-  }
+type op_choice = {
+    op:op
+  ; one:int 
+  ; two:int
+};;
 
-let rec take_index (i:int) (l:int list) : int option * int list =
-  match l with
-  | [] -> None,[]
-  | h::t -> if (i <= 0) then Some h,t else
-    let res_num,res_tail = take_index (i-1) t in
-    res_num,h::res_tail
-[@@measure (Ordinal.of_int i)]
+let rec choose_and_rest (num:int) (nums:int list) (rest:int list): bool = 
+  match nums with 
+  | [] -> false
+  | n::r when n=num && r = rest -> true 
+  | n::r -> choose_and_rest num r (n::rest);;
 
-let valid_choice (choice:op_choice) (nums: int list): bool =
-  choice.one >=0 && choice.two >= 0 && choice.one <> choice.two &&
-  choice.one < List.length nums && choice.two < List.length nums &&
-  match choice.op, List.nth choice.one nums,List.nth choice.two nums with
-  | _,None,_ -> false
-  | _,_,None -> false
-  | Divides, Some one, Some two ->
-      one <> 1 && two <> 0 && two <> 1  && one mod two = 0
+let rec rest (a:int) (l:int list) : int list = 
+  match l with 
+  | [] -> []
+  | h::t when h = a -> t 
+  | h::t -> h::(rest a t);;
+
+let calc op =
+   match op.op with 
+  | Plus -> op.one + op.two 
+  | Minus -> op.one - op.two 
+  | Times -> op.one * op.two 
+  | Divides -> op.one / op.two
+;;
+
+let valid_choice op nums = 
+  List.mem op.one nums && List.mem op.two nums &&
+  match op.op with 
+  | Divides ->  op.one <> 0 && op.one <> 1 && op.two <> 1 && op.two <> 0 && op.one mod op.two = 0
+  | Minus -> op.one > op.two
   | _ -> true
+;;
 
-let apply_choice (choice: op_choice) (nums: int list) : int list =
-  let one, one_rest = take_index choice.one nums in
-  let next_index = if choice.one < choice.two then choice.two-1 else choice.two in
-  let two, rest = take_index next_index one_rest in
-  match one,two,choice.op with
-  | None,_,_ -> nums
-  | _,None,_ -> nums
-  | Some one,Some two,op ->
-    (match op with
-    | Times -> (one*two)::rest
-    | Plus -> (one+two)::rest
-    | Minus -> (one-two)::rest
-    | Divides -> (one / two)::rest
-    )
+let choose (nums:int list) (op:op_choice) (resta:int list) (restb:int list) (ans:int) : bool = 
+  valid_choice op nums && 
+  choose_and_rest op.one nums resta &&
+  choose_and_rest op.two nums restb && 
+  calc op = ans 
+;;
 
-
-let has_result choices initial target =
-  List.mem target initial ||
-  let _,res,left = List.fold_left
-    (fun (acc,res,l_acc) el ->
-      if res || List.mem target acc
-        then (acc,true,el::l_acc)
-        else if valid_choice el acc
-          then let res_acc = apply_choice el acc in res_acc, List.mem target res_acc,l_acc
-          else acc,res,l_acc)
-    (initial,false,[]) choices in res 
-
+let rec apply_choices (choices:op_choice list) (nums:int list) (target:int) : bool = 
+  List.length choices < List.length nums && 
+  match choices with 
+  | [] -> false
+  | op::t -> 
+      valid_choice op nums &&
+      let resta = rest op.one nums in 
+      let restb = rest op.two resta in
+      (choose nums op resta restb target && List.is_empty t) ||
+      apply_choices t ((calc op)::restb) target
+;;
 ```
 Let's use it to find a solution to a simple problem:
 ```{.imandra .input}
-instance (fun cs -> has_result cs [2;3;4;5] 17);; 
+instance (fun cs -> apply_choices cs [2;3;4;5] 17);; 
 ```
 We can use trace to see the operations performed here:
 ```{.imandra .input}
 #trace apply_choice;;
-has_result CX.cs [2;3;4;5] 17;;
+apply_choices CX.cs [2;3;4;5] 17;;
 ```
 Also we can verify some properties - for example that reversing the numbers chosen has no effect on the result:
 ```{.imandra .input}
 #untrace apply_choice;;
-verify (fun x y nums target -> has_result x nums target ==> has_result x (List.rev nums) target);; 
+verify (fun x y nums target -> apply_choices x nums target ==> apply_choices x (List.rev nums) target);; 
 ```
 or that if you find a set of operations which find a solution, adding any new operations does not affect this result:
 ```{.imandra .input}
-verify (fun x y nums target -> has_result x nums target ==> has_result (x@y) nums target);; 
+verify (fun x y nums target -> apply_choices x nums target ==> apply_choices (x@y) nums target);; 
 ```
 or we can prove that if you subtract one from each of the answers this does not maintain the result:
 ```{.imandra .input}
-verify (fun x y nums target -> has_result x nums target ==> has_result x (List.map (fun x -> x-1)  nums) target);; 
+verify (fun x y nums target -> apply_choices x nums target ==> apply_choices x (List.map (fun x -> x-1)  nums) target);; 
 ```
 
 
