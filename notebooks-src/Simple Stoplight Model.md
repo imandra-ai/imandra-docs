@@ -32,6 +32,7 @@ type light_state = {
 ```
 
 Next we define a transition function for the stoplight:
+
 ```{.imandra .input}
 
 (* Update the light *)
@@ -56,6 +57,7 @@ let light_step (l : light_state) =
 ```
 
 We do the same for the state of the car approaching said stoplight:
+
 ```{.imandra .input}
 
 (* Driving state *)
@@ -135,7 +137,6 @@ let valid_car_state (i: intersection) =
 
 ```
 
-
 Let's verify that our model ensures that the car will always brake when approaching a red light:
 
 ```{.imandra .input}
@@ -149,18 +150,23 @@ verify
 ```
 
 Let's now use Imandra's Principal Region Decomposition to enumerate all the possible distinct regions of behavior of the intersection:
+
 ```{.imandra .input}
 #program;;
 let d = Modular_decomp.top ~prune:true ~assuming:"valid_car_state" "one_step";;
 ```
 
 Imandra has computed all the regions of behavior, let's now implement a custom printer using the `Imandra-tools` library to explore the behavior of the car in plain english:
+
 ```{.imandra .input}
 open Imandra_tools;;
 
 module Custom = struct
   open Region_pp_intf
-  type t =
+
+  type ty = string
+
+  type c =
     (* todo: collapse? *)
     | DriveState of driving_state
     | WithinMaxSpeed of bool
@@ -200,101 +206,107 @@ module Custom = struct
                                              (if b then "" else "n't")
 end
 
-
-module PPrinter = Region_pp.Make(Custom);;
+module PPrinter = Region_pp.Make  (Region_pp_intf.Type_conv.Make (Region_pp_intf.Type_conv.String_type)) (Custom);;
 
 module Refiner = struct
 
   open PPrinter
+  open Region_pp_intf
   exception Ignore
 
-  let refine_invariant (intersection_s : (string * node) list) : node list=
-    match List.assoc "c" intersection_s, List.assoc "l" intersection_s with
-    | Some Struct("car_state", car_state_s), Some Struct ("light_state", light_state_s) ->
+  let refine_invariant (intersection_s : (string * node) list) : node list =
+    let open Custom in
+    match CCOption.map view (List.assoc "c" intersection_s), CCOption.map view (List.assoc "l" intersection_s) with
+    | Some Struct ("car_state", car_state_s), Some Struct ("light_state", light_state_s) ->
        begin
          match List.assoc "car_drive_state" car_state_s,
                List.assoc "car_speed" car_state_s,
                List.assoc "blinking" light_state_s,
                List.assoc "light_state" light_state_s
          with
-         | Some (Obj (state, [])), Some speed, Some blinking, Some light_state ->
-            let speed : node = Eq (Var "car_speed", speed) in
-            let blinking : node = Eq (Var "blinking", blinking) in
-            let light_state : node = Eq (Var "light_state", light_state) in
+         | Some {view = (Obj (state, []));ty=obj_ty}, Some ({ty = speed_ty;_} as speed), Some ({ty = blinking_ty;_} as blinking), Some ({ty = light_state_ty;_} as light_state) ->
+            let speed : node = mk ~ty:(bool_type()) (Eq (mk ~ty:speed_ty (Var "car_speed"), speed)) in
+            let blinking : node = mk ~ty:(bool_type()) (Eq (mk ~ty:blinking_ty (Var "blinking"), blinking)) in
+            let light_state : node = mk ~ty:(bool_type()) (Eq (mk ~ty:light_state_ty (Var "light_state"), light_state)) in
             begin match state with
-            | "Accelerating" -> [Custom (DriveState Accelerating); speed; blinking; light_state]
-            | "Steady" -> [Custom (DriveState Steady); speed; blinking; light_state]
-            | "Braking" -> [Custom (DriveState Braking); speed; blinking; light_state]
+            | "Accelerating" -> [mk ~ty:obj_ty (Custom (DriveState Accelerating)); speed; blinking; light_state]
+            | "Steady" -> [mk ~ty:obj_ty (Custom (DriveState Steady)); speed; blinking; light_state]
+            | "Braking" -> [mk ~ty:obj_ty (Custom (DriveState Braking)); speed; blinking; light_state]
             | _ -> raise Ignore
             end
          | _ -> raise Ignore
        end
     | _, _ -> raise Ignore
 
-  let walk (x : node) : node = match x with
-
-    | FieldOf (Record, "current_time", FieldOf (Record, "l", Var "i")) -> Var "Current time"
-    | FieldOf (Record, l, FieldOf (Record, "l", Var "i")) -> Var l
-    | FieldOf (Record, c, FieldOf (Record, "c", Var "i")) -> Var c
-
-    | Is (x, _, Var "car_drive_state") ->
+  let walk (x : node) : node =
+    let open Custom in
+    let r_x = match view x with
+   | FieldOf (Record, "current_time", {view = FieldOf (Record, "l", {view = Var "i";_});_}) ->
+      Ok (Var "Current time")
+     | FieldOf (Record, l, {view = FieldOf (Record, "l", {view = Var "i";_});_}) ->
+      Ok (Var l)
+    | FieldOf (Record, c, {view = FieldOf (Record, "c", {view = Var "i";_});_}) ->
+      Ok (Var c)
+   | Is (x, _, {view = Var "car_drive_state";_}) ->
        begin match x with
-       | "Accelerating" -> Custom (DriveState Accelerating)
-       | "Steady" -> Custom (DriveState Steady)
-       | "Braking" -> Custom (DriveState Braking)
-       | _ -> raise Ignore
+       | "Accelerating" -> Ok  (Custom (DriveState Accelerating))
+       | "Steady" -> Ok (Custom (DriveState Steady))
+       | "Braking" -> Ok (Custom (DriveState Braking))
+       | _ -> Error Ignore
        end
 
-    | Eq (Var "light_state", Obj (x, [])) ->
-       Is (x, [], Var "light_state")
+    | Eq ({view = Var "light_state";ty}, {view = Obj (x, []);_}) ->
+       Ok (Is (x, [], mk ~ty (Var "light_state")))
 
-    | Is (x, _, Var "light_state") ->
+    | Is (x, _, {view = Var "light_state";_}) ->
        begin match x with
-       | "Green" -> Custom (LightState Green)
-       | "Yellow" -> Custom (LightState Yellow)
-       | "Red" -> Custom (LightState Red)
-       | _ -> raise Ignore
+       | "Green" -> Ok (Custom (LightState Green))
+       | "Yellow" -> Ok (Custom (LightState Yellow))
+       | "Red" -> Ok (Custom (LightState Red))
+       | _ -> Error Ignore
        end
 
-    | Minus (Var "light_change_time", Int 1) ->
-       Custom TimeToChangeLight
+    | Minus ({view = Var "light_change_time";_}, {view = Int 1;_}) ->
+       Ok (Custom TimeToChangeLight)
 
-    | Minus (Var "blink_time", Int 1) ->
-       Custom TimeToBlink
+    | Minus ({view = Var "blink_time";_}, {view = Int 1;_}) ->
+       Ok (Custom TimeToBlink)
 
-    | Var "blinking" ->
-       Custom (LightBlinking true)
+   | Var "blinking" ->
+       Ok (Custom (LightBlinking true))
 
-    | Not (Custom (LightBlinking true)) ->
-       Custom (LightBlinking false)
+    | Not ({view = Custom (LightBlinking true);_}) ->
+       Ok (Custom (LightBlinking false))
 
-    | Geq (Var "car_max_speed", Plus (Var "car_speed", Var "car_accel_speed"))
-      -> Custom (WithinMaxSpeed true)
+    | Geq ({view = Var "car_max_speed";_}, {view = Plus ({view = Var "car_speed";_}, {view = Var "car_accel_speed";_});_})
+      -> Ok (Custom (WithinMaxSpeed true))
 
-    | Gt (Plus (Var "car_speed", Var "car_accel_speed"), Var "car_max_speed")
-      -> Custom (WithinMaxSpeed false)
+   | Gt ({view = Plus ({view = Var "car_speed";_}, {view = Var "car_accel_speed";_});_}, {view = Var "car_max_speed";_})
+      -> Ok (Custom (WithinMaxSpeed false))
 
-    | Geq (Minus (Var "car_speed", Var "car_accel_speed"), Int 0)
-      -> Custom GoingForwards
+    | Geq ({view = Minus ({view = Var "car_speed";_}, {view = Var "car_accel_speed";_});_}, {view = Int 0;_})
+      -> Ok (Custom GoingForwards)
 
-    | Gt (Int 0, Minus (Var "car_speed", Var "car_accel_speed"))
-      -> Custom GoingBackwards
+    | Gt ({view = Int 0;_}, {view = Minus ({view = Var "car_speed";_}, {view = Var "car_accel_speed";_});_})
+      -> Ok (Custom GoingBackwards)
 
     (* 10 is currently hard coded in the model *)
-    | Geq (Int 10, Plus (Var "car_distance", Var "car_speed"))
-      -> Custom (CurrentSpeedEnough false)
+    | Geq ({view = Int 10;_}, {view = Plus ({view = Var "car_distance";_}, {view = Var "car_speed";_});_})
+      -> Ok (Custom (CurrentSpeedEnough false))
 
-    | Gt (Plus (Var "car_distance", Var "car_speed"), Int 10)
-      -> Custom (CurrentSpeedEnough true)
-
-    | x -> x
+    | Gt ({view = Plus ({view = Var "car_distance";_}, {view = Var "car_speed";_});_}, {view = Int 10;_})
+      -> Ok (Custom (CurrentSpeedEnough true))
+    | x -> Ok x
+    in match r_x with
+    | Ok node_view -> mk ~ty:x.ty node_view
+    | Error e -> raise e
 
   let rec refine (node : node) =
     try
-      match node with
-      | Eq (Var "F", Struct ("intersection", intersection))
+      match view node with
+      | Eq ({view = Var "F";_}, {view = Struct ("intersection", intersection);_})
         -> refine_invariant intersection |> List.flat_map refine
-      | node ->
+      | _ ->
          [XF.walk_fix walk node]
     with Ignore ->
       []
