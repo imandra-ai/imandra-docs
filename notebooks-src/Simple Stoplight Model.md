@@ -206,13 +206,17 @@ module Custom = struct
                                              (if b then "" else "n't")
 end
 
-module PPrinter = Region_pp.Make  (Region_pp_intf.Type_conv.Make (Region_pp_intf.Type_conv.String_type)) (Custom);;
+module TY = Region_pp.String_conv
+
+module PPrinter = Region_pp.Make (TY) (Custom)
 
 module Refiner = struct
 
   open PPrinter
   open Region_pp_intf
   exception Ignore
+
+  let bool_types = (TY.translate_imandra_type (Type.bool ()))
 
   let refine_invariant (intersection_s : (string * node) list) : node list =
     let open Custom in
@@ -225,9 +229,9 @@ module Refiner = struct
                List.assoc "light_state" light_state_s
          with
          | Some {view = (Obj (state, []));ty=obj_ty}, Some ({ty = speed_ty;_} as speed), Some ({ty = blinking_ty;_} as blinking), Some ({ty = light_state_ty;_} as light_state) ->
-            let speed : node = mk ~ty:(bool_type()) (Eq (mk ~ty:speed_ty (Var "car_speed"), speed)) in
-            let blinking : node = mk ~ty:(bool_type()) (Eq (mk ~ty:blinking_ty (Var "blinking"), blinking)) in
-            let light_state : node = mk ~ty:(bool_type()) (Eq (mk ~ty:light_state_ty (Var "light_state"), light_state)) in
+            let speed : node = mk ~ty:bool_type (Eq (mk ~ty:speed_ty (Var "car_speed"), speed)) in
+            let blinking : node = mk ~ty:bool_type (Eq (mk ~ty:blinking_ty (Var "blinking"), blinking)) in
+            let light_state : node = mk ~ty:bool_type (Eq (mk ~ty:light_state_ty (Var "light_state"), light_state)) in
             begin match state with
             | "Accelerating" -> [mk ~ty:obj_ty (Custom (DriveState Accelerating)); speed; blinking; light_state]
             | "Steady" -> [mk ~ty:obj_ty (Custom (DriveState Steady)); speed; blinking; light_state]
