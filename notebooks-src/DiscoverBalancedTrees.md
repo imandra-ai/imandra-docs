@@ -21,13 +21,8 @@ In this example, we will define a type of binary trees, and a function that crea
 You may need to `#require` the Discover bridge.  This may not be necessary if you are using Try Imandra or Imandra through a Docker image.  The command is commented out here for reference so that you can easily use it if needed.
 
 ```{.imandra .input}
-(* #require "imandra-discover-bridge";; *)
-```
-
-This function loads some other things necessary for Discover to run, including the Imandra `rand_gen` plugin.
-
-```{.imandra .input}
-Imandra_discover_bridge.Top.init ();;
+#require "imandra-discover-bridge";;
+open Imandra_discover_bridge.User_level;;
 ```
 
 It is common to restrict induction used by Imandra using `#max_induct`.
