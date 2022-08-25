@@ -161,8 +161,9 @@ Imandra has computed all the regions of behavior, let's now implement a custom p
 ```{.imandra .input}
 open Imandra_tools;;
 
+open Region_pp_intf
+
 module Custom = struct
-  open Region_pp_intf
 
   type ty = string
 
@@ -216,7 +217,7 @@ module Refiner = struct
   open Region_pp
   exception Ignore
 
-  let bool_types = (TY.translate_imandra_type (Type.bool ()))
+  let bool_type = (TY.translate_imandra_type (Type.bool ()))
 
   let refine_invariant (intersection_s : (string * node) list) : node list =
     let open Custom in
