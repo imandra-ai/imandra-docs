@@ -213,7 +213,7 @@ module PPrinter = Region_pp.Make (TY) (Custom)
 module Refiner = struct
 
   open PPrinter
-  open Region_pp_intf
+  open Region_pp
   exception Ignore
 
   let bool_types = (TY.translate_imandra_type (Type.bool ()))
@@ -251,7 +251,7 @@ module Refiner = struct
       Ok (Var l)
     | FieldOf (Record, c, {view = FieldOf (Record, "c", {view = Var "i";_});_}) ->
       Ok (Var c)
-   | Is (x, _, {view = Var "car_drive_state";_}) ->
+    | Is (x, _, {view = Var "car_drive_state";_}) ->
        begin match x with
        | "Accelerating" -> Ok  (Custom (DriveState Accelerating))
        | "Steady" -> Ok (Custom (DriveState Steady))
@@ -276,7 +276,7 @@ module Refiner = struct
     | Minus ({view = Var "blink_time";_}, {view = Int 1;_}) ->
        Ok (Custom TimeToBlink)
 
-   | Var "blinking" ->
+    | Var "blinking" ->
        Ok (Custom (LightBlinking true))
 
     | Not ({view = Custom (LightBlinking true);_}) ->
@@ -285,7 +285,7 @@ module Refiner = struct
     | Geq ({view = Var "car_max_speed";_}, {view = Plus ({view = Var "car_speed";_}, {view = Var "car_accel_speed";_});_})
       -> Ok (Custom (WithinMaxSpeed true))
 
-   | Gt ({view = Plus ({view = Var "car_speed";_}, {view = Var "car_accel_speed";_});_}, {view = Var "car_max_speed";_})
+    | Gt ({view = Plus ({view = Var "car_speed";_}, {view = Var "car_accel_speed";_});_}, {view = Var "car_max_speed";_})
       -> Ok (Custom (WithinMaxSpeed false))
 
     | Geq ({view = Minus ({view = Var "car_speed";_}, {view = Var "car_accel_speed";_});_}, {view = Int 0;_})
