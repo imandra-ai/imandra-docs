@@ -316,8 +316,8 @@ open Imandra_tools;;
 module PPrinter = Region_pp.PPrinter;;
 
 module Refiner = struct
+ open Region_pp
  open PPrinter
- open Region_pp_intf
 
  (* This function will be used to traverse the regions' data (constraints and invariants) and convert them to humanly readable text *)
  let walk (x : node) : node = match view x with

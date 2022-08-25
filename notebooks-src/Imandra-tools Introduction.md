@@ -246,10 +246,9 @@ module Custom = struct
       CCFormat.(fprintf out "@[<hv>{ %a@ }@]" (list ~sep:(return "@ ; ") p)) s
 end
 
-module PPrinter =
-  Region_pp.Make
-    (Region_pp_intf.Type_conv.Make (Region_pp_intf.Type_conv.String_type))
-    (Custom)
+module TY = Region_pp.String_conv
+
+module PPrinter = Region_pp.Make (TY) (Custom)
 open Custom
 open PPrinter
 
@@ -265,8 +264,9 @@ let get_input_types : PPrinter.ty list -> ty list =
 
 let rec refine_ n =
   let union_to_subset ty =
+    let bool_type = (TY.translate_imandra_type (Type.bool ())) in[<8;
     let types_of_union_input = to_curried_types ty |> get_input_types in
-    let subset_type = types_of_union_input @ [ bool_type () ] in
+    let subset_type = types_of_union_input @ [ bool_type ] in
     from_curried_types subset_type
   in
   match view n with

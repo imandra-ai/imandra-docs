@@ -22,12 +22,7 @@ You may need to `#require` the Discover bridge.  This may not be necessary if yo
 
 ```{.imandra .input}
 (* #require "imandra-discover-bridge";; *)
-```
-
-This function loads some other things necessary for Discover to run, including the Imandra `rand_gen` plugin.
-
-```{.imandra .input}
-Imandra_discover_bridge.Top.init ();;
+open Imandra_discover_bridge.User_level;;
 ```
 
 It is common to restrict induction used by Imandra using `#max_induct`.
