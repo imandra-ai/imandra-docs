@@ -3739,9 +3739,9 @@ An additional constraint which is not enforciable by the OCaml type system but i
 <div class="output_text output_subarea output_execute_result">
 <pre>module SM :
   sig
-    type i = Int of SM.state | Zero
-    type event = Add of i | Sub of SM.state | Reset
-    type state = SM.state
+    type i = Int of Z.t | Zero
+    type event = Add of i | Sub of Z.t | Reset
+    type state = Z.t
     val init_state : state
     val step : event -&gt; state -&gt; state
     val is_valid : event -&gt; state -&gt; bool
@@ -3861,8 +3861,8 @@ An additional constraint which is not enforciable by the OCaml type system but i
 <pre>module TPL :
   sig
     type t = Add | AddInt | Sub | Reset | Any
-    type c = TPL.c
-    type state = TPL.state
+    type c = SM.event
+    type state = SM.state
     val concrete : t -&gt; c -&gt; &#39;a -&gt; bool
   end
 </pre>
@@ -3975,8 +3975,13 @@ An additional constraint which is not enforciable by the OCaml type system but i
   TPL.c list -&gt; TPL.state = &lt;fun&gt;
 module IDF :
   sig
-    type shape = IDF.shape = Tree
-    type pol = IDF.pol = Valid | Invalid | No | Custom of string
+    type shape = Imandra_tools.Idf.Make(Decomp).shape = Tree
+    type pol =
+      Imandra_tools.Idf.Make(Decomp).pol =
+        Valid
+      | Invalid
+      | No
+      | Custom of string
     module DSM :
       sig
         module State_machine :
@@ -3998,11 +4003,11 @@ module IDF :
       end
     val pp_state : TPL.state -&gt; string
     type target = TPL.t list
-    type node = IDF.node
+    type node = Imandra_tools.Idf.Make(Decomp).node
     type path = node list
     module G :
       sig
-        type t = IDF.G.t
+        type t = Imandra_tools.Idf.Make(Decomp).G.t
         module V :
           sig
             type t = node
@@ -4016,12 +4021,12 @@ module IDF :
         type vertex = node
         module E :
           sig
-            type t = IDF.G.edge
+            type t = Imandra_tools.Idf.Make(Decomp).G.E.t
             val compare : t -&gt; t -&gt; int
             type vertex = node
             val src : t -&gt; vertex
             val dst : t -&gt; vertex
-            type label = IDF.G.E.label
+            type label = Imandra_tools.Idf.Make(Decomp).G.E.label
             val create : vertex -&gt; label -&gt; vertex -&gt; t
             val label : t -&gt; label
           end
@@ -4080,27 +4085,27 @@ module IDF :
     val sample : node -&gt; TPL.c list option
     val model : node -&gt; Top_result.model option
     type region_expander =
-      IDF.region_expander = {
+      Imandra_tools.Idf.Make(Decomp).region_expander = {
       valid_fn : string option;
       field_projections : string list list;
       expand_when : string option;
     }
     type target_step =
-      IDF.target_step = {
+      Imandra_tools.Idf.Make(Decomp).target_step = {
       event : TPL.t;
       valid_pol : pol;
       region_expander : region_expander option;
     }
     val target_steps : node -&gt; target_step list list
     type replay_sample =
-      IDF.replay_sample = {
+      Imandra_tools.Idf.Make(Decomp).replay_sample = {
       state_before : TPL.state;
       event : TPL.c;
       state_after : TPL.state;
     }
     val replay_events : TPL.c list -&gt; replay_sample list
     val replay : node -&gt; replay_sample list option
-    type runner = IDF.runner
+    type runner = Imandra_tools.Idf.Make(Decomp).runner
     val create :
       ?basis:string list -&gt;
       ?expanding:string list -&gt;

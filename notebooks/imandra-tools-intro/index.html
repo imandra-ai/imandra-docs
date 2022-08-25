@@ -3992,8 +3992,13 @@ Note: this is an introductory walkthrough of the capabilities of `imandra-tools`
   Model.message list -&gt; Model.counter_state = &lt;fun&gt;
 module IDF :
   sig
-    type shape = IDF.shape = Tree
-    type pol = IDF.pol = Valid | Invalid | No | Custom of string
+    type shape = Imandra_tools.Idf.Make(Decomp).shape = Tree
+    type pol =
+      Imandra_tools.Idf.Make(Decomp).pol =
+        Valid
+      | Invalid
+      | No
+      | Custom of string
     module DSM :
       sig
         module State_machine :
@@ -4015,11 +4020,11 @@ module IDF :
       end
     val pp_state : Model.counter_state -&gt; string
     type target = DSM.Template.t list
-    type node = IDF.node
+    type node = Imandra_tools.Idf.Make(Decomp).node
     type path = node list
     module G :
       sig
-        type t = IDF.G.t
+        type t = Imandra_tools.Idf.Make(Decomp).G.t
         module V :
           sig
             type t = node
@@ -4033,12 +4038,12 @@ module IDF :
         type vertex = node
         module E :
           sig
-            type t = IDF.G.edge
+            type t = Imandra_tools.Idf.Make(Decomp).G.E.t
             val compare : t -&gt; t -&gt; int
             type vertex = node
             val src : t -&gt; vertex
             val dst : t -&gt; vertex
-            type label = IDF.G.E.label
+            type label = Imandra_tools.Idf.Make(Decomp).G.E.label
             val create : vertex -&gt; label -&gt; vertex -&gt; t
             val label : t -&gt; label
           end
@@ -4098,27 +4103,27 @@ module IDF :
     val sample : node -&gt; Model.message list option
     val model : node -&gt; Top_result.model option
     type region_expander =
-      IDF.region_expander = {
+      Imandra_tools.Idf.Make(Decomp).region_expander = {
       valid_fn : string option;
       field_projections : string list list;
       expand_when : string option;
     }
     type target_step =
-      IDF.target_step = {
+      Imandra_tools.Idf.Make(Decomp).target_step = {
       event : DSM.Template.t;
       valid_pol : pol;
       region_expander : region_expander option;
     }
     val target_steps : node -&gt; target_step list list
     type replay_sample =
-      IDF.replay_sample = {
+      Imandra_tools.Idf.Make(Decomp).replay_sample = {
       state_before : Model.counter_state;
       event : Model.message;
       state_after : Model.counter_state;
     }
     val replay_events : Model.message list -&gt; replay_sample list
     val replay : node -&gt; replay_sample list option
-    type runner = IDF.runner
+    type runner = Imandra_tools.Idf.Make(Decomp).runner
     val create :
       ?basis:string list -&gt;
       ?expanding:string list -&gt;
@@ -4270,6 +4275,9 @@ val first_path : IDF.path = [&lt;abstr&gt;;&lt;abstr&gt;;&lt;abstr&gt;;&lt;abstr
 
 <div class="output_text output_subarea output_execute_result">
 <pre>File &#34;jupyter cell 6&#34;, line 1, characters 45-58:
+Alert deprecated: Imandra_util.CCOpt.get_exn
+use CCOption.get_exn_or instead
+File &#34;jupyter cell 6&#34;, line 1, characters 45-58:
 Alert deprecated: Imandra_util.CCOpt.get_exn
 use CCOption.get_exn_or instead
 - : IDF.replay_sample list option =
@@ -4551,7 +4559,7 @@ val rs : Top_result.modular_region list =
 
 
 <div class="output_html rendered_html output_subarea ">
-<div class="imandra-alternatives" id="alt-55f562dc-18e9-4130-b81f-9935d503c139"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi (2 of 2)</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-59aacf0f-9dbd-45d3-84d4-c4caf6ce3e42" class="decompose"><textarea class="display-none">{
+<div class="imandra-alternatives" id="alt-115fcdb7-5dd5-4adf-a0d6-29ec69743462"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi (2 of 2)</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-6a8c1c95-764b-4eec-9694-28b86ecbd661" class="decompose"><textarea class="display-none">{
   &quot;regions&quot;: [
     {
       &quot;constraints&quot;: [ &quot;not (Set.subset x y)&quot; ],
@@ -4577,13 +4585,13 @@ val rs : Top_result.modular_region list =
 }</textarea><div class="decompose-foamtree"></div><div class="decompose-details"><div class="decompose-details-header">Regions details</div><div class="decompose-details-no-selection"><p>No group selected.</p><ul><li>Concrete regions are numbered</li><li>Unnumbered regions are groups whose children share a particular constraint</li><li>Click on a region to view its details</li><li>Double click on a region to zoom in on it</li><li>Shift+double click to zoom out</li><li>Hit escape to reset back to the top</li></ul></div><div class="decompose-details-selection hidden"><div><span class="decompose-details-label">Direct sub-regions: </span><span class="decompose-details-direct-sub-regions-text">-</span></div><div><span class="decompose-details-label">Contained regions: </span><span class="decompose-details-contained-regions-text">-</span></div><div class="decompose-details-section-header">Constraints</div><div class="decompose-details-constraints"><pre class="decompose-details-constraint">&lt;constraint&gt;</pre></div><div class="decompose-details-invariant"><div class="decompose-details-section-header">Invariant</div><pre class="decompose-details-invariant-text">&lt;invariant&gt;</pre></div></div></div><script>
 (function () {
   require(['nbextensions/nbimandra/regions'], function (regions) {
-    var target = '#decompose-59aacf0f-9dbd-45d3-84d4-c4caf6ce3e42';
+    var target = '#decompose-6a8c1c95-764b-4eec-9694-28b86ecbd661';
     regions.hydrate(target);
   });
 })();
-</script></div></div><div class="tab-pane"><div><div>decomp of (f x, y, z<div class="imandra-table" id="table-f687aac7-5a9c-4f90-a77d-df7c3d9848a1"><table><thead><tr><th>Reg_id</th><th>Constraints</th><th>Invariant</th></tr></thead><tr><td>1</td><td><ul><li><pre>not (Set.subset x y)</pre></li></ul></td><td><pre>Set.add z Set.empty</pre></td></tr><tr><td>0</td><td><ul><li><pre>Set.subset x y</pre></li></ul></td><td><pre>Set.add z x</pre></td></tr></table></div></div></div></div></div><script>
+</script></div></div><div class="tab-pane"><div><div>decomp of (f x, y, z<div class="imandra-table" id="table-9bea0abd-17ea-4d42-b2f5-2f00a54c9dfc"><table><thead><tr><th>Reg_id</th><th>Constraints</th><th>Invariant</th></tr></thead><tr><td>1</td><td><ul><li><pre>not (Set.subset x y)</pre></li></ul></td><td><pre>Set.add z Set.empty</pre></td></tr><tr><td>0</td><td><ul><li><pre>Set.subset x y</pre></li></ul></td><td><pre>Set.add z x</pre></td></tr></table></div></div></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-55f562dc-18e9-4130-b81f-9935d503c139';
+  var target = '#alt-115fcdb7-5dd5-4adf-a0d6-29ec69743462';
   alternatives.hydrate(target);
 });
 </script></div>
@@ -4648,10 +4656,9 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
       <span class="nn">CCFormat</span><span class="p">.</span><span class="o">(</span><span class="n">fprintf</span> <span class="n">out</span> <span class="s2">&quot;@[&lt;hv&gt;{ %a@ }@]&quot;</span> <span class="o">(</span><span class="kt">list</span> <span class="o">~</span><span class="n">sep</span><span class="o">:(</span><span class="n">return</span> <span class="s2">&quot;@ ; &quot;</span><span class="o">)</span> <span class="n">p</span><span class="o">))</span> <span class="n">s</span>
 <span class="k">end</span>
 
-<span class="k">module</span> <span class="nc">PPrinter</span> <span class="o">=</span>
-  <span class="nn">Region_pp</span><span class="p">.</span><span class="nc">Make</span>
-    <span class="o">(</span><span class="nn">Region_pp_intf</span><span class="p">.</span><span class="nn">Type_conv</span><span class="p">.</span><span class="nc">Make</span> <span class="o">(</span><span class="nn">Region_pp_intf</span><span class="p">.</span><span class="nn">Type_conv</span><span class="p">.</span><span class="nc">String_type</span><span class="o">))</span>
-    <span class="o">(</span><span class="nc">Custom</span><span class="o">)</span>
+<span class="k">module</span> <span class="nc">TY</span> <span class="o">=</span> <span class="nn">Region_pp</span><span class="p">.</span><span class="nc">String_conv</span>
+
+<span class="k">module</span> <span class="nc">PPrinter</span> <span class="o">=</span> <span class="nn">Region_pp</span><span class="p">.</span><span class="nc">Make</span> <span class="o">(</span><span class="nc">TY</span><span class="o">)</span> <span class="o">(</span><span class="nc">Custom</span><span class="o">)</span>
 <span class="k">open</span> <span class="nc">Custom</span>
 <span class="k">open</span> <span class="nc">PPrinter</span>
 
@@ -4667,8 +4674,9 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
 
 <span class="k">let</span> <span class="k">rec</span> <span class="n">refine_</span> <span class="n">n</span> <span class="o">=</span>
   <span class="k">let</span> <span class="n">union_to_subset</span> <span class="n">ty</span> <span class="o">=</span>
+    <span class="k">let</span> <span class="n">bool_type</span> <span class="o">=</span> <span class="o">(</span><span class="nn">TY</span><span class="p">.</span><span class="n">translate_imandra_type</span> <span class="o">(</span><span class="nn">Type</span><span class="p">.</span><span class="n">bool</span> <span class="bp">()</span><span class="o">))</span> <span class="k">in</span><span class="o">[&lt;</span><span class="mi">8</span><span class="o">;</span>
     <span class="k">let</span> <span class="n">types_of_union_input</span> <span class="o">=</span> <span class="n">to_curried_types</span> <span class="n">ty</span> <span class="o">|&gt;</span> <span class="n">get_input_types</span> <span class="k">in</span>
-    <span class="k">let</span> <span class="n">subset_type</span> <span class="o">=</span> <span class="n">types_of_union_input</span> <span class="o">@</span> <span class="o">[</span> <span class="n">bool_type</span> <span class="bp">()</span> <span class="o">]</span> <span class="k">in</span>
+    <span class="k">let</span> <span class="n">subset_type</span> <span class="o">=</span> <span class="n">types_of_union_input</span> <span class="o">@</span> <span class="o">[</span> <span class="n">bool_type</span> <span class="o">]</span> <span class="k">in</span>
     <span class="n">from_curried_types</span> <span class="n">subset_type</span>
   <span class="k">in</span>
   <span class="k">match</span> <span class="n">view</span> <span class="n">n</span> <span class="k">with</span>
@@ -4745,92 +4753,8 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>module Custom :
-  sig
-    type ty = string
-    type c = Set of (ty, c) node_ list
-    val map : ((ty, c) node_ -&gt; (ty, c) node_) -&gt; c -&gt; c
-    val compare :
-      ((ty, c) node_ -&gt; (ty, c) node_ -&gt; comparison) -&gt; c -&gt; c -&gt; comparison
-    val print : (ty, c) node_ Fmt.printer -&gt; focus:&#39;a -&gt; Fmt.t -&gt; c -&gt; unit
-  end
-module PPrinter :
-  sig
-    type custom = PPrinter.custom
-    type ty = string
-    module TY :
-      sig
-        type ty = string
-        val translate_imandra_type : Type.t -&gt; ty
-        val mk_tuple : ty list -&gt; ty
-        val mk_list : ty -&gt; ty
-        val mk_func : ty list -&gt; ty
-        val type_var : ty -&gt; ty
-        val mk_set : ty -&gt; ty
-        val bool_type : unit -&gt; ty
-      end
-    type node = (ty, custom) node_
-    val bool_type : unit -&gt; ty
-    module XF :
-      sig
-        val map : (node -&gt; node) -&gt; node -&gt; node
-        val walk : pre:(node -&gt; node) -&gt; ?post:(node -&gt; node) -&gt; node -&gt; node
-        val fix_ : ?bound:int -&gt; (&#39;a -&gt; &#39;a) -&gt; &#39;a -&gt; &#39;a -&gt; &#39;a
-        val fix : ?bound:int -&gt; (&#39;a -&gt; &#39;a) -&gt; &#39;a -&gt; &#39;a
-        val walk_fix : ?bound:int -&gt; (node -&gt; node) -&gt; node -&gt; node
-        val iterated : unit -&gt; &#39;a
-        val iter : f:(node -&gt; unit) -&gt; node -&gt; unit
-        val exists : f:(node -&gt; bool) -&gt; node -&gt; bool
-      end
-    val vars : node -&gt; ty list
-    val has_symbolic_term : node -&gt; bool
-    module Printer :
-      sig
-        val print :
-          ?p:(node Fmt.printer -&gt; Fmt.t -&gt; node -&gt; unit option) -&gt;
-          ?focus:ty -&gt; unit -&gt; node Fmt.printer
-        val to_string :
-          ?p:(node Fmt.printer -&gt; Fmt.t -&gt; node -&gt; unit option) -&gt;
-          ?focus:ty -&gt; node -&gt; ty
-      end
-    module Comparator :
-      sig
-        val is_eq : comparison -&gt; bool
-        val compare : node -&gt; node -&gt; comparison
-        val compare_all : node list -&gt; node list -&gt; comparison
-      end
-    module Simplifier : sig val simplify : node -&gt; node end
-    module Unifier :
-      sig
-        type unifier = node -&gt; node -&gt; node option
-        val unify : ?unify:unifier -&gt; node list -&gt; node list
-      end
-    module Parser : sig val parse : Term.term -&gt; node option end
-    module Compactor : sig val compact : node list -&gt; node list end
-    type refiner = node -&gt; node list
-    type pprinter =
-        ?unify:Unifier.unifier -&gt;
-        ?refine:refiner -&gt; ?inv:bool -&gt; Term.term list -&gt; node list
-    val pp : pprinter
-    val print :
-      ?pp:pprinter -&gt;
-      ?unify:Unifier.unifier -&gt;
-      ?refine:refiner -&gt;
-      ?print:(node Fmt.printer -&gt; Fmt.t -&gt; node -&gt; unit option) -&gt;
-      ?skip_invariant:bool -&gt;
-      ?focus:ty -&gt; unit -&gt; Fmt.t -&gt; Top_result.modular_region -&gt; unit
-    val to_string :
-      ?unify:Unifier.unifier -&gt;
-      ?refine:refiner -&gt; Top_result.modular_region -&gt; ty
-  end
-val to_curried_types : ty -&gt; ty list = &lt;fun&gt;
-val from_curried_types : ty list -&gt; ty = &lt;fun&gt;
-val get_input_types : ty list -&gt; ty list = &lt;fun&gt;
-val refine_ : (ty, custom) node_ -&gt; (ty, custom) node_ = &lt;fun&gt;
-val gather_keys : (ty, custom) node_ -&gt; (ty, custom) node_ list = &lt;fun&gt;
-val is_proper_set : (ty, custom) node_ -&gt; bool = &lt;fun&gt;
-val refine : node -&gt; node list = &lt;fun&gt;
-val print : Fmt.t -&gt; Top_result.modular_region -&gt; unit = &lt;fun&gt;
+<pre>Compiler exception:
+Syntaxerr.Error(_)
 </pre>
 </div>
 
@@ -4883,7 +4807,8 @@ val print : Fmt.t -&gt; Top_result.modular_region -&gt; unit = &lt;fun&gt;
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>- : Top_result.modular_region list =
+<pre>Unbound value print.
+- : Top_result.modular_region list =
 [---[region]---
  Constraints:
    [ Set.subset x y ]
@@ -4956,7 +4881,7 @@ val print : Fmt.t -&gt; Top_result.modular_region -&gt; unit = &lt;fun&gt;
 <div class="output_text output_subarea output_execute_result">
 <pre>val region_0 : &#39;a Set.t -&gt; &#39;a Set.t -&gt; &#39;b -&gt; bool = &lt;fun&gt;
 val region_1 : &#39;a Set.t -&gt; &#39;a Set.t -&gt; &#39;b -&gt; bool = &lt;fun&gt;
-- : ty list = [&#34;region_0&#34;;&#34;region_1&#34;]
+- : string list = [&#34;region_0&#34;;&#34;region_1&#34;]
 </pre>
 </div>
 
@@ -5207,13 +5132,13 @@ Invariant:
 <div class="output_text output_subarea output_execute_result">
 <pre>type colour = Red | Green | Blue
 val pp_colour : colour Fmt.printer = &lt;fun&gt;
-val string_of_colour : colour -&gt; ty = &lt;fun&gt;
+val string_of_colour : colour -&gt; string = &lt;fun&gt;
 type obj = { colour : colour; broken : bool; }
 val pp_obj : obj Fmt.printer = &lt;fun&gt;
-val string_of_obj : obj -&gt; ty = &lt;fun&gt;
+val string_of_obj : obj -&gt; string = &lt;fun&gt;
 type dom = obj * real * Z.t
 val pp_dom : dom Fmt.printer = &lt;fun&gt;
-val string_of_dom : dom -&gt; ty = &lt;fun&gt;
+val string_of_dom : dom -&gt; string = &lt;fun&gt;
 val f&#39; : obj * real * Z.t -&gt; Z.t * real = &lt;fun&gt;
 </pre>
 </div>
@@ -5395,17 +5320,18 @@ module Example :
     type domain = dom
     val get_probs :
       Top_result.modular_region list -&gt;
-      ?assuming:ty -&gt;
+      ?assuming:string -&gt;
       ?n:Z.t -&gt;
-      ?d:ty -&gt;
+      ?d:string -&gt;
       ?step_function:(domain -&gt; domain) -&gt;
       ?num_steps:Z.t -&gt;
       unit -&gt; (int, float * Top_result.modular_region) Hashtbl.t
     val query :
       (domain -&gt; bool) -&gt;
-      ?n:Z.t -&gt; ?d:ty -&gt; ?max_std_err:real -&gt; ?precision:Z.t -&gt; unit -&gt; unit
-    val save : ty -&gt; ?n:Z.t -&gt; ?d:domain list -&gt; unit -&gt; unit
-    val load : ty -&gt; domain list
+      ?n:Z.t -&gt;
+      ?d:string -&gt; ?max_std_err:real -&gt; ?precision:Z.t -&gt; unit -&gt; unit
+    val save : string -&gt; ?n:Z.t -&gt; ?d:domain list -&gt; unit -&gt; unit
+    val load : string -&gt; domain list
   end
 val g___23 : obj * real * &#39;a -&gt; int = &lt;fun&gt;
 - : unit = ()
@@ -5433,7 +5359,7 @@ Region   Probability
 
 
 <div class="output_html rendered_html output_subarea ">
-<div class="imandra-alternatives" id="alt-f2226301-5793-474c-bfe2-788d5e7e28a0"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi (8 of 8)</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-77d8027d-862c-4efb-bdc8-bf366d98ba04" class="decompose"><textarea class="display-none">{
+<div class="imandra-alternatives" id="alt-a564b02a-1340-45cd-a355-b2864c7ddf9d"><ul class="nav nav-tabs"><li class="active" data-toggle="tab"><a>Voronoi (8 of 8)</a></li><li class="" data-toggle="tab"><a>Table</a></li></ul><div class="tab-content"><div class="tab-pane active"><div id="decompose-f439c35e-0e7a-4676-9da1-2f7b0a100610" class="decompose"><textarea class="display-none">{
   &quot;regions&quot;: [
     {
       &quot;constraints&quot;: [ &quot;_x[1] &gt; 37/2&quot; ],
@@ -5567,13 +5493,13 @@ Region   Probability
 }</textarea><div class="decompose-foamtree"></div><div class="decompose-details"><div class="decompose-details-header">Regions details</div><div class="decompose-details-no-selection"><p>No group selected.</p><ul><li>Concrete regions are numbered</li><li>Unnumbered regions are groups whose children share a particular constraint</li><li>Click on a region to view its details</li><li>Double click on a region to zoom in on it</li><li>Shift+double click to zoom out</li><li>Hit escape to reset back to the top</li></ul></div><div class="decompose-details-selection hidden"><div><span class="decompose-details-label">Direct sub-regions: </span><span class="decompose-details-direct-sub-regions-text">-</span></div><div><span class="decompose-details-label">Contained regions: </span><span class="decompose-details-contained-regions-text">-</span></div><div class="decompose-details-section-header">Constraints</div><div class="decompose-details-constraints"><pre class="decompose-details-constraint">&lt;constraint&gt;</pre></div><div class="decompose-details-invariant"><div class="decompose-details-section-header">Invariant</div><pre class="decompose-details-invariant-text">&lt;invariant&gt;</pre></div></div></div><script>
 (function () {
   require(['nbextensions/nbimandra/regions'], function (regions) {
-    var target = '#decompose-77d8027d-862c-4efb-bdc8-bf366d98ba04';
+    var target = '#decompose-f439c35e-0e7a-4676-9da1-2f7b0a100610';
     regions.hydrate(target);
   });
 })();
-</script></div></div><div class="tab-pane"><div><div>decomp of (f' _x<div class="imandra-table" id="table-c1a1aa64-e9f5-4906-8d0e-127fac7de273"><table><thead><tr><th>Reg_id</th><th>Constraints</th><th>Invariant</th></tr></thead><tr><td>7</td><td><ul><li><pre>not (_x.0.colour = Green)</pre></li><li><pre>not (_x.1 &gt;. 37/2)</pre></li><li><pre>not (_x.0.colour = Red)</pre></li></ul></td><td><pre>(_x.2 * 2, 141/10)</pre></td></tr><tr><td>6</td><td><ul><li><pre>_x.0.colour = Green</pre></li><li><pre>not (_x.1 &gt;. 37/2)</pre></li><li><pre>not (_x.0.colour = Red)</pre></li></ul></td><td><pre>(_x.2 * 2, _x.1 -. 39/5)</pre></td></tr><tr><td>5</td><td><ul><li><pre>_x.0.colour = Green</pre></li><li><pre>not (_x.0.colour = Blue)</pre></li><li><pre>_x.1 &gt;. 37/2</pre></li><li><pre>not (_x.0.colour = Red)</pre></li></ul></td><td><pre>(_x.2 * 2, _x.1 -. 39/5)</pre></td></tr><tr><td>4</td><td><ul><li><pre>_x.0.colour = Blue</pre></li><li><pre>_x.1 &gt;. 37/2</pre></li><li><pre>not (_x.0.colour = Red)</pre></li></ul></td><td><pre>(_x.2 * 2, _x.1 +. 43/10)</pre></td></tr><tr><td>3</td><td><ul><li><pre>not (_x.0.colour = Green)</pre></li><li><pre>not (_x.1 &gt;. 37/2)</pre></li><li><pre>not _x.0.broken</pre></li><li><pre>_x.0.colour = Red</pre></li></ul></td><td><pre>(7, 141/10)</pre></td></tr><tr><td>2</td><td><ul><li><pre>not (_x.0.colour = Green)</pre></li><li><pre>not (_x.0.colour = Blue)</pre></li><li><pre>_x.1 &gt;. 37/2</pre></li><li><pre>not _x.0.broken</pre></li><li><pre>_x.0.colour = Red</pre></li></ul></td><td><pre>(7, 141/10)</pre></td></tr><tr><td>1</td><td><ul><li><pre>not (_x.0.colour = Green)</pre></li><li><pre>not (_x.1 &gt;. 37/2)</pre></li><li><pre>_x.0.broken</pre></li><li><pre>_x.0.colour = Red</pre></li></ul></td><td><pre>(_x.2, 141/10)</pre></td></tr><tr><td>0</td><td><ul><li><pre>not (_x.0.colour = Green)</pre></li><li><pre>not (_x.0.colour = Blue)</pre></li><li><pre>_x.1 &gt;. 37/2</pre></li><li><pre>_x.0.broken</pre></li><li><pre>_x.0.colour = Red</pre></li></ul></td><td><pre>(_x.2, 141/10)</pre></td></tr></table></div></div></div></div></div><script>
+</script></div></div><div class="tab-pane"><div><div>decomp of (f' _x<div class="imandra-table" id="table-75059ab9-e009-4c76-bdba-fd54e21cda83"><table><thead><tr><th>Reg_id</th><th>Constraints</th><th>Invariant</th></tr></thead><tr><td>7</td><td><ul><li><pre>not (_x.0.colour = Green)</pre></li><li><pre>not (_x.1 &gt;. 37/2)</pre></li><li><pre>not (_x.0.colour = Red)</pre></li></ul></td><td><pre>(_x.2 * 2, 141/10)</pre></td></tr><tr><td>6</td><td><ul><li><pre>_x.0.colour = Green</pre></li><li><pre>not (_x.1 &gt;. 37/2)</pre></li><li><pre>not (_x.0.colour = Red)</pre></li></ul></td><td><pre>(_x.2 * 2, _x.1 -. 39/5)</pre></td></tr><tr><td>5</td><td><ul><li><pre>_x.0.colour = Green</pre></li><li><pre>not (_x.0.colour = Blue)</pre></li><li><pre>_x.1 &gt;. 37/2</pre></li><li><pre>not (_x.0.colour = Red)</pre></li></ul></td><td><pre>(_x.2 * 2, _x.1 -. 39/5)</pre></td></tr><tr><td>4</td><td><ul><li><pre>_x.0.colour = Blue</pre></li><li><pre>_x.1 &gt;. 37/2</pre></li><li><pre>not (_x.0.colour = Red)</pre></li></ul></td><td><pre>(_x.2 * 2, _x.1 +. 43/10)</pre></td></tr><tr><td>3</td><td><ul><li><pre>not (_x.0.colour = Green)</pre></li><li><pre>not (_x.1 &gt;. 37/2)</pre></li><li><pre>not _x.0.broken</pre></li><li><pre>_x.0.colour = Red</pre></li></ul></td><td><pre>(7, 141/10)</pre></td></tr><tr><td>2</td><td><ul><li><pre>not (_x.0.colour = Green)</pre></li><li><pre>not (_x.0.colour = Blue)</pre></li><li><pre>_x.1 &gt;. 37/2</pre></li><li><pre>not _x.0.broken</pre></li><li><pre>_x.0.colour = Red</pre></li></ul></td><td><pre>(7, 141/10)</pre></td></tr><tr><td>1</td><td><ul><li><pre>not (_x.0.colour = Green)</pre></li><li><pre>not (_x.1 &gt;. 37/2)</pre></li><li><pre>_x.0.broken</pre></li><li><pre>_x.0.colour = Red</pre></li></ul></td><td><pre>(_x.2, 141/10)</pre></td></tr><tr><td>0</td><td><ul><li><pre>not (_x.0.colour = Green)</pre></li><li><pre>not (_x.0.colour = Blue)</pre></li><li><pre>_x.1 &gt;. 37/2</pre></li><li><pre>_x.0.broken</pre></li><li><pre>_x.0.colour = Red</pre></li></ul></td><td><pre>(_x.2, 141/10)</pre></td></tr></table></div></div></div></div></div><script>
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
-  var target = '#alt-f2226301-5793-474c-bfe2-788d5e7e28a0';
+  var target = '#alt-a564b02a-1340-45cd-a355-b2864c7ddf9d';
   alternatives.hydrate(target);
 });
 </script></div>
