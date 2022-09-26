@@ -150,7 +150,7 @@ Let's now suppose that we want to verify the transitivity of `subset`:
 
 ```{.imandra .input}
 #max_induct 1;;
-verify (fun x y z -> subset x y && subset y z ==> subset x z) [@@auto]
+verify (fun x y z -> subset x y && subset y z ==> subset x z) [@@auto];;
 #max_induct 3;;
 ```
 
