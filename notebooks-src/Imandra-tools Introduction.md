@@ -156,7 +156,7 @@ let first_path = List.hd paths
 This output is not very useful, but we can ask `Idf` to play out a sample execution of that path:
 
 ```{.imandra .input}
-IDF.replay (first_path |> CCList.last_opt |> CCOpt.get_exn)
+IDF.replay (first_path |> CCList.last_opt |> CCOption.get_exn_or "no paths")
 ```
 
 Or we can ask `Idf` to let us inspect the regions for that path (each region in the list will correspond to the constraints and invariant of the model up to each event in the template):
@@ -223,7 +223,7 @@ module Custom = struct
 
   type ty = string
 
-  type c = Set of (ty, c) node_ list
+  type c = Set of (ty, c) node list
 
   let map f = function
     | Set els -> Set (List.map f els)
