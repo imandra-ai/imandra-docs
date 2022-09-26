@@ -217,7 +217,7 @@ module Refiner = struct
   open Region_pp
   exception Ignore
 
-  let bool_type = (TY.translate_imandra_type (Type.bool ()))
+  let bool_type = TY.translate_imandra_type Type.bool
 
   let refine_invariant (intersection_s : (string * node) list) : node list =
     let open Custom in

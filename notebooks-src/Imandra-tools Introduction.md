@@ -264,7 +264,7 @@ let get_input_types : PPrinter.ty list -> ty list =
 
 let rec refine_ n =
   let union_to_subset ty =
-    let bool_type = (TY.translate_imandra_type (Type.bool ())) in[<8;
+    let bool_type = TY.translate_imandra_type Type.bool in
     let types_of_union_input = to_curried_types ty |> get_input_types in
     let subset_type = types_of_union_input @ [ bool_type ] in
     from_curried_types subset_type
