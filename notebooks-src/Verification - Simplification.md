@@ -150,8 +150,8 @@ Let's now suppose that we want to verify the transitivity of `subset`:
 
 ```{.imandra .input}
 #max_induct 1;;
+
 verify (fun x y z -> subset x y && subset y z ==> subset x z) [@@auto];;
-#max_induct 3;;
 ```
 
 It looks like Imandra needs an additional lemma in order to prove this. By
@@ -242,6 +242,8 @@ above will fire if either `List.length x` or `List.length (List.rev x)`
 matches.
 
 ```{.imandra .input}
+#max_induct 2;;
+
 lemma rev_len_fc x =
    List.length x [@trigger] = List.length (List.rev x) [@trigger]
 [@@auto] [@@fc]
