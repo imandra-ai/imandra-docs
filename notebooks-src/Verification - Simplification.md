@@ -195,6 +195,8 @@ Let's say we want to prove the commutativity of `Peano_nat.plus` and install it 
 a rewrite rule:
 
 ```{.imandra .input}
+#max_induct 2;;
+
 lemma comm_plus x y =
   Peano_nat.(plus x y = plus y x)
  [@@auto] [@@rw] [@@permutative]
@@ -242,8 +244,6 @@ above will fire if either `List.length x` or `List.length (List.rev x)`
 matches.
 
 ```{.imandra .input}
-#max_induct 2;;
-
 lemma rev_len_fc x =
    List.length x [@trigger] = List.length (List.rev x) [@trigger]
 [@@auto] [@@fc]
