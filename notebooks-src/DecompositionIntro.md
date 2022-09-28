@@ -156,6 +156,6 @@ let d2 = Modular_decomp.(
     |> CCList.filter_map
          (fun r ->
            refine r
-                  (* x = 1 *)
-                  [Term.eq ~ty:(Type.int()) arg (Term.int 1)])) [@@program];;
+             (* x = 1 *)
+             [Term.eq ~ty:Type.int arg (Term.int 1)])) [@@program];;
 ```

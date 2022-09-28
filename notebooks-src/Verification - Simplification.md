@@ -150,8 +150,8 @@ Let's now suppose that we want to verify the transitivity of `subset`:
 
 ```{.imandra .input}
 #max_induct 1;;
-verify (fun x y z -> subset x y && subset y z ==> subset x z) [@@auto]
-#max_induct 3;;
+
+verify (fun x y z -> subset x y && subset y z ==> subset x z) [@@auto];;
 ```
 
 It looks like Imandra needs an additional lemma in order to prove this. By
@@ -195,6 +195,8 @@ Let's say we want to prove the commutativity of `Peano_nat.plus` and install it 
 a rewrite rule:
 
 ```{.imandra .input}
+#max_induct 2;;
+
 lemma comm_plus x y =
   Peano_nat.(plus x y = plus y x)
  [@@auto] [@@rw] [@@permutative]
