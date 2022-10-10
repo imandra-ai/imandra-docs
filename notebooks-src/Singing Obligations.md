@@ -2,7 +2,7 @@
 title: "Obligation rules."
 description: "How to determine the inter-relatedness or consistency of a rule set."
 kernel: imandra
-slug: singasgon
+slug: singasong
 key-phrases:
   - OCaml
   - proof
@@ -521,6 +521,3 @@ let rule5 = Rule5.rule;;
 Modular_decomp.top "rule5";;
 
 ```
-
-
-
