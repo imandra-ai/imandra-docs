@@ -79,7 +79,7 @@ We use the `[@@program]` attribute on our pretty-printer definition, to tell Ima
 
 ```{.imandra .input}
 #program;;
-#require "tyxml";;
+(* #require "tyxml";; *)
 
 let html elt =
   let module H = Tyxml.Html in
