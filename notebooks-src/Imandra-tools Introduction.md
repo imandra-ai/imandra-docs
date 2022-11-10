@@ -17,12 +17,9 @@ key-phrases:
 
 In this notebook, we'll introduce the `imandra-tools` library and go through how to use its powerful modules to augment Imandra's decomposition facilities.
 
-Normally, before using `imandra-tools`, one would have to require it in their Imandra toplevel by executing the require statement `#require "imandra-tools"`. Since the `#require` directive is disabled for security reasons in this notebook, this step won't be necessary as we've pre-loaded imandra-tools.
-
-Let's make sure this is actually the case before starting.
-
+Let's first require the library.
 ```{.imandra .input}
-#show Imandra_tools;;
+#require "imandra-tools";;
 ```
 
 Great! Let's start exploring `imandra-tools`.

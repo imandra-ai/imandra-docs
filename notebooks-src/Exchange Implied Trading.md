@@ -223,7 +223,7 @@ One of Imandra's powerful features is the ability to combine logic (pure subset 
 (* Here's an example of a custom printer that we can install for arbitrary data types. *)
 
 #program;;
-(* #require "tyxml";; *)
+#require "tyxml";;
 let html_of_order (o : order) =
   let module H = Tyxml.Html in
   H.div
