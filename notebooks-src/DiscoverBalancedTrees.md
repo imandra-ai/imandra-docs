@@ -18,10 +18,10 @@ In this example, we will define a type of binary trees, and a function that crea
 
 # Demonstration
 
-First you need to `#require` the Discover bridge.
+You may need to `#require` the Discover bridge.  This may not be necessary if you are using Try Imandra or Imandra through a Docker image.  The command is commented out here for reference so that you can easily use it if needed.
 
 ```{.imandra .input}
-#require "imandra-discover-bridge";;
+(* #require "imandra-discover-bridge";; *)
 open Imandra_discover_bridge.User_level;;
 ```
 
