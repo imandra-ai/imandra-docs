@@ -200,8 +200,10 @@ Now that we have an early model, let's compile it with our ROS node wrapper into
 
 # 3. Verifying the ROS node model
 
-Formal verification is the process of reasoning mathematically about the correctness of computer programs. We'll use Imandra to formally verify some properties of the ROS node model we've created.
-
+Formal verification is the process of reasoning mathematically about the correctness of computer programs. We'll use Imandra to formally verify some properties of the ROS node model we've created. First we can use imandra to analyse all possible behaviours of the model, by using [Region Decomposition](https://docs.imandra.ai/imandra-docs/notebooks/decomposition/):
+```{.imandra .input}
+Modular_decomp.top "one_step";;
+```
 ## 3.1 Verifying outgoing `Twist` message at `Clock` ticks
 
 Our model is designed in such a way that it updates its state parameters upon `LaserScan` messages and sends out `Twist` control messages in response to `Clock` messages. Let's verify a simple theorem that on every incoming `Clock` message, there is an outgoing `Twist` message.
