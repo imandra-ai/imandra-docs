@@ -4,7 +4,7 @@ In this notebook, we will build an Imandra framework for reasoning about concurr
 
 Let's begin with an informal description of the problem space.
 
-# Detecting resource conflicts over concurrent workflows
+## Detecting resource conflicts over concurrent workflows
 
 Imagine there are two workflows, WF1 and WF2, that can each access Sharable and Unsharable resources.
 
