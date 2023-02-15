@@ -1,6 +1,6 @@
 # Imandra for automated conflict detection
 
-In this notebook, we will build an Imandra framework for reasoning about concurrent conflict detection. Once we encode the problem domain, we'll be able to use Imandra to automatically solve arbitrary problems in this domain of concurrent resource conflict detection simply by encoding them in a simple datatype and asking Imandra if a sequence of events leading to a conflict is possible.
+In this notebook, we will build an Imandra framework for reasoning about concurrent conflict detection. Once we encode the problem domain, we'll be able to use Imandra to automatically solve arbitrary problems simply by describing them in a simple datatype and asking Imandra if a sequence of events leading to a conflict is possible.
 
 Let's begin with an informal description of the problem space.
 
