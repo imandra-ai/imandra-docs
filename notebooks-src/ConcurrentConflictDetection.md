@@ -1,3 +1,10 @@
+---
+title: "Concurrent Conflict Detection"
+description: "Imandra for automated conflict detection"
+kernel: imandra
+slug: concurrent-conflict-detection
+---
+
 # Imandra for automated conflict detection
 
 In this notebook, we will build an Imandra framework for reasoning about concurrent conflict detection. Once we encode the problem domain, we'll be able to use Imandra to automatically solve arbitrary problems simply by describing them in a simple datatype and asking Imandra if a sequence of events leading to a conflict is possible.
@@ -56,21 +63,21 @@ Node F
 - Accesses `Apple`
 
 ### Problem 1A
-Suppose that we define our resources as such:  
+Suppose that we define our resources as such:
 
 Resources
 - Apple: `Sharable`
 - Banana: `Unsharable`
 - Orange: `Sharable`
 
-If the following sequence of events is seen:  
+If the following sequence of events is seen:
 1. `Sensor = 1` (`WF1 -> A`) (`WF2 -> D`)
 2. `Sensor = 2` (`WF1 -> B`) (`WF2 -> E`)
 
 Then `B` and `E` will access `Banana` (which is an Unsharable resource) at the same time, and there exists a sequence of events such that **a conflict is possible**.
 
 ### Problem 1B
-Suppose that we now define our resources as such:  
+Suppose that we now define our resources as such:
 
 Resources
 - Apple: `Unsharable`
@@ -83,7 +90,7 @@ Then there is **no such sequence of events such that a conflict is possible**.
 Suppose we keep the resource definition as in 1B but now change the definition of the Nodes to be:
 
 Node D
-- Starts when `Sensor == 1` OR `Sensor == 2` 
+- Starts when `Sensor == 1` OR `Sensor == 2`
 
 Node E
 - Starts when `Sensor == 2` OR `Sensor == 3`
@@ -92,7 +99,7 @@ Node F
 - Starts when `Sensor == 3` OR `Sensor == 1`
 - Accesses `Apple`
 
-If the following sequence of events is seen:  
+If the following sequence of events is seen:
 1. `Sensor = 2` (`WF2 -> D`)
 2. `Sensor = 3` (`WF2 -> E`)
 3. `Sensor = 1` (`WF2 -> F`) (`WF1 -> A`)
