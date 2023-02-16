@@ -13,7 +13,7 @@ We keep notebooks in markdown in the repo as it's easier to diff them for change
 There are two key steps for creating a new docs markdown file which will work with our Imandra Docs system:
 
 1. Inside the Jupyter UI do `File > Save As` and save your file with `.md` file extension before committing it. Do not use the `Download as Markdown` command as that will produce files we cannot handle.
-- Add appropriate metadata at the top of the file (using a texteditor outside of Jupyter). It should have the following format:
+2. Add appropriate metadata at the top of the file (using a texteditor outside of Jupyter). It should have the following format:
 
 ```
 ---
