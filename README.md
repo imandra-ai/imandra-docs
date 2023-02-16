@@ -6,7 +6,7 @@
 make docker-dev
 ```
 
-## Markdown notebooks
+## Creating a notebook for Imandra Docs
 
 We keep notebooks in markdown in the repo as it's easier to diff them for changes.
 
