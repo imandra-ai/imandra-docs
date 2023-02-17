@@ -7,6 +7,8 @@ slug: concurrent-conflict-detection
 
 # Imandra for concurrent conflict detection
 
+![Imandra CCD](https://storage.googleapis.com/imandra-assets/images/docs/imandra-ccd.svg) 
+
 In this notebook, we'll build an Imandra framework for reasoning about concurrent conflict detection. Once we encode the problem domain, we'll be able to use Imandra to automatically solve arbitrary problems simply by describing them and asking Imandra if a sequence of events leading to a conflict is possible.
 
 Let's begin with an informal description.
