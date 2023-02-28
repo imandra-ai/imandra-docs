@@ -5,22 +5,23 @@ kernel: imandra
 slug: concurrent-conflict-detection
 ---
 
-# Imandra for automated conflict detection
+# Imandra for concurrent conflict detection
 
-In this notebook, we will build an Imandra framework for reasoning about concurrent conflict detection. Once we encode the problem domain, we'll be able to use Imandra to automatically solve arbitrary problems simply by describing them in a simple datatype and asking Imandra if a sequence of events leading to a conflict is possible.
+![Imandra CCD](https://storage.googleapis.com/imandra-assets/images/docs/imandra-ccd.svg) 
 
-Let's begin with an informal description of the problem space.
+In this notebook, we'll build an Imandra framework for reasoning about concurrent conflict detection. Once we encode the problem domain, we'll be able to use Imandra to automatically solve arbitrary problems simply by describing them and asking Imandra if a sequence of events leading to a conflict is possible.
+
+Let's begin with an informal description.
 
 ## Detecting resource conflicts over concurrent workflows
 
-Imagine there are two workflows, WF1 and WF2, that can each access Sharable and Unsharable resources.
+Imagine there are two concurrent workflows, WF1 and WF2, that progress at their own pace based upon guards on sensor readings, and can each access Sharable and Unsharable resources.
 
-We define a conflict as any possible scenario in which WF1 and WF2 both access
-an Unsharable resource at the same time.
+We define a conflict as any possible scenario in which WF1 and WF2 both access an Unsharable resource at the same time.
 
 For a given problem specification, we want to prove either that a conflict can never occur, or to prove that a conflict can occur and synthesize a witness (a sequence of events) realizing the conflict.
 
-## Imagine we have the following work-flows
+## Imagine we have the following workflows
 
 ### WF1
 ```
@@ -166,7 +167,7 @@ Next, we're going to encode the "meaning" or "semantics" of concurrent conflicts
 
 ## State
 
-The `state` datatype will encode the current state of the world. This is core datatype over which a problem execution trace will take place.
+The `state` datatype will encode the current state of the world. This is the core datatype over which a problem execution trace will take place.
 
 ## Interpreter
 
@@ -429,7 +430,7 @@ use Imandra's concrete execution facilities to investigate the state for this co
 run_problem ex_3 CX.sensors
 ```
 
-We can see that the conflict Imandra found, which happens with a sensor sequence of `[2;3;1]` results in
+We can see that the conflict Imandra found, which happens with a sensor sequence of `[2;3;1]` or `[2;2;1]`, results in
 both `Node A` and `Node F` trying to access `Apple` at the same time, which is not allowed by the
 resource access policy.
 
