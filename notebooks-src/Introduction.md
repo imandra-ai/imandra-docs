@@ -13,7 +13,7 @@ slug: introduction
 
 Imandra is a programming language and an automated reasoning engine which you can use to create models/programs and reason about them. Imandra uses OCaml as the input language - we've given its "pure" subset a mechanized formal semantics allowing Imandra to automatically translate the code into mathematical logic and analyze it using a variety of cutting-edge techniques. Imandra is very special in several important ways, here are just a few:
 
-- It's built on many breakthroughs that eliminate manual work that was historically required (e.g. using academic tools). Traditionally, logical analysis of code for industrial applications required a PhD - wIth Imandra, you just write code and properties you wish to analyze, and Imandra does the work.
+- It's built on many breakthroughs that eliminate manual work that was historically required (e.g. using academic tools). Traditionally, logical analysis of code for industrial applications required a PhD - with Imandra, you just write code and properties you wish to analyze, and Imandra does the work.
 - It contains myriad of techniques that are required for "real world" industrial applications of automated reasoning that would typically be implemented in disparate tools.
 - It's cloud-native - to scale to "real-world" applications, we've had to do a lot of engineering which you can now access via APIs and intergrate into your products.
 
