@@ -26,15 +26,15 @@ The following pages contain further information on the technical details behind 
 
 ## What can you do with Imandra?
 
-The short answer is "Quite a lot!" Our customers have used Imandra to verify complex algorithms, rigorously test and audit their complex software systems, develop new AI product offerings and much more. Imandra brings the most value where/when you rely on algorithms, which is pretty much almost everything these days.
+The short answer is "Quite a lot!"  As discussed above - at its core, Imandra is a unified collection of tools for reasoning about code. Our customers have used Imandra to verify complex algorithms, rigorously test and audit their complex software systems, develop new AI product offerings and much more. Imandra brings the most value where/when you rely on algorithms, which is pretty much almost everything these days.
 
 Below, we've tried to create a few broad categories of use-cases with high-level explanations and links to demos and tutorials. As always, if you have specific questions - please do not hesitate to reach out to us ([contact@imandra.ai](mailto:contact@imandra.ai "Contact Imandra")).
 
 ### Create and reason about mental models
 
-LLMs have fundmental flaws that stem from their statistical nature - hallucinations, lack of explainability and audit trail.
+Large Language Models ("LLMs") have fundmental flaws that stem from their statistical nature - hallucinations, lack of explainability and audit trail.
 
-To fix this, Large Language Models (LLMs) can use Imandra to build mental models and reason about them, unlocking the incredible potential of generative AI for industries where correctness and compliance matter.
+To fix this, LLMs can use Imandra to build mental models and reason about them, unlocking the incredible potential of generative AI for industries where correctness and compliance matter.
 
 Check out this video for further details:
 
@@ -47,13 +47,13 @@ There are two (primary) ways to integrate Imandra with your LLMs:
 
 With option 1, you write more example data to teach your LLM how to translate problems into Imandra with minimal modifications on the Imandra side. Option 2 is the opposite - you create the IML scaffolding on the Imandra side with minimal data training for the LLM.
 
-![Imandra LLM Integrations](../assets/../notebook-assets/imandra-llms-integrations.svg)
+![Imandra LLM Integrations](../assets/../notebook-assets/imandra-integrations.svg)
 
 We also have another type of "Reasoning Skills" - with Domain Specific Languages ("DSLs"). This is a good option for really complex domains like reasoning about Financial Information eXchange ("FIX") specifications used to connect trading systems in finance. We work with corporations on creating new DSLs or domain-specific interfaces. For example, we're also working on SysML 2.0 modeling in Imandra. Please reach out to [contact@imandra.ai](mailto:contact@imandra.ai "Contact us") if you think this integration could be relevant in your domain.
 
 ## Discovering specifications
 
-Another special feature of Imandra is "Discover" - it **generates** code from data that logically describes the obvservations. This has many important applications randing from ensuring third party applications are conforming with their interfaces to cyber security.
+Another special feature of Imandra is "Discover" - it **generates** code from data that logically describes the observations. This has many important applications ranging from ensuring third party applications are conforming with their interfaces to cyber security.
 
 Here's a quick example where modules `A` and `B` represent different APIs:
 
@@ -131,7 +131,7 @@ The concept of "digital twins" has become envogue right now, but we've applied t
 
 ### Apply formal methods to answer questions about programs (e.g. Neural Networks)
 
-Formal verification seeks to apply local reasoning to answer deep questions about behavior of programs. In our case, programs written in IML. Use of formal methods (including verification) is present in most applications of Imandra, so quite a few of the demos in our gallery will have relevant information and tutorial.
+Formal verification seeks to apply logical reasoning to answer deep questions about behavior of programs. In our case, programs written in IML. Use of formal methods (including verification) is present in most applications of Imandra, so quite a few of the demos in our gallery will have relevant information and tutorials.
 
 [In this example](https://docs.imandra.ai/imandra-docs/notebooks/supervised-learning/ "Analyzing Machine Learnt models with Imandra"), we illustrate how to encode a model of a neural network:
 
@@ -194,4 +194,4 @@ Imandra has a number of user interfaces:
 
 ## How to get started
 
-The best way to get started is by going through the tutorials and the demonstrations. A basic knowledge of OCaml is preferred - luckily there are quite a few tutorials online that teach OCaml and [the offical website offers great tutorials](https://ocaml.org/ "Ocaml.ord"). There's also the excellent "Real World OCaml" [available online for free](https://dev.realworldocaml.org/toc.html "Real World OCaml").
+The best way to get started is by going through the tutorials and the demonstrations. A basic knowledge of OCaml is preferred - luckily there are quite a few tutorials online that teach OCaml and [the offical website offers great tutorials](https://ocaml.org/ "Ocaml.org"). There's also the excellent "Real World OCaml" [available online for free](https://dev.realworldocaml.org/toc.html "Real World OCaml").
