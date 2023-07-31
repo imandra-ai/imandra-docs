@@ -1,0 +1,499 @@
+openapi: 3.0.0
+info:
+  title: imandra-http-server
+  description: Query Imandra via HTTP. See also https://github.com/aestheticIntegration/bs-imandra-client for a sample client implementation and OCaml API types.
+  version: 0.0.1
+
+servers:
+  - url: http://localhost:3000
+
+security:
+  - bearerAuth: []
+
+paths:
+  /status:
+    get:
+      summary: "Get server status"
+      description: "Can be used to check that the server is up and running."
+      operationId: "getStatus"
+      responses:
+        '200':
+          description: "OK"
+          content: { text/plain : { schema : { type : string } } }
+
+  /history:
+    get:
+      summary: "Get a text version of the Logic History"
+      description: "Gives an idea of what functions and theorems have been defined."
+      operationId: "getHistory"
+      responses:
+        '200':
+          description: "History in markdown"
+          content: { text/plain : { schema : { type : string } } }
+
+  /reset:
+    post:
+      summary: "Reset Imandra internal state"
+      description: "Equivalent to #reset directive in imandra-repl"
+      operationId: "reset"
+      responses:
+        '200':
+          description: "OK"
+          content: { text/plain : { schema : { type : string } } }
+
+  /shutdown:
+    post:
+      summary: "Shutdown the server"
+      operationId: "shutdown"
+      responses:
+        '200':
+          description: "OK"
+          content: { text/plain : { schema : { type : string } } }
+
+  /eval/by-src:
+    post:
+      summary: "Evaluate a string of source code"
+      description: ""
+      operationId: "eval"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EvalRequestSrc'
+
+      responses:
+        '200':
+          description: "Evaluated ok"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EvalResponse'
+
+        '422':
+          description: "Error during compilation/evaluation"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
+
+  /verify/by-src:
+    post:
+      summary: "Verify a property (boolean function) from lambda expression source"
+      operationId: "verify_by_src"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VerifyRequestSrc'
+      responses:
+        '200':
+          description: "Evaluated ok"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VerifyResponse'
+
+        '422':
+          description: "Error during compilation/evaluation"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
+
+  /verify/by-name:
+    post:
+      summary: |
+        Verify a property (boolean function) by name.
+        (The name should exist from a previous call to `/eval`).
+
+        This is the more 'primitive' call - calls to /*/by-src are for
+        convenience and use Imandra_util.gensym to assign a name to your `src`
+        block first, and then act by_name, so give this endpoint a try if you're
+        having issues with /*/by-src.
+
+      operationId: "verify_by_name"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VerifyRequestName'
+
+      responses:
+        '200':
+          description: "Evaluated ok"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VerifyResponse'
+
+        '422':
+          description: "Bad request"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
+
+  /instance/by-src:
+    post:
+      summary: "Obtain an instance from a property (boolean function) from lambda expression source"
+      operationId: "instance_by_src"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InstanceRequestSrc'
+      responses:
+        '200':
+          description: "Evaluated ok"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InstanceResponse'
+
+        '422':
+          description: "Error during compilation/evaluation"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
+
+  /instance/by-name:
+    post:
+      summary: |
+        Search for an instance from a property (boolean function) by name.
+        (The name should exist from a previous call to `/eval`).
+
+        This is the more 'primitive' call - calls to /*/by-src are for
+        convenience and use Imandra_util.gensym to assign a name to your `src`
+        block first, and then act by_name, so give this endpoint a try if you're
+        having issues with /*/by-src.
+
+      operationId: "instance_by_name"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InstanceRequestName'
+
+      responses:
+        '200':
+          description: "Evaluated ok"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InstanceResponse'
+
+        '422':
+          description: "Bad request"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+
+  schemas:
+    Syntax:
+      type: string
+      description: "The syntax of passed source. NB: For 'reason' to work, ensure the server is started with `-reason`, which loads the reason parser."
+      enum:
+        - iml
+        - reason
+    PrinterDetails:
+      type: object
+      required:
+        - name
+        - cx_var_name
+      properties:
+        name:
+          type: string
+          description: "Name of printer function. Should be of type `t -> string`, where `t` is the type returned by your instance constraint function."
+        cx_var_name:
+          type: string
+          description: "Name of the variable in your instance constraint function, e.g. `x` for `fun x -> true`. In an `imandra-repl` session, this is the name of the property on the generated CX module, e.g. the `x` in `CX.x`."
+
+    EvalRequestSrc:
+      type: object
+      required:
+        - src
+      properties:
+        src:
+          type: string
+          description: "Source code string with a given syntax (default Iml)"
+        syntax:
+          $ref: '#/components/schemas/Syntax'
+      example:
+        src: "let f x = x + 1"
+
+    VerifyRequestName:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          description: |
+            Example: my_fn_name
+          type: "string"
+        instance_printer:
+          $ref: '#/components/schemas/PrinterDetails'
+        hints:
+          $ref: '#/components/schemas/Hints'
+
+    VerifyRequestSrc:
+      type: object
+      required:
+        - src
+      properties:
+        src:
+          type: string
+          description: "Source code string with a given syntax (default Iml)"
+        syntax:
+          $ref: '#/components/schemas/Syntax'
+        instance_printer:
+          $ref: '#/components/schemas/PrinterDetails'
+        hints:
+          $ref: '#/components/schemas/Hints'
+
+    InstanceRequestName:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          description: |
+            Example: my_fn_name
+          type: "string"
+        instance_printer:
+          $ref: '#/components/schemas/PrinterDetails'
+        hints:
+          $ref: '#/components/schemas/Hints'
+
+    InstanceRequestSrc:
+      type: object
+      required:
+        - src
+      properties:
+        src:
+          type: string
+          description: "Source code string with a given syntax (default Iml)"
+        syntax:
+          $ref: '#/components/schemas/Syntax'
+        instance_printer:
+          $ref: '#/components/schemas/PrinterDetails'
+        hints:
+          $ref: '#/components/schemas/Hints'
+
+    ResponseError:
+      required:
+        - error
+      properties:
+        error:
+          type: string
+        stdout:
+          type: string
+        stderr:
+          type: string
+
+    VerifyResult:
+      type: string
+      enum:
+        - proved
+        - proved_upto
+        - refuted
+        - unknown
+
+    ResponseModel:
+      type: object
+      properties:
+        syntax:
+          $ref: '#/components/schemas/Syntax'
+        src:
+          type: string
+          description: "Source code string with a given syntax (default Iml)"
+
+    InstanceType:
+      type: string
+      enum:
+        - counterexample
+        - instance
+
+    ResponseInstance:
+      type: object
+      properties:
+        model:
+          $ref: '#/components/schemas/ResponseModel'
+        type:
+          $ref: '#/components/schemas/InstanceType'
+        src:
+          type:
+            string
+
+    WithInstanceBody:
+      type: object
+      required:
+        - instance
+      properties:
+        instance:
+          $ref: '#/components/schemas/ResponseInstance'
+
+    WithUnknownReasonBody:
+      type: object
+      required:
+        - unknown_reason
+      properties:
+        unknown_reason:
+          type: string
+
+    UpToBody:
+      type: object
+      required:
+        - steps
+      properties:
+        steps:
+          type: integer
+        bound:
+          type: integer
+
+    VerifyResponse:
+      type: object
+      required:
+        - type
+      properties:
+        type:
+          $ref: '#/components/schemas/VerifyResult'
+        body:
+          oneOf:
+            - $ref: '#/components/schemas/UpToBody'
+            - $ref: '#/components/schemas/WithInstanceBody'
+            - $ref: '#/components/schemas/WithUnknownReasonBody'
+
+    EvalResponse:
+      type: object
+      required:
+        - success
+      properties:
+        success:
+          type: boolean
+        stdout:
+          type: string
+        stderr:
+          type: string
+
+    InstanceResult:
+      type: string
+      enum:
+        - unsat
+        - unsat_upto
+        - sat
+        - unknown
+
+    InstanceResponse:
+      type: object
+      required:
+        - type
+      properties:
+        type:
+          $ref: '#/components/schemas/InstanceResult'
+        body:
+          oneOf:
+            - $ref: '#/components/schemas/UpToBody'
+            - $ref: '#/components/schemas/WithInstanceBody'
+            - $ref: '#/components/schemas/WithUnknownReasonBody'
+
+    Hints:
+      type: object
+      required:
+        - method
+      properties:
+        method:
+          $ref: '#/components/schemas/Method'
+
+    MethodType:
+      type: string
+      enum:
+        - unroll
+        - ext_solver
+        - auto
+        - induct
+
+    MethodUnrollBody:
+      type: object
+      required:
+        - name
+      properties:
+        steps:
+          type: integer
+
+    MethodExtSolverBody:
+      type: object
+      properties:
+        name:
+          type: string
+
+    InductType:
+      type: string
+      enum:
+        - functional
+        - structural
+        - default
+
+    InductStructuralStyle:
+      type: string
+      enum:
+        - multiplicative
+        - additive
+
+    InductStructuralBody:
+      type: object
+      required:
+        - vars
+        - style
+      properties:
+        vars:
+          type: array
+          items:
+            type: string
+        style:
+          $ref: '#/components/schemas/InductStructuralStyle'
+
+    InductFunctionalBody:
+      type: object
+      required:
+        - f_name
+      properties:
+        f_name:
+          type: string
+
+    MethodInductBody:
+      type: object
+      required:
+        - type
+      properties:
+        type:
+          $ref: '#/components/schemas/InductType'
+        body:
+          oneOf:
+            - $ref: '#/components/schemas/InductStructuralBody'
+            - $ref: '#/components/schemas/InductFunctionalBody'
+
+    Method:
+      type: object
+      required:
+        - type
+      properties:
+        type:
+          $ref: '#/components/schemas/MethodType'
+        body:
+          oneOf:
+            - $ref: '#/components/schemas/MethodUnrollBody'
+            - $ref: '#/components/schemas/MethodExtSolverBody'
+            - $ref: '#/components/schemas/MethodInductBody'
