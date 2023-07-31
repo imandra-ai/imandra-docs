@@ -10,4 +10,5 @@ slug: reference
 Here are the reference docs generated for Imandra's standard library and API:
 
 - [Standard Library](../../odoc/imandra-base/Imandra_prelude/)
-- [API Docs](../../odoc/)
+- [OCaml API Docs](../../odoc/)
+- [Python API Socs](../../python/)
