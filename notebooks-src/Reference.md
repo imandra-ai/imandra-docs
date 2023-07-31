@@ -11,4 +11,4 @@ Here are the reference docs generated for Imandra's standard library and API:
 
 - [Standard Library](../../odoc/imandra-base/Imandra_prelude/)
 - [OCaml API Docs](../../odoc/)
-- [Python API Socs](../../python/)
+- [Python API Docs](../../python/)
