@@ -14,10 +14,10 @@ slug: introduction
 Imandra is a programming language and an automated reasoning engine which you can use to create models/programs and reason about them. Imandra uses OCaml as the input language - we've given its "pure" subset a mechanized formal semantics allowing Imandra to automatically translate the code into mathematical logic and analyze it using a variety of cutting-edge techniques. Imandra is very special in several important ways, here are just a few:
 
 - It's built on many breakthroughs that eliminate manual work that was historically required (e.g. using academic tools). Traditionally, logical analysis of code for industrial applications required a PhD - with Imandra, you just write code and properties you wish to analyze, and Imandra does the work.
-- It contains myriad of techniques that are required for "real world" industrial applications of automated reasoning that would typically be implemented in disparate tools.
-- It's cloud-native - to scale to "real-world" applications, we've had to do a lot of engineering which you can now access via APIs and intergrate into your products.
+- It contains a myriad of techniques that are required for "real world" industrial applications of automated reasoning that would typically be implemented in disparate tools.
+- It's cloud-native - to scale to "real-world" applications, we've had to do a lot of engineering which you can now access via APIs and integrate into your products.
 
-![Imandra Core Overview](../assets/../notebook-assets/core-process.png)
+![Imandra Core Overview](../assets/../notebook-assets/imandra-core-process.svg)
 
 The following pages contain further information on the technical details behind Imandra:
 
@@ -47,7 +47,7 @@ There are two (primary) ways to integrate Imandra with your LLMs:
 
 With option 1, you write more example data to teach your LLM how to translate problems into Imandra with minimal modifications on the Imandra side. Option 2 is the opposite - you create the IML scaffolding on the Imandra side with minimal data training for the LLM.
 
-![Imandra LLM Integrations](../assets/../notebook-assets/imandra-llm-integrations.png)
+![Imandra LLM Integrations](../assets/../notebook-assets/imandra-llms-integrations.svg)
 
 We also have another type of "Reasoning Skills" - with Domain Specific Languages ("DSLs"). This is a good option for really complex domains like reasoning about Financial Information eXchange ("FIX") specifications used to connect trading systems in finance. We work with corporations on creating new DSLs or domain-specific interfaces. For example, we're also working on SysML 2.0 modeling in Imandra. Please reach out to [contact@imandra.ai](mailto:contact@imandra.ai "Contact us") if you think this integration could be relevant in your domain.
 
@@ -127,7 +127,7 @@ The concept of "digital twins" has become envogue right now, but we've applied t
 2. Use them to rigorously test the implementations before release into production
 3. Audit their performance post production release
 
-![Model Based Software Development](../assets/../notebook-assets/imandra-mbsd-light.png)
+![Model Based Software Development](../assets/../notebook-assets/imandra-mbsd-dark-extended.svg)
 
 ### Apply formal methods to answer questions about programs (e.g. Neural Networks)
 
