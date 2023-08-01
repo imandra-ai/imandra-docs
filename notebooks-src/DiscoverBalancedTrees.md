@@ -18,11 +18,10 @@ In this example, we will define a type of binary trees, and a function that crea
 
 # Demonstration
 
-You may need to `#require` the Discover bridge.  This may not be necessary if you are using Try Imandra or Imandra through a Docker image.  The command is commented out here for reference so that you can easily use it if needed.
+You may need to `#require` Discover.  This may not be necessary if you are using Try Imandra or Imandra through a Docker image.  The command is commented out here for reference so that you can easily use it if needed.
 
 ```{.imandra .input}
-(* #require "imandra-discover-bridge";; *)
-open Imandra_discover_bridge.User_level;;
+(* #require "discover";; *)
 ```
 
 It is common to restrict induction used by Imandra using `#max_induct`.
@@ -54,7 +53,7 @@ let rhs_split n = n - lhs_split n;;
 What are some properties that hold of these functions?  We should ask Discover to suggest some things.  We invoke Discover with the events database `db` and pass it a list of the string function names we would like Discover to investigate.
 
 ```{.imandra .input}
-discover db ~iterations:2i ["+";"lhs_split";"rhs_split"];;
+Discover.top db ~iterations:2i ["+";"lhs_split";"rhs_split"];;
 ```
 
 Discover finishes after running for a few seconds and gives us some conjectures we could try to prove.  One of them states that the sum of the `lhs_split` and `rhs_split` of some `x0` is equal to `x0`.  Great, we can ask Imandra to prove it for us.
@@ -97,7 +96,7 @@ let leq_zero x = x <= 0;;
 Now that we have the functions `nodes` and `cbal`, we should ask Discover to find some properties that may hold.  Since `cbal` is only really interesting if the input is nonnegative, we invoke Discover with the labeled argument `~condition` set to the string literal `"nonnegative"`.  This string argument lets Discover know to always instantiate a fixed variable with values satisfying the predicate we just defined.  We specify `nodes` and `cbal` for investigation.
 
 ```{.imandra .input}
-discover db ~condition:"nonnegative" ["nodes";"cbal"];;
+Discover.top db ~condition:"nonnegative" ["nodes";"cbal"];;
 ```
 
 Great, Discover suggests that the balanced binary trees produced by `cbal` have the correct number of nodes!  It's often helpful to tweak the lemmas suggested by Discover.  In this case we'll replace the predicate condition with its body. Let's have Imandra prove it.
@@ -109,7 +108,7 @@ lemma discover__0 x0 = x0 >= 0 ==> (nodes (cbal x0)) = x0   [@@auto];;
 What about the zero or negative case?
 
 ```{.imandra .input}
-discover db ~condition:"leq_zero" ["nodes";"cbal";"Empty"];;
+Discover.top db ~condition:"leq_zero" ["nodes";"cbal";"Empty"];;
 ```
 
 Discover suggests exactly what `cbal` does in the less than or equal to zero case, so we can have Imandra prove this as well.
@@ -133,7 +132,7 @@ let is_balanced tree =
 Now we can ask Discover to find a relationship between `is_balanced`, `cbal`, and `true`.  We include `true` so that Discover can suggest predicates as equations.  Similarly, you can include `false` to find things that don't hold.
 
 ```{.imandra .input}
-discover db ["is_balanced";"cbal";"true"];;
+Discover.top db ["is_balanced";"cbal";"true"];;
 ```
 
 Discover suggests that every tree produced by `cbal` is balanced.  We can prove this too!
