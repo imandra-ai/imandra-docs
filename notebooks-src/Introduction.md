@@ -17,7 +17,7 @@ Imandra is a programming language and an automated reasoning engine which you ca
 - It contains a myriad of techniques that are required for "real world" industrial applications of automated reasoning that would typically be implemented in disparate tools.
 - It's cloud-native - to scale to "real-world" applications, we've had to do a lot of engineering which you can now access via APIs and integrate into your products.
 
-![Imandra Core Overview](../assets/../notebook-assets/imandra-core-process.svg)
+![Imandra Core Overview](https://storage.googleapis.com/imandra-notebook-assets/imandra-core-process.svg)
 
 The following pages contain further information on the technical details behind Imandra:
 
@@ -47,7 +47,7 @@ There are two (primary) ways to integrate Imandra with your LLMs:
 
 With option 1, you write more example data to teach your LLM how to translate problems into Imandra with minimal modifications on the Imandra side. Option 2 is the opposite - you create the IML scaffolding on the Imandra side with minimal data training for the LLM.
 
-![Imandra LLM Integrations](../assets/../notebook-assets/imandra-integrations.svg)
+![Imandra LLM Integrations](https://storage.googleapis.com/imandra-notebook-assets/imandra-integrations.svg)
 
 We also have another type of "Reasoning Skills" - with Domain Specific Languages ("DSLs"). This is a good option for really complex domains like reasoning about Financial Information eXchange ("FIX") specifications used to connect trading systems in finance. We work with corporations on creating new DSLs or domain-specific interfaces. For example, we're also working on SysML 2.0 modeling in Imandra. Please reach out to [contact@imandra.ai](mailto:contact@imandra.ai "Contact us") if you think this integration could be relevant in your domain.
 
@@ -127,7 +127,7 @@ The concept of "digital twins" has become envogue right now, but we've applied t
 2. Use them to rigorously test the implementations before release into production
 3. Audit their performance post production release
 
-![Model Based Software Development](../assets/../notebook-assets/imandra-mbsd-dark-extended.svg)
+![Model Based Software Development](https://storage.googleapis.com/imandra-notebook-assets/imandra-mbsd-dark-extended.svg)
 
 ### Apply formal methods to answer questions about programs (e.g. Neural Networks)
 
