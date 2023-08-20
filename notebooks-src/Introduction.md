@@ -9,13 +9,13 @@ slug: introduction
 ---
 # Introduction
 
-*This introduction is designed to give you a brief and high-level overview of Imandra and some sample use cases. If you'd prefer to start "from the beginning", take a look at [A Quick Tour of Imandra](A%20Quick%20Tour%20of%20Imandra.md).*
+*This introduction is designed to give you a brief and high-level overview of Imandra and some sample use cases. If you'd prefer to start from the beginning, take a look at [A Quick Tour of Imandra](A%20Quick%20Tour%20of%20Imandra.md).*
 
-Imandra is a programming language and an automated reasoning engine which you can use to create models/programs and reason about them. Imandra uses OCaml as the input language - we've given its "pure" subset a mechanized formal semantics allowing Imandra to automatically translate the code into mathematical logic and analyze it using a variety of cutting-edge techniques. Imandra is very special in several important ways, here are just a few:
+Imandra is a programming language and an automated reasoning engine which you can use to create models/programs and reason about them. Imandra uses "pure" subset of Caml as the input language (we call it Imandra Modeling Language or "IML"). IML has a mechanized formal semantics allowing Imandra to automatically translate the code into mathematical logic and analyze it using a variety of cutting-edge techniques:
 
-- It's built on many breakthroughs that eliminate manual work that was historically required (e.g. using academic tools). Traditionally, logical analysis of code for industrial applications required a PhD - with Imandra, you just write code and properties you wish to analyze, and Imandra does the work.
+- It's built on many breakthroughs that eliminate the manual work that was historically required. Traditionally, logical analysis of code for industrial applications required a PhD - with Imandra, you just write code and properties you wish to analyze, and Imandra does the work.
 - It contains a myriad of techniques that are required for "real world" industrial applications of automated reasoning that would typically be implemented in disparate tools.
-- It's cloud-native - to scale to "real-world" applications, we've had to do a lot of engineering which you can now access via APIs and integrate into your products.
+- It's cloud-native - to scale to "real world" applications, we've had to do a lot of engineering which you can now access via APIs and integrate into your products.
 
 ![Imandra Core Overview](https://storage.googleapis.com/imandra-notebook-assets/imandra-core-process.svg)
 
@@ -26,13 +26,13 @@ The following pages contain further information on the technical details behind 
 
 ## What can you do with Imandra?
 
-The short answer is "Quite a lot!"  As discussed above - at its core, Imandra is a unified collection of tools for reasoning about code. Our customers have used Imandra to verify complex algorithms, rigorously test and audit their complex software systems, develop new AI product offerings and much more. Imandra brings the most value where/when you rely on algorithms, which is pretty much almost everything these days.
+The short answer is "Quite a lot!"  As discussed above - at its core, Imandra is a unified collection of tools for reasoning about code. Our customers have used Imandra to verify complex algorithms, rigorously test and audit their complex software systems, develop new AI product offerings and much more. Imandra adds value and enhances understanding whenever algorithms are relied on as parts of the complex systems that permeate our daily lives.
 
 Below, we've tried to create a few broad categories of use-cases with high-level explanations and links to demos and tutorials. As always, if you have specific questions - please do not hesitate to reach out to us ([contact@imandra.ai](mailto:contact@imandra.ai "Contact Imandra")).
 
 ### Create and reason about mental models
 
-Large Language Models ("LLMs") have fundmental flaws that stem from their statistical nature - hallucinations, lack of explainability and audit trail.
+Large Language Models ("LLMs") have fundamental flaws that stem from their statistical nature - hallucinations, lack of both explainability and audit trail.
 
 To fix this, LLMs can use Imandra to build mental models and reason about them, unlocking the incredible potential of generative AI for industries where correctness and compliance matter.
 
@@ -42,18 +42,18 @@ Check out this video for further details:
 
 There are two (primary) ways to integrate Imandra with your LLMs:
 
-1. "Raw" use of Imandra Core (we're working on a Python API interface to make this very easy to get up and running. Should be released soon!) where the LLM is trained to translate problems/questions into IML and query Imandra for answers.
+1. Direct use of Imandra Core - where the LLM is trained to translate problems/questions into IML and query Imandra for answers. This can be done via Imandra's HTTP, Python or OCaml APIs. Coming soon!
 2. Use of "Reasoning Skills" - these are special Imandra modules that are auto-generated from a reasoning skill model that you encode in Imandra. The generated code contains functions that make it very easy to build, inspect and reason about the model.
 
 With option 1, you write more example data to teach your LLM how to translate problems into Imandra with minimal modifications on the Imandra side. Option 2 is the opposite - you create the IML scaffolding on the Imandra side with minimal data training for the LLM.
 
 ![Imandra LLM Integrations](https://storage.googleapis.com/imandra-notebook-assets/imandra-integrations.svg)
 
-We also have another type of "Reasoning Skills" - with Domain Specific Languages ("DSLs"). This is a good option for really complex domains like reasoning about Financial Information eXchange ("FIX") specifications used to connect trading systems in finance. We work with corporations on creating new DSLs or domain-specific interfaces. For example, we're also working on SysML 2.0 modeling in Imandra. Please reach out to [contact@imandra.ai](mailto:contact@imandra.ai "Contact us") if you think this integration could be relevant in your domain.
+We also have another type of "Reasoning Skills":  the use of Domain Specific Languages ("DSLs"). These can be a good option when reasoning about really complex domains, such as trading systems in finance. We currently leverage a DSL called Imandra Protocol Language ("IPL") for describing and reasoning about Financial Information eXchange ("FIX") specifications. We also work with corporations to create new DSLs or domain-specific interfaces. For example, we're currently working on teaching Imandra about SysML 2.0 models. Please reach out to [contact@imandra.ai](mailto:contact@imandra.ai "Contact us") if you think this integration could be relevant in your domain.
 
 ## Discovering specifications
 
-Another special feature of Imandra is "Discover" - it **generates** code from data that logically describes the observations. This has many important applications ranging from ensuring third party applications are conforming with their interfaces to cyber security.
+Another special feature of Imandra is "Discover" - it **generates** code from data that logically describes the transactional data it observes. This has many important applications ranging from ensuring third party applications are conforming with their interfaces to cyber security.
 
 Here's a quick example where modules `A` and `B` represent different APIs:
 
@@ -121,7 +121,7 @@ Check out this [example to learn more](https://docs.imandra.ai/imandra-docs/note
 
 ### Model-Based Software Development ("MBSD")
 
-The concept of "digital twins" has become envogue right now, but we've applied this technique to model, test and audit complex software systems with great industrial success for a number of years. Moreover, with Imandra's formal methods features we provide the ultimate "shift left" methodology. Here is a typical workflow once you encode the requirements as an Imandra model:
+The concept of "digital twins" has become *en vogue* right now, but we've applied this technique to model, test and audit complex software systems with great industrial success for a number of years. Moreover, with Imandra's formal methods features we provide the ultimate "shift left" methodology. Here is a typical workflow once you encode the requirements as an Imandra model:
 
 1. Verify their compliance with requirements and regulations
 2. Use them to rigorously test the implementations before release into production
