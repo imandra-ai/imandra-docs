@@ -59,31 +59,23 @@ Here's a quick example where modules `A` and `B` represent different APIs:
 
 ```
 #require "imandra-discover-bridge";;
-
 open Imandra_discover_bridge.User_level;;
 
 type at = int;;
-
 type bt = string;;
 
 module A = struct
-
   let rec f (x : at) : bt =
     if x < 0 then ""
     else if x = 0 then ""
     else "j" ^ (f (x - 1))
-
   let p (x : at) (y : at) : bt =
     f (x + y)
-
 end;;
 
 module B = struct
-
   let g (x : bt) : at = String.length x
-
   let h (x : bt) (y : bt) : bt = String.append x y
-
 end;;
 
 let funlist = ["A.f"; "A.p"; "B.g"; "B.h"];;
