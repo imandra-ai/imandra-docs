@@ -69,7 +69,6 @@ module A = struct
     if x < 0 then ""
     else if x = 0 then ""
     else "j" ^ (f (x - 1))
-
   let p (x : at) (y : at) : bt =
     f (x + y)
 end;;
@@ -90,22 +89,22 @@ discover ~constructor_functions:false
 This will produce:
 
 ```
- <===DISCOVER RESULTS===========================>
+ <===DISCOVER RESULTS===========================> 
 These are the 11 conjectures suggested by Discover for discover_run.
-fun x -> (B.g (A.f (B.g x))) = (B.g x)
-fun x -> (A.f (B.g (A.f x))) = (A.f x)
-fun x y -> (A.p y x) = (A.p x y)
-fun x y -> (A.f (B.g (A.p x y))) = (A.p x y)
-fun x -> (A.p x x) = (B.h (A.f x) (A.f x))
-fun x y -> (B.g (B.h y x)) = (B.g (B.h x y))
-fun x y -> (A.p (B.g x) (B.g y)) = (A.f (B.g (B.h x y)))
-fun x -> (A.p x (B.g (A.f x))) = (B.h (A.f x) (A.f x))
-fun x y z -> (B.h (B.h x y) z) = (B.h x (B.h y z))
-fun x y -> (B.h (A.f y) (A.f x)) = (B.h (A.f x) (A.f y))
-fun x -> (A.f (B.g (B.h (A.f x) (A.f x)))) = (B.h (A.f x) (A.f x))
+fun x -> (B.g (A.f (B.g x))) = (B.g x) 
+fun x -> (A.f (B.g (A.f x))) = (A.f x) 
+fun x y -> (A.p y x) = (A.p x y) 
+fun x y -> (A.f (B.g (A.p x y))) = (A.p x y) 
+fun x -> (A.p x x) = (B.h (A.f x) (A.f x)) 
+fun x y -> (B.g (B.h y x)) = (B.g (B.h x y)) 
+fun x y -> (A.p (B.g x) (B.g y)) = (A.f (B.g (B.h x y))) 
+fun x -> (A.p x (B.g (A.f x))) = (B.h (A.f x) (A.f x)) 
+fun x y z -> (B.h (B.h x y) z) = (B.h x (B.h y z)) 
+fun x y -> (B.h (A.f y) (A.f x)) = (B.h (A.f x) (A.f y)) 
+fun x -> (A.f (B.g (B.h (A.f x) (A.f x)))) = (B.h (A.f x) (A.f x)) 
 These are SUBSUMED laws that may be interesting to the user.
  No subsumed conjectures.
- <==============================================>
+ <==============================================> 
 ```
 
 Once we have these conjectures - we can translate them into code, natural language or perform other types of reasoning with Imandra.
