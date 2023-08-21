@@ -7,17 +7,25 @@ slug: installation-simple
 
 # Installation
 
-N.B. the following is supported natively on MacOS and Linux. On Windows you'll need to use [WSL](https://docs.microsoft.com/en-us/windows/wsl/install-win10).
+The Imandra CLI, `imandra`, allows you to use Imandra's cloud APIs to create instances of Imandra Core in the cloud, submit IPL jobs, and more. The CLI is `python` based (it requires `python3`), and can be used from Unix, MacOS and Windows.
 
-Install the Imandra CLI `imandra`, by running the command below in a terminal:
+Install the Imandra CLI `imandra` on MacOS or Unix systems running the command below in a terminal:
 
 ```sh.copy
 sh <(curl -s "https://storage.googleapis.com/imandra-do/install.sh")
 ```
 
-This tool is Python based (requires Python 3) allows you to use Imandra's cloud APIs, and also aids with installation of Imandra Core.
+On Windows, you can use the command below from a powershell terminal:
+
+```sh.copy
+(Invoke-WebRequest https://storage.googleapis.com/imandra-do/install.ps1).Content | powershell -
+```
 
 ## Installation of Imandra Core
+
+Imandra Core is based on OCaml, and is supported natively on MacOS and Unix. On Windows you'll need to use [WSL](https://docs.microsoft.com/en-us/windows/wsl/install-win10).
+
+If this installation process is not an option for you, you can still use Imandra by spawning an Imandra Core instance in our cloud using the Imandra CLI.
 
 In order to use Imandra Core tools such as our Imandra REPL, you additionally need a local OCaml environment to be setup. The installer will set up a new OCaml environment (using the `opam` installer), and then install Imandra. Invoke the installer by running:
 

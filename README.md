@@ -54,3 +54,19 @@ make all
 cd ..
 make docker-build-docs IMANDRA_TOKEN=$(cat ~/.imandra-dev/login_token)
 ```
+
+## Including images or other assets
+
+To avoid having to do transforms to the notebook contents, we serve all assets out of a cloud bucket. You can add an asset for your own notebook by adding it to the `notebooks-assets` subfolder, and then running:
+
+```
+make upload-notebook-assets
+```
+
+You can then include an image in your notebook via:
+
+```
+![Image description](https://storage.googleapis.com/imandra-notebook-assets/<filename>.png)
+```
+
+This will work both locally, on the docs site and via try-imandra.
