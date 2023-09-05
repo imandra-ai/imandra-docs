@@ -61,8 +61,7 @@ let x : int = (Z.of_nativeint (-1n))
 
 When used as a context manager it initiates a pod specifically for the time within the `with` context. Once the operations within the `with` block are completed, the pod is automatically terminated and its resources are recycled.
 
-This could be limiting, especially within the Jupyter notebook environment. Alternatively one can instantiate the `imandra.session` class directly.In this case, the session remains persistent across the Jupyter cells. However, it is crucial not to forget to free the pod resources once the execution is completed by calling the `session.close()` method at the final section of the notebook.
-
+This can be limiting, especially within the Jupyter notebook environment. Alternatively one can instantiate the `imandra.session` class directly. In this case, the session remains persistent across the Jupyter cells. However, it is crucial to remember to free the pod resources once the execution is completed by calling the `session.close()` method. Each user has a limit on the number of active pods. If this limit is exceeded, any attempt to request a new pod will lead to the termination of one of the older pods. Additionally, idle pods don't linger indefinitely - they are automatically terminated after a specific timeout period.
 
 ```
 session = imandra.session()
@@ -76,7 +75,7 @@ Instance created:
 
 ## Running OCaml/ImandraML code
 
-The `eval` method of the `session` instance serves as the bridge between your Python environment and the Imandra REPL. By invoking this method, you can evaluate code within the Imandra environment.
+The `eval` method of the `session` instance serves as the bridge between your Python environment and the Imandra session. By invoking this method, you can evaluate code within the Imandra environment.
 
 ```
 session.eval('let f x = if x > 42 then 0 else 2 * x + 1')
@@ -86,7 +85,7 @@ session.eval('let f x = if x > 42 then 0 else 2 * x + 1')
 EvalResponse(success=True, stdout='', stderr='')
 ```
 
-Any errors (syntax, typecheking, e.t.c.) in the evaulated code will ber reported and the evaluation fails:
+Any errors (syntax, typecheking, e.t.c.) in the evaluated code will be reported and the evaluation fails:
 
 ```
 result = session.eval('let x = "test" + 0')
@@ -105,7 +104,7 @@ Error:
 ```      
 
 
-The REPL environment stays persistent as long as the session remains unclosed - any declared variables or functions are staying in the context. 
+The Imandra session environment remains persistent as long as the session is unclosed. Any declared variables or functions stay in scope and are available for further evaluation.
 Here we define a function `g` that uses `f` defined above.
 
 
@@ -131,7 +130,7 @@ print(session.get_history())
 1. Fun: g
 ```
 
-The `session.reset()` method resets the Imandra REPL internal state, wiping all the previous variables and functions.
+The `session.reset()` method resets the Imandra session internal state, wiping all the previous variables and functions.
 
 
 ```
@@ -157,7 +156,7 @@ print(result)
 Proved
 ```
 
-If the proof attempt fails, Imandra will try to synthesize a concrete counterexample illustrating the failure
+If the proof attempt fails, Imandra will try to synthesize a concrete counterexample illustrating the failure:
 
 
 ```
@@ -186,8 +185,7 @@ let x : int = (Z.of_nativeint (-1n))
 let y : int = (Z.of_nativeint (5n))
 ```
 
-If the constraints are found to be unsatisfiable, the result is not
-
+If the constraints are found to be unsatisfiable, the system will return "Unsatisfiable". For instance:
 
 ```
 result = session.instance('fun x -> x * x < 0')
@@ -211,7 +209,7 @@ print(result)
 Unknown: Verified up to bound 100
 ```
 
-This goal is in fact a property that is better suited for verification by induction. We might try adding the `auto` hint to the above goal to invoke the Imandra's inductive waterfall and prove it.
+This goal is in fact a property that is better suited for verification by induction. We might try adding the `auto` hint to the above goal to invoke the Imandra's inductive waterfall and prove it:
 
 
 ```
@@ -228,7 +226,7 @@ let x : int = (Z.of_nativeint (0n))
 
 The term Region Decomposition refers to a (geometrically inspired) "slicing" of an algorithm’s state-space into distinct regions where the behavior of the algorithm is invariant, i.e., where it behaves "the same." Each "slice" or region of the state-space describes a family of inputs and the output of the algorithm upon them, both of which may be symbolic and represent (potentially infinitely) many concrete instances.
 
-The `session.decompose(...)` method allows you to run perform the Region Decomposition given the function name:
+The `session.decompose(...)` method allows you to perform the Region Decomposition given the function name:
 
 
 ```
@@ -258,7 +256,7 @@ Invariant:
 
 # Closing the Imandra session
 
-Always ensure to close the session after use.
+Always ensure you close the session after use.
 
 
 ```
