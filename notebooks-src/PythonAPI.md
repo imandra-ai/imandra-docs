@@ -43,16 +43,14 @@ import imandra
 with imandra.session() as s:
     verify_result = s.verify("fun x -> x * x = 0 ")
 print("\n", verify_result)
-```
 
-```
-Instance created:
-- url: https://core-europe-west1.imandra.ai/imandra-http-api/http/31b7acb6-ed86-4204-bd6f-75a9c05d9909
-- token: 8805d2e6-8fc7-49d1-a5b5-26d639755bb8
-Instance killed
-
- Refuted, with counterexample:
-let x : int = (Z.of_nativeint (-1n))
+# Instance created:
+# - url: https://core-europe-west1.imandra.ai/imandra-http-api/http/31b7acb6-ed86-4204-bd6f-75a9c05d9909
+# - token: 8805d2e6-8fc7-49d1-a5b5-26d639755bb8
+# Instance killed
+#
+#  Refuted, with counterexample:
+# let x : int = (Z.of_nativeint (-1n))
 ```
 
 When used as a context manager it initiates a pod specifically for the time within the `with` context. Once the operations within the `with` block are completed, the pod is automatically terminated and its resources are recycled.
