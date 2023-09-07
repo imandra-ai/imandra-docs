@@ -7,9 +7,9 @@ slug: python-api
 
 # Imandra Python API client library
 
-[Imandra](https://www.imandra.ai) is a cloud-native automated reasoning engine for analysis of algorithms and data.  
+[Imandra](https://www.imandra.ai) is a cloud-native automated reasoning engine for analysis of algorithms and data.
 
-This notebook illustrates the use of `imandra` python library for interacting with cloud-hosted  Imandra Core instances. 
+This notebook illustrates the use of `imandra` python library for interacting with cloud-hosted  Imandra Core instances.
 
 For more details on developing Imandra models, you may also want to see the [main Imandra docs site](https://docs.imandra.ai/imandra-docs/), and consider setting up Imandra Core locally by following the installation instructions there.
 
@@ -39,9 +39,7 @@ The `imandra.session` class provides an easy-to-use interface for requesting and
 
 ```python
 import imandra
-```
 
-```python
 with imandra.session() as s:
     verify_result = s.verify("fun x -> x * x = 0 ")
 print("\n", verify_result)
@@ -63,12 +61,10 @@ This can be limiting, especially within the Jupyter notebook environment. Altern
 
 ```python
 session = imandra.session()
-```
 
-```
-Instance created:
-- url: https://core-europe-west1.imandra.ai/imandra-http-api/http/84d5880f-0bae-4f57-be09-101ee25a4c11
-- token: 8680adcd-6af4-4963-8f34-477736dd2568
+# Instance created:
+# - url: https://core-europe-west1.imandra.ai/imandra-http-api/http/84d5880f-0bae-4f57-be09-101ee25a4c11
+# - token: 8680adcd-6af4-4963-8f34-477736dd2568
 ```
 
 ## Running OCaml/ImandraML code
@@ -77,10 +73,8 @@ The `eval` method of the `session` instance serves as the bridge between your Py
 
 ```python
 session.eval('let f x = if x > 42 then 0 else 2 * x + 1')
-```
 
-```
-EvalResponse(success=True, stdout='', stderr='')
+# EvalResponse(success=True, stdout='', stderr='')
 ```
 
 Any errors (syntax, typecheking, e.t.c.) in the evaluated code will be reported and the evaluation fails:
@@ -88,40 +82,34 @@ Any errors (syntax, typecheking, e.t.c.) in the evaluated code will be reported 
 ```python
 result = session.eval('let x = "test" + 0')
 print(result.error)
-```
 
+# Error:
+#   Type error (typecore):
+#     File "<user input>", line 1, characters 8-14:
+#     Error: This expression has type string
+#            but an expression was expected of type Z.t
+#   At <user input>:1,8--14
+#   1 | let x = "test" + 0
+#               ^^^^^^
 ```
-Error:
-  Type error (typecore):
-    File "<user input>", line 1, characters 8-14:
-    Error: This expression has type string
-           but an expression was expected of type Z.t
-  At <user input>:1,8--14
-  1 | let x = "test" + 0
-              ^^^^^^
-```      
 
 The Imandra session environment remains persistent as long as the session is unclosed. Any declared variables or functions stay in scope and are available for further evaluation.
 Here we define a function `g` that uses `f` defined above.
 
 ```python
 session.eval('let g x = if x > 5 then f (x + 3) else 3 * x')
-```
 
-```
-EvalResponse(success=True, stdout='', stderr='')
+# EvalResponse(success=True, stdout='', stderr='')
 ```
 
 The `session.get_history()` method allows you to retrieve what functions and theorems have been defined in the current session context.
 
 ```python
 print(session.get_history())
-```
 
-```
-## All events in session
-0. Fun: f
-1. Fun: g
+# ## All events in session
+# 0. Fun: f
+# 1. Fun: g
 ```
 
 The `session.reset()` method resets the Imandra session internal state, wiping all the previous variables and functions.
@@ -129,23 +117,19 @@ The `session.reset()` method resets the Imandra session internal state, wiping a
 ```python
 session.reset()
 print(session.get_history())
+
+# No events in session
 ```
 
-```
-No events in session
-```
-
-## Proving statements and getting counterexamples 
+## Proving statements and getting counterexamples
 
 The `session.verify(src)` method takes a function representing a goal and attempts to prove it.
 
 ```python
 result = session.verify('fun x -> x + 1 > x')
 print(result)
-```
 
-```
-Proved
+# Proved
 ```
 
 If the proof attempt fails, Imandra will try to synthesize a concrete counterexample illustrating the failure:
@@ -153,11 +137,9 @@ If the proof attempt fails, Imandra will try to synthesize a concrete counterexa
 ```python
 result = session.verify('fun n -> succ n <> 100')
 print(result)
-```
 
-```
-Refuted, with counterexample:
-let n : int = (Z.of_nativeint (99n))
+# Refuted, with counterexample:
+# let n : int = (Z.of_nativeint (99n))
 ```
 
 ## Finding instances
@@ -167,12 +149,10 @@ A `session.instance(src)` takes a function representing a goal and attempts to s
 ```python
 result = session.instance('fun x y -> x < 0 && x + y = 4')
 print(result)
-```
 
-```
-Instance found:
-let x : int = (Z.of_nativeint (-1n))
-let y : int = (Z.of_nativeint (5n))
+# Instance found:
+# let x : int = (Z.of_nativeint (-1n))
+# let y : int = (Z.of_nativeint (5n))
 ```
 
 If the constraints are found to be unsatisfiable, the system will return "Unsatisfiable". For instance:
@@ -180,10 +160,8 @@ If the constraints are found to be unsatisfiable, the system will return "Unsati
 ```python
 result = session.instance('fun x -> x * x < 0')
 print(result)
-```
 
-```
-Unsatisfiable
+# Unsatisfiable
 ```
 
 It the recursion depth needed to find an instance exceeds the unrolling, Imandra could only check this property up to that bound.
@@ -192,10 +170,8 @@ It the recursion depth needed to find an instance exceeds the unrolling, Imandra
 session.eval("let rec fib x = if x <= 0 then 1 else fib (x - 1)")
 result = session.instance("fun x -> x < 101 ==> fib x <> 1")
 print(result)
-```
 
-```
-Unknown: Verified up to bound 100
+# Unknown: Verified up to bound 100
 ```
 
 This goal is in fact a property that is better suited for verification by induction. We might try adding the `auto` hint to the above goal to invoke the Imandra's inductive waterfall and prove it:
@@ -203,11 +179,9 @@ This goal is in fact a property that is better suited for verification by induct
 ```python
 result = session.instance("fun x -> x < 101 ==> fib x <> 1", hints={"method": {"type": "auto"}})
 print(result)
-```
 
-```
-Instance found:
-let x : int = (Z.of_nativeint (0n))
+# Instance found:
+# let x : int = (Z.of_nativeint (0n))
 ```
 
 ## Region decomposition
@@ -224,21 +198,19 @@ for n, region in enumerate(decomposition.regions):
     print("-"*10 + " Region", n, "-"*10 + "\nConstraints")
     for c in region.constraints_pp:
         print("  ", c)
-    print("Invariant:", "\n  ", region.invariant_pp) 
-```
+    print("Invariant:", "\n  ", region.invariant_pp)
 
-```
----------- Region 0 ----------
-Constraints
-   (x * x) >= 0
-   x > 0
-Invariant: 
-   x + 1
----------- Region 1 ----------
-Constraints
-   x <= 0
-Invariant: 
-   x
+# ---------- Region 0 ----------
+# Constraints
+#    (x * x) >= 0
+#    x > 0
+# Invariant:
+#    x + 1
+# ---------- Region 1 ----------
+# Constraints
+#    x <= 0
+# Invariant:
+#    x
 ```
 
 # Closing the Imandra session
@@ -247,8 +219,6 @@ Always ensure you close the session after use.
 
 ```python
 session.close()
-```
 
-```
-Instance killed
+# Instance killed
 ```
