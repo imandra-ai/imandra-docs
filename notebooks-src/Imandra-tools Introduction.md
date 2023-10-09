@@ -369,7 +369,7 @@ Caml.List.mapi (fun i region ->
 The above should be quite straightforward:
 
 - We extract the constraints from the region and we conjoin them into a single `Term`
-- We ask `Region_term_synth` to synthesize our term, using `false` as a default value (we're synthesizing a boolean function)
+- We ask `Region_term_synth` to synthesize our term, using `false` as a default value (we're synthesizing a Boolean function)
 - Finally we generate a string representation of a function using the synthesized term as its body, and evaluate it
 
 We can start playing with those functions immediately:
@@ -382,7 +382,7 @@ region_1 Set.empty (Set.of_list [1]) 0;;
 region_1 (Set.of_list [1]) Set.empty 0;;
 ```
 
-Great! `region_0` is now a boolean function that checks whether or not certain values of `x` and `y` belong to the region of behaviour 0. `region_1` does the same for the region of behaviour 1.
+Great! `region_0` is now a Boolean function that checks whether or not certain values of `x` and `y` belong to the region of behaviour 0. `region_1` does the same for the region of behaviour 1.
 
 This ability to generate _total_ functions from _partial regions of behaviour_ is fundamental to creating modules like `Idf` and `Region_idx`.
 
