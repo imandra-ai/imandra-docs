@@ -355,7 +355,7 @@ Now we see the same regions, but constraints and invariants refined and translat
 
 ## Adding constraints (side conditions)
 
-The regions Imandra has thus far produced describe the full state-space of `match_price.` But what if we would like to focus on its specific subset? Can we, somehow, 'slice' the state-space? Absolutely, you can do this by adding a 'side-condition', a function that takes the same arguments as `match_price` and returns a boolean value. Imandra will constrain the state-space of `match_price` such that the side condition is `true`. This is quite a powerful mechanism which we'll illustrate with two examples: one case where we simply constrain the *inputs* into `match_price` and another where we constrain the *output* of `match_price`:
+The regions Imandra has thus far produced describe the full state-space of `match_price.` But what if we would like to focus on its specific subset? Can we, somehow, 'slice' the state-space? Absolutely, you can do this by adding a 'side-condition', a function that takes the same arguments as `match_price` and returns a Boolean value. Imandra will constrain the state-space of `match_price` such that the side condition is `true`. This is quite a powerful mechanism which we'll illustrate with two examples: one case where we simply constrain the *inputs* into `match_price` and another where we constrain the *output* of `match_price`:
 
 ```{.imandra .input}
 (* Side condition function must be defined in logic mode just like the original `match_price` function. *)
