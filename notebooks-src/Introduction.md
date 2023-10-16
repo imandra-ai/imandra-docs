@@ -180,7 +180,7 @@ Imandra has a number of user interfaces:
 - Jupyter notebooks
 - VS Code Plug-in
 - Command line interface
-- (Coming soon!) Python APIs
+- [Python APIs](https://docs.imandra.ai/imandra-docs/notebooks/python-api/)
 
 [Check out the installation instructions.](https://docs.imandra.ai/imandra-docs/notebooks/installation/)
 
