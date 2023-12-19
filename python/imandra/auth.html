@@ -154,11 +154,18 @@ class Auth:
 
         self.verifier, self.challenge = _get_secrets()
         link = self._make_link()
+        print(&#34;Trying to open a browser window to authenticate you...&#34;)
+        show_open_msg = False
         try:
-            webbrowser.open(link)
+            if not webbrowser.open(link):
+                show_open_msg = True
         except webbrowser.Error:
-            print(&#34;We need to authenticate you! Please open: \n{}&#34;.format(link))
-        code_str = str(input(&#34;Enter the code provided on the page above: &#34;)).strip()
+            show_open_msg = True
+
+        if show_open_msg:
+            print(&#34;We couldn&#39;t open the browser automatically! Please visit: \n{}&#34;.format(link))
+
+        code_str = str(input(&#34;Once you&#39;ve authenticated, please enter the code provided: &#34;)).strip()
         self._exchange_tokens(code_str, token_path)
 
     def ensure_zone(self):
@@ -478,11 +485,18 @@ details.</p></div>
 
         self.verifier, self.challenge = _get_secrets()
         link = self._make_link()
+        print(&#34;Trying to open a browser window to authenticate you...&#34;)
+        show_open_msg = False
         try:
-            webbrowser.open(link)
+            if not webbrowser.open(link):
+                show_open_msg = True
         except webbrowser.Error:
-            print(&#34;We need to authenticate you! Please open: \n{}&#34;.format(link))
-        code_str = str(input(&#34;Enter the code provided on the page above: &#34;)).strip()
+            show_open_msg = True
+
+        if show_open_msg:
+            print(&#34;We couldn&#39;t open the browser automatically! Please visit: \n{}&#34;.format(link))
+
+        code_str = str(input(&#34;Once you&#39;ve authenticated, please enter the code provided: &#34;)).strip()
         self._exchange_tokens(code_str, token_path)
 
     def ensure_zone(self):
@@ -761,11 +775,18 @@ details.</p></div>
 
     self.verifier, self.challenge = _get_secrets()
     link = self._make_link()
+    print(&#34;Trying to open a browser window to authenticate you...&#34;)
+    show_open_msg = False
     try:
-        webbrowser.open(link)
+        if not webbrowser.open(link):
+            show_open_msg = True
     except webbrowser.Error:
-        print(&#34;We need to authenticate you! Please open: \n{}&#34;.format(link))
-    code_str = str(input(&#34;Enter the code provided on the page above: &#34;)).strip()
+        show_open_msg = True
+
+    if show_open_msg:
+        print(&#34;We couldn&#39;t open the browser automatically! Please visit: \n{}&#34;.format(link))
+
+    code_str = str(input(&#34;Once you&#39;ve authenticated, please enter the code provided: &#34;)).strip()
     self._exchange_tokens(code_str, token_path)</code></pre>
 </details>
 </dd>

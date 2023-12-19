@@ -50,6 +50,25 @@ paths:
           description: "OK"
           content: { text/plain : { schema : { type : string } } }
 
+  /decompose:
+    post:
+      summary: "Region decomposition of a function"
+      description: ""
+      operationId: "decompose"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DecomposeRequestSrc'
+      responses:
+        '200':
+          description: "Decompostion suceeded"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DecomposeResult'
+
   /eval/by-src:
     post:
       summary: "Evaluate a string of source code"
@@ -220,6 +239,49 @@ components:
         cx_var_name:
           type: string
           description: "Name of the variable in your instance constraint function, e.g. `x` for `fun x -> true`. In an `imandra-repl` session, this is the name of the property on the generated CX module, e.g. the `x` in `CX.x`."
+
+    DecomposeRequestSrc:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+          description: "Name of a function to decompose"
+        assuming:
+          type: string
+          description: "A side condition function name"
+        prune:
+          type: boolean
+        max_rounds:
+          type: integer
+        stop_at:
+          type: integer
+
+    DecomposeRegion:
+      type: object
+      required:
+        - constraints_pp
+        - invariant_pp
+      properties:
+        constraints_pp:
+          type: array
+          items:
+            type: string
+        invariant_pp:
+          type: string
+        ast_json:
+          type: object
+
+    DecomposeResult:
+      type: object
+      required:
+        - regions
+      properties:
+        regions:
+          type: array
+          items:
+            $ref: '#/components/schemas/DecomposeRegion'
 
     EvalRequestSrc:
       type: object
