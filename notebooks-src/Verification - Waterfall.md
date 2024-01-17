@@ -194,29 +194,29 @@ hypotheses.
 For a term to be considered eligible for generalization, it must not be
 an _explicit value template_, an equality or a destructor term.
 
-A term is an explicit value template if it a variable (actually, a Skolem
+A term is an explicit value template if it is a variable (actually, a Skolem
 constant) such as `x`, a constant value such as `1` or `Some [1;2;3]`, or 
 the application of a constructor to explicit value templates such as `A [1;x;3]`.
 
-This generalisation process can sometimes produce goals that are "too general"
-and not theorems. This is called "over generalisation." In such a case, the
-proof attempt involving the generalised goal will fail. Imandra attempts to
-validate candidate generalisations by via recursive unrolling (up to
+This generalization process can sometimes produce goals that are "too general"
+and not theorems. This is called "over generalization." In such a case, the
+proof attempt involving the generalized goal will fail. Imandra attempts to
+validate candidate generalizations by recursive unrolling (up to
 `#induct_unroll`). If unrolling is able to find a counterexample to the
-candidate generalisation, then the generalisation is abandoned and the subgoal
+candidate generalization, then the generalization is abandoned and the subgoal
 being processed is unchanged.
 
 ### Generalization Rules
 
-A generalization rule is a theorem that can be used to restrict generalisations.
+A generalization rule is a theorem that can be used to restrict generalizations.
 
 For example, consider a function `square = (fun (n : int) -> n * n)`. If Imandra
-decides to generalise the term `square x` in a goal by replacing `square x` with
+decides to generalize the term `square x` in a goal by replacing `square x` with
 a fresh variable `v`, it may be desirable for Imandra to "remember" the fact
 that `v` is non-negative, i.e., to adjoin an additional hypothesis stating 
 `v >= 0`.
 
-Imandra can be instructed to do this through the a generalisation rule of the
+Imandra can be instructed to do this through the a generalization rule of the
 following form:
 
 ```
@@ -225,17 +225,17 @@ lemma square_gen n =
 [@@gen]
 ```
 
-In general, such rules may have arbitrary boolean structure.
+In general, such rules may have arbitrary Boolean structure.
 
 In order for a theorem to be a valid generalization rule, it must contain at least
 one term which is a function application applied to at least one of the variables
 of the theorem and is marked as a _trigger_ term using the `[@trigger]` annotation.
 
-If Imandra has decided to generalise a term `tm`, it searches through its
-database of generalisation rules for the most recent rule whose trigger matches
+If Imandra has decided to generalize a term `tm`, it searches through its
+database of generalization rules for the most recent rule whose trigger matches
 `tm`. If such a rule is found, it is instantiated based upon the trigger match,
 and the corresponding instance is adjoined as an additional hypothesis to the
-generalised goal.
+generalized goal.
 
 ## Induction
 

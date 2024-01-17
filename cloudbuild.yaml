@@ -6,7 +6,7 @@ steps:
     waitFor: ['-']
     entrypoint: '/bin/bash'
     env:
-      - "IMANDRA_DOCS_BUILDER=eu.gcr.io/imandra-dev/imandra-docs-builder:b261b3c4be7857889e183f7e63688a90660e2077"
+      - "IMANDRA_DOCS_BUILDER=eu.gcr.io/imandra-dev/imandra-docs-builder:b67ad91a333c4095fa0f87d2bdc249fbd8862598"
     args:
       - '-c'
       - |
@@ -17,3 +17,5 @@ steps:
           --config tmp/cloudbuild.yaml \
           --async \
           --substitutions="BRANCH_NAME=$BRANCH_NAME,COMMIT_SHA=$COMMIT_SHA,REPO_NAME=imandra-docs,TAG_NAME=build,_IMANDRA_DOCS_BUILDER=$$IMANDRA_DOCS_BUILDER"
+
+logsBucket: gs://imandra-dev-build-logs

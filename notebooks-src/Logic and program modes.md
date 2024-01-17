@@ -45,7 +45,7 @@ In logic mode, all definitions -- types, values and functions -- are entered int
 
 While in logic mode, we are restricted to a purely functional subset of OCaml, and our recursive functions must terminate.
 
-If we try to define a non-termating function, for example, Imandra will reject it.
+If we try to define a non-terminating function, for example, Imandra will reject it.
 
 ```{.imandra .input}
 let rec bad_repeat x = x :: bad_repeat x

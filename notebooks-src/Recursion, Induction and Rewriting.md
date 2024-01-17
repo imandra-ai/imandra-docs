@@ -110,7 +110,7 @@ Let's focus in this notebook on the use of theorems as _rewrite rules_.
 
 A rewrite rule is a theorem of the form `(H1 && ... && Hk ==> LHS = RHS)`. It instructs Imandra's simplifier to replace terms it matches with the `LHS` with the suitably instantiated `RHS`, provided that the corresponding instantiations of the hypotheses `H1, ..., Hk` can be proved.
 
-It is also allowed for the conclusion of the rule to be a boolean term, e.g., `(H1 && ... && Hk ==> foo)` is interpreted with an `RHS` of `true`, i.e., `(H1 && ... && Hk ==> foo = true)`.
+It is also allowed for the conclusion of the rule to be a Boolean term, e.g., `(H1 && ... && Hk ==> foo)` is interpreted with an `RHS` of `true`, i.e., `(H1 && ... && Hk ==> foo = true)`.
 
 Good rewrite rules can have a powerful normalising effect on formulas. We usually want to orient them so that the `RHS` is a _better_ (i.e., _simpler_ or _more canonical_) term than the `LHS`.
 
@@ -189,7 +189,7 @@ Success!
 
 Imandra proves this fact automatically, and its inductive proof actually involves a nested subinduction.
 
-Imandra has powerful techniques for automating complex inductions, involving simplification, destructor elimination, generalisation and more. But it's often the case that nested inductions actually suggest _lemmas_ that could be of general use.
+Imandra has powerful techniques for automating complex inductions, involving simplification, destructor elimination, generalization and more. But it's often the case that nested inductions actually suggest _lemmas_ that could be of general use.
 
 To illustrate this, let's take a look at one of the interesting subgoals in our proof:
 

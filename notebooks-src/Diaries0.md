@@ -11,7 +11,7 @@ Let’s try to verify a property of list concatenation: concatenating a list `ls
 
 This seems quite an obvious property, but proving it formally is not trivial, thankfully, Imandra can help us prove this without too much effort.
 
-Let’s first encode this property as a computable boolean function:
+Let’s first encode this property as a computable Boolean function:
 
 ```{.imandra .input}
 let append_self_property_1 lst =
