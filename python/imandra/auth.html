@@ -68,6 +68,8 @@ class Auth:
         details.
         &#34;&#34;&#34;
 
+        # NOTE: config env var handling mimics imandra_network_client
+
         envs = {&#39;dev&#39;:
                 {&#39;auth0_base_host&#39;: &#34;test-ai.eu.auth0.com&#34;,
                  &#39;auth0_client_id&#39;: &#34;DQs4kqaeTPAENZ8dAj64qEm2SbJgncNK&#34;,
@@ -86,10 +88,10 @@ class Auth:
 
         env = os.getenv(&#34;IMANDRA_ENV&#34;, &#39;prod&#39;)
 
-        self.auth0_base_host  = envs[env][&#39;auth0_base_host&#39;]
-        self.auth0_client_id  = envs[env][&#39;auth0_client_id&#39;]
-        self.auth0_audience   = envs[env][&#39;auth0_audience&#39;]
-        self.imandra_web_host = envs[env][&#39;imandra_web_host&#39;]
+        self.auth0_base_host  = os.getenv(&#34;IMANDRA_AUTH0_BASE_HOST&#34;, envs[env][&#39;auth0_base_host&#39;])
+        self.auth0_client_id  = os.getenv(&#34;IMANDRA_AUTH0_CLIENT_ID&#34;, envs[env][&#39;auth0_client_id&#39;])
+        self.auth0_audience   = os.getenv(&#34;IMANDRA_AUTH0_AUDIENCE&#34;, envs[env][&#39;auth0_audience&#39;])
+        self.imandra_web_host = os.getenv(&#34;IMANDRA_WEB_HOST&#34;, envs[env][&#39;imandra_web_host&#39;])
         self.imandra_repl     = envs[env][&#39;imandra_repl&#39;]
         self.http_port        = None
 
@@ -399,6 +401,8 @@ details.</p></div>
         details.
         &#34;&#34;&#34;
 
+        # NOTE: config env var handling mimics imandra_network_client
+
         envs = {&#39;dev&#39;:
                 {&#39;auth0_base_host&#39;: &#34;test-ai.eu.auth0.com&#34;,
                  &#39;auth0_client_id&#39;: &#34;DQs4kqaeTPAENZ8dAj64qEm2SbJgncNK&#34;,
@@ -417,10 +421,10 @@ details.</p></div>
 
         env = os.getenv(&#34;IMANDRA_ENV&#34;, &#39;prod&#39;)
 
-        self.auth0_base_host  = envs[env][&#39;auth0_base_host&#39;]
-        self.auth0_client_id  = envs[env][&#39;auth0_client_id&#39;]
-        self.auth0_audience   = envs[env][&#39;auth0_audience&#39;]
-        self.imandra_web_host = envs[env][&#39;imandra_web_host&#39;]
+        self.auth0_base_host  = os.getenv(&#34;IMANDRA_AUTH0_BASE_HOST&#34;, envs[env][&#39;auth0_base_host&#39;])
+        self.auth0_client_id  = os.getenv(&#34;IMANDRA_AUTH0_CLIENT_ID&#34;, envs[env][&#39;auth0_client_id&#39;])
+        self.auth0_audience   = os.getenv(&#34;IMANDRA_AUTH0_AUDIENCE&#34;, envs[env][&#39;auth0_audience&#39;])
+        self.imandra_web_host = os.getenv(&#34;IMANDRA_WEB_HOST&#34;, envs[env][&#39;imandra_web_host&#39;])
         self.imandra_repl     = envs[env][&#39;imandra_repl&#39;]
         self.http_port        = None
 
