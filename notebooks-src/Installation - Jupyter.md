@@ -15,6 +15,11 @@ To install the Imandra and Imandra-reason kernels, run the following commands:
 
 (Note: if you have a more intricate Jupyter environment setup or if you use `conda`, you'll need to adjust the commands accordingly to install things into the correct location).
 
+The Imandra notebook extension is not compatible with notebook version 7, so you'll need version 6 or earlier. To install, for example with `pip`:
+```sh.copy
+pip install notebook~=6.5.7
+```
+
 ```sh.copy
 # install imandra and imandra kernels
 jupyter kernelspec install /usr/local/var/imandra/_opam/share/jupyter/kernelspec/imandra
