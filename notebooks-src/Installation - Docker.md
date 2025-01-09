@@ -13,7 +13,7 @@ From a terminal execute:
 
 ```sh.copy
 docker pull imandra/imandra-client:latest && \
-  docker run -it --rm -v ${HOME}/.imandra:/root/.imandra \
+  docker run -it --rm -v ${HOME}/.imandra:/home/imandra/.imandra \
   imandra/imandra-client:latest
 ```
 
