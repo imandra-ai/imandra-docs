@@ -7,6 +7,12 @@ slug: python-api
 
 # Imandra Python API client library
 
+## [Available on PyPi!](https://pypi.org/project/imandra/)
+
+Check out the library on PyPi for more in depth information about how to interact with Imandra via our Python library.
+
+## Overview
+
 We provide the `imandra` Python library for interacting with Imandra's web APIs. The library includes:
 
 - `imandra.core`, which provides programmatic access to Imandra X, Imandra's core reasoning engine.
