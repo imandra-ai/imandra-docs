@@ -106,7 +106,7 @@ el.replaceWith(d);
 <div class="desc"></div>
 </dd>
 <dt id="imandra.api.ipl_common.decompose"><code class="name flex">
-<span>def <span class="ident">decompose</span></span>(<span>config: <a title="imandra.api.ipl_common.Config" href="#imandra.api.ipl_common.Config">Config</a>,<br>path: str,<br>file,<br>testgen_lang,<br>organization,<br>callback,<br>doc_gen,<br>parent_job_id)</span>
+<span>def <span class="ident">decompose</span></span>(<span>config: <a title="imandra.api.ipl_common.Config" href="#imandra.api.ipl_common.Config">Config</a>,<br>path: str,<br>file,<br>model,<br>testgen_lang,<br>organization,<br>callback,<br>doc_gen,<br>parent_job_id)</span>
 </code></dt>
 <dd>
 <details class="source">
@@ -117,6 +117,7 @@ el.replaceWith(d);
     config: Config,
     path: str,
     file,
+    model,
     testgen_lang,
     organization,
     callback,
@@ -127,15 +128,20 @@ el.replaceWith(d);
     if parent_job_id is not None:
         params_dict[&#34;parent-job-id&#34;] = parent_job_id
 
-    if file is not None:
-        filename = os.path.basename(file)
-        params_dict[&#34;filename&#34;] = filename
+    if file:
+        if model:
+            raise ValueError(
+                &#34;Only one of `file` and `model` arguments should be provided&#34;
+            )
         with open(file, &#34;r&#34;) as ipl_file:
-            content = ipl_file.read()
-        data = content.encode(&#34;utf-8&#34;)
+            contents = ipl_file.read()
+    elif model:
+        contents = model
     else:
-        data = b&#34;&#34;
-
+        raise ValueError(
+            &#34;At least one of `file` and `model` arguments must be provided&#34;
+        )
+    data = contents.encode(&#34;utf-8&#34;)
     if testgen_lang is not None:
         params_dict[&#34;testgen-lang&#34;] = testgen_lang
 
@@ -293,24 +299,30 @@ el.replaceWith(d);
 <div class="desc"></div>
 </dd>
 <dt id="imandra.api.ipl_common.unsat_analysis"><code class="name flex">
-<span>def <span class="ident">unsat_analysis</span></span>(<span>config: <a title="imandra.api.ipl_common.Config" href="#imandra.api.ipl_common.Config">Config</a>,<br>path: str,<br>file,<br>organization,<br>callback)</span>
+<span>def <span class="ident">unsat_analysis</span></span>(<span>config: <a title="imandra.api.ipl_common.Config" href="#imandra.api.ipl_common.Config">Config</a>,<br>path: str,<br>file,<br>model,<br>organization,<br>callback)</span>
 </code></dt>
 <dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def unsat_analysis(config: Config, path: str, file, organization, callback):
+<pre><code class="python">def unsat_analysis(config: Config, path: str, file, model, organization, callback):
     params_dict = {&#34;lang&#34;: &#34;ipl&#34;}
 
-    if file is not None:
-        filename = os.path.basename(file)
-        params_dict[&#34;filename&#34;] = filename
+    if file:
+        if model:
+            raise ValueError(
+                &#34;Only one of `file` and `model` arguments should be provided&#34;
+            )
         with open(file, &#34;r&#34;) as ipl_file:
-            content = ipl_file.read()
-        data = content.encode(&#34;utf-8&#34;)
+            contents = ipl_file.read()
+    elif model:
+        contents = model
     else:
-        data = b&#34;&#34;
+        raise ValueError(
+            &#34;At least one of `file` and `model` arguments must be provided&#34;
+        )
+    data = contents.encode(&#34;utf-8&#34;)
 
     if organization is not None:
         params_dict[&#34;organization-id&#34;] = organization

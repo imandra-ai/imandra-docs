@@ -66,6 +66,8 @@ el.replaceWith(d);
         }
 
     def status(self, job_id):
+        &#34;&#34;&#34;Query about the status of a long-running job.&#34;&#34;&#34;
+
         path = &#34;ipl/jobs/{}/status&#34;
         return ipl_common.status(self._ipl_config, path, job_id)
 
@@ -74,21 +76,43 @@ el.replaceWith(d);
         return ipl_common.wait(self._ipl_config, path, job_id, interval)
 
     def decompose(
-        self, file, testgen_lang, organization, callback, doc_gen, parent_job_id
+        self,
+        file: str | None = None,
+        testgen_lang=None,
+        organization=None,
+        callback=None,
+        doc_gen=None,
+        parent_job_id=None,
+        model: str | None = None,
+        # model goes at end for backwards compatibility
     ):
+        &#34;&#34;&#34;Perform Region Decomposition on an IPL model.
+
+        Returns a job uuid referencing the running job.
+        You can use the `status` method to check progress, and the `data` method
+        to extract the data.
+
+        You can optionally choose to pass in the model as
+        a file via the `file` argument, or pass it in as
+        a string via the `model` argument, but not both.
+        &#34;&#34;&#34;
         path = &#34;ipl/jobs&#34;
+
         return ipl_common.decompose(
             self._ipl_config,
             path,
             file,
+            model,
             testgen_lang,
-            organization,
+            self._config.get_organization(organization),
             callback,
             doc_gen,
             parent_job_id,
         )
 
     def data(self, job_id, file=None):
+        &#34;&#34;&#34;Receive the data of a completed job.&#34;&#34;&#34;
+
         path = &#34;ipl/jobs/{}/data&#34;
         return ipl_common.data(self._ipl_config, path, job_id, file)
 
@@ -100,10 +124,32 @@ el.replaceWith(d);
         path = &#34;ipl/jobs&#34;
         return ipl_common.list_jobs(self._ipl_config, path, limit, job_type)
 
-    def unsat_analysis(self, file, organization, callback):
+    def unsat_analysis(
+        self,
+        file: str | None = None,
+        organization=None,
+        callback=None,
+        model: str | None = None,
+        # model goes in back for backwards compatibility
+    ):
+        &#34;&#34;&#34;Call the Un-SAT analyzer on an IPL Model.
+
+        Returns a job uuid referencing the running job.
+        You can use the `status` method to check progress, and the `data` method
+        to extract the data.
+
+        You can optionally choose to pass in the model as
+        a file via the `file` argument, or pass it in as
+        a string via the `model` argument, but not both.
+        &#34;&#34;&#34;
         path = &#34;ipl/unsat-analysis/jobs&#34;
         return ipl_common.unsat_analysis(
-            self._ipl_config, path, file, organization, callback
+            self._ipl_config,
+            path,
+            file,
+            model,
+            self._config.get_organization(organization),
+            callback,
         )
 
     def log_analysis_builder(
@@ -111,7 +157,12 @@ el.replaceWith(d);
     ):
         path = &#34;ipl/log-analysis-builder/jobs&#34;
         return ipl_common.log_analysis_builder(
-            self._ipl_config, path, file, organization, callback, decomp_job_id
+            self._ipl_config,
+            path,
+            file,
+            self._config.get_organization(organization),
+            callback,
+            decomp_job_id,
         )
 
     def cancel(self, job_id):
@@ -121,8 +172,23 @@ el.replaceWith(d);
     def validate(
         self, file: str | None = None, model: str | None = None, organization=None
     ):
+        &#34;&#34;&#34;Perform Validation on an IPL model.
+
+        Returns a list of errors contained in the IPL file,
+        which will be empty if the file is correct.
+
+        You can optionally choose to pass in the model as
+        a file via the `file` argument, or pass it in as
+        a string via the `model` argument, but not both.
+        &#34;&#34;&#34;
         path = &#34;ipl/validate&#34;
-        return ipl_common.validate(self._ipl_config, path, file, model, organization)</code></pre>
+        return ipl_common.validate(
+            self._ipl_config,
+            path,
+            file,
+            model,
+            self._config.get_organization(organization),
+        )</code></pre>
 </details>
 <div class="desc"></div>
 <h3>Methods</h3>
@@ -150,13 +216,15 @@ el.replaceWith(d);
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def data(self, job_id, file=None):
+    &#34;&#34;&#34;Receive the data of a completed job.&#34;&#34;&#34;
+
     path = &#34;ipl/jobs/{}/data&#34;
     return ipl_common.data(self._ipl_config, path, job_id, file)</code></pre>
 </details>
-<div class="desc"></div>
+<div class="desc"><p>Receive the data of a completed job.</p></div>
 </dd>
 <dt id="imandra.ipl.Client.decompose"><code class="name flex">
-<span>def <span class="ident">decompose</span></span>(<span>self, file, testgen_lang, organization, callback, doc_gen, parent_job_id)</span>
+<span>def <span class="ident">decompose</span></span>(<span>self,<br>file: str | None = None,<br>testgen_lang=None,<br>organization=None,<br>callback=None,<br>doc_gen=None,<br>parent_job_id=None,<br>model: str | None = None)</span>
 </code></dt>
 <dd>
 <details class="source">
@@ -164,21 +232,47 @@ el.replaceWith(d);
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def decompose(
-    self, file, testgen_lang, organization, callback, doc_gen, parent_job_id
+    self,
+    file: str | None = None,
+    testgen_lang=None,
+    organization=None,
+    callback=None,
+    doc_gen=None,
+    parent_job_id=None,
+    model: str | None = None,
+    # model goes at end for backwards compatibility
 ):
+    &#34;&#34;&#34;Perform Region Decomposition on an IPL model.
+
+    Returns a job uuid referencing the running job.
+    You can use the `status` method to check progress, and the `data` method
+    to extract the data.
+
+    You can optionally choose to pass in the model as
+    a file via the `file` argument, or pass it in as
+    a string via the `model` argument, but not both.
+    &#34;&#34;&#34;
     path = &#34;ipl/jobs&#34;
+
     return ipl_common.decompose(
         self._ipl_config,
         path,
         file,
+        model,
         testgen_lang,
-        organization,
+        self._config.get_organization(organization),
         callback,
         doc_gen,
         parent_job_id,
     )</code></pre>
 </details>
-<div class="desc"></div>
+<div class="desc"><p>Perform Region Decomposition on an IPL model.</p>
+<p>Returns a job uuid referencing the running job.
+You can use the <code>status</code> method to check progress, and the <code>data</code> method
+to extract the data.</p>
+<p>You can optionally choose to pass in the model as
+a file via the <code>file</code> argument, or pass it in as
+a string via the <code>model</code> argument, but not both.</p></div>
 </dd>
 <dt id="imandra.ipl.Client.list_jobs"><code class="name flex">
 <span>def <span class="ident">list_jobs</span></span>(<span>self, limit=10, job_type=None)</span>
@@ -207,7 +301,12 @@ el.replaceWith(d);
 ):
     path = &#34;ipl/log-analysis-builder/jobs&#34;
     return ipl_common.log_analysis_builder(
-        self._ipl_config, path, file, organization, callback, decomp_job_id
+        self._ipl_config,
+        path,
+        file,
+        self._config.get_organization(organization),
+        callback,
+        decomp_job_id,
     )</code></pre>
 </details>
 <div class="desc"></div>
@@ -235,26 +334,56 @@ el.replaceWith(d);
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def status(self, job_id):
+    &#34;&#34;&#34;Query about the status of a long-running job.&#34;&#34;&#34;
+
     path = &#34;ipl/jobs/{}/status&#34;
     return ipl_common.status(self._ipl_config, path, job_id)</code></pre>
 </details>
-<div class="desc"></div>
+<div class="desc"><p>Query about the status of a long-running job.</p></div>
 </dd>
 <dt id="imandra.ipl.Client.unsat_analysis"><code class="name flex">
-<span>def <span class="ident">unsat_analysis</span></span>(<span>self, file, organization, callback)</span>
+<span>def <span class="ident">unsat_analysis</span></span>(<span>self,<br>file: str | None = None,<br>organization=None,<br>callback=None,<br>model: str | None = None)</span>
 </code></dt>
 <dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def unsat_analysis(self, file, organization, callback):
+<pre><code class="python">def unsat_analysis(
+    self,
+    file: str | None = None,
+    organization=None,
+    callback=None,
+    model: str | None = None,
+    # model goes in back for backwards compatibility
+):
+    &#34;&#34;&#34;Call the Un-SAT analyzer on an IPL Model.
+
+    Returns a job uuid referencing the running job.
+    You can use the `status` method to check progress, and the `data` method
+    to extract the data.
+
+    You can optionally choose to pass in the model as
+    a file via the `file` argument, or pass it in as
+    a string via the `model` argument, but not both.
+    &#34;&#34;&#34;
     path = &#34;ipl/unsat-analysis/jobs&#34;
     return ipl_common.unsat_analysis(
-        self._ipl_config, path, file, organization, callback
+        self._ipl_config,
+        path,
+        file,
+        model,
+        self._config.get_organization(organization),
+        callback,
     )</code></pre>
 </details>
-<div class="desc"></div>
+<div class="desc"><p>Call the Un-SAT analyzer on an IPL Model.</p>
+<p>Returns a job uuid referencing the running job.
+You can use the <code>status</code> method to check progress, and the <code>data</code> method
+to extract the data.</p>
+<p>You can optionally choose to pass in the model as
+a file via the <code>file</code> argument, or pass it in as
+a string via the <code>model</code> argument, but not both.</p></div>
 </dd>
 <dt id="imandra.ipl.Client.validate"><code class="name flex">
 <span>def <span class="ident">validate</span></span>(<span>self, file: str | None = None, model: str | None = None, organization=None)</span>
@@ -267,10 +396,30 @@ el.replaceWith(d);
 <pre><code class="python">def validate(
     self, file: str | None = None, model: str | None = None, organization=None
 ):
+    &#34;&#34;&#34;Perform Validation on an IPL model.
+
+    Returns a list of errors contained in the IPL file,
+    which will be empty if the file is correct.
+
+    You can optionally choose to pass in the model as
+    a file via the `file` argument, or pass it in as
+    a string via the `model` argument, but not both.
+    &#34;&#34;&#34;
     path = &#34;ipl/validate&#34;
-    return ipl_common.validate(self._ipl_config, path, file, model, organization)</code></pre>
+    return ipl_common.validate(
+        self._ipl_config,
+        path,
+        file,
+        model,
+        self._config.get_organization(organization),
+    )</code></pre>
 </details>
-<div class="desc"></div>
+<div class="desc"><p>Perform Validation on an IPL model.</p>
+<p>Returns a list of errors contained in the IPL file,
+which will be empty if the file is correct.</p>
+<p>You can optionally choose to pass in the model as
+a file via the <code>file</code> argument, or pass it in as
+a string via the <code>model</code> argument, but not both.</p></div>
 </dd>
 <dt id="imandra.ipl.Client.wait"><code class="name flex">
 <span>def <span class="ident">wait</span></span>(<span>self, job_id, interval=10)</span>

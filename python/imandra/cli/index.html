@@ -149,6 +149,7 @@ el.replaceWith(d);
             job_id = api.ipl.decompose(
                 auth,
                 args.file,
+                None,  # on CLI, always use a file
                 args.testgen_lang,
                 args.organization,
                 args.callback,
@@ -191,7 +192,11 @@ el.replaceWith(d);
         else:
             auth.login()
             job_id = api.ipl.unsat_analysis(
-                auth, args.file, args.organization, args.callback
+                auth,
+                args.file,
+                None,  # You must pass in as file instead of string
+                args.organization,
+                args.callback,
             )
             print(&#34;{}&#34;.format(job_id))
 
