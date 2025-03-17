@@ -106,7 +106,7 @@ el.replaceWith(d);
 <div class="desc"></div>
 </dd>
 <dt id="imandra.api.ipl_common.decompose"><code class="name flex">
-<span>def <span class="ident">decompose</span></span>(<span>config: <a title="imandra.api.ipl_common.Config" href="#imandra.api.ipl_common.Config">Config</a>,<br>path: str,<br>file,<br>model,<br>testgen_lang,<br>organization,<br>callback,<br>doc_gen,<br>parent_job_id)</span>
+<span>def <span class="ident">decompose</span></span>(<span>config: <a title="imandra.api.ipl_common.Config" href="#imandra.api.ipl_common.Config">Config</a>,<br>path: str,<br>file,<br>model,<br>testgen_lang,<br>organization,<br>callback,<br>doc_gen,<br>parent_job_id,<br>lite)</span>
 </code></dt>
 <dd>
 <details class="source">
@@ -123,6 +123,7 @@ el.replaceWith(d);
     callback,
     doc_gen,
     parent_job_id,
+    lite,
 ):
     params_dict = {&#34;lang&#34;: &#34;ipl&#34;}
     if parent_job_id is not None:
@@ -135,6 +136,7 @@ el.replaceWith(d);
             )
         with open(file, &#34;r&#34;) as ipl_file:
             contents = ipl_file.read()
+            params_dict[&#34;filename&#34;] = file.split(&#39;/&#39;)[-1] # get the filename
     elif model:
         contents = model
     else:
@@ -153,6 +155,8 @@ el.replaceWith(d);
 
     if callback is not None:
         params_dict[&#34;callback&#34;] = callback
+
+    params_dict[&#34;lite&#34;] = lite
 
     params = urllib.parse.urlencode(params_dict)
     url = &#34;{}/{}?{}&#34;.format(config[&#34;host&#34;], path, params)

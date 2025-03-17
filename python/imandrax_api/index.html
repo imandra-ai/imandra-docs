@@ -211,6 +211,14 @@ el.replaceWith(d);
             ctx=Context(),
             request=api_pb2.ArtifactGetQuery(task_id=task.id, kind=kind),
             timeout=timeout,
+        )
+
+    def typecheck( self, src: str, timeout: Optional[float] = None) -&gt; simple_api_pb2.TypecheckRes:
+        timeout = timeout or self._timeout
+        return self._client.typecheck(
+            ctx=Context(),
+            request=simple_api_pb2.TypecheckReq(src=src, session=self._sesh),
+            timeout=timeout,
         )</code></pre>
 </details>
 <div class="desc"></div>
@@ -221,7 +229,7 @@ el.replaceWith(d);
 <h3>Methods</h3>
 <dl>
 <dt id="imandrax_api.Client.decompose"><code class="name flex">
-<span>def <span class="ident">decompose</span></span>(<span>self,<br>name: str,<br>assuming: str | None = None,<br>basis: list[str] | None = [],<br>rule_specs: list[str] | None = [],<br>prune: bool | None = True,<br>ctx_simp: bool | None = None,<br>lift_bool: <google.protobuf.internal.enum_type_wrapper.EnumTypeWrapper object at 0x7feb5f1ec0b0> | None = None,<br>timeout: float | None = None,<br>str: bool | None = True) ‑> simple_api_pb2.DecomposeRes</span>
+<span>def <span class="ident">decompose</span></span>(<span>self,<br>name: str,<br>assuming: str | None = None,<br>basis: list[str] | None = [],<br>rule_specs: list[str] | None = [],<br>prune: bool | None = True,<br>ctx_simp: bool | None = None,<br>lift_bool: <google.protobuf.internal.enum_type_wrapper.EnumTypeWrapper object at 0x7f6b48f9c260> | None = None,<br>timeout: float | None = None,<br>str: bool | None = True) ‑> simple_api_pb2.DecomposeRes</span>
 </code></dt>
 <dd>
 <details class="source">
@@ -360,6 +368,24 @@ el.replaceWith(d);
 </details>
 <div class="desc"></div>
 </dd>
+<dt id="imandrax_api.Client.typecheck"><code class="name flex">
+<span>def <span class="ident">typecheck</span></span>(<span>self, src: str, timeout: float | None = None) ‑> simple_api_pb2.TypecheckRes</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def typecheck( self, src: str, timeout: Optional[float] = None) -&gt; simple_api_pb2.TypecheckRes:
+    timeout = timeout or self._timeout
+    return self._client.typecheck(
+        ctx=Context(),
+        request=simple_api_pb2.TypecheckReq(src=src, session=self._sesh),
+        timeout=timeout,
+    )</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
 <dt id="imandrax_api.Client.verify_src"><code class="name flex">
 <span>def <span class="ident">verify_src</span></span>(<span>self, src: str, hints: str | None = None, timeout: float | None = None) ‑> simple_api_pb2.VerifyRes</span>
 </code></dt>
@@ -414,6 +440,7 @@ el.replaceWith(d);
 <li><code><a title="imandrax_api.Client.instance_src" href="#imandrax_api.Client.instance_src">instance_src</a></code></li>
 <li><code><a title="imandrax_api.Client.list_artifacts" href="#imandrax_api.Client.list_artifacts">list_artifacts</a></code></li>
 <li><code><a title="imandrax_api.Client.status" href="#imandrax_api.Client.status">status</a></code></li>
+<li><code><a title="imandrax_api.Client.typecheck" href="#imandrax_api.Client.typecheck">typecheck</a></code></li>
 <li><code><a title="imandrax_api.Client.verify_src" href="#imandrax_api.Client.verify_src">verify_src</a></code></li>
 </ul>
 </li>

@@ -144,6 +144,9 @@ el.replaceWith(d);
             sys.exit(1)
         if args.file is None and args.parent_job_id is None:
             print(&#34;error: --file must be provided&#34;)
+
+        if args.lite is not None and args.lite != &#34;true&#34; and args.lite != &#34;false&#34;:
+            print(&#39;error: --lite, if set, must be either &#34;true&#34; or &#34;false&#34;  &#39;)
         else:
             auth.login()
             job_id = api.ipl.decompose(
@@ -155,6 +158,7 @@ el.replaceWith(d);
                 args.callback,
                 args.doc_gen,
                 args.parent_job_id,
+                args.lite,
             )
             print(&#34;{}/ipl/jobs/{}&#34;.format(auth.imandra_web_host, job_id))
             if args.wait:
@@ -184,6 +188,13 @@ el.replaceWith(d);
         action=&#34;store_true&#34;,
         help=(&#34;Block until the decomp job has finished running&#34;),
     )
+    parser_ipl_decompose.add_argument(
+        &#34;--lite&#34;,
+        choices=[&#34;true&#34;, &#34;false&#34;],
+        default=&#34;false&#34;,
+        help=(&#34;Action-only, non-FIX decomposition&#34;),
+    )
+
     parser_ipl_decompose.set_defaults(run=ipl_decompose)
 
     def ipl_unsat_analysis(args):
@@ -311,7 +322,7 @@ el.replaceWith(d);
 
     def ipl_list_jobs(args):
         auth.login()
-        job_type = &#34;ipl-log-analysis-builder&#34; if args.log_analysis else None
+        job_type = args.job_type
         resp = api.ipl.list_jobs(auth, limit=10, job_type=job_type)
 
         if len(resp[&#34;jobs&#34;]) == 0:
@@ -348,7 +359,9 @@ el.replaceWith(d);
                 )
 
     parser_ipl_jobs = parser_ipl_subparsers.add_parser(&#34;list-jobs&#34;)
-    parser_ipl_jobs.add_argument(&#34;--log-analysis&#34;, action=&#34;store_true&#34;)
+    parser_ipl_jobs.add_argument(&#34;--job-type&#34;, choices=[&#34;ipl-worker&#34;,
+                                                        &#34;ipl-unsat-analysis&#34;,
+                                                        &#34;ipl-log-analysis-builder&#34;])
     parser_ipl_jobs.set_defaults(run=ipl_list_jobs)
 
     def ipl_cancel(args):
